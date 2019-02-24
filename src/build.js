@@ -4,21 +4,20 @@ try {
     const Enumerator = require( 'enumerator' )
     const log = require( 'log' )
 
-    let files = new Enumerator( FSO.GetFolder( "core" ).Files )
+    let files = new Enumerator( FSO.GetFolder( "./core" ).Files )
+
 
     let result = {}
 
-    files.forEach( ( file ) => {
-        let [ , filename, ext ] = file.Path.split( io.win32Sep ).pop().match( /(^.+)(\.[^\.]+$)/ )
-
+    files.forEach( file => {
+        let [ , filename, ext ] = file.name.match( /(.+)(\..+)/ )
         if ( ext !== '.js' ) return
-
         let source = io.readFileSync( file.Path ).replace( /\r/g, '' )
         result[ filename ] = { source, mapping: {}, name: null }
 
-    } )
+    })
 
-    let graph = JSON.stringify( result, null, 2 )
+    let graph = JSON.stringify( result, null, 4 )
 
 
     log( () => io.writeFileSync( 'core/core.json', graph ) )

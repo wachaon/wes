@@ -16,7 +16,7 @@ const log = ( code ) => {
         default:
             res = JSON.stringify( res, null, 2 )
     }
-    const { highGreen: green } = console.ansi
+    const { brightGreen: green } = console.ansi
     console.log( code.toString() + green + ' // => ' + res )
 }
 
