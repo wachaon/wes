@@ -60,7 +60,7 @@ try {
             bgBrightBlue: '\u001B[104m',
             bgBrightMagenta: '\u001B[105m',
             bgBrightCyan: '\u001B[106m',
-            bgBWhite: '\u001B[107m'
+            bgWhite: '\u001B[107m'
         }
     }
     if (!WScript.Arguments.Named.Exists('Engine')) {
