@@ -7,14 +7,15 @@
     let noop = ( () => {} )
     let n = '\n'
 
-    const heavyCheck = '\u2714'
+    const checkMark = '\u2714'
 
     const {
-        highRed: red,
-        highGreen: green,
-        highYellow: yellow,
-        highMagenta: pink,
-        highBlack: gray } = console.ansi
+        brightRed: red,
+        brightGreen: green,
+        brightYellow: yellow,
+        brightMagenta: pink,
+        gray
+    } = console.ansi
 
     const describe = ( title, fn ) => {
         let s = depth ? '' : n
@@ -41,7 +42,7 @@
 
         try {
             fn()
-            console.log( `${ indent }${ gray }${ message } ${ green }${ heavyCheck }` )
+            console.log( `${ indent }${ gray }${ message } ${ green }${ checkMark }` )
         } catch ( e ) {
             console.log( `${ indent }${ pink }${ message }\n${ yellow }${ printCode( fn ) } ${ red }// => ${ e.message }${ n }` )
         } finally {
