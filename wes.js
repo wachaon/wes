@@ -1,5 +1,12 @@
 try {
     var WShell = WScript.CreateObject( 'WScript.Shell' )
+    var WScriptArguments = ( function() {
+        var results = []
+        for ( var i = 0, args = WScript.Arguments; i < args.length; i++ ) {
+            results.push( args.Item( i ) )
+        }
+        return results
+    } )()
     if ( !WScript.Arguments.Named.Exists( 'IE' ) ) {
         var console = {
             log: function( args ) {
@@ -61,13 +68,7 @@ try {
             }
         }
 
-        var WScriptArguments = ( function() {
-            var results = []
-            for ( var i = 0, args = WScript.Arguments; i < args.length; i++ ) {
-                results.push( args.Item( i ) )
-            }
-            return results
-        } )()
+
         var restarted = WScript.Arguments.Named.Exists( 'restarted' )
         var ScriptHost = WShell.ExpandEnvironmentStrings( '%PROCESSOR_ARCHITECTURE%' ) !== 'x86' ? '{%}windir{%}\\SysWOW64\\cscript' : 'cscript'
         var monotone = WScript.Arguments.Named.Exists( 'monotone' ) ? '' : '| echo off'
@@ -269,7 +270,7 @@ try {
         if ( !stack.length ) {
             stack.push( [ null, Guid ] )
             graph[ Guid ] = {
-                code: function() { return require( WScript.Arguments( 0 ) ) },
+                code: function() { return require( WScriptArguments[0] ) },
                 mapping: {}
             }
         }
