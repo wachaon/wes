@@ -25,6 +25,7 @@ try {
             blink: '\u001B[5m',
             reverse: '\u001B[7m',
             concealed: '\u001B[8m',
+
             black: '\u001B[30m',
             red: '\u001B[31m',
             green: '\u001B[32m',
@@ -32,7 +33,17 @@ try {
             blue: '\u001B[34m',
             magenta: '\u001B[35m',
             cyan: '\u001B[36m',
-            white: '\u001B[37m',
+            slver: '\u001B[37m',
+
+            gray: '\u001B[90m',
+            brightRed: '\u001B[91m',
+            brightGreen: '\u001B[92m',
+            brightYellow: '\u001B[93m',
+            brightBlue: '\u001B[94m',
+            brightMagenta: '\u001B[95m',
+            brightCyan: '\u001B[96m',
+            white: '\u001B[97m',
+
             bgBlack: '\u001B[40m',
             bgRed: '\u001B[41m',
             bgGreen: '\u001B[42m',
@@ -40,23 +51,16 @@ try {
             bgBlue: '\u001B[44m',
             bgMagenta: '\u001B[45m',
             bgCyan: '\u001B[46m',
-            bgWhite: '\u001B[47m',
-            highBlack: '\u001B[90m',
-            highRed: '\u001B[91m',
-            highGreen: '\u001B[92m',
-            highYellow: '\u001B[93m',
-            highBlue: '\u001B[94m',
-            highMagenta: '\u001B[95m',
-            highCyan: '\u001B[96m',
-            highWhite: '\u001B[97m',
-            bgHighBlack: '\u001B[100m',
-            bgHighRed: '\u001B[101m',
-            bgHighGreen: '\u001B[102m',
-            bgHighYellow: '\u001B[103m',
-            bgHighBlue: '\u001B[104m',
-            bgHighMagenta: '\u001B[105m',
-            bgHighCyan: '\u001B[106m',
-            bgHighWhite: '\u001B[107m'
+            bgSlver: '\u001B[47m',
+
+            bgGray: '\u001B[100m',
+            bgBrightRed: '\u001B[101m',
+            bgBrightGreen: '\u001B[102m',
+            bgBrightYellow: '\u001B[103m',
+            bgBrightBlue: '\u001B[104m',
+            bgBrightMagenta: '\u001B[105m',
+            bgBrightCyan: '\u001B[106m',
+            bgBWhite: '\u001B[107m'
         }
     }
     if (!WScript.Arguments.Named.Exists('Engine')) {
