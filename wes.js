@@ -1,4 +1,5 @@
 try {
+    var WShell = WScript.CreateObject( 'WScript.Shell' )
     if ( !WScript.Arguments.Named.Exists( 'IE' ) ) {
         var console = {
             log: function( args ) {
@@ -60,7 +61,6 @@ try {
             }
         }
 
-        var WShell = WScript.CreateObject( 'WScript.Shell' )
         var WScriptArguments = ( function() {
             var results = []
             for ( var i = 0, args = WScript.Arguments; i < args.length; i++ ) {
@@ -260,7 +260,6 @@ try {
         }
 
         var FSO = require( 'Scripting.FileSystemObject' )
-        var WShell = require( 'WScript.Shell' )
         var genUUID = function() {
             var typelib = require( "Scriptlet.Typelib" )
             return typelib.GUID.replace( /[^\}]+$/, "" )
