@@ -1,6 +1,6 @@
 
 const ScriptControl = ( language ) => {
-    const sc = WScript.CreateObject( 'ScriptControl' )
+    const sc = require( 'ScriptControl' )
     sc.Language = language
     return {
         AddCode( code ) {

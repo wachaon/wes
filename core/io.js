@@ -1,6 +1,6 @@
-const UTF8Encoding = WScript.CreateObject('System.Text.UTF8Encoding')
-const ADODB = WScript.CreateObject('ADODB.Stream')
-const DOMDocument = WScript.CreateObject('Msxml2.DOMDocument')
+const UTF8Encoding = require('System.Text.UTF8Encoding')
+const ADODB = require('ADODB.Stream')
+const DOMDocument = require('Msxml2.DOMDocument')
 const SHIFT_JIS = 'Shift-JIS'
 const UTF_8 = 'UTF-8'
 const UTF_8BOM = 'UTF-8BOM'
@@ -32,23 +32,23 @@ const binary2SJIS = ( binary ) => {
 }
 
 const binary2Hex = ( binary ) => {
-    let hex = WScript.CreateObject('Msxml2.DOMDocument').createElement('hex')
+    let hex = require('Msxml2.DOMDocument').createElement('hex')
     hex.dataType = 'bin.hex'
     hex.nodeTypedValue = binary
     return hex.text
 }
 
 const Hex2binary = ( text ) => {
-    let hex = WScript.CreateObject('Msxml2.DOMDocument').createElement('hex')
+    let hex = require('Msxml2.DOMDocument').createElement('hex')
     hex.dataType = 'bin.hex'
     hex.text = text
     return hex.nodeTypedValue
 }
 
-const UTF82bynary = ( text ) => WScript.CreateObject( 'System.Text.UTF8Encoding' ).GetBytes_4( text )
+const UTF82bynary = ( text ) => require( 'System.Text.UTF8Encoding' ).GetBytes_4( text )
 
 const SJIS2binary = ( text ) => {
-    const stream = WScript.CreateObject( 'ADODB.Stream' )
+    const stream = require( 'ADODB.Stream' )
     stream.Open()
     stream.Type = AD_TYPE_TEXT
     stream.Charset = SHIFT_JIS
@@ -121,7 +121,7 @@ const read = ( filespec, enc ) => {
 }
 
 const write = ( filespec, text, enc ) => {
-    const ADODB = WScript.CreateObject('ADODB.Stream')
+    const ADODB = require('ADODB.Stream')
     try {
         ADODB.Type = AD_TYPE_TEXT
         if ( enc == null ) ADODB.CharSet = enc = SHIFT_JIS
