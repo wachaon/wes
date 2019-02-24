@@ -4,8 +4,7 @@ try {
     const Enumerator = require( 'enumerator' )
     const log = require( 'log' )
 
-    let files = new Enumerator( FSO.GetFolder( "./core" ).Files )
-
+    let files = new Enumerator( FSO.GetFolder( "core" ).Files )
 
     let result = {}
 
@@ -14,7 +13,6 @@ try {
         if ( ext !== '.js' ) return
         let source = io.readFileSync( file.Path ).replace( /\r/g, '' )
         result[ filename ] = { source, mapping: {}, name: null }
-
     })
 
     let graph = JSON.stringify( result, null, 4 )
