@@ -16,7 +16,7 @@ const toArray = ( col ) => {
     return res
 }
 
-const Enumerator = new Proxy( () => {},{
+class Enumerator {
     construct( target, args ) {
         const res = []
         const e = JScript.Run( 'enumerator', args[0] )
@@ -25,7 +25,7 @@ const Enumerator = new Proxy( () => {},{
         }
         return res
     }
-} )
+}
 
 
 class Enumerators extends Array {
