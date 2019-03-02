@@ -1,6 +1,5 @@
 class Day extends Date {
     [Symbol.toPrimitive] ( hint ) {
-        console.log( hint )
         if ( hint === 'number' ) return this.getTime()
         else {
             let year = this.getFullYear()
