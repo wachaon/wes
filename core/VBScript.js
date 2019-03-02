@@ -16,7 +16,7 @@ End Function
 const TypeName = ( object ) => VBScript.Run( 'getTypeName', object )
 const VarType = ( object ) => VBScript.Run( 'getVarType', object )
 const Type = ( object ) => {
-    const constant = [
+    let constant = [
         'vbEmpty', // 0
         'vbNull', // 1
         'vbInteger', // 2
@@ -32,11 +32,12 @@ const Type = ( object ) => {
         'vbVariant', // 12
         'vbDataObject', // 13
     ]
+    constant[17] = 'vbByte'
+    constant[8192] = 'vbArray'
     let num = VarType( object )
     return  num > 8192 ? `${ constant[ num - 8192 ] }[]` : constant[ num ]
 }
-Type[17] = 'vbByte'
-Type[8192] = 'vbArray'
+
 
 module.exports = {
     TypeName,
