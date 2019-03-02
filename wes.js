@@ -137,6 +137,7 @@ try {
                     "name": null
                 }
             }
+        }
         function require(id, option) {
             if (graph[id] != null) {
                 if (!id.startsWith('{')) stack.push([null, null])
