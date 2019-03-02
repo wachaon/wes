@@ -5,7 +5,7 @@ const log = ( code ) => {
             res = res.toString()
             break
         case res instanceof Date:
-            res = res.toISOString()
+            res = res[Symbol.toPrimitive]( "string" )
             break
         case res === ( function(){} )():
             res = 'undefined'
