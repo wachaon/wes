@@ -1,5 +1,5 @@
 const { JScript } = require('sc')
-const { TypeName } = require('vbs')
+const { TypeName } = require('VBScript')
 
 JScript.AddCode(`
 function enumerator ( collection ) {
