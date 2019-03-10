@@ -33,7 +33,7 @@ const splitLines = ( string, mod, start, end, ) => {
       .join( sep )
 }
 
-module.exprots = {
+module.exports = {
     LF,
     CR,
     CRLF,
