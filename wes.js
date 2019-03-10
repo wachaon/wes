@@ -150,6 +150,11 @@ try {
         "source": "const { VBScript } = require( 'sc' )\nVBScript.AddCode(`\nFunction getTypeName( obj )\ngetTypeName = TypeName( obj )\nEnd Function\n`)\nVBScript.AddCode(`\nFunction getVarType( obj )\ngetVarType = VarType( obj )\nEnd Function\n`)\nconst TypeName = ( object ) => VBScript.Run( 'getTypeName', object )\nconst VarType = ( object ) => VBScript.Run( 'getVarType', object )\nconst Type = ( object ) => {\nlet constant = [\n'vbEmpty', // 0\n'vbNull', // 1\n'vbInteger', // 2\n'vbLong', // 3\n'vbSingle', // 4\n'vbDouble', // 5\n'vbCurrency', // 6\n'vbDate', // 7\n'vbString', // 8\n'vbObject', // 9\n'vbError', // 10\n'vbBoolean', // 11\n'vbVariant', // 12\n'vbDataObject', // 13\n]\nconstant[17] = 'vbByte'\nconstant[8192] = 'vbArray'\nlet num = VarType( object )\nreturn  num > 8192 ? `${ constant[ num - 8192 ] }[]` : constant[ num ]\n}\nmodule.exports = {\nTypeName,\nVarType,\nType\n}\n",
         "mapping": {},
         "name": "core/VBScript"
+    },
+    "version": {
+        "source": "module.exports = \"0.1.0\"",
+        "mapping": {},
+        "name": "core/version"
     }
 }
         );
