@@ -131,7 +131,7 @@ try {
         "mapping": {},
         "name": null
     },
-    "string": {
+    "StringHelper": {
         "source": "const LF = '\\n'\nconst CR = '\\r'\nconst CRLF = CR + LF\nconst SPACE = ' '\nconst TAB = '\\t'\nconst NONE = ''\nconst REG_LINE_SEP = /\\r?\\n/g\nconst REG_LF = /\\n/g\nconst REG_CRLF = /\\r\\n/g\nconst REG_SPACE = /\\s/g\nconst REG_SPACES = /\\s+/g\nconst REG_BLANK_LINE = /^\\s+$/\nconst REG_TAB = /\\t/g\nconst REG_TABS = /\\t+/g\nconst trimStarts = ( string ) => {\nreturn string.replace( /^([\\s\\r\\n]+\\n)/, NONE )\n}\nconst trimEnds = ( string ) => {\nreturn string.replace( /(\\n[\\s\\r\\n]+)$/, NONE )\n}\nconst trim = ( string ) => {\nreturn trimStarts( trimEnds( string ) )\n}\nconst splitLines = ( string, mod, start, end, ) => {\nconst sep = REG_CRLF.test( string )? CRLF : LF\nreturn string.split( REG_LINE_SEP )\n.filter( ( value, i ) => start < i % mod &&\ni % mod < end ||\nREG_BLANK_LINE.test( value )\n)\n.join( sep )\n}\nmodule.exports = {\nLF,\nCR,\nCRLF,\nSPACE,\nTAB,\nNONE,\nREG_LINE_SEP,\nREG_LF,\nREG_CRLF,\nREG_SPACE,\nREG_SPACES,\nREG_BLANK_LINE,\nREG_TAB,\nREG_TABS,\ntrimStarts,\ntrimEnds,\ntrim,\nsplitLines\n}",
         "mapping": {},
         "name": null
