@@ -10,7 +10,7 @@ files.forEach( file => {
     let [ , filename, ext ] = file.name.match( /(.+)(\..+)/ )
     if ( ext !== '.js' ) return
     let source = io.readFileSync( file.Path ).replace( /\r/g, '' ).replace( /^\s+/mg, '' )
-    result[ filename ] = { source, mapping: {}, name: null }
+    result[ filename ] = { source, mapping: {}, name: `core/${ filename }` }
 })
 
 let graph = JSON.stringify( result, null, 4 )
