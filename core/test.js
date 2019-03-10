@@ -7,6 +7,8 @@
     let noop = ( () => {} )
     let n = '\n'
 
+    let paragraph = true
+
     const checkMark = '\u2714'
 
     const {
@@ -18,7 +20,7 @@
     } = console.ansi
 
     const describe = ( title, fn ) => {
-        let s = depth ? '' : n
+        let s = paragraph ? n : ''
         depth++
         indent = space.repeat( depth * rate )
         console.log( s + indent + title + n )
