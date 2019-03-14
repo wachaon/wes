@@ -13,7 +13,11 @@ files.forEach( file => {
     result[ filename ] = { source, mapping: {}, name: `lib/${ filename }` }
 })
 
-let graph = JSON.stringify( result, null, 4 )
+let graph = JSON.stringify(result, null, 4)
+    .split(/\r?\n/)
+    .map(v => " ".repeat(12) + v)
+    .join( '\r\n' )
+
 
 const log = require( 'log' )
 
