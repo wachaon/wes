@@ -155,7 +155,7 @@ try {
                     "name": "lib/VBScript"
                 },
                 "version": {
-                    "source": "module.exports = \"0.2.6\"",
+                    "source": "module.exports = \"0.2.7\"",
                     "mapping": {},
                     "name": "lib/version"
                 }
@@ -183,6 +183,7 @@ try {
                 var module = {
                     exports: {}
                 }
+                var global = {}
                 var fn =
                     typeof code === 'function'
                         ? code
@@ -192,6 +193,7 @@ try {
                               'exports',
                               'console',
                               '__filename',
+                              'global',
                               '"use strict"\n' + source
                           )
                 fn(
@@ -199,7 +201,8 @@ try {
                     module,
                     module.exports,
                     console,
-                    graph[id].name || graph[id]
+                    graph[id].name || graph[id],
+                    global
                 )
                 graph[id].code = fn
                 stack.pop()
