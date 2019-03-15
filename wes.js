@@ -162,6 +162,11 @@ try {
             }
         );
         function require(id, option) {
+            let encode, eventPrefix = null
+            if (option != null) {
+                if (option.endsWith(option) === "_") eventPrefix = option
+                else encode = option
+            }
             if (graph[id] != null) {
                 if (!id.startsWith('{')) stack.push([null, null])
                 var code = graph[id].code
@@ -170,13 +175,9 @@ try {
                 function localRequire(name, option) {
                     var res = mapping[name]
                     if (res == null)
-                        return require(name, option && !option.startsWith('_')
-                            ? option
-                            : null)
+                        return require(name, encode )
                     else
-                        return require(res, option && !option.startsWith('_')
-                            ? option
-                            : null)
+                        return require(res, oencode )
                 }
                 localRequire.stack = stack
                 localRequire.graph = graph
@@ -206,9 +207,7 @@ try {
                 return module.exports
             }
             try {
-                if (option && option.startsWith('_'))
-                    return WScript.CreateObject(id, option)
-                else return WScript.CreateObject(id)
+                return WScript.CreateObject(id, eventPrefix)
             } catch (e) {}
             var io = require('io')
             var curr = (function() {
@@ -264,7 +263,7 @@ try {
                     var temp = JSON.parse(
                         io.readFileSync(
                             package,
-                            option && !option.startsWith('_') ? option : null
+                            encode
                         )
                     ).main
                     if (temp != null) {
@@ -301,14 +300,14 @@ try {
                 source: io
                     .readFileSync(
                         entry,
-                        option && !option.startsWith('_') ? option : null
+                        encode
                     )
                     .replace(/\r/g, ''),
                 name: entry.match(/([^\/]+)$/)[0] + '',
                 mapping: {}
             }
             history.push([entry, uuid])
-            return require(uuid, option ? option : null)
+            return require(uuid, option)
         }
         var FSO = require('Scripting.FileSystemObject')
         var genUUID = function() {
