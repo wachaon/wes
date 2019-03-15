@@ -132,7 +132,7 @@ try {
                     "name": "lib/log"
                 },
                 "pipe": {
-                    "source": "class Pipe {\nconstructor() {\nreturn ( value ) => {\nlet val = value instanceof Pipe ? value.dist() : value\nreturn {\npipe( fn ) {\nreturn new Pipe()( fn( val ) )\n},\ndist() {\nreturn val\n},\nlog() {\nconsole.log(`log: ${ val }`)\nreturn new Pipe()( val)\n}\n}\n}\n}\n}\nmodule.exports = new Pipe",
+                    "source": "class Pipe {\nconstructor() {\nreturn ( value ) => {\nlet val = value instanceof Pipe ? value.dist() : value\nreturn {\npipe( fn ) {\nreturn new Pipe()( fn( val ) )\n},\ndist() {\nreturn val\n},\nlog() {\nconsole.log( val )\nreturn new Pipe()( val )\n}\n}\n}\n}\n}\nmodule.exports = new Pipe",
                     "mapping": {},
                     "name": "lib/pipe"
                 },
@@ -162,7 +162,7 @@ try {
                     "name": "lib/VBScript"
                 },
                 "version": {
-                    "source": "module.exports = \"0.2.1\"",
+                    "source": "module.exports = \"0.2.2\"",
                     "mapping": {},
                     "name": "lib/version"
                 }
