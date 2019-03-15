@@ -111,7 +111,7 @@ try {
                     if (res == null)
                         return require(name, encode )
                     else
-                        return require(res, oencode )
+                        return require(res, encode )
                 }
                 localRequire.stack = stack
                 localRequire.graph = graph
