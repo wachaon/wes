@@ -117,6 +117,7 @@ try {
                 var module = {
                     exports: {}
                 }
+                var global = {}
                 var fn =
                     typeof code === 'function'
                         ? code
@@ -126,6 +127,7 @@ try {
                               'exports',
                               'console',
                               '__filename',
+                              'global',
                               '"use strict"\n' + source
                           )
                 fn(
@@ -133,7 +135,8 @@ try {
                     module,
                     module.exports,
                     console,
-                    graph[id].name || graph[id]
+                    graph[id].name || graph[id],
+                    global
                 )
                 graph[id].code = fn
                 stack.pop()
