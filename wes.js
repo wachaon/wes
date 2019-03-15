@@ -1,22 +1,15 @@
 try {
     var WShell = WScript.CreateObject('WScript.Shell')
     var console = {
-        log: function(args) {
-            var res
-            if (WScript.Arguments.Named.Exists('monotone')) {
-                res = args.replace(/(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]/g, '')
-            } else {
-                res = args + console.ansi.clear
-            }
-            WScript.StdErr.WriteLine(res)
+        log: function () {
+            var args = Array.prototype.slice.call( arguments ).join( ' ' )
+            var res = args + console.ansi.clear
+            WScript.StdErr.WriteLine( res )
         },
         print: function(args) {
-            if (WScript.Arguments.Named.Exists('monotone')) {
-                res = args.replace(/(\u009B|\u001B\[)[0-?]*[ -\/]*[@-~]/g, '')
-            } else {
-                res = args + console.ansi.clear
-            }
-            WScript.StdErr.Write(args)
+            var args = Array.prototype.slice.call( arguments ).join( ' ' )
+            var res = args + console.ansi.clear
+            WScript.StdErr.Write( res )
         },
         ansi: {
             clear: '\u001B[0m',
@@ -162,7 +155,7 @@ try {
                     "name": "lib/VBScript"
                 },
                 "version": {
-                    "source": "module.exports = \"0.2.2\"",
+                    "source": "module.exports = \"0.2.3\"",
                     "mapping": {},
                     "name": "lib/version"
                 }
