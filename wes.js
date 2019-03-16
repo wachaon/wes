@@ -183,7 +183,7 @@ try {
                 var module = {
                     exports: {}
                 }
-                var global = {}
+                var global = global || {}
                 var fn =
                     typeof code === 'function'
                         ? code
