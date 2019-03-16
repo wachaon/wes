@@ -1,15 +1,15 @@
 try {
     var WShell = WScript.CreateObject('WScript.Shell')
     var console = {
-        log: function () {
-            var args = Array.prototype.slice.call( arguments ).join( ' ' )
+        log: function() {
+            var args = Array.prototype.slice.call(arguments).join(' ')
             var res = args + console.ansi.clear
-            WScript.StdErr.WriteLine( res )
+            WScript.StdErr.WriteLine(res)
         },
         print: function(args) {
-            var args = Array.prototype.slice.call( arguments ).join( ' ' )
+            var args = Array.prototype.slice.call(arguments).join(' ')
             var res = args + console.ansi.clear
-            WScript.StdErr.Write( res )
+            WScript.StdErr.Write(res)
         },
         ansi: {
             clear: '\u001B[0m',
@@ -155,7 +155,7 @@ try {
                     "name": "lib/VBScript"
                 },
                 "version": {
-                    "source": "module.exports = \"0.2.8\"",
+                    "source": "module.exports = \"0.2.9\"",
                     "mapping": {},
                     "name": "lib/version"
                 }
@@ -188,16 +188,20 @@ try {
                     env: {
                         NODE_DEBUG: 'semver'
                     },
-                    argv: ( function() {
+                    argv: (function() {
                         var res = ['wes']
-                        for (var i = 0, args = WScript.Arguments; i < args.length; i++) {
+                        for (
+                            var i = 0, args = WScript.Arguments;
+                            i < args.length;
+                            i++
+                        ) {
                             res.push(WScript.Arguments.Item(i))
                         }
                         return res
                     })(),
                     versions: {
-                node: '8.0.0'
-                },
+                        node: '8.0.0'
+                    },
                     platform: 'win32'
                 }
                 var fn =

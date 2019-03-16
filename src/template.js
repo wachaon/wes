@@ -92,8 +92,9 @@ try {
     } else {
         var history = []
         var stack = []
-        var graph = {}
+        var graph = ( {}
         /* includes lib */
+        );
         function require(id, option) {
             if (graph[id] != null) {
                 if (!id.startsWith('{')) stack.push([null, null])
