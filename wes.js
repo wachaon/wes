@@ -155,7 +155,7 @@ try {
                     "name": "lib/VBScript"
                 },
                 "version": {
-                    "source": "module.exports = \"0.2.7\"",
+                    "source": "module.exports = \"0.2.8\"",
                     "mapping": {},
                     "name": "lib/version"
                 }
@@ -184,6 +184,22 @@ try {
                     exports: {}
                 }
                 var global = global || {}
+                var process = {
+                    env: {
+                        NODE_DEBUG: 'semver'
+                    },
+                    argv: ( function() {
+                        var res = ['wes']
+                        for (var i = 0, args = WScript.Arguments; i < args.length; i++) {
+                            res.push(WScript.Arguments.Item(i))
+                        }
+                        return res
+                    })(),
+                    versions: {
+                node: '8.0.0'
+                },
+                    platform: 'win32'
+                }
                 var fn =
                     typeof code === 'function'
                         ? code
@@ -194,6 +210,7 @@ try {
                               'console',
                               '__filename',
                               'global',
+                              'process',
                               '"use strict"\n' + source
                           )
                 fn(
@@ -202,7 +219,8 @@ try {
                     module.exports,
                     console,
                     graph[id].name || graph[id],
-                    global
+                    global,
+                    process
                 )
                 graph[id].code = fn
                 stack.pop()

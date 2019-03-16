@@ -1,15 +1,15 @@
 try {
     var WShell = WScript.CreateObject('WScript.Shell')
     var console = {
-        log: function () {
-            var args = Array.prototype.slice.call( arguments ).join( ' ' )
+        log: function() {
+            var args = Array.prototype.slice.call(arguments).join(' ')
             var res = args + console.ansi.clear
-            WScript.StdErr.WriteLine( res )
+            WScript.StdErr.WriteLine(res)
         },
         print: function(args) {
-            var args = Array.prototype.slice.call( arguments ).join( ' ' )
+            var args = Array.prototype.slice.call(arguments).join(' ')
             var res = args + console.ansi.clear
-            WScript.StdErr.Write( res )
+            WScript.StdErr.Write(res)
         },
         ansi: {
             clear: '\u001B[0m',
@@ -92,9 +92,8 @@ try {
     } else {
         var history = []
         var stack = []
-        var graph = ( {}
-            /* includes lib */
-        );
+        var graph = {}
+        /* includes lib */
         function require(id, option) {
             if (graph[id] != null) {
                 if (!id.startsWith('{')) stack.push([null, null])
@@ -118,6 +117,26 @@ try {
                     exports: {}
                 }
                 var global = global || {}
+                var process = {
+                    env: {
+                        NODE_DEBUG: 'semver'
+                    },
+                    argv: (function() {
+                        var res = ['wes']
+                        for (
+                            var i = 0, args = WScript.Arguments;
+                            i < args.length;
+                            i++
+                        ) {
+                            res.push(WScript.Arguments.Item(i))
+                        }
+                        return res
+                    })(),
+                    versions: {
+                        node: '8.0.0'
+                    },
+                    platform: 'win32'
+                }
                 var fn =
                     typeof code === 'function'
                         ? code
@@ -128,6 +147,7 @@ try {
                               'console',
                               '__filename',
                               'global',
+                              'process',
                               '"use strict"\n' + source
                           )
                 fn(
@@ -136,7 +156,8 @@ try {
                     module.exports,
                     console,
                     graph[id].name || graph[id],
-                    global
+                    global,
+                    process
                 )
                 graph[id].code = fn
                 stack.pop()
