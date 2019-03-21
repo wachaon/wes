@@ -248,9 +248,14 @@ try {
             graph[stack[stack.length - 1][1]].mapping[id] = uuid
             stack.push([entry, uuid])
             graph[uuid] = {
-                source: io
-                    .readFileSync(entry)
-                    .replace(/\r/g, ''),
+                source: entry.endsWith( '.json' ) ?
+                    "module.exports = " + io
+                        .readFileSync(entry)
+                        .replace(/\r/g, '') :
+                    io
+                        .readFileSync(entry)
+                        .replace(/\r/g, '')
+                        .replace( /^#![^\n]+$/m, '' ),
                 name: entry.match(/([^\/]+)$/)[0] + '',
                 mapping: {}
             }
