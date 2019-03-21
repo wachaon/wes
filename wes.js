@@ -160,23 +160,19 @@ try {
                     "name": "lib/version"
                 }
             }
-        );
-        function require(id, option) {
+        )
+        function require(id) {
             if (graph[id] != null) {
                 if (!id.startsWith('{')) stack.push([null, null])
                 var code = graph[id].code
                 var source = graph[id].source
                 var mapping = graph[id].mapping
-                function localRequire(name, option) {
+                function localRequire(name) {
                     var res = mapping[name]
                     if (res == null)
-                        return require(name, option && !option.startsWith('_')
-                            ? option
-                            : null)
+                        return require(name)
                     else
-                        return require(res, option && !option.startsWith('_')
-                            ? option
-                            : null)
+                        return require(res)
                 }
                 localRequire.stack = stack
                 localRequire.graph = graph
@@ -231,9 +227,7 @@ try {
                 return module.exports
             }
             try {
-                if (option && option.startsWith('_'))
-                    return WScript.CreateObject(id, option)
-                else return WScript.CreateObject(id)
+                return WScript.CreateObject(id)
             } catch (e) {}
             var io = require('io')
             var curr = (function() {
@@ -287,10 +281,7 @@ try {
                     io.fileExists(package))
                 ) {
                     var temp = JSON.parse(
-                        io.readFileSync(
-                            package,
-                            option && !option.startsWith('_') ? option : null
-                        )
+                        io.readFileSync( package )
                     ).main
                     if (temp != null) {
                         if (((res = io.join(value, temp)), io.fileExists(res)))
@@ -324,16 +315,13 @@ try {
             stack.push([entry, uuid])
             graph[uuid] = {
                 source: io
-                    .readFileSync(
-                        entry,
-                        option && !option.startsWith('_') ? option : null
-                    )
+                    .readFileSync(entry)
                     .replace(/\r/g, ''),
                 name: entry.match(/([^\/]+)$/)[0] + '',
                 mapping: {}
             }
             history.push([entry, uuid])
-            return require(uuid, option ? option : null)
+            return require(uuid)
         }
         var FSO = require('Scripting.FileSystemObject')
         var genUUID = function() {
