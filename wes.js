@@ -95,7 +95,7 @@ try {
         var graph = ( {}
             ,{
                 "args": {
-                    "source": "const { Enumerator } = require( 'JScript' )\nconst args = new Enumerator(WScript.Arguments)\nconst unnamed = new Enumerator(WScript.Arguments.unnamed)\nconst named = ( () => {\nlet res = {}\nlet named = new Enumerator(WScript.Arguments.named)\nnamed.forEach(v => {\nlet named = WScript.Arguments.named.item(v)\nres[v] = named || \"\"\n} )\nreturn res\n} )()\nmodule.exports = {\nargs,\nunnamed,\nnamed\n}",
+                    "source": "const { Enumerator } = require( 'JScript' )\nconst program = [ 'wes' ]\nconst args = program.push( new Enumerator( WScript.Arguments ) )\nconst unnamed = new Enumerator( WScript.Arguments.unnamed )\nconst named = ( () => {\nlet res = {}\nlet named = new Enumerator(WScript.Arguments.named)\nnamed.forEach(v => {\nlet named = WScript.Arguments.named.item(v)\nres[v] = named || \"\"\n} )\nreturn res\n} )()\nmodule.exports = {\nargs,\nunnamed,\nnamed\n}",
                     "mapping": {},
                     "name": "lib/args"
                 },
