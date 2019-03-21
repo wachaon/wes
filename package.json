@@ -1,0 +1,31 @@
+{
+  "name": "wes",
+  "version": "0.2.11",
+  "description": "Windows Ecma Script host",
+  "main": "wes.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wachaon/wes.git"
+  },
+  "keywords": [
+    "wsh",
+    "jscript",
+    "ecmascript",
+    "cscript"
+  ],
+  "author": "wachaon@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wachaon/wes/issues"
+  },
+  "homepage": "https://github.com/wachaon/wes#readme"
+}
