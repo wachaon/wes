@@ -94,6 +94,11 @@ try {
         var stack = []
         var graph = ( {}
             ,{
+                "args": {
+                    "source": "const { Enumerator } = require( 'JScript' )\nconst args = new Enumerator(WScript.Arguments)\nconst unnamed = new Enumerator(WScript.Arguments.unnamed)\nconst named = ( () => {\nlet res = {}\nlet named = new Enumerator(WScript.Arguments.named)\nnamed.forEach(v => {\nlet named = WScript.Arguments.named.item(v)\nres[v] = named || \"\"\n} )\nreturn res\n} )()\nmodule.exports = {\nargs,\nunnamed,\nnamed\n}",
+                    "mapping": {},
+                    "name": "lib/args"
+                },
                 "day": {
                     "source": "class Day extends Date {\n[Symbol.toPrimitive] ( hint ) {\nif ( hint === 'number' ) return this.getTime()\nelse {\nlet year = this.getFullYear()\nlet month = ( \"0\" + ( this.getMonth() + 1 ) ).slice( -2 )\nlet date = ( \"0\" + ( this.getDate() ) ).slice( -2 )\nlet hours = ( \"0\" + ( this.getHours() ) ).slice( -2 )\nlet minutes = ( \"0\" + ( this.getMinutes() ) ).slice( -2 )\nlet seconds = ( \"0\" + ( this.getSeconds() ) ).slice( -2 )\nlet milliseconds = ( \"00\" + ( this.getMilliseconds() ) ).slice( -3 )\nreturn `${ year }/${ month }/${ date } ${ hours }:${ minutes }:${ seconds }.${ milliseconds }`\n}\n}\n}\nmodule.exports = Day",
                     "mapping": {},
