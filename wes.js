@@ -160,7 +160,7 @@ try {
                     "name": "lib/VBScript"
                 },
                 "version": {
-                    "source": "module.exports = \"0.2.9\"",
+                    "source": "module.exports = require( 'package.json' ).version",
                     "mapping": {},
                     "name": "lib/version"
                 }
