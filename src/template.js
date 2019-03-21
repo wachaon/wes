@@ -93,15 +93,9 @@ try {
         var history = []
         var stack = []
         var graph = ( {}
-<<<<<<< HEAD
-        /* includes lib */
-        );
-        function require(id, option) {
-=======
             /* includes lib */
         )
         function require(id) {
->>>>>>> develop
             if (graph[id] != null) {
                 if (!id.startsWith('{')) stack.push([null, null])
                 var code = graph[id].code
