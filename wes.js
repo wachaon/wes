@@ -125,7 +125,7 @@ try {
                     "name": "lib/JScript"
                 },
                 "log": {
-                    "source": "const log = ( code ) => {\nlet res = code()\nswitch ( true ) {\ncase typeof res === 'function' || res instanceof RegExp:\nres = res.toString()\nbreak\ncase res instanceof Date:\nres = res[Symbol.toPrimitive]( \"string\" )\nbreak\ncase res === ( function(){} )():\nres = 'undefined'\nbreak\ncase res === null:\nres = null\nbreak\ndefault:\nres = JSON.stringify( res, null, 2 )\n}\nconst { brightGreen: green } = console.ansi\nconsole.log( code.toString() + green + ' // => ' + res )\n}\nmodule.exports = log",
+                    "source": "const output = require( 'output' )\nconst { green, clear } = console.ansi\nconst log = ( code ) => {\nlet res = output( code() )\nconsole.log( code.toString() + green + ' // => ' + clear + res )\n}\nmodule.exports = log",
                     "mapping": {},
                     "name": "lib/log"
                 },
