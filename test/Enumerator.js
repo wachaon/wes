@@ -1,5 +1,5 @@
-const { Enumerator } = require( '../lib/JScript' )
-const { describe, it, assert } = require('test') // { describe, it, assert }
+const { Enumerator } = require( 'JScript' )
+const { describe, it, assert } = require('test')
 
 describe('Enumerator test', () => {
     it('lib/ files', () => {
@@ -23,6 +23,7 @@ describe('Enumerator test', () => {
             "VBScript.js",
             "version.js"
         ]
+        //console.log( JSON.stringify( files ) )
         assert( JSON.stringify( files ) === JSON.stringify( list ) )
     })
 })

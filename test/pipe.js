@@ -1,4 +1,4 @@
-const pipe = require( '../lib/pipe' )
+const pipe = require( 'pipe' )
 const { describe, it, assert } = require( 'test' )
 
 
@@ -8,10 +8,10 @@ describe( 'pipe test', () => {
     const multi = ( curr ) => ( acc ) => acc * curr
     const div = ( curr ) => ( acc ) => acc / curr
     const rem = ( curr ) => ( acc ) => acc % curr
-    it( '’Pƒ‚È `pipe()`', () => {
+    it( 'pipe( 3 ).pipe( add( 5 ) ).dist() === 8', () => {
         assert( pipe( 3 ).pipe( add( 5 ) ).dist() === 8 )
     } )
-    it ( '•¡”‚Ìˆø”‚ğˆµ‚¤ `pipe()`', () => {
+    it ( 'pipe( 14 ).pipe( div( 7 ), add( 6 ), sub( 4 ), multi( 5 ), rem( 3 ) ).dist() === 2', () => {
         assert( pipe( 14 ).pipe( div( 7 ), add( 6 ), sub( 4 ), multi( 5 ), rem( 3 ) ).dist() === 2 )
     } )
 } )

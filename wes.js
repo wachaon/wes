@@ -348,7 +348,7 @@ try {
             stack.push([null, Guid])
             graph[Guid] = {
                 code: function() {
-                    return require(WScript.Arguments(0))
+                    return require( WScript.Arguments(0) )
                 },
                 mapping: {}
             }
