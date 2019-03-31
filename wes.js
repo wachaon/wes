@@ -130,7 +130,7 @@ try {
                     "name": "lib/JScript"
                 },
                 "log": {
-                    "source": "const output = require( 'output' )\nconst { green, clear } = console.ansi\nconst log = ( code ) => {\nlet res = output( code() )\nconsole.log( 'log( ' + code.toString() + ' )' +green + ' // => ' + clear + res )\n}\nmodule.exports = log",
+                    "source": "const output = require( 'output' )\nconst { unindent } = require( 'text' )\nconst { green, clear } = console.ansi\nconst log = ( code ) => {\nlet res = output( code() )\nconsole.log( 'log( ' + output( code ) + ' )' + green + ' // => ' + clear + res )\n}\nmodule.exports = log",
                     "mapping": {},
                     "name": "lib/log"
                 },
