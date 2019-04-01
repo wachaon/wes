@@ -145,7 +145,7 @@ try {
                               '__filename',
                               'global',
                               'process',
-                              '"use strict"\ntry{\n' + source +'\n} catch ( error ) {\nlet [, fn, line, column] = `${ error.stack }`.split( /\\r?\\n/ )[1].match( /\\(([^:]+):(\\d+):(\\d+)\\)$/ )\nconsole.log( `\nError: ${ error.message }\n    at module code (${ __filename }:${ line - 2 }:${ column })` ) }'
+                              '"use strict"\ntry{\n' + source +'\n} catch ( error ) {\nlet [, fn, line, column] = `${ error.stack }`.split( /\\r?\\n/ )[1].match( /\\(([^:]+):(\\d+):(\\d+)\\)$/ )\nconsole.log( `\nError: ${ error.message }\n    at module code (${ __filename }:${ line }:${ column })` ) }'
                           )
                 fn(
                     localRequire,
@@ -285,7 +285,7 @@ try {
         var e = error.stack.split( /\r?\n/ )[1].match( /\(([^:]+):(\d+):(\d+)\)$/ )
         var line = e[2]
         var column = e[3]
-        console.log( "\nError: " + error.message + "\n    at module code (" + __filename + ":" + ( line - 1 ) + ":" + column + ")" )
+        console.log( "\nError: " + error.message + "\n    at module code (" + __filename + ":" + ( line ) + ":" + column + ")" )
     } else {
         WScript.StdErr.WriteLine('\n' + errorStack)
     }
