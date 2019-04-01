@@ -226,7 +226,7 @@ try {
                               '__filename',
                               'global',
                               'process',
-                              '"use strict"\n' + source
+                              '"use strict"\ntry{\n' + source +'\n} catch ( error ) {\nlet [, fn, line, column] = `${ error.stack }`.split( /\\r?\\n/ )[1].match( /\\(([^:]+):(\\d+):(\\d+)\\)$/ )\nconsole.log( `\nError: ${ error.message }\n    at module code (${ __filename }:${ line - 2 }:${ column })` ) }'
                           )
                 fn(
                     localRequire,
@@ -283,7 +283,7 @@ try {
             var entry = null
             points.some(function(value) {
                 var res = null
-                var package = null
+                var pack = null
                 if (((res = value), io.fileExists(res))) return (entry = res)
                 if (((res = value + '.js'), io.fileExists(res)))
                     return (entry = res)
@@ -292,11 +292,11 @@ try {
                 if (((res = value + '/index.js'), io.fileExists(res)))
                     return (entry = res)
                 if (
-                    ((package = value + '/package.json'),
-                    io.fileExists(package))
+                    ((pack = value + '/pack.json'),
+                    io.fileExists(pack))
                 ) {
                     var temp = JSON.parse(
-                        io.readFileSync( package )
+                        io.readFileSync( pack )
                     ).main
                     if (temp != null) {
                         if (((res = io.join(value, temp)), io.fileExists(res)))
@@ -360,10 +360,13 @@ try {
         }
         require(Guid)
     }
-} catch (e) {
+} catch ( error ) {
     var errorStack = e.stack
     if (console) {
-        console.log('\n' + errorStack)
+        var e = error.stack.split( /\r?\n/ )[1].match( /\(([^:]+):(\d+):(\d+)\)$/ )
+        var line = e[2]
+        var column = e[3]
+        console.log( "\nError: " + error.message + "\n    at module code (" + __filename + ":" + ( line - 1 ) + ":" + column + ")" )
     } else {
         WScript.StdErr.WriteLine('\n' + errorStack)
     }
