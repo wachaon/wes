@@ -228,8 +228,8 @@ try {
                     env: {
                         NODE_DEBUG: 'semver'
                     },
-                    argv: WScriptArguments,
-                    versions: { node: '8.0.0' },
+                    argv: ['wes'].concat( WScriptArguments ),
+                    versions: { node: '4.0.0' },
                     platform: 'win32'
                 }
                 var fn =
