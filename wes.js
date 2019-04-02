@@ -1,15 +1,47 @@
 try {
     var WShell = WScript.CreateObject('WScript.Shell')
     var console = {
-        log: function() {
-            var args = Array.prototype.slice.call(arguments).join(' ')
-            var res = args + console.ansi.clear
-            WScript.StdErr.WriteLine(res)
+        log: function () {
+            var args = Array.prototype.slice.call( arguments )
+            if( args.length && args[0].includes( '%' ) ) {
+                var message = args.shift()
+                while( args.length ) {
+                    var val = args.shift()
+                    var type = /(%[sdifjo])/.test( message ) ? message.match( /(%[sdifjo])/ )[0]: null
+                    switch( type ) {
+                        case null: break;
+                        case '%s': message = message.replace( '%s', '' + val ); break
+                        case '%d': message = message.replace( '%d', val - 0 ); break
+                        case '%f': message = message.replace( '%f', val - 0 ); break
+                        case '%i': message = message.replace( '%i', parseInt( val ) ); break
+                        case '%j': message = message.replace( '%j', JSON.stringify( val ) ); break
+                        case '%o': message = message.replace( '%o', val ); break
+                        default: break
+                    }
+                }
+                WScript.StdErr.WriteLine( message )
+            } else WScript.StdErr.WriteLine( args.join( ' ' ) )
         },
-        print: function(args) {
-            var args = Array.prototype.slice.call(arguments).join(' ')
-            var res = args + console.ansi.clear
-            WScript.StdErr.Write(res)
+        print: function () {
+            var args = Array.prototype.slice.call( arguments )
+            if( args.length && args[0].includes( '%' ) ) {
+                var message = args.shift()
+                while( args.length ) {
+                    var val = args.shift()
+                    var type = /(%[sdifjo])/.test( message ) ? message.match( /(%[sdifjo])/ )[0]: null
+                    switch( type ) {
+                        case null: break;
+                        case '%s': message = message.replace( '%s', '' + val ); break
+                        case '%d': message = message.replace( '%d', val - 0 ); break
+                        case '%f': message = message.replace( '%f', val - 0 ); break
+                        case '%i': message = message.replace( '%i', parseInt( val ) ); break
+                        case '%j': message = message.replace( '%j', JSON.stringify( val ) ); break
+                        case '%o': message = message.replace( '%o', val ); break
+                        default: break
+                    }
+                }
+                WScript.StdErr.Write( message )
+            } else WScript.StdErr.Write( args.join( ' ' ) )
         },
         ansi: {
             clear: '\u001B[0m',
@@ -160,7 +192,7 @@ try {
                     "name": "lib/text"
                 },
                 "validation": {
-                    "source": "const isValid = ( target, name, fn, throwError ) => {\nif ( fn( target ) ) return target\nif ( throwError ) throw new Error ( `${ target } is not ${ name }` )\nreturn false\n}\nconst isString = ( string, throwError ) => {\nlet fn = ( target ) => typeof target === 'string'\nreturn isValid( string, 'String', fn, throwError )\n}\nconst isNumber = ( number, throwError ) => {\nlet fn = ( target ) =>  typeof target === 'number'\nreturn isValid( number, 'Number', fn, throwError )\n}\nconst isFunction = ( func, throwError ) => {\nlet fn = ( target ) => typeof target === 'function'\nreturn isValid( func, 'Function', fn, throwError )\n}\nconst isArray = ( array, throwError ) => {\nlet fn = ( target ) => Array.isArray( target )\nreturn isValid( array, 'Array', fn, throwError )\n}\nconst isDate = ( date, throwError ) => {\nlet fn = ( target ) => target instanceof Date\nreturn isValid( date, 'Date', fn, throwError )\n}\nconst isRegExp = ( regexp, throwError ) => {\nlet fn = ( target ) => regexp instanceof RegExp\nreturn isValid( regexp, 'RegExp', fn, throwError )\n}\nconst isObject = ( object, throwError ) => {\nlet fn = ( target ) => target != null && Object.prototype.toString.call( target ) === '[object Object]'\nreturn isValid( object, 'Object', fn, throwError )\n}\nconst isClass = ( Class, constructor, throwError ) => {\nlet fn = ( target ) => target instanceof constructor\nreturn isValid( Class, constructor.name, fn, throwError )\n}\nmodule.exports = {\nisValid,\nisString,\nisNumber,\nisFunction,\nisArray,\nisDate,\nisRegExp,\nisObject,\nisClass\n}",
+                    "source": "const isValid = ( target, name, fn, throwError ) => {\nif ( fn( target ) ) return target\nif ( throwError ) throw new Error ( `${ target } is not ${ name }` )\nreturn false\n}\nconst isString = ( string, throwError ) => {\nlet fn = ( target ) => typeof target === 'string'\nreturn isValid( string, 'String', fn, throwError )\n}\nconst isNumber = ( number, throwError ) => {\nlet fn = ( target ) =>  typeof target === 'number'\nreturn isValid( number, 'Number', fn, throwError )\n}\nconst isFunction = ( func, throwError ) => {\nlet fn = ( target ) => typeof target === 'function'\nreturn isValid( func, 'Function', fn, throwError )\n}\nconst isArray = ( array, throwError ) => {\nlet fn = ( target ) => Array.isArray( target )\nreturn isValid( array, 'Array', fn, throwError )\n}\nconst isDate = ( date, throwError ) => {\nlet fn = ( target ) => target instanceof Date\nreturn isValid( date, 'Date', fn, throwError )\n}\nconst isRegExp = ( regexp, throwError ) => {\nlet fn = ( target ) => regexp instanceof RegExp\nreturn isValid( regexp, 'RegExp', fn, throwError )\n}\nconst isObject = ( object, throwError ) => {\nlet fn = ( target ) => target != null && Object.prototype.toString.call( target ) === '[object Object]'\nreturn isValid( object, 'Object', fn, throwError )\n}\nconst isClass = ( Class, classConstructor, throwError ) => {\nlet fn = ( target ) => target instanceof classConstructor\nreturn isValid( Class, classConstructor.name, fn, throwError )\n}\nmodule.exports = {\nisValid,\nisString,\nisNumber,\nisFunction,\nisArray,\nisDate,\nisRegExp,\nisObject,\nisClass\n}",
                     "mapping": {},
                     "name": "lib/validation"
                 },

@@ -4,13 +4,13 @@ try {
         log: function () {
             var args = Array.prototype.slice.call( arguments )
             if( args.length && args[0].includes( '%' ) ) {
-                let message = args.shift()
+                var message = args.shift()
                 while( args.length ) {
-                    let val = args.shift()
-                    let type = /(%[sdifjo])/.test( message ) ? message.match( /(%[sdifjo])/ )[0]: null
+                    var val = args.shift()
+                    var type = /(%[sdifjo])/.test( message ) ? message.match( /(%[sdifjo])/ )[0]: null
                     switch( type ) {
                         case null: break;
-                        case '%s': message = message.replace( '%s', `${ val }` ); break
+                        case '%s': message = message.replace( '%s', '' + val ); break
                         case '%d': message = message.replace( '%d', val - 0 ); break
                         case '%f': message = message.replace( '%f', val - 0 ); break
                         case '%i': message = message.replace( '%i', parseInt( val ) ); break
@@ -25,13 +25,13 @@ try {
         print: function () {
             var args = Array.prototype.slice.call( arguments )
             if( args.length && args[0].includes( '%' ) ) {
-                let message = args.shift()
+                var message = args.shift()
                 while( args.length ) {
-                    let val = args.shift()
-                    let type = /(%[sdifjo])/.test( message ) ? message.match( /(%[sdifjo])/ )[0]: null
+                    var val = args.shift()
+                    var type = /(%[sdifjo])/.test( message ) ? message.match( /(%[sdifjo])/ )[0]: null
                     switch( type ) {
                         case null: break;
-                        case '%s': message = message.replace( '%s', `${ val }` ); break
+                        case '%s': message = message.replace( '%s', '' + val ); break
                         case '%d': message = message.replace( '%d', val - 0 ); break
                         case '%f': message = message.replace( '%f', val - 0 ); break
                         case '%i': message = message.replace( '%i', parseInt( val ) ); break
