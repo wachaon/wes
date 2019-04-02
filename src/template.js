@@ -1,15 +1,47 @@
 try {
     var WShell = WScript.CreateObject('WScript.Shell')
     var console = {
-        log: function() {
-            var args = Array.prototype.slice.call(arguments).join(' ')
-            var res = args + console.ansi.clear
-            WScript.StdErr.WriteLine(res)
+        log: function () {
+            var args = Array.prototype.slice.call( arguments )
+            if( args.length && args[0].includes( '%' ) ) {
+                let message = args.shift()
+                while( args.length ) {
+                    let val = args.shift()
+                    let type = /(%[sdifjo])/.test( message ) ? message.match( /(%[sdifjo])/ )[0]: null
+                    switch( type ) {
+                        case null: break;
+                        case '%s': message = message.replace( '%s', `${ val }` ); break
+                        case '%d': message = message.replace( '%d', val - 0 ); break
+                        case '%f': message = message.replace( '%f', val - 0 ); break
+                        case '%i': message = message.replace( '%i', parseInt( val ) ); break
+                        case '%j': message = message.replace( '%j', JSON.stringify( val ) ); break
+                        case '%o': message = message.replace( '%o', val ); break
+                        default: break
+                    }
+                }
+                WScript.StdErr.WriteLine( message )
+            } else WScript.StdErr.WriteLine( args.join( ' ' ) )
         },
-        print: function(args) {
-            var args = Array.prototype.slice.call(arguments).join(' ')
-            var res = args + console.ansi.clear
-            WScript.StdErr.Write(res)
+        print: function () {
+            var args = Array.prototype.slice.call( arguments )
+            if( args.length && args[0].includes( '%' ) ) {
+                let message = args.shift()
+                while( args.length ) {
+                    let val = args.shift()
+                    let type = /(%[sdifjo])/.test( message ) ? message.match( /(%[sdifjo])/ )[0]: null
+                    switch( type ) {
+                        case null: break;
+                        case '%s': message = message.replace( '%s', `${ val }` ); break
+                        case '%d': message = message.replace( '%d', val - 0 ); break
+                        case '%f': message = message.replace( '%f', val - 0 ); break
+                        case '%i': message = message.replace( '%i', parseInt( val ) ); break
+                        case '%j': message = message.replace( '%j', JSON.stringify( val ) ); break
+                        case '%o': message = message.replace( '%o', val ); break
+                        default: break
+                    }
+                }
+                WScript.StdErr.Write( message )
+            } else WScript.StdErr.Write( args.join( ' ' ) )
         },
         ansi: {
             clear: '\u001B[0m',
