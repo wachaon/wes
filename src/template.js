@@ -268,13 +268,7 @@ try {
         require(Guid)
     }
 } catch ( error ) {
-    var errorStack = e.stack
-    if (console) {
-        var e = error.stack.split( /\r?\n/ )[1].match( /\(([^:]+):(\d+):(\d+)\)$/ )
-        var line = e[2]
-        var column = e[3]
-        console.log( "\nError: " + error.message + "\n    at module code (" + __filename + ":" + ( line ) + ":" + column + ")" )
-    } else {
-        WScript.StdErr.WriteLine('\n' + errorStack)
-    }
+    var errorStack = error.stack
+    if (console) console.log( errorStack )
+    else WScript.StdErr.WriteLine( errorStack )
 }
