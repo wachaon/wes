@@ -21,18 +21,23 @@ try {
             return  message
         } else return args.join( ' ' )
     }
-    var debugLog = []
     var console = {
-        debugLog: debugLog,
+        debugLog: [],
         log: function () {
             var args = Array.prototype.slice.call( arguments )
             var message = formatString.apply( null, args )
-            if ( WScript.Arguments.Named.Exists( 'debug' ) ) debugLog.push( message )
+            message =  WScript.Arguments.Named.Exists( 'monotone' )
+                ? message.replace( /(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]/g, "" )
+                : message + console.ansi.clear
+            if ( WScript.Arguments.Named.Exists( 'debug' ) ) console.debugLog.push( message )
             WScript.StdErr.WriteLine( message )
         },
         print: function () {
             var args = Array.prototype.slice.call( arguments )
             var message = formatString.apply( null, args )
+            message =  WScript.Arguments.Named.Exists( 'monotone' )
+                ? message.replace( /(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]/g, "" )
+                : message + console.ansi.clear
             WScript.StdErr.Write( message )
         },
         ansi: {
