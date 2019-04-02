@@ -21,10 +21,13 @@ try {
             return  message
         } else return args.join( ' ' )
     }
+    var debugLog = []
     var console = {
+        debugLog: debugLog,
         log: function () {
             var args = Array.prototype.slice.call( arguments )
             var message = formatString.apply( null, args )
+            if ( WScript.Arguments.Named.Exists( 'debug' ) ) debugLog.push( message )
             WScript.StdErr.WriteLine( message )
         },
         print: function () {
