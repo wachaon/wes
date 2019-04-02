@@ -5,6 +5,7 @@
   "main": "wes.js",
   "directories": {
     "lib": "lib",
+    "src": "src",
     "test": "test"
   },
   "dependencies": {},

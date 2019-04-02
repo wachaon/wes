@@ -118,20 +118,8 @@ try {
                     env: {
                         NODE_DEBUG: 'semver'
                     },
-                    argv: (function() {
-                        var res = ['wes']
-                        for (
-                            var i = 0, args = WScript.Arguments;
-                            i < args.length;
-                            i++
-                        ) {
-                            res.push(WScript.Arguments.Item(i))
-                        }
-                        return res
-                    })(),
-                    versions: {
-                        node: '8.0.0'
-                    },
+                    argv: WScriptArguments,
+                    versions: { node: '8.0.0' },
                     platform: 'win32'
                 }
                 var fn =
