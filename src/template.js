@@ -133,7 +133,7 @@ try {
                               '__filename',
                               'global',
                               'process',
-                              '"use strict"\ntry{\n' + source +'\n} catch ( error ) {\nlet [, fn, line, column] = `${ error.stack }`.split( /\\r?\\n/ )[1].match( /\\(([^:]+):(\\d+):(\\d+)\\)$/ )\nconsole.log( `\nError: ${ error.message }\n    at module code (${ __filename }:${ line }:${ column })` ) }'
+                              '"use strict"\n' + source
                           )
                 fn(
                     localRequire,

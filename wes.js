@@ -160,7 +160,7 @@ try {
                     "name": "lib/text"
                 },
                 "validation": {
-                    "source": "const isValid = ( target, name, fn, throwError ) => {\nif ( fn( target ) ) return true\nif ( throwError ) throw new Error ( `${ target } is not ${ name }` )\nreturn false\n}\nconst isString = ( string, throwError ) => {\nlet fn = ( target ) => typeof target === 'string'\nreturn isValid( string, 'String', fn, throwError )\n}\nconst isNumber = ( number, throwError ) => {\nlet fn = ( target ) =>  typeof target === 'number'\nreturn isValid( number, 'Number', fn, throwError )\n}\nconst isFunction = ( func, throwError ) => {\nlet fn = ( target ) => typeof target === 'function'\nreturn isValid( func, 'Function', fn, throwError )\n}\nconst isArray = ( array, throwError ) => {\nlet fn = ( target ) => Array.isArray( target )\nreturn isValid( array, 'Array', fn, throwError )\n}\nconst isDate = ( date, throwError ) => {\nlet fn = ( target ) => target instanceof Date\nreturn isValid( date, 'Date', fn, throwError )\n}\nconst isRegExp = ( regexp, throwError ) => {\nlet fn = ( target ) => regexp instanceof RegExp\nreturn isValid( regexp, 'RegExp', fn, throwError )\n}\nconst isObject = ( object, throwError ) => {\nlet fn = ( target ) => target != null && Object.prototype.toString.call( target ) === '[object Object]'\nreturn isValid( object, 'Object', fn, throwError )\n}\nmodule.exports = {\nisValid,\nisString,\nisNumber,\nisFunction,\nisArray,\nisDate,\nisRegExp,\nisObject\n}",
+                    "source": "const isValid = ( target, name, fn, throwError ) => {\nif ( fn( target ) ) return true\nif ( throwError ) throw new Error ( `${ target } is not ${ name }` )\nreturn false\n}\nconst isString = ( string, throwError ) => {\nlet fn = ( target ) => typeof target === 'string'\nreturn isValid( string, 'String', fn, throwError )\n}\nconst isNumber = ( number, throwError ) => {\nlet fn = ( target ) =>  typeof target === 'number'\nreturn isValid( number, 'Number', fn, throwError )\n}\nconst isFunction = ( func, throwError ) => {\nlet fn = ( target ) => typeof target === 'function'\nreturn isValid( func, 'Function', fn, throwError )\n}\nconst isArray = ( array, throwError ) => {\nlet fn = ( target ) => Array.isArray( target )\nreturn isValid( array, 'Array', fn, throwError )\n}\nconst isDate = ( date, throwError ) => {\nlet fn = ( target ) => target instanceof Date\nreturn isValid( date, 'Date', fn, throwError )\n}\nconst isRegExp = ( regexp, throwError ) => {\nlet fn = ( target ) => regexp instanceof RegExp\nreturn isValid( regexp, 'RegExp', fn, throwError )\n}\nconst isObject = ( object, throwError ) => {\nlet fn = ( target ) => target != null && Object.prototype.toString.call( target ) === '[object Object]'\nreturn isValid( object, 'Object', fn, throwError )\n}\nconst isClass = ( Class, constructor, throwError ) => {\nlet fn = ( target ) => target instanceof constructor\nreturn isValid( Class, constructor.name, fn, throwError )\n}\nmodule.exports = {\nisValid,\nisString,\nisNumber,\nisFunction,\nisArray,\nisDate,\nisRegExp,\nisObject\n}",
                     "mapping": {},
                     "name": "lib/validation"
                 },
@@ -199,20 +199,8 @@ try {
                     env: {
                         NODE_DEBUG: 'semver'
                     },
-                    argv: (function() {
-                        var res = ['wes']
-                        for (
-                            var i = 0, args = WScript.Arguments;
-                            i < args.length;
-                            i++
-                        ) {
-                            res.push(WScript.Arguments.Item(i))
-                        }
-                        return res
-                    })(),
-                    versions: {
-                        node: '8.0.0'
-                    },
+                    argv: WScriptArguments,
+                    versions: { node: '8.0.0' },
                     platform: 'win32'
                 }
                 var fn =
@@ -226,7 +214,7 @@ try {
                               '__filename',
                               'global',
                               'process',
-                              '"use strict"\ntry{\n' + source +'\n} catch ( error ) {\nlet [, fn, line, column] = `${ error.stack }`.split( /\\r?\\n/ )[1].match( /\\(([^:]+):(\\d+):(\\d+)\\)$/ )\nconsole.log( `\nError: ${ error.message }\n    at module code (${ __filename }:${ line }:${ column })` ) }'
+                              '"use strict"\n' + source
                           )
                 fn(
                     localRequire,
