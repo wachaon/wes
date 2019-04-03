@@ -2,7 +2,7 @@ try {
     var WShell = WScript.CreateObject('WScript.Shell')
     var formatString = function () {
         var args = Array.prototype.slice.call( arguments )
-        if( args.length && typeof args === 'string' && args[0].includes( '%' ) ) {
+        if( args.length && typeof args[0] === 'string' && args[0].includes( '%' ) ) {
             var message = args.shift()
             while( args.length ) {
                 var val = args.shift()
