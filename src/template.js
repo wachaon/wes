@@ -1,6 +1,6 @@
 try {
     var WShell = WScript.CreateObject('WScript.Shell')
-    var formatString = function () {
+    var formatSonsoleString = function () {
         var args = Array.prototype.slice.call( arguments )
         if( args.length && typeof args[0] === 'string' && args[0].includes( '%' ) ) {
             var message = args.shift()
@@ -21,23 +21,30 @@ try {
             return  message
         } else return args.join( ' ' )
     }
+    var normalizeConsoleString = function ( message ){
+        message =  WScript.Arguments.Named.Exists( 'monotone' )
+        ? message.replace( /(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]/g, "" )
+        : message + console.ansi.clear
+        return message
+    }
     var console = {
         debugLog: [],
         log: function () {
             var args = Array.prototype.slice.call( arguments )
-            var message = formatString.apply( null, args )
-            message =  WScript.Arguments.Named.Exists( 'monotone' )
-                ? message.replace( /(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]/g, "" )
-                : message + console.ansi.clear
-            if ( WScript.Arguments.Named.Exists( 'debug' ) ) console.debugLog.push( message )
+            var message = formatSonsoleString.apply( null, args )
+            message = normalizeConsoleString( message )
+            if ( WScript.Arguments.Named.Exists( 'debug' ) ) console.logPush( message )
             WScript.StdErr.WriteLine( message )
+        },
+        logPush: function() {
+            var args = Array.prototype.slice.call( arguments )
+            var message = formatSonsoleString.apply( null, args )
+            message = normalizeConsoleString( message )
+            console.debugLog.push( message )
         },
         print: function () {
             var args = Array.prototype.slice.call( arguments )
-            var message = formatString.apply( null, args )
-            message =  WScript.Arguments.Named.Exists( 'monotone' )
-                ? message.replace( /(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]/g, "" )
-                : message + console.ansi.clear
+            var message = normalizeConsoleString( args.join('') )
             WScript.StdErr.Write( message )
         },
         ansi: {
