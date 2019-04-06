@@ -1,6 +1,6 @@
 try {
     var WShell = WScript.CreateObject('WScript.Shell')
-    var formatSonsoleString = function () {
+    var formatConsoleString = function () {
         var args = Array.prototype.slice.call( arguments )
         if( args.length && typeof args[0] === 'string' && args[0].includes( '%' ) ) {
             var message = args.shift()
@@ -31,14 +31,14 @@ try {
         debugLog: [],
         log: function () {
             var args = Array.prototype.slice.call( arguments )
-            var message = formatSonsoleString.apply( null, args )
+            var message = formatConsoleString.apply( null, args )
             message = normalizeConsoleString( message )
             if ( WScript.Arguments.Named.Exists( 'debug' ) ) console.logPush( message )
             WScript.StdErr.WriteLine( message )
         },
         logPush: function() {
             var args = Array.prototype.slice.call( arguments )
-            var message = formatSonsoleString.apply( null, args )
+            var message = formatConsoleString.apply( null, args )
             message = normalizeConsoleString( message )
             console.debugLog.push( message )
         },
