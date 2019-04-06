@@ -111,19 +111,6 @@ try {
         var Monotone = WScript.Arguments.Named.Exists('monotone')
             ? ''
             : '| echo off'
-        var Enter = '{ENTER}'
-        WShell.SendKeys(
-            [
-                ScriptHost,
-                WScript.ScriptFullName,
-                WScriptArguments.join(' '),
-                Nologo,
-                Chakra,
-                Engin,
-                Monotone,
-                Enter
-            ].join(' ')
-        )
         WScript.Quit()
     } else {
         var history = []
