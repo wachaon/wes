@@ -111,16 +111,29 @@ try {
         var Monotone = WScript.Arguments.Named.Exists('monotone')
             ? ''
             : '| echo off'
+        var Enter = '{ENTER}'
+        WShell.SendKeys(
+            [
+                ScriptHost,
+                WScript.ScriptFullName,
+                WScriptArguments.join(' '),
+                Nologo,
+                Chakra,
+                Engin,
+                Monotone,
+                Enter
+            ].join(' ')
+        )
         WScript.Quit()
     } else {
         var history = []
         var stack = []
         var graph = ( {}
             ,{
-                "args": {
+                "argv": {
                     "source": "const { Enumerator } = require( 'JScript' )\nconst program = [ 'wes' ]\nconst args = program.concat( new Enumerator( WScript.Arguments ) )\nconst unnamed = new Enumerator( WScript.Arguments.unnamed )\nconst named = ( () => {\nlet res = {}\nlet named = new Enumerator(WScript.Arguments.named)\nnamed.forEach(v => {\nlet named = WScript.Arguments.named.item(v)\nres[v] = named || \"\"\n} )\nreturn res\n} )()\nmodule.exports = {\nargs,\nunnamed,\nnamed\n}",
                     "mapping": {},
-                    "name": "lib/args"
+                    "name": "lib/argv"
                 },
                 "day": {
                     "source": "class Day extends Date {\n[Symbol.toPrimitive] ( hint ) {\nif ( hint === 'number' ) return this.getTime()\nelse {\nlet year = this.getFullYear()\nlet month = ( \"0\" + ( this.getMonth() + 1 ) ).slice( -2 )\nlet date = ( \"0\" + ( this.getDate() ) ).slice( -2 )\nlet hours = ( \"0\" + ( this.getHours() ) ).slice( -2 )\nlet minutes = ( \"0\" + ( this.getMinutes() ) ).slice( -2 )\nlet seconds = ( \"0\" + ( this.getSeconds() ) ).slice( -2 )\nlet milliseconds = ( \"00\" + ( this.getMilliseconds() ) ).slice( -3 )\nreturn `${ year }/${ month }/${ date } ${ hours }:${ minutes }:${ seconds }.${ milliseconds }`\n}\n}\n}\nmodule.exports = Day",
@@ -128,7 +141,7 @@ try {
                     "name": "lib/day"
                 },
                 "debug": {
-                    "source": "const { named } = require( 'args' )\nconst output = require( 'output' )\nconst debug = ( expression ) => {\nif ( 'debug' in named ) {\nconsole.log( `debug( ${ output( expression ) } )` )\n}\nreturn expression\n}\nmodule.exports = debug",
+                    "source": "const { named } = require( 'argv' )\nconst output = require( 'output' )\nconst debug = ( expression ) => {\nif ( 'debug' in named ) {\nconsole.log( `debug( ${ output( expression ) } )` )\n}\nreturn expression\n}\nmodule.exports = debug",
                     "mapping": {},
                     "name": "lib/debug"
                 },
@@ -163,7 +176,7 @@ try {
                     "name": "lib/output"
                 },
                 "pipe": {
-                    "source": "const { named } = require( 'args' )\nconst output = require( 'output' )\nclass Pipe {\nconstructor(){\nlet reslut = ( value ) => {\nconst val = value instanceof Pipe ? value.dist() : value\nconst _pipe = ( v, f ) => new Pipe()( f( v ) )\nlet res = {\ndist() {\nreturn val\n},\nlog( fn ) {\nif ( typeof fn !== 'function' ) console.log( output( val ) )\nelse fn( val )\nreturn new Pipe()( val )\n},\ndebug( fn ) {\nif ( 'debug' in named ) {\nif ( fn == null ) console.log( output( val ) )\nelse console.log( fn( val ) )\n}\nreturn new Pipe()( val )\n},\npipe( ...args ) {\nargs.unshift( new Pipe()( val ) )\nreturn args.reduce( ( acc, curr ) => {\nreturn _pipe( acc.dist(), curr )\n} )\n}\n}\nreturn res\n}\nreturn reslut\n}\n}\nmodule.exports = new Pipe",
+                    "source": "const { named } = require( 'argv' )\nconst output = require( 'output' )\nclass Pipe {\nconstructor(){\nlet reslut = ( value ) => {\nconst val = value instanceof Pipe ? value.dist() : value\nconst _pipe = ( v, f ) => new Pipe()( f( v ) )\nlet res = {\ndist() {\nreturn val\n},\nlog( fn ) {\nif ( typeof fn !== 'function' ) console.log( output( val ) )\nelse fn( val )\nreturn new Pipe()( val )\n},\ndebug( fn ) {\nif ( 'debug' in named ) {\nif ( fn == null ) console.log( output( val ) )\nelse console.log( fn( val ) )\n}\nreturn new Pipe()( val )\n},\npipe( ...args ) {\nargs.unshift( new Pipe()( val ) )\nreturn args.reduce( ( acc, curr ) => {\nreturn _pipe( acc.dist(), curr )\n} )\n}\n}\nreturn res\n}\nreturn reslut\n}\n}\nmodule.exports = new Pipe",
                     "mapping": {},
                     "name": "lib/pipe"
                 },
