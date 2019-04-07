@@ -6,15 +6,15 @@ describe('Enumerator test', () => {
         const FSO = require('Scripting.FileSystemObject')
         let files = ( new Enumerator(FSO.GetFolder(`./lib`).Files) ).map( v => v.name )
         let list = [
-            "args.js",
+            "argv.js",
             "day.js",
             "debug.js",
+            "dump.js",
             "enumerator.js",
             "event.js",
             "io.js",
             "JScript.js",
             "log.js",
-            "output.js",
             "pipe.js",
             "sc.js",
             "test.js",
