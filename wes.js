@@ -166,7 +166,7 @@ try {
                     "name": "lib/io"
                 },
                 "JScript": {
-                    "source": "const {JScript} = require('sc')\nJScript.AddCode(`\nfunction enumerator ( collection ) {\nreturn new Enumerator( collection )\n}`)\nconst Enumerator = new Proxy(() => {}, {\nconstruct(target, args) {\nconst res = []\nconst e = JScript.Run('enumerator', args[0])\nfor (; !e.atEnd(); e.moveNext()) {\nres.push(e.item())\n}\nreturn res\n}\n})\nmodule.exports = {\nEnumerator\n}",
+                    "source": "const { JScript } = require('sc')\nconst { TypeName } = require('VBScript')\nJScript.AddCode(`\nfunction enumerator ( collection ) {\nreturn new Enumerator( collection )\n}`)\nconst toArray = ( col ) => {\nlet res = []\nlet Enum = JScript.Run( 'enumerator', col )\nfor (; !Enum.atEnd(); Enum.moveNext()) {\nres.push( Enum.item() )\n}\nEnum.moveFirst()\nreturn res\n}\nclass Enumerator {\nconstructor( collection ) {\nlet res = []\nif (TypeName( collection ) === 'Long') {\nres = collection\n} else {\nres = toArray( collection )\n}\nreturn res\n}\n}\nmodule.exports = {\nEnumerator\n}",
                     "mapping": {},
                     "name": "lib/JScript"
                 },
