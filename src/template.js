@@ -167,6 +167,7 @@ try {
                               'exports',
                               'console',
                               '__filename',
+                              '__dirname',
                               'global',
                               'process',
                               '"use strict"\n' + source
@@ -177,6 +178,7 @@ try {
                     module.exports,
                     console,
                     graph[id].name || graph[id],
+                    ( stack[ stack.length - 1 ][0] + '' ).replace( /\/[^\/]+$/, ''),
                     global,
                     process
                 )
