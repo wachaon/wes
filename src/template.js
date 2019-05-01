@@ -62,7 +62,7 @@ try {
             blue: '\u001B[34m',
             magenta: '\u001B[35m',
             cyan: '\u001B[36m',
-            slver: '\u001B[37m',
+            silver: '\u001B[37m',
 
             gray: '\u001B[90m',
             brightRed: '\u001B[91m',
