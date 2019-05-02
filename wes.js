@@ -136,7 +136,7 @@ try {
                     "name": "lib/argv"
                 },
                 "buffer": {
-                    "source": "class Buffer {\nconstructor( byte ) {\nreturn Hex2Buffer( Byte2Hex( byte ) )\n}\n}\nconst Byte2Hex = ( byte ) => {\nlet hex = require('Msxml2.DOMDocument').createElement('hex')\nhex.dataType = 'bin.hex'\nhex.nodeTypedValue = byte\nreturn hex.text\n}\nconst Hex2Buffer = ( hex ) => new Uint8Array( hex.match( /.{1,2}/g ).map( v => parseInt( v, 16 ) ) )\nmodule.exports = Buffer\n",
+                    "source": "class Buffer {\nconstructor( byte ) {\nreturn Hex2Buffer( Byte2Hex( byte ) )\n}\n}\nconst Byte2Hex = ( byte ) => {\nlet elm = require('MSXML2.DOMDocument.6.0').createElement('elm')\nelm.dataType = 'bin.hex'\nelm.nodeTypedValue = byte\nreturn elm.text\n}\nconst Hex2Buffer = ( hex ) => new Uint8Array( hex.match( /.{1,2}/g ).map( v => parseInt( v, 16 ) ) )\nmodule.exports = Buffer\n",
                     "mapping": {},
                     "name": "lib/buffer"
                 },
@@ -179,6 +179,11 @@ try {
                     "source": "const dump = require( 'dump' )\nconst { unindent } = require( 'text' )\nconst { green, clear } = console.ansi\nconst log = ( code ) => {\nlet res = dump( code() )\nconsole.log( 'log( ' + dump( code ) + ' )' + green + ' // => ' + clear + res )\n}\nmodule.exports = log",
                     "mapping": {},
                     "name": "lib/log"
+                },
+                "msxml": {
+                    "source": "const msxmlId = [\n'MSXML2.DOMDocument.6.0',\n'MSXML2.DOMDocument.3.0',\n'Msxml2.DOMDocument',\n'Msxml.DOMDocument',\n'Microsoft.XMLDOM'\n]\nlet MSXML = null\nfor ( let i = 0; i < msxmlId.length; i++ ) {\ntry {\nMSXML = WScript.CreateObject( msxmlId[ i ] )\nbreak\n} catch ( e ) {\ncontinue\n}\n}\nif ( MSXML == null ) WScript.CreateObject( msxmlId[ 0 ] )\nconsole.debug( `${ console.ansi.gray }Get ${ require( 'VBScript' ).TypeName( MSXML ) }`)\nmodule.exports = MSXML\n",
+                    "mapping": {},
+                    "name": "lib/msxml"
                 },
                 "pathname": {
                     "source": "const win32Sep = '\\\\'\nconst posixSep = '/'\nconst split = ( path ) => toPosixSep( path ).split( posixSep )\nconst toWin32Sep = ( path ) => path.split( posixSep ).join( win32Sep )\nconst toPosixSep = ( path ) => path.split( win32Sep ).join( posixSep )\nconst absolute = ( path ) => toPosixSep( FSO.GetAbsolutePathName( toWin32Sep( path ) ) )\nconst join = ( ...paths ) => absolute( toWin32Sep( paths.reduce( ( acc, curr ) => `${ acc }${ win32Sep }${ curr }` ) ) )\nconst dirname = ( path ) => absolute( FSO.GetParentFolderName( toWin32Sep( path ) ) )\nconst extname = ( path ) => {\nlet temp = split( path )\nlet res = temp[ temp.length - 1 ].split( '.' )\nif ( res.length > 1 ) return '.' + res[ res.length - 1 ]\nreturn '' \n}\nconst relative = ( from, to ) => {\nlet _from = split( absolute( from ) )\nlet _to = split( absolute( to ) )\nif ( _from[0] !== _to[0] ) return toPosixSep( to )\nwhile ( _from[0] === _to[0] ) {\n_from.shift()\n_to.shift()\n}\n_from = _from.fill( '..' )\nreturn _from.concat( _to ).join( posixSep )\n}\nconst basename = ( path, ext ) => {\nconst temp = split( path )\nconst res = temp[ temp.length - 1 ]\nif ( ext != null && ext[0] === '.' && res.slice( -ext.length ) === ext) {\nreturn res.slice( 0, res.length - ext.length )\n} else {\nreturn res\n}\n}\nconst normalize = ( path ) => {\nlet temp = split( toPosixSep( path ).replace( /\\/+/g, posixSep ) )\nlet res = []\nlet parent = 0\nfor ( let i = temp.length - 1; i > -1 ; i-- ) {\nlet item = temp[i]\nif ( item === '.' ) continue\nelse if ( item === '..' ) parent++\nelse if ( parent ) parent--\nelse res.unshift( item )\n}\nif ( parent > 0 ) res.unshift( ( new Array( parent ) ).fill( '..' ) )\nif ( /^[a-z]:$/.test( res[0] ) ) res[0] = res[0].toUpperCase()\nreturn res.join( posixSep )\n}\nconst isAbsolute = ( path ) => absolute( path ) === normalize( path )\nmodule.exports = {\nwin32Sep,\nposixSep,\nsplit,\ntoWin32Sep,\ntoPosixSep,\nabsolute,\njoin,\ndirname,\nextname,\nrelative,\nbasename,\nnormalize,\nisAbsolute\n}\n",
