@@ -1,5 +1,5 @@
 const pipe = require( 'pipe' )
-const { describe, it, assert } = require( 'test' )
+const { describe, it, assert } = require( 'minitest' )
 
 
 describe( 'pipe test', () => {
