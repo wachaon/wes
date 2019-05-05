@@ -1,7 +1,7 @@
 const FSO = require( "Scripting.FileSystemObject" )
 const fs = require( 'filesystem' )
 const path = require( 'pathname' )
-const { REG_LINE_SEP, REG_CRLF, REG_CR, CRLF, SPACE } = require( 'text' )
+const { REG_LINE_SEP, REG_CRLF, REG_CR, CRLF, SPACE, NONE } = require( 'text' )
 const { Enumerator } = require( 'JScript' )
 
 let files = new Enumerator( FSO.GetFolder( "lib" ).Files )
@@ -12,7 +12,7 @@ files.forEach( file => {
     let filename = path.basename( file.name, '.js' )
     let ext = path.extname( file.name )
     if ( ext !== '.js' ) return
-    let source = fs.readTextFileSync( file.Path ).replace( REG_CR, '' ).replace( /^\s+/mg, '' )
+    let source = fs.readTextFileSync( file.Path ).replace( REG_CR, NONE ).replace( /^\s+/mg, NONE )
     result[ filename ] = { source, mapping: {}, name: `wes/${ filename }` }
 })
 
