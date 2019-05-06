@@ -136,7 +136,7 @@ try {
                     "name": "wes/argv"
                 },
                 "buffer": {
-                    "source": "class Buffer extends Uint8Array{\nconstructor( byte ) {\nsuper( Hex2Buffer( Byte2Hex( byte ) ) )\n}\nstatic toHex ( buffer ) {\nreturn Buffer2Hex( buffer )\n}\n}\nconst Byte2Hex = ( byte ) => {\nlet elm = require('MSXML2.DOMDocument.6.0').createElement('elm')\nelm.dataType = 'bin.hex'\nelm.nodeTypedValue = byte\nreturn elm.text\n}\nconst Hex2Buffer = ( hex ) => new Uint8Array( hex.match( /.{1,2}/g ).map( v => parseInt( v, 16 ) ) )\nconst Buffer2Hex = ( buffer ) => {\nlet res = []\nbuffer.forEach( v => res.push( v.toString( 16 ) ) )\nreturn res.join( '' )\n}\nmodule.exports = Buffer\n",
+                    "source": "class Buffer extends Uint8Array{\nconstructor( byte ) {\nsuper( Hex2Buffer( Byte2Hex( byte ) ) )\nthis.toByte = () => byte\n}\nstatic toHex ( buffer ) {\nreturn Buffer2Hex( buffer )\n}\n}\nconst Byte2Hex = ( byte ) => {\nlet elm = require('msxml').createElement('elm')\nelm.dataType = 'bin.hex'\nelm.nodeTypedValue = byte\nreturn elm.text\n}\nconst Hex2Buffer = ( hex ) => new Uint8Array( hex.match( /.{1,2}/g ).map( v => parseInt( v, 16 ) ) )\nconst Buffer2Hex = ( buffer ) => {\nlet res = []\nbuffer.forEach( v => res.push( v.toString( 16 ) ) )\nreturn res.join( '' )\n}\nmodule.exports = Buffer\n",
                     "mapping": {},
                     "name": "wes/buffer"
                 },
@@ -196,7 +196,7 @@ try {
                     "name": "wes/minitest"
                 },
                 "msxml": {
-                    "source": "const msxmlId = [\n'MSXML2.DOMDocument.6.0',\n'MSXML2.DOMDocument.3.0',\n'Msxml2.DOMDocument',\n'Msxml.DOMDocument',\n'Microsoft.XMLDOM'\n]\nlet MSXML = null\nfor ( let i = 0; i < msxmlId.length; i++ ) {\ntry {\nMSXML = WScript.CreateObject( msxmlId[ i ] )\nbreak\n} catch ( e ) {\ncontinue\n}\n}\nif ( MSXML == null ) WScript.CreateObject( msxmlId[ 0 ] )\nconsole.debug( `${ console.ansi.gray }Get ${ require( 'VBScript' ).TypeName( MSXML ) }`)\nmodule.exports = MSXML\n",
+                    "source": "const msxmlId = [\n'MSXML2.DOMDocument.6.0',\n'MSXML2.DOMDocument.3.0',\n'Msxml2.DOMDocument',\n'Msxml.DOMDocument',\n'Microsoft.XMLDOM'\n]\nlet MSXML = null\nfor ( let i = 0; i < msxmlId.length; i++ ) {\ntry {\nMSXML = WScript.CreateObject( msxmlId[ i ] )\nbreak\n} catch ( e ) {\ncontinue\n}\n}\nif ( MSXML == null ) WScript.CreateObject( msxmlId[ 0 ] )\n//console.debug( `${ console.ansi.gray }Get ${ require( 'VBScript' ).TypeName( MSXML ) }`)\nmodule.exports = MSXML\n",
                     "mapping": {},
                     "name": "wes/msxml"
                 },
