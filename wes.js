@@ -80,7 +80,7 @@ try {
             bgBlue: '\u001B[44m',
             bgMagenta: '\u001B[45m',
             bgCyan: '\u001B[46m',
-            bgSlver: '\u001B[47m',
+            bgSilver: '\u001B[47m',
 
             bgGray: '\u001B[100m',
             bgBrightRed: '\u001B[101m',
