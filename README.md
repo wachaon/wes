@@ -1,7 +1,7 @@
 # WES (Windows EcmaScript host)
 
 WES は WSH を現代的なECMAScript構文で開発できる実行環境です。
-Windows のオートメーション処理をストレスなく開発できます。
+Windows のオートメーション処理の開発コストを軽減できます。
 
 ## 特徴
 -  chakra エンジンを使用して `const` `let` `() =>` `class` などの現代的なECMAScript構文で開発できる
@@ -9,10 +9,21 @@ Windows のオートメーション処理をストレスなく開発できます
 -  標準出力に色指定ができる
 -  ファイルエンコードを自動推測できる
 
-## 設定
+## 取得と設定
 
-https://github.com/wachaon/wes から wes.js を取得してプロジェクトルートに保存するか、
-保存先のディレクトリのパスを環境変数に登録してください。
+### 取得
+
+実行に必要なファイルは wes.js の1ファイルのみです。
+
+コマンドプロンプトからダウンロード
+
+```
+bitsadmin.exe /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
+```
+
+もしくは下記リンク先から wes.js を取得して、プロジェクトルートに配置するか、配置先のディレクトリを環境変数に登録します。
+https://github.com/wachaon/wes
+
 
 ## 使い方
 
@@ -22,7 +33,8 @@ https://github.com/wachaon/wes から wes.js を取得してプロジェクト�
 wes index.js
 ```
 
-wes.js が cpu の 32/64bit の判断、実行エンジンを chakra に変更、標準出力の色出力を可能にするコマンドを発行します
+wes.js が cpu の 32/64bit の判断、実行エンジンを chakra に変更、色付き文字を出力するためのコマンドを発行し、
+起点となるファイルを実行します。
 
 ## console
 
@@ -32,9 +44,9 @@ wes.js が cpu の 32/64bit の判断、実行エンジンを chakra に変更�
 色付き文字を表示するサンプル
 
 ```javascript
-const { red, green, yellow, brightBlue, clear } = console.ansi
+const { reverse, underscore, bold, concealed, red, gray, green, yellow, cyan, clear } = console.ansi
 
-console.log( `Hello ${ red }W${ clear }o${ green }r${ brightBlue }l${ yellow }d`)
+console.log( `H${ reverse + clear }e${ underscore + clear }l${ bold }l${ concealed }o${ clear } ${ red }W${ gray }o${ green }r${ cyan }l${ yellow }d`)
 ```
 
 ## require
