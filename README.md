@@ -32,9 +32,21 @@ wes.js が cpu の 32/64bit の判断、実行エンジンを chakra に変更�
 色付き文字を表示するサンプル
 
 ```javascript
-const { red, green, yellow, brightBlue, clear } = console.ansi
+const { 
+    white, silver, gray,
+    red, green, yellow, blue, magenta, cyan,
+    brightRed, brightGreen, brightYellow,
+    brightBlue, brightMagenta, brightCyan,
+    reverse, underscore, clear
+} = console.ansi
 
-console.log( `Hello ${ red }W${ clear }o${ green }r${ brightBlue }l${ yellow }d`)
+console.log( `
+${ white }white ${ silver }silver ${ gray }gray
+${ red }red ${ green }green ${ yellow }yellow ${ blue }blue ${ magenta }magenta ${ cyan }cyan
+${ brightRed }brightRed ${ brightGreen }brightGreen ${ brightYellow }brightYellow
+${ brightBlue }brightBlue ${ brightMagenta }brightMagenta ${ brightCyan }brightCyan
+${ reverse }reverse${ clear } ${ underscore }underscore${ clear }
+`)
 ```
 
 ## require
