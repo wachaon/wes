@@ -110,7 +110,7 @@ BOM なし ( utf-8 without byte order mark ) の場合は、明示的に `'UTF-8
 const fs = require( 'filesystem' )
 const path = require( 'pathname' )
 
-const readme = path.join( __dirname, 'README.md' )
+const readme = path.join( __dirname, '_README.md' )
 
 const text = 'Hello World'
 
