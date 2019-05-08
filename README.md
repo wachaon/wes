@@ -44,16 +44,28 @@ wes.js が cpu の 32/64bit の判断、実行エンジンを chakra に変更�
 色付き文字を表示するサンプル
 
 ```javascript
-const { reverse, underscore, bold, concealed, red, gray, green, yellow, cyan, clear } = console.ansi
+const { 
+    white, silver, gray,
+    red, green, yellow, blue, magenta, cyan,
+    brightRed, brightGreen, brightYellow,
+    brightBlue, brightMagenta, brightCyan,
+    reverse, underscore, clear
+} = console.ansi
 
-console.log( `H${ reverse + clear }e${ underscore + clear }l${ bold }l${ concealed }o${ clear } ${ red }W${ gray }o${ green }r${ cyan }l${ yellow }d`)
+console.log( `
+${ white }white ${ silver }silver ${ gray }gray
+${ red }red ${ green }green ${ yellow }yellow ${ blue }blue ${ magenta }magenta ${ cyan }cyan
+${ brightRed }brightRed ${ brightGreen }brightGreen ${ brightYellow }brightYellow
+${ brightBlue }brightBlue ${ brightMagenta }brightMagenta ${ brightCyan }brightCyan
+${ reverse }reverse${ clear } ${ underscore }underscore${ clear }
+`)
 ```
 
 ## require
 
 モジュールは node.js で使われてる `require()` `module.exports` で読み込みます。
 
-パスの指定も node.js に似ているので、拡張子は自動で補間されます。
+パスの指定も node.js の `require()` に似せているので、拡張子の指定も不要です。
 
 [chardet](https://github.com/runk/node-chardet) を修正したものが標準モジュールにあるので、
 UTF-8 以外のエンコードファイルも自動推測で読み込めます。
@@ -92,17 +104,19 @@ BOM なし ( utf-8 without byte order mark ) の場合は、明示的に `'UTF-8
 
 `'UTF-8'` の場合の規定値は変更される可能性があります。保存したファイルを他のプログラムで使用する可能性がある場合は明示的に `'UTF-8BOM'` `'UTF-8N'` を指定してエンコードを固定してください。
 
+ファイルを書き込むサンプル
+
 ```javascript
 const fs = require( 'filesystem' )
 const path = require( 'pathname' )
 
-const readme = path.join( __dirname, '_README.md' )
+const readme = path.join( __dirname, 'README.md' )
 
 const text = 'Hello World'
 
 console.log( fs.writeFileSync( readme, text, 'UTF-8N' ) )
 // or
-console.log( fs.writeTextFileSync( readme, text, 'UTF-8N' ) )
+console.log( fs.writeTextFileSync( readme, text ) )
 ```
 
 読み込みは `readFileSync( path, encode )` で行います。`encode` を指定しない場合の戻り値は `Buffer` オブジェクトになります。
