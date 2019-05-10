@@ -62,10 +62,10 @@ try {
             if ( args == null || args.length > 2 ) return args[0]
             if ( !specifier.test( args[0] ) ) return args.join( space )
             var msg = args.shift()
-            while( args.length ) {
+            while ( args.length ) {
                 var val = args.shift()
-                var type = specifier.test( msg ) ? msg.match( specifier )[0]: null
-                switch( type ) {
+                var type = specifier.test( msg ) ? msg.match( specifier )[0] : null
+                switch ( type ) {
                     case '%s':
                         msg = msg.replace( '%s', '' + val ); break
                     case '%d':
@@ -147,7 +147,7 @@ try {
 
       } )()
 
-    if ( !argv.exists('engine') ) {
+    if ( !argv.exists( 'engine' ) ) {
 
         var host = WShell.ExpandEnvironmentStrings('%PROCESSOR_ARCHITECTURE%') !== 'x86'
                 ? '{%}windir{%}\\SysWOW64\\cscript'
