@@ -1,97 +1,163 @@
 try {
     var WShell = WScript.CreateObject('WScript.Shell')
-    var formatConsoleString = function () {
-        var args = Array.prototype.slice.call( arguments )
-        if( args.length && typeof args[0] === 'string' && args[0].includes( '%' ) ) {
-            var message = args.shift()
-            while( args.length ) {
-                var val = args.shift()
-                var type = /(%[sdifjo])/.test( message ) ? message.match( /(%[sdifjo])/ )[0]: null
-                switch( type ) {
-                    case null: break;
-                    case '%s': message = message.replace( '%s', '' + val ); break
-                    case '%d': message = message.replace( '%d', val - 0 ); break
-                    case '%f': message = message.replace( '%f', val - 0 ); break
-                    case '%i': message = message.replace( '%i', parseInt( val ) ); break
-                    case '%j': message = message.replace( '%j', JSON.stringify( val ) ); break
-                    case '%o': message = message.replace( '%o', val ); break
-                    default: break
-                }
-            }
-            return  message
-        } else return args.join( ' ' )
-    }
-    var normalizeConsoleString = function ( message ){
-        message =  WScript.Arguments.Named.Exists( 'monotone' )
-        ? message.replace( /(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]/g, "" )
-        : message + console.ansi.clear
-        return message
-    }
-    var console = {
-        debugLog: [],
-        log: function () {
-            var args = Array.prototype.slice.call( arguments )
-            var message = formatConsoleString.apply( null, args )
-            message = normalizeConsoleString( message )
-            if ( WScript.Arguments.Named.Exists( 'debug' ) ) console.logPush( message )
-            WScript.StdErr.WriteLine( message )
-        },
-        logPush: function() {
-            var args = Array.prototype.slice.call( arguments )
-            var message = formatConsoleString.apply( null, args )
-            message = normalizeConsoleString( message )
-            console.debugLog.push( message )
-        },
-        print: function () {
-            var args = Array.prototype.slice.call( arguments )
-            var message = normalizeConsoleString( args.join('') )
-            WScript.StdErr.Write( message )
-        },
-        ansi: {
-            clear: '\u001B[0m',
-            bold: '\u001B[1m',
-            underscore: '\u001B[4m',
-            blink: '\u001B[5m',
-            reverse: '\u001B[7m',
-            concealed: '\u001B[8m',
 
-            black: '\u001B[30m',
-            red: '\u001B[31m',
-            green: '\u001B[32m',
-            yellow: '\u001B[33m',
-            blue: '\u001B[34m',
-            magenta: '\u001B[35m',
-            cyan: '\u001B[36m',
-            silver: '\u001B[37m',
+    var argv = ( function () {
 
-            gray: '\u001B[90m',
-            brightRed: '\u001B[91m',
-            brightGreen: '\u001B[92m',
-            brightYellow: '\u001B[93m',
-            brightBlue: '\u001B[94m',
-            brightMagenta: '\u001B[95m',
-            brightCyan: '\u001B[96m',
-            white: '\u001B[97m',
-
-            bgBlack: '\u001B[40m',
-            bgRed: '\u001B[41m',
-            bgGreen: '\u001B[42m',
-            bgYellow: '\u001B[43m',
-            bgBlue: '\u001B[44m',
-            bgMagenta: '\u001B[45m',
-            bgCyan: '\u001B[46m',
-            bgSilver: '\u001B[47m',
-
-            bgGray: '\u001B[100m',
-            bgBrightRed: '\u001B[101m',
-            bgBrightGreen: '\u001B[102m',
-            bgBrightYellow: '\u001B[103m',
-            bgBrightBlue: '\u001B[104m',
-            bgBrightMagenta: '\u001B[105m',
-            bgBrightCyan: '\u001B[106m',
-            bgWhite: '\u001B[107m'
+        var argv = WScript.Arguments
+    
+        var args = []
+        for ( var i = 0; i < argv.Unnamed.Count; i++ ) {
+          args.push( argv.Unnamed( i ) )
         }
-    }
+    
+        function exists ( name ) {
+          return argv.Named.Exists( name )
+        }
+    
+        function getValue ( name ) {
+          return argv.Named( name )
+        }
+    
+        args.exists = exists
+        args.getValue = getValue
+        
+        return args
+    
+    } )()
+    
+    var console = ( function() {
+
+        function log () {
+          var res = normalize( arguments )
+          WScript.StdErr.WriteLine( res )
+          return res
+        }
+            
+        function print () {
+          var res = normalize( arguments )
+          WScript.StdErr.Write( res )
+          return res
+        }
+            
+        function debug () {
+          var debugging = existsArgv( 'debug' )
+          if ( !debugging ) return void 0
+          var res = normalize( arguments )
+          WScript.StdErr.WriteLine( 'DEBUG: ' + res )
+          return res
+        }
+        
+        // util
+        var none = ''
+        var space = ' '
+        var specifier = /(%[sdifjo])/
+        var seq = /(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]/g
+        
+        function normalize ( argList ) {
+            var monotone = argv.exists( 'monotone' )
+            var args = splitArgs( argList )
+            var res = formatArgs( args )
+            if ( monotone ) res = removeColor( res )
+            else res = clearTail( res )
+            return res
+        }
+        
+
+        
+        function formatArgs ( args ) {
+          if ( args == null || args.length > 2 ) return args[0]
+          if ( !specifier.test( args[0] ) ) return args.join( space )
+          var msg = args.shift()
+          while( args.length ) {
+            var val = args.shift()
+            var type = specifier.test( msg ) ? msg.match( specifier )[0]: null
+            switch( type ) {
+              case '%s':
+                msg = msg.replace( '%s', '' + val ); break
+              case '%d':
+                msg = msg.replace( '%d', val - 0 ); break
+              case '%f':
+                msg = msg.replace( '%f', val - 0 ); break
+              case '%i':
+                msg = msg.replace( '%i', parseInt( val ) ); break
+              case '%j':
+                msg = msg.replace( '%j', JSON.stringify( val ) ); break
+              case '%o': 
+                msg = msg.replace( '%o', val ); break
+            }
+          }
+          return msg
+        }
+
+        function splitArgs ( args ) {
+            return Array.prototype.slice.call( args )
+        }
+               
+        function clearTail ( arg ) {
+          if ( !seq.test( arg ) ) return arg
+          return arg + ansi.clear
+        }
+        
+        function removeColor ( arg ) {
+          if ( !seq.test( arg ) ) return arg
+          return arg.replace( seq, none )
+        }
+        
+        
+        var ansi = {
+          clear: '\u001B[0m',
+          bold: '\u001B[1m',
+          underscore: '\u001B[4m',
+          blink: '\u001B[5m',
+          reverse: '\u001B[7m',
+          concealed: '\u001B[8m',
+    
+          black: '\u001B[30m',
+          red: '\u001B[31m',
+          green: '\u001B[32m',
+          yellow: '\u001B[33m',
+          blue: '\u001B[34m',
+          magenta: '\u001B[35m',
+          cyan: '\u001B[36m',
+          silver: '\u001B[37m',
+    
+          gray: '\u001B[90m',
+          brightRed: '\u001B[91m',
+          brightGreen: '\u001B[92m',
+          brightYellow: '\u001B[93m',
+          brightBlue: '\u001B[94m',
+          brightMagenta: '\u001B[95m',
+          brightCyan: '\u001B[96m',
+          white: '\u001B[97m',
+    
+          bgBlack: '\u001B[40m',
+          bgRed: '\u001B[41m',
+          bgGreen: '\u001B[42m',
+          bgYellow: '\u001B[43m',
+          bgBlue: '\u001B[44m',
+          bgMagenta: '\u001B[45m',
+          bgCyan: '\u001B[46m',
+          bgSilver: '\u001B[47m',
+    
+          bgGray: '\u001B[100m',
+          bgBrightRed: '\u001B[101m',
+          bgBrightGreen: '\u001B[102m',
+          bgBrightYellow: '\u001B[103m',
+          bgBrightBlue: '\u001B[104m',
+          bgBrightMagenta: '\u001B[105m',
+          bgBrightCyan: '\u001B[106m',
+          bgWhite: '\u001B[107m'
+        }
+        
+        return {
+          log: log,
+          print: print,
+          debug: debug,
+          ansi: ansi
+        }
+          
+      } )()
+    
     if (!WScript.Arguments.Named.Exists('Engine')) {
         var WScriptArguments = (function() {
             var results = []
