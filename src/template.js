@@ -180,17 +180,17 @@ try {
             /* includes lib */
         )
         function require(id) {
-            if (graph[id] != null) {
-                if (!id.startsWith('{')) stack.push([null, null])
+            if ( graph[id] != null ) {
+                if ( !id.startsWith('{') ) stack.push( [null, null] )
                 var code = graph[id].code
                 var source = graph[id].source
                 var mapping = graph[id].mapping
-                function localRequire(name) {
+                function localRequire( name ) {
                     var res = mapping[name]
-                    if (res == null)
-                        return require(name)
+                    if ( res == null )
+                        return require( name )
                     else
-                        return require(res)
+                        return require( res )
                 }
                 localRequire.stack = stack
                 localRequire.graph = graph
@@ -226,7 +226,7 @@ try {
                     module.exports,
                     console,
                     graph[id].name || graph[id],
-                    ( stack[ stack.length - 1 ][0] + '' ).replace( /\/[^\/]+$/, ''),
+                    ( stack[stack.length - 1][0] + '' ).replace( /\/[^\/]+$/, '' ),
                     global,
                     process
                 )
@@ -235,35 +235,35 @@ try {
                 return module.exports
             }
             try {
-                return WScript.CreateObject(id)
-            } catch (e) {}
-            var io = require('io')
-            var curr = (function() {
+                return WScript.CreateObject( id )
+            } catch ( e ) {}
+            var io = require( 'io' )
+            var curr = ( function() {
                 var res
-                if (stack.length) {
-                    if ((res = stack[stack.length - 1])) {
-                        if (res[0]) {
-                            return io.dirname(res[0])
+                if ( stack.length ) {
+                    if ( ( res = stack[stack.length - 1] ) ) {
+                        if ( res[0] ) {
+                            return io.dirname( res[0] )
                         }
                     }
                 }
-                return io.toPosixSep(WShell.CurrentDirectory)
+                return io.toPosixSep( WShell.CurrentDirectory )
             })()
             var points = []
-            if (id.startsWith(io.posixSep)) curr = FSO.GetDriveName(curr)
+            if ( id.startsWith( io.posixSep ) ) curr = FSO.GetDriveName( curr )
             if (
-                id.startsWith(io.posixSep) ||
-                id.startsWith('.' + io.posixSep) ||
-                id.startsWith('..' + io.posixSep)
+                id.startsWith( io.posixSep ) ||
+                id.startsWith( '.' + io.posixSep ) ||
+                id.startsWith( '..' + io.posixSep )
             ) {
-                points.push(io.join(curr, id))
+                points.push( io.join( curr, id ) )
             } else {
-                points.push(io.join(curr, id))
-                var hierarchy = io.split(curr)
-                while (hierarchy.length) {
+                points.push( io.join( curr, id ) )
+                var hierarchy = io.split( curr )
+                while ( hierarchy.length ) {
                     points.push(
                         io.absolute(
-                            hierarchy.join(io.posixSep) +
+                            hierarchy.join( io.posixSep ) +
                                 io.posixSep +
                                 'node_modules' +
                                 io.posixSep +
@@ -274,84 +274,84 @@ try {
                 }
             }
             var entry = null
-            points.some(function(value) {
+            points.some( function( value ) {
                 var res = null
                 var pack = null
-                if (((res = value), io.fileExists(res))) return (entry = res)
-                if (((res = value + '.js'), io.fileExists(res)))
+                if ( ( ( res = value), io.fileExists( res ) ) ) return ( entry = res )
+                if ( ( ( res = value + '.js'), io.fileExists(res) ) )
+                    return ( entry = res )
+                if ( ( ( res = value + '.json' ), io.fileExists( res ) ) )
                     return (entry = res)
-                if (((res = value + '.json'), io.fileExists(res)))
-                    return (entry = res)
-                if (((res = value + '/index.js'), io.fileExists(res)))
-                    return (entry = res)
+                if ( ( ( res = value + '/index.js' ), io.fileExists( res ) ) )
+                    return ( entry = res )
                 if (
-                    ((pack = value + '/pack.json'),
-                    io.fileExists(pack))
+                    ( ( pack = value + '/pack.json' ),
+                    io.fileExists(pack) )
                 ) {
                     var temp = JSON.parse(
                         io.readFileSync( pack )
                     ).main
-                    if (temp != null) {
-                        if (((res = io.join(value, temp)), io.fileExists(res)))
-                            return (entry = res)
+                    if ( temp != null ) {
+                        if ( ( ( res = io.join( value, temp ) ), io.fileExists( res ) ) )
+                            return ( entry = res )
                         else if (
-                            ((res = io.join(value, temp + '.js')),
-                            io.fileExists(res))
+                            ( ( res = io.join( value, temp + '.js' ) ),
+                            io.fileExists( res ) )
                         )
-                            return (entry = res)
+                            return ( entry = res )
                     }
                 }
             })
-            if (entry == null)
+            if ( entry == null)
                 throw new Error(
-                    "module not found\ncaller: '" +
+                    "module not foun d\ncaller: '" +
                         curr +
                         "' => require: '" +
                         id +
                         "'"
                 )
-            var loaded = history.find(function(val) {
+            var loaded = history.find( function( val ) {
                 return val[0] === entry
-            })
-            if (!!loaded) {
-                graph[stack[stack.length - 1][1]].mapping[id] = loaded[1]
-                stack.push([entry, loaded[1]])
-                return require(loaded[1])
+            } )
+            if ( !!loaded ) {
+                graph[ stack[stack.length - 1][1]].mapping[id] = loaded[1]
+                stack.push( [entry, loaded[1]] )
+                return require( loaded[1] )
             }
             var uuid = genUUID()
-            graph[stack[stack.length - 1][1]].mapping[id] = uuid
-            stack.push([entry, uuid])
+            graph[ stack[stack.length - 1][1]].mapping[id] = uuid
+            stack.push( [entry, uuid] )
             graph[uuid] = {
                 source: entry.endsWith( '.json' ) ?
                     "module.exports = " + io
-                        .readFileSync(entry)
-                        .replace(/\r/g, '') :
+                        .readFileSync( entry )
+                        .replace( /\r/g, '' ) :
                     io
-                        .readFileSync(entry)
-                        .replace(/\r/g, '')
+                        .readFileSync( entry )
+                        .replace( /\r/g, '' )
                         .replace( /^#![^\n]+$/m, '' ),
-                name: entry.match(/([^\/]+)$/)[0] + '',
+                name: entry.match( /([^\/]+)$/ )[0] + '',
                 mapping: {}
             }
-            history.push([entry, uuid])
-            return require(uuid)
+            history.push( [entry, uuid] )
+            return require( uuid )
         }
         var FSO = require('Scripting.FileSystemObject')
         var genUUID = function() {
-            var typelib = require('Scriptlet.Typelib')
-            return typelib.GUID.replace(/[^\}]+$/, '')
+            var typelib = require( 'Scriptlet.Typelib' )
+            return typelib.GUID.replace( /[^\}]+$/, '' )
         }
         var Guid = genUUID()
-        if (!stack.length) {
-            stack.push([null, Guid])
+        if ( !stack.length ) {
+            stack.push( [null, Guid] )
             graph[Guid] = {
                 code: function() {
-                    return require(argv[0])
+                    return require( argv[0] )
                 },
                 mapping: {}
             }
         }
-        require(Guid)
+        require( Guid )
     }
 } catch ( error ) {
     var errorStack = error.stack
