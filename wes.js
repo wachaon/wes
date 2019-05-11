@@ -10,9 +10,15 @@ try {
             res.push( args( i ) )
         }
 
+        var unnamed = []
+        for ( var i = 0; i < args.Unnamed.length; i++ ) {
+            unnamed.push( args.Unnamed( i ) )
+        }
+
         function exists ( name ) { return args.Named.Exists( name ) }
         function getValue ( name ) { return args.Named( name ) }
 
+        res.unnamed = unnamed
         res.exists = exists
         res.getValue = getValue
 
@@ -172,8 +178,8 @@ try {
     if ( !argv.exists( 'engine' ) ) {
 
         var host = WShell.ExpandEnvironmentStrings('%PROCESSOR_ARCHITECTURE%') !== 'x86'
-                ? '{%}windir{%}\\SysWOW64\\cscript'
-                : 'cscript'
+            ? '{%}windir{%}\\SysWOW64\\cscript'
+            : 'cscript'
         var nologo = '//nologo'
         var engin = '/engine:Chakra'
         var chakra = '//E:{{}1b7cd997-e5ff-4932-a7a6-2a9e636da385{}}'
