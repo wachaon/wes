@@ -3,20 +3,20 @@ try {
 
     var argv = ( function () {
 
-        var argv = WScript.Arguments
+        var args = WScript.Arguments
 
-        var args = []
-        for ( var i = 0; i < argv.Unnamed.length; i++ ) {
-            args.push( argv.Unnamed( i ) )
+        var res = []
+        for ( var i = 0; i < args.length; i++ ) {
+            res.push( args( i ) )
         }
 
-        function exists ( name ) { return argv.Named.Exists( name ) }
-        function getValue ( name ) { return argv.Named( name ) }
+        function exists ( name ) { return args.Named.Exists( name ) }
+        function getValue ( name ) { return args.Named( name ) }
 
-        args.exists = exists
-        args.getValue = getValue
+        res.exists = exists
+        res.getValue = getValue
 
-        return args
+        return res
 
     } )()
 
@@ -35,7 +35,7 @@ try {
         }
 
         function debug () {
-            var debugging = existsArgv( 'debug' )
+            var debugging = argv.exists( 'debug' )
             if ( !debugging ) return void 0
             var res = normalize( arguments )
             WScript.StdErr.WriteLine( 'DEBUG: ' + res )
@@ -45,7 +45,7 @@ try {
         var none = ''
         var space = ' '
         var specifier = /(%[sdifjo])/
-        var seq = /(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]/g
+        var seq = /(\u001B\[)(\d{1,3};)*(\d{1,3}m)/g
 
         function normalize ( argList ) {
             var monotone = argv.exists( 'monotone' )
@@ -84,13 +84,32 @@ try {
         }
 
         function removeColor ( arg ) {
-          if ( !seq.test( arg ) ) return arg
-          return arg.replace( seq, none )
+            return arg.replace( seq, none )
         }
 
         function clearTail ( arg ) {
-          if ( !seq.test( arg ) ) return arg
-          return arg + ansi.clear
+            if ( !seq.test( arg ) ) return arg
+            return arg + ansi.clear
+        }
+
+        function color ( red, green, blue ) {
+            var args = arguments
+            if ( args.length === 1 && args[0].startsWith( '#' ) ) {
+                red = parseInt( args[0].slice( 1, 3 ), 16 )
+                green = parseInt( args[0].slice( 3, 5 ), 16 )
+                blue = parseInt( args[0].slice( 5, 7 ), 16 )
+            }
+            return '\u001B[38;2;' + red + ';' + green + ';' + blue + 'm'
+        }
+
+        function bgColor( red, green, blue ) {
+            var args = arguments
+            if ( args.length === 1 && args[0].startsWith( '#' ) ) {
+                red = parseInt( args[0].slice( 1, 3 ), 16 )
+                green = parseInt( args[0].slice( 3, 5 ), 16 )
+                blue = parseInt( args[0].slice( 5, 7 ), 16 )
+            }
+            return '\u001B[48;2;' + red + ';' + green + ';' + blue + 'm'
         }
 
         var ansi = {
@@ -135,7 +154,10 @@ try {
             bgBrightBlue: '\u001B[104m',
             bgBrightMagenta: '\u001B[105m',
             bgBrightCyan: '\u001B[106m',
-            bgWhite: '\u001B[107m'
+            bgWhite: '\u001B[107m',
+
+            color: color,
+            bgColor: bgColor
         }
 
         return {
@@ -410,9 +432,9 @@ try {
             })
             if ( entry == null)
                 throw new Error(
-                    "module not foun d\ncaller: '" +
+                    "module not found\ncaller: '" +
                         curr +
-                        "' => require: '" +
+                        "' => require '" +
                         id +
                         "'"
                 )
