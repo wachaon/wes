@@ -207,7 +207,7 @@ try {
         var graph = ( {}
             ,{
                 "argv": {
-                    "source": "const { Enumerator } = require( 'JScript' )\nconst program = [ 'wes' ]\nconst args = program.concat( new Enumerator( WScript.Arguments ) )\nconst unnamed = new Enumerator( WScript.Arguments.unnamed )\nconst named = ( () => {\nlet res = {}\nlet named = new Enumerator(WScript.Arguments.named)\nnamed.forEach(v => {\nlet named = WScript.Arguments.named.item(v)\nres[v] = named || \"\"\n} )\nreturn res\n} )()\nmodule.exports = {\nargs,\nunnamed,\nnamed\n}",
+                    "source": "var argv = ( function () {\nconst args = WScript.Arguments\nlet res = ['wes']\nfor ( let i = 0; i < args.length; i++ ) {\nres.push( args( i ) )\n}\nlet unnamed = ['wes']\nfor ( let i = 0; i < args.Unnamed.length; i++ ) {\nunnamed.push( args.Unnamed( i ) )\n}\nfunction exists ( name ) { return args.Named.Exists( name ) }\nfunction getValue ( name ) { return args.Named( name ) }\nres.unnamed = unnamed\nres.exists = exists\nres.getValue = getValue\nreturn res\n} )()\nmodule.exports = argv",
                     "mapping": {},
                     "name": "wes/argv"
                 },
