@@ -51,14 +51,14 @@ try {
         var none = ''
         var space = ' '
         var specifier = /(%[sdifjo])/
-        var seq = /(\u001B\[)(\d{1,3};)*(\d{1,3}m)/g
+        var seq = /\u001B\[[\d;]+m/g
 
         function normalize ( argList ) {
             var monotone = argv.exists( 'monotone' )
             var args = splitArgs( argList )
             var res = formatArgs( args )
+            res = clearTail( res )
             if ( monotone ) res = removeColor( res )
-            else res = clearTail( res )
             return res
         }
 
@@ -94,12 +94,11 @@ try {
         }
 
         function clearTail ( arg ) {
-            if ( !seq.test( arg ) ) return arg
             return arg + ansi.clear
         }
 
         function color ( red, green, blue ) {
-            var args = arguments
+            var args = Array.prototype.slice.call( arguments )
             if ( args.length === 1 && args[0].startsWith( '#' ) ) {
                 red = parseInt( args[0].slice( 1, 3 ), 16 )
                 green = parseInt( args[0].slice( 3, 5 ), 16 )
@@ -109,7 +108,7 @@ try {
         }
 
         function bgColor( red, green, blue ) {
-            var args = arguments
+            var args = Array.prototype.slice.call( arguments )
             if ( args.length === 1 && args[0].startsWith( '#' ) ) {
                 red = parseInt( args[0].slice( 1, 3 ), 16 )
                 green = parseInt( args[0].slice( 3, 5 ), 16 )
@@ -302,7 +301,7 @@ try {
                     "name": "wes/validation"
                 },
                 "VBScript": {
-                    "source": "const { VBScript } = require( 'sc' )\nVBScript.AddCode(`\nFunction getTypeName( obj )\ngetTypeName = TypeName( obj )\nEnd Function\n`)\nVBScript.AddCode(`\nFunction getVarType( obj )\ngetVarType = VarType( obj )\nEnd Function\n`)\nconst TypeName = ( object ) => VBScript.Run( 'getTypeName', object )\nconst VarType = ( object ) => VBScript.Run( 'getVarType', object )\nconst Type = ( object ) => {\nlet constant = [\n'vbEmpty', // 0\n'vbNull', // 1\n'vbInteger', // 2\n'vbLong', // 3\n'vbSingle', // 4\n'vbDouble', // 5\n'vbCurrency', // 6\n'vbDate', // 7\n'vbString', // 8\n'vbObject', // 9\n'vbError', // 10\n'vbBoolean', // 11\n'vbVariant', // 12\n'vbDataObject', // 13\n]\nconstant[17] = 'vbByte'\nconstant[8192] = 'vbArray'\nlet num = VarType( object )\nreturn  num > 8192 ? `${ constant[ num - 8192 ] }[]` : constant[ num ]\n}\nmodule.exports = {\nTypeName,\nVarType,\nType\n}\n",
+                    "source": "const { VBScript } = require( 'sc' )\nVBScript.AddCode(`\nFunction getTypeName( obj )\ngetTypeName = TypeName( obj )\nEnd Function\n`)\nVBScript.AddCode(`\nFunction getVarType( obj )\ngetVarType = VarType( obj )\nEnd Function\n`)\nVBScript.AddCode(`\nFunction getChrW( num )\ngetChrW = ChrW( num )\nEnd Function\n`)\nconst TypeName = ( object ) => VBScript.Run( 'getTypeName', object )\nconst VarType = ( object ) => VBScript.Run( 'getVarType', object )\nconst Type = ( object ) => {\nlet constant = [\n'vbEmpty', // 0\n'vbNull', // 1\n'vbInteger', // 2\n'vbLong', // 3\n'vbSingle', // 4\n'vbDouble', // 5\n'vbCurrency', // 6\n'vbDate', // 7\n'vbString', // 8\n'vbObject', // 9\n'vbError', // 10\n'vbBoolean', // 11\n'vbVariant', // 12\n'vbDataObject', // 13\n]\nconstant[17] = 'vbByte'\nconstant[8192] = 'vbArray'\nlet num = VarType( object )\nreturn  num > 8192 ? `${ constant[ num - 8192 ] }[]` : constant[ num ]\n}\nconst ChrW = ( num ) => VBScript.Run( 'getChrW', num )\nmodule.exports = {\nTypeName,\nVarType,\nType,\nChrW\n}\n",
                     "mapping": {},
                     "name": "wes/VBScript"
                 },
