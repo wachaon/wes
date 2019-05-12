@@ -51,14 +51,14 @@ try {
         var none = ''
         var space = ' '
         var specifier = /(%[sdifjo])/
-        var seq = /(\u001B\[)(\d{1,3};)*(\d{1,3}m)/g
+        var seq = /\u001B\[[\d;]+m/g
 
         function normalize ( argList ) {
             var monotone = argv.exists( 'monotone' )
             var args = splitArgs( argList )
             var res = formatArgs( args )
+            res = clearTail( res )
             if ( monotone ) res = removeColor( res )
-            else res = clearTail( res )
             return res
         }
 
@@ -94,12 +94,11 @@ try {
         }
 
         function clearTail ( arg ) {
-            if ( !seq.test( arg ) ) return arg
             return arg + ansi.clear
         }
 
         function color ( red, green, blue ) {
-            var args = arguments
+            var args = Array.prototype.slice.call( arguments )
             if ( args.length === 1 && args[0].startsWith( '#' ) ) {
                 red = parseInt( args[0].slice( 1, 3 ), 16 )
                 green = parseInt( args[0].slice( 3, 5 ), 16 )
@@ -109,7 +108,7 @@ try {
         }
 
         function bgColor( red, green, blue ) {
-            var args = arguments
+            var args = Array.prototype.slice.call( arguments )
             if ( args.length === 1 && args[0].startsWith( '#' ) ) {
                 red = parseInt( args[0].slice( 1, 3 ), 16 )
                 green = parseInt( args[0].slice( 3, 5 ), 16 )
