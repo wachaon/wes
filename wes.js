@@ -31,13 +31,13 @@ try {
         function log () {
             var res = normalize( arguments )
             WScript.StdErr.WriteLine( res )
-            return res
+            return removeColor( res )
         }
 
         function print () {
             var res = normalize( arguments )
             WScript.StdErr.Write( res )
-            return res
+            return removeColor( res )
         }
 
         function debug () {
@@ -45,7 +45,7 @@ try {
             if ( !debugging ) return void 0
             var res = normalize( arguments )
             WScript.StdErr.WriteLine( 'DEBUG: ' + res )
-            return res
+            return removeColor( res )
         }
 
         var none = ''
