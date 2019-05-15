@@ -41,8 +41,8 @@ try {
         }
 
         function debug () {
-            var debugging = argv.exists( 'debug' )
-            if ( !debugging ) return void 0
+            var isDebugOption = argv.exists( 'debug' )
+            if ( !isDebugOption ) return void 0
             var res = normalize( arguments )
             WScript.StdErr.WriteLine( 'DEBUG: ' + res )
             return removeColor( res )
