@@ -6,19 +6,17 @@ Windows のオートメーション処理の開発コストを軽減できます
 ## 特徴
 -  chakra エンジンを使用して `const` `let` `() =>` `class` などの現代的なECMAScript構文で開発できる
 -  モジュールを扱える
--  標準出力に色指定ができる
--  ファイルエンコードを自動推測できる
+-  標準出力に色付き文字を出力できます
+-  ファイルのエンコードを自動で推測します
 
-## 取得と設定
-
-### 取得
+## 取得
 
 実行に必要なファイルは wes.js の1ファイルのみです。
 
 コマンドプロンプトからダウンロード
 
 ```
-bitsadmin.exe /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
+bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
 もしくは下記リンク先から wes.js を取得して、プロジェクトルートに配置するか、配置先のディレクトリを環境変数に登録します。
@@ -33,7 +31,7 @@ https://github.com/wachaon/wes
 wes index.js
 ```
 
-wes.js が cpu の 32/64bit の判断、実行エンジンを chakra に変更、色付き文字を出力するためのコマンドを発行し、
+wes.js が cpu の 32/64bit の判断、実行エンジンを chakra に変更、色付き文字を出力するために ` | echo off` を付加して、
 起点となるファイルを実行します。
 
 ## console
@@ -44,7 +42,7 @@ wes.js が cpu の 32/64bit の判断、実行エンジンを chakra に変更�
 色付き文字を表示するサンプル
 
 ```javascript
-const { 
+const {
     white, silver, gray,
     red, green, yellow, blue, magenta, cyan,
     brightRed, brightGreen, brightYellow,
@@ -63,7 +61,7 @@ ${ reverse }reverse${ clear } ${ underscore }underscore${ clear }
 
 ## require
 
-モジュールは node.js で使われてる `require()` `module.exports` で読み込みます。
+モジュールは node.js で使われてる `module.exports` で定義して `require()` で読み込みます。
 
 パスの指定も node.js の `require()` に似せているので、拡張子の指定も不要です。
 
@@ -94,15 +92,33 @@ wes はいくつかの標準モジュールを持っています。
 
 引数で指定する `path` を相対パスにした場合は常にプロジェクトルート `require( 'WScript.Shell' ).CurrentDirectory` が起点となります。
 
+読み込みは `readFileSync( path, encode )` で読み込めます。`encode` を指定しない場合の戻り値は `Buffer` オブジェクトになります。
+
+テキストファイルを読み込むならエンコードの自動推測を行う  `readTextFileSync( path )` が便利です。
+
+ファイルを読み込みのサンプル
+
+```javascript
+const fs = require( 'filesystem' )
+const path = require( 'pathname' )
+
+const readme = path.join( __dirname, '_README.md' )
+
+console.log( fs.readFileSync( readme, 'UTF-8' ) )
+// or
+console.log( fs.readTextFileSync( readme ) )
+```
+
 書き込みは `writeFileSync( path, data, encode )` で行います。`data` が `Buffer` もしくは `byte` の場合は `encode` の指定を無視して、`byte` を書き込みます。
 
 テキストを保存する場合は `writeTextFileSync( path, text, encode )` を使います。`encode` を指定しない場合は `require( 'ADODB.stream' )` で `Charset` を省略した場合と同になります。
 
-現時点では `encode` で `'UTF-8'` を指定した場合の規定値が `'UTF-8BOM'` ( utf-8 with byte order mark ) となります。
+現時点では encode を `'UTF-8'` に指定した場合は `'UTF-8BOM'` ( utf-8 with byte order mark ) で読み込みます。
 
-BOM なし ( utf-8 without byte order mark ) の場合は、明示的に `'UTF-8N'` と指定してください。
+BOM なし ( utf-8 without byte order mark ) で読み込みたい場合は、明示的に `encode` に `'UTF-8N'` と指定してください。
 
-`'UTF-8'` の場合の規定値は変更される可能性があります。保存したファイルを他のプログラムで使用する可能性がある場合は明示的に `'UTF-8BOM'` `'UTF-8N'` を指定してエンコードを固定してください。
+ 今後、 encode を `'UTF-8'` にした場合の規定値を変更する可能性があります。
+ 保存したファイルを他のプログラムで使用する可能性がある場合は、明示的に `'UTF-8BOM'` もしくは `'UTF-8N'` を指定してエンコードを固定してください。
 
 ファイルを書き込むサンプル
 
@@ -119,22 +135,6 @@ console.log( fs.writeFileSync( readme, text, 'UTF-8N' ) )
 console.log( fs.writeTextFileSync( readme, text ) )
 ```
 
-読み込みは `readFileSync( path, encode )` で行います。`encode` を指定しない場合の戻り値は `Buffer` オブジェクトになります。
-
-`readTextFileSync( path )` はエンコードの自動推測を行うので、テキストファイルの場合はこちらが便利です。
-
-ファイルを読み込みのサンプル
-
-```javascript
-const fs = require( 'filesystem' )
-const path = require( 'pathname' )
-
-const readme = path.join( __dirname, '_README.md' )
-
-console.log( fs.readFileSync( readme, 'UTF-8' ) )
-// or
-console.log( fs.readTextFileSync( readme ) )
-```
 
 ### pathname
 
@@ -146,20 +146,24 @@ pathname のメソッドのほとんどは戻り値のパスの区切りを `/` 
 ### JScript
 
 JScript 固有のコンストラクタの `Enumerator` を使用可能にします。
-`new Enumerator( collection )` は `Array` を返します。
+`new Enumerator( collection )` は常に `Array` を返します。
 
 カレントディレクトリにある、すべてのファイルを読み込むサンプル
 
 ```javascript
 const { Enumerator } = require( 'JScript' )
 const FSO = require( 'Scripting.FileSystemObject' )
+const path = require( 'pathname' )
 const WShell = require( 'WScript.Shell' )
 const fs = require( 'filesystem' )
 
-const cd = FSO.GetFolder( WShell.CurrentDirectory )
-const files = new Enumerator( cd.Files ).map( item => item.Path )
+const dir = path.join( WShell.CurrentDirectory, 'lib' )
+const folder = FSO.GetFolder( dir )
+const libs = new Enumerator( folder.Files )
+  .map( file => file.Path )
+  .map( path => fs.readTextFileSync( path ) )
 
-files.forEach( path => console.log( fs.readTextFileSync( path ) ) )
+libs.forEach( text => console.log( text ) )
 ```
 
 ### VBScript
@@ -173,6 +177,7 @@ const { TypeName, Type } = require( 'VBScript' )
 const FSO = require( 'Scripting.FileSystemObject' )
 
 console.log( TypeName( FSO ) )
+console.log( VarType( FSO ) )
 console.log( Type( FSO ) )
 ```
 
@@ -209,15 +214,14 @@ console.log( dump( obj ) )
 
 ### log
 
-アロー関数を引数に渡すことで、出力したい項目と内容が標準出力に出力されます。
+関数を引数に渡すことで、出力したい項目と内容が標準出力に出力されます。
 
 簡易ログ表示のサンプル
 
 ```javascript
 const log = require( 'log' )
 
-const now = new Date()
-log( () => now )
+log( () => new Date() )
 ```
 
 ### minitest
@@ -241,4 +245,3 @@ describe( 'test sample', () => {
     } )
 } )
 ```
-

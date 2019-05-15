@@ -226,7 +226,7 @@ try {
                     "name": "wes/day"
                 },
                 "debug": {
-                    "source": "const argv = require( 'argv' )\nconst dump = require( 'dump' )\nconst debug = ( expression ) => {\nif ( argv.exists( 'debug' ) ) {\nconsole.log( `debug: ${ dump( expression ) }` )\n}\nreturn expression\n}\nmodule.exports = debug",
+                    "source": "const argv = require( 'argv' )\nconst dump = require( 'dump' )\nconst isDebugOprion = () => argv.exists( 'debug' )\nconst debug = ( expression ) => {\nif ( isDebugOprion ) {\nconsole.log( `debug: ${ dump( expression ) }` )\n}\nreturn expression\n}\ndebug.isDebugOption = isDebugOprion\nmodule.exports = debug",
                     "mapping": {},
                     "name": "wes/debug"
                 },
