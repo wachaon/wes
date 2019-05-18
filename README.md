@@ -25,7 +25,7 @@ https://github.com/wachaon/wes
 
 ## 使い方
 
-コマンドプロンプトでプロジェクトルートまで移動をしたら　`wes`　に続けて起点となるファイルを入力します。
+コマンドプロンプトでプロジェクトルートまで移動をしたら `wes` に続けて起点となるファイルを入力します。
 
 ```
 wes index.js
@@ -113,9 +113,9 @@ console.log( fs.readTextFileSync( readme ) )
 
 テキストを保存する場合は `writeTextFileSync( path, text, encode )` を使います。`encode` を指定しない場合は `require( 'ADODB.stream' )` で `Charset` を省略した場合と同になります。
 
-現時点では encode を `'UTF-8'` に指定した場合は `'UTF-8BOM'` ( utf-8 with byte order mark ) で読み込みます。
+現時点では encode を `'UTF-8'` に指定した場合は `'UTF-8BOM'` ( utf-8 with byte order mark ) で書き込みます。( 読み込みは自動で `'UTF-8'`　の BOM を取り除きます。)
 
-BOM なし ( utf-8 without byte order mark ) で読み込みたい場合は、明示的に `encode` に `'UTF-8N'` と指定してください。
+BOM なし ( utf-8 without byte order mark ) で書き込みたい場合は、明示的に `encode` に `'UTF-8N'` と指定してください。
 
  今後、 encode を `'UTF-8'` にした場合の規定値を変更する可能性があります。
  保存したファイルを他のプログラムで使用する可能性がある場合は、明示的に `'UTF-8BOM'` もしくは `'UTF-8N'` を指定してエンコードを固定してください。
