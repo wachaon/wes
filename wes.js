@@ -220,6 +220,11 @@ try {
                     "mapping": {},
                     "name": "wes/chardet"
                 },
+                "contract": {
+                    "source": "const { isDebugOption } = require( 'debug' )\nconst dump = require( 'dump' )\nconst {\nbrightRed: errorColor,\ngray: commentColor,\nyellow: codeColor,\ncyan: conditionColor,\nclear\n} = console.ansi\nfunction contract ( code, condition, ...args ) {\nif( !isDebugOption() ) return code( ...args )\nconst res = condition( ...args )\nif ( res.every( v => v ) ) return code( ...args )\nlet message = `${ errorColor }Contract Error${ clear }\ncall: ${ codeColor }${ code.name || code }${ clear } ( ${ require.stack[ require.stack.length  -1 ][0] } )\ncondition: ${\nconditionColor }${ condition.name || condition }${ commentColor}${ clear }${\n'\\n  ' + args.map( ( v, i ) => 'arguments[' + ( i + 1 ) + ']: ' + dump( v ) + commentColor + ' // => ' + clear + dump( res[i] ) ).join( '\\n  ' )\n}\\n`\nconsole.debug( message )\nreturn code( ...args )\n}\nmodule.exports = contract",
+                    "mapping": {},
+                    "name": "wes/contract"
+                },
                 "day": {
                     "source": "class Day extends Date {\n[Symbol.toPrimitive] ( hint ) {\nif ( hint === 'number' ) return this.getTime()\nelse {\nlet year = this.getFullYear()\nlet month = ( \"0\" + ( this.getMonth() + 1 ) ).slice( -2 )\nlet date = ( \"0\" + ( this.getDate() ) ).slice( -2 )\nlet hours = ( \"0\" + ( this.getHours() ) ).slice( -2 )\nlet minutes = ( \"0\" + ( this.getMinutes() ) ).slice( -2 )\nlet seconds = ( \"0\" + ( this.getSeconds() ) ).slice( -2 )\nlet milliseconds = ( \"00\" + ( this.getMilliseconds() ) ).slice( -3 )\nreturn `${ year }/${ month }/${ date } ${ hours }:${ minutes }:${ seconds }.${ milliseconds }`\n}\n}\n}\nmodule.exports = Day",
                     "mapping": {},
