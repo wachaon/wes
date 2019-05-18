@@ -305,26 +305,26 @@ try {
             points.some( function( value ) {
                 var res = null
                 var pack = null
-                if ( ( ( res = value), fs.fileExists( res ) ) ) return ( entry = res )
-                if ( ( ( res = value + '.js'), fs.fileExists(res) ) )
+                if ( ( ( res = value), fs.exists( res ) ) ) return ( entry = res )
+                if ( ( ( res = value + '.js'), fs.exists(res) ) )
                     return ( entry = res )
-                if ( ( ( res = value + '.json' ), fs.fileExists( res ) ) )
+                if ( ( ( res = value + '.json' ), fs.exists( res ) ) )
                     return (entry = res)
-                if ( ( ( res = value + '/index.js' ), fs.fileExists( res ) ) )
+                if ( ( ( res = value + '/index.js' ), fs.exists( res ) ) )
                     return ( entry = res )
                 if (
                     ( ( pack = value + '/pack.json' ),
-                    fs.fileExists(pack) )
+                    fs.exists(pack) )
                 ) {
                     var temp = JSON.parse(
                         fs.readFileSync( pack )
                     ).main
                     if ( temp != null ) {
-                        if ( ( ( res = fs.join( value, temp ) ), fs.fileExists( res ) ) )
+                        if ( ( ( res = fs.join( value, temp ) ), fs.exists( res ) ) )
                             return ( entry = res )
                         else if (
                             ( ( res = fs.join( value, temp + '.js' ) ),
-                            fs.fileExists( res ) )
+                            fs.exists( res ) )
                         )
                             return ( entry = res )
                     }

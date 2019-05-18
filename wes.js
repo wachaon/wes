@@ -246,7 +246,7 @@ try {
                     "name": "wes/event"
                 },
                 "filesystem": {
-                    "source": "const ADODB = require('ADODB.Stream')\nconst FSO = require( 'Scripting.FileSystemObject' )\nconst pathname = require( 'pathname' )\nconst chardet = require( 'chardet' )\nconst Buffer = require( 'buffer' )\nconst { Type } = require( 'VBScript' )\nconst VB_BYTE = 'vbByte[]'\nconst AD_TYPE_BINARY = 1\nconst AD_TYPE_TEXT = 2\nconst AD_SAVE_CREAE_OVER_WRITE = 2\nconst UTF_8 = 'UTF-8'\nconst UTF_8BOM = 'UTF-8BOM'\nconst UTF_8N = 'UTF-8N'\nconst readFileSync = ( filespec, options ) => {\nif ( options == null ) return new Buffer( readByteFile( filespec ) )\nreturn readTextFileSync( filespec, options )\n}\nconst readTextFileSync = ( filespec, options ) => {\nlet encoding = options != null ? options : chardet.detectFileSync( filespec )\nlet byte = readByteFile( filespec )\nlet buffer = new Buffer( byte )\nif ( encoding.toUpperCase() === UTF_8 &&\nbuffer[0] === 0xef && buffer[1] === 0xfb && buffer[2] === 0xbb ) {\nbuffer = splitUtf8Bom( byte )\n}\nreturn Byte2Text( byte, encoding )\n}\nconst writeFileSync = ( filespec, data, options ) => {\nif ( data instanceof Buffer ) data = data.toByte()\nif ( Type( data ) === VB_BYTE ) {\ntry {\nADODB.Open()\nADODB.Position = 0\nADODB.SetEOS()\nADODB.Type = AD_TYPE_BINARY\nADODB.Write( data )\nADODB.SaveToFile( filespec, AD_SAVE_CREAE_OVER_WRITE )\nADODB.Close()\nreturn `succeeded in writing '${ filespec }'`\n} catch ( error ) {\nconsole.log( `failed to writing '${ filespec }'\\n${ error }`)\n}\n}\nreturn writeTextFileSync( filespec, data, options )\n}\nconst writeTextFileSync = ( filespec, text, enc ) => {\nlet spliBbom = false\ntry {\nADODB.Open()\nADODB.Position = 0\nADODB.SetEOS()\nADODB.Type = AD_TYPE_TEXT\nif ( enc != null ) {\nconst _enc = enc.toUpperCase()\nif ( _enc.startsWith( UTF_8 ) ) ADODB.CharSet = UTF_8\nelse ADODB.CharSet = enc\nif ( _enc === UTF_8BOM ) bom = false\nelse if ( _enc === UTF_8N ) bom = true\nelse bom = false\n}\nADODB.WriteText( text )\nif ( spliBbom ) {\nADODB.Position = 0\nADODB.Type = AD_TYPE_BINARY\nADODB.Position = 3\nlet bytes = ADODB.Read()\nADODB.Position = 0\nADODB.SetEOS()\nADODB.Write( bytes )\n}\nADODB.SaveToFile( filespec, AD_SAVE_CREAE_OVER_WRITE )\n} catch ( error ) {\nreturn console.log( `failed to writing '${ filespec }'\\n${ error }`)\n} finally {\nADODB.Close()\n}\nreturn `succeeded in writing '${ filespec }'`\n}\n// util\nconst readByteFile = ( path ) => {\nlet byte = ''\ntry {\nADODB.Type = AD_TYPE_BINARY\nADODB.Open()\nADODB.LoadFromFile( path )\nbyte = ADODB.Read()\n} catch ( error ) {\nconsole.log( `error readByteFile ${ error } ${ path }` )\n} finally {\nADODB.Close()\n}\nreturn byte\n}\nconst Byte2Hex = ( byte ) => {\nlet elm = require( 'Msxml2.DOMDocument' ).createElement( 'elm' )\nelm.dataType = 'bin.hex'\nelm.nodeTypedValue = byte\nreturn elm.text\n}\nconst Hex2Byte = ( hex ) => {\nlet elm = require( 'Msxml2.DOMDocument' ).createElement( 'elm' )\nelm.dataType = 'bin.hex'\nelm.text = hex\nreturn elm.nodeTypedValue\n}\nconst splitUtf8Bom = ( byte ) => {\nreturn Hex2Byte( Byte2Hex( byte ).replace( /^efbbbf/, '' ) )\n}\nconst Byte2Text = ( byte, enc ) => {\ntry {\nADODB.Open()\nADODB.Type = AD_TYPE_BINARY\nADODB.Write( byte )\nADODB.Position = 0\nADODB.Type = AD_TYPE_TEXT\nADODB.Charset = enc\nreturn ADODB.ReadText()\n} catch (error) {\nconsole.log( `error Byte2Text ${ error }` )\n} finally {\nADODB.Close()\n}\n}\nconst fileExists = ( path ) => {\nreturn FSO.FileExists( pathname.toWin32Sep( path ) )\n}\nmodule.exports = {\nreadFileSync,\nreadTextFileSync,\nwriteFileSync,\nwriteTextFileSync,\nreadByteFile,\nBuffer,\nfileExists\n}",
+                    "source": "const ADODB = require('ADODB.Stream')\nconst FSO = require( 'Scripting.FileSystemObject' )\nconst pathname = require( 'pathname' )\nconst chardet = require( 'chardet' )\nconst Buffer = require( 'buffer' )\nconst { Type } = require( 'VBScript' )\nconst VB_BYTE = 'vbByte[]'\nconst AD_TYPE_BINARY = 1\nconst AD_TYPE_TEXT = 2\nconst AD_SAVE_CREAE_OVER_WRITE = 2\nconst UTF_8 = 'UTF-8'\nconst UTF_8BOM = 'UTF-8BOM'\nconst UTF_8N = 'UTF-8N'\nconst readFileSync = ( filespec, options ) => {\nif ( options == null ) return new Buffer( readByteFile( filespec ) )\nreturn readTextFileSync( filespec, options )\n}\nconst readTextFileSync = ( filespec, options ) => {\nlet encoding = options != null ? options : chardet.detectFileSync( filespec )\nlet byte = readByteFile( filespec )\nlet buffer = new Buffer( byte )\nif ( encoding.toUpperCase() === UTF_8 &&\nbuffer[0] === 0xef && buffer[1] === 0xfb && buffer[2] === 0xbb ) {\nbuffer = splitUtf8Bom( byte )\n}\nreturn Byte2Text( byte, encoding )\n}\nconst writeFileSync = ( filespec, data, options ) => {\nif ( data instanceof Buffer ) data = data.toByte()\nif ( Type( data ) === VB_BYTE ) {\ntry {\nADODB.Open()\nADODB.Position = 0\nADODB.SetEOS()\nADODB.Type = AD_TYPE_BINARY\nADODB.Write( data )\nADODB.SaveToFile( filespec, AD_SAVE_CREAE_OVER_WRITE )\nADODB.Close()\nreturn `succeeded in writing '${ filespec }'`\n} catch ( error ) {\nconsole.log( `failed to writing '${ filespec }'\\n${ error }`)\n}\n}\nreturn writeTextFileSync( filespec, data, options )\n}\nconst writeTextFileSync = ( filespec, text, enc ) => {\nlet spliBbom = false\ntry {\nADODB.Open()\nADODB.Position = 0\nADODB.SetEOS()\nADODB.Type = AD_TYPE_TEXT\nif ( enc != null ) {\nconst _enc = enc.toUpperCase()\nif ( _enc.startsWith( UTF_8 ) ) ADODB.CharSet = UTF_8\nelse ADODB.CharSet = enc\nif ( _enc === UTF_8BOM ) bom = false\nelse if ( _enc === UTF_8N ) bom = true\nelse bom = false\n}\nADODB.WriteText( text )\nif ( spliBbom ) {\nADODB.Position = 0\nADODB.Type = AD_TYPE_BINARY\nADODB.Position = 3\nlet bytes = ADODB.Read()\nADODB.Position = 0\nADODB.SetEOS()\nADODB.Write( bytes )\n}\nADODB.SaveToFile( filespec, AD_SAVE_CREAE_OVER_WRITE )\n} catch ( error ) {\nreturn console.log( `failed to writing '${ filespec }'\\n${ error }`)\n} finally {\nADODB.Close()\n}\nreturn `succeeded in writing '${ filespec }'`\n}\n// util\nconst readByteFile = ( path ) => {\nlet byte = ''\ntry {\nADODB.Type = AD_TYPE_BINARY\nADODB.Open()\nADODB.LoadFromFile( path )\nbyte = ADODB.Read()\n} catch ( error ) {\nconsole.log( `error readByteFile ${ error } ${ path }` )\n} finally {\nADODB.Close()\n}\nreturn byte\n}\nconst Byte2Hex = ( byte ) => {\nlet elm = require( 'Msxml2.DOMDocument' ).createElement( 'elm' )\nelm.dataType = 'bin.hex'\nelm.nodeTypedValue = byte\nreturn elm.text\n}\nconst Hex2Byte = ( hex ) => {\nlet elm = require( 'Msxml2.DOMDocument' ).createElement( 'elm' )\nelm.dataType = 'bin.hex'\nelm.text = hex\nreturn elm.nodeTypedValue\n}\nconst splitUtf8Bom = ( byte ) => {\nreturn Hex2Byte( Byte2Hex( byte ).replace( /^efbbbf/, '' ) )\n}\nconst Byte2Text = ( byte, enc ) => {\ntry {\nADODB.Open()\nADODB.Type = AD_TYPE_BINARY\nADODB.Write( byte )\nADODB.Position = 0\nADODB.Type = AD_TYPE_TEXT\nADODB.Charset = enc\nreturn ADODB.ReadText()\n} catch (error) {\nconsole.log( `error Byte2Text ${ error }` )\n} finally {\nADODB.Close()\n}\n}\nconst exists = ( path ) => {\nreturn FSO.FileExists( pathname.toWin32Sep( path ) )\n}\nmodule.exports = {\nreadFileSync,\nreadTextFileSync,\nwriteFileSync,\nwriteTextFileSync,\nreadByteFile,\nBuffer,\nexists\n}",
                     "mapping": {},
                     "name": "wes/filesystem"
                 },
@@ -301,7 +301,7 @@ try {
                     "name": "wes/VBScript"
                 },
                 "version": {
-                    "source": "const io = require( 'io' )\nconst packageJSON = JSON.parse( io.readFileSync( 'package.json' ) )\nmodule.exports = packageJSON.version",
+                    "source": "const fs = require( 'filesystem' )\nlet packageJSON = { version: null }\nif ( fs.exists( 'package.json' ) ) {\npackageJSON = JSON.parse( fs.readTextFileSync( 'package.json' ) )\n}\nmodule.exports = packageJSON.version",
                     "mapping": {},
                     "name": "wes/version"
                 }
@@ -406,26 +406,26 @@ try {
             points.some( function( value ) {
                 var res = null
                 var pack = null
-                if ( ( ( res = value), fs.fileExists( res ) ) ) return ( entry = res )
-                if ( ( ( res = value + '.js'), fs.fileExists(res) ) )
+                if ( ( ( res = value), fs.exists( res ) ) ) return ( entry = res )
+                if ( ( ( res = value + '.js'), fs.exists(res) ) )
                     return ( entry = res )
-                if ( ( ( res = value + '.json' ), fs.fileExists( res ) ) )
+                if ( ( ( res = value + '.json' ), fs.exists( res ) ) )
                     return (entry = res)
-                if ( ( ( res = value + '/index.js' ), fs.fileExists( res ) ) )
+                if ( ( ( res = value + '/index.js' ), fs.exists( res ) ) )
                     return ( entry = res )
                 if (
                     ( ( pack = value + '/pack.json' ),
-                    fs.fileExists(pack) )
+                    fs.exists(pack) )
                 ) {
                     var temp = JSON.parse(
                         fs.readFileSync( pack )
                     ).main
                     if ( temp != null ) {
-                        if ( ( ( res = fs.join( value, temp ) ), fs.fileExists( res ) ) )
+                        if ( ( ( res = fs.join( value, temp ) ), fs.exists( res ) ) )
                             return ( entry = res )
                         else if (
                             ( ( res = fs.join( value, temp + '.js' ) ),
-                            fs.fileExists( res ) )
+                            fs.exists( res ) )
                         )
                             return ( entry = res )
                     }
