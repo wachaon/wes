@@ -200,7 +200,8 @@ const obj = {
     now: new Date(),
     regexp: /regexp/g,
     boolean: true,
-    buffer: fs.readFileSync( 'index.js' ),
+    isSymbol: Symbol( fs ),
+    buffer: fs.readFileSync( 'README.md' ),
     array: [1, 'string'],
     object: {
         code: () => false
