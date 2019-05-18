@@ -240,25 +240,15 @@ try {
                     "mapping": {},
                     "name": "wes/dump"
                 },
-                "enumerator": {
-                    "source": "const { JScript } = require('sc')\nconst { TypeName } = require('VBScript')\nJScript.AddCode(`\nfunction enumerator ( collection ) {\nreturn new Enumerator( collection )\n}`)\nconst toArray = ( col ) => {\nlet res = []\nlet Enum = JScript.Run( 'enumerator', col )\nfor (; !Enum.atEnd(); Enum.moveNext()) {\nres.push( Enum.item() )\n}\nEnum.moveFirst()\nreturn res\n}\nconst Enumerator = new Proxy( () => {},{\nconstruct( target, args ) {\nconst res = []\nconst e = JScript.Run( 'enumerator', args[0] )\nfor ( ; !e.atEnd(); e.moveNext() ) {\nres.push( e.item() )\n}\nreturn res\n}\n} )\nclass Enumerators extends Array {\nconstructor( collection ) {\nlet res = []\nif (TypeName( collection ) === 'Long') {\nres = collection\n} else {\nres = toArray( collection )\n}\nsuper( ...res )\nlet i = 0\nObject.defineProperties( this, {\nmoveNext: { value() { i++ } },\natEnd: { value() { return !( i < this.length ) } },\nmoveFirst: { value() { return ( i = 0 ) } },\nitem: { value(num) { return num != null ? this[ num ] : this[ i ] } }\n} )\n}\nmap( callback ) {\nvar T, A, k\nif ( this == null ) {\nthrow new TypeError( 'this is null or not defined' )\n}\nvar O = Object( this )\nvar len = O.length >>> 0\nif ( typeof callback !== 'function' ) {\nthrow new TypeError(callback + ' is not a function' )\n}\nif ( arguments.length > 1) {\nT = arguments[1]\n}\nA = new Array(len)\nk = 0\nwhile (k < len) {\nvar kValue, mappedValue\nif ( k in O ) {\nkValue = O[k]\nmappedValue = callback.call(T, kValue, k, O)\nA[k] = mappedValue\n}\nk++\n}\nreturn A\n}\nfilter( func, thisArg ) {\n'use strict'\nif (\n!(\n( typeof func === 'Function' || typeof func === 'function' ) &&\nthis\n)\n)\nthrow new TypeError()\nvar len = this.length >>> 0,\nres = new Array( len ),\nt = this,\nc = 0,\ni = -1\nif ( thisArg === undefined ) {\nwhile ( ++i !== len ) {\nif (i in this) {\nif ( func( t[ i ], i, t ) ) {\nres[ c++ ] = t[ i ]\n}\n}\n}\n} else {\nwhile ( ++i !== len ) {\nif ( i in this ) {\nif ( func.call( thisArg, t[ i ], i, t ) ) {\nres[ c++ ] = t[ i ]\n}\n}\n}\n}\nres.length = c\nreturn res\n}\n}\nEnumerator.Enumerator = Enumerators\nmodule.exports = Enumerator",
-                    "mapping": {},
-                    "name": "wes/enumerator"
-                },
                 "event": {
                     "source": "class Event {\nconstructor() {\nthis.state = {}\n}\non(handler, fn) {\nlet state = this.state\nif (state[handler] == null) state[handler] = [fn]\nelse state[handler].push(fn)\nreturn fn\n}\nemit(handler, ...args) {\nlet state = this.state\nif (state[handler] == null) console.log(`handler: ${handler} not State`)\nelse state[handler].forEach((v) => v(...args))\n}\noff(handler, fn) {\nlet state = this.state\nif (state[handler] == null) console.log(`handler: ${handler} not State`)\nelse if (fn == null) state[handler] = null\nelse state[handler] = state[handler].filter((v) => v !== fn)\n}\nonce(handler, fn) {\nlet state = this.state\nconst _once = (...args) => {\nfn(...args)\nthis.off(handler, _once)\n}\nif (state[handler] == null) state[handler] = [_once]\nelse state[handler].push(_once)\nreturn _once\n}\n}\nmodule.exports = Event",
                     "mapping": {},
                     "name": "wes/event"
                 },
                 "filesystem": {
-                    "source": "const ADODB = require('ADODB.Stream')\nconst chardet = require( 'chardet' )\nconst Buffer = require( 'buffer' )\nconst { Type } = require( 'VBScript' )\nconst VB_BYTE = 'vbByte[]'\nconst AD_TYPE_BINARY = 1\nconst AD_TYPE_TEXT = 2\nconst AD_SAVE_CREAE_OVER_WRITE = 2\nconst UTF_8 = 'UTF-8'\nconst UTF_8BOM = 'UTF-8BOM'\nconst UTF_8N = 'UTF-8N'\nconst readFileSync = ( filespec, options ) => {\nif ( options == null ) return new Buffer( readByteFile( filespec ) )\nreturn readTextFileSync( filespec, options )\n}\nconst readTextFileSync = ( filespec, options ) => {\nlet encoding = options != null ? options : chardet.detectFileSync( filespec )\nlet byte = readByteFile( filespec )\nlet buffer = new Buffer( byte )\nif ( encoding.toUpperCase() === UTF_8 &&\nbuffer[0] === 0xef && buffer[1] === 0xfb && buffer[2] === 0xbb ) {\nbuffer = splitUtf8Bom( byte )\n}\nreturn Byte2Text( byte, encoding )\n}\nconst writeFileSync = ( filespec, data, options ) => {\nif ( data instanceof Buffer ) data = data.toByte()\nif ( Type( data ) === VB_BYTE ) {\ntry {\nADODB.Open()\nADODB.Position = 0\nADODB.SetEOS()\nADODB.Type = AD_TYPE_BINARY\nADODB.Write( data )\nADODB.SaveToFile( filespec, AD_SAVE_CREAE_OVER_WRITE )\nADODB.Close()\nreturn `succeeded in writing '${ filespec }'`\n} catch ( error ) {\nconsole.log( `failed to writing '${ filespec }'\\n${ error }`)\n}\n}\nreturn writeTextFileSync( filespec, data, options )\n}\nconst writeTextFileSync = ( filespec, text, enc ) => {\nlet spliBbom = false\ntry {\nADODB.Open()\nADODB.Position = 0\nADODB.SetEOS()\nADODB.Type = AD_TYPE_TEXT\nif ( enc != null ) {\nconst _enc = enc.toUpperCase()\nif ( _enc.startsWith( UTF_8 ) ) ADODB.CharSet = UTF_8\nelse ADODB.CharSet = enc\nif ( _enc === UTF_8BOM ) bom = false\nelse if ( _enc === UTF_8N ) bom = true\nelse bom = false\n}\nADODB.WriteText( text )\nif ( spliBbom ) {\nADODB.Position = 0\nADODB.Type = AD_TYPE_BINARY\nADODB.Position = 3\nlet bytes = ADODB.Read()\nADODB.Position = 0\nADODB.SetEOS()\nADODB.Write( bytes )\n}\nADODB.SaveToFile( filespec, AD_SAVE_CREAE_OVER_WRITE )\n} catch ( error ) {\nreturn console.log( `failed to writing '${ filespec }'\\n${ error }`)\n} finally {\nADODB.Close()\n}\nreturn `succeeded in writing '${ filespec }'`\n}\n// util\nconst readByteFile = ( path ) => {\nlet byte = ''\ntry {\nADODB.Type = AD_TYPE_BINARY\nADODB.Open()\nADODB.LoadFromFile( path )\nbyte = ADODB.Read()\n} catch ( error ) {\nconsole.log( `error readByteFile ${ error } ${ path }` )\n} finally {\nADODB.Close()\n}\nreturn byte\n}\nconst Byte2Hex = ( byte ) => {\nlet elm = require( 'Msxml2.DOMDocument' ).createElement( 'elm' )\nelm.dataType = 'bin.hex'\nelm.nodeTypedValue = byte\nreturn elm.text\n}\nconst Hex2Byte = ( hex ) => {\nlet elm = require( 'Msxml2.DOMDocument' ).createElement( 'elm' )\nelm.dataType = 'bin.hex'\nelm.text = hex\nreturn elm.nodeTypedValue\n}\nconst splitUtf8Bom = ( byte ) => {\nreturn Hex2Byte( Byte2Hex( byte ).replace( /^efbbbf/, '' ) )\n}\nconst Byte2Text = ( byte, enc ) => {\ntry {\nADODB.Open()\nADODB.Type = AD_TYPE_BINARY\nADODB.Write( byte )\nADODB.Position = 0\nADODB.Type = AD_TYPE_TEXT\nADODB.Charset = enc\nreturn ADODB.ReadText()\n} catch (error) {\nconsole.log( `error Byte2Text ${ error }` )\n} finally {\nADODB.Close()\n}\n}\nmodule.exports = {\nreadFileSync,\nreadTextFileSync,\nwriteFileSync,\nwriteTextFileSync,\nreadByteFile,\nBuffer\n}",
+                    "source": "const ADODB = require('ADODB.Stream')\nconst FSO = require( 'Scripting.FileSystemObject' )\nconst pathname = require( 'pathname' )\nconst chardet = require( 'chardet' )\nconst Buffer = require( 'buffer' )\nconst { Type } = require( 'VBScript' )\nconst VB_BYTE = 'vbByte[]'\nconst AD_TYPE_BINARY = 1\nconst AD_TYPE_TEXT = 2\nconst AD_SAVE_CREAE_OVER_WRITE = 2\nconst UTF_8 = 'UTF-8'\nconst UTF_8BOM = 'UTF-8BOM'\nconst UTF_8N = 'UTF-8N'\nconst readFileSync = ( filespec, options ) => {\nif ( options == null ) return new Buffer( readByteFile( filespec ) )\nreturn readTextFileSync( filespec, options )\n}\nconst readTextFileSync = ( filespec, options ) => {\nlet encoding = options != null ? options : chardet.detectFileSync( filespec )\nlet byte = readByteFile( filespec )\nlet buffer = new Buffer( byte )\nif ( encoding.toUpperCase() === UTF_8 &&\nbuffer[0] === 0xef && buffer[1] === 0xfb && buffer[2] === 0xbb ) {\nbuffer = splitUtf8Bom( byte )\n}\nreturn Byte2Text( byte, encoding )\n}\nconst writeFileSync = ( filespec, data, options ) => {\nif ( data instanceof Buffer ) data = data.toByte()\nif ( Type( data ) === VB_BYTE ) {\ntry {\nADODB.Open()\nADODB.Position = 0\nADODB.SetEOS()\nADODB.Type = AD_TYPE_BINARY\nADODB.Write( data )\nADODB.SaveToFile( filespec, AD_SAVE_CREAE_OVER_WRITE )\nADODB.Close()\nreturn `succeeded in writing '${ filespec }'`\n} catch ( error ) {\nconsole.log( `failed to writing '${ filespec }'\\n${ error }`)\n}\n}\nreturn writeTextFileSync( filespec, data, options )\n}\nconst writeTextFileSync = ( filespec, text, enc ) => {\nlet spliBbom = false\ntry {\nADODB.Open()\nADODB.Position = 0\nADODB.SetEOS()\nADODB.Type = AD_TYPE_TEXT\nif ( enc != null ) {\nconst _enc = enc.toUpperCase()\nif ( _enc.startsWith( UTF_8 ) ) ADODB.CharSet = UTF_8\nelse ADODB.CharSet = enc\nif ( _enc === UTF_8BOM ) bom = false\nelse if ( _enc === UTF_8N ) bom = true\nelse bom = false\n}\nADODB.WriteText( text )\nif ( spliBbom ) {\nADODB.Position = 0\nADODB.Type = AD_TYPE_BINARY\nADODB.Position = 3\nlet bytes = ADODB.Read()\nADODB.Position = 0\nADODB.SetEOS()\nADODB.Write( bytes )\n}\nADODB.SaveToFile( filespec, AD_SAVE_CREAE_OVER_WRITE )\n} catch ( error ) {\nreturn console.log( `failed to writing '${ filespec }'\\n${ error }`)\n} finally {\nADODB.Close()\n}\nreturn `succeeded in writing '${ filespec }'`\n}\n// util\nconst readByteFile = ( path ) => {\nlet byte = ''\ntry {\nADODB.Type = AD_TYPE_BINARY\nADODB.Open()\nADODB.LoadFromFile( path )\nbyte = ADODB.Read()\n} catch ( error ) {\nconsole.log( `error readByteFile ${ error } ${ path }` )\n} finally {\nADODB.Close()\n}\nreturn byte\n}\nconst Byte2Hex = ( byte ) => {\nlet elm = require( 'Msxml2.DOMDocument' ).createElement( 'elm' )\nelm.dataType = 'bin.hex'\nelm.nodeTypedValue = byte\nreturn elm.text\n}\nconst Hex2Byte = ( hex ) => {\nlet elm = require( 'Msxml2.DOMDocument' ).createElement( 'elm' )\nelm.dataType = 'bin.hex'\nelm.text = hex\nreturn elm.nodeTypedValue\n}\nconst splitUtf8Bom = ( byte ) => {\nreturn Hex2Byte( Byte2Hex( byte ).replace( /^efbbbf/, '' ) )\n}\nconst Byte2Text = ( byte, enc ) => {\ntry {\nADODB.Open()\nADODB.Type = AD_TYPE_BINARY\nADODB.Write( byte )\nADODB.Position = 0\nADODB.Type = AD_TYPE_TEXT\nADODB.Charset = enc\nreturn ADODB.ReadText()\n} catch (error) {\nconsole.log( `error Byte2Text ${ error }` )\n} finally {\nADODB.Close()\n}\n}\nconst fileExists = ( path ) => {\nreturn FSO.FileExists( pathname.toWin32Sep( path ) )\n}\nmodule.exports = {\nreadFileSync,\nreadTextFileSync,\nwriteFileSync,\nwriteTextFileSync,\nreadByteFile,\nBuffer,\nfileExists\n}",
                     "mapping": {},
                     "name": "wes/filesystem"
-                },
-                "io": {
-                    "source": "const UTF8Encoding = require('System.Text.UTF8Encoding')\nconst ADODB = require('ADODB.Stream')\nconst DOMDocument = require('Msxml2.DOMDocument')\nconst SHIFT_JIS = 'Shift-JIS'\nconst UTF_8 = 'UTF-8'\nconst UTF_8BOM = 'UTF-8BOM'\nconst UTF_8N = 'UTF-8N'\nconst AD_TYPE_BINARY = 1\nconst AD_TYPE_TEXT = 2\nconst AD_SAVE_CREAE_OVER_WRITE = 2\nconst binary2UTF8 = ( binary ) => {\nreturn UTF8Encoding.GetString( binary )\n}\nconst binary2SJIS = ( binary ) => {\nlet source = ''\ntry {\nADODB.Open()\nADODB.Type = AD_TYPE_BINARY\nADODB.Write(binary)\nADODB.Position = 0\nADODB.Type = AD_TYPE_TEXT\nADODB.Charset = SHIFT_JIS\nsource = ADODB.ReadText()\n} catch (error) {\nconsole.log( `error binary2SJIS ${ error }` )\n} finally {\nADODB.Close()\n}\nreturn source\n}\nconst binary2Hex = ( binary ) => {\nlet hex = require('Msxml2.DOMDocument').createElement('hex')\nhex.dataType = 'bin.hex'\nhex.nodeTypedValue = binary\nreturn hex.text\n}\nconst Hex2binary = ( text ) => {\nlet hex = require('Msxml2.DOMDocument').createElement('hex')\nhex.dataType = 'bin.hex'\nhex.text = text\nreturn hex.nodeTypedValue\n}\nconst UTF82bynary = ( text ) => require( 'System.Text.UTF8Encoding' ).GetBytes_4( text )\nconst SJIS2binary = ( text ) => {\nconst stream = require( 'ADODB.Stream' )\nstream.Open()\nstream.Type = AD_TYPE_TEXT\nstream.Charset = SHIFT_JIS\nstream.WriteText( text )\nstream.Position = 0\nstream.Type = AD_TYPE_BINARY\nconst res = stream.Read()\nstream.Close()\nreturn res\n}\nconst ReadBinaryFile = ( path ) => {\nlet source = ''\ntry {\nADODB.Type = AD_TYPE_BINARY\nADODB.Open()\nADODB.LoadFromFile( path )\nsource = ADODB.Read()\n} catch ( error ) {\nconsole.log( `error ReadBinaryFile ${ error } ${ path }` )\n} finally {\nADODB.Close()\n}\nreturn source\n}\nconst autoGuessEncode = ( binary ) => {\nlet hex = binary2Hex( binary )\nif ( /^efbbbf.+/.test(hex) ) return UTF_8BOM\nlet hexes = []\nfor ( let i = 0; i < hex.length; i++ ) {\nhexes.push( Number( `0x${ hex[i] }${ hex[i + 1] }` ) )\ni++\n}\nlet len = hexes.length\nif ( len < 2 ) return UTF_8N\nlet sjis = 0\nlet utf8 = 0\nfor ( let i = 0; i < len - 2; i++ ) {\nconst hex1 = hexes[i]\nconst hex2 = hexes[i + 1]\nconst hex3 = hexes[i + 2]\nif (\n( ( 0x81 <= hex1 && hex1 <= 0x9f ) || ( 0xe0 <= hex1 && hex1 <= 0xfc ) ) &&\n( (0x40 <= hex2 && hex2 <= 0x7e ) || ( 0x80 <= hex2 && hex2 <= 0xfc ) )\n) sjis += 2\nif (0xc0 <= hex1 && hex1 <= 0xdf && (0x80 <= hex2 && hex2 <= 0xbf)) utf8 += 2\nelse if (\n0xe0 <= hex1 &&\nhex1 <= 0xef &&\n(0x80 <= hex2 && hex2 <= 0xbf) &&\n(0x80 <= hex3 && hex3 <= 0xbf)\n) {\nutf8 += 3\ni += 2\n}\ni++\n}\nreturn sjis > utf8 ? SHIFT_JIS : UTF_8N\n}\nconst read = ( filespec, enc ) => {\nlet binary = ReadBinaryFile( filespec )\nlet encode = enc || autoGuessEncode( binary )\nif (encode.toLowerCase() === SHIFT_JIS.toLowerCase()) return binary2SJIS( binary )\nif (encode.toLowerCase() === UTF_8BOM.toLowerCase() || encode.toLowerCase() === UTF_8.toLowerCase() ) {\nreturn binary2UTF8( Hex2binary( binary2Hex( binary ).replace(/^efbbbf/, '') ) )\n}\nreturn binary2UTF8(binary)\n}\nconst write = ( filespec, text, enc ) => {\nconst ADODB = require('ADODB.Stream')\ntry {\nADODB.Type = AD_TYPE_TEXT\nif ( enc == null ) ADODB.CharSet = enc = SHIFT_JIS\nelse if ( enc.toLowerCase() === UTF_8N.toLowerCase() ) ADODB.CharSet = UTF_8\nelse ADODB.CharSet = enc\nADODB.Open()\nADODB.WriteText( text )\nif ( enc.toLowerCase() === UTF_8N.toLowerCase() ) {\nADODB.Position = 0\nADODB.Type = AD_TYPE_BINARY\nADODB.Position = 3\nlet bytes = ADODB.Read()\nADODB.Position = 0\nADODB.SetEOS()\nADODB.Write( bytes )\n}\nADODB.SaveToFile( filespec, AD_SAVE_CREAE_OVER_WRITE )\n} catch ( error ) {\nreturn console.log( `failed to writing '${ filespec }'\\n${ error }`)\n} finally {\nADODB.Close()\n}\nreturn `succeeded in writing '${ filespec }'`\n}\nconst win32Sep = '\\\\'\nconst posixSep = '/'\nconst split = ( path ) => toPosixSep( path ).split( posixSep )\nconst toWin32Sep = ( path ) => path.split( posixSep ).join( win32Sep )\nconst toPosixSep = ( path ) => path.split( win32Sep ).join( posixSep )\nconst absolute = ( path ) => toPosixSep( FSO.GetAbsolutePathName( toWin32Sep( path ) ) )\nconst join = ( ...paths ) => absolute( toWin32Sep( paths.reduce( ( acc, curr ) => `${ acc }${ win32Sep }${ curr }` ) ) )\nconst dirname = ( path ) => absolute( FSO.GetParentFolderName( toWin32Sep( path ) ) )\nconst fileExists = ( path ) => FSO.FileExists( toWin32Sep( path ) )\nmodule.exports = {\nreadFileSync: read,\nwriteFileSync: write,\nautoGuessEncode,\nwin32Sep,\nposixSep,\ntoWin32Sep,\ntoPosixSep,\nabsolute,\nsplit,\njoin,\ndirname,\nfileExists,\nReadBinaryFile,\nbinary2UTF8,\nbinary2SJIS,\nbinary2Hex,\nHex2binary,\nUTF82bynary,\nSJIS2binary\n}\n",
-                    "mapping": {},
-                    "name": "wes/io"
                 },
                 "JScript": {
                     "source": "const { JScript } = require('sc')\nconst { TypeName } = require('VBScript')\nJScript.AddCode(`\nfunction enumerator ( collection ) {\nreturn new Enumerator( collection )\n}`)\nconst toArray = ( col ) => {\nlet res = []\nlet Enum = JScript.Run( 'enumerator', col )\nfor (; !Enum.atEnd(); Enum.moveNext()) {\nres.push( Enum.item() )\n}\nEnum.moveFirst()\nreturn res\n}\nclass Enumerator {\nconstructor( collection ) {\nlet res = []\nif (TypeName( collection ) === 'Long') {\nres = collection\n} else {\nres = toArray( collection )\n}\nreturn res\n}\n}\nmodule.exports = {\nEnumerator\n}",
@@ -375,36 +365,37 @@ try {
             try {
                 return WScript.CreateObject( id )
             } catch ( e ) {}
-            var io = require( 'io' )
+            var fs = require( 'filesystem' )
+            var path = require( 'pathname')
             var curr = ( function() {
                 var res
                 if ( stack.length ) {
                     if ( ( res = stack[stack.length - 1] ) ) {
                         if ( res[0] ) {
-                            return io.dirname( res[0] )
+                            return path.dirname( res[0] )
                         }
                     }
                 }
-                return io.toPosixSep( WShell.CurrentDirectory )
+                return path.toPosixSep( WShell.CurrentDirectory )
             })()
             var points = []
-            if ( id.startsWith( io.posixSep ) ) curr = FSO.GetDriveName( curr )
+            if ( id.startsWith( path.posixSep ) ) curr = FSO.GetDriveName( curr )
             if (
-                id.startsWith( io.posixSep ) ||
-                id.startsWith( '.' + io.posixSep ) ||
-                id.startsWith( '..' + io.posixSep )
+                id.startsWith( path.posixSep ) ||
+                id.startsWith( '.' + path.posixSep ) ||
+                id.startsWith( '..' + path.posixSep )
             ) {
-                points.push( io.join( curr, id ) )
+                points.push( path.join( curr, id ) )
             } else {
-                points.push( io.join( curr, id ) )
-                var hierarchy = io.split( curr )
+                points.push( path.join( curr, id ) )
+                var hierarchy = path.split( curr )
                 while ( hierarchy.length ) {
                     points.push(
-                        io.absolute(
-                            hierarchy.join( io.posixSep ) +
-                                io.posixSep +
+                        path.absolute(
+                            hierarchy.join( path.posixSep ) +
+                                path.posixSep +
                                 'node_modules' +
-                                io.posixSep +
+                                path.posixSep +
                                 id
                         )
                     )
@@ -415,26 +406,26 @@ try {
             points.some( function( value ) {
                 var res = null
                 var pack = null
-                if ( ( ( res = value), io.fileExists( res ) ) ) return ( entry = res )
-                if ( ( ( res = value + '.js'), io.fileExists(res) ) )
+                if ( ( ( res = value), fs.fileExists( res ) ) ) return ( entry = res )
+                if ( ( ( res = value + '.js'), fs.fileExists(res) ) )
                     return ( entry = res )
-                if ( ( ( res = value + '.json' ), io.fileExists( res ) ) )
+                if ( ( ( res = value + '.json' ), fs.fileExists( res ) ) )
                     return (entry = res)
-                if ( ( ( res = value + '/index.js' ), io.fileExists( res ) ) )
+                if ( ( ( res = value + '/index.js' ), fs.fileExists( res ) ) )
                     return ( entry = res )
                 if (
                     ( ( pack = value + '/pack.json' ),
-                    io.fileExists(pack) )
+                    fs.fileExists(pack) )
                 ) {
                     var temp = JSON.parse(
-                        io.readFileSync( pack )
+                        fs.readFileSync( pack )
                     ).main
                     if ( temp != null ) {
-                        if ( ( ( res = io.join( value, temp ) ), io.fileExists( res ) ) )
+                        if ( ( ( res = fs.join( value, temp ) ), fs.fileExists( res ) ) )
                             return ( entry = res )
                         else if (
-                            ( ( res = io.join( value, temp + '.js' ) ),
-                            io.fileExists( res ) )
+                            ( ( res = fs.join( value, temp + '.js' ) ),
+                            fs.fileExists( res ) )
                         )
                             return ( entry = res )
                     }
@@ -461,11 +452,11 @@ try {
             stack.push( [entry, uuid] )
             graph[uuid] = {
                 source: entry.endsWith( '.json' ) ?
-                    "module.exports = " + io
-                        .readFileSync( entry )
+                    "module.exports = " + fs
+                        .readTextFileSync( entry )
                         .replace( /\r/g, '' ) :
-                    io
-                        .readFileSync( entry )
+                    fs
+                        .readTextFileSync( entry )
                         .replace( /\r/g, '' )
                         .replace( /^#![^\n]+$/m, '' ),
                 name: entry.match( /([^\/]+)$/ )[0] + '',

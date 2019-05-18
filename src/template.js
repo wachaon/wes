@@ -264,36 +264,37 @@ try {
             try {
                 return WScript.CreateObject( id )
             } catch ( e ) {}
-            var io = require( 'io' )
+            var fs = require( 'filesystem' )
+            var path = require( 'pathname')
             var curr = ( function() {
                 var res
                 if ( stack.length ) {
                     if ( ( res = stack[stack.length - 1] ) ) {
                         if ( res[0] ) {
-                            return io.dirname( res[0] )
+                            return path.dirname( res[0] )
                         }
                     }
                 }
-                return io.toPosixSep( WShell.CurrentDirectory )
+                return path.toPosixSep( WShell.CurrentDirectory )
             })()
             var points = []
-            if ( id.startsWith( io.posixSep ) ) curr = FSO.GetDriveName( curr )
+            if ( id.startsWith( path.posixSep ) ) curr = FSO.GetDriveName( curr )
             if (
-                id.startsWith( io.posixSep ) ||
-                id.startsWith( '.' + io.posixSep ) ||
-                id.startsWith( '..' + io.posixSep )
+                id.startsWith( path.posixSep ) ||
+                id.startsWith( '.' + path.posixSep ) ||
+                id.startsWith( '..' + path.posixSep )
             ) {
-                points.push( io.join( curr, id ) )
+                points.push( path.join( curr, id ) )
             } else {
-                points.push( io.join( curr, id ) )
-                var hierarchy = io.split( curr )
+                points.push( path.join( curr, id ) )
+                var hierarchy = path.split( curr )
                 while ( hierarchy.length ) {
                     points.push(
-                        io.absolute(
-                            hierarchy.join( io.posixSep ) +
-                                io.posixSep +
+                        path.absolute(
+                            hierarchy.join( path.posixSep ) +
+                                path.posixSep +
                                 'node_modules' +
-                                io.posixSep +
+                                path.posixSep +
                                 id
                         )
                     )
@@ -304,26 +305,26 @@ try {
             points.some( function( value ) {
                 var res = null
                 var pack = null
-                if ( ( ( res = value), io.fileExists( res ) ) ) return ( entry = res )
-                if ( ( ( res = value + '.js'), io.fileExists(res) ) )
+                if ( ( ( res = value), fs.fileExists( res ) ) ) return ( entry = res )
+                if ( ( ( res = value + '.js'), fs.fileExists(res) ) )
                     return ( entry = res )
-                if ( ( ( res = value + '.json' ), io.fileExists( res ) ) )
+                if ( ( ( res = value + '.json' ), fs.fileExists( res ) ) )
                     return (entry = res)
-                if ( ( ( res = value + '/index.js' ), io.fileExists( res ) ) )
+                if ( ( ( res = value + '/index.js' ), fs.fileExists( res ) ) )
                     return ( entry = res )
                 if (
                     ( ( pack = value + '/pack.json' ),
-                    io.fileExists(pack) )
+                    fs.fileExists(pack) )
                 ) {
                     var temp = JSON.parse(
-                        io.readFileSync( pack )
+                        fs.readFileSync( pack )
                     ).main
                     if ( temp != null ) {
-                        if ( ( ( res = io.join( value, temp ) ), io.fileExists( res ) ) )
+                        if ( ( ( res = fs.join( value, temp ) ), fs.fileExists( res ) ) )
                             return ( entry = res )
                         else if (
-                            ( ( res = io.join( value, temp + '.js' ) ),
-                            io.fileExists( res ) )
+                            ( ( res = fs.join( value, temp + '.js' ) ),
+                            fs.fileExists( res ) )
                         )
                             return ( entry = res )
                     }
@@ -350,11 +351,11 @@ try {
             stack.push( [entry, uuid] )
             graph[uuid] = {
                 source: entry.endsWith( '.json' ) ?
-                    "module.exports = " + io
-                        .readFileSync( entry )
+                    "module.exports = " + fs
+                        .readTextFileSync( entry )
                         .replace( /\r/g, '' ) :
-                    io
-                        .readFileSync( entry )
+                    fs
+                        .readTextFileSync( entry )
                         .replace( /\r/g, '' )
                         .replace( /^#![^\n]+$/m, '' ),
                 name: entry.match( /([^\/]+)$/ )[0] + '',
