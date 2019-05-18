@@ -52,8 +52,7 @@ const {
     reverse, underscore, clear
 } = console.ansi
 
-console.log( `
-${ white }white ${ silver }silver ${ gray }gray
+console.log( `${ white }white ${ silver }silver ${ gray }gray
 ${ red }red ${ green }green ${ yellow }yellow ${ blue }blue ${ magenta }magenta ${ cyan }cyan
 ${ brightRed }brightRed ${ brightGreen }brightGreen ${ brightYellow }brightYellow
 ${ brightBlue }brightBlue ${ brightMagenta }brightMagenta ${ brightCyan }brightCyan
