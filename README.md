@@ -173,7 +173,7 @@ VBScript 固有の `TypeName` や `VarType` と `VarType` をわかりやすく�
 `require( 'Scripting.FileSystemObject' )` オブジェクトを `TypeName` で表示するサンプル
 
 ```javascript
-const { TypeName, Type } = require( 'VBScript' )
+const { TypeName, Type, VarType } = require( 'VBScript' )
 const FSO = require( 'Scripting.FileSystemObject' )
 
 console.log( TypeName( FSO ) )
