@@ -39,6 +39,8 @@ wes.js が cpu の 32/64bit の判断、実行エンジンを chakra に変更�
 標準出力は `WScript.Echo()` ではなく、`console.log()` を使います。
 色付き文字を出力したい場合は `console.ansi` にあるカラープロパティを使います。
 
+また、色を RBG で指定できる `console.ansi.color()` `console.ansi.bgColor()` もあります。
+
 色付き文字を表示するサンプル
 
 ```javascript
