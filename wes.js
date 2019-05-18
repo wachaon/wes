@@ -44,7 +44,7 @@ try {
             var isDebugOption = argv.exists( 'debug' )
             if ( !isDebugOption ) return void 0
             var res = normalize( arguments )
-            WScript.StdErr.WriteLine( 'DEBUG: ' + res )
+            WScript.StdErr.WriteLine( '\u001B[91m\u001B[7mDEBUG:\u001B[0m ' + res )
             return removeColor( res )
         }
 
@@ -231,7 +231,7 @@ try {
                     "name": "wes/day"
                 },
                 "debug": {
-                    "source": "const argv = require( 'argv' )\nconst dump = require( 'dump' )\nconst isDebugOprion = () => argv.exists( 'debug' )\nconst debug = ( expression ) => {\nif ( isDebugOprion ) {\nconsole.log( `debug: ${ dump( expression ) }` )\n}\nreturn expression\n}\ndebug.isDebugOption = isDebugOprion\nmodule.exports = debug",
+                    "source": "const argv = require( 'argv' )\nconst dump = require( 'dump' )\nconst {\nbrightRed,\nreverse,\nclear\n} = console\nconst isDebugOprion = () => argv.exists( 'debug' )\nconst debug = ( expression ) => {\nif ( isDebugOprion ) {\nconsole.log( `${ brightRed + reverse }DEBUG${ clear }: ${ dump( expression ) }` )\n}\nreturn expression\n}\ndebug.isDebugOption = isDebugOprion\nmodule.exports = debug",
                     "mapping": {},
                     "name": "wes/debug"
                 },
