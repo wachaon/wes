@@ -221,7 +221,7 @@ try {
                     "name": "wes/chardet"
                 },
                 "contract": {
-                    "source": "const { isDebugOption } = require( 'debug' )\nconst dump = require( 'dump' )\nconst {\nbrightRed: errorColor,\ngray: commentColor,\nyellow: codeColor,\ncyan: conditionColor,\nclear\n} = console.ansi\nfunction contract ( code, condition, ...args ) {\nif( !isDebugOption() ) return code( ...args )\nconst res = condition( ...args )\nif ( res.every( v => v ) ) return code( ...args )\nlet message = `${ errorColor }Contract Error${ clear }\ncall: ${ codeColor }${ code.name || code }${ clear } ( ${ require.stack[ require.stack.length  -1 ][0] } )\ncondition: ${\nconditionColor }${ condition.name || condition }${ clear }${\n'\\n  ' + args.map( ( v, i ) => 'arguments[' + ( i + 1 ) + ']: ' + dump( v ) + commentColor + ' // => ' + clear + dump( res[i] ) ).join( '\\n  ' )\n}\\n`\nconsole.debug( message )\nreturn code( ...args )\n}\nmodule.exports = contract",
+                    "source": "const { isDebugOption } = require( 'debug' )\nconst dump = require( 'dump' )\nconst {\nbrightRed: errorColor,\ngray: commentColor,\nyellow: codeColor,\ncyan: conditionColor,\nclear\n} = console.ansi\nfunction contract ( code, condition, ...args ) {\nif( !isDebugOption() ) return code( ...args )\nconst res = condition( ...args )\nif ( res.every( v => v ) ) return code( ...args )\nlet message = `${ errorColor }Contract Error${ clear }\ncall: ${ codeColor }${ code.name || code }${ clear } ( ${ require.stack[ require.stack.length  -1 ][0] } )\ncondition: ${\nconditionColor }${ condition.name || condition }${ clear }${\n'\\n  ' + args.map( ( v, i ) => 'arguments[' + ( i ) + ']: ' + dump( v ) + commentColor + ' // => ' + clear + dump( res[i] ) ).join( '\\n  ' )\n}\\n`\nconsole.debug( message )\nreturn code( ...args )\n}\nmodule.exports = contract",
                     "mapping": {},
                     "name": "wes/contract"
                 },
@@ -261,7 +261,7 @@ try {
                     "name": "wes/minitest"
                 },
                 "msxml": {
-                    "source": "const msxmlId = [\n'MSXML2.DOMDocument.6.0',\n'MSXML2.DOMDocument.3.0',\n'Msxml2.DOMDocument',\n'Msxml.DOMDocument',\n'Microsoft.XMLDOM'\n]\nlet MSXML = null\nfor ( let i = 0; i < msxmlId.length; i++ ) {\ntry {\nMSXML = WScript.CreateObject( msxmlId[ i ] )\nbreak\n} catch ( e ) {\ncontinue\n}\n}\nif ( MSXML == null ) WScript.CreateObject( msxmlId[ 0 ] )\n//console.debug( `${ console.ansi.gray }Get ${ require( 'VBScript' ).TypeName( MSXML ) }`)\nmodule.exports = MSXML\n",
+                    "source": "const msxmlId = [\n'MSXML2.DOMDocument.6.0',\n'MSXML2.DOMDocument.3.0',\n'Msxml2.DOMDocument',\n'Msxml.DOMDocument',\n'Microsoft.XMLDOM'\n]\nlet MSXML = null\nfor ( let i = 0; i < msxmlId.length; i++ ) {\ntry {\nMSXML = WScript.CreateObject( msxmlId[ i ] )\nbreak\n} catch ( e ) {\ncontinue\n}\n}\nif ( MSXML == null ) WScript.CreateObject( msxmlId[ 0 ] )\nmodule.exports = MSXML\n",
                     "mapping": {},
                     "name": "wes/msxml"
                 },
