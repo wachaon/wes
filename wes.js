@@ -41,8 +41,8 @@ try {
         }
 
         function debug () {
-            var debugging = argv.exists( 'debug' )
-            if ( !debugging ) return void 0
+            var isDebugOption = argv.exists( 'debug' )
+            if ( !isDebugOption ) return void 0
             var res = normalize( arguments )
             WScript.StdErr.WriteLine( 'DEBUG: ' + res )
             return removeColor( res )
@@ -281,7 +281,7 @@ try {
                     "name": "wes/pathname"
                 },
                 "pipe": {
-                    "source": "const { named } = require( 'argv' )\nconst dump = require( 'dump' )\nclass Pipe {\nconstructor(){\nlet reslut = ( value ) => {\nconst val = value instanceof Pipe ? value.dist() : value\nconst _pipe = ( v, f ) => new Pipe()( f( v ) )\nlet res = {\ndist() {\nreturn val\n},\nlog( fn ) {\nif ( typeof fn !== 'function' ) console.log( dump( val ) )\nelse fn( val )\nreturn new Pipe()( val )\n},\ndebug( fn ) {\nif ( 'debug' in named ) {\nif ( fn == null ) console.log( dump( val ) )\nelse console.log( fn( val ) )\n}\nreturn new Pipe()( val )\n},\npipe( ...args ) {\nargs.unshift( new Pipe()( val ) )\nreturn args.reduce( ( acc, curr ) => {\nreturn _pipe( acc.dist(), curr )\n} )\n}\n}\nreturn res\n}\nreturn reslut\n}\n}\nmodule.exports = new Pipe",
+                    "source": "const { named } = require( 'argv' )\nconst dump = require( 'dump' )\nconst { isDebugOption } = require( 'debug' )\nclass Pipe {\nconstructor(){\nlet reslut = ( value ) => {\nconst val = value instanceof Pipe ? value.dist() : value\nconst _pipe = ( v, f ) => new Pipe()( f( v ) )\nlet res = {\ndist() {\nreturn val\n},\nlog( fn ) {\nif ( typeof fn !== 'function' ) console.log( dump( val ) )\nelse fn( val )\nreturn new Pipe()( val )\n},\ndebug( fn ) {\nif ( isDebugOption ) {\nif ( fn == null ) console.log( dump( val ) )\nelse console.log( fn( val ) )\n}\nreturn new Pipe()( val )\n},\npipe( ...args ) {\nargs.unshift( new Pipe()( val ) )\nreturn args.reduce( ( acc, curr ) => {\nreturn _pipe( acc.dist(), curr )\n} )\n}\n}\nreturn res\n}\nreturn reslut\n}\n}\nmodule.exports = new Pipe",
                     "mapping": {},
                     "name": "wes/pipe"
                 },
@@ -296,7 +296,7 @@ try {
                     "name": "wes/text"
                 },
                 "validation": {
-                    "source": "const isValid = ( target, name, fn, throwError ) => {\nif ( fn( target ) ) return target\nif ( throwError ) throw new Error ( `${ target } is not ${ name }` )\nreturn false\n}\nconst isString = ( string, throwError ) => {\nlet fn = ( target ) => typeof target === 'string'\nreturn isValid( string, 'String', fn, throwError )\n}\nconst isNumber = ( number, throwError ) => {\nlet fn = ( target ) =>  typeof target === 'number'\nreturn isValid( number, 'Number', fn, throwError )\n}\nconst isFunction = ( func, throwError ) => {\nlet fn = ( target ) => typeof target === 'function'\nreturn isValid( func, 'Function', fn, throwError )\n}\nconst isArray = ( array, throwError ) => {\nlet fn = ( target ) => Array.isArray( target )\nreturn isValid( array, 'Array', fn, throwError )\n}\nconst isDate = ( date, throwError ) => {\nlet fn = ( target ) => target instanceof Date\nreturn isValid( date, 'Date', fn, throwError )\n}\nconst isRegExp = ( regexp, throwError ) => {\nlet fn = ( target ) => regexp instanceof RegExp\nreturn isValid( regexp, 'RegExp', fn, throwError )\n}\nconst isObject = ( object, throwError ) => {\nlet fn = ( target ) => target != null && Object.prototype.toString.call( target ) === '[object Object]'\nreturn isValid( object, 'Object', fn, throwError )\n}\nconst isClass = ( Class, classConstructor, throwError ) => {\nlet fn = ( target ) => target instanceof classConstructor\nreturn isValid( Class, classConstructor.name, fn, throwError )\n}\nmodule.exports = {\nisValid,\nisString,\nisNumber,\nisFunction,\nisArray,\nisDate,\nisRegExp,\nisObject,\nisClass\n}",
+                    "source": "const toStringCall = type =>\nObject.prototype.toString.call( type )\nconst isClass = ( constructor, val ) =>\nval instanceof constructor\nconst isString = val =>\ntypeof val === 'string' ||\ntoStringCall( val ) === '[object String]'\nconst isNumber = val =>\ntypeof val === 'number' ||\ntoStringCall( val ) === '[object Number]'\nconst isFunction = val =>\ntypeof val === 'function'\nconst isDate = val => isClass( Date, val )\nconst isRegExp = ( val ) => isClass( RegExp, val )\nconst isArray = ( val ) => Array.isArray( val )\nconst isObject = ( val ) =>\ntarget != null &&\ntoStringCall( target ) === '[object Object]'\nmodule.exports = {\nisString,\nisNumber,\nisFunction,\nisDate,\nisRegExp,\nisArray,\nisObject,\nisClass\n}",
                     "mapping": {},
                     "name": "wes/validation"
                 },
