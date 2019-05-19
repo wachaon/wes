@@ -162,7 +162,7 @@ pathname のメソッドのほとんどは戻り値のパスの区切りを `/` 
 JScript 固有のコンストラクタの `Enumerator` を使用可能にします。
 `new Enumerator( collection )` は常に `Array` を返します。
 
-カレントディレクトリにある、すべてのファイルを読み込むサンプル
+ディレクトリにある、すべてのファイルを読み込むサンプル
 
 ```javascript
 const { Enumerator } = require( 'JScript' )
