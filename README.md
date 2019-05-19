@@ -49,14 +49,27 @@ const {
     red, green, yellow, blue, magenta, cyan,
     brightRed, brightGreen, brightYellow,
     brightBlue, brightMagenta, brightCyan,
-    reverse, underscore, clear
+    reverse, underscore, clear, black,
+    bgWhite, bgSilver, bgGray,
+    bgRed, bgGreen, bgYellow,
+    bgBlue, bgMagenta, bgCyan,
+    bgBrightRed, bgBrightGreen, bgBrightYellow,
+    bgBrightBlue, bgBrightMagenta, bgBrightCyan,
+    color, bgColor
 } = console.ansi
 
-console.log( `${ white }white ${ silver }silver ${ gray }gray
-${ red }red ${ green }green ${ yellow }yellow ${ blue }blue ${ magenta }magenta ${ cyan }cyan
-${ brightRed }brightRed ${ brightGreen }brightGreen ${ brightYellow }brightYellow
-${ brightBlue }brightBlue ${ brightMagenta }brightMagenta ${ brightCyan }brightCyan
+console.log( `${ white }white ${ silver }silver ${ gray }gray${ clear }
+${ red }red ${ green }green ${ yellow }yellow ${ blue }blue ${ magenta }magenta ${ cyan }cyan${ clear }
+${ brightRed }brightRed ${ brightGreen }brightGreen ${ brightYellow }brightYellow${ clear }
+${ brightBlue }brightBlue ${ brightMagenta }brightMagenta ${ brightCyan }brightCyan${ clear }
 ${ reverse }reverse${ clear } ${ underscore }underscore${ clear }
+${ black + bgWhite }bgWhite ${ bgSilver }bgSilver ${ bgGray }bgGray${ clear }
+${ black + bgRed }bgRed ${ bgGreen }bgGreen ${ bgYellow }bgYellow${ clear }
+${ black + bgBlue }bgBlue ${ bgMagenta }bgMagenta ${ bgCyan }bgCyan${ clear }
+${ black + bgBrightRed }bgBrightRed ${ bgBrightGreen }bgBrightGreen ${ bgBrightYellow }bgBrightYellow${ clear }
+${ black + bgBrightBlue }bgBrightBlue ${ bgBrightMagenta }bgBrightMagenta ${ bgBrightCyan }bgBrightCyan${ clear }
+${ color( '#E6DB74' ) + bgColor( '#272822' ) }color( '#E6DB74' ) + bgColor( '#272822' )${ clear }
+${ color( 39, 40, 34 ) + bgColor( 174, 129, 255 ) }color( 39, 40, 34 ) + bgColor( 174, 129, 255 )${ clear }
 `)
 ```
 
