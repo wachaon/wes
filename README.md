@@ -260,3 +260,42 @@ describe( 'test sample', () => {
     } )
 } )
 ```
+### contract
+
+与えられた引数の値が想定している値かどうかを確認します。
+コマンドラインで名前付き引数を `/debug` にしなければ確認はしません。
+条件に合致しない場合のみ画面に出力します。
+
+```javascript
+const contract = require( 'contract' )
+const { isNumber } = require( 'typecheck' )
+const log = require( 'log' )
+
+
+const numbers = ( ...args ) => [
+    ( arg ) => isNumber( arg ) && arg === parseInt( arg ),
+    ( arg ) => isNumber( arg ) && arg === parseInt( arg )
+].map( ( v, i ) => v( args[i] ) )
+
+const two = 2
+const five = 5
+const _five = '5'
+const eight = 8
+
+const add = ( a, b ) => a + b
+
+contract( add, numbers, two, five )
+log( () => add( two, five ) )
+
+contract( add, numbers, two, _five )
+log( () => add( two, _five ) )
+
+
+const sub = ( a, b ) => a - b
+
+contract( sub, numbers, eight, five )
+log( () => sub( eight, five ) )
+
+contract( sub, numbers, eight, _five )
+log( () => sub( eight, _five ) )
+```

@@ -221,7 +221,7 @@ try {
                     "name": "wes/chardet"
                 },
                 "contract": {
-                    "source": "const { isDebugOption } = require( 'debug' )\nconst dump = require( 'dump' )\nconst {\nbrightRed: errorColor,\ngray: commentColor,\nyellow: codeColor,\ncyan: conditionColor,\nclear\n} = console.ansi\nfunction contract ( code, condition, ...args ) {\nif( !isDebugOption() ) return code( ...args )\nconst res = condition( ...args )\nif ( res.every( v => v ) ) return code( ...args )\nlet message = `${ errorColor }Contract Error${ clear }\ncall: ${ codeColor }${ code.name || code }${ clear } ( ${ require.stack[ require.stack.length  -1 ][0] } )\ncondition: ${\nconditionColor }${ condition.name || condition }${ clear }${\n'\\n  ' + args.map( ( v, i ) => 'arguments[' + ( i ) + ']: ' + dump( v ) + commentColor + ' // => ' + clear + dump( res[i] ) ).join( '\\n  ' )\n}`\nconsole.debug( message )\nreturn code( ...args )\n}\nmodule.exports = contract",
+                    "source": "const { isDebugOption } = require( 'debug' )\nconst dump = require( 'dump' )\nconst {\nbrightRed: errorColor,\ngray: commentColor,\nyellow: codeColor,\ncyan: conditionColor,\nclear\n} = console.ansi\nfunction contract ( code, condition, ...args ) {\nif( !isDebugOption() ) return void 0\nconst res = condition( ...args )\nif ( res.every( v => v ) ) return void 0\nlet message = `${ errorColor }Contract Error${ clear }\ncall: ${ codeColor }${ code.name || code }${ clear } ( ${ require.stack[ require.stack.length  -1 ][0] } )\ncondition: ${\nconditionColor }${ condition.name || condition }${ clear }${\n'\\n  ' + args.map( ( v, i ) => 'arguments[' + ( i ) + ']: ' + dump( v ) + commentColor + ' // => ' + clear + dump( res[i] ) ).join( '\\n  ' ) + '\\n'\n}`\nconsole.debug( message )\nreturn void 0\n}\nmodule.exports = contract",
                     "mapping": {},
                     "name": "wes/contract"
                 },
@@ -251,7 +251,7 @@ try {
                     "name": "wes/JScript"
                 },
                 "log": {
-                    "source": "const dump = require( 'dump' )\nconst { green, clear } = console.ansi\nconst log = ( code ) => {\nlet res = dump( code() )\nconsole.log( 'log( ' + dump( code ) + ' )' + green + ' // => ' + clear + res )\n}\nmodule.exports = log",
+                    "source": "const dump = require( 'dump' )\nconst { green, clear } = console.ansi\nconst log = ( code ) => {\nlet res = dump( code() )\nconsole.log( 'log( ' + dump( code ) + ' )' + green + ' // => ' + clear + res + '\\n' )\n}\nmodule.exports = log",
                     "mapping": {},
                     "name": "wes/log"
                 },
