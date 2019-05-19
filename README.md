@@ -322,7 +322,7 @@ const two = 2
 const five = 5
 const _five = '5'
 const eight = 8
-const _three = 3.5
+const threePointFive = 3.5
 
 const add = ( a, b ) => a + b
 
@@ -332,8 +332,8 @@ log( () => add( two, five ) )
 contract( add, Int, two, _five )
 log( () => add( two, _five ) )
 
-contract( add, Int, two, _three )
-log( () => add( two, _three ) )
+contract( add, Int, two, threePointFive )
+log( () => add( two, threePointFive ) )
 
 
 const sub = ( a, b ) => a - b
@@ -344,6 +344,6 @@ log( () => sub( eight, five ) )
 contract( sub, Int, eight, _five )
 log( () => sub( eight, _five ) )
 
-contract( sub, Int, eight, _three )
-log( () => sub( eight, _three ) )
+contract( sub, Int, eight, threePointFive )
+log( () => sub( eight, threePointFive ) )
 ```
