@@ -260,6 +260,47 @@ describe( 'test sample', () => {
     } )
 } )
 ```
+
+### typecheck
+
+ECMAScript で扱う変数の型を確認する関数を提供します。
+
+型を確認するサンプル
+
+```javascript
+const typecheck = require( 'typecheck' )
+
+const list = {
+    Null: null,
+    Undefined: undefined,
+    string: 'string',
+    number: 1,
+    fn: () => {},
+    bool: true,
+    date: new Date,
+    regexp: /regexp/,
+    array: [],
+    object: {},
+}
+
+const listkeys = Object.keys( list )
+
+const typekeys = Object.keys( typecheck )
+typekeys.pop() // remove typecheck.isClass
+
+listkeys.forEach( v => {
+    typekeys.forEach( val => {
+        const ret = typecheck[val]( list[v] )
+        console.log( `${
+            ret ? '': console.ansi.gray
+        }${ v } // => ${ val }${
+            ret ? '': console.ansi.clear
+        }` )
+    } )
+    console.log( '' )
+} )
+```
+
 ### contract
 
 与えられた引数の値が想定している値かどうかを確認します。
