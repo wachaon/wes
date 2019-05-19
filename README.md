@@ -272,7 +272,7 @@ const { isNumber } = require( 'typecheck' )
 const log = require( 'log' )
 
 
-const numbers = ( ...args ) => [
+const Int = ( ...args ) => [
     ( arg ) => isNumber( arg ) && arg === parseInt( arg ),
     ( arg ) => isNumber( arg ) && arg === parseInt( arg )
 ].map( ( v, i ) => v( args[i] ) )
@@ -281,21 +281,28 @@ const two = 2
 const five = 5
 const _five = '5'
 const eight = 8
+const _three = 3.5
 
 const add = ( a, b ) => a + b
 
-contract( add, numbers, two, five )
+contract( add, Int, two, five )
 log( () => add( two, five ) )
 
-contract( add, numbers, two, _five )
+contract( add, Int, two, _five )
 log( () => add( two, _five ) )
+
+contract( add, Int, two, _three )
+log( () => add( two, _three ) )
 
 
 const sub = ( a, b ) => a - b
 
-contract( sub, numbers, eight, five )
+contract( sub, Int, eight, five )
 log( () => sub( eight, five ) )
 
-contract( sub, numbers, eight, _five )
+contract( sub, Int, eight, _five )
 log( () => sub( eight, _five ) )
+
+contract( sub, Int, eight, _three )
+log( () => sub( eight, _three ) )
 ```
