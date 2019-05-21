@@ -22,6 +22,7 @@ describe('Enumerator test', () => {
             "pipe.js",
             "sc.js",
             "text.js",
+            "typecast.js",
             "typecheck.js",
             "VBScript.js",
             "version.js"
