@@ -9,13 +9,11 @@ describe('Enumerator test', () => {
             "argv.js",
             "buffer.js",
             "chardet.js",
+            "contract.js",
             "day.js",
             "debug.js",
             "dump.js",
-            "enumerator.js",
-            "event.js",
             "filesystem.js",
-            "io.js",
             "JScript.js",
             "log.js",
             "minitest.js",
@@ -24,7 +22,7 @@ describe('Enumerator test', () => {
             "pipe.js",
             "sc.js",
             "text.js",
-            "validation.js",
+            "typecheck.js",
             "VBScript.js",
             "version.js"
         ]
