@@ -24,8 +24,7 @@ describe('Enumerator test', () => {
             "text.js",
             "typecast.js",
             "typecheck.js",
-            "VBScript.js",
-            "version.js"
+            "VBScript.js"
         ]
         //console.log( JSON.stringify( files ) )
         assert( JSON.stringify( files ) === JSON.stringify( list ) )
