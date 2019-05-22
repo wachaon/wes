@@ -17,7 +17,6 @@ describe('Enumerator test', () => {
             "JScript.js",
             "log.js",
             "minitest.js",
-            "msxml.js",
             "pathname.js",
             "pipe.js",
             "sc.js",
@@ -26,7 +25,7 @@ describe('Enumerator test', () => {
             "typecheck.js",
             "VBScript.js"
         ]
-        //console.log( JSON.stringify( files ) )
+        //console.log( JSON.stringify( files, null, 4 ) )
         assert( JSON.stringify( files ) === JSON.stringify( list ) )
     })
 })
