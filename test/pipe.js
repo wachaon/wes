@@ -1,8 +1,8 @@
 const pipe = require( 'pipe' )
-const { describe, it, assert } = require( 'minitest' )
+const { describe, it, assert, pass } = require( 'minitest' )
 
 
-describe( 'pipe test', () => {
+describe( '#test pipe', () => {
     const add = ( curr ) => ( acc ) => acc + curr
     const sub = ( curr ) => ( acc ) => acc - curr
     const multi = ( curr ) => ( acc ) => acc * curr
@@ -15,3 +15,5 @@ describe( 'pipe test', () => {
         assert( pipe( 14 ).pipe( div( 7 ), add( 6 ), sub( 4 ), multi( 5 ), rem( 3 ) ).dist() === 2 )
     } )
 } )
+
+return pass

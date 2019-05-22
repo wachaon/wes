@@ -1,6 +1,6 @@
-const { describe, it, assert } = require( 'minitest' )
+const { describe, it, assert, pass } = require( 'minitest' )
 
-describe( 'chardet', () => {
+describe( '#test chardet', () => {
     const { Enumerator } = require( 'JScript' )
     const FSO = require( 'Scripting.FileSystemObject' )
     const path = require( 'pathname' )
@@ -30,3 +30,5 @@ describe( 'chardet', () => {
         } )
     } )
 } )
+
+return pass

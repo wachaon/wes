@@ -1,7 +1,7 @@
 const { Enumerator } = require( 'JScript' )
-const { describe, it, assert } = require('minitest')
+const { describe, it, assert, pass } = require('minitest')
 
-describe('Enumerator test', () => {
+describe('#test Enumerator', () => {
     it('lib/ files', () => {
         const FSO = require('Scripting.FileSystemObject')
         let files = ( new Enumerator(FSO.GetFolder(`./lib`).Files) ).map( v => v.name )
@@ -29,3 +29,5 @@ describe('Enumerator test', () => {
         assert( JSON.stringify( files ) === JSON.stringify( list ) )
     })
 })
+
+return pass

@@ -1,8 +1,8 @@
 const path = require( 'pathname' )
-const { describe, it, assert } = require( 'minitest' )
+const { describe, it, assert, pass } = require( 'minitest' )
 
 
-describe( 'extname', () => {
+describe( '#test extname', () => {
     it( 'WScript.ScriptFullName', () => {
         assert( path.extname( WScript.ScriptFullName ) === ".js" )
     } )
@@ -23,7 +23,7 @@ describe( 'extname', () => {
     } )
 } )
 
-describe( 'normalize', () => {
+describe( '#test normalize', () => {
     it( 'c://bin/github//wes////wes.js', () => {
         assert( path.normalize( 'c://bin/github//wes////wes.js' ) === 'C:/bin/github/wes/wes.js' )
     } )
@@ -44,7 +44,7 @@ describe( 'normalize', () => {
     } )
 } )
 
-describe( 'isAbsolute', () => {
+describe( '#test isAbsolute', () => {
     it( 'WScript.ScriptFullName', () => {
         assert( path.isAbsolute( WScript.ScriptFullName ) === true )
     } )
@@ -61,3 +61,5 @@ describe( 'isAbsolute', () => {
         assert( path.isAbsolute( 'c:/bin/github/../Desktop/log/log.json' ) === true )
     } )
 } )
+
+return pass
