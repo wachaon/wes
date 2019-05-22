@@ -58,24 +58,24 @@ const {
     color, bgColor
 } = console.ansi
 
-console.log( `${ white }white ${ silver }silver ${ gray }gray${ clear }
+console.log( `${ white }white ${ silver }silver ${ gray }gray ${ clear }
 ${ red }red ${ green }green ${ yellow }yellow ${ blue }blue ${ magenta }magenta ${ cyan }cyan${ clear }
 ${ brightRed }brightRed ${ brightGreen }brightGreen ${ brightYellow }brightYellow${ clear }
 ${ brightBlue }brightBlue ${ brightMagenta }brightMagenta ${ brightCyan }brightCyan${ clear }
-${ reverse }reverse${ clear } ${ underscore }underscore${ clear }
-${ black + bgWhite }bgWhite ${ bgSilver }bgSilver ${ bgGray }bgGray${ clear }
-${ black + bgRed }bgRed ${ bgGreen }bgGreen ${ bgYellow }bgYellow${ clear }
-${ black + bgBlue }bgBlue ${ bgMagenta }bgMagenta ${ bgCyan }bgCyan${ clear }
-${ black + bgBrightRed }bgBrightRed ${ bgBrightGreen }bgBrightGreen ${ bgBrightYellow }bgBrightYellow${ clear }
-${ black + bgBrightBlue }bgBrightBlue ${ bgBrightMagenta }bgBrightMagenta ${ bgBrightCyan }bgBrightCyan${ clear }
-${ color( '#E6DB74' ) + bgColor( '#272822' ) }color( '#E6DB74' ) + bgColor( '#272822' )${ clear }
-${ color( 39, 40, 34 ) + bgColor( 174, 129, 255 ) }color( 39, 40, 34 ) + bgColor( 174, 129, 255 )${ clear }
+${ reverse }reverse${ clear } ${ underscore }underscore${ clear }\n
+${ black + bgWhite } bgWhite ${ bgSilver } bgSilver ${ bgGray } bgGray ${ clear }
+${ black + bgRed } bgRed ${ bgGreen } bgGreen ${ bgYellow } bgYellow ${ clear }
+${ black + bgBlue } bgBlue ${ bgMagenta } bgMagenta ${ bgCyan } bgCyan ${ clear }
+${ black + bgBrightRed } bgBrightRed ${ bgBrightGreen } bgBrightGreen ${ bgBrightYellow } bgBrightYellow ${ clear }
+${ black + bgBrightBlue } bgBrightBlue ${ bgBrightMagenta } bgBrightMagenta ${ bgBrightCyan } bgBrightCyan ${ clear }
+${ color( '#E6DB74' ) + bgColor( '#272822' ) } color( '#E6DB74' ) + bgColor( '#272822' ) ${ clear }
+${ color( 39, 40, 34 ) + bgColor( 174, 129, 255 ) } color( 39, 40, 34 ) + bgColor( 174, 129, 255 )${ clear }
 `)
 ```
 
 ## require
 
-モジュールは node.js で使われてる `module.exports` で定義して `require()` で読み込みます。
+モジュールは node.js と同じように `module.exports` で定義して `require()` で読み込みます。
 
 パスの指定も node.js の `require()` に似せているので、拡張子の指定も不要です。
 
@@ -110,7 +110,7 @@ wes はいくつかの標準モジュールを持っています。
 
 テキストファイルを読み込むならエンコードの自動推測を行う  `readTextFileSync( path )` が便利です。
 
-ファイルを読み込みのサンプル
+ファイルを読み込むサンプル
 
 ```javascript
 const fs = require( 'filesystem' )
@@ -268,37 +268,9 @@ ECMAScript で扱う変数の型を確認する関数を提供します。
 型を確認するサンプル
 
 ```javascript
-const typecheck = require( 'typecheck' )
+const { isString } = require( 'typecheck' )
 
-const list = {
-    Null: null,
-    Undefined: undefined,
-    string: 'string',
-    number: 1,
-    fn: () => {},
-    bool: true,
-    date: new Date,
-    regexp: /regexp/,
-    array: [],
-    object: {},
-}
-
-const listkeys = Object.keys( list )
-
-const typekeys = Object.keys( typecheck )
-typekeys.pop() // remove typecheck.isClass
-
-listkeys.forEach( v => {
-    typekeys.forEach( val => {
-        const ret = typecheck[val]( list[v] )
-        console.log( `${
-            ret ? '': console.ansi.gray
-        }${ v } // => ${ val }${
-            ret ? '': console.ansi.clear
-        }` )
-    } )
-    console.log( '' )
-} )
+console.log( isString( 'foo' ) )
 ```
 
 ### contract
