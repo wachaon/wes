@@ -278,7 +278,7 @@ try {
                 return path.toPosixSep( path.CurrentDirectory )
             })()
             var points = []
-            if ( id.startsWith( path.posixSep ) ) curr = FSO.GetDriveName( curr )
+            if ( id.startsWith( path.posixSep ) ) curr = path.CurrentDirectory /* FSO.GetDriveName( curr ) */
             if (
                 id.startsWith( path.posixSep ) ||
                 id.startsWith( '.' + path.posixSep ) ||
