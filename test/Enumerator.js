@@ -14,6 +14,7 @@ describe('#test Enumerator', () => {
             "debug.js",
             "dump.js",
             "filesystem.js",
+            "hex.js",
             "JScript.js",
             "log.js",
             "minitest.js",
@@ -21,7 +22,6 @@ describe('#test Enumerator', () => {
             "pipe.js",
             "sc.js",
             "text.js",
-            "typecast.js",
             "typecheck.js",
             "VBScript.js"
         ]
