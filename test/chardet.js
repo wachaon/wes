@@ -1,4 +1,5 @@
 const { describe, it, assert, pass } = require( 'minitest' )
+const path = require( 'path' )
 
 describe( '#test chardet', () => {
     const { Enumerator } = require( 'JScript' )
@@ -8,7 +9,7 @@ describe( '#test chardet', () => {
     const fs = require( 'filesystem' )
     const chardet = require( 'chardet' )
 
-    const dir = path.join( WShell.CurrentDirectory, 'test/encodings' )
+    const dir = path.join( path.CurrentDirectory, 'test/encodings' )
     const folder = FSO.GetFolder( dir )
     const encodeings = new Enumerator( folder.Files )
     const names = encodeings.map( file => file.name )
