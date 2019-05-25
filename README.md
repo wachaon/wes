@@ -78,8 +78,9 @@ ${ color( 39, 40, 34 ) + bgColor( 174, 129, 255 ) } color( 39, 40, 34 ) + bgColo
 モジュールは node.js と同じように `module.exports` で定義して `require()` で読み込みます。
 
 パスの指定も node.js の `require()` に似せているので、拡張子の指定も不要です。
+( ver 0.6.0 から `/` から始めるパスをドライブレターからのパスではなく、プロジェクトフォルダからのパスとして扱うようになりました。)
 
-[chardet](https://github.com/runk/node-chardet) を修正したものが標準モジュールにあるので、
+[chardet](https://github.com/runk/node-chardet) を wes で実行できるようにしたものが標準モジュールにあるので、
 UTF-8 以外のエンコードファイルも自動推測で読み込めます。
 
 また、従来のオートメーションオブジェクトを呼ぶ場合
