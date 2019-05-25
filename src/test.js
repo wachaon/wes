@@ -1,5 +1,5 @@
-const { Enumerator } = require( 'JScript' )
-const fs = require( 'filesystem' )
+const { Enumerator } = require( '/lib/JScript' )
+const fs = require( '/lib/filesystem' )
 const { brightGreen, brightRed } =console.ansi
 
 const FSO = require('Scripting.FileSystemObject')

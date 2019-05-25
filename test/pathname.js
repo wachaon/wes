@@ -1,5 +1,5 @@
 const path = require( 'pathname' )
-const { describe, it, assert, pass } = require( 'minitest' )
+const { describe, it, assert, pass } = require( 'sminitest' )
 
 
 describe( '#test extname', () => {
