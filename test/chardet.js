@@ -1,5 +1,4 @@
 const { describe, it, assert, pass } = require( 'minitest' )
-const path = require( 'pathname' )
 
 describe( '#test chardet', () => {
     const { Enumerator } = require( 'JScript' )
