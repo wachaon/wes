@@ -1,11 +1,10 @@
 const { describe, it, assert, pass } = require( 'minitest' )
-const path = require( 'path' )
+const path = require( 'pathname' )
 
 describe( '#test chardet', () => {
     const { Enumerator } = require( 'JScript' )
     const FSO = require( 'Scripting.FileSystemObject' )
     const path = require( 'pathname' )
-    const WShell = require( 'WScript.Shell' )
     const fs = require( 'filesystem' )
     const chardet = require( 'chardet' )
 
@@ -17,8 +16,8 @@ describe( '#test chardet', () => {
         .map( file => file.Path )
         //.map( path => fs.readTextFileSync( path ) )
 
-    paths.forEach( ( path, i ) => {
-        const detect = chardet.detect( fs.readFileSync( path ) )
+    paths.forEach( ( file, i ) => {
+        const detect = chardet.detect( fs.readFileSync( file ) )
         it( names[i] + ' === ' + detect, () => {
             const a = detect.toLowerCase().replace( /\-/g, '_' )
             const b = detect.toLowerCase().replace( /\-/g, '' )

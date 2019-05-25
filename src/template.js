@@ -275,7 +275,7 @@ try {
                         }
                     }
                 }
-                return path.toPosixSep( WShell.CurrentDirectory )
+                return path.toPosixSep( path.CurrentDirectory )
             })()
             var points = []
             if ( id.startsWith( path.posixSep ) ) curr = FSO.GetDriveName( curr )
