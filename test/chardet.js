@@ -5,7 +5,7 @@ describe( '#test chardet', () => {
     const FSO = require( 'Scripting.FileSystemObject' )
     const path = require( 'pathname' )
     const fs = require( 'filesystem' )
-    const chardet = require( 'chardet' )
+    const chardet = require( '/lib/chardet' )
 
     const dir = path.join( path.CurrentDirectory, 'test/encodings' )
     const folder = FSO.GetFolder( dir )

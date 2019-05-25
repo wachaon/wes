@@ -1,5 +1,5 @@
-const { Enumerator } = require( 'JScript' )
-const { describe, it, assert, pass } = require('minitest')
+const { Enumerator } = require( '/lib/JScript' )
+const { describe, it, assert, pass } = require('/lib/minitest')
 
 describe('#test Enumerator', () => {
     it('lib/ files', () => {

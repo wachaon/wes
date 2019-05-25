@@ -1,5 +1,5 @@
-const path = require( 'pathname' )
-const { describe, it, assert, pass } = require( 'sminitest' )
+const path = require( '/lib/pathname' )
+const { describe, it, assert, pass } = require( '/lib/minitest' )
 
 
 describe( '#test extname', () => {

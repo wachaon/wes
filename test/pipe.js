@@ -1,5 +1,5 @@
-const pipe = require( 'pipe' )
-const { describe, it, assert, pass } = require( 'minitest' )
+const pipe = require( '/lib/pipe' )
+const { describe, it, assert, pass } = require( '/lib/minitest' )
 
 
 describe( '#test pipe', () => {
