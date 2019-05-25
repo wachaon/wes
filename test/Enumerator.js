@@ -2,7 +2,7 @@ const { Enumerator } = require( '/lib/JScript' )
 const { describe, it, assert, pass } = require('/lib/minitest')
 
 describe('#test Enumerator', () => {
-    it('lib/ files', () => {
+    it('/lib/ files', () => {
         const FSO = require('Scripting.FileSystemObject')
         let files = ( new Enumerator(FSO.GetFolder(`./lib`).Files) ).map( v => v.name )
         let list = [
