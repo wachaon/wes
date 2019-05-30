@@ -271,7 +271,7 @@ try {
                     "name": "wes/pathname"
                 },
                 "pipe": {
-                    "source": "const { named } = require( 'argv' )\nconst dump = require( 'dump' )\nconst { isDebugOption } = require( 'debug' )\nclass Pipe {\nconstructor(){\nlet reslut = ( value ) => {\nconst val = value instanceof Pipe ? value.dist() : value\nconst _pipe = ( v, f ) => new Pipe()( f( v ) )\nlet res = {\ndist() {\nreturn val\n},\nlog( fn ) {\nif ( typeof fn !== 'function' ) console.log( dump( val ) )\nelse fn( val )\nreturn new Pipe()( val )\n},\ndebug( fn ) {\nif ( isDebugOption ) {\nif ( fn == null ) console.log( dump( val ) )\nelse console.log( fn( val ) )\n}\nreturn new Pipe()( val )\n},\npipe( ...args ) {\nargs.unshift( new Pipe()( val ) )\nreturn args.reduce( ( acc, curr ) => {\nreturn _pipe( acc.dist(), curr )\n} )\n}\n}\nreturn res\n}\nreturn reslut\n}\n}\nmodule.exports = new Pipe",
+                    "source": "class Pipe {\nconstructor( value ) {\nthis.value = value\n}\npipe ( fn ) {\nthis.value = fn( this.value )\nreturn this\n}\nlog ( message ) {\nconsole.log( message, this.value )\nreturn this\n}\ndebug ( message ) {\nconsole.debug( message, this.value )\nreturn this\n}\n[Symbol.toPrimitive] ( hint ) {\nreturn this.value\n}\n}\nmodule.exports = Pipe",
                     "mapping": {},
                     "name": "wes/pipe"
                 },
