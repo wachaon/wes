@@ -291,11 +291,7 @@ try {
                 while ( hierarchy.length ) {
                     points.push(
                         path.absolute(
-                            hierarchy.join( path.posixSep ) +
-                                path.posixSep +
-                                'node_modules' +
-                                path.posixSep +
-                                id
+                            path.join( hierarchy.join( path.posixSep ), 'node_modules', id )
                         )
                     )
                     hierarchy.pop()
@@ -305,35 +301,30 @@ try {
             points.some( function( value ) {
                 var res = null
                 var pack = null
-                if ( ( ( res = value), fs.exists( res ) ) ) return ( entry = res )
-                if ( ( ( res = value + '.js'), fs.exists(res) ) )
+                if ( ( ( res = value ), fs.exists( res ) ) ) {
                     return ( entry = res )
-                if ( ( ( res = value + '.json' ), fs.exists( res ) ) )
+                }
+                if ( ( ( res = value + '.js'), fs.exists( res ) ) ) {
+                    return ( entry = res )
+                }
+                if ( ( ( res = value + '.json' ), fs.exists( res ) ) ) {
                     return (entry = res)
-                if ( ( ( res = value + '/index.js' ), fs.exists( res ) ) )
+                }
+                if ( ( ( res = path.join( value, 'index.js' ) ), fs.exists( res ) ) ) {
                     return ( entry = res )
-                if (
-                    ( ( pack = value + '/pack.json' ),
-                    fs.exists(pack) )
-                ) {
-                    var temp = JSON.parse(
-                        fs.readFileSync( pack )
-                    ).main
+                }
+                if ( ( ( pack = path.join( value, 'package.json' ) ), fs.exists( pack ) ) ) {
+                    var temp = ( JSON.parse( fs.readTextFileSync( pack ) ) ).main
                     if ( temp != null ) {
-                        if ( ( ( res = fs.join( value, temp ) ), fs.exists( res ) ) )
-                            return ( entry = res )
-                        else if (
-                            ( ( res = fs.join( value, temp + '.js' ) ),
-                            fs.exists( res ) )
-                        )
-                            return ( entry = res )
+                        if ( ( ( res = path.join( value, temp ) ), fs.exists( res ) ) ) return ( entry = res )
+                        else if ( ( ( res = path.join( value, temp + '.js' ) ), fs.exists( res ) ) ) return ( entry = res )
                     }
                 }
-            })
-            if ( entry == null)
+            } )
+            if ( entry == null )
                 throw new Error(
                     "module not found\ncaller: '" +
-                        curr +
+                        stack[ stack.length - 1 ][0] +
                         "' => require '" +
                         id +
                         "'"
@@ -364,7 +355,6 @@ try {
             history.push( [entry, uuid] )
             return require( uuid )
         }
-        var FSO = require('Scripting.FileSystemObject')
         var genUUID = function() {
             var typelib = require( 'Scriptlet.Typelib' )
             return typelib.GUID.replace( /[^\}]+$/, '' )
