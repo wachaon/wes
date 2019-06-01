@@ -50,7 +50,7 @@ try {
 
         var none = ''
         var space = ' '
-        var specifier = /(%[sdifjJoO])/
+        var specifier = /%[sdifjJoO]/
         var seq = /\u001B\[[\d;]+m/g
 
         function normalize ( argList ) {
@@ -65,29 +65,31 @@ try {
         function splitArgs ( args ) { return Array.prototype.slice.call( args ) }
 
         function formatArgs ( args ) {
-            if ( args == null || args.length > 2 ) return args[0]
+            if ( args == null || args.length === 1 ) return args[0]
             if ( !specifier.test( args[0] ) ) return args.join( space )
             var msg = args.shift()
-            while ( args.length ) {
+            while ( args.length > 0) {
                 var val = args.shift()
                 var type = specifier.test( msg ) ? msg.match( specifier )[0] : null
                 switch ( type ) {
                     case '%s':
-                        msg = msg.replace( '%s', '' + val ); break
+                        msg = msg.replace( '%s', '' + val ); continue
                     case '%d':
-                        msg = msg.replace( '%d', val - 0 ); break
+                        msg = msg.replace( '%d', val - 0 ); continue
                     case '%f':
-                        msg = msg.replace( '%f', val - 0 ); break
+                        msg = msg.replace( '%f', val - 0 ); continue
                     case '%i':
-                        msg = msg.replace( '%i', parseInt( val ) ); break
+                        msg = msg.replace( '%i', parseInt( val ) ); continue
                     case '%j':
-                        msg = msg.replace( '%j', JSON.stringify( val ) ); break
+                        msg = msg.replace( '%j', JSON.stringify( val ) ); continue
                     case '%J':
-                        msg = msg.replace( '%J', JSON.stringify( val, null, 2 ) ); break
+                        msg = msg.replace( '%J', JSON.stringify( val, null, 2 ) ); continue
                     case '%o':
-                        msg = msg.replace( '%o', val ); break
+                        msg = msg.replace( '%o', val ); continue
                     case '%O':
-                        msg = msg.replace( '%O', require( 'dump' )( val ) ); break
+                        msg = msg.replace( '%O', require( 'dump' )( val ) ); continue
+                    default:
+                        break
                 }
             }
             return msg
@@ -469,6 +471,11 @@ try {
     }
 } catch ( error ) {
     var errorStack = error.stack
-    if (console) console.log( errorStack )
+    if (console) {
+        console.log( errorStack )
+        var log = require( 'log' )
+        log( function() { return stack } )
+        log( function() { return history } )
+    }
     else WScript.StdErr.WriteLine( errorStack )
 }
