@@ -50,7 +50,7 @@ try {
 
         var none = ''
         var space = ' '
-        var specifier = /(%[sdifjo])/
+        var specifier = /(%[sdifjJoO])/
         var seq = /\u001B\[[\d;]+m/g
 
         function normalize ( argList ) {
@@ -88,8 +88,12 @@ try {
                         msg = msg.replace( '%o', val ); break
                     case '%O':
                         msg = msg.replace( '%O', require( 'dump' )( val ) ); break
+<<<<<<< HEAD
 
                 }
+=======
+                    }
+>>>>>>> master
             }
             return msg
         }
