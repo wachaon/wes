@@ -88,12 +88,7 @@ try {
                         msg = msg.replace( '%o', val ); break
                     case '%O':
                         msg = msg.replace( '%O', require( 'dump' )( val ) ); break
-<<<<<<< HEAD
-
                 }
-=======
-                    }
->>>>>>> master
             }
             return msg
         }
