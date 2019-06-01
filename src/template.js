@@ -65,7 +65,7 @@ try {
         function splitArgs ( args ) { return Array.prototype.slice.call( args ) }
 
         function formatArgs ( args ) {
-            if ( args == null || args.length > 2 ) return args[0]
+            if ( args == null || args.length < 2 ) return args[0]
             if ( !specifier.test( args[0] ) ) return args.join( space )
             var msg = args.shift()
             while ( args.length ) {
