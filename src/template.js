@@ -218,10 +218,13 @@ try {
         )
         function require(id) {
             if ( graph[id] != null ) {
-                if ( !id.startsWith('{') ) stack.push( [null, null] )
+                if ( !id.startsWith('{') ) {
+                    stack.push( [null, null] )
+                }
                 var code = graph[id].code
                 var source = graph[id].source
                 var mapping = graph[id].mapping
+
                 function localRequire( name ) {
                     var res = mapping[name]
                     if ( res == null )
@@ -229,46 +232,42 @@ try {
                     else
                         return require( res )
                 }
+
                 localRequire.stack = stack
                 localRequire.graph = graph
-                var module = {
-                    exports: {}
-                }
+
+                var module = { exports: {} }
                 var global = global || {}
                 var process = {
-                    env: {
-                        NODE_DEBUG: 'semver'
-                    },
+                    env: { NODE_DEBUG: 'semver' },
                     argv: ['wes'].concat( argv ),
                     versions: { node: '4.0.0' },
                     platform: 'win32'
                 }
-                var fn =
-                    typeof code === 'function'
-                        ? code
-                        : new Function(
-                              'require',
-                              'module',
-                              'exports',
-                              'console',
-                              '__filename',
-                              '__dirname',
-                              'global',
-                              'process',
-                              '"use strict"\n' + source
-                          )
+                var fn = typeof code === 'function' ? code : new Function(
+                    'require',
+                    'module',
+                    'exports',
+                    'console',
+                    '__filename',
+                    '__dirname',
+                    'global',
+                    'process',
+                    '"use strict"\n' + source
+                )
                 fn(
                     localRequire,
                     module,
                     module.exports,
                     console,
                     graph[id].name || graph[id],
-                    ( stack[stack.length - 1][0] + '' ).replace( /\/[^\/]+$/, '' ),
+                    ( stack[ stack.length - 1 ][0] + '' ).replace( /\/[^\/]+$/, '' ),
                     global,
                     process
                 )
                 graph[id].code = fn
                 stack.pop()
+
                 return module.exports
             }
             try {
@@ -276,7 +275,9 @@ try {
             } catch ( e ) {}
             var fs = require( 'filesystem' )
             var path = require( 'pathname')
+
             var curr = ( function() {
+                if ( id.startsWith( path.posixSep ) ) return path.CurrentDirectory
                 var res
                 if ( stack.length ) {
                     if ( ( res = stack[stack.length - 1] ) ) {
@@ -287,16 +288,10 @@ try {
                 }
                 return path.toPosixSep( path.CurrentDirectory )
             })()
+
             var points = []
-            if ( id.startsWith( path.posixSep ) ) curr = path.CurrentDirectory /* FSO.GetDriveName( curr ) */
-            if (
-                id.startsWith( path.posixSep ) ||
-                id.startsWith( '.' + path.posixSep ) ||
-                id.startsWith( '..' + path.posixSep )
-            ) {
-                points.push( path.join( curr, id ) )
-            } else {
-                points.push( path.join( curr, id ) )
+            points.push( path.join( curr, id ) )
+            if ( !id.startsWith( path.posixSep ) || !id.startsWith( '.' + path.posixSep ) || !id.startsWith( '..' + path.posixSep ) ) {
                 var hierarchy = path.split( curr )
                 while ( hierarchy.length ) {
                     points.push(
@@ -308,6 +303,7 @@ try {
                 }
             }
             var entry = null
+            console.log( "%scurr: %O", console.ansi.brightGreen, curr)
             points.some( function( value ) {
                 var res = null
                 var pack = null
@@ -331,14 +327,12 @@ try {
                     }
                 }
             } )
-            if ( entry == null )
+            if ( entry == null ) {
                 throw new Error(
-                    "module not found\ncaller: '" +
-                        stack[ stack.length - 1 ][0] +
-                        "' => require '" +
-                        id +
-                        "'"
+                    "module not found\ncaller: '" + stack[ stack.length - 1 ][0] + "' => require '" + id + "'"
                 )
+            }
+            //console.log( "%sentry %J", console.ansi.brightRed, entry )
             var loaded = history.find( function( val ) {
                 return val[0] === entry
             } )
@@ -348,6 +342,7 @@ try {
                 return require( loaded[1] )
             }
             var uuid = genUUID()
+            //console.log( "%s stack: %O", console.ansi.cyan, stack )
             graph[ stack[stack.length - 1][1]].mapping[id] = uuid
             stack.push( [entry, uuid] )
             graph[uuid] = {
@@ -363,6 +358,7 @@ try {
                 mapping: {}
             }
             history.push( [entry, uuid] )
+            console.log( "%sentry: %s", console.ansi.reverse, entry)
             return require( uuid )
         }
         var genUUID = function() {
