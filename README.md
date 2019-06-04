@@ -224,21 +224,7 @@ console<span class="token punctuation">.</span><span class="token function">log<
 <span class="token function">contract</span><span class="token punctuation">(</span> add<span class="token punctuation">,</span> Int<span class="token punctuation">,</span> two<span class="token punctuation">,</span> _five <span class="token punctuation">)</span>
 <span class="token function">log</span><span class="token punctuation">(</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token function">add</span><span class="token punctuation">(</span> two<span class="token punctuation">,</span> _five <span class="token punctuation">)</span> <span class="token punctuation">)</span>
 
-<span class="token function">contract</span><span class="token punctuation">(</span> add<span class="token punctuation">,</span> Int<span class="token punctuation">,</span> two<span class="token punctuation">,</span> threePointFive <span class="token punctuation">)</span>
-<span class="token function">log</span><span class="token punctuation">(</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token function">add</span><span class="token punctuation">(</span> two<span class="token punctuation">,</span> threePointFive <span class="token punctuation">)</span> <span class="token punctuation">)</span>
-
-
-<span class="token keyword">const</span> <span class="token function-variable function">sub</span> <span class="token operator">=</span> <span class="token punctuation">(</span> a<span class="token punctuation">,</span> b <span class="token punctuation">)</span> <span class="token operator">=&gt;</span> a <span class="token operator">-</span> b
-
-<span class="token function">contract</span><span class="token punctuation">(</span> sub<span class="token punctuation">,</span> Int<span class="token punctuation">,</span> eight<span class="token punctuation">,</span> five <span class="token punctuation">)</span>
-<span class="token function">log</span><span class="token punctuation">(</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token function">sub</span><span class="token punctuation">(</span> eight<span class="token punctuation">,</span> five <span class="token punctuation">)</span> <span class="token punctuation">)</span>
-
-<span class="token function">contract</span><span class="token punctuation">(</span> sub<span class="token punctuation">,</span> Int<span class="token punctuation">,</span> eight<span class="token punctuation">,</span> _five <span class="token punctuation">)</span>
-<span class="token function">log</span><span class="token punctuation">(</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token function">sub</span><span class="token punctuation">(</span> eight<span class="token punctuation">,</span> _five <span class="token punctuation">)</span> <span class="token punctuation">)</span>
-
-<span class="token function">contract</span><span class="token punctuation">(</span> sub<span class="token punctuation">,</span> Int<span class="token punctuation">,</span> eight<span class="token punctuation">,</span> threePointFive <span class="token punctuation">)</span>
-<span class="token function">log</span><span class="token punctuation">(</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token function">sub</span><span class="token punctuation">(</span> eight<span class="token punctuation">,</span> threePointFive <span class="token punctuation">)</span> <span class="token punctuation">)</span>
-</code></pre>
+<span class="token function">contract</span><span class="token punctuation">(</span> add<span class="token punctuation">,</span> Int<span class="token punctuation">
 # WES (Windows EcmaScript host)
 
 WES は WSH を現代的なECMAScript構文で開発できる実行環境です。
@@ -562,5 +548,5 @@ contract( sub, Int, eight, threePointFive )
 log( () => sub( eight, threePointFive ) )
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbOTAxMjM0OTk3XX0=
+eyJoaXN0b3J5IjpbLTEwNDc1ODQ2MTFdfQ==
 -->
