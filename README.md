@@ -80,22 +80,22 @@ ${ color( 39, 40, 34 ) + bgColor( 174, 129, 255 ) } color( 39, 40, 34 ) + bgColo
 パスの指定も node.js の `require()` に似せているので、拡張子の指定も不要です。
 ( ver 0.6.0 から `/` から始めるパスをドライブレターからのパスではなく、プロジェクトフォルダからのパスとして扱うようになりました。)
 
-[chardet](https://github.com/runk/node-chardet) を wes で実行できるようにしたものが標準モジュールにあるので、
+wes の標準モジュールに [chardet](https://github.com/runk/node-chardet) を 改変したものがあるので、
 UTF-8 以外のエンコードファイルも自動推測で読み込めます。
 
-また、従来のオートメーションオブジェクトを呼ぶ場合
+また、従来のオートメーションオブジェクトを呼ぶ場合も
 
 ```javascript
 var FSO = new ActiveXObject( 'Scripting.FileSystemObject' )
 ```
 
-と、していたものを
+ではなく、
 
 ```javascript
 const FSO = require( 'Scripting.FileSystemObject' )
 ```
 
-と、`require` で呼び出します。
+と、`requで呼び出します。
 
 ## 標準モジュール
 
@@ -321,5 +321,5 @@ contract( sub, Int, eight, threePointFive )
 log( () => sub( eight, threePointFive ) )
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTQ1MjA1OTI3NV19
+eyJoaXN0b3J5IjpbLTEzMDA4Njk3NjgsMTQ1MjA1OTI3NV19
 -->
