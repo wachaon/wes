@@ -307,7 +307,9 @@ try {
                 }
             }
         )
+
         function require(id) {
+            //console.debug( "stack => %J\nhistory => %J", stack, history )
             if ( graph[id] != null ) {
                 if ( !id.startsWith('{') ) {
                     stack.push( [null, null] )
@@ -394,7 +396,7 @@ try {
                 }
             }
             var entry = null
-            console.log( "%scurr: %O", console.ansi.brightGreen, curr)
+            // console.log( "%scurr: %O", console.ansi.brightGreen, curr)
             points.some( function( value ) {
                 var res = null
                 var pack = null
@@ -434,7 +436,7 @@ try {
             }
             var uuid = genUUID()
             //console.log( "%s stack: %O", console.ansi.cyan, stack )
-            graph[ stack[stack.length - 1][1]].mapping[id] = uuid
+            graph[ stack[stack.length - 1][1] ].mapping[id] = uuid
             stack.push( [entry, uuid] )
             graph[uuid] = {
                 source: entry.endsWith( '.json' ) ?
@@ -449,7 +451,7 @@ try {
                 mapping: {}
             }
             history.push( [entry, uuid] )
-            console.log( "%sentry: %s", console.ansi.reverse, entry)
+            // console.log( "%sentry: %s", console.ansi.reverse, entry)
             return require( uuid )
         }
         var genUUID = function() {
