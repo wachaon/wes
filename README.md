@@ -1,7 +1,7 @@
 # WES (Windows EcmaScript host)
 
 WES は WSH を現代的なECMAScript構文で開発できる実行環境です。
-Windows のオートメーション処理の開発コストを軽減できます。
+Windows のオートメーション自動化処理の開発コストを軽減できます。
 
 ## 特徴
 -  chakra エンジンを使用して `const` `let` `() =>` `class` などの現代的なECMAScript構文で開発できる
@@ -320,3 +320,6 @@ log( () => sub( eight, _five ) )
 contract( sub, Int, eight, threePointFive )
 log( () => sub( eight, threePointFive ) )
 ```
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbMTQ1MjA1OTI3NV19
+-->
