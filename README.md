@@ -95,7 +95,7 @@ var FSO = new ActiveXObject( 'Scripting.FileSystemObject' )
 const FSO = require( 'Scripting.FileSystemObject' )
 ```
 
-と、`requで呼び出します。
+で呼び出します。
 
 ## 標準モジュール
 
@@ -321,5 +321,5 @@ contract( sub, Int, eight, threePointFive )
 log( () => sub( eight, threePointFive ) )
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzMDA4Njk3NjgsMTQ1MjA1OTI3NV19
+eyJoaXN0b3J5IjpbLTk5OTk4Njg3MiwxNDUyMDU5Mjc1XX0=
 -->
