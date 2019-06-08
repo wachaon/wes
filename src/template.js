@@ -182,7 +182,12 @@ try {
             ansi: ansi
         }
 
-      } )()
+    } )()
+
+    var genUUID = function() {
+        var typelib = require( 'Scriptlet.Typelib' )
+        return typelib.GUID.replace( /[^\}]+$/, '' )
+    }
 
     if ( !argv.exists( 'engine' ) ) {
 
@@ -216,6 +221,8 @@ try {
         var graph = ( {}
             /* includes lib */
         )
+
+
 
         function require(id) {
             //console.debug( "stack => %J\nhistory => %J", stack, history )
@@ -276,7 +283,7 @@ try {
                 return WScript.CreateObject( id )
             } catch ( e ) {}
             var fs = require( 'filesystem' )
-            var path = require( 'pathname')
+            var path = require( 'pathname' )
 
             var curr = ( function() {
                 if ( id.startsWith( path.posixSep ) ) return path.CurrentDirectory
@@ -362,10 +369,6 @@ try {
             history.push( [entry, uuid] )
             // console.log( "%sentry: %s", console.ansi.reverse, entry)
             return require( uuid )
-        }
-        var genUUID = function() {
-            var typelib = require( 'Scriptlet.Typelib' )
-            return typelib.GUID.replace( /[^\}]+$/, '' )
         }
         var Guid = genUUID()
         if ( !stack.length ) {
