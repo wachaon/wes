@@ -290,11 +290,6 @@ try {
                     "mapping": {},
                     "name": "{wes}/pipe"
                 },
-                "sc": {
-                    "source": "const ScriptControl = ( language ) => {\nconst sc = require( 'ScriptControl' )\nsc.Language = language\nreturn {\nAddCode( code ) {\nsc.AddCode( code )\n},\nRun( name, ...args ) {\nreturn sc.run( name, ...args )\n}\n}\n}\nmodule.exports = {\nJScript: ScriptControl( 'JScript' ),\nVBScript: ScriptControl( 'VBScript' )\n}\n",
-                    "mapping": {},
-                    "name": "{wes}/sc"
-                },
                 "text": {
                     "source": "const LF = '\\n'\nconst CR = '\\r'\nconst CRLF = CR + LF\nconst SPACE = ' '\nconst TAB = '\\t'\nconst NONE = ''\nconst REG_LINE_SEP = /\\r?\\n/g\nconst REG_LF = /\\n/g\nconst REG_CR = /\\r/g\nconst REG_CRLF = /\\r\\n/g\nconst REG_SPACE = /\\s/g\nconst REG_SPACES = /\\s+/g\nconst REG_BLANK_LINE = /^\\s+$/\nconst REG_TAB = /\\t/g\nconst REG_TABS = /\\t+/g\nconst INDNT = /^\\s+/\nconst trimStarts = ( string ) => {\nreturn string.replace( /^([\\s\\r\\n]+\\n)/, NONE )\n}\nconst trimEnds = ( string ) => {\nreturn string.replace( /(\\n[\\s\\r\\n]+)$/, NONE )\n}\nconst trim = ( string ) => {\nreturn trimStarts( trimEnds( string ) )\n}\nconst splitLines = ( string, mod, start, end ) => {\nconst sep = REG_CRLF.test( string ) ? CRLF : LF\nreturn string\n.split( REG_LINE_SEP )\n.filter(\n( value, i ) =>\n( start < i % mod && i % mod < end ) || REG_BLANK_LINE.test( value )\n)\n.join(sep)\n}\nconst unindent = ( text ) => {\nconst lineBreak = text.includes( CRLF ) ? CRLF : LF\nlet line = text.split( REG_LINE_SEP )\nconst lastLineSpace = line[ line.length - 1 ].match( INDNT )\nif ( lastLineSpace == null ) return text\nreturn line.map( v => {\nreturn v.replace( lastLineSpace, '' )\n} ).join( lineBreak ).replace( /^\\s+/, '')\n}\nmodule.exports = {\nLF,\nCR,\nCRLF,\nSPACE,\nTAB,\nNONE,\nREG_LINE_SEP,\nREG_LF,\nREG_CR,\nREG_CRLF,\nREG_SPACE,\nREG_SPACES,\nREG_BLANK_LINE,\nREG_TAB,\nREG_TABS,\ntrimStarts,\ntrimEnds,\ntrim,\nsplitLines,\nunindent\n}",
                     "mapping": {},
