@@ -293,6 +293,7 @@ try {
                         }
                     }
                 }
+                // console.debug( '%snot stack: %J', console.ansi.brightRed, stack )
                 return path.toPosixSep( path.CurrentDirectory )
             })()
 
@@ -300,9 +301,6 @@ try {
             points.push( path.join( curr, id ) )
             if ( !id.startsWith( path.posixSep ) || !id.startsWith( '.' + path.posixSep ) || !id.startsWith( '..' + path.posixSep ) ) {
                 var hierarchy = path.split( curr )
-                //
-                console.log( "curr: %s, id: %s, point: %J", curr, id, points )
-                //
                 while ( hierarchy.length ) {
                     points.push(
                         path.absolute(
@@ -313,7 +311,7 @@ try {
                 }
             }
             var entry = null
-            // console.log( "%scurr: %O", console.ansi.brightGreen, curr)
+            // console.debug( "\ncurr: %s\nid: %s\npoint: %J", curr, id, points )
             points.some( function( value ) {
                 var res = null
                 var pack = null
@@ -339,7 +337,8 @@ try {
             } )
             if ( entry == null ) {
                 throw new Error(
-                    "module not found\ncaller: '" + stack[ stack.length - 1 ][0] + "' => require '" + id + "'"
+                    // "module not found\ncaller: '" + stack[ stack.length - 1 ][0] + "' => require '" + id + "'"
+                    "module not found\ncaller: '" + curr + "' => require '" + id + "'"
                 )
             }
             //console.log( "%sentry %J", console.ansi.brightRed, entry )
@@ -364,8 +363,13 @@ try {
                         .readTextFileSync( entry )
                         .replace( /\r/g, '' )
                         .replace( /^#![^\n]+$/m, '' ),
-                name: entry.match( /([^\/]+)$/ )[0] + '',
-                mapping: {}
+                    // name: entry.match( /([^\/]+)$/ )[0] + '',
+                    // name: entry
+                    name: ( function() {
+                        var base = path.basename( path.CurrentDirectory )
+                        return "{" + base + "}/" + path.relative( path.CurrentDirectory, entry )
+                    } )(),
+                    mapping: {}
             }
             history.push( [entry, uuid] )
             // console.log( "%sentry: %s", console.ansi.reverse, entry)
@@ -388,9 +392,17 @@ try {
     var errorStack = error.stack
     if (console) {
         console.log( errorStack )
-        var log = require( 'log' )
-        log( function() { return stack } )
-        log( function() { return history } )
+        var color = console.ansi.brightGreen
+        var clear = console.ansi.clear
+        console.debug( "%sstack: %s%O", color, clear, stack )
+        console.debug( "%shistory: %s%O", color, clear, history )
+        console.debug( "%sgraph: %s%O", color, clear, Object.keys( graph ).map( function ( v ) {
+            return {
+                id: v,
+                name: graph[ v ].name,
+                mapping: graph[ v ].mapping
+            }
+        } ) )
     }
     else WScript.StdErr.WriteLine( errorStack )
 }
