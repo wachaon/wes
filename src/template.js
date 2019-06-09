@@ -222,8 +222,6 @@ try {
             /* includes lib */
         )
 
-
-
         function require(id) {
             //console.debug( "stack => %J\nhistory => %J", stack, history )
             if ( graph[id] != null ) {
@@ -302,6 +300,9 @@ try {
             points.push( path.join( curr, id ) )
             if ( !id.startsWith( path.posixSep ) || !id.startsWith( '.' + path.posixSep ) || !id.startsWith( '..' + path.posixSep ) ) {
                 var hierarchy = path.split( curr )
+                //
+                console.log( "curr: %s, id: %s, point: %J", curr, id, points )
+                //
                 while ( hierarchy.length ) {
                     points.push(
                         path.absolute(
