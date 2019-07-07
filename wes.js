@@ -216,10 +216,7 @@ try {
         WScript.Quit()
 
     } else {
-        var history = []
-        var stack = []
-        var graph = ( {}
-            ,{
+        var Modules =             {
                 "argv": {
                     "source": "var argv = ( function () {\nconst args = WScript.Arguments\nlet res = ['wes']\nfor ( let i = 0; i < args.length; i++ ) {\nres.push( args( i ) )\n}\nlet unnamed = ['wes']\nfor ( let i = 0; i < args.Unnamed.length; i++ ) {\nunnamed.push( args.Unnamed( i ) )\n}\nfunction exists ( name ) { return args.Named.Exists( name ) }\nfunction getValue ( name ) { return args.Named( name ) }\nres.unnamed = unnamed\nres.exists = exists\nres.getValue = getValue\nreturn res\n} )()\nmodule.exports = argv",
                     "mapping": {},
@@ -281,7 +278,7 @@ try {
                     "name": "{wes}/minitest"
                 },
                 "pathname": {
-                    "source": "const { CurrentDirectory } = require( 'WScript.Shell' )\nconst FSO = require( 'Scripting.FileSystemObject' )\nconst win32Sep = '\\\\'\nconst posixSep = '/'\nconst split = ( path ) => toPosixSep( path ).split( posixSep )\nconst toWin32Sep = ( path ) => path.split( posixSep ).join( win32Sep )\nconst toPosixSep = ( path ) => path.split( win32Sep ).join( posixSep )\nconst absolute = ( path ) => toPosixSep( FSO.GetAbsolutePathName( toWin32Sep( path ) ) )\nconst join = ( ...paths ) => absolute( toWin32Sep( paths.reduce( ( acc, curr ) => `${ acc }${ win32Sep }${ curr }` ) ) )\nconst dirname = ( path ) => absolute( FSO.GetParentFolderName( toWin32Sep( path ) ) )\nconst extname = ( path ) => {\nlet temp = split( path )\nlet res = temp[ temp.length - 1 ].split( '.' )\nif ( res.length > 1 ) return '.' + res[ res.length - 1 ]\nreturn ''\n}\nconst relative = ( from, to ) => {\nlet _from = split( absolute( from ) )\nlet _to = split( absolute( to ) )\nif ( _from[0] !== _to[0] ) return toPosixSep( to )\nwhile ( _from[0] === _to[0] ) {\n_from.shift()\n_to.shift()\n}\n_from = _from.fill( '..' )\nreturn _from.concat( _to ).join( posixSep )\n}\nconst basename = ( path, ext ) => {\nconst temp = split( path )\nconst res = temp[ temp.length - 1 ]\nif ( ext != null && ext[0] === '.' && res.slice( -ext.length ) === ext) {\nreturn res.slice( 0, res.length - ext.length )\n} else {\nreturn res\n}\n}\nconst normalize = ( path ) => {\nlet temp = split( toPosixSep( path ).replace( /\\/+/g, posixSep ) )\nlet res = []\nlet parent = 0\nfor ( let i = temp.length - 1; i > -1 ; i-- ) {\nlet item = temp[i]\nif ( item === '.' ) continue\nelse if ( item === '..' ) parent++\nelse if ( parent ) parent--\nelse res.unshift( item )\n}\nif ( parent > 0 ) res.unshift( ( new Array( parent ) ).fill( '..' ) )\nif ( /^[a-z]:$/.test( res[0] ) ) res[0] = res[0].toUpperCase()\nreturn res.join( posixSep )\n}\nconst isAbsolute = ( path ) => absolute( path ) === normalize( path )\nmodule.exports = {\nCurrentDirectory: toPosixSep( CurrentDirectory ),\nwin32Sep,\nposixSep,\nsplit,\ntoWin32Sep,\ntoPosixSep,\nabsolute,\njoin,\ndirname,\nextname,\nrelative,\nbasename,\nnormalize,\nisAbsolute\n}\n",
+                    "source": "const { CurrentDirectory } = require( 'WScript.Shell' )\nconst FSO = require( 'Scripting.FileSystemObject' )\nconst win32Sep = '\\\\'\nconst posixSep = '/'\nconst split = ( path ) => toPosixSep( path ).split( posixSep )\nconst toWin32Sep = ( path ) => path.split( posixSep ).join( win32Sep )\nconst toPosixSep = ( path ) => path.split( win32Sep ).join( posixSep )\nconst absolute = ( path ) => toPosixSep( FSO.GetAbsolutePathName( toWin32Sep( path ) ) )\nconst join = ( ...paths ) => absolute( toWin32Sep( paths.reduce( ( acc, curr ) => `${ acc }${ win32Sep }${ curr }` ) ) )\nconst dirname = ( path ) => {\nif ( FSO.GetParentFolderName( toWin32Sep( path ) ) !== '' ){\nreturn absolute( FSO.GetParentFolderName( toWin32Sep( path ) ) )\n} else {\nreturn ''\n}\n}\nconst extname = ( path ) => {\nlet temp = split( path )\nlet res = temp[ temp.length - 1 ].split( '.' )\nif ( res.length > 1 ) return '.' + res[ res.length - 1 ]\nreturn ''\n}\nconst relative = ( from, to ) => {\nlet _from = split( absolute( from ) )\nlet _to = split( absolute( to ) )\nif ( _from[0] !== _to[0] ) return toPosixSep( to )\nwhile ( _from[0] === _to[0] ) {\n_from.shift()\n_to.shift()\n}\n_from = _from.fill( '..' )\nreturn _from.concat( _to ).join( posixSep )\n}\nconst basename = ( path, ext ) => {\nconst temp = split( path )\nconst res = temp[ temp.length - 1 ]\nif ( ext != null && ext[0] === '.' && res.slice( -ext.length ) === ext) {\nreturn res.slice( 0, res.length - ext.length )\n} else {\nreturn res\n}\n}\nconst normalize = ( path ) => {\nlet temp = split( toPosixSep( path ).replace( /\\/+/g, posixSep ) )\nlet res = []\nlet parent = 0\nfor ( let i = temp.length - 1; i > -1 ; i-- ) {\nlet item = temp[i]\nif ( item === '.' ) continue\nelse if ( item === '..' ) parent++\nelse if ( parent ) parent--\nelse res.unshift( item )\n}\nif ( parent > 0 ) res.unshift( ( new Array( parent ) ).fill( '..' ) )\nif ( /^[a-z]:$/.test( res[0] ) ) res[0] = res[0].toUpperCase()\nreturn res.join( posixSep )\n}\nconst isAbsolute = ( path ) => absolute( path ) === normalize( path )\nmodule.exports = {\nCurrentDirectory: toPosixSep( CurrentDirectory ),\nwin32Sep,\nposixSep,\nsplit,\ntoWin32Sep,\ntoPosixSep,\nabsolute,\njoin,\ndirname,\nextname,\nrelative,\nbasename,\nnormalize,\nisAbsolute\n}\n",
                     "mapping": {},
                     "name": "{wes}/pathname"
                 },
@@ -306,189 +303,209 @@ try {
                     "name": "{wes}/VBScript"
                 }
             }
-        )
 
-        function require(id) {
-            //console.debug( "stack => %J\nhistory => %J", stack, history )
-            if ( graph[id] != null ) {
-                if ( !id.startsWith('{') ) {
-                    stack.push( [null, null] )
-                }
-                var code = graph[id].code
-                var source = graph[id].source
-                var mapping = graph[id].mapping
-
-                function localRequire( name ) {
-                    var res = mapping[name]
-                    if ( res == null )
-                        return require( name )
-                    else
-                        return require( res )
-                }
-
-                localRequire.stack = stack
-                localRequire.graph = graph
-
-                var module = { exports: {} }
-                var global = global || {}
-                var process = {
-                    env: { NODE_DEBUG: 'semver' },
-                    argv: ['wes'].concat( argv ),
-                    versions: { node: '4.0.0' },
-                    platform: 'win32'
-                }
-                var fn = typeof code === 'function' ? code : new Function(
-                    'require',
-                    'module',
-                    'exports',
-                    'console',
-                    '__filename',
-                    '__dirname',
-                    'global',
-                    'process',
-                    '"use strict"\n' + source
-                )
-                fn(
-                    localRequire,
-                    module,
-                    module.exports,
-                    console,
-                    graph[id].name || graph[id],
-                    ( stack[ stack.length - 1 ][0] + '' ).replace( /\/[^\/]+$/, '' ),
-                    global,
-                    process
-                )
-                graph[id].code = fn
-                stack.pop()
-
-                return module.exports
-            }
-            try {
-                return WScript.CreateObject( id )
-            } catch ( e ) {}
-            var fs = require( 'filesystem' )
-            var path = require( 'pathname' )
-
-            var curr = ( function() {
-                if ( id.startsWith( path.posixSep ) ) return path.CurrentDirectory
-                var res
-                if ( stack.length ) {
-                    if ( ( res = stack[stack.length - 1] ) ) {
-                        if ( res[0] ) {
-                            return path.dirname( res[0] )
-                        }
-                    }
-                }
-                // console.debug( '%snot stack: %J', console.ansi.brightRed, stack )
-                return path.toPosixSep( path.CurrentDirectory )
-            })()
-
-            var points = []
-            points.push( path.join( curr, id ) )
-            if ( !id.startsWith( path.posixSep ) || !id.startsWith( '.' + path.posixSep ) || !id.startsWith( '..' + path.posixSep ) ) {
-                var hierarchy = path.split( curr )
-                while ( hierarchy.length ) {
-                    points.push(
-                        path.absolute(
-                            path.join( hierarchy.join( path.posixSep ), 'node_modules', id )
-                        )
-                    )
-                    hierarchy.pop()
-                }
-            }
-            var entry = null
-            // console.debug( "\ncurr: %s\nid: %s\npoint: %J", curr, id, points )
-            points.some( function( value ) {
-                var res = null
-                var pack = null
-                if ( ( ( res = value ), fs.exists( res ) ) ) {
-                    return ( entry = res )
-                }
-                if ( ( ( res = value + '.js'), fs.exists( res ) ) ) {
-                    return ( entry = res )
-                }
-                if ( ( ( res = value + '.json' ), fs.exists( res ) ) ) {
-                    return (entry = res)
-                }
-                if ( ( ( res = path.join( value, 'index.js' ) ), fs.exists( res ) ) ) {
-                    return ( entry = res )
-                }
-                if ( ( ( pack = path.join( value, 'package.json' ) ), fs.exists( pack ) ) ) {
-                    var temp = ( JSON.parse( fs.readTextFileSync( pack ) ) ).main
-                    if ( temp != null ) {
-                        if ( ( ( res = path.join( value, temp ) ), fs.exists( res ) ) ) return ( entry = res )
-                        else if ( ( ( res = path.join( value, temp + '.js' ) ), fs.exists( res ) ) ) return ( entry = res )
-                    }
-                }
-            } )
-            if ( entry == null ) {
-                throw new Error(
-                    // "module not found\ncaller: '" + stack[ stack.length - 1 ][0] + "' => require '" + id + "'"
-                    "module not found\ncaller: '" + curr + "' => require '" + id + "'"
-                )
-            }
-            //console.log( "%sentry %J", console.ansi.brightRed, entry )
-            var loaded = history.find( function( val ) {
-                return val[0] === entry
-            } )
-            if ( !!loaded ) {
-                graph[ loaded[1] ].mapping[id] = loaded[1]
-                stack.push( [entry, loaded[1]] )
-                return require( loaded[1] )
-            }
-            var uuid = genUUID()
-            //console.log( "%s stack: %O", console.ansi.cyan, stack )
-            graph[ stack[stack.length - 1][1] ].mapping[id] = uuid
-            stack.push( [entry, uuid] )
-            graph[uuid] = {
-                source: entry.endsWith( '.json' ) ?
-                    "module.exports = " + fs
-                        .readTextFileSync( entry )
-                        .replace( /\r/g, '' ) :
-                    fs
-                        .readTextFileSync( entry )
-                        .replace( /\r/g, '' )
-                        .replace( /^#![^\n]+$/m, '' ),
-                    // name: entry.match( /([^\/]+)$/ )[0] + '',
-                    // name: entry
-                    name: ( function() {
-                        var base = path.basename( path.CurrentDirectory )
-                        return "{" + base + "}/" + path.relative( path.CurrentDirectory, entry )
-                    } )(),
-                    mapping: {}
-            }
-            history.push( [entry, uuid] )
-            // console.log( "%sentry: %s", console.ansi.reverse, entry)
-            return require( uuid )
+        // util
+        function genUUID () {
+            var typelib = WScript.CreateObject( 'Scriptlet.Typelib' )
+            return typelib.GUID.replace( /[^\}]+$/, '' )
         }
-        var Guid = genUUID()
-        if ( !stack.length ) {
-            stack.push( [null, Guid] )
-            graph[Guid] = {
-                code: function() {
-                    return require( argv[0] )
+
+        function has( cls, prop ) {
+            if ( cls == null ) throw new Error ( prop + ' is null' )
+            return cls.hasOwnProperty( prop )
+        }
+
+        function starts( str, word ) {
+            return str.startsWith( word )
+        }
+
+        function getPathToModule ( filespec ) {
+            var mod = Object.keys( Modules ).find( function ( key ) {
+                if ( !!Modules[ key ].path ) return Modules[ key ].path === filespec
+                return false
+            } )
+            return Modules[ mod ]
+        }
+
+        function getAreas ( caller, query ) { // console.log( 'getAreas: caller => %s query => %s', caller, query )
+            var pathname = req( 'pathname' )
+            var CurrentDirectory = pathname.CurrentDirectory
+            var join = pathname.join
+            var dirname = pathname.dirname
+            var rd = '/' // root directory
+            var cd = './' // current directory
+            var pd = '../' // parent directory
+
+            var areas = []
+            // Replace '/' with Current Directory if query starts with '/'
+            if ( starts( query, rd ) ) {
+                areas.push( join( CurrentDirectory, query.replace( rd, '' ) ) )
+            } else {
+                // combine the caller's path and the query, if relative path
+                if ( starts( query, cd ) || starts( query, pd ) ) {
+                    areas.push( join( caller, query ) )
+                } else {
+                    // Otherwise, combine node_module while going back directory
+                    var hierarchy = dirname( caller )
+                    // console.log( 'hierarchy: %s', hierarchy )
+                    var node_modules = 'node_modules'
+                    // console.log( 'areas while...' )
+                    while ( hierarchy === '' ) { // console.log( 'hierarchy => %s dirname( hierarchy ) => %s', hierarchy, dirname( hierarchy ) )
+                        areas.push( join( hierarchy, node_modules, query ) )
+                        hierarchy = dirname( hierarchy )
+                    }
+                }
+            }
+            // console.log( 'getAreas caller => %s query => %s areas => %J', caller, query, areas )
+            return areas
+        }
+
+        function getEntry ( areas ) { // console.log( 'getEntry: areas => %J', areas )
+            var join = req( 'pathname' ).join
+            var filesystem = req( 'filesystem' )
+            var exists = filesystem.exists
+            var readTextFileSync = filesystem.readTextFileSync
+            var parse = JSON.parse
+            var js = '.js'
+            var json = '.json'
+            var index = 'index.js'
+            var indexjson = 'index.json'
+            var packagejson = 'package.json'
+
+            var entry = null
+            while ( areas.length ) {
+                //console.log( 'getEntry#areas: %j', areas )
+                var area = areas.shift()
+                var temp
+                if ( exists( temp = area ) ) { entry = temp; break }
+                if ( exists( temp = area + js ) ) { entry = temp; break }
+                if ( exists( temp = area + json ) ) { entry = temp; break }
+                if ( exists( temp = join( area, index ) ) ) { entry = temp; break }
+                if ( exists( temp = join( area, indexjson ) ) ) { entry = temp; break }
+                if ( exists( temp = join( area, packagejson ) ) ) {
+                    var main = parse( readTextFileSync( temp ) ).main
+                    if ( main == null ) continue
+                    areas.unshift( join( area, main ) )
+                }
+            }
+            // console.log( 'getEntry#entry: %s', entry )
+            return entry
+        }
+
+        function createModule ( GUID, entry, query, parentModule ) { // console.log( 'createModule: GUID => %s entry => %s query => %s parentModule => %s', GUID, entry, query, ( parentModule != null && typeof parentModule === 'object' ? parentModule.path : 'noParent') )
+            var pathname = req( 'pathname' )
+            var dirname = pathname.dirname
+            var basename = pathname.basename
+            var extname = pathname.extname
+            var readTextFileSync = req( 'filesystem' ).readTextFileSync
+
+            if ( parentModule ) parentModule.mapping[ query ] = GUID
+
+            var mod = {
+                source: readTextFileSync( entry ),
+                module: {
+                    exports: {}
                 },
+                path: entry,
                 mapping: {}
             }
+
+            Modules[ GUID ] = mod
+
+            var js = '.js'
+
+            switch ( extname( entry ) ) {
+                case js:
+                    var code = new Function( 'require', 'module', 'exports', 'console', '__dirname', '__filename', '"use strict";' + mod.source )
+                    code( require.bind( null, entry ), mod.module, mod.module.exports, console, dirname( entry ), basename( entry ) )
+                    break
+                case json:
+                    mod.module.exports = parse( mod.source )
+                    break
+                default:
+                    mod.module.exports = mod.source
+            }
+            return mod
         }
-        console.log( '' )
-        require( Guid )
+
+        // local require
+        function req ( moduleID ) { // console.log( 'req moduleID => %s', moduleID )
+            var mod = Modules[ moduleID ]
+            var entry = mod.path || '/'
+            if ( !has( mod, 'exports' ) ) {
+                if ( !has( mod, 'module') ) {
+                    var dirname = entry.split( '/' )
+                    var basename = dirname.pop()
+                    mod.module = { exports: {} }
+                    mod.mapping = {}
+                    new Function(
+                        'require',
+                        'module',
+                        'exports',
+                        'console',
+                        '__dirname',
+                        '__filename',
+                        '"use strict";' + mod.source
+                    )(
+                        require.bind( null, entry ),
+                        mod.module,
+                        mod.module.exports,
+                        console,
+                        dirname,
+                        basename
+                    )
+                }
+                mod.exports = mod.module.exports
+            }
+            return mod.exports
+        }
+
+        // require
+        function require( caller, query ) { // console.log( 'require: caller => %s query => %s', caller, query )
+
+            var posixSep = req( 'pathname' ).posixSep
+
+            // execute req function, if it is a core module
+            if ( !( query.includes( posixSep ) ) ) {
+                if ( has( Modules, query ) ) {
+                    // console.log( '%s is core module', query )
+                    return req( query )
+                }
+            }
+
+            // execute OLE, if it is OLE
+            try {
+                return WScript.CreateObject( query )
+            } catch ( e ) {}
+
+            // execute req function, if it is a mapping[ query ]
+            var parentModule  = getPathToModule( caller )
+            var mappingID
+            if ( parentModule ) {
+                if ( mappingID = parentModule.mapping[ query ] ) {
+                    // console.log( '%s is required module form %s', query, caller )
+                    return req( mappingID )
+                }
+            }
+
+            var areas = getAreas( caller, query )
+
+            // console.log( 'areas => %J', areas )
+            var entry = getEntry( areas )
+            if ( entry == null ) throw new Error( 'no module:\n' + 'caller: ' + caller + '\nquery: ' + query + '\n' + JSON.stringify( areas, null, 2 ) )
+
+            var mod = createModule( genUUID(), entry, query, parentModule )
+            mod.exports = mod.module.exports
+
+            return mod.exports
+        }
+        //console.log( "argv %J", argv )
+        require( '', '/' + argv[0] )
     }
 } catch ( error ) {
     var errorStack = error.stack
     if (console) {
         console.log( errorStack )
-        var color = console.ansi.brightGreen
-        var clear = console.ansi.clear
-        console.debug( "%sstack: %s%O", color, clear, stack )
-        console.debug( "%shistory: %s%O", color, clear, history )
-        console.debug( "%sgraph: %s%O", color, clear, Object.keys( graph ).map( function ( v ) {
-            return {
-                id: v,
-                name: graph[ v ].name,
-                mapping: graph[ v ].mapping
-            }
-        } ) )
     }
     else WScript.StdErr.WriteLine( errorStack )
 }

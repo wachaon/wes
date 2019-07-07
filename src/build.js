@@ -16,7 +16,7 @@ files.forEach( file => {
     result[ filename ] = { source, mapping: {}, name: `{wes}/${ filename }` }
 })
 
-let graph = ( ',' + JSON.stringify(result, null, 4) )
+let graph = JSON.stringify(result, null, 4)
     .split( REG_LINE_SEP )
     .map(v => SPACE.repeat(12) + v)
     .join( CRLF )
@@ -27,13 +27,13 @@ const log = require( 'log' )
 let template = fs.readTextFileSync( 'src/template.js' )
 let sep = REG_CRLF.test( template ) ? CRLF: LF
 let line = template.split( sep )
-const match = /^\s*\/\*\s*includes\s+(.+)\s*\*\/\s*$/
+const match = /^        var Modules = \{\}$/
 
 let res = line.map( value => {
     if ( !( match.test( value ) ) ) {
         return value
     } else {
-        return  graph
+        return  '        var Modules = ' + graph
     }
 } ).join( sep )
 
