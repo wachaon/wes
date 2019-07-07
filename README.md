@@ -319,6 +319,3 @@ log( () => sub( eight, _five ) )
 contract( sub, Int, eight, threePointFive )
 log( () => sub( eight, threePointFive ) )
 ```
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTk5OTk4Njg3MiwxNDUyMDU5Mjc1XX0=
--->
