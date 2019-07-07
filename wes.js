@@ -432,7 +432,7 @@ try {
                 return val[0] === entry
             } )
             if ( !!loaded ) {
-                graph[ stack[stack.length - 1][1]].mapping[id] = loaded[1]
+                graph[ loaded[1] ].mapping[id] = loaded[1]
                 stack.push( [entry, loaded[1]] )
                 return require( loaded[1] )
             }
