@@ -279,7 +279,8 @@ console.log( isString( 'foo' ) )
 条件に合致しない場合のみ画面に出力します。
 
 ```javascript
-const contract = require( 'contract' )
+const { join } = require( 'pathname' )
+const contract = require( 'contract' ).bind( null, join( __dirname, __filename ) )
 const { isNumber } = require( 'typecheck' )
 const log = require( 'log' )
 
