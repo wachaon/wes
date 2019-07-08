@@ -413,8 +413,10 @@ try {
 
             return mod.exports
         }
+
         //console.log( "argv %J", argv )
-        require( '', '/' + argv[0] )
+        var CurrentDirectory = req( 'pathname' ).CurrentDirectory
+        require( CurrentDirectory, '/' + argv[0] )
     }
 } catch ( error ) {
     var errorStack = error.stack

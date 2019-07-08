@@ -13,7 +13,7 @@ files.forEach( file => {
     let ext = path.extname( file.name )
     if ( ext !== '.js' ) return
     let source = fs.readTextFileSync( file.Path ).replace( REG_CR, NONE ).replace( /^\s+/mg, NONE )
-    result[ filename ] = { source, mapping: {}, name: `{wes}/${ filename }` }
+    result[ filename ] = { source, mapping: {}, path: `{wes}/${ filename }` }
 })
 
 let graph = JSON.stringify(result, null, 4)
