@@ -270,11 +270,11 @@ try {
                     areas.push( join( dirname( caller ), query ) )
                 } else {
 
-                    console.log( console.ansi.yellow + 'else' )
+                    //console.log( console.ansi.yellow + 'else' )
 
                     // Otherwise, combine node_module while going back directory
                     var hierarchy = dirname( caller )
-                    console.log( 'hierarchy => %s', hierarchy )
+                    //console.log( 'hierarchy => %s', hierarchy )
                     var node_modules = 'node_modules'
                     // console.log( 'areas while...' )
 
