@@ -257,7 +257,7 @@ try {
             } else {
                 // combine the caller's path and the query, if relative path
                 if ( starts( query, cd ) || starts( query, pd ) ) {
-                    areas.push( join( caller, query ) )
+                    areas.push( join( dirname( caller ), query ) )
                 } else {
                     // Otherwise, combine node_module while going back directory
                     var hierarchy = dirname( caller )
