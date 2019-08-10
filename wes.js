@@ -327,7 +327,7 @@ try {
             return Modules[ mod ]
         }
 
-        function getAreas ( caller, query ) { // console.log( 'getAreas: caller => %s query => %s', caller, query )
+        function getAreas ( caller, query ) { //console.log( 'getAreas: caller => %s query => %s', caller, query )
             var pathname = req( 'pathname' )
             var CurrentDirectory = pathname.CurrentDirectory
             var join = pathname.join
@@ -338,29 +338,49 @@ try {
 
             var areas = []
             // Replace '/' with Current Directory if query starts with '/'
+
+            //console.log( "starts( '%s', '%s' ) => %j", query, rd, starts( query, rd ) )
+
             if ( starts( query, rd ) ) {
                 areas.push( join( CurrentDirectory, query.replace( rd, '' ) ) )
             } else {
                 // combine the caller's path and the query, if relative path
+
+                //console.log( "starts( '%s', '%s' ) => %j", query, cd, starts( query, cd ) )
+                //console.log( "starts( '%s', '%s' ) => %j ", query, pd, starts( query, pd ) )
+
                 if ( starts( query, cd ) || starts( query, pd ) ) {
+
+                    //console.log( "join( dirname( '%s' ), '%s' )", caller, query, join( dirname( caller ), query ) )
+
                     areas.push( join( dirname( caller ), query ) )
                 } else {
+
+                    console.log( console.ansi.yellow + 'else' )
+
                     // Otherwise, combine node_module while going back directory
                     var hierarchy = dirname( caller )
-                    // console.log( 'hierarchy: %s', hierarchy )
+                    console.log( 'hierarchy => %s', hierarchy )
                     var node_modules = 'node_modules'
                     // console.log( 'areas while...' )
-                    while ( hierarchy === '' ) { // console.log( 'hierarchy => %s dirname( hierarchy ) => %s', hierarchy, dirname( hierarchy ) )
+
+                    //console.log( "%s !== '' => %s", hierarchy, hierarchy !== '' )
+
+                    while ( hierarchy !== '' ) { // console.log( 'hierarchy => %s dirname( hierarchy ) => %s', hierarchy, dirname( hierarchy ) )
+
+                        //console.log( "join( '%s', node_modules, '%s' ) => %j" , hierarchy, query, join( hierarchy, node_modules, query ) )
+                        //console.log( "join => %s", Object.prototype.toString.call( join( hierarchy, node_modules, query ) ) )
+
                         areas.push( join( hierarchy, node_modules, query ) )
                         hierarchy = dirname( hierarchy )
                     }
                 }
             }
-            // console.log( 'getAreas caller => %s query => %s areas => %J', caller, query, areas )
+            //console.log( 'getAreas caller => %s query => %s areas => %J', caller, query, areas )
             return areas
         }
 
-        function getEntry ( areas ) { // console.log( 'getEntry: areas => %J', areas )
+        function getEntry ( areas ) { //console.log( 'getEntry: areas => %J', areas )
             var join = req( 'pathname' ).join
             var filesystem = req( 'filesystem' )
             var exists = filesystem.exists
