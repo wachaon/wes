@@ -1,6 +1,6 @@
 {
   "name": "wes",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "Windows Ecma Script host",
   "main": "wes.js",
   "directories": {
@@ -8,7 +8,9 @@
     "src": "src",
     "test": "test"
   },
-  "dependencies": {},
+  "dependencies": {
+    "textlint-rule-no-mix-dearu-desumasu": "^4.0.0"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
