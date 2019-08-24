@@ -7,7 +7,7 @@ try {
 
         var res = []
         for ( var i = 0; i < args.length; i++ ) {
-            res.push( args( i ) )
+            res.push( unescape( args( i ) ) )
         }
 
         var unnamed = []
@@ -202,10 +202,15 @@ try {
             : '| echo off'
         var enter = '{ENTER}'
 
+        var parameters = []
+        for( var i = 0; i < WScript.Arguments.length; i++ ) {
+            parameters.push( escape( WScript.Arguments( i ) ).replace( /%/g, '{%}' ) )
+        }
+
         WShell.SendKeys([
             host,
             WScript.ScriptFullName,
-            argv.join(' '),
+            parameters.join(' '),
             nologo,
             chakra,
             engin,
