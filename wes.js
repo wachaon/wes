@@ -223,7 +223,7 @@ try {
     } else {
         var Modules =             {
                 "argv": {
-                    "source": "var argv = ( function () {\nconst args = WScript.Arguments\nlet res = ['wes']\nfor ( let i = 0; i < args.length; i++ ) {\nres.push( escape( args( i ) ) )\n}\nlet unnamed = ['wes']\nfor ( let i = 0; i < args.Unnamed.length; i++ ) {\nunnamed.push( args.Unnamed( i ) )\n}\nfunction exists ( name ) { return args.Named.Exists( name ) }\nfunction getValue ( name ) { return args.Named( name ) }\nres.unnamed = unnamed\nres.exists = exists\nres.getValue = getValue\nreturn res\n} )()\nmodule.exports = argv",
+                    "source": "var argv = ( function () {\nconst args = WScript.Arguments\nlet res = ['wes']\nfor ( let i = 0; i < args.length; i++ ) {\nres.push( unescape( args( i ) ) )\n}\nlet unnamed = ['wes']\nfor ( let i = 0; i < args.Unnamed.length; i++ ) {\nunnamed.push( args.Unnamed( i ) )\n}\nfunction exists ( name ) { return args.Named.Exists( name ) }\nfunction getValue ( name ) { return args.Named( name ) }\nres.unnamed = unnamed\nres.exists = exists\nres.getValue = getValue\nreturn res\n} )()\nmodule.exports = argv",
                     "mapping": {},
                     "path": "{wes}/argv"
                 },
