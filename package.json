@@ -8,12 +8,10 @@
     "src": "src",
     "test": "test"
   },
-  "dependencies": {
-    "textlint-rule-no-mix-dearu-desumasu": "^4.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "wes src/test"
   },
   "repository": {
     "type": "git",
