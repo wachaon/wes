@@ -441,7 +441,7 @@ try {
 
         //console.log( "argv %J", argv )
         var CurrentDirectory = req( 'pathname' ).CurrentDirectory
-        require( CurrentDirectory, '/' + argv[0] )
+        require( req( 'pathname' ).join( CurrentDirectory, '*' ), argv[0] )
     }
 } catch ( error ) {
     var errorStack = error.stack
