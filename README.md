@@ -79,7 +79,7 @@ ${ color( 39, 40, 34 ) + bgColor( 174, 129, 255 ) } color( 39, 40, 34 ) + bgColo
 
 モジュールは node.js と同じように `module.exports` で定義して `require()` で読み込みます。
 
-パスの指定も node.js の `require()` に似せているので、拡張子の指定も不要です。
+パスの指定も node.js の `require()` に似せていて、拡張子の指定も不要です。
 ( ver 0.6.0 から `/` から始めるパスをドライブレターからのパスではなく、プロジェクトフォルダからのパスとして扱うようになりました。)
 
 wes の標準モジュールに [chardet](https://github.com/runk/node-chardet) を 改変したものがあるので、
@@ -103,7 +103,7 @@ const FSO = require( 'Scripting.FileSystemObject' )
 
 wes はいくつかの標準モジュールを持っています。
 
-### filesyste
+### filesystem
 
 ファイルの読み書きを行います。
 
