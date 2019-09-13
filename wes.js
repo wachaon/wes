@@ -486,7 +486,7 @@ try {
         }
 
         // require
-        function require( caller, query ) { // console.log( 'require: caller => %s query => %s', caller, query )
+        function require( caller, query, event_prefix ) { // console.log( 'require: caller => %s query => %s', caller, query )
 
             var posixSep = req( 'pathname' ).posixSep
 
@@ -500,7 +500,7 @@ try {
 
             // execute OLE, if it is OLE
             try {
-                return WScript.CreateObject( query )
+                return WScript.CreateObject( query, event_prefix )
             } catch ( e ) {}
 
             // execute req function, if it is a mapping[ query ]
