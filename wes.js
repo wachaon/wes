@@ -227,6 +227,11 @@ try {
                     "mapping": {},
                     "path": "{wes}/argv"
                 },
+                "browser": {
+                    "source": "const { isRegExp } = require( 'typecheck' )\nfunction poling ( callback, options ) {\nfunction wait ( browser ) {\nwhile ( browser.Busy || browser.readystate != 4 ) {\nWScript.Sleep(100)\n}\n}\nconst app = require( 'InternetExplorer.Application' )\napp.Visible = true\napp.Navigate( options.home || 'about:blank' )\nwait( app )\nconst events = new Map()\nconst event = {\non ( target, fn ) {\nif ( events.has( target ) ) events.get( target ).push( fn )\nelse events.set( target, [ fn ] )\n},\nemit ( url, ...params ) {\nevents.forEach( ( callbacks, evaluation ) => {\nif ( ( isRegExp( evaluation ) && evaluation.test( url ) ) || String( evaluation ) === url ) callbacks.forEach( fn => fn( url, ...params ) )\n} )\n}\n}\nlet result = {}\ntry {\ncallback( app, event, result )\nlet state = ''\nconsole.print( 'poling' )\nwhile ( true ) {\nwait( app )\nlet url = app.document.location.href\nif ( state === url ) {\nconsole.print( '.' )\nWScript.Sleep( 100 )\ncontinue\n}\nwait( app )\nconsole.print( '\\n' )\nevent.emit( url )\nstate = url\nconsole.print( 'poling' )\n}\n} catch ( error ) {\nif ( options.exception ) options.exception( error, result )\nelse throw e\n}\n}\nexports.poling = poling\n",
+                    "mapping": {},
+                    "path": "{wes}/browser"
+                },
                 "buffer": {
                     "source": "const { Type } = require( 'VBScript' )\nconst {\nByteToHex,\nHexToByte,\nUint8ToHex,\nHexToUint8\n} = require( 'hex' )\nclass Buffer extends Uint8Array{\nconstructor( data ) {\nlet hex\nif ( data instanceof Uint8Array ) {\ndata = Array.from( data )\n}\nif ( Array.isArray( data ) ) {\nhex = data.map( v => ( '0' + v.toString( 16 ) ).slice( -2 ) ).join( '' )\n} else if ( Type( data ) === 'vbByte[]') {\nhex = ByteToHex( data )\n} else {\nthrow new TypeError ('argument must be either Array or TypedArray or Byte[]')\n}\nsuper( HexToUint8( hex ) )\n}\ntoByte() {\nreturn HexToByte( Uint8ToHex( this ) )\n}\nstatic from( array ) {\nreturn new Buffer( array )\n}\n}\nmodule.exports = Buffer\n",
                     "mapping": {},
