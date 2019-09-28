@@ -7,6 +7,7 @@ describe('#test Enumerator', () => {
         let files = ( new Enumerator(FSO.GetFolder(`./lib`).Files) ).map( v => v.name )
         let list = [
             "argv.js",
+            "browser.js",
             "buffer.js",
             "chardet.js",
             "contract.js",
