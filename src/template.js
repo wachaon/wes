@@ -246,60 +246,34 @@ try {
             return Modules[ mod ]
         }
 
-        function getAreas ( caller, query ) { //console.log( 'getAreas: caller => %s query => %s', caller, query )
+        function getAreas ( caller, query ) {
             var pathname = req( 'pathname' )
             var CurrentDirectory = pathname.CurrentDirectory
             var join = pathname.join
             var dirname = pathname.dirname
             var rd = '/' // root directory
-            var cd = './' // current directory
-            var pd = '../' // parent directory
 
             var areas = []
+
             // Replace '/' with Current Directory if query starts with '/'
-
-            //console.log( "starts( '%s', '%s' ) => %j", query, rd, starts( query, rd ) )
-
             if ( starts( query, rd ) ) {
                 areas.push( join( CurrentDirectory, query.replace( rd, '' ) ) )
             } else {
-                // combine the caller's path and the query, if relative path
+                areas.push( join( dirname( caller ), query ) )
 
-                //console.log( "starts( '%s', '%s' ) => %j", query, cd, starts( query, cd ) )
-                //console.log( "starts( '%s', '%s' ) => %j ", query, pd, starts( query, pd ) )
+                // Otherwise, combine node_module while going back directory
+                var hierarchy = dirname( caller )
+                var node_modules = 'node_modules'
 
-                if ( starts( query, cd ) || starts( query, pd ) ) {
-
-                    //console.log( "join( dirname( '%s' ), '%s' )", caller, query, join( dirname( caller ), query ) )
-
-                    areas.push( join( dirname( caller ), query ) )
-                } else {
-
-                    //console.log( console.ansi.yellow + 'else' )
-
-                    // Otherwise, combine node_module while going back directory
-                    var hierarchy = dirname( caller )
-                    //console.log( 'hierarchy => %s', hierarchy )
-                    var node_modules = 'node_modules'
-                    // console.log( 'areas while...' )
-
-                    //console.log( "%s !== '' => %s", hierarchy, hierarchy !== '' )
-
-                    while ( hierarchy !== '' ) { // console.log( 'hierarchy => %s dirname( hierarchy ) => %s', hierarchy, dirname( hierarchy ) )
-
-                        //console.log( "join( '%s', node_modules, '%s' ) => %j" , hierarchy, query, join( hierarchy, node_modules, query ) )
-                        //console.log( "join => %s", Object.prototype.toString.call( join( hierarchy, node_modules, query ) ) )
-
-                        areas.push( join( hierarchy, node_modules, query ) )
-                        hierarchy = dirname( hierarchy )
-                    }
+                while ( hierarchy !== '' ) {
+                    areas.push( join( hierarchy, node_modules, query ) )
+                    hierarchy = dirname( hierarchy )
                 }
             }
-            //console.log( 'getAreas caller => %s query => %s areas => %J', caller, query, areas )
-            return areas
+             return areas
         }
 
-        function getEntry ( areas ) { //console.log( 'getEntry: areas => %J', areas )
+        function getEntry ( areas ) {
             var join = req( 'pathname' ).join
             var filesystem = req( 'filesystem' )
             var exists = filesystem.exists
@@ -313,7 +287,6 @@ try {
 
             var entry = null
             while ( areas.length ) {
-                //console.log( 'getEntry#areas: %j', areas )
                 var area = areas.shift()
                 var temp
                 if ( exists( temp = area ) ) { entry = temp; break }
@@ -327,11 +300,10 @@ try {
                     areas.unshift( join( area, main ) )
                 }
             }
-            // console.log( 'getEntry#entry: %s', entry )
             return entry
         }
 
-        function createModule ( GUID, entry, query, parentModule ) { // console.log( 'createModule: GUID => %s entry => %s query => %s parentModule => %s', GUID, entry, query, ( parentModule != null && typeof parentModule === 'object' ? parentModule.path : 'noParent') )
+        function createModule ( GUID, entry, query, parentModule ) {
             var pathname = req( 'pathname' )
             var dirname = pathname.dirname
             var basename = pathname.basename
@@ -368,7 +340,7 @@ try {
         }
 
         // local require
-        function req ( moduleID ) { // console.log( 'req moduleID => %s', moduleID )
+        function req ( moduleID ) {
             var mod = Modules[ moduleID ]
             var entry = mod.path || '/'
             if ( !has( mod, 'exports' ) ) {
@@ -400,14 +372,13 @@ try {
         }
 
         // require
-        function require( caller, query ) { // console.log( 'require: caller => %s query => %s', caller, query )
+        function require( caller, query ) {
 
             var posixSep = req( 'pathname' ).posixSep
 
             // execute req function, if it is a core module
             if ( !( query.includes( posixSep ) ) ) {
                 if ( has( Modules, query ) ) {
-                    // console.log( '%s is core module', query )
                     return req( query )
                 }
             }
@@ -422,14 +393,12 @@ try {
             var mappingID
             if ( parentModule ) {
                 if ( mappingID = parentModule.mapping[ query ] ) {
-                    // console.log( '%s is required module form %s', query, caller )
                     return req( mappingID )
                 }
             }
 
             var areas = getAreas( caller, query )
 
-            // console.log( 'areas => %J', areas )
             var entry = getEntry( areas )
             if ( entry == null ) throw new Error( 'no module:\n' + 'caller: ' + caller + '\nquery: ' + query + '\n' + JSON.stringify( areas, null, 2 ) )
 
@@ -439,7 +408,6 @@ try {
             return mod.exports
         }
 
-        //console.log( "argv %J", argv )
         var CurrentDirectory = req( 'pathname' ).CurrentDirectory
         require( CurrentDirectory + '/_', argv[0] )
     }
