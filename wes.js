@@ -343,12 +343,16 @@ try {
             var join = pathname.join
             var dirname = pathname.dirname
             var rd = '/' // root directory
+            var cd = './' // current directory
+            var pd = '../' // parent directory
 
             var areas = []
 
             // Replace '/' with Current Directory if query starts with '/'
             if ( starts( query, rd ) ) {
                 areas.push( join( CurrentDirectory, query.replace( rd, '' ) ) )
+            } else if ( starts( query, cd ) || starts( query, pd )) {
+                areas.push( join( dirname( caller ), query ) )
             } else {
                 areas.push( join( dirname( caller ), query ) )
 
