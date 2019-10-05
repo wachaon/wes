@@ -246,7 +246,7 @@ try {
             return Modules[ mod ]
         }
 
-        function getAreas ( caller, query ) {
+        function getAreas ( caller, _query ) {
             var pathname = req( 'pathname' )
             var CurrentDirectory = pathname.CurrentDirectory
             var join = pathname.join
@@ -254,6 +254,7 @@ try {
             var rd = '/' // root directory
             var cd = './' // current directory
             var pd = '../' // parent directory
+            var query = _query.replace( /\\/g, '/' )
 
             var areas = []
 
