@@ -260,7 +260,9 @@ try {
             // Replace '/' with Current Directory if query starts with '/'
             if ( starts( query, rd ) ) {
                 areas.push( join( CurrentDirectory, query.replace( rd, '' ) ) )
-            } else if ( starts( query, cd ) || starts( query, pd )) {
+
+            // combine the caller's path and the query, if relative path
+            } else if ( starts( query, cd ) || starts( query, pd ) ) {
                 areas.push( join( dirname( caller ), query ) )
             } else {
                 areas.push( join( dirname( caller ), query ) )
