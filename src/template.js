@@ -418,8 +418,8 @@ try {
         // Publish Modules
         require.Modules = Modules
 
-        var CurrentDirectory = req( 'pathname' ).CurrentDirectory
-        require( CurrentDirectory + '/_', argv[0] )
+        var path = req( 'pathname' )
+        require( path.join( path.CurrentDirectory, '_' ), argv[0] )
     }
 } catch ( error ) {
     var errorStack = error.stack
