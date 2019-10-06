@@ -415,6 +415,9 @@ try {
             return mod.exports
         }
 
+        // Publish Modules
+        require.Modules = Modules
+
         var CurrentDirectory = req( 'pathname' ).CurrentDirectory
         require( CurrentDirectory + '/_', argv[0] )
     }
