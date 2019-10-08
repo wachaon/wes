@@ -41,7 +41,7 @@ try {
         }
 
         function debug () {
-            var isDebugOption = argv.exists( 'debug' )
+            var isDebugOption = argv.exists( 'log:debug' )
             if ( !isDebugOption ) return void 0
             var res = normalize( arguments )
             WScript.StdErr.WriteLine( '\u001B[91m\u001B[7mDEBUG:\u001B[0m ' + res )
