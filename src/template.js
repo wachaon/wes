@@ -221,6 +221,7 @@ try {
         WScript.Quit()
 
     } else {
+        var wes = {}
         var Modules = {}
 
         // util
@@ -334,8 +335,8 @@ try {
 
             switch ( extname( entry ) ) {
                 case js:
-                    var code = new Function( 'require', 'module', 'exports', 'console', '__dirname', '__filename', '"use strict";' + mod.source )
-                    code( require.bind( null, entry ), mod.module, mod.module.exports, console, dirname( entry ), basename( entry ) )
+                    var code = new Function( 'require', 'module', 'exports', 'console', '__dirname', '__filename', 'wes', '"use strict";' + mod.source )
+                    code( require.bind( null, entry ), mod.module, mod.module.exports, console, dirname( entry ), basename( entry ), wes )
                     break
                 case json:
                     mod.module.exports = parse( mod.source )
@@ -363,6 +364,7 @@ try {
                         'console',
                         '__dirname',
                         '__filename',
+                        'wes',
                         '"use strict";' + mod.source
                     )(
                         require.bind( null, entry ),
@@ -370,7 +372,8 @@ try {
                         mod.module.exports,
                         console,
                         dirname,
-                        basename
+                        basename,
+                        wes
                     )
                 }
                 mod.exports = mod.module.exports
@@ -415,12 +418,11 @@ try {
             return mod.exports
         }
 
-        // Publish Modules
-        require.Modules = Modules
-
+        wes.Modules = Modules
         var path = req( 'pathname' )
         require( path.join( path.CurrentDirectory, '_' ), argv[0] )
     }
+
 } catch ( error ) {
     var errorStack = error.stack
     if (console) {
