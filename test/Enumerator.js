@@ -9,6 +9,7 @@ describe('#test Enumerator', () => {
             "argv.js",
             "browser.js",
             "buffer.js",
+            "bundle.js",
             "chardet.js",
             "contract.js",
             "day.js",
