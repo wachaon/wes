@@ -356,7 +356,7 @@ try {
                     var dirname = entry.split( '/' )
                     var basename = dirname.pop()
                     mod.module = { exports: {} }
-                    mod.mapping = {}
+                    mod.mapping = mod.mapping || {}
                     new Function(
                         'require',
                         'module',
