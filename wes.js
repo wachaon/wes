@@ -239,7 +239,7 @@ try {
                     "path": "{wes}/buffer"
                 },
                 "bundle": {
-                    "source": "const argv = require( 'argv' )\nconst { relative, normalize } = require( 'pathname' )\nconst { writeTextFileSync } = require( 'filesystem' )\nconst { REG_LINE_SEP, LF } = require( 'text' )\nconst cd = normalize( require( 'WScript.Shell' ).CurrentDirectory )\nconst sep = '/'\nconst dir = cd.split( sep ).pop()\nconst host = 'wes'\nif ( dir === host ) throw new Error( `Cannot bundle if the current directory is \"${ host }\"` )\nconst { parse, stringify } = JSON\nconst bracket = '{'\nfunction bundle ( _modules ) {\nconst modules = parse( stringify( _modules ) )\nconst mods = {}\nObject.keys( modules )\n.filter( key => key.startsWith( bracket ) )\n.map( key => {\nconst mod = modules[ key ]\nmod.path = dir + sep + relative( cd, mod.path )\ndelete mod.module\ndelete mod.exports\nreturn key\n} )\n.forEach( key => mods[ key ] = modules[ key ] )\nreturn mods\n}\nif (\nargv[2] === '/engine:Chakra' ||\nargv[2].toLowerCase() === '/color:monotone' ||\nargv[2].toLowerCase() === '/sec:unsafe' ||\nargv[2].toLowerCase() === '/sec:danger' ||\nargv[2].toLowerCase() === '/log:debug'\n) throw new Error( 'Module must be specified' )\nrequire( argv[2] )\nconst mods = bundle( wes.Modules )\nconst json = '.json'\nconsole.log( writeTextFileSync( dir + json, stringify( mods, null, 4 ).replace( REG_LINE_SEP, LF ) ) )\n",
+                    "source": "const argv = require( 'argv' )\nconst { relative, normalize } = require( 'pathname' )\nconst { writeTextFileSync } = require( 'filesystem' )\nconst { REG_LINE_SEP, LF } = require( 'text' )\nconst cd = normalize( require( 'WScript.Shell' ).CurrentDirectory )\nconst sep = '/'\nconst dir = cd.split( sep ).pop()\nconst host = 'wes'\nif ( dir === host ) throw new Error( `Cannot bundle if the current directory is \"${ host }\"` )\nconst { parse, stringify } = JSON\nconst bracket = '{'\nfunction bundle ( _modules ) {\nconst modules = parse( stringify( _modules ) )\nconst mods = {}\nObject.keys( modules )\n.filter( key => key.startsWith( bracket ) )\n.map( key => {\nconst mod = modules[ key ]\nmod.path = `{${ dir }}${ sep }${ relative( cd, mod.path ) }`\ndelete mod.module\ndelete mod.exports\nreturn key\n} )\n.forEach( key => mods[ key ] = modules[ key ] )\nreturn mods\n}\nif (\nargv[2] === '/engine:Chakra' ||\nargv[2].toLowerCase() === '/color:monotone' ||\nargv[2].toLowerCase() === '/sec:unsafe' ||\nargv[2].toLowerCase() === '/sec:danger' ||\nargv[2].toLowerCase() === '/log:debug'\n) throw new Error( 'Module must be specified' )\nrequire( argv[2] )\nconst mods = bundle( wes.Modules )\nconst json = '.json'\nconsole.log( writeTextFileSync( dir + json, stringify( mods, null, 4 ).replace( REG_LINE_SEP, LF ) ) )\n",
                     "mapping": {},
                     "path": "{wes}/bundle"
                 },
@@ -452,7 +452,7 @@ try {
                     var dirname = entry.split( '/' )
                     var basename = dirname.pop()
                     mod.module = { exports: {} }
-                    mod.mapping = {}
+                    mod.mapping = mod.mapping || {}
                     new Function(
                         'require',
                         'module',
