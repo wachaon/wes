@@ -17,6 +17,7 @@ describe('#test Enumerator', () => {
             "dump.js",
             "filesystem.js",
             "hex.js",
+            "install.js",
             "JScript.js",
             "log.js",
             "minitest.js",
