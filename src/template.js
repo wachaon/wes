@@ -42,7 +42,7 @@ try {
         }
 
         var get = function argv_get ( name ) {
-            return options[ name ]
+            return options[ name.toLowerCase() ]
         }
 
         res.options = options
