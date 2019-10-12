@@ -12,7 +12,8 @@ try {
         var none = ''
 
         for ( var i = 0; i < args.length; i++ ) {
-            var arg = unescape( args( i ) ).toLowerCase()
+            var Arg = unescape( args( i ) )
+            var arg = Arg.toLowerCase()
             var opt = none
             var next = args.length > i + 1 ? unescape( args( i + 1 ) ) : none
 
@@ -36,7 +37,7 @@ try {
                     i++
                 }
             } else {
-                res.push( unescape( args( i ) ) )
+                res.push( Arg )
             }
 
         }
