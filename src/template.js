@@ -36,7 +36,7 @@ try {
                     i++
                 }
             } else {
-                res.push( arg )
+                res.push( unescape( args( i ) ) )
             }
 
         }
