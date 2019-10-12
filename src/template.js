@@ -28,13 +28,12 @@ try {
                 }
             } else if ( short.test( arg ) ) {
                 opt = arg.slice( 1 )
-                if ( opt.length > 1 ) throw new Error( 'There are two or more characters with short options "' + arg + '"' )
-                else {
-                    if (  short.test( next ) ) options[ opt ] = true
-                    else {
-                        options[ opt ] = next
-                        i++
-                    }
+                for ( var j = 0; j < opt.length; j++ ) {
+                    options[ opt[j] ] = true
+                }
+                if ( !short.test( next ) ) {
+                    options[ opt.slice( -1 ) ] = next
+                    i++
                 }
             } else {
                 res.push( arg )
