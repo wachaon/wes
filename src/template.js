@@ -2,28 +2,54 @@ try {
     var WShell = WScript.CreateObject('WScript.Shell')
 
     var argv = ( function () {
-
         var args = WScript.Arguments
 
         var res = []
+        var options = {}
+        var short = /^\-/
+        var named = /^\-{2}/
+        var sep = '='
+        var none = ''
+
         for ( var i = 0; i < args.length; i++ ) {
-            res.push( unescape( args( i ) ) )
+            var arg = unescape( args( i ) ).toLowerCase()
+            var opt = none
+            var next = args.length > i + 1 ? unescape( args( i + 1 ) ) : none
+
+            if ( named.test( arg ) ) {
+                opt = arg.slice( 2 )
+                if ( ~arg.indexOf( sep ) ) options[ opt.split( sep )[0] ] = opt.split( sep )[1]
+                else {
+                    if ( short.test( next ) ) options[ opt ] = true
+                    else {
+                        options[ opt ] = next
+                        i++
+                    }
+                }
+            } else if ( short.test( arg ) ) {
+                opt = arg.slice( 1 )
+                if ( opt.length > 1 ) throw new Error( 'There are two or more characters with short options "' + arg + '"' )
+                else {
+                    if (  short.test( next ) ) options[ opt ] = true
+                    else {
+                        options[ opt ] = next
+                        i++
+                    }
+                }
+            } else {
+                res.push( arg )
+            }
+
         }
 
-        var unnamed = []
-        for ( var i = 0; i < args.Unnamed.length; i++ ) {
-            unnamed.push( args.Unnamed( i ) )
+        var get = function argv_get ( name ) {
+            return options[ name ]
         }
 
-        function exists ( name ) { return args.Named.Exists( name ) }
-        function getValue ( name ) { return args.Named( name ) }
-
-        res.unnamed = unnamed
-        res.exists = exists
-        res.getValue = getValue
+        res.options = options
+        res.get = get
 
         return res
-
     } )()
 
     var console = ( function() {
@@ -41,7 +67,7 @@ try {
         }
 
         function debug () {
-            var isDebugOption = argv.exists( 'log:debug' )
+            var isDebugOption = argv.get( 'debug' ) != null
             if ( !isDebugOption ) return void 0
             var res = normalize( arguments )
             WScript.StdErr.WriteLine( '\u001B[91m\u001B[7mDEBUG:\u001B[0m ' + res )
@@ -54,7 +80,7 @@ try {
         var seq = /\u001B\[[\d;]+m/g
 
         function normalize ( argList ) {
-            var monotone = argv.exists( 'monotone' )
+            var monotone = argv.get( 'monotone' ) != null
             var args = splitArgs( argList )
             var res = formatArgs( args )
             res = clearTail( res )
@@ -189,15 +215,15 @@ try {
         return typelib.GUID.replace( /[^\}]+$/, '' )
     }
 
-    if ( !argv.exists( 'engine' ) ) {
+    if ( argv.get( 'engine' ) == null ) {
 
         var host = WShell.ExpandEnvironmentStrings('%PROCESSOR_ARCHITECTURE%') !== 'x86'
             ? '{%}windir{%}\\SysWOW64\\cscript'
             : 'cscript'
         var nologo = '//nologo'
-        var engin = '/engine:Chakra'
+        var engin = '--engine=Chakra'
         var chakra = '//E:{{}1b7cd997-e5ff-4932-a7a6-2a9e636da385{}}'
-        var monotone = argv.exists('monotone')
+        var monotone = argv.get('monotone') != null
             ? ''
             : '| echo off'
         var enter = '{ENTER}'
@@ -221,6 +247,8 @@ try {
         WScript.Quit()
 
     } else {
+        console.log( '' ) // Send a line
+
         var wes = {}
         var Modules = {}
 
