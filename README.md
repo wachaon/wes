@@ -1,12 +1,12 @@
 # WES
 
-*WES* は *WSH* で *ECMAScript* の実行可能とします。
+*WES* は *WSH* で *ECMAScript* の実行を可能とします。
 
 ## 特徴
 -  スクリプトエンジンを Chakra に変更し *ECMAScript* を使用可能にします
 -  常に 32bit の cscript.exe を使用するので、64bit環境 の固有の不具合を回避します
--  `require()` でモジュールを扱える
--  標準出力に色付き文字を出力できる
+-  `require()` でモジュールを扱えます
+-  標準出力に色付き文字を出力できます
 -  ファイルのエンコードを自動で推測します
 
 ## 出来ないこと
@@ -99,6 +99,18 @@ const FSO = require( 'Scripting.FileSystemObject' )
 
 wes はいくつかの標準モジュールを持っています。
 
+### argv
+
+コマンドライン引数の処理を簡略化します。通常 *wsh* での 名前付き引数 は `/` から始まりますが、パスの区切りと混同するので
+`--` ならびに `-` で 名前付き引数 を宣言します。
+
+`require( 'argv')` は 名前なし引数 の配列 `require( 'argv' ).options` に 名前付き引数 の結果をオブジェクト化したものを格納しています。
+
+`-` は 次の引数が 名前なし引数 の場合は値がその 名前なし引数 になり、それ以外の場合は値が `true` になります。
+`--` は 間に `=` があれば右辺が値に、次の引数が 名前なし引数 の場合は値がその 名前なし引数 になり、それ以外の場合は値が `true` になります。
+
+名前付き引数 の値になった 名前なし引数 は 名前なし引数の配列 には追加されません。
+
 ### filesystem
 
 ファイルの読み書きを行います。
@@ -167,10 +179,10 @@ JScript 固有のコンストラクタの `Enumerator` `ActiveXObject` を使用
 const { Enumerator, ActiveXObject } = require( 'JScript' )
 const FSO = new ActiveXObject( 'Scripting.FileSystemObject' )
 const WShell = require( 'WScript.Shell' )
-const path = require( 'pathname' )
+const { join } = require( 'pathname' )
 const fs = require( 'filesystem' )
 
-const dir = path.join( WShell.CurrentDirectory, 'lib' )
+const dir = join( WShell.CurrentDirectory, 'lib' )
 const folder = FSO.GetFolder( dir )
 const libs = new Enumerator( folder.Files )
   .map( file => file.Path )
@@ -277,6 +289,7 @@ console.log( isString( 'foo' ) )
 与えられた引数の値が想定している値かどうかを確認します。
 コマンドラインで名前付き引数を `--debug` にしなければ確認はしません。
 条件に合致しない場合のみ画面に出力します。
+条件に合致しない場合でも 関数 は実行されます。
 
 ```javascript
 const { join } = require( 'pathname' )
@@ -359,7 +372,7 @@ const calc = require( 'wachaon@calc' )
 で呼び出せます。
 
 また `--core` もしくは `-c`、`--global` もしくは `-g` を `--unsafe` もしくは `--danger` のオプションと一緒に宣言することで
-インストール先とモジュールの名前を変更します。
+モジュールの名前とインストール先を変更します。
 
 `--core` ならびに `-c` は モジュール名の `"author@repository" + ".js"` を `"repository" + ".js"` にします。
 
