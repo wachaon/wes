@@ -462,6 +462,7 @@ try {
             Modules[ GUID ] = mod
 
             var js = '.js'
+            var json = '.json'
 
             switch ( extname( entry ) ) {
                 case js:
