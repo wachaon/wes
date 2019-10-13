@@ -1,16 +1,18 @@
 # WES
 
-*WES* は *WSH* で現代的な *ECMAScript* の実行可能とします。
+*WES* は *WSH* で *ECMAScript* の実行可能とします。
 
 ## 特徴
--  chakra エンジンを使用して `const` `let` `() =>` `class` などの現代的な構文が実行可能
--  モジュールを扱える
+-  スクリプトエンジンを Chakra に変更し *ECMAScript* を使用可能にします
+-  常に 32bit の cscript.exe を使用するので、64bit環境 の固有の不具合を回避します
+-  `require()` でモジュールを扱える
 -  標準出力に色付き文字を出力できる
 -  ファイルのエンコードを自動で推測します
 
 ## 出来ないこと
 -  `WScript.Quit()`
 -  非同期処理
+-  `WScript.CreateObject()` の第二引数の event prefix の使用
 
 ## 取得
 
@@ -23,12 +25,12 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 もしくは下記リンク先から wes.js を取得して、プロジェクトルートに配置するか、配置先のディレクトリを環境変数に登録します。
-https://github.com/wachaon/wes
+https://raw.githubusercontent.com/wachaon/wes/master/wes.js
 
 
 ## 使い方
 
-コマンドプロンプトでプロジェクトルートまで移動をしたら `wes` に続けて起点となるファイルを入力します。
+コマンドプロンプトで `wes` に続けて起点となるファイルを入力します。
 
 ```
 wes index.js
@@ -85,19 +87,13 @@ ${ color( 39, 40, 34 ) + bgColor( 174, 129, 255 ) } color( 39, 40, 34 ) + bgColo
 wes の標準モジュールに [chardet](https://github.com/runk/node-chardet) を 改変したものがあるので、
 UTF-8 以外のエンコードファイルも自動推測で読み込めます。
 
-また、従来のオートメーションオブジェクトを呼ぶ場合も
-
-```javascript
-var FSO = new ActiveXObject( 'Scripting.FileSystemObject' )
-```
-
-ではなく、
+また、従来のオートメーションオブジェクトも
 
 ```javascript
 const FSO = require( 'Scripting.FileSystemObject' )
 ```
 
-で呼び出します。
+で呼び出せます。
 
 ## 標準モジュール
 
@@ -162,16 +158,16 @@ pathname のメソッドのほとんどは戻り値のパスの区切りを `/` 
 
 ### JScript
 
-JScript 固有のコンストラクタの `Enumerator` を使用可能にします。
+JScript 固有のコンストラクタの `Enumerator` `ActiveXObject` を使用可能にします。
 `new Enumerator( collection )` は常に `Array` を返します。
 
 ディレクトリにある、すべてのファイルを読み込むサンプル
 
 ```javascript
-const { Enumerator } = require( 'JScript' )
-const FSO = require( 'Scripting.FileSystemObject' )
-const path = require( 'pathname' )
+const { Enumerator, ActiveXObject } = require( 'JScript' )
+const FSO = new ActiveXObject( 'Scripting.FileSystemObject' )
 const WShell = require( 'WScript.Shell' )
+const path = require( 'pathname' )
 const fs = require( 'filesystem' )
 
 const dir = path.join( WShell.CurrentDirectory, 'lib' )
@@ -279,7 +275,7 @@ console.log( isString( 'foo' ) )
 ### contract
 
 与えられた引数の値が想定している値かどうかを確認します。
-コマンドラインで名前付き引数を `/debug` にしなければ確認はしません。
+コマンドラインで名前付き引数を `--debug` にしなければ確認はしません。
 条件に合致しない場合のみ画面に出力します。
 
 ```javascript
@@ -323,3 +319,43 @@ log( () => sub( eight, _five ) )
 contract( sub, Int, eight, threePointFive )
 log( () => sub( eight, threePointFive ) )
 ```
+
+## モジュールエコシステム
+
+*wes* で使用するモジュールを一元管理するエコシステムは存在しません。
+代わりに github 利用して モジュールをバンドルする方法とインストールする方法を提供します。
+
+### モジュールバンドルと登録
+
+github のリポジトリに登録出来ることが条件になります。
+また、レポジトリ名とローカルのカレントディレクトリ名は同名にしてください。
+カレントディレクトリを `wes` にするとエラーで登録できません。
+
+github のユーザー名が `wachaon`、カレントディレクトリが `C:/calc`、 モジュールの起点のファイルが `C:/calc/index.js` にあるとします。
+
+```
+wes bundle /index
+```
+
+とコマンドを打つと `C:/calc/calc.json` に モジュールをバンドルした JSONファイル が作成されます。
+このバンドルされた JSONファイルを github に push してください。
+
+### モジュールのインストール
+
+インストールは上記のモジュールの場合
+
+```
+wes install wachaon@calc
+```
+
+でインストールできます。
+
+モジュールを使用する場合は
+
+```javascript
+const calc = require( 'wachaon@calc' )
+```
+
+で呼び出せます。
+
+また `--core` もしくは `-c`、`--global` もしくは `-g`
