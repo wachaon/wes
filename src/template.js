@@ -305,6 +305,7 @@ try {
                     areas.push( join( hierarchy, node_modules, query ) )
                     hierarchy = dirname( hierarchy )
                 }
+                areas.push( join( dirname( WScript.ScriptFullName ), node_module, query ) )
             }
              return areas
         }
