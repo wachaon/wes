@@ -344,6 +344,7 @@ try {
             var dirname = pathname.dirname
             var basename = pathname.basename
             var extname = pathname.extname
+            var parse = JSON.parse
             var readTextFileSync = req( 'filesystem' ).readTextFileSync
 
             if ( parentModule ) parentModule.mapping[ query ] = GUID
