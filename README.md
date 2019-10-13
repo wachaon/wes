@@ -358,4 +358,9 @@ const calc = require( 'wachaon@calc' )
 
 で呼び出せます。
 
-また `--core` もしくは `-c`、`--global` もしくは `-g`
+また `--core` もしくは `-c`、`--global` もしくは `-g` を `--unsafe` もしくは `--danger` のオプションと一緒に宣言することで
+インストール先とモジュールの名前を変更します。
+
+`--core` ならびに `-c` は モジュール名の `"author@repository" + ".js"` を `"repository" + ".js"` にします。
+
+`--global` ならびに `-g` は `WScript.ScriptFullName` の `node_modules` フォルダにインストールします。
