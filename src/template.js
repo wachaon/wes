@@ -210,11 +210,6 @@ try {
 
     } )()
 
-    var genUUID = function() {
-        var typelib = require( 'Scriptlet.Typelib' )
-        return typelib.GUID.replace( /[^\}]+$/, '' )
-    }
-
     if ( argv.get( 'engine' ) == null ) {
 
         var host = WShell.ExpandEnvironmentStrings('%PROCESSOR_ARCHITECTURE%') !== 'x86'
