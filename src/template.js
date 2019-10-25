@@ -212,7 +212,7 @@ try {
 
     if ( argv.get( 'engine' ) == null ) {
 
-        var host = WShell.ExpandEnvironmentStrings('%PROCESSOR_ARCHITECTURE%') !== 'x86'
+        var cpu = WShell.ExpandEnvironmentStrings('%PROCESSOR_ARCHITECTURE%') !== 'x86'
             ? '{%}windir{%}\\SysWOW64\\cscript'
             : 'cscript'
         var nologo = '//nologo'
@@ -229,7 +229,7 @@ try {
         }
 
         WShell.SendKeys([
-            host,
+            cpu,
             WScript.ScriptFullName,
             parameters.join(' '),
             nologo,
