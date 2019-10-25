@@ -24,7 +24,7 @@
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-もしくは下記リンク先から *wes.js* を取得して、プロジェクトルートに配置するか、配置先のディレクトリを環境変数に登録します。
+もしくは下記リンク先から *wes.js* を取得して、カレントディレクトリに配置するか、配置先のディレクトリを環境変数に登録します。
 https://raw.githubusercontent.com/wachaon/wes/master/wes.js
 
 
@@ -38,14 +38,16 @@ wes index.js
 
 *wes.js* が cpu の 32/64bit の判断、実行エンジンを *chakra* に変更、色付き文字を出力するために ` | echo off` を付加して、起点となるファイルを実行します。
 
+
+
+
+
 ## console
 
 標準出力は `WScript.Echo()` ではなく、`console.log()` を使います。
 色付き文字を出力したい場合は `console.ansi` にあるカラープロパティを使います。
 
 また、色を RBG で指定できる `console.ansi.color()` `console.ansi.bgColor()` もあります。
-
-色付き文字を表示するサンプル
 
 ```javascript
 const {
@@ -84,16 +86,15 @@ ${ color( 39, 40, 34 ) + bgColor( 174, 129, 255 ) } color( 39, 40, 34 ) + bgColo
 パスの指定も *node.js* の `require()` に似せていて、拡張子の指定も不要です。
 ( ver 0.6.0 から `/` から始めるパスをドライブレターからのパスではなく、カレントディレクトリからのパスとして扱うようになりました。)
 
-*wes* の標準モジュールに [chardet](https://github.com/runk/node-chardet) を 改変したものがあるので、
+*wes* の標準モジュールに [chardet](https://github.com/runk/node-chardet) があり、
 *UTF-8* 以外のエンコードファイルも自動推測で読み込めます。
 
-また、従来のオートメーションオブジェクトも
+また、従来のオートメーションオブジェクトも `require()` で呼び出せます。
 
 ```javascript
 const FSO = require( 'Scripting.FileSystemObject' )
 ```
 
-で呼び出せます。
 
 ## 標準モジュール
 
@@ -104,7 +105,7 @@ const FSO = require( 'Scripting.FileSystemObject' )
 コマンドライン引数の処理を簡略化します。通常 *wsh* での 名前付き引数 は `/` から始まりますが、パスの区切りと混同するので
 `--` ならびに `-` で 名前付き引数 を宣言します。
 
-`require( 'argv')` は 名前なし引数 の配列 `require( 'argv' ).options` に 名前付き引数 の結果をオブジェクト化したものを格納しています。
+`require( 'argv' )` は 名前なし引数 の配列、 `require( 'argv' ).options` に 名前付き引数 の結果をオブジェクト化したものを格納しています。
 
 `-` は 次の引数が 名前なし引数 の場合は値がその 名前なし引数 になり、それ以外の場合は値が `true` になります。
 `--` は 間に `=` があれば右辺が値に、次の引数が 名前なし引数 の場合は値がその 名前なし引数 になり、それ以外の場合は値が `true` になります。
@@ -121,8 +122,6 @@ const FSO = require( 'Scripting.FileSystemObject' )
 
 テキストファイルを読み込むならエンコードの自動推測を行う  `readTextFileSync( path )` が便利です。
 
-ファイルを読み込むサンプル
-
 ```javascript
 const fs = require( 'filesystem' )
 const path = require( 'pathname' )
@@ -138,14 +137,14 @@ console.log( fs.readTextFileSync( readme ) )
 
 テキストを保存する場合は `writeTextFileSync( path, text, encode )` を使います。`encode` を指定しない場合は `require( 'ADODB.stream' )` で `Charset` を省略した場合と同になります。
 
-現時点では encode を `'UTF-8'` に指定した場合は `'UTF-8BOM'` ( utf-8 with byte order mark ) で書き込みます。( 読み込みは自動で `'UTF-8'`　の BOM を取り除きます。)
+現時点では *encode* を `'UTF-8'` に指定した場合は `'UTF-8BOM'` ( utf-8 with byte order mark ) で書き込みます。( 読み込みは自動で `'UTF-8'`　の BOM を取り除きます。)
 
 BOM なし ( utf-8 without byte order mark ) で書き込みたい場合は、明示的に `encode` に `'UTF-8N'` と指定してください。
 
  今後、*encode* を `'UTF-8'` にした場合の規定値を変更する可能性があります。
+
  保存したファイルを他のプログラムで使用する可能性がある場合は、明示的に `'UTF-8BOM'` もしくは `'UTF-8N'` を指定してエンコードを固定してください。
 
-ファイルを書き込むサンプル
 
 ```javascript
 const fs = require( 'filesystem' )
@@ -170,10 +169,8 @@ console.log( fs.writeTextFileSync( readme, text ) )
 
 ### JScript
 
-*JScript* 固有のコンストラクタの `Enumerator` `ActiveXObject` を使用可能にします。
+*JScript* 固有のコンストラクタの `Enumerator` や `ActiveXObject` を使用可能にします。
 `new Enumerator( collection )` は常に `Array` を返します。
-
-ディレクトリにある、すべてのファイルを読み込むサンプル
 
 ```javascript
 const { Enumerator, ActiveXObject } = require( 'JScript' )
@@ -195,8 +192,6 @@ libs.forEach( text => console.log( text ) )
 
 *VBScript* 固有の `TypeName` や `VarType` と `VarType` をわかりやすくした `Type` が使えます。
 
-`require( 'Scripting.FileSystemObject' )` オブジェクトを `TypeName` で表示するサンプル
-
 ```javascript
 const { TypeName, Type, VarType } = require( 'VBScript' )
 const FSO = require( 'Scripting.FileSystemObject' )
@@ -208,9 +203,7 @@ console.log( Type( FSO ) )
 
 ## dump
 
-オブジェクトを内容を簡易表記します。
-
-オブジェクトの表示するサンプル
+オブジェクトを内容を色付き文字で、簡易表記します。
 
 ```javascript
 const dump = require( 'dump' )
@@ -237,12 +230,9 @@ obj.object.array = obj.array
 console.log( dump( obj ) )
 ```
 
-
 ### log
 
 関数を引数に渡すことで、出力したい項目と内容が標準出力に出力されます。
-
-簡易ログ表示のサンプル
 
 ```javascript
 const log = require( 'log' )
@@ -253,8 +243,6 @@ log( () => new Date() )
 ### minitest
 
 簡易的なテストを実行できます。
-
-テストのサンプル
 
 ```javascript
 const { describe, it, assert } = require( 'minitest' )
@@ -275,8 +263,6 @@ describe( 'test sample', () => {
 ### typecheck
 
 *ECMAScript* で扱う変数の型を確認する関数を提供します。
-
-型を確認するサンプル
 
 ```javascript
 const { isString } = require( 'typecheck' )
@@ -355,25 +341,20 @@ wes bundle /index
 
 ### モジュールのインストール
 
-インストールは上記のモジュールの場合
+以下のコマンドでモジュールをインストールできます。
 
 ```
 wes install wachaon@calc
 ```
 
-でインストールできます。
-
-モジュールを使用する場合は
+モジュールを使用する場合は以下のように呼び出します。
 
 ```javascript
 const calc = require( 'wachaon@calc' )
 ```
 
-で呼び出せます。
+コマンドライン引数で `--core` もしくは `-c`、`--global` もしくは `-g` を `--unsafe` もしくは `--danger` のオプションと一緒に宣言することでモジュールの名前とインストール先を変更します。
 
-また `--core` もしくは `-c`、`--global` もしくは `-g` を `--unsafe` もしくは `--danger` のオプションと一緒に宣言することで
-モジュールの名前とインストール先を変更します。
++   `--core` ならびに `-c` は モジュール名の `"author@repository" + ".js"` を `"repository" + ".js"` にします。
 
-`--core` ならびに `-c` は モジュール名の `"author@repository" + ".js"` を `"repository" + ".js"` にします。
-
-`--global` ならびに `-g` は `WScript.ScriptFullName` ( *wes.js* のあるディレクトリ ) の `node_modules` フォルダにインストールします。
++   `--global` ならびに `-g` は モジュールを `WScript.ScriptFullName` ( *wes.js* のあるディレクトリ ) の `node_modules` フォルダにインストールします。
