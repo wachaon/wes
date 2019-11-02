@@ -344,17 +344,17 @@ wes bundle /index
 以下のコマンドでモジュールをインストールできます。
 
 ```
-wes install wachaon@calc
+wes install @wachaon/calc
 ```
 
 モジュールを使用する場合は以下のように呼び出します。
 
 ```javascript
-const calc = require( 'wachaon@calc' )
+const calc = require( '@wachaon/calc' )
 ```
 
 コマンドライン引数で `--core` もしくは `-c`、`--global` もしくは `-g` を `--unsafe` もしくは `--danger` のオプションと一緒に宣言することでモジュールの名前とインストール先を変更します。
 
-+   `--core` ならびに `-c` は モジュール名の `"author@repository" + ".js"` を `"repository" + ".js"` にします。
++   `--core` ならびに `-c` は モジュール名の `require( "@author/repository" + ".js" )` を `require( "repository" + ".js" )` にします。
 
 +   `--global` ならびに `-g` は モジュールを `WScript.ScriptFullName` ( *wes.js* のあるディレクトリ ) の `node_modules` フォルダにインストールします。
