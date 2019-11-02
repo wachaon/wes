@@ -326,7 +326,7 @@ log( () => sub( eight, threePointFive ) )
 
 ### モジュールバンドルと登録
 
-*github* のリポジトリに登録出来ることが条件になります。
+モジュールを公開し、他者にインストールさせるには *github* のリポジトリに登録出来ることが条件になります。
 また、レポジトリ名とローカルのカレントディレクトリ名は同名にしてください。
 カレントディレクトリを `wes` にするとエラーで登録できません。
 
@@ -353,8 +353,8 @@ wes install @wachaon/calc
 const calc = require( '@wachaon/calc' )
 ```
 
-コマンドライン引数で `--core` もしくは `-c`、`--global` もしくは `-g` を `--unsafe` もしくは `--danger` のオプションと一緒に宣言することでモジュールの名前とインストール先を変更します。
+コマンドライン引数で `--core`、`--global` を `--unsafe` もしくは `--danger` のオプションと一緒に宣言することでモジュールの名前とインストール先を変更します。
 
-+   `--core` ならびに `-c` は モジュール名の `require( "@author/repository" + ".js" )` を `require( "repository" + ".js" )` にします。
++   `--core` は呼び出し時の `@author` を省いて呼び出しできます。(上記の場合は `require( 'calc' )` )
 
-+   `--global` ならびに `-g` は モジュールを `WScript.ScriptFullName` ( *wes.js* のあるディレクトリ ) の `node_modules` フォルダにインストールします。
++   `--global` はモジュールを `WScript.ScriptFullName` ( *wes.js* のあるディレクトリ ) の `node_modules` フォルダにインストールします。
