@@ -1,7 +1,6 @@
 {
   "name": "wes",
-  "version": "0.7.63",
-
+  "version": "0.7.64",
   "description": "Windows Ecma Script host",
   "main": "wes.js",
   "directories": {
@@ -9,7 +8,10 @@
     "src": "src",
     "test": "test"
   },
-  "dependencies": {},
+  "dependencies": {
+    "hast-util-to-html": "^6.0.2",
+    "rehype-parse": "^6.0.1"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "wes /src/test"
