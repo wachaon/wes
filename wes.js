@@ -475,6 +475,7 @@ try {
         }
 
         // local require
+        var process = { env: { NODE_ENV: '' } }
         function req ( moduleID ) {
             var mod = Modules[ moduleID ]
             var entry = mod.path || '/'
@@ -492,6 +493,7 @@ try {
                         '__dirname',
                         '__filename',
                         'wes',
+                        'process',
                         '"use strict";' + mod.source
                     )(
                         require.bind( null, entry ),
@@ -500,7 +502,8 @@ try {
                         console,
                         dirname,
                         basename,
-                        wes
+                        wes,
+                        process
                     )
                 }
                 mod.exports = mod.module.exports
