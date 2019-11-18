@@ -374,7 +374,7 @@ try {
         }
 
         // local require
-        var process = { env: { NODE_ENV: '' } }
+        var process = { env: { NODE_ENV: '' }, cwd: function() { return req( 'pathname' ).CurrentDirectory } }
         function req ( moduleID ) {
             var mod = Modules[ moduleID ]
             var entry = mod.path || '/'
