@@ -327,7 +327,7 @@ try {
                     "path": "{wes}/pathname"
                 },
                 "pipe": {
-                    "source": "class Pipe {\nconstructor( value ) {\nthis.value = value\n}\npipe ( fn ) {\nthis.value = fn( this.value )\nreturn this\n}\nlog ( message ) {\nconsole.log( message, this.value )\nreturn this\n}\ndebug ( message ) {\nconsole.debug( message, this.value )\nreturn this\n}\n[Symbol.toPrimitive] ( hint ) {\nreturn this.value\n}\n}\nmodule.exports = Pipe",
+                    "source": "function pipe () {\nconst translators = []\nfunction process ( data, callback ) {\nlet res, err\ntry {\nres = translators.reduce( ( acc, curr, i ) => {\nreturn curr( i === 1 ? data : acc )\n} )\n} catch ( error ) {\nerr = error\n} finally {\nreturn callback( err, res )\n}\n}\nfunction use ( fn ) {\ntranslators.push( fn )\nreturn {\nuse,\nprocess\n}\n}\nreturn use( null )\n}\nmodule.exports = pipe",
                     "mapping": {},
                     "path": "{wes}/pipe"
                 },
