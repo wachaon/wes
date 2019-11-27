@@ -5,14 +5,14 @@
 ## 特徴
 -  スクリプトエンジンを *Chakra* に変更し *ECMAScript* を使用可能にします
 -  常に 32bit の *cscript.exe* を使用するので、64bit環境 の固有の不具合を回避します
--  `require()` でモジュールを扱えます
+-  `require()` でモジュールを呼び出せます
 -  標準出力に色付き文字を出力できます
 -  ファイルのエンコードを自動で推測します
 
 ## 出来ないこと
--  `WScript.Quit()`
+-  `WScript.Quit()` はプログラムを中断出来ず、エラーコードも返しません
 -  非同期処理
--  `WScript.CreateObject()` の第二引数の event prefix の使用
+-  `WScript.CreateObject()` の第二引数の *event prefix* の使用
 
 ## 取得
 
