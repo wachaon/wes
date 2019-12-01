@@ -270,55 +270,6 @@ const { isString } = require( 'typecheck' )
 console.log( isString( 'foo' ) )
 ```
 
-### contract
-
-与えられた引数の値が想定している値かどうかを確認します。
-コマンドラインで名前付き引数を `--debug` にしなければ確認はしません。
-条件に合致しない場合のみ画面に出力します。
-条件に合致しない場合でも 関数 は実行されます。
-
-```javascript
-const { join } = require( 'pathname' )
-const contract = require( 'contract' ).bind( null, join( __dirname, __filename ) )
-const { isNumber } = require( 'typecheck' )
-const log = require( 'log' )
-
-
-const Int = ( ...args ) => [
-    ( arg ) => isNumber( arg ) && arg === parseInt( arg ),
-    ( arg ) => isNumber( arg ) && arg === parseInt( arg )
-].map( ( v, i ) => v( args[i] ) )
-
-const two = 2
-const five = 5
-const _five = '5'
-const eight = 8
-const threePointFive = 3.5
-
-const add = ( a, b ) => a + b
-
-contract( add, Int, two, five )
-log( () => add( two, five ) )
-
-contract( add, Int, two, _five )
-log( () => add( two, _five ) )
-
-contract( add, Int, two, threePointFive )
-log( () => add( two, threePointFive ) )
-
-
-const sub = ( a, b ) => a - b
-
-contract( sub, Int, eight, five )
-log( () => sub( eight, five ) )
-
-contract( sub, Int, eight, _five )
-log( () => sub( eight, _five ) )
-
-contract( sub, Int, eight, threePointFive )
-log( () => sub( eight, threePointFive ) )
-```
-
 ## モジュールエコシステム
 
 *wes* で使用するモジュールを一元管理するエコシステムは存在しません。
