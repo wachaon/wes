@@ -141,9 +141,9 @@ console.log( fs.readTextFileSync( readme ) )
 
 BOM なし ( utf-8 without byte order mark ) で書き込みたい場合は、明示的に `encode` に `'UTF-8N'` と指定してください。
 
- 今後、*encode* を `'UTF-8'` にした場合の規定値を変更する可能性があります。
+今後、*encode* を `'UTF-8'` にした場合の規定値を変更する可能性があります。
 
- 保存したファイルを他のプログラムで使用する可能性がある場合は、明示的に `'UTF-8BOM'` もしくは `'UTF-8N'` を指定してエンコードを固定してください。
+保存したファイルを他のプログラムで使用する可能性がある場合は、明示的に `'UTF-8BOM'` もしくは `'UTF-8N'` を指定してエンコードを固定してください。
 
 
 ```javascript
@@ -158,7 +158,6 @@ console.log( fs.writeFileSync( readme, text, 'UTF-8N' ) )
 // or
 console.log( fs.writeTextFileSync( readme, text ) )
 ```
-
 
 ### pathname
 
