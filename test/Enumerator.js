@@ -17,6 +17,7 @@ describe('#test Enumerator', () => {
             "filesystem.js",
             "genUUID.js",
             "hex.js",
+            "httprequest.js",
             "install.js",
             "JScript.js",
             "log.js",
