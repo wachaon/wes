@@ -1,6 +1,6 @@
 const { describe, it, assert, pass } = require( 'minitest' )
 
-describe( '#test chardet', () => {
+describe( '# test chardet', () => {
     const { Enumerator } = require( 'JScript' )
     const FSO = require( 'Scripting.FileSystemObject' )
     const path = require( 'pathname' )
