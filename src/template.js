@@ -362,7 +362,7 @@ try {
             switch ( extname( entry ) ) {
                 case js:
                     var code = new Function( 'require', 'module', 'exports', 'console', '__dirname', '__filename', 'wes', '"use strict";' + mod.source )
-                    code( require.bind( null, entry ), mod.module, mod.module.exports, console, dirname( entry ), basename( entry ), wes )
+                    code( require.bind( null, entry ), mod.module, mod.module.exports, console, dirname( entry ), entry, wes )
                     break
                 case json:
                     mod.module.exports = parse( mod.source )
@@ -381,7 +381,6 @@ try {
             if ( !has( mod, 'exports' ) ) {
                 if ( !has( mod, 'module') ) {
                     var dirname = entry.split( '/' )
-                    var basename = dirname.pop()
                     mod.module = { exports: {} }
                     mod.mapping = mod.mapping || {}
                     new Function(
@@ -400,7 +399,7 @@ try {
                         mod.module.exports,
                         console,
                         dirname,
-                        basename,
+                        entry,
                         wes,
                         process
                     )
