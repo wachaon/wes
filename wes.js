@@ -550,7 +550,9 @@ try {
             var entry = getEntry( areas )
             if ( entry == null ) throw new Error( 'no module:\n' + 'caller: ' + caller + '\nquery: ' + query + '\n' + JSON.stringify( areas, null, 2 ) )
 
-            var mod = createModule( genUUID(), entry, query, parentModule )
+            var modId = genUUID()
+            wes.main = wes.main != null ? wes.main : modId
+            var mod = createModule( modId, entry, query, parentModule )
             mod.exports = mod.module.exports
 
             return mod.exports
