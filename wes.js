@@ -490,7 +490,7 @@ try {
             var entry = mod.path || '/'
             if ( !has( mod, 'exports' ) ) {
                 if ( !has( mod, 'module') ) {
-                    var dirname = entry.split( '/' )
+                    var dirname = entry//.split( '/' )
                     mod.module = { exports: {} }
                     mod.mapping = mod.mapping || {}
                     new Function(
