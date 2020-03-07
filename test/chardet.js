@@ -1,4 +1,4 @@
-const { describe, it, assert, pass } = require( 'minitest' )
+const { describe, it, assert, pass } = require( '/lib/minitest' )
 
 describe( '# test chardet', () => {
     const { Enumerator } = require( 'JScript' )
