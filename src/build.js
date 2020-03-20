@@ -29,7 +29,7 @@ const log = require('log')
 let template = fs.readTextFileSync('src/template.js')
 let sep = REG_CRLF.test(template) ? CRLF : LF
 let line = template.split(sep)
-const match = /^        var Modules = \{\}$/
+const match = /^\s+var Modules = \{\}$/
 
 let res = line
     .map(value => {

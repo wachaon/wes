@@ -15,7 +15,7 @@ const lib = readdirSync(join(process.cwd(), 'lib')).map(file =>
 const src = readdirSync(join(process.cwd(), 'src')).map(file =>
     join(process.cwd(), 'src', file)
 )
-const dir = [...lib, ...src]
+const dir = [...lib, ...src, join(process.cwd(), 'wes.js')]
 /*
 const moduleSpec = join(process.cwd(), 'src', 'modules.json')
 if (!existsFileSync(moduleSpec)) writeTextFileSync(moduleSpec, stringify({}))
