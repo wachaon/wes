@@ -363,6 +363,11 @@ try {
                     "source": "const VBScript = (function(language) {\nconst sc = require('ScriptControl')\nsc.Language = language\nreturn {\nAddCode(code) {\nsc.AddCode(code)\n},\nRun(name, ...args) {\nreturn sc.run(name, ...args)\n}\n}\n})('VBScript')\nVBScript.AddCode(`\nFunction getTypeName( obj )\ngetTypeName = TypeName( obj )\nEnd Function\n`)\nconst TypeName = function VBScript_TypeName(object) {\nreturn VBScript.Run('getTypeName', object)\n}\nVBScript.AddCode(`\nFunction getVarType( obj )\ngetVarType = VarType( obj )\nEnd Function\n`)\nconst VarType = function VBScript_VarType(object) {\nreturn VBScript.Run('getVarType', object)\n}\nconst Type = function VBScript_Type(object) {\nlet constant = [\n'vbEmpty', // 0\n'vbNull', // 1\n'vbInteger', // 2\n'vbLong', // 3\n'vbSingle', // 4\n'vbDouble', // 5\n'vbCurrency', // 6\n'vbDate', // 7\n'vbString', // 8\n'vbObject', // 9\n'vbError', // 10\n'vbBoolean', // 11\n'vbVariant', // 12\n'vbDataObject' // 13\n]\nconstant[17] = 'vbByte'\nconstant[8192] = 'vbArray'\nlet num = VarType(object)\nreturn num > 8192 ? `${constant[num - 8192]}[]` : constant[num]\n}\nmodule.exports = {\nTypeName,\nVarType,\nType\n}\n",
                     "mapping": {},
                     "path": "{wes}/VBScript"
+                },
+                "version": {
+                    "source": "module.exports = console.log('0.8.0')",
+                    "mapping": {},
+                    "path": "{wes}/version"
                 }
             }
 
