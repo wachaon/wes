@@ -19,6 +19,8 @@ files.forEach(file => {
     result[filename] = { source, mapping: {}, path: `{wes}/${filename}` }
 })
 
+result['version'] =  { source: `module.exports = console.log('${ require('/package').version }')`, mapping: {}, path: `{wes}/version` }
+
 let graph = JSON.stringify(result, null, 4)
     .split(REG_LINE_SEP)
     .map(v => SPACE.repeat(12) + v)
