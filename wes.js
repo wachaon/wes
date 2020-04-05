@@ -55,13 +55,15 @@ try {
     var console = (function() {
         function log() {
             var res = normalize(arguments)
-            WScript.StdErr.WriteLine(res)
+            if ( argv.get('monotone') != null ) WScript.StdOut.WriteLine(res)
+            else WScript.StdErr.WriteLine(res)
             return removeColor(res)
         }
 
         function print() {
             var res = normalize(arguments)
-            WScript.StdErr.Write(res)
+            if ( argv.get('monotone') != null ) WScript.StdOut.Write(res)
+            else WScript.StdErr.Write(res)
             return removeColor(res)
         }
 
@@ -69,7 +71,8 @@ try {
             var isDebugOption = argv.get('debug') != null
             if (!isDebugOption) return void 0
             var res = normalize(arguments)
-            WScript.StdErr.WriteLine(
+            if ( argv.get('monotone') != null ) WScript.StdOut.WriteLine('DEBUG: ' + res)
+            else WScript.StdErr.WriteLine(
                 '\u001B[91m\u001B[7mDEBUG:\u001B[0m ' + res
             )
             return removeColor(res)
