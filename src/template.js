@@ -62,8 +62,8 @@ try {
 
         function print() {
             var res = normalize(arguments)
-            if ( argv.get('monotone') != null ) WScript.StdOut.WriteLine(res)
-            else WScript.StdErr.WriteLine(res)
+            if ( argv.get('monotone') != null ) WScript.StdOut.Write(res)
+            else WScript.StdErr.Write(res)
             return removeColor(res)
         }
 
