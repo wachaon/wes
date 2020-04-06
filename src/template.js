@@ -129,9 +129,6 @@ try {
                     case '%o':
                         msg = msg.replace('%o', val)
                         continue
-                    case '%O':
-                        msg = msg.replace('%O', require('dump')(val))
-                        continue
                     default:
                         break
                 }
