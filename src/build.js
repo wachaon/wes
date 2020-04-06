@@ -23,7 +23,7 @@ result['version'] =  { source: `module.exports = console.log('${ require('/packa
 
 let graph = JSON.stringify(result, null, 4)
     .split(REG_LINE_SEP)
-    .map(v => SPACE.repeat(12) + v)
+    .map(v => SPACE.repeat(8) + v)
     .join(CRLF)
 
 const log = require('log')
@@ -38,7 +38,7 @@ let res = line
         if (!match.test(value)) {
             return value
         } else {
-            return '        var Modules = ' + graph
+            return '        var Modules = ' + graph.trim()
         }
     })
     .join(sep)

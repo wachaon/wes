@@ -19,8 +19,7 @@ try {
 
             if (named.test(arg)) {
                 opt = arg.slice(2)
-                if (~arg.indexOf(sep))
-                    options[opt.split(sep)[0]] = opt.split(sep)[1]
+                if (~arg.indexOf(sep)) options[opt.split(sep)[0]] = opt.split(sep)[1]
                 else {
                     if (short.test(next)) options[opt] = true
                     else {
@@ -55,14 +54,14 @@ try {
     var console = (function() {
         function log() {
             var res = normalize(arguments)
-            if ( argv.get('monotone') != null ) WScript.StdOut.WriteLine(res)
+            if (argv.get('monotone') != null) WScript.StdOut.WriteLine(res)
             else WScript.StdErr.WriteLine(res)
             return removeColor(res)
         }
 
         function print() {
             var res = normalize(arguments)
-            if ( argv.get('monotone') != null ) WScript.StdOut.Write(res)
+            if (argv.get('monotone') != null) WScript.StdOut.Write(res)
             else WScript.StdErr.Write(res)
             return removeColor(res)
         }
@@ -71,10 +70,8 @@ try {
             var isDebugOption = argv.get('debug') != null
             if (!isDebugOption) return void 0
             var res = normalize(arguments)
-            if ( argv.get('monotone') != null ) WScript.StdOut.WriteLine('DEBUG: ' + res)
-            else WScript.StdErr.WriteLine(
-                '\u001B[91m\u001B[7mDEBUG:\u001B[0m ' + res
-            )
+            if (argv.get('monotone') != null) WScript.StdOut.WriteLine('DEBUG: ' + res)
+            else WScript.StdErr.WriteLine('\u001B[91m\u001B[7mDEBUG:\u001B[0m ' + res)
             return removeColor(res)
         }
 
@@ -222,8 +219,7 @@ try {
 
     if (argv.get('engine') == null) {
         var cpu =
-            WShell.ExpandEnvironmentStrings('%PROCESSOR_ARCHITECTURE%') !==
-            'x86'
+            WShell.ExpandEnvironmentStrings('%PROCESSOR_ARCHITECTURE%') !== 'x86'
                 ? '{%}windir{%}\\SysWOW64\\cscript'
                 : 'cscript'
         var nologo = '//nologo'
@@ -238,16 +234,7 @@ try {
         }
 
         WShell.SendKeys(
-            [
-                cpu,
-                WScript.ScriptFullName,
-                parameters.join(' '),
-                nologo,
-                chakra,
-                engin,
-                monotone,
-                enter
-            ].join(' ')
+            [cpu, WScript.ScriptFullName, parameters.join(' '), nologo, chakra, engin, monotone, enter].join(' ')
         )
 
         WScript.Quit()
@@ -310,9 +297,7 @@ try {
                     areas.push(join(hierarchy, node_modules, query))
                     hierarchy = dirname(hierarchy)
                 }
-                areas.push(
-                    join(dirname(WScript.ScriptFullName), node_modules, query)
-                )
+                areas.push(join(dirname(WScript.ScriptFullName), node_modules, query))
             }
             return areas
         }
@@ -398,15 +383,7 @@ try {
                         'wes',
                         '"use strict";' + mod.source
                     )
-                    code(
-                        require.bind(null, entry),
-                        mod.module,
-                        mod.module.exports,
-                        console,
-                        dirname(entry),
-                        entry,
-                        wes
-                    )
+                    code(require.bind(null, entry), mod.module, mod.module.exports, console, dirname(entry), entry, wes)
                     break
                 case json:
                     mod.module.exports = parse(mod.source)
@@ -443,16 +420,7 @@ try {
                         'wes',
                         'process',
                         '"use strict";' + mod.source
-                    )(
-                        require.bind(null, entry),
-                        mod.module,
-                        mod.module.exports,
-                        console,
-                        dirname,
-                        entry,
-                        wes,
-                        process
-                    )
+                    )(require.bind(null, entry), mod.module, mod.module.exports, console, dirname, entry, wes, process)
                 }
                 mod.exports = mod.module.exports
             }
@@ -489,13 +457,7 @@ try {
             var entry = getEntry(areas)
             if (entry == null)
                 throw new Error(
-                    'no module:\n' +
-                        'caller: ' +
-                        caller +
-                        '\nquery: ' +
-                        query +
-                        '\n' +
-                        JSON.stringify(areas, null, 2)
+                    'no module:\n' + 'caller: ' + caller + '\nquery: ' + query + '\n' + JSON.stringify(areas, null, 2)
                 )
 
             var modId = genUUID()
