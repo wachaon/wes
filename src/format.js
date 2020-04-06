@@ -9,12 +9,8 @@ const failureColor = console.ansi.brightRed
 // const infoColor = console.ansi.brightYellow
 const { clear } = console.ansi
 
-const lib = readdirSync(join(process.cwd(), 'lib')).map(file =>
-    join(process.cwd(), 'lib', file)
-)
-const src = readdirSync(join(process.cwd(), 'src')).map(file =>
-    join(process.cwd(), 'src', file)
-)
+const lib = readdirSync(join(process.cwd(), 'lib')).map(file => join(process.cwd(), 'lib', file))
+const src = readdirSync(join(process.cwd(), 'src')).map(file => join(process.cwd(), 'src', file))
 const dir = [...lib, ...src, join(process.cwd(), 'wes.js')]
 /*
 const moduleSpec = join(process.cwd(), 'src', 'modules.json')
