@@ -381,9 +381,10 @@ try {
                         '__dirname',
                         '__filename',
                         'wes',
+                        'Buffer',
                         '"use strict";' + mod.source
                     )
-                    code(require.bind(null, entry), mod.module, mod.module.exports, console, dirname(entry), entry, wes)
+                    code(require.bind(null, entry), mod.module, mod.module.exports, console, dirname(entry), entry, wes, entry === 'buffer' ? null : req('buffer'))
                     break
                 case json:
                     mod.module.exports = parse(mod.source)
@@ -419,8 +420,9 @@ try {
                         '__filename',
                         'wes',
                         'process',
+                        'Buffer',
                         '"use strict";' + mod.source
-                    )(require.bind(null, entry), mod.module, mod.module.exports, console, dirname, entry, wes, process)
+                    )(require.bind(null, entry), mod.module, mod.module.exports, console, dirname, entry, wes, process, entry === 'buffer' ? null : req('buffer'))
                 }
                 mod.exports = mod.module.exports
             }
