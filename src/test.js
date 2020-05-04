@@ -10,8 +10,8 @@ let succeed = 0
 
 files.forEach(v => {
     let [_total, _succeed] = eval(`( () => { ${fs.readTextFileSync(v)} } )()`)
-    total += _total
-    succeed += _succeed
+    total = _total
+    succeed = _succeed
 })
 
 let complete = succeed / total === 1
