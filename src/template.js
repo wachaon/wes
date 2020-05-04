@@ -241,7 +241,10 @@ try {
     } else {
         console.log('') // Send a line
 
-        var wes = {}
+        var wes = {
+            filestack: [WScript.ScriptFullName.split('\\').join('/')]
+        }
+
         var Modules = {}
 
         // util
@@ -373,6 +376,19 @@ try {
 
             switch (extname(entry)) {
                 case js:
+                    var name = entry
+                        .split('')
+                        .map(function(ch) {
+                            return (
+                                '$' +
+                                ch
+                                    .codePointAt()
+                                    .toString(16)
+                                    .toUpperCase()
+                            )
+                        })
+                        .join('')
+                    wes.filestack.push(entry)
                     var code = new Function(
                         'require',
                         'module',
@@ -382,9 +398,19 @@ try {
                         '__filename',
                         'wes',
                         'Buffer',
-                        '"use strict";' + mod.source
+                        '(function ' + name + '() { ' + '"use strict";' + mod.source + '} )()'
                     )
-                    code(require.bind(null, entry), mod.module, mod.module.exports, console, dirname(entry), entry, wes, entry === 'buffer' ? null : req('buffer'))
+                    code(
+                        require.bind(null, entry),
+                        mod.module,
+                        mod.module.exports,
+                        console,
+                        dirname(entry),
+                        entry,
+                        wes,
+                        entry === 'buffer' ? null : req('buffer')
+                    )
+                    wes.filestack.pop()
                     break
                 case json:
                     mod.module.exports = parse(mod.source)
@@ -422,7 +448,17 @@ try {
                         'process',
                         'Buffer',
                         '"use strict";' + mod.source
-                    )(require.bind(null, entry), mod.module, mod.module.exports, console, dirname, entry, wes, process, entry === 'buffer' ? null : req('buffer'))
+                    )(
+                        require.bind(null, entry),
+                        mod.module,
+                        mod.module.exports,
+                        console,
+                        dirname,
+                        entry,
+                        wes,
+                        process,
+                        entry === 'buffer' ? null : req('buffer')
+                    )
                 }
                 mod.exports = mod.module.exports
             }
@@ -475,8 +511,62 @@ try {
         require(path.join(path.CurrentDirectory, '_'), argv[0])
     }
 } catch (error) {
-    var errorStack = error.stack
-    if (console) {
-        console.log(errorStack)
-    } else WScript.StdErr.WriteLine(errorStack)
+    if (!!console) {
+        var errorStack = unescape(error.stack.split('$').join('%'))
+        errorStack = errorStack.split(/\r?\n/).filter(function(line) {
+            return !(
+                line.startsWith('   at Function code (Function code:') ||
+                line.startsWith('   at createModule (') ||
+                line.startsWith('   at require (')
+            )
+        })
+        var current = wes.filestack.slice(-1)
+
+        /*
+        errorStack.splice(errorStack
+            .findIndex(
+                function ( val ) {
+                    return val.startsWith('   at ')
+                } )
+            , 0, ' ( ' + current + ')')
+        */
+
+        console.log(
+            console.ansi.color(255, 165, 0) +
+                errorStack
+                    .join('\r\n')
+                    .split('Function code:')
+                    .join('')
+        )
+
+        if (error instanceof SyntaxError) {
+            var _prettier
+            try {
+                _prettier = require('*', 'prettier')
+            } catch (error1) {
+                try {
+                    _prettier = require('*', '@wachaon/prettier')
+                } catch (error2) {
+                    _prettier = null
+                }
+            }
+            if (_prettier != null) {
+                var fs = require('*', 'filesystem')
+                var existsFileSync = fs.existsFileSync
+                var readTextFileSync = fs.readTextFileSync
+                var prettier = _prettier.prettier
+                var babylon = _prettier.babylon
+                var opt = {
+                    parser: 'babel',
+                    plugins: [babylon]
+                }
+                var source = readTextFileSync(current)
+                try {
+                    prettier.format(readTextFileSync(current), opt)
+                } catch (errors) {
+                    console.log(errors)
+                }
+            }
+        }
+    } else WScript.StdErr.WriteLine(error.stack)
 }
