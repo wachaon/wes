@@ -1,7 +1,7 @@
 try {
     var WShell = WScript.CreateObject('WScript.Shell')
 
-    var argv = (function() {
+    var argv = (function () {
         var args = WScript.Arguments
 
         var res = []
@@ -51,7 +51,7 @@ try {
         return res
     })()
 
-    var console = (function() {
+    var console = (function () {
         function log() {
             var res = normalize(arguments)
             if (argv.get('monotone') != null) WScript.StdOut.WriteLine(res)
@@ -81,7 +81,11 @@ try {
         var seq = /\u001B\[[\d;]+m/g
 
         function normalize(argList) {
-            var monotone = argv.get('monotone') != null
+            /* Change the process when the migration of argv implementation is completed
+                -| var monotone = 'has' in argv ? argv.has('monotone') : argv.get('monotone') != null
+                +| var monotone = argv.has('monotone')
+            */
+            var monotone = 'has' in argv ? argv.has('monotone') : argv.get('monotone') != null
             var args = splitArgs(argList)
             var res = formatArgs(args)
             res = clearTail(res)
@@ -217,7 +221,11 @@ try {
         }
     })()
 
-    if (argv.get('engine') == null) {
+    /* Change the process when the migration of argv implementation is completed
+        -| if ( 'has' in argv ? argv.has('engine', 'Chakra') : argv.get('engine') == null) {
+        +| if (argv.has('engine', 'Chakra ) {
+    */
+    if ('has' in argv ? argv.has('engine', 'Chakra') : argv.get('engine') == null) {
         var cpu =
             WShell.ExpandEnvironmentStrings('%PROCESSOR_ARCHITECTURE%') !== 'x86'
                 ? '{%}windir{%}\\SysWOW64\\cscript'
@@ -263,7 +271,7 @@ try {
         }
 
         function getPathToModule(filespec) {
-            var mod = Object.keys(Modules).find(function(key) {
+            var mod = Object.keys(Modules).find(function (key) {
                 if (!!Modules[key].path) return Modules[key].path === filespec
                 return false
             })
@@ -378,14 +386,8 @@ try {
                 case js:
                     var name = entry
                         .split('')
-                        .map(function(ch) {
-                            return (
-                                '$' +
-                                ch
-                                    .codePointAt()
-                                    .toString(16)
-                                    .toUpperCase()
-                            )
+                        .map(function (ch) {
+                            return '$' + ch.codePointAt().toString(16).toUpperCase()
                         })
                         .join('')
                     wes.filestack.push(entry)
@@ -424,7 +426,7 @@ try {
         // local require
         var process = {
             env: { NODE_ENV: '' },
-            cwd: function() {
+            cwd: function () {
                 return req('pathname').CurrentDirectory
             },
             platform: 'win32'
@@ -508,12 +510,18 @@ try {
 
         wes.Modules = Modules
         var path = req('pathname')
+
+        /* Change the process when the migration of argv implementation is completed
+            -| var main = 'unnamed' in argv ? argv.unnamed[0] : argv[0]
+            +| var main = argv.unnamed[0]
+        */
+        var main = 'unnamed' in argv ? argv.unnamed[0] : argv[0]
         require(path.join(path.CurrentDirectory, '_'), argv[0])
     }
 } catch (error) {
     if (!!console) {
         var errorStack = unescape(error.stack.split('$').join('%'))
-        errorStack = errorStack.split(/\r?\n/).filter(function(line) {
+        errorStack = errorStack.split(/\r?\n/).filter(function (line) {
             return !(
                 line.startsWith('   at Function code (Function code:') ||
                 line.startsWith('   at createModule (') ||
@@ -531,13 +539,7 @@ try {
             , 0, ' ( ' + current + ')')
         */
 
-        console.log(
-            console.ansi.color(255, 165, 0) +
-                errorStack
-                    .join('\r\n')
-                    .split('Function code:')
-                    .join('')
-        )
+        console.log(console.ansi.color(255, 165, 0) + errorStack.join('\r\n').split('Function code:').join(''))
 
         if (error instanceof SyntaxError) {
             var _prettier

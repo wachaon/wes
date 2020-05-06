@@ -9,8 +9,8 @@ const failureColor = console.ansi.brightRed
 // const infoColor = console.ansi.brightYellow
 const { clear } = console.ansi
 
-const lib = readdirSync(join(process.cwd(), 'lib')).map(file => join(process.cwd(), 'lib', file))
-const src = readdirSync(join(process.cwd(), 'src')).map(file => join(process.cwd(), 'src', file))
+const lib = readdirSync(join(process.cwd(), 'lib')).map((file) => join(process.cwd(), 'lib', file))
+const src = readdirSync(join(process.cwd(), 'src')).map((file) => join(process.cwd(), 'src', file))
 const dir = [...lib, ...src, join(process.cwd(), 'wes.js')]
 /*
 const moduleSpec = join(process.cwd(), 'src', 'modules.json')
@@ -18,13 +18,13 @@ if (!existsFileSync(moduleSpec)) writeTextFileSync(moduleSpec, stringify({}))
 const mod = require('./modules')
 */
 
-dir.map(spec => {
+dir.map((spec) => {
     const filespec = spec // join(process.cwd(), 'lib', spec)
     const file = FSO.GetFile(filespec)
     let modified = new Date(file.DateLastModified)
     let created = new Date(file.DateCreated)
     return { filespec, modified, created }
-}).forEach(spec => {
+}).forEach((spec) => {
     const { filespec, modified, created } = spec
     try {
         exec(filespec)

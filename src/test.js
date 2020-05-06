@@ -3,12 +3,12 @@ const fs = require('/lib/filesystem')
 const { brightGreen, brightRed } = console.ansi
 
 const FSO = require('Scripting.FileSystemObject')
-let files = new Enumerator(FSO.GetFolder(`./test`).Files).map(v => v.path)
+let files = new Enumerator(FSO.GetFolder(`./test`).Files).map((v) => v.path)
 
 let total = 0
 let succeed = 0
 
-files.forEach(v => {
+files.forEach((v) => {
     let [_total, _succeed] = eval(`( () => { ${fs.readTextFileSync(v)} } )()`)
     total = _total
     succeed = _succeed
