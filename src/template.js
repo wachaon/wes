@@ -223,7 +223,7 @@ try {
 
     /* Change the process when the migration of argv implementation is completed
         -| if ( 'has' in argv ? argv.has('engine', 'Chakra') : argv.get('engine') == null) {
-        +| if (argv.has('engine', 'Chakra ) {
+        +| if (argv.has('engine', 'Chakra') ) {
     */
     if ('has' in argv ? argv.has('engine', 'Chakra') : argv.get('engine') == null) {
         var cpu =
@@ -530,15 +530,6 @@ try {
         })
         var current = wes.filestack.slice(-1)
 
-        /*
-        errorStack.splice(errorStack
-            .findIndex(
-                function ( val ) {
-                    return val.startsWith('   at ')
-                } )
-            , 0, ' ( ' + current + ')')
-        */
-
         console.log(console.ansi.color(255, 165, 0) + errorStack.join('\r\n').split('Function code:').join(''))
 
         if (error instanceof SyntaxError) {
@@ -554,13 +545,12 @@ try {
             }
             if (_prettier != null) {
                 var fs = require('*', 'filesystem')
-                var existsFileSync = fs.existsFileSync
                 var readTextFileSync = fs.readTextFileSync
                 var prettier = _prettier.prettier
-                var babylon = _prettier.babylon
+                var babel = _prettier.babel
                 var opt = {
                     parser: 'babel',
-                    plugins: [babylon]
+                    plugins: [babel]
                 }
                 var source = readTextFileSync(current)
                 try {
