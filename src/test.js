@@ -17,7 +17,9 @@ files.forEach((v) => {
 let complete = succeed / total === 1
 
 console.log(
-    `\n${complete ? brightGreen : brightRed}tests: ${total} ${complete ? 'complete' : 'fail:' + (total - succeed)}`
+    `\n${complete ? brightGreen : brightRed}tests: ${total} ${
+        complete ? 'complete' : 'fail:' + (total - succeed)
+    }`
 )
 
 module.exports = complete

@@ -242,7 +242,16 @@ try {
         }
 
         WShell.SendKeys(
-            [cpu, WScript.ScriptFullName, parameters.join(' '), nologo, chakra, engin, monotone, enter].join(' ')
+            [
+                cpu,
+                WScript.ScriptFullName,
+                parameters.join(' '),
+                nologo,
+                chakra,
+                engin,
+                monotone,
+                enter
+            ].join(' ')
         )
 
         WScript.Quit()
@@ -497,7 +506,13 @@ try {
             var entry = getEntry(areas)
             if (entry == null)
                 throw new Error(
-                    'no module:\n' + 'caller: ' + caller + '\nquery: ' + query + '\n' + JSON.stringify(areas, null, 2)
+                    'no module:\n' +
+                        'caller: ' +
+                        caller +
+                        '\nquery: ' +
+                        query +
+                        '\n' +
+                        JSON.stringify(areas, null, 2)
                 )
 
             var modId = genUUID()
@@ -516,7 +531,7 @@ try {
             +| var main = argv.unnamed[0]
         */
         var main = 'unnamed' in argv ? argv.unnamed[0] : argv[0]
-        require(path.join(path.CurrentDirectory, '_'), argv[0])
+        require(path.join(path.CurrentDirectory, '_'), main)
     }
 } catch (error) {
     if (!!console) {
@@ -530,7 +545,10 @@ try {
         })
         var current = wes.filestack.slice(-1)
 
-        console.log(console.ansi.color(255, 165, 0) + errorStack.join('\r\n').split('Function code:').join(''))
+        console.log(
+            console.ansi.color(255, 165, 0) +
+                errorStack.join('\r\n').split('Function code:').join('')
+        )
 
         if (error instanceof SyntaxError) {
             var _prettier
