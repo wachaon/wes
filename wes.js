@@ -744,5 +744,5 @@ try {
                 }
             }
         }
-    } else WScript.Echo('yokisenu error')
+    } else WScript.popup('[error]' + error.message)
 }

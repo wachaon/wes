@@ -633,5 +633,5 @@ try {
                 }
             }
         }
-    } else WScript.Echo('yokisenu error')
+    } else WScript.Popup('[error]' + error.message)
 }
