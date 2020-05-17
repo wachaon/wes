@@ -744,5 +744,5 @@ try {
                 }
             }
         }
-    } else WScript.popup('[error]' + error.message)
+    } else WScript.Popup('[error]' + error.message)
 }
