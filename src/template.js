@@ -2,66 +2,150 @@ try {
     var WShell = WScript.CreateObject('WScript.Shell')
 
     var argv = (function () {
-        var args = WScript.Arguments
+        var module = { exports: {} }
+        ;(function () {
+            //main
+            var Arguments = WScript.Arguments
+            var argv = [WScript.FullName, WScript.ScriptFullName]
+            var unnamed = []
+            var named = {}
 
-        var res = []
-        var options = {}
-        var short = /^\-/
-        var named = /^\-{2}/
-        var sep = '='
-        var none = ''
+            var key = null
+            for (var i = 0; i < Arguments.length; i++) {
+                var arg = unescape(Arguments.Item(i))
+                argv.push(arg)
+                if (!arg.indexOf('--') && arg.length > 2) key = setLongNamed(arg, key)
+                else if (!arg.indexOf('-')) key = setShortNamed(arg, key)
+                else key = setUnNamed(arg, key)
+            }
+            if (key) named[key] = true
 
-        for (var i = 0; i < args.length; i++) {
-            var Arg = unescape(args(i))
-            var arg = Arg.toLowerCase()
-            var opt = none
-            var next = args.length > i + 1 ? unescape(args(i + 1)) : none
+            // methods
+            function get(name) {
+                if (name in named) return named[name]
+                else false
+            }
 
-            if (named.test(arg)) {
-                opt = arg.slice(2)
-                if (~arg.indexOf(sep)) options[opt.split(sep)[0]] = opt.split(sep)[1]
-                else {
-                    if (short.test(next)) options[opt] = true
-                    else {
-                        options[opt] = next
-                        i++
+            function has(name, expect) {
+                var value = null
+                if (name in named) {
+                    value = named[name]
+                    if (arguments.length > 1) return value === expect
+                    return true
+                }
+                return false
+            }
+
+            function security() {
+                return has('safe')
+                    ? security.safe
+                    : has('usual')
+                    ? security.usual
+                    : has('unsafe')
+                    ? security.unsafe
+                    : has('dangerous')
+                    ? security.dangerous
+                    : 0
+            }
+
+            ;(security.safe = -1), (security.usual = 0), (security.unsafe = 1), (security.dangerous = 2)
+
+            function allow(borderline) {
+                return borderline <= security()
+            }
+
+            function stringify(args) {
+                var params = args != null ? args : { unnamed: unnamed, named: named }
+                var res = []
+                var short = []
+                for (var name in params.named) {
+                    var target = params.named[name]
+                    if (name.length === 1) {
+                        if (target === true) short.push(name)
+                        else res.push('-' + key + ' ' + inner(escape(String(target))))
+                    } else {
+                        if (target === true) res.push('--' + escape(name))
+                        else res.push('--' + key + '=' + inner(escape(String(target))))
                     }
                 }
-            } else if (short.test(arg)) {
-                opt = arg.slice(1)
-                for (var j = 0; j < opt.length; j++) {
-                    options[opt[j]] = true
-                }
-                if (!short.test(next)) {
-                    options[opt.slice(-1)] = next
-                    i++
-                }
-            } else {
-                res.push(Arg)
+
+                if (short.length) res.unshift('-' + short.join(''))
+                if (params.unnamed.length) res.unshift(params.unnamed.join(' '))
+                // console.log('-----------\n' + inspect(res))
+                return res.join(' ')
             }
-        }
 
-        var get = function argv_get(name) {
-            return options[name.toLowerCase()]
-        }
+            // bind
+            argv.unnamed = unnamed
+            argv.named = named
+            argv.get = get
+            argv.has = has
+            argv.security = security
+            argv.allow = allow
+            argv.stringify = stringify
 
-        res.options = options
-        res.get = get
+            module.exports = argv
 
-        return res
+            // util
+            function setLongNamed(arg, name) {
+                var rNamed = /^\-\-([^=]+)=?([^=]+)?$/
+                if (name != null) named[name] = true
+                var _named = rNamed.exec(arg)
+                name = _named[1]
+                var value = _named[2] || null
+                if (value) {
+                    named[name] = typecast(inner(value))
+                    name = null
+                }
+                return name
+            }
+
+            function setShortNamed(arg, name) {
+                var args = arg.substring(1).split('')
+                for (var j = 0; j < args.length; j++) {
+                    if (name != null) named[name] = true
+                    name = args[j]
+                }
+                return name
+            }
+
+            function setUnNamed(arg, name) {
+                var _arg = typecast(arg)
+                if (name != null) named[name] = _arg
+                else unnamed.push(_arg)
+                return null
+            }
+
+            function typecast(arg) {
+                var rBoolean = /true|false/i
+                if (rBoolean.test(arg)) {
+                    if (arg.toLowerCase() === 'true') return true
+                    else return false
+                }
+                if (!isNaN(arg)) return Number(arg)
+                return arg
+            }
+
+            function inner(value) {
+                if (!value.indexOf('"') && value.indexOf('"') === value.length - 1)
+                    return value.substring(1, value.lenght - 1)
+                return value
+            }
+        })()
+        return module.exports
     })()
 
     var console = (function () {
         function log() {
             var res = normalize(arguments)
-            if (argv.get('monotone') != null) WScript.StdOut.WriteLine(res)
+            if (argv.has('monotone')) WScript.StdOut.WriteLine(res)
             else WScript.StdErr.WriteLine(res)
             return removeColor(res)
         }
 
         function print() {
             var res = normalize(arguments)
-            if (argv.get('monotone') != null) WScript.StdOut.Write(res)
+            if (argv.has('monotone')) WScript.StdOut.Write(res)
             else WScript.StdErr.Write(res)
             return removeColor(res)
         }
@@ -70,7 +154,7 @@ try {
             var isDebugOption = argv.get('debug') != null
             if (!isDebugOption) return void 0
             var res = normalize(arguments)
-            if (argv.get('monotone') != null) WScript.StdOut.WriteLine('DEBUG: ' + res)
+            if (argv.has('monotone')) WScript.StdOut.WriteLine('DEBUG: ' + res)
             else WScript.StdErr.WriteLine('\u001B[91m\u001B[7mDEBUG:\u001B[0m ' + res)
             return removeColor(res)
         }
@@ -81,11 +165,7 @@ try {
         var seq = /\u001B\[[\d;]+m/g
 
         function normalize(argList) {
-            /* Change the process when the migration of argv implementation is completed
-                -| var monotone = 'has' in argv ? argv.has('monotone') : argv.get('monotone') != null
-                +| var monotone = argv.has('monotone')
-            */
-            var monotone = 'has' in argv ? argv.has('monotone') : argv.get('monotone') != null
+            var monotone = argv.has('monotone')
             var args = splitArgs(argList)
             var res = formatArgs(args)
             res = clearTail(res)
@@ -221,11 +301,7 @@ try {
         }
     })()
 
-    /* Change the process when the migration of argv implementation is completed
-        -| if ( 'has' in argv ? argv.has('engine', 'Chakra') : argv.get('engine') == null) {
-        +| if (argv.has('engine', 'Chakra') ) {
-    */
-    if ('has' in argv ? argv.has('engine', 'Chakra') : argv.get('engine') == null) {
+    if (!argv.has('engine', 'Chakra')) {
         var cpu =
             WShell.ExpandEnvironmentStrings('%PROCESSOR_ARCHITECTURE%') !== 'x86'
                 ? '{%}windir{%}\\SysWOW64\\cscript'
@@ -233,7 +309,7 @@ try {
         var nologo = '//nologo'
         var engin = '--engine=Chakra'
         var chakra = '//E:{{}1b7cd997-e5ff-4932-a7a6-2a9e636da385{}}'
-        var monotone = argv.get('monotone') != null ? '' : '| echo off'
+        var monotone = argv.has('monotone') ? '' : '| echo off'
         var enter = '{ENTER}'
 
         var parameters = []
@@ -242,16 +318,7 @@ try {
         }
 
         WShell.SendKeys(
-            [
-                cpu,
-                WScript.ScriptFullName,
-                parameters.join(' '),
-                nologo,
-                chakra,
-                engin,
-                monotone,
-                enter
-            ].join(' ')
+            [cpu, WScript.ScriptFullName, parameters.join(' '), nologo, chakra, engin, monotone, enter].join(' ')
         )
 
         WScript.Quit()
@@ -506,17 +573,11 @@ try {
             var entry = getEntry(areas)
             if (entry == null)
                 throw new Error(
-                    'no module:\n' +
-                        'caller: ' +
-                        caller +
-                        '\nquery: ' +
-                        query +
-                        '\n' +
-                        JSON.stringify(areas, null, 2)
+                    'no module:\n' + 'caller: ' + caller + '\nquery: ' + query + '\n' + JSON.stringify(areas, null, 2)
                 )
 
             var modId = genUUID()
-            wes.main = wes.main != null ? wes.main : modId
+            if ( wes.main == null ) wes.main = modId
             var mod = createModule(modId, entry, query, parentModule)
             mod.exports = mod.module.exports
 
@@ -526,11 +587,8 @@ try {
         wes.Modules = Modules
         var path = req('pathname')
 
-        /* Change the process when the migration of argv implementation is completed
-            -| var main = 'unnamed' in argv ? argv.unnamed[0] : argv[0]
-            +| var main = argv.unnamed[0]
-        */
-        var main = 'unnamed' in argv ? argv.unnamed[0] : argv[0]
+        var main = argv.unnamed[0]
+        if ( main in wes.Modules ) wes.main = main
         require(path.join(path.CurrentDirectory, '_'), main)
     }
 } catch (error) {
@@ -545,10 +603,7 @@ try {
         })
         var current = wes.filestack.slice(-1)
 
-        console.log(
-            console.ansi.color(255, 165, 0) +
-                errorStack.join('\r\n').split('Function code:').join('')
-        )
+        console.log(console.ansi.color(255, 165, 0) + errorStack.join('\r\n').split('Function code:').join(''))
 
         if (error instanceof SyntaxError) {
             var _prettier
@@ -578,5 +633,5 @@ try {
                 }
             }
         }
-    } else WScript.StdErr.WriteLine(error.stack)
+    } else WScript.Echo('yokisenu error')
 }
