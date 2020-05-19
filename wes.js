@@ -436,7 +436,7 @@ try {
                 "path": "{wes}/VBScript"
             },
             "version": {
-                "source": "module.exports = console.log('0.8.12')",
+                "source": "module.exports = console.log('0.8.13')",
                 "mapping": {},
                 "path": "{wes}/version"
             }
@@ -679,7 +679,11 @@ try {
                 }
             }
 
-            var areas = getAreas(caller, query)
+            var isAbsolute = req('pathname').isAbsolute
+            var resolve = req('pathname').resolve
+            var areas = []
+            if (isAbsolute(query)) areas = [resolve(query)]
+            else areas = getAreas(caller, query)
 
             var entry = getEntry(areas)
             if (entry == null)
