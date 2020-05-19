@@ -568,7 +568,11 @@ try {
                 }
             }
 
-            var areas = getAreas(caller, query)
+            var isAbsolute = req('pathname').isAbsolute
+            var resolve = req('pathname').resolve
+            var areas = []
+            if (isAbsolute(query)) areas = [resolve(query)]
+            else areas = getAreas(caller, query)
 
             var entry = getEntry(areas)
             if (entry == null)
