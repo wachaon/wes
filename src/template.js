@@ -577,7 +577,7 @@ try {
                 )
 
             var modId = genUUID()
-            if ( wes.main == null ) wes.main = modId
+            if (wes.main == null) wes.main = modId
             var mod = createModule(modId, entry, query, parentModule)
             mod.exports = mod.module.exports
 
@@ -588,7 +588,7 @@ try {
         var path = req('pathname')
 
         var main = argv.unnamed[0]
-        if ( main in wes.Modules ) wes.main = main
+        if (main in wes.Modules) wes.main = main
         require(path.join(path.CurrentDirectory, '_'), main)
     }
 } catch (error) {
