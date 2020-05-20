@@ -610,31 +610,21 @@ try {
         console.log(console.ansi.color(255, 165, 0) + errorStack.join('\r\n').split('Function code:').join(''))
 
         if (error instanceof SyntaxError) {
-            var _prettier
+            var prettier
             try {
-                _prettier = require('*', 'prettier')
+                prettier = require('*', 'prettier')
             } catch (error1) {
                 try {
-                    _prettier = require('*', '@wachaon/prettier')
+                    prettier = require('*', '@wachaon/prettier')
                 } catch (error2) {
-                    _prettier = null
+                    prettier = null
                 }
             }
-            if (_prettier != null) {
+            if (prettier != null) {
                 var fs = require('*', 'filesystem')
-                var readTextFileSync = fs.readTextFileSync
-                var prettier = _prettier.prettier
-                var babel = _prettier.babel
-                var opt = {
-                    parser: 'babel',
-                    plugins: [babel]
-                }
-                var source = readTextFileSync(current)
-                try {
-                    prettier.format(readTextFileSync(current), opt)
-                } catch (errors) {
-                    console.log(errors)
-                }
+                var source = fs.readTextFileSync(current)
+                console.log('\n' + console.ansi.yellow + current)
+                prettier.format(source)
             }
         }
     } else WScript.Popup('[error]' + error.message)
