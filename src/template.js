@@ -247,7 +247,6 @@ try {
                 return message
             }
 
-
             function log() {
                 var message = normalize(arguments)
                 var monotoneMessage = removeColor(message)
@@ -275,7 +274,7 @@ try {
             }
 
             function removeColor(message) {
-                if (typeof message === 'string' ) return message.replace(rSEQ, NONE)
+                if (typeof message === 'string') return message.replace(rSEQ, NONE)
                 return message
             }
 
@@ -286,7 +285,7 @@ try {
                 normalize: normalize,
                 ansi: ansi
             }
-        })();
+        })()
         return module.exports
     })()
 
