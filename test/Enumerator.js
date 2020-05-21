@@ -13,6 +13,7 @@ describe('#test Enumerator', () => {
             'buffer.js',
             'bundle.js',
             'chardet.js',
+            'console.js',
             'day.js',
             'debug.js',
             'filesystem.js',
