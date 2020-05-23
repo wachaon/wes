@@ -216,10 +216,10 @@ try {
             function normalize(arg) {
                 var args = Array.prototype.slice.call(arg)
                 if (args.length === 0) return
-                var message = args.pop()
+                var message = args.shift()
                 if (args.length === 0) return message
                 while (rSPECIFIER.test(message) && args.length > 0) {
-                    var val = args.pop()
+                    var val = args.shift()
                     message = message.replace(rSPECIFIER, function ($1) {
                         if ($1 === '%s' || $1 === '%S') return String(val)
                         if ($1 === '%d' || $1 === '%D') return parseInt(val, 10)
