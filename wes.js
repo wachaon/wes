@@ -425,7 +425,7 @@ try {
                 "path": "{wes}/VBScript"
             },
             "version": {
-                "source": "module.exports = console.log('0.8.21')",
+                "source": "module.exports = console.log('0.8.22')",
                 "mapping": {},
                 "path": "{wes}/version"
             }
