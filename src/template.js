@@ -580,7 +580,7 @@ try {
 
         var main = argv.unnamed[0]
         if (main in wes.Modules) wes.main = main
-        require(path.join(path.CurrentDirectory, '_'), main)
+        require(path.join(path.CurrentDirectory, '_'), main, argv.get('encode'))
     }
 } catch (error) {
     if (!!console) {
