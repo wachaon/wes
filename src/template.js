@@ -421,7 +421,7 @@ try {
             return entry
         }
 
-        function createModule(GUID, entry, query, parentModule) {
+        function createModule(GUID, entry, query, parentModule, encode) {
             var pathname = req('pathname')
             var dirname = pathname.dirname
             var basename = pathname.basename
@@ -432,7 +432,7 @@ try {
             if (parentModule) parentModule.mapping[query] = GUID
 
             var mod = {
-                source: readTextFileSync(entry),
+                source: readTextFileSync(entry, encode != null ? encode : null),
                 module: {
                     exports: {}
                 },
@@ -531,7 +531,7 @@ try {
         }
 
         // require
-        function require(caller, query) {
+        function require(caller, query, encode) {
             var posixSep = req('pathname').posixSep
 
             // execute req function, if it is a core module
@@ -569,7 +569,7 @@ try {
 
             var modId = genUUID()
             if (wes.main == null) wes.main = modId
-            var mod = createModule(modId, entry, query, parentModule)
+            var mod = createModule(modId, entry, query, parentModule, encode)
             mod.exports = mod.module.exports
 
             return mod.exports
