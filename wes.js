@@ -306,7 +306,7 @@ try {
         }
 
         WShell.SendKeys(
-            [cpu, WScript.ScriptFullName, parameters.join(' '), nologo, chakra, engin, monotone, enter].join(' ')
+            [cpu, WScript.ScriptName, parameters.join(' '), nologo, chakra, engin, monotone, enter].join(' ')
         )
 
         WScript.Quit()
@@ -425,7 +425,7 @@ try {
                 "path": "{wes}/VBScript"
             },
             "version": {
-                "source": "module.exports = console.log('0.8.28')",
+                "source": "module.exports = console.log('0.8.29')",
                 "mapping": {},
                 "path": "{wes}/version"
             }
