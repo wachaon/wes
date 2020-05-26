@@ -425,7 +425,7 @@ try {
                 "path": "{wes}/VBScript"
             },
             "version": {
-                "source": "module.exports = console.log('0.8.30')",
+                "source": "module.exports = console.log('0.8.31')",
                 "mapping": {},
                 "path": "{wes}/version"
             }
@@ -696,7 +696,7 @@ try {
 
         var main = argv.unnamed[0]
         if (main in wes.Modules) wes.main = main
-        require(path.join(path.CurrentDirectory, '_'), main)
+        require(path.join(path.CurrentDirectory, '_'), main, argv.get('encode'))
     }
 } catch (error) {
     if (!!console) {
