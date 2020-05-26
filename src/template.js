@@ -368,7 +368,10 @@ try {
                     areas.push(join(hierarchy, node_modules, query))
                     hierarchy = dirname(hierarchy)
                 }
-                areas.push(join(dirname(WScript.ScriptFullName), node_modules, query))
+                var ScriptFullName = WScript.ScriptFullName
+                if (ScriptFullName === escape(ScriptFullName))
+                    areas.push(join(dirname(ScriptFullName), node_modules, query))
+                else areas.push(unescape(join(dirname(escape(ScriptFullName)), node_modules, query)))
             }
             return areas
         }
