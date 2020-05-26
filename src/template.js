@@ -306,7 +306,7 @@ try {
         }
 
         WShell.SendKeys(
-            [cpu, WScript.ScriptFullName, parameters.join(' '), nologo, chakra, engin, monotone, enter].join(' ')
+            [cpu, WScript.ScriptName, parameters.join(' '), nologo, chakra, engin, monotone, enter].join(' ')
         )
 
         WScript.Quit()
