@@ -330,7 +330,7 @@ try {
                 "path": "{wes}/buffer"
             },
             "bundle": {
-                "source": "const argv = require('argv')\nconst { relative, posixSep, CurrentDirectory } = require('pathname')\nconst { writeTextFileSync } = require('filesystem')\nconst { REG_LINE_SEP, LF } = require('text')\nconst cd = CurrentDirectory\nconst dir = cd.split(posixSep).pop()\nconst host = 'wes'\nif (dir === host) throw new Error(`Cannot bundle if the current directory is \"${host}\"`)\nconst { parse, stringify } = JSON\nconst bracket = '{'\nfunction bundle(_modules) {\nconst modules = parse(stringify(_modules))\nconst mods = {}\nObject.keys(modules)\n.filter((key) => key.startsWith(bracket))\n.map((key) => {\nconst mod = modules[key]\nmod.path = `{${dir}}${posixSep}${relative(cd, mod.path)}`\ndelete mod.module\ndelete mod.exports\nreturn key\n})\n.forEach((key) => (mods[key] = modules[key]))\nreturn mods\n}\nrequire(argv.unnamed[1])\nconst mods = bundle(wes.Modules)\nconst json = '.json'\nconsole.log(writeTextFileSync(dir + json, stringify(mods, null, 4).replace(REG_LINE_SEP, LF)))\n",
+                "source": "const argv = require('argv')\nconst { relative, posixSep, CurrentDirectory } = require('pathname')\nconst { writeTextFileSync } = require('filesystem')\nconst { REG_LINE_SEP, LF } = require('text')\nconst cd = CurrentDirectory\nconst dir = cd.split(posixSep).pop()\nconst host = 'wes'\nif (dir === host) throw new Error(`Cannot bundle if the current directory is \"${host}\"`)\nconst { parse, stringify } = JSON\nconst bracket = '{'\nfunction bundle(_modules) {\nconst modules = parse(stringify(_modules))\nconst mods = {}\nObject.keys(modules)\n.filter((key) => key.startsWith(bracket))\n.map((key) => {\nconst mod = modules[key]\nmod.path = `{${dir}}${posixSep}${relative(cd, mod.path)}`\ndelete mod.module\ndelete mod.exports\nreturn key\n})\n.forEach((key) => (mods[key] = modules[key]))\nreturn mods\n}\nrequire(argv.unnamed[1])\nconst mods = bundle(wes.Modules)\nconst json = '.json'\nconsole.log(writeTextFileSync(dir + json, stringify(mods, null, 4).replace(REG_LINE_SEP, LF), 'UTF-8N'))\n",
                 "mapping": {},
                 "path": "{wes}/bundle"
             },
@@ -425,7 +425,7 @@ try {
                 "path": "{wes}/VBScript"
             },
             "version": {
-                "source": "module.exports = console.log('0.8.32')",
+                "source": "module.exports = console.log('0.8.33')",
                 "mapping": {},
                 "path": "{wes}/version"
             }
