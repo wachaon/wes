@@ -1,6 +1,6 @@
 const { readdirSync, readTextFileSync, writeTextFileSync } = require('filesystem')
 const { resolve } = require('pathname')
-const prettier = require('prettier')
+const fmt = require('fmt')
 
 const successColor = console.ansi.brightGreen
 
@@ -10,6 +10,6 @@ const dir = [...lib, ...src, resolve(process.cwd(), 'wes.js')]
 
 dir.forEach((file) => {
     const source = readTextFileSync(file)
-    const res = prettier.format(source)
+    const res = fmt.format(source)
     console.log(successColor + writeTextFileSync(file, res))
 })

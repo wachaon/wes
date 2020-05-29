@@ -595,21 +595,21 @@ try {
         console.log(console.ansi.color(255, 165, 0) + errorStack.join('\r\n').split('Function code:').join(''))
 
         if (error instanceof SyntaxError) {
-            var prettier
+            var fmt
             try {
-                prettier = require('*', 'prettier')
+                fmt = require('*', 'fmt')
             } catch (error1) {
                 try {
-                    prettier = require('*', '@wachaon/prettier')
+                    fmt = require('*', '@wachaon/fmt')
                 } catch (error2) {
-                    prettier = null
+                    fmt = null
                 }
             }
-            if (prettier != null) {
+            if (fmt != null) {
                 var fs = require('*', 'filesystem')
                 var source = fs.readTextFileSync(current)
                 console.log('\n' + console.ansi.yellow + current)
-                prettier.format(source)
+                fmt.format(source)
             }
         }
     } else WScript.Popup('[error]' + error.message)
