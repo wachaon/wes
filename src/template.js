@@ -306,7 +306,7 @@ try {
         }
 
         WShell.SendKeys(
-            [cpu, WScript.ScriptName, parameters.join(' '), nologo, chakra, engin, monotone, enter].join(' ')
+            [cpu, WScript.ScriptFullName, parameters.join(' '), nologo, chakra, engin, monotone, enter].join(' ')
         )
 
         WScript.Quit()
@@ -369,9 +369,7 @@ try {
                     hierarchy = dirname(hierarchy)
                 }
                 var ScriptFullName = WScript.ScriptFullName
-                if (ScriptFullName === escape(ScriptFullName))
-                    areas.push(join(dirname(ScriptFullName), node_modules, query))
-                else areas.push(unescape(join(dirname(escape(ScriptFullName)), node_modules, query)))
+                areas.push(join(dirname(ScriptFullName), node_modules, query))
             }
             return areas
         }
