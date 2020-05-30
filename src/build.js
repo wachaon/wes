@@ -12,7 +12,7 @@ files.forEach((file) => {
     let filename = path.basename(file.name, '.js')
     let ext = path.extname(file.name)
     if (ext !== '.js') return
-    let source = fs.readTextFileSync(file.Path).replace(REG_CR, NONE).replace(/^\s+/gm, NONE)
+    let source = fs.readTextFileSync(file.Path).replace(REG_CR, NONE)
     result[filename] = { source, mapping: {}, path: `{wes}/${filename}` }
 })
 
