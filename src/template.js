@@ -608,7 +608,6 @@ try {
             if (fmt != null) {
                 var source
                 if (wes.main === 'REPL') {
-                    //Object.keys(wes.Modules).forEach(function(key){ console.log(key)})
                     var file = Object.keys(wes.Modules).filter(function(key){
                         return key.startsWith('{')
                     })[0]
