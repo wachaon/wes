@@ -409,6 +409,11 @@ try {
                 "mapping": {},
                 "path": "{wes}/pipe"
             },
+            "REPL": {
+                "source": "console.log(console.ansi.brightBlue + 'wes REPL mode:')\nprocess.stdin = {\n    writeLine(s) {\n        WScript.StdIn.WriteLine(s)\n    },\n    event: {},\n    on(type, callback) {\n        const ev = this.event\n        ev[type] = ev[type] || []\n        ev[type].push(callback)\n    },\n    emit(type, ...args) {\n        if ( !this.event[type] ) return\n        const evs = this.event[type]\n        return evs.map(ev => ev(...args))\n    },\n}\n\nlet input_string = ''\n\nprocess.stdin.on('data', (chunk) => {\n    input_string += chunk + '\\n'\n})\n\nprocess.stdin.on('end', () => {\n    const id = require('genUUID')()\n    wes.Modules[id] = {\n        source: input_string,\n        path: require('pathname').resolve(process.cwd(), id),\n        mapping:{}\n    }\n    console.log(console.ansi.magenta + 'result:')\n    const result = require(id)\n    if (Object.prototype.toString.call(result) === '[object Object]' && Object.keys(result).length === 0 ) {}\n    else console.log('%O', result)\n})\n\nwhile(true) {\n    if (WScript.StdIn.AtEndOfStream) {\n        process.stdin.emit('end')\n        break\n    } else {\n        const data = WScript.StdIn.ReadLine()\n        if (data === '') {\n            process.stdin.emit('end')\n            break\n        }\n        process.stdin.emit('data', data)\n    }\n}\n",
+                "mapping": {},
+                "path": "{wes}/REPL"
+            },
             "text": {
                 "source": "const LF = '\\n'\nconst CR = '\\r'\nconst CRLF = CR + LF\nconst SPACE = ' '\nconst TAB = '\\t'\nconst NONE = ''\n\nconst REG_LINE_SEP = /\\r?\\n/g\nconst REG_LF = /\\n/g\nconst REG_CR = /\\r/g\nconst REG_CRLF = /\\r\\n/g\nconst REG_SPACE = /\\s/g\nconst REG_SPACES = /\\s+/g\nconst REG_BLANK_LINE = /^\\s+$/\nconst REG_TAB = /\\t/g\nconst REG_TABS = /\\t+/g\nconst INDNT = /^\\s+/\n\nconst trimStarts = function text_trimStarts(string) {\n    return string.replace(/^([\\s\\r\\n]+\\n)/, NONE)\n}\nconst trimEnds = function text_trimEnds(string) {\n    return string.replace(/(\\n[\\s\\r\\n]+)$/, NONE)\n}\nconst trim = function text_trimEnds(string) {\n    return trimStarts(trimEnds(string))\n}\nconst splitLines = function text_splitLines(string, mod, start, end) {\n    const sep = REG_CRLF.test(string) ? CRLF : LF\n    return string\n        .split(REG_LINE_SEP)\n        .filter((value, i) => (start < i % mod && i % mod < end) || REG_BLANK_LINE.test(value))\n        .join(sep)\n}\n\nconst unindent = function text_unindent(text) {\n    const lineBreak = text.includes(CRLF) ? CRLF : LF\n    let line = text.split(REG_LINE_SEP)\n    const lastLineSpace = line[line.length - 1].match(INDNT)\n    if (lastLineSpace == null) return text\n    return line\n        .map((v) => {\n            return v.replace(lastLineSpace, '')\n        })\n        .join(lineBreak)\n        .replace(/^\\s+/, '')\n}\n\nmodule.exports = {\n    LF,\n    CR,\n    CRLF,\n    SPACE,\n    TAB,\n    NONE,\n\n    REG_LINE_SEP,\n    REG_LF,\n    REG_CR,\n    REG_CRLF,\n    REG_SPACE,\n    REG_SPACES,\n    REG_BLANK_LINE,\n    REG_TAB,\n    REG_TABS,\n\n    trimStarts,\n    trimEnds,\n    trim,\n    splitLines,\n    unindent\n}\n",
                 "mapping": {},
@@ -425,7 +430,7 @@ try {
                 "path": "{wes}/VBScript"
             },
             "version": {
-                "source": "module.exports = console.log('0.8.42')",
+                "source": "module.exports = console.log('0.8.43')",
                 "mapping": {},
                 "path": "{wes}/version"
             }
@@ -692,7 +697,7 @@ try {
         wes.Modules = Modules
         var path = req('pathname')
 
-        var main = argv.unnamed[0]
+        var main = argv.unnamed[0] != null ? argv.unnamed[0] : 'REPL'
         if (main in wes.Modules) wes.main = main
         require(path.join(path.CurrentDirectory, '_'), main, argv.get('encode'))
     }
