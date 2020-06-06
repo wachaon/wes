@@ -27,6 +27,7 @@ describe('#test Enumerator', () => {
             'minitest.js',
             'pathname.js',
             'pipe.js',
+            'REPL.js',
             'text.js',
             'typecheck.js',
             'VBScript.js'
