@@ -576,7 +576,7 @@ try {
         wes.Modules = Modules
         var path = req('pathname')
 
-        var main = argv.unnamed[0]
+        var main = argv.unnamed[0] != null ? argv.unnamed[0] : 'REPL'
         if (main in wes.Modules) wes.main = main
         require(path.join(path.CurrentDirectory, '_'), main, argv.get('encode'))
     }
