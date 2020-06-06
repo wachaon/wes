@@ -606,9 +606,18 @@ try {
                 }
             }
             if (fmt != null) {
-                var fs = require('*', 'filesystem')
-                var source = fs.readTextFileSync(current)
-                console.log('\n' + console.ansi.yellow + current)
+                var source
+                if (wes.main === 'REPL') {
+                    //Object.keys(wes.Modules).forEach(function(key){ console.log(key)})
+                    var file = Object.keys(wes.Modules).filter(function(key){
+                        return key.startsWith('{')
+                    })[0]
+                    source = wes.Modules[file].source
+                } else {
+                    var fs = require('*', 'filesystem')
+                    source = fs.readTextFileSync(current)
+                    console.log('\n' + console.ansi.yellow + current)
+                }
                 fmt.format(source)
             }
         }
