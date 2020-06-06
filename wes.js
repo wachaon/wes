@@ -390,7 +390,7 @@ try {
                 "path": "{wes}/JScript"
             },
             "log": {
-                "source": "const inspect = require('inspect')\nconst { LF } = require('text')\nconst { gray, silver, clear } = console.ansi\n\nconst opt = { colors: true, indent: true }\n\nconst log = function log(code) {\n    let res = inspect(code(), opt)\n    console.log(silver + 'log(' + inspect(code, opt) + silver + ')' + gray + ' // => ' + clear + res + LF)\n}\n\nmodule.exports = log\n",
+                "source": "const inspect = require('inspect')\nconst { gray, silver, clear } = console.ansi\n\nconst opt = { colors: true, indent: true }\n\nconst log = function log(code) {\n    let res = inspect(code(), opt)\n    console.log(silver + 'log(' + inspect(code, opt) + silver + ')' + gray + ' // => ' + clear + res)\n}\n\nmodule.exports = log\n",
                 "mapping": {},
                 "path": "{wes}/log"
             },
@@ -430,7 +430,7 @@ try {
                 "path": "{wes}/VBScript"
             },
             "version": {
-                "source": "module.exports = console.log('0.8.46')",
+                "source": "module.exports = console.log('0.8.47')",
                 "mapping": {},
                 "path": "{wes}/version"
             }
@@ -727,9 +727,17 @@ try {
                 }
             }
             if (fmt != null) {
-                var fs = require('*', 'filesystem')
-                var source = fs.readTextFileSync(current)
-                console.log('\n' + console.ansi.yellow + current)
+                var source
+                if (wes.main === 'REPL') {
+                    var file = Object.keys(wes.Modules).filter(function (key) {
+                        return key.startsWith('{')
+                    })[0]
+                    source = wes.Modules[file].source
+                } else {
+                    var fs = require('*', 'filesystem')
+                    source = fs.readTextFileSync(current)
+                    console.log('\n' + console.ansi.yellow + current)
+                }
                 fmt.format(source)
             }
         }
