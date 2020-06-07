@@ -1,7 +1,7 @@
 const FSO = require('Scripting.FileSystemObject')
 const fs = require('filesystem')
 const path = require('pathname')
-const { REG_LINE_SEP, REG_CRLF, REG_CR, CRLF, SPACE, NONE } = require('text')
+const { rLINE_SEP, rCRLF, rCR, CRLF, SPACE, NONE } = require('text')
 const { Enumerator } = require('JScript')
 
 let files = new Enumerator(FSO.GetFolder('lib').Files)
@@ -12,7 +12,7 @@ files.forEach((file) => {
     let filename = path.basename(file.name, '.js')
     let ext = path.extname(file.name)
     if (ext !== '.js') return
-    let source = fs.readTextFileSync(file.Path).replace(REG_CR, NONE)
+    let source = fs.readTextFileSync(file.Path).replace(rCR, NONE)
     result[filename] = { source, mapping: {}, path: `{wes}/${filename}` }
 })
 
@@ -23,14 +23,14 @@ result['version'] = {
 }
 
 let graph = JSON.stringify(result, null, 4)
-    .split(REG_LINE_SEP)
+    .split(rLINE_SEP)
     .map((v) => SPACE.repeat(8) + v)
     .join(CRLF)
 
 const log = require('log')
 
 let template = fs.readTextFileSync('src/template.js')
-let sep = REG_CRLF.test(template) ? CRLF : LF
+let sep = rCRLF.test(template) ? CRLF : LF
 let line = template.split(sep)
 const match = /^\s+var Modules = \{\}$/
 
