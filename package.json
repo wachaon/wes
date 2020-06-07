@@ -13,7 +13,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "wes /src/test"
+    "test": "wes src/test",
+    "build": "wes src/build"
   },
   "repository": {
     "type": "git",
