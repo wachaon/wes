@@ -385,7 +385,7 @@ try {
                 "path": "{wes}/install"
             },
             "JScript": {
-                "source": "const JScript = (function (language) {\n    const sc = require('ScriptControl')\n    sc.Language = language\n    return {\n        AddCode(code) {\n            sc.AddCode(code)\n        },\n        Run(name, ...args) {\n            return sc.run(name, ...args)\n        }\n    }\n})('JScript')\n\nconst { TypeName } = require('VBScript')\n\nJScript.AddCode(`\nfunction enumerator ( collection ) {\n    return new Enumerator( collection )\n}`)\n\nconst toArray = function JScript_toArray(col) {\n    let res = []\n    let Enum = JScript.Run('enumerator', col)\n    for (; !Enum.atEnd(); Enum.moveNext()) {\n        res.push(Enum.item())\n    }\n    Enum.moveFirst()\n    return res\n}\n\nclass Enumerator {\n    constructor(collection) {\n        let res = []\n        if (TypeName(collection) === 'Long') {\n            res = collection\n        } else {\n            res = toArray(collection)\n        }\n        return res\n    }\n}\n\nclass ActiveXObject {\n    constructor(progID) {\n        return WScript.CreateObject(progID)\n    }\n}\n\nmodule.exports = {\n    Enumerator,\n    ActiveXObject\n}\n",
+                "source": "const JScript = (function (language) {\n    const sc = require('ScriptControl')\n    sc.Language = language\n    return {\n        AddCode(code) {\n            sc.AddCode(code)\n        },\n        Run(name, ...args) {\n            return sc.run(name, ...args)\n        }\n    }\n})('JScript')\n\nconst { TypeName } = require('VBScript')\n\nJScript.AddCode(`\nfunction enumerator ( collection ) {\n    return new Enumerator( collection )\n}`)\n\nconst toArray = function JScript_toArray(col) {\n    let res = []\n    let Enum = JScript.Run('enumerator', col)\n    for (; !Enum.atEnd(); Enum.moveNext()) {\n        res.push(Enum.item())\n    }\n    Enum.moveFirst()\n    return res\n}\n\nclass Enumerator {\n    constructor(collection) {\n        let res = []\n        if (TypeName(collection) === 'Long') {\n            res = collection\n        } else {\n            res = toArray(collection)\n        }\n        return res\n    }\n}\n\nclass ActiveXObject {\n    constructor(progID) {\n        return WScript.CreateObject(progID)\n    }\n}\n\nmodule.exports = {\n    JScript,\n    Enumerator,\n    ActiveXObject\n}\n",
                 "mapping": {},
                 "path": "{wes}/JScript"
             },
@@ -425,12 +425,12 @@ try {
                 "path": "{wes}/typecheck"
             },
             "VBScript": {
-                "source": "const VBScript = (function (language) {\n    const sc = require('ScriptControl')\n    sc.Language = language\n    return {\n        AddCode(code) {\n            sc.AddCode(code)\n        },\n        Run(name, ...args) {\n            return sc.run(name, ...args)\n        }\n    }\n})('VBScript')\n\nVBScript.AddCode(`\nFunction getTypeName( obj )\n    getTypeName = TypeName( obj )\nEnd Function\n`)\nconst TypeName = function VBScript_TypeName(object) {\n    return VBScript.Run('getTypeName', object)\n}\n\nVBScript.AddCode(`\nFunction getVarType( obj )\n    getVarType = VarType( obj )\nEnd Function\n`)\nconst VarType = function VBScript_VarType(object) {\n    return VBScript.Run('getVarType', object)\n}\n\nconst Type = function VBScript_Type(object) {\n    let constant = [\n        'vbEmpty', // 0\n        'vbNull', // 1\n        'vbInteger', // 2\n        'vbLong', // 3\n        'vbSingle', // 4\n        'vbDouble', // 5\n        'vbCurrency', // 6\n        'vbDate', // 7\n        'vbString', // 8\n        'vbObject', // 9\n        'vbError', // 10\n        'vbBoolean', // 11\n        'vbVariant', // 12\n        'vbDataObject' // 13\n    ]\n    constant[17] = 'vbByte'\n    constant[8192] = 'vbArray'\n    let num = VarType(object)\n    return num > 8192 ? `${constant[num - 8192]}[]` : constant[num]\n}\n\nmodule.exports = {\n    TypeName,\n    VarType,\n    Type\n}\n",
+                "source": "const VBScript = (function (language) {\n    const sc = require('ScriptControl')\n    sc.Language = language\n    return {\n        AddCode(code) {\n            sc.AddCode(code)\n        },\n        Run(name, ...args) {\n            return sc.run(name, ...args)\n        }\n    }\n})('VBScript')\n\nVBScript.AddCode(`\nFunction getTypeName( obj )\n    getTypeName = TypeName( obj )\nEnd Function\n`)\nconst TypeName = function VBScript_TypeName(object) {\n    return VBScript.Run('getTypeName', object)\n}\n\nVBScript.AddCode(`\nFunction getVarType( obj )\n    getVarType = VarType( obj )\nEnd Function\n`)\nconst VarType = function VBScript_VarType(object) {\n    return VBScript.Run('getVarType', object)\n}\n\nconst Type = function VBScript_Type(object) {\n    let constant = [\n        'vbEmpty', // 0\n        'vbNull', // 1\n        'vbInteger', // 2\n        'vbLong', // 3\n        'vbSingle', // 4\n        'vbDouble', // 5\n        'vbCurrency', // 6\n        'vbDate', // 7\n        'vbString', // 8\n        'vbObject', // 9\n        'vbError', // 10\n        'vbBoolean', // 11\n        'vbVariant', // 12\n        'vbDataObject' // 13\n    ]\n    constant[17] = 'vbByte'\n    constant[8192] = 'vbArray'\n    let num = VarType(object)\n    return num > 8192 ? `${constant[num - 8192]}[]` : constant[num]\n}\n\nmodule.exports = {\n    VBScript,\n    TypeName,\n    VarType,\n    Type\n}\n",
                 "mapping": {},
                 "path": "{wes}/VBScript"
             },
             "version": {
-                "source": "module.exports = console.log('0.8.50')",
+                "source": "module.exports = console.log('0.8.51')",
                 "mapping": {},
                 "path": "{wes}/version"
             }
@@ -708,7 +708,8 @@ try {
             return !(
                 line.startsWith('   at Function code (Function code:') ||
                 line.startsWith('   at createModule (') ||
-                line.startsWith('   at require (')
+                line.startsWith('   at require (') ||
+                line.startsWith('   at req (')
             )
         })
         var current = wes.filestack.slice(-1)
