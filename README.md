@@ -1,5 +1,274 @@
 # WES
 
+*wes* は *Windows Script Host* で *ECMAScript* を実行するフレームワークです
+
+## Features
+
+-  スクリプトエンジンを *Chakra* に変更し *ECMAScript* を使用可能にします
+-  常に 32bit の *cscript.exe* を使用するので、64bit環境 の固有の不具合を回避します
+-  `require()` でモジュールを呼び出せます
+-  標準出力に色付き文字を出力できます
+-  ファイルのエンコードを自動で推測します
+
+## Features not resolved
+
+-  `WScript.Quit()` はプログラムを中断出来ず、エラーコードも返しません
+-  非同期処理
+-  `WScript.CreateObject()` の第二引数の *event prefix* の使用
+
+## Install
+
+```shell
+bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
+```
+
+## Usage
+
+コマンドラインにて `wes` に続けてプログラムの起点となるファイルを指定します。
+
+```shell
+wes index
+```
+
+また、*wes* には *REPL* が備わっているので、`wes` のみで起動させることで、
+コマンドラインに直接入力したスクリプトを実行出来ます。
+
+```shell
+wes
+```
+
+空白行を２つ入力するまでスクリプトの入力を受け付けます。*README.md* でのサンプルスクリプトの
+実行も *REPL* で確認出来ます。
+
+## Global
+
+*wes* には *JScript* には無い *Global Object* があります。
+
+### require
+
+*require* でモジュールを取得出来ます。*wes* ではモジュールファイルのエンコードを自動推測しますが、
+自動推測が上手く機能しない場合に第二引数でエンコードを指定出来ます。
+
+また `require('WScript.Shell')` の様に、*OLE* に対しても *require* で取得可能です。
+
+### module and module.exports
+
+`module.exports` に代入した値をモジュールの値としてエクスポート出来ます。
+
+### console
+
+*wes* では `WScript.Echo` や `WScript.StdErr.WriteLine` の代わりに *console* を使用します。
+
+#### console.log
+
+`console.log` でコマンドラインに文字を出力出来ます。また書式化文字列にも対応しています。
+
+書式化演算子 `%` 使用して書式化文字列を指定できます。
+第一引数に書式化演算子を含む書式化文字列を指定し、以降の引数には書式化演算子の分だけオブジェクトやリテラルを指定してください。
+
+| 書式化演算子 | 出力疑似コード                                          |
+|--------------|---------------------------------------------------------|
+| `%s`         | `String(val)`                                           |
+| `%d`         | `parseInt(val)`                                         |
+| `%f`         | `Number(val)`                                           |
+| `%j`         | `JSON.stringify(val)`                                   |
+| `%J`         | `JSON.stringify(val, null, 2)`                          |
+| `%o`         | `require('inspect')(val)`                               |
+| `%O`         | `require('inspect')(val, {indent: ture, colors: true})` |
+
+```javascript
+console.log( `item: %j`,  {name: 'apple', id: '001', price: 120 } )
+// => item: {"name":"apple","id":"001","price":120}
+```
+
+### console.ansi
+
+`console.ansi` にはあらかじめ *ANSI escape code* があります。
+使用するコンソールアプリケーションの種類や設定によって色や効果などは異なる場合があります。
+`console.log()` は出力の最後に `console.ansi.clear` を追加し、初期化されます。
+
+| プロパティ        | 値            |
+|-------------------|---------------|
+| `bold`            | `\u001B[1m`   |
+| `underscore`      | `\u001B[4m`   |
+| `blink`           | `\u001B[5m`   |
+| `reverse`         | `\u001B[7m`   |
+| `concealed`       | `\u001B[8m`   |
+| `black`           | `\u001B[30m`  |
+| `red`             | `\u001B[31m`  |
+| `green`           | `\u001B[32m`  |
+| `yellow`          | `\u001B[33m`  |
+| `blue`            | `\u001B[34m`  |
+| `magenta`         | `\u001B[35m`  |
+| `cyan`            | `\u001B[36m`  |
+| `silver`          | `\u001B[37m`  |
+| `gray`            | `\u001B[90m`  |
+| `brightRed`       | `\u001B[91m`  |
+| `brightGreen`     | `\u001B[92m`  |
+| `brightYellow`    | `\u001B[93m`  |
+| `brightBlue`      | `\u001B[94m`  |
+| `brightMagenta`   | `\u001B[95m`  |
+| `brightCyan`      | `\u001B[96m`  |
+| `white`           | `\u001B[97m`  |
+| `bgBlack`         | `\u001B[40m`  |
+| `bgRed`           | `\u001B[41m`  |
+| `bgGreen`         | `\u001B[42m`  |
+| `bgYellow`        | `\u001B[43m`  |
+| `bgBlue`          | `\u001B[44m`  |
+| `bgMagenta`       | `\u001B[45m`  |
+| `bgCyan`          | `\u001B[46m`  |
+| `bgSilver`        | `\u001B[47m`  |
+| `bgGray`          | `\u001B[100m` |
+| `bgBrightRed`     | `\u001B[101m` |
+| `bgBrightGreen`   | `\u001B[102m` |
+| `bgBrightYellow`  | `\u001B[103m` |
+| `bgBrightBlue`    | `\u001B[104m` |
+| `bgBrightMagenta` | `\u001B[105m` |
+| `bgBrightCyan`    | `\u001B[106m` |
+| `bgWhite`         | `\u001B[107m` |
+
+```javascript
+const message = 'File does not exist'
+console.log( console.ansi.brightRed + 'Error: ' + console.ansi.brightMagenta + message )
+```
+
+`console.ansi.color()` や `console.ansi.bgColor()` で色の作成ができます。
+引数は `255, 165, 0` などの *RGB* や `'#FFA500'` などの *color code* が使用できますが、`orange` などの *color name* は使用できません。
+
+```javascript
+const orange = console.ansi.color(255, 165, 0)
+console.log(orange + 'Hello World')
+```
+
+### Buffer
+
+### __dirname and __Filename
+
+## Standard module
+
+*wes* では基本的な処理を簡略化するための *Standard module* を搭載しています。
+
+### argv
+
+### pathname
+
+### filesystem
+
+### JScript
+
+### VBScript
+
+### inspect
+
+### httprequest
+
+### minitest
+
+### pipe
+
+### text
+
+### typecheck
+
+## Module bundle and install
+
+### bundle
+
+### install
+
+## External module
+
+ここではいくつかの外部モジュールを紹介します。
+
+### *@wachaon/fmt*
+
+*@wachaon/fmt* は *prettier* をバンドルしたもので、スクリプトのフォーマットをします。
+
+#### install
+
+```shell
+wes install @wachaon/fmt
+```
+
+#### usage
+
+ワーキングディレクトリに *.prettierrc* (JSONフォーマットのみ対応) があれば設定に反映させます。
+*fmt* では *CLI*（コマンドラインインターフェース）と *module* の両方で使用できます。
+
+*CLI* として使用する
+
+```shell
+wes @wachaon/fmt src/sample --write
+```
+
+| unnamed number | description |
+|---|---|
+| 0 | - |
+| 1 | 必須。フォーマットしたいファイル |
+
+| short name | long name | description |
+|---|---|---|
+| `-w` | `--write` | 上書きを許可する |
+
+`-w` もしくは `--write` の名前付き引数の指定があればフォーマットしたスクリプトでファイルを上書きします。
+
+*module*
+
+#### `option`
+
+```javascript
+{
+    parser: 'babel',
+    plugins: [babel]
+}
+```
+
+#### `format`
+
+| argument name | type | description |
+|---|---|---|
+| `source` | `string` | フォーマットしたい文字列 |
+| `option?` | `object` | *prettier* に渡すオプション |
+
+
+
+```javascript
+const { format } = require('@wachaon/fmt')
+const { readTextFileSync, writeTextFileSync } = require('filesystem')
+const { resolve } = require('pathname')
+
+const spec = resolve(process.cwd(), 'sample.js')
+let source = readTextFileSync(spec)
+source = format(source)
+console.log(writeTextFileSync(spec, source))
+```
+
+*@wachaon/fmt* はコマンドラインから直接実行も可能です。
+
+```shell
+wes @wachaon/fmt sample.js dist/sample.js --write
+```
+
+また、*wes* で *SyntaxError* が発生した場合に *@wachaon/fmt* をインストールしておけば
+どの部分で *SyntaxError* が発生したか *prettier* のエラーから確認出来ます。
+（正規表現での *SyntaxError* は *prettier* では確認できません。）
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 *WES* は *WSH* で *ECMAScript* の実行を可能とします。
 
 ## 特徴
