@@ -587,7 +587,8 @@ try {
             return !(
                 line.startsWith('   at Function code (Function code:') ||
                 line.startsWith('   at createModule (') ||
-                line.startsWith('   at require (')
+                line.startsWith('   at require (') ||
+                line.startsWith('   at req (')
             )
         })
         var current = wes.filestack.slice(-1)
