@@ -4,8 +4,11 @@ const fmt = require('fmt')
 
 const successColor = console.ansi.brightGreen
 
-const lib = readdirSync(resolve(process.cwd(), 'lib')).map((file) => resolve(process.cwd(), 'lib', file))
-const src = readdirSync(resolve(process.cwd(), 'src')).map((file) => resolve(process.cwd(), 'src', file))
+const libspec = resolve(process.cwd(), 'lib')
+const srcspec = resolve(process.cwd(), 'src')
+
+const lib = readdirSync(libspec).map((file) => resolve(libspec, file))
+const src = readdirSync(srcspec).map((file) => resolve(srcspec, file))
 const dir = [...lib, ...src, resolve(process.cwd(), 'wes.js')]
 
 dir.forEach((file) => {
