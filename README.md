@@ -73,11 +73,19 @@ console.log( `item: %j`,  {name: 'apple', id: '001', price: 120 } )
 // => item: {"name":"apple","id":"001","price":120}
 ```
 
-### console.ansi
 
-`console.ansi` にはあらかじめ *ANSI escape code* があります。
+### Buffer
+
+### __dirname and __Filename
+
+## Standard module
+
+*wes* では基本的な処理を簡略化するための *Standard module* を搭載しています。
+
+### ansi
+
+`ansi` には *ANSI escape code* があります。
 使用するコンソールアプリケーションの種類や設定によって色や効果などは異なる場合があります。
-`console.log()` は出力の最後に `console.ansi.clear` を追加し、初期化されます。
 
 | プロパティ        | 値            |
 |-------------------|---------------|
@@ -120,25 +128,19 @@ console.log( `item: %j`,  {name: 'apple', id: '001', price: 120 } )
 | `bgWhite`         | `\u001B[107m` |
 
 ```javascript
+const { brightRed, brightMagenta } = require('ansi')
 const message = 'File does not exist'
-console.log( console.ansi.brightRed + 'Error: ' + console.ansi.brightMagenta + message )
+console.log( brightRed + 'Error: ' + brightMagenta + message )
 ```
 
-`console.ansi.color()` や `console.ansi.bgColor()` で色の作成ができます。
+`ansi.color()` や `ansi.bgColor()` で色の作成ができます。
 引数は `255, 165, 0` などの *RGB* や `'#FFA500'` などの *color code* が使用できますが、`orange` などの *color name* は使用できません。
 
 ```javascript
-const orange = console.ansi.color(255, 165, 0)
+const { color } = require('ansi')
+const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
-
-### Buffer
-
-### __dirname and __Filename
-
-## Standard module
-
-*wes* では基本的な処理を簡略化するための *Standard module* を搭載しています。
 
 ### argv
 
