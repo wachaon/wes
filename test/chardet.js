@@ -1,4 +1,7 @@
 const { describe, it, assert, pass } = require('/lib/minitest')
+const NONE = ''
+const UNDER = '_'
+const rDASHg = '-'
 
 describe('# test chardet', () => {
     const { Enumerator } = require('JScript')
@@ -16,8 +19,8 @@ describe('# test chardet', () => {
     paths.forEach((file, i) => {
         const detect = chardet.detect(fs.readFileSync(file))
         it(names[i] + ' === ' + detect, () => {
-            const a = detect.toLowerCase().replace(/\-/g, '_')
-            const b = detect.toLowerCase().replace(/\-/g, '')
+            const a = detect.toLowerCase().replace(rDASHg, UNDER)
+            const b = detect.toLowerCase().replace(rDASHg, NONE)
             assert(
                 names[i] === a ||
                     names[i] === b ||
