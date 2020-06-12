@@ -14,6 +14,7 @@ describe('# test typecheck', () => {
             assert(isNull({}) === false)
         })
     })
+
     describe('## isString', () => {
         const { isString } = typecheck
         it('"wachaon"', () => {
@@ -26,6 +27,7 @@ describe('# test typecheck', () => {
             assert(isString(String(3.6)))
         })
     })
+
     describe('## isNumber', () => {
         const { isNumber } = typecheck
         it('5', () => {
@@ -41,6 +43,7 @@ describe('# test typecheck', () => {
             assert(isNumber('8') === false)
         })
     })
+
     describe('## isFunction', () => {
         const { isFunction } = typecheck
         it('function(){}', () => {
@@ -65,6 +68,7 @@ describe('# test typecheck', () => {
             )
         })
     })
+
     describe('## isBoolean', () => {
         const { isBoolean } = typecheck
         it('true', () => {
@@ -77,6 +81,7 @@ describe('# test typecheck', () => {
             assert(isBoolean(1) === false)
         })
     })
+
     describe('## isSymbol', () => {
         const { isSymbol } = typecheck
         it('Symbol()', () => {
@@ -86,6 +91,7 @@ describe('# test typecheck', () => {
             assert(isSymbol(Symbol.for(isSymbol)))
         })
     })
+
     describe('## isDate', () => {
         const { isDate } = typecheck
         it('new Date', () => {
@@ -99,6 +105,7 @@ describe('# test typecheck', () => {
             assert(isDate(new Date().getTime()) === false)
         })
     })
+
     describe('## isRegExp', () => {
         const { isRegExp } = typecheck
         it('/RegExp/', () => {
@@ -111,6 +118,7 @@ describe('# test typecheck', () => {
             assert(isRegExp('RegExp') === false)
         })
     })
+
     describe('## isArray', () => {
         const { isArray } = typecheck
         it('[]', () => {
@@ -133,6 +141,7 @@ describe('# test typecheck', () => {
             )
         })
     })
+
     describe('## isObject', () => {
         const { isObject } = typecheck
         it('{}', () => {
@@ -154,6 +163,7 @@ describe('# test typecheck', () => {
             assert(isObject(function() {}) === false)
         })
     })
+
     describe('## isClass', () => {
         const { isClass } = typecheck
         it('String', () => {
