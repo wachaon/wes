@@ -25,40 +25,22 @@ describe('# test pathname', () => {
 
     describe('## test normalize', () => {
         it('d://bin/github//wes////wes.js', () => {
-            assert(
-                path.normalize('d://bin/github//wes////wes.js') ===
-                    'D:/bin/github/wes/wes.js'
-            )
+            assert(path.normalize('d://bin/github//wes////wes.js') === 'D:/bin/github/wes/wes.js')
         })
         it('d://bin/github//./wes////wes.js', () => {
-            assert(
-                path.normalize('d://bin/github//./wes////wes.js') ===
-                    'D:/bin/github/wes/wes.js'
-            )
+            assert(path.normalize('d://bin/github//./wes////wes.js') === 'D:/bin/github/wes/wes.js')
         })
         it('d://bin/github//../wes////wes.js', () => {
-            assert(
-                path.normalize('d://bin/github//../wes////wes.js') ===
-                    'D:/bin/wes/wes.js'
-            )
+            assert(path.normalize('d://bin/github//../wes////wes.js') === 'D:/bin/wes/wes.js')
         })
         it('d://bin/github/..//../wes////wes.js', () => {
-            assert(
-                path.normalize('d://bin/github/..//../wes////wes.js') ===
-                    'D:/wes/wes.js'
-            )
+            assert(path.normalize('d://bin/github/..//../wes////wes.js') === 'D:/wes/wes.js')
         })
         it('bin/github/wes////wes.js', () => {
-            assert(
-                path.normalize('bin/github/wes////wes.js') ===
-                    'bin/github/wes/wes.js'
-            )
+            assert(path.normalize('bin/github/wes////wes.js') === 'bin/github/wes/wes.js')
         })
         it('github/.././../wes////wes.js', () => {
-            assert(
-                path.normalize('github/.././../wes////wes.js') ===
-                    '../wes/wes.js'
-            )
+            assert(path.normalize('github/.././../wes////wes.js') === '../wes/wes.js')
         })
     })
 
@@ -76,10 +58,7 @@ describe('# test pathname', () => {
             assert(path.isAbsolute('./wes.js') === false)
         })
         it('d:/bin/github/../Desktop/log/log.json', () => {
-            assert(
-                path.isAbsolute('d:/bin/github/../Desktop/log/log.json') ===
-                    true
-            )
+            assert(path.isAbsolute('d:/bin/github/../Desktop/log/log.json') === true)
         })
     })
 })
