@@ -12,7 +12,6 @@ describe('# test chardet', () => {
     const encodeings = new Enumerator(folder.Files)
     const names = encodeings.map(file => file.name)
     const paths = encodeings.map(file => file.Path)
-    //.map( path => fs.readTextFileSync( path ) )
 
     paths.forEach((file, i) => {
         const detect = chardet.detect(fs.readFileSync(file))
