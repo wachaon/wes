@@ -25,11 +25,13 @@ describe('# ECMA2016', () => {
             assert(['a', 'b', 'c'].includes('a', 1) === false)
         })
     })
+
     describe('## Exponentiation Operator', () => {
         it('2 ** 2 === 4', () => {
             assert(2 ** 2 === 4)
         })
     })
+
     describe('## Exponentiation Operator', () => {
         it('let a = 2; a **= 2 === 4', () => {
             let a = 2
