@@ -4,9 +4,7 @@ const { describe, it, assert, pass } = require('/lib/minitest')
 describe('#test Enumerator', () => {
     it('/lib/ files', () => {
         const FSO = require('Scripting.FileSystemObject')
-        let files = new Enumerator(FSO.GetFolder(`./lib`).Files).map(
-            v => v.name
-        )
+        let files = new Enumerator(FSO.GetFolder(`./lib`).Files).map((v) => v.name)
         let list = [
             'ansi.js',
             'argv.js',
@@ -33,7 +31,6 @@ describe('#test Enumerator', () => {
             'typecheck.js',
             'VBScript.js'
         ]
-        //console.log( JSON.stringify( files, null, 4 ) )
         assert(JSON.stringify(files) === JSON.stringify(list))
     })
 })
