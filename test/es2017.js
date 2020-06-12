@@ -1,4 +1,3 @@
-const typecheck = require('/lib/typecheck')
 const { describe, it, assert, pass } = require('/lib/minitest')
 
 describe('# ECMA2017', () => {
