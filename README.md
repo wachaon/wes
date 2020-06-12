@@ -14,9 +14,11 @@
 
 -  `WScript.Quit()` はプログラムを中断出来ず、エラーコードも返しません
 -  非同期処理
--  `WScript.CreateObject()` の第二引数の *event prefix* の使用
+-  `WScript.CreateObject()` の第二引数の *event prefix* の活用
 
 ## Install
+
+コマンドプロンプトを起動して次のコマンドを入力してください。
 
 ```shell
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -25,6 +27,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ## Usage
 
 コマンドラインにて `wes` に続けてプログラムの起点となるファイルを指定します。
+スクリプトの拡張子 *.js* の入力は省くことができます。
 
 ```shell
 wes index
@@ -47,9 +50,9 @@ wes
 ### require
 
 *require* でモジュールを取得出来ます。*wes* ではモジュールファイルのエンコードを自動推測しますが、
-自動推測が上手く機能しない場合に第二引数でエンコードを指定出来ます。
+正しく推測しない場合に第二引数でエンコードを指定します。
 
-また `require('WScript.Shell')` の様に、*OLE* に対しても *require* で取得可能です。
+また、`require('WScript.Shell')` の様に *OLE* に対しても *require* で取得可能です。
 
 ### module and module.exports
 
@@ -64,17 +67,6 @@ wes
 `console.log` でコマンドラインに文字を出力出来ます。また書式化文字列にも対応しています。
 
 書式化演算子 `%` 使用して書式化文字列を指定できます。
-第一引数に書式化演算子を含む書式化文字列を指定し、以降の引数には書式化演算子の分だけオブジェクトやリテラルを指定してください。
-
-| 書式化演算子 | 出力疑似コード                                          |
-|--------------|---------------------------------------------------------|
-| `%s`         | `String(val)`                                           |
-| `%d`         | `parseInt(val)`                                         |
-| `%f`         | `Number(val)`                                           |
-| `%j`         | `JSON.stringify(val)`                                   |
-| `%J`         | `JSON.stringify(val, null, 2)`                          |
-| `%o`         | `require('inspect')(val)`                               |
-| `%O`         | `require('inspect')(val, {indent: ture, colors: true})` |
 
 ```javascript
 console.log( `item: %j`,  {name: 'apple', id: '001', price: 120 } )
