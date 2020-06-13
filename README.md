@@ -4,17 +4,17 @@
 
 ## Features
 
--  スクリプトエンジンを *Chakra* に変更し *ECMAScript* を使用可能にします
--  常に 32bit の *cscript.exe* を使用するので、64bit環境 の固有の不具合を回避します
--  `require()` でモジュールを呼び出せます
+-  スクリプトエンジンを *Chakra* に変更し *ECMA2015+* の実行を可能にします
+-  32bit の *cscript.exe* を使用するので、64bit環境 の固有の不具合を回避します
+-  `require` でモジュールを呼び出せます
 -  標準出力に色付き文字を出力できます
 -  ファイルのエンコードを自動で推測します
 
 ## Features not resolved
 
--  `WScript.Quit()` はプログラムを中断出来ず、エラーコードも返しません
+-  `WScript.Quit` はプログラムを中断出来ず、エラーコードも返しません
 -  非同期処理
--  `WScript.CreateObject()` の第二引数の *event prefix* の活用
+-  `WScript.CreateObject` の第二引数の *event prefix* の活用
 
 ## Install
 
@@ -27,7 +27,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ## Usage
 
 コマンドラインにて `wes` に続けてプログラムの起点となるファイルを指定します。
-スクリプトの拡張子 *.js* の入力は省くことができます。
+スクリプトの拡張子 *.js* のは省略できます。
 
 ```shell
 wes index
@@ -45,7 +45,7 @@ wes
 
 ## Global
 
-*wes* には *JScript* には無い *Global Object* があります。
+*wes* には *JScript* には無い *built-in objects* があります。
 
 ### require
 
@@ -54,18 +54,21 @@ wes
 
 また、`require('WScript.Shell')` の様に *OLE* に対しても *require* で取得可能です。
 
+```javascript
+const ie = require('InternetExplorer.Application')
+ie.Visible = true
+ie.Navigate('https://google.com/')
+```
+
 ### module and module.exports
 
-`module.exports` に代入した値をモジュールの値としてエクスポート出来ます。
+`module.exports` に代入した値を `require` の戻り値としてエクスポートします。
 
 ### console
 
 *wes* では `WScript.Echo` や `WScript.StdErr.WriteLine` の代わりに *console* を使用します。
 
-#### console.log
-
 `console.log` でコマンドラインに文字を出力出来ます。また書式化文字列にも対応しています。
-
 書式化演算子 `%` 使用して書式化文字列を指定できます。
 
 ```javascript
@@ -73,14 +76,25 @@ console.log( `item: %j`,  {name: 'apple', id: '001', price: 120 } )
 // => item: {"name":"apple","id":"001","price":120}
 ```
 
-
 ### Buffer
 
-### __dirname and __Filename
+バッファーを扱うことができます。
+
+```javascript
+console.log('Hello World %O', Buffer.from('Hello World'))
+```
+
+### __dirname and __filename
+
+`__dirname` `__filename`
+
+```javascript
+console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+```
 
 ## Standard module
 
-*wes* では基本的な処理を簡略化するための *Standard module* を搭載しています。
+*wes* では基本的な処理を簡略化するための *built-in modules* を搭載しています。
 
 ### ansi
 
