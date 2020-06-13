@@ -493,11 +493,12 @@ try {
             platform: 'win32'
         }
         function req(moduleID) {
+            var sep = '/'
             var mod = Modules[moduleID]
-            var entry = mod.path || '/'
+            var entry = mod.path || sep
             if (!has(mod, 'exports')) {
                 if (!has(mod, 'module')) {
-                    var dirname = entry //.split( '/' )
+                    var dirname = entry.split(sep).slice(0, -1).join(sep)
                     mod.module = { exports: {} }
                     mod.mapping = mod.mapping || {}
                     new Function(
