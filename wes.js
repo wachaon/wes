@@ -415,7 +415,7 @@ try {
                 "path": "{wes}/pipe"
             },
             "REPL": {
-                "source": "const CLI = wes.Modules[wes.main].path === __filename\nif (!CLI) throw new Error('REPL can only be used on the command line')\n\nconsole.log(console.ansi.brightBlue + 'wes REPL mode:')\n\nconst stdin = {\n    event: {},\n    on(type, callback) {\n        const ev = this.event\n        ev[type] = ev[type] || []\n        ev[type].push(callback)\n    },\n    emit(type, ...args) {\n        if (!this.event[type]) return\n        const evs = this.event[type]\n        return evs.map((ev) => ev(...args))\n    }\n}\n\nlet input_string = ''\n\nstdin.on('data', (chunk) => {\n    input_string += chunk + '\\n'\n})\n\nstdin.on('end', () => {\n    console.print('\\u001B[1A')\n    const id = require('genUUID')()\n    wes.Modules[id] = {\n        source: input_string,\n        path: require('pathname').resolve(process.cwd(), id),\n        mapping: {}\n    }\n\n    console.log(console.ansi.magenta + 'result:')\n    const result = require(id)\n\n    if (Object.prototype.toString.call(result) === '[object Object]' && Object.keys(result).length === 0) {\n    } else console.log('%O', result)\n})\n\nwhile (true) {\n    if (WScript.StdIn.AtEndOfStream) {\n        stdin.emit('end')\n        break\n    } else {\n        const data = WScript.StdIn.ReadLine()\n        if (data === '') {\n            const data = WScript.StdIn.ReadLine()\n            if (data === '') {\n                stdin.emit('end')\n                break\n            } else stdin.emit('data', '\\n' + data)\n        }\n        stdin.emit('data', data)\n    }\n}\n",
+                "source": "const CLI = wes.Modules[wes.main].path === __filename\nif (!CLI) throw new Error('REPL can only be used on the command line')\n\nconsole.log(console.ansi.brightBlue + 'wes REPL mode:')\n\nconst stdin = {\n    event: {},\n    on(type, callback) {\n        const ev = this.event\n        ev[type] = ev[type] || []\n        ev[type].push(callback)\n    },\n    emit(type, ...args) {\n        if (!this.event[type]) return\n        const evs = this.event[type]\n        return evs.map((ev) => ev(...args))\n    }\n}\n\nlet input_string = ''\n\nstdin.on('data', (chunk) => {\n    input_string += chunk + '\\n'\n})\n\nstdin.on('end', () => {\n    console.print('\\u001B[1A')\n    const id = require('genUUID')()\n    wes.Modules[id] = {\n        source: input_string,\n        path: require('pathname').resolve(process.cwd(), id + '.js'),\n        mapping: {}\n    }\n\n    console.log(console.ansi.magenta + 'result:')\n    const result = require(id)\n\n    if (Object.prototype.toString.call(result) === '[object Object]' && Object.keys(result).length === 0) {\n    } else console.log('%O', result)\n})\n\nwhile (true) {\n    if (WScript.StdIn.AtEndOfStream) {\n        stdin.emit('end')\n        break\n    } else {\n        const data = WScript.StdIn.ReadLine()\n        if (data === '') {\n            const data = WScript.StdIn.ReadLine()\n            if (data === '') {\n                stdin.emit('end')\n                break\n            } else stdin.emit('data', '\\n' + data)\n        }\n        stdin.emit('data', data)\n    }\n}\n",
                 "mapping": {},
                 "path": "{wes}/REPL"
             },
@@ -435,7 +435,7 @@ try {
                 "path": "{wes}/VBScript"
             },
             "version": {
-                "source": "module.exports = console.log('0.8.57')",
+                "source": "module.exports = console.log('0.8.58')",
                 "mapping": {},
                 "path": "{wes}/version"
             }
@@ -619,11 +619,12 @@ try {
             platform: 'win32'
         }
         function req(moduleID) {
+            var sep = '/'
             var mod = Modules[moduleID]
-            var entry = mod.path || '/'
+            var entry = mod.path || sep
             if (!has(mod, 'exports')) {
                 if (!has(mod, 'module')) {
-                    var dirname = entry //.split( '/' )
+                    var dirname = entry.split(sep).slice(0, -1).join(sep)
                     mod.module = { exports: {} }
                     mod.mapping = mod.mapping || {}
                     new Function(
