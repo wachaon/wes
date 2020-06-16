@@ -4,9 +4,9 @@
 
 ## Features
 
--  スクリプトエンジンを *Chakra* に変更し *ECMA2015+* の実行を可能にします
+-  スクリプトエンジンを *Chakra* に変更し *ECMAScript2015+* の実行を可能にします
 -  32bit の *cscript.exe* を使用するので、64bit環境 の固有の不具合を回避します
--  `require` でモジュールを呼び出せます
+-  `require` でモジュールをインポートできます
 -  標準出力に色付き文字を出力できます
 -  ファイルのエンコードを自動で推測します
 
@@ -18,11 +18,16 @@
 
 ## Install
 
+*wes* に必要なのは *wes.js* のファイルのみです。
 コマンドプロンプトを起動して次のコマンドを入力してください。
 
 ```shell
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
+
+*wes* は実装として *WScript.Shell* の `SendKeys` を使用します。
+*wes.js* を保存するディレクトリのパスに *ascii* 以外文字が含まれており `SendKeys` で正しく処理出来ない場合は
+*wes.js* の保存先を変更してください。
 
 ## Usage
 
@@ -43,21 +48,28 @@ wes
 空白行を２つ入力するまでスクリプトの入力を受け付けます。*README.md* でのサンプルスクリプトの
 実行も *REPL* で確認出来ます。
 
-## Global
+
+
+## built-in objects
 
 *wes* には *JScript* には無い *built-in objects* があります。
 
 ### require
 
-*require* でモジュールを取得出来ます。*wes* ではモジュールファイルのエンコードを自動推測しますが、
+*require* でモジュールをインポートします。*wes* ではモジュールファイルのエンコードを自動推測しますが、
 正しく推測しない場合に第二引数でエンコードを指定します。
 
-また、`require('WScript.Shell')` の様に *OLE* に対しても *require* で取得可能です。
+また、`require('WScript.Shell')` の様に *OLE* に対しても *require* でインポート可能です。
 
 ```javascript
+const WShell = require('WScript.Shell')
 const ie = require('InternetExplorer.Application')
 ie.Visible = true
 ie.Navigate('https://google.com/')
+while( ie.Busy || ie.readystate != 4 ) {
+    WScript.Sleep( 100 )
+}
+WShell.AppActivate('Google')
 ```
 
 ### module and module.exports
@@ -73,7 +85,6 @@ ie.Navigate('https://google.com/')
 
 ```javascript
 console.log( `item: %j`,  {name: 'apple', id: '001', price: 120 } )
-// => item: {"name":"apple","id":"001","price":120}
 ```
 
 ### Buffer
@@ -81,74 +92,37 @@ console.log( `item: %j`,  {name: 'apple', id: '001', price: 120 } )
 バッファーを扱うことができます。
 
 ```javascript
-console.log('Hello World %O', Buffer.from('Hello World'))
+const content = 'Hello World'
+const buff = Buffer.from(content)
+console.log(`${content} %O`, buff)
 ```
 
 ### __dirname and __filename
 
-`__dirname` `__filename`
+`__filename` は現在実行しているモジュールファイルのパスで `__dirname` はそのディレクトリを指します。
 
 ```javascript
 console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 ```
 
-## Standard module
+## built-in modules
 
 *wes* では基本的な処理を簡略化するための *built-in modules* を搭載しています。
 
 ### ansi
 
-`ansi` には *ANSI escape code* があります。
+`ansi` には *ANSI escape code* があり、標準出力の色や効果を変更できます。
 使用するコンソールアプリケーションの種類や設定によって色や効果などは異なる場合があります。
 
-| プロパティ        | 値            |
-|-------------------|---------------|
-| `bold`            | `\u001B[1m`   |
-| `underscore`      | `\u001B[4m`   |
-| `blink`           | `\u001B[5m`   |
-| `reverse`         | `\u001B[7m`   |
-| `concealed`       | `\u001B[8m`   |
-| `black`           | `\u001B[30m`  |
-| `red`             | `\u001B[31m`  |
-| `green`           | `\u001B[32m`  |
-| `yellow`          | `\u001B[33m`  |
-| `blue`            | `\u001B[34m`  |
-| `magenta`         | `\u001B[35m`  |
-| `cyan`            | `\u001B[36m`  |
-| `silver`          | `\u001B[37m`  |
-| `gray`            | `\u001B[90m`  |
-| `brightRed`       | `\u001B[91m`  |
-| `brightGreen`     | `\u001B[92m`  |
-| `brightYellow`    | `\u001B[93m`  |
-| `brightBlue`      | `\u001B[94m`  |
-| `brightMagenta`   | `\u001B[95m`  |
-| `brightCyan`      | `\u001B[96m`  |
-| `white`           | `\u001B[97m`  |
-| `bgBlack`         | `\u001B[40m`  |
-| `bgRed`           | `\u001B[41m`  |
-| `bgGreen`         | `\u001B[42m`  |
-| `bgYellow`        | `\u001B[43m`  |
-| `bgBlue`          | `\u001B[44m`  |
-| `bgMagenta`       | `\u001B[45m`  |
-| `bgCyan`          | `\u001B[46m`  |
-| `bgSilver`        | `\u001B[47m`  |
-| `bgGray`          | `\u001B[100m` |
-| `bgBrightRed`     | `\u001B[101m` |
-| `bgBrightGreen`   | `\u001B[102m` |
-| `bgBrightYellow`  | `\u001B[103m` |
-| `bgBrightBlue`    | `\u001B[104m` |
-| `bgBrightMagenta` | `\u001B[105m` |
-| `bgBrightCyan`    | `\u001B[106m` |
-| `bgWhite`         | `\u001B[107m` |
-
 ```javascript
-const { brightRed, brightMagenta } = require('ansi')
+const { brightRed, yellow } = require('ansi')
 const message = 'File does not exist'
-console.log( brightRed + 'Error: ' + brightMagenta + message )
+console.log( brightRed + 'Error: ' + yellow + message )
 ```
 
-`ansi.color()` や `ansi.bgColor()` で色の作成ができます。
-引数は `255, 165, 0` などの *RGB* や `'#FFA500'` などの *color code* が使用できますが、`orange` などの *color name* は使用できません。
+また、`ansi.color()` や `ansi.bgColor()` で独自の色の作成ができます。
+引数は `255, 165, 0` などの *RGB* や `'#FFA500'` などの *color code* を使用します。
+`orange` などの *color name* は使用できません。
 
 ```javascript
 const { color } = require('ansi')
@@ -158,31 +132,204 @@ console.log(orange + 'Hello World')
 
 ### argv
 
+コマンドライン引数のを取得します。
+`cscript.exe` のコマンドライン引数は `/` で名前付き引数を宣言しますが、*wes* では `-` および `--` で
+名前付き引数を宣言します。
+
+*argv.unnamed* および *argv.named* はコマンドライン引数の値の型を *String* *Number* *Boolean* の何れかにキャストします。
+
+*REPL* と一緒にコマンドライン引数を入力します。
+
+```shell
+wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
+```
+
+*REPL* で次のスクリプトを実行します。
+
+```javascript
+const argv = require('argv')
+console.log(`argv: %O
+argv.unnamed: %O
+argv.named: %O`,
+argv, argv.unnamed, argv.named)
+```
+
 ### pathname
+
+パスの操作をします。
+
+```javascript
+const path = require('pathname')
+const file = path.resolve(__dirname, 'index.js')
+console.log('file %O', file)
+```
 
 ### filesystem
 
+ファイルの操作やディレクトリの操作をします。
+`readTextFileSync` はファイルのエンコードを自動推測して読み込みます。
+
+```javascript
+const fs = require('filesystem')
+const path = require('pathname')
+const readme = path.resolve(__dirname, 'README.md')
+const contents = fs.readTextFileSync(readme)
+console.log(contents)
+```
+
 ### JScript
+
+スクリプトエンジンを *Chakra* に変更すると、*JScript* 固有の *Enumerator* などが使用できなくなります。
+ビルトインモジュールの *JScript* はそれらを使用可能にします。
+ただし、*Enumerator* は Enumeratorオブジェクトではなく *Array* を返します。
+
+```javascript
+const { Enumerator, ActiveXObject } = require('JScript')
+const FSO = new ActiveXObject('Scripting.FileSystemObject')
+const dir = FSO.getFolder(__dirname).Files
+const files = new Enumerator(dir)
+files.forEach(file => console.log(file.Name))
+```
 
 ### VBScript
 
-### inspect
+*VBScript* は *JScript* にはない機能のいくつかを提供します。
+
+```javascript
+const { TypeName } = require('VBScript')
+const FSO = require('Scripting.FileSystemObject')
+console.log(TypeName(FSO))
+```
 
 ### httprequest
 
+*httprequest* はその名の通り *http request* を発行します。
+
+```javascript
+const request = require('lib/httprequest')
+const content = request('GET', 'http://weather.livedoor.com/forecast/webservice/json/v1?city=130010')
+console.log('%O', JSON.parse(content))
+```
+
 ### minitest
+
+*minitest* は簡易的なテストを記述できます。
+
+```javascript
+const { describe, it, assert } = require('minitest')
+
+function add (a, b) {
+  return a + b
+}
+
+describe( '# calc test', () => {
+  it('add(2, 5) === 7', () => {
+    assert(add(2, 5) === 7)
+  })
+})
+```
 
 ### pipe
 
-### text
+*pipe* はパイプ処理を簡素化します
+
+```javascript
+const pipe = require('pipe')
+
+function add (a, b) {
+    return b + a
+}
+
+function sub (a, b) {
+    return b - a
+}
+
+const add5 = add.bind(null, 5)
+const sub3 = sub.bind(null, 3)
+
+pipe()
+  .use(add5)
+  .use(sub3)
+  .process(10, (err, res) => console.log('res: %O', res))
+```
 
 ### typecheck
 
+スクリプトの型の判定をします。
+
+```javascript
+const { isString, isNumber, isBoolean } = require('typecheck')
+
+console.log('isString("ECMAScript") // => %O', isString("ECMAScript"))
+console.log('isNumber(43.5) // => %O', isNumber(43.5))
+console.log('(isBoolean(false) // => %O', isBoolean(false))
+```
+
 ## Module bundle and install
+
+*install* では *github* で公開されている *wes* 用のモジュールをインストール出来ます。
+モジュールを公開する為には *github repository* が必要になります。
+またリポジトリ名とローカルのディレクトリ名は同名にしてください。
 
 ### bundle
 
+*wes* では *github* で公開されているモジュールを取り込むことができます。
+モジュールを公開するにあたり、*bundle* モジュールは必要なモジュールをバンドルし、*install* モジュールで取り込める形式に変更します。
+
+安全性を考え、*wes* ではスクリプトの直接的な取り込みをさせないため、*bundle* モジュールにて *.json* ファイルを作成します。
+
+モジュールをバンドルさせるにはいくつかの条件があります。
+
+1. 一つの *repository* に公開できるモジュールは一つになります。
+1.  *github* のリポジトリ名とローカルのワーキングディレクトリ名は同名である必要があります。
+1. 第三者にモジュールを公開する場合にはリポジトリはパブリックである必要があります。
+1. *wes* ではスクリプトの静的解釈はしないので、`if` ステートメントなど特定条件時のみに `require` をしたモジュールはバンドルされない可能性があります。
+1. *.json* ファイルはワーキングディレクトリに *directory_name.json* という名前で作成されます。ファイル名の変更やファイルを移動するとインストールできません。
+1. `node_modules/directory_name` をバンドルする場合 `directory_name.json` を参照するのでバンドルが失敗します。
+
 ### install
+
+*github* に公開されている *wes* 用のモジュールファイルをインストールするのに使用します。
+
+## usage
+
+*install* には `@author/repository` という書式で引数を渡します
+
+```shell
+wes install @wachaon/fmt
+```
+
+*install* にはオプションがあります
+
+| オプション名 | ショートオプション名 | 解説                                                  |
+|--------------|----------------------|-------------------------------------------------------|
+| `--bare`     | `-b`                 | *@author* フォルダを作成しない                        |
+| `--global`   | `-g`                 | *wes.js* があるフォルダにモジュールをインストールする |
+
+`--bare` オプションは `require` の引数を `author@repository` から `repository` に省略できます。
+`--global` オプションはインストールしたモジュールを全てのスクリプトから利用できます。
+上記のオプションは *wes* のセキュリティーオプション `--unsafe` もしくは `--dangerous` と
+同時に指定する必要があります。
+
+
+# プライベートリポジトリのモジュールをインストール
+*install* は *github* のパブリックリポジトリのモジュールだけでなく、プライベートリポジトリでもインストール可能です。
+
+*install* では `author@repository` でモジュールを指定します。
+実装では下記をダウンロードしています。
+
+```javascript
+`https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
+```
+
+ブラウザでプライベートリポジトリの *raw* にアクセスすると *token* が表示されますので、
+その *token* をコピーして使用します。
+
+*token* が有効な時間内にコマンドラインで実行すれば、プライベートリポジトリのモジュールもインストールできます。
+
+```shell
+wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
+```
 
 ## External module
 
@@ -191,6 +338,8 @@ console.log(orange + 'Hello World')
 ### *@wachaon/fmt*
 
 *@wachaon/fmt* は *prettier* をバンドルしたもので、スクリプトのフォーマットをします。
+また、*@wachaon/fmt* がインストールされている状態で `SyntaxError` が発生した場合に
+そのエラー箇所を提示できます。
 
 #### install
 
@@ -200,7 +349,7 @@ wes install @wachaon/fmt
 
 #### usage
 
-ワーキングディレクトリに *.prettierrc* (JSONフォーマットのみ対応) があれば設定に反映させます。
+ワーキングディレクトリに *.prettierrc* (JSONフォーマット) があれば設定に反映させます。
 *fmt* では *CLI*（コマンドラインインターフェース）と *module* の両方で使用できます。
 
 *CLI* として使用する
@@ -250,16 +399,6 @@ let source = readTextFileSync(spec)
 source = format(source)
 console.log(writeTextFileSync(spec, source))
 ```
-
-*@wachaon/fmt* はコマンドラインから直接実行も可能です。
-
-```shell
-wes @wachaon/fmt sample.js dist/sample.js --write
-```
-
-また、*wes* で *SyntaxError* が発生した場合に *@wachaon/fmt* をインストールしておけば
-どの部分で *SyntaxError* が発生したか *prettier* のエラーから確認出来ます。
-（正規表現での *SyntaxError* は *prettier* では確認できません。）
 
 
 
@@ -314,10 +453,6 @@ wes index.js
 ```
 
 *wes.js* が cpu の 32/64bit の判断、実行エンジンを *chakra* に変更、色付き文字を出力するために ` | echo off` を付加して、起点となるファイルを実行します。
-
-
-
-
 
 ## console
 
