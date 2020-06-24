@@ -316,7 +316,7 @@ try {
         var Modules = {}
 
         // util
-        function genUUID() {
+        function genGUID() {
             var typelib = WScript.CreateObject('Scriptlet.Typelib')
             return typelib.GUID.replace(/[^\}]+$/, '')
         }
@@ -566,7 +566,7 @@ try {
                     'no module:\n' + 'caller: ' + caller + '\nquery: ' + query + '\n' + JSON.stringify(areas, null, 2)
                 )
 
-            var modId = genUUID()
+            var modId = genGUID()
             if (wes.main == null) wes.main = modId
             var mod = createModule(modId, entry, query, parentModule, encode)
             mod.exports = mod.module.exports
