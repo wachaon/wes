@@ -1,7 +1,7 @@
 const { describe, it, assert, pass } = require('/lib/minitest')
 const NONE = ''
 const UNDER = '_'
-const rDASHg = '-'
+const rDASHg = /-/g
 
 describe('# test chardet', () => {
     const { Enumerator } = require('JScript')
