@@ -15,6 +15,7 @@ describe('#test Enumerator', () => {
             'console.js',
             'day.js',
             'debug.js',
+            'event.js',
             'filesystem.js',
             'genGUID.js',
             'hex.js',
