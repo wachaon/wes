@@ -55,7 +55,7 @@ wes
 
 | named             | description                                       |
 |-------------------|---------------------------------------------------|
-| `--monotone`      | 色付き文字列を抑制します                          |
+| `--monotone`      | *ANSI escape code* を排除します                   |
 | `--safe`          | スクリプトを安全モードで実行します                |
 | `--usual`         | スクリプトを通常モードで実行します (デフォルト)   |
 | `--unsafe`        | スクリプトを安全ではないモードで実行します        |
@@ -247,7 +247,7 @@ console.log(TypeName(FSO))
 *httprequest* はその名の通り *http request* を発行します。
 
 ```javascript
-const request = require('lib/httprequest')
+const request = require('httprequest')
 const content = request('GET', 'http://weather.livedoor.com/forecast/webservice/json/v1?city=130010')
 console.log('%O', JSON.parse(content))
 ```
