@@ -97,9 +97,9 @@ describe('# test typecheck', () => {
         it('new Date', () => {
             assert(isDate(new Date()))
         })
-        it('new Day', () => {
+        it('new Day not Date', () => {
             const Day = require('day')
-            assert(isDate(new Day()))
+            assert(!isDate(new Day()))
         })
         it('isDate( new Date().getTime() ) === false', () => {
             assert(isDate(new Date().getTime()) === false)
