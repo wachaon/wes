@@ -1,6 +1,6 @@
 const { Enumerator } = require('/lib/JScript')
 const fs = require('/lib/filesystem')
-const { brightGreen, brightRed } = console.ansi
+const { brightGreen, brightRed } = require('ansi')
 
 const FSO = require('Scripting.FileSystemObject')
 let files = new Enumerator(FSO.GetFolder(`./test`).Files).map((v) => v.path)
