@@ -1,8 +1,9 @@
 const { readdirSync, readTextFileSync, writeTextFileSync } = require('filesystem')
 const { resolve } = require('pathname')
 const fmt = require('fmt')
+const ansi = require('ansi')
 
-const successColor = console.ansi.brightGreen
+const successColor = ansi.brightGreen
 
 const libspec = resolve(process.cwd(), 'lib')
 const srcspec = resolve(process.cwd(), 'src')
