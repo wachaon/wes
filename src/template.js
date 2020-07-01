@@ -137,14 +137,9 @@ try {
         return module.exports
     })()
 
-    var console = (function () {
+    var ansi = (function () {
         var module = { exports: {} }
         ;(function () {
-            var NONE = ''
-            var SPACE = ' '
-            var rSPECIFIER = /(%[sdfoj])/i
-            var rSEQ = /\u001B\[[\d;]+m/g
-
             function color(red, green, blue) {
                 var args = Array.prototype.slice.call(arguments)
                 if (args.length === 1 && args[0].startsWith('#')) {
@@ -165,7 +160,31 @@ try {
                 return '\u001B[48;2;' + red + ';' + green + ';' + blue + 'm'
             }
 
-            var ansi = {
+            function cursorUp(row) {
+                return '\u001B[' + row + 'A'
+            }
+
+            function cursorDown(row) {
+                return '\u001B[' + row + 'B'
+            }
+
+            function cursorForward(column) {
+                return '\u001B[' + column + 'C'
+            }
+
+            function cursorBack(column) {
+                return '\u001B[' + column + 'D'
+            }
+
+            function cursorHrAbs(column) {
+                return '\u001B[' + column + 'G'
+            }
+
+            function eraseInLine(type) {
+                return '\u001B[' + type + 'K'
+            }
+
+            module.exports = {
                 clear: '\u001B[0m',
                 bold: '\u001B[1m',
                 underscore: '\u001B[4m',
@@ -210,10 +229,30 @@ try {
                 bgWhite: '\u001B[107m',
 
                 color: color,
-                bgColor: bgColor
+                bgColor: bgColor,
+                cursorUp: cursorUp,
+                cursorDown: cursorDown,
+                cursorForward: cursorForward,
+                cursorBack: cursorBack,
+                cursorHrAbs: cursorHrAbs,
+                eraseInLine: eraseInLine
             }
+        })()
+        return module.exports
+    })()
 
-            function normalize(arg) {
+    var console = (function () {
+        var module = { exports: {} }
+        ;(function () {
+            var NONE = ''
+            var SPACE = ' '
+            var rSPECIFIER = /(%[sdfoj])/i
+            var rSEQ = /\u001B\[[\d;]+m/g
+            var clear = '\u001B[0m'
+            var brightRed = '\u001B[91m'
+            var reverse = '\u001B[7m'
+
+            function format(arg) {
                 var args = Array.prototype.slice.call(arg)
                 if (args.length === 0) return
                 var message = args.shift()
@@ -224,18 +263,11 @@ try {
                         if ($1 === '%s' || $1 === '%S') return String(val)
                         if ($1 === '%d' || $1 === '%D') return parseInt(val, 10)
                         if ($1 === '%f' || $1 === '%F') return Number(val)
-                        if ($1 === '%o') return req('inspect')(val)
-                        if ($1 === '%O') return req('inspect')(val, { indent: true, colors: true })
-                        if ($1 === '%j') {
+                        if ($1 === '%o' || $1 === '%O')
+                            return req('inspect')(val, $1 === '%O' ? { indent: true, colors: true } : {})
+                        if ($1 === '%j' || $1 === '%J') {
                             try {
-                                return JSON.stringify(val)
-                            } catch (error) {
-                                return val
-                            }
-                        }
-                        if ($1 === '%J') {
-                            try {
-                                return JSON.stringify(val, null, 2)
+                                return JSON.stringify(val, null, $1 === '%J' ? 2 : null)
                             } catch (error) {
                                 return val
                             }
@@ -248,28 +280,28 @@ try {
             }
 
             function log() {
-                var message = normalize(arguments)
+                var message = format(arguments)
                 var monotoneMessage = removeColor(message)
                 if (argv.has('monotone')) WScript.StdOut.WriteLine(monotoneMessage)
-                else WScript.StdErr.WriteLine(message + ansi.clear)
+                else WScript.StdErr.WriteLine(message + clear)
                 return monotoneMessage
             }
 
             function print() {
-                var message = normalize(arguments)
+                var message = format(arguments)
                 var monotoneMessage = removeColor(message)
                 if (argv.has('monotone')) WScript.StdOut.Write(monotoneMessage)
-                else WScript.StdErr.Write(message + ansi.clear)
+                else WScript.StdErr.Write(message + clear)
                 return monotoneMessage
             }
 
             function debug() {
                 var isDebugOption = argv.has('debug')
                 if (!isDebugOption) return
-                var message = normalize(arguments)
+                var message = format(arguments)
                 var monotoneMessage = removeColor(message)
                 if (argv.has('monotone')) WScript.StdOut.WriteLine('DEBUG: ' + monotoneMessage)
-                else WScript.StdErr.WriteLine('\u001B[91m\u001B[7mDEBUG:\u001B[0m ' + message + ansi.clear)
+                else WScript.StdErr.WriteLine(brightRed + reverse + 'DEBUG:' + clear + message + clear)
                 return monotoneMessage
             }
 
@@ -282,8 +314,7 @@ try {
                 log: log,
                 print: print,
                 debug: debug,
-                normalize: normalize,
-                ansi: ansi
+                format: format
             }
         })()
         return module.exports
@@ -594,7 +625,7 @@ try {
         })
         var current = wes.filestack.slice(-1)
 
-        console.log(console.ansi.color(255, 165, 0) + errorStack.join('\r\n').split('Function code:').join(''))
+        console.log(ansi.color(255, 165, 0) + errorStack.join('\r\n').split('Function code:').join(''))
 
         if (error instanceof SyntaxError) {
             var fmt
@@ -617,7 +648,7 @@ try {
                 } else {
                     var fs = require('*', 'filesystem')
                     source = fs.readTextFileSync(current)
-                    console.log('\n' + console.ansi.yellow + current)
+                    console.log('\n' + ansi.yellow + current)
                 }
                 fmt.format(source)
             }
