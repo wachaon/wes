@@ -35,7 +35,7 @@ describe('# ECMA2016', () => {
     describe('## Exponentiation Operator', () => {
         it('let a = 2; a **= 2 === 4', () => {
             let a = 2
-            assert((a **= 2 === 4))
+            assert((a **= 2) === 4)
         })
     })
 })
