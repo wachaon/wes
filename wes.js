@@ -466,7 +466,7 @@ try {
                 "path": "{wes}/VBScript"
             },
             "version": {
-                "source": "module.exports = console.log('0.8.65')",
+                "source": "module.exports = console.log('0.8.66')",
                 "mapping": {},
                 "path": "{wes}/version"
             }
@@ -736,7 +736,7 @@ try {
 
         var main = argv.unnamed[0] != null ? argv.unnamed[0] : 'REPL'
         if (main in wes.Modules) wes.main = main
-        require(path.join(path.CurrentDirectory, '_'), main, argv.get('encode'))
+        require(path.join(path.CurrentDirectory, '_'), main, argv.get('encoding'))
     }
 } catch (error) {
     if (!!console) {
