@@ -8,7 +8,6 @@ describe('#test Enumerator', () => {
         let list = [
             'ansi.js',
             'argv.js',
-            'browser.js',
             'buffer.js',
             'bundle.js',
             'chardet.js',
