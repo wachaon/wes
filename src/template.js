@@ -610,7 +610,7 @@ try {
 
         var main = argv.unnamed[0] != null ? argv.unnamed[0] : 'REPL'
         if (main in wes.Modules) wes.main = main
-        require(path.join(path.CurrentDirectory, '_'), main, argv.get('encode'))
+        require(path.join(path.CurrentDirectory, '_'), main, argv.get('encoding'))
     }
 } catch (error) {
     if (!!console) {
