@@ -466,7 +466,7 @@ try {
                 "path": "{wes}/VBScript"
             },
             "version": {
-                "source": "module.exports = console.log('0.8.66')",
+                "source": "module.exports = console.log('0.8.67')",
                 "mapping": {},
                 "path": "{wes}/version"
             }
@@ -618,6 +618,7 @@ try {
                         '__filename',
                         'wes',
                         'Buffer',
+                        'global',
                         '(function ' + name + '() { ' + '"use strict";' + mod.source + '} )()'
                     )
                     code(
@@ -628,7 +629,8 @@ try {
                         dirname(entry),
                         entry,
                         wes,
-                        entry === 'buffer' ? null : req('buffer')
+                        entry === 'buffer' ? null : req('buffer'),
+                        {}
                     )
                     wes.filestack.pop()
                     break
@@ -668,6 +670,7 @@ try {
                         'wes',
                         'process',
                         'Buffer',
+                        'global',
                         '"use strict";' + mod.source
                     )(
                         require.bind(null, entry),
@@ -678,7 +681,8 @@ try {
                         entry,
                         wes,
                         process,
-                        entry === 'buffer' ? null : req('buffer')
+                        entry === 'buffer' ? null : req('buffer'),
+                        {}
                     )
                 }
                 mod.exports = mod.module.exports
