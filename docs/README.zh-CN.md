@@ -1,8 +1,9 @@
-# WES
+# *WES*
 
 *wes*是在*Windows Script Host*上执行*ECMAScript*的框架
 
-[*japanese*](README.ja.md) *README*原文会。除日语外，它将是机器翻译的文本。请从下面选择另一种语言的句子。
+[*japanese*](README.ja.md) *README*原文会。除日语外，它将是机器翻译的文本。  
+请从下面选择另一种语言的句子。
 
 -   [*簡体字*](README.zh-CN.md) <!-- 中国語 (簡体字) -->
 -   [*繁体字*](README.zh-TW.md) <!-- 中国語 (繁体字) -->
@@ -19,10 +20,10 @@
 
 ## 特征
 
--   将脚本引擎更改为*Chakra*并启用*ECMAScript2015* *Chakra*
--   *cscript.exe* 32位*cscript.exe* ，因此避免了64位环境中的特殊错误
--   您可以使用`require`导入模块
--   彩色字符可以输出到标准输出
+-   将脚本引擎更改为*Chakra*并执行*ECMAScript2015* *Chakra*
+-   *cscript.exe* 32位*cscript.exe* ，不会引起任何特定于64位环境的错误
+-   用`require`导入模块
+-   将彩色字符输出到标准输出
 -   自动猜测文件编码
 
 ## 功能未解决
@@ -39,7 +40,8 @@
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-*wes*在执行时作为`SendKeys`的实现*WScript.Shell*使用。 *wes.js*保存*wes.js*的目录的路径包含*ascii*以外的字符，则`SendKeys`将无法正确发送它，并且脚本将无法运行。在这种情况下，请配置路径以仅使用*ascii*保存*wes.js*
+*wes*在运行时使用*WScript.Shell*的`SendKeys` 。 *wes.js*的存储目录路径包含*ascii*以外的字符，则`SendKeys`无法正确发送密钥，并且脚本无法执行。  
+请仅将*ascii*配置为保存*wes.js*的路径。
 
 ## 用法
 
@@ -49,17 +51,17 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 wes index
 ```
 
-另外，由于*wes*具有*REPL* ，您可以通过仅使用`wes`启动脚本来执行直接在命令行上输入的脚本。
+另外， *wes*具有*REPL*因此，如果仅以`wes`开头，则可以直接输入脚本。
 
 ```shell
 wes
 ```
 
-接受脚本输入，直到您输入两个空白行。 *README.md*还可以使用*REPL*在*README.md*检查示例脚本的执行情况。
+接受脚本输入，直到您输入两个空白行。 *README.md*也可以使用*REPL*在*README.md*检查示例脚本的执行情况。
 
 ## 命令行命名参数
 
-*wes*下面的命名变量被接受为*wes*启动选项。
+*wes*的启动选项如下。
 
 | 命名                 | 描述                   |
 | ------------------ | -------------------- |
@@ -69,16 +71,16 @@ wes
 | `--unsafe`         | 在不安全模式下运行脚本          |
 | `--dangerous`      | 在危险模式下运行脚本           |
 | `--debug`          | 在调试模式下运行脚本           |
-| `--encoding=UTF-8` | 指定要首先读取的文件的编码。       |
+| `--encoding=UTF-8` | 指定要先读取的文件的编码         |
 | `--engine=Chakra`  | 此选项由*wes*自动添加        |
 
 `--safe` `--usual` `--unsafe` `--dangerous`是不完整的，但是保留了命名参数。
 
 ## 内置对象
 
-*wes*具有*JScript*没有的*built-in objects* 。
+*wes*具有*WSH (JScript)*没有的*built-in objects* 。
 
-### 要求
+### *require*
 
 使用*require*导入模块。 *wes*自动猜测模块文件的编码，但是如果您猜对的不正确，则可以使用第二个参数指定编码。
 
@@ -107,11 +109,11 @@ function add (a, b) {
 module.exports = add
 ```
 
-### 安慰
+### *console*
 
 *wes*在`WScript.Echo`和`WScript.StdErr.WriteLine`而不是*console*使用。
 
-您可以使用`console.log`将字符输出到命令行。它还支持格式化的字符串。您可以使用格式运算符`%`指定格式字符串。
+使用`console.log`将字符输出到命令行。它还支持格式化的字符串。使用格式运算符`%`输出格式字符串。
 
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
@@ -119,7 +121,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 
 *wes*为了输出彩色串`WScript.StdOut.WriteLine`而是`WScript.StdErr.WriteLine`使用。 `WScript.Echo`和`WScript.StdOut.WriteLine` `WScript.Echo`输出被阻止，请使用`WScript.StdOut.WriteLine`或`console.log` 。
 
-### 缓冲
+### *Buffer*
 
 可以处理缓冲区。
 
@@ -129,7 +131,7 @@ const buff = Buffer.from(content)
 console.log(`${content} %O`, buff)
 ```
 
-### **目录**名**和**文件名
+### `__dirname`和`__filename`
 
 `__filename`存储当前正在执行的模块文件的路径。 `__dirname`存储`__filename`目录。
 
@@ -141,9 +143,9 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 
 *wes*具有*built-in modules* ，可简化和标准化基本处理。
 
-### 安西
+### *ansi*
 
-`ansi`包含*ANSI escape code* ，您可以更改标准输出的颜色和效果。颜色和效果可能会有所不同，具体取决于所使用的控制台应用程序的类型和设置。
+`ansi`具有*ANSI escape code* ，可让您更改标准输出的颜色和效果。颜色和效果可能会有所不同，具体取决于所使用的控制台应用程序的类型和设置。
 
 ```javascript
 const { brightRed, yellow } = require('ansi')
@@ -159,7 +161,7 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
-### 精油
+### *argv*
 
 获取命令行参数。 `cscript.exe`的命令行参数`/`声明了一个名为论据，但*wes*在`-`和`--`在声明命名参数。
 
@@ -181,7 +183,7 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
-### 路径名
+### *pathname*
 
 操作路径。
 
@@ -191,7 +193,7 @@ const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
 
-### 文件系统
+### *filesystem*
 
 操作文件和目录。 `readTextFileSync`将猜测文件编码并读取它。
 
@@ -203,7 +205,7 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
-### 脚本
+### *JScript*
 
 如果将脚本引擎更改为*Chakra* ，则将无法使用特定于*JScript* *Enumerator* 。内置模块*JScript*使它们可用。但是， *Enumerator*返回一个*Array*而不是一个Enumerator对象。
 
@@ -228,7 +230,7 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
-### VB脚本
+### *VBScript*
 
 *VBScript*提供了*JScript*不具备的某些功能。
 
@@ -238,17 +240,17 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
-### httprequest
+### *httprequest*
 
 *httprequest*是其名称， *http request*将发出一个。
 
 ```javascript
 const request = require('httprequest')
-const content = request('GET', 'http://weather.livedoor.com/forecast/webservice/json/v1?city=130010')
+const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
 
-### 最小测试
+### *minitest*
 
 *minitest*可以编写简单的测试。
 
@@ -266,7 +268,7 @@ describe( '# calc test', () => {
 })
 ```
 
-### 管
+### *pipe*
 
 *pipe*简化了管道处理
 
@@ -290,7 +292,7 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
-### 类型检查
+### *typecheck*
 
 判断脚本的类型。
 
@@ -306,22 +308,22 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 
 *install* ，您可以安装该模块*wes*上发布*github* 。要发布模块，您需要*github repository* 。另外，存储库名称和本地目录名称必须相同。
 
-### 束
+### *bundle*
 
-将模块发布到*github* ， *bundle*包捆绑必要的模块并将其更改为*install*模块可以包含的格式。
+将模块发布到*github* ， *bundle*包捆绑必要的模块，并将其更改为*install*模块可以包含的格式。
 
-考虑到安全性， *wes*不会导入，可直接执行的模块，所以建立*.json*文件*bundle*模块。
+考虑到安全性， *wes*不会导入直接可执行模块，因此创建一个*.json*的文件*bundle*模块。
 
 捆绑模块有一些条件。
 
 1.  在一个*repository*只能发布一种模块。
 2.  *github*存储库名称和本地工作目录名称必须相同。
 3.  如果要将模块发布给第三方，则存储库必须是公共的。
-4.  *wes*不会静态地解释脚本，因此仅在某些条件下（例如， `if`语句可能未捆绑）才`require`模块。
+4.  *wes*不会静态解释脚本。在某些条件下（例如`if`语句）可能`require`模块。
 5.  *.json*文件将在工作目录中创建，名称为*directory_name.json* 。如果更改文件名或移动文件，则无法安装。
 6.  `node_modules/directory_name` ，绑定失败，因为它引用`directory_name.json` 。
 
-### 安装
+### *install*
 
 它用于为*github*发布的*wes*安装模块文件。
 
@@ -350,27 +352,27 @@ wes install @wachaon/fmt --bare --unsafe
 
 *install*不仅可以安装在*github*的公共存储库模块中，还可以安装在私有存储库中。
 
-*install* ，使用`author@repository`指定模块。该实现下载以下内容。
+*install* ，使用`author@repository`指定模块。在实现中下载了以下内容。
 
 ```javascript
 `https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
 ```
 
-当您使用浏览器访问私有存储库的*raw*时，会显示*token* ，因此请复制并使用*token* 。
+当使用浏览器访问私有存储库的*raw*时，会显示*token* ，因此请复制*token*并使用它。
 
-如果在*token*有效时在命令行上运行模块，则也可以将模块安装在专用存储库中。
+如果您在*token*的有效时间内在命令行上执行它，则可以安装专用存储库的模块。
 
 ```shell
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
-## 外部模块
+## 外部模组
 
 在这里，我们介绍一些外部模块。
 
 ### *@wachaon/fmt*
 
-*@wachaon/fmt*是*@wachaon/fmt* *prettier*格式化脚本的文件。此外，处于已安装状态`SyntaxError` *@wachaon/fmt*可以在发生错误时显示错误位置。
+*@wachaon/fmt*是*@wachaon/fmt* *prettier*格式化脚本的文件。另外，如果在安装*@wachaon/fmt*时发生`SyntaxError` ，则可以显示错误位置。
 
 #### 安装
 
@@ -408,22 +410,4 @@ wes @wachaon/fmt src/sample --write
     parser: 'babel',
     plugins: [babel]
 }
-```
-
-#### `format`
-
-| 参数名称      | 类型       | 描述            |
-| --------- | -------- | ------------- |
-| `source`  | `string` | 字符串格式         |
-| `option?` | `object` | 传递给*prettier* |
-
-```javascript
-const { format } = require('@wachaon/fmt')
-const { readTextFileSync, writeTextFileSync } = require('filesystem')
-const { resolve } = require('pathname')
-
-const spec = resolve(process.cwd(), 'sample.js')
-let source = readTextFileSync(spec)
-source = format(source)
-console.log(writeTextFileSync(spec, source))
 ```

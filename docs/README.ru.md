@@ -1,8 +1,9 @@
-# WES
+# *WES*
 
 *wes* - это среда для выполнения *ECMAScript* на *Windows Script Host*
 
-*README* оригинал [*japanese*](README.ja.md) будет. Кроме японского, это будет машинный перевод. Пожалуйста, выберите предложение на другом языке из следующих.
+*README* оригинал [*japanese*](README.ja.md) будет. Текст, кроме японского, будет переведен автоматически.  
+Пожалуйста, выберите из следующих текстов на других языках.
 
 -   [*簡体字*](README.zh-CN.md) <!-- 中国語 (簡体字) -->
 -   [*繁体字*](README.zh-TW.md) <!-- 中国語 (繁体字) -->
@@ -19,17 +20,17 @@
 
 ## Характеристики
 
--   Измените механизм сценария на *Chakra* и включите выполнение *ECMAScript2015* *Chakra*
--   *cscript.exe* 32-битный *cscript.exe* , поэтому избегает специфических ошибок в 64-битной среде
--   Вы можете импортировать модуль с помощью `require`
--   Цветные символы можно выводить на стандартный вывод
+-   Измените движок сценария на *Chakra* и выполните *ECMAScript2015* *Chakra*
+-   *cscript.exe* 32- *cscript.exe* и не вызывает ошибок, характерных для 64-битной среды.
+-   импортировать модуль с помощью `require`
+-   Выводит цветные символы на стандартный вывод
 -   Угадай кодировку файла автоматически
 
 ## Функции не решены
 
 -   `WScript.Quit` не может прервать программу и не возвращает код ошибки
 -   Асинхронная обработка
--   Использование *event prefix* второго аргумента `WScript.CreateObject`
+-   `WScript.CreateObject` *event prefix* второго аргумента `WScript.CreateObject`
 
 ## устанавливать
 
@@ -39,7 +40,8 @@
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-*wes* во время выполнения, поскольку реализация *WScript.Shell* использует `SendKeys` . *wes.js* путь к каталогу, в котором *wes.js* содержит символы, отличные от *ascii* , `SendKeys` не отправит его правильно и скрипт не запустится. В этом случае настройте путь для сохранения *wes.js* только с *ascii* .
+*wes* использует *WScript.Shell* «S `SendKeys` во время выполнения. *wes.js* путь к каталогу, в котором *wes.js* содержит символы, отличные от *ascii* , `SendKeys` не может правильно отправить ключ и сценарий не может быть выполнен.  
+*wes.js* *ascii* только для пути сохранения *wes.js*
 
 ## использование
 
@@ -49,7 +51,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 wes index
 ```
 
-Кроме того, поскольку в *wes* есть *REPL* , вы можете выполнить сценарий, введенный непосредственно в командной строке, запустив его только с помощью команды `wes` .
+Кроме того, в *wes* есть *REPL* поэтому, если вы запустите его только с `wes` , вы можете напрямую ввести скрипт.
 
 ```shell
 wes
@@ -59,26 +61,26 @@ wes
 
 ## именованные аргументы командной строки
 
-*wes* качестве параметров запуска *wes* принимаются следующие именованные аргументы.
+Варианты старта *wes* следующие.
 
-| названный          | описание                                             |
-| ------------------ | ---------------------------------------------------- |
-| `--monotone`       | Устранение *ANSI escape code*                        |
-| `--safe`           | Запустить скрипт в безопасном режиме                 |
-| `--usual`          | Запустить скрипт в обычном режиме (по умолчанию)     |
-| `--unsafe`         | Запустить скрипт в небезопасном режиме               |
-| `--dangerous`      | Запустить скрипт в опасном режиме                    |
-| `--debug`          | Запустить скрипт в режиме отладки                    |
-| `--encoding=UTF-8` | Укажите кодировку файла для чтения в первую очередь. |
-| `--engine=Chakra`  | Эта опция автоматически добавляется *wes*            |
+| названный          | описание                                           |
+| ------------------ | -------------------------------------------------- |
+| `--monotone`       | Устранение *ANSI escape code*                      |
+| `--safe`           | Запустить скрипт в безопасном режиме               |
+| `--usual`          | Запустить скрипт в обычном режиме (по умолчанию)   |
+| `--unsafe`         | Запустить скрипт в небезопасном режиме             |
+| `--dangerous`      | Запустить скрипт в опасном режиме                  |
+| `--debug`          | Запустить скрипт в режиме отладки                  |
+| `--encoding=UTF-8` | Задает кодировку файла для чтения в первую очередь |
+| `--engine=Chakra`  | Эта опция автоматически добавляется *wes*          |
 
 Реализация `--safe` `--usual` `--unsafe` `--dangerous` не завершена, но именованные аргументы зарезервированы.
 
 ## встроенные объекты
 
-*wes* имеет *built-in objects* , которых нет в *JScript* .
+*wes* имеет *built-in objects* , которых нет в *WSH (JScript)* .
 
-### требовать
+### *require*
 
 Импортируйте модуль с помощью *require* . *wes* автоматически угадывает кодировку файла модуля, но если вы не угадали ее правильно, вы можете указать кодировку вторым аргументом.
 
@@ -107,11 +109,11 @@ function add (a, b) {
 module.exports = add
 ```
 
-### приставка
+### *console*
 
 *wes* В `WScript.Echo` и `WScript.StdErr.WriteLine` вместо *console* использовать.
 
-Вы можете выводить символы в командную строку с помощью `console.log` . Он также поддерживает форматированные строки. Вы можете использовать оператор формата `%` чтобы указать строку формата.
+Выведите символы в командную строку с помощью `console.log` . Он также поддерживает форматированные строки. Выведите строку формата с помощью оператора формата `%` .
 
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
@@ -119,7 +121,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 
 *wes* для того , чтобы вывести строку в цветной `WScript.StdOut.WriteLine` вместо того, чтобы , `WScript.StdErr.WriteLine` использование. `WScript.Echo` вывод `WScript.Echo` и `WScript.StdOut.WriteLine` заблокирован, используйте `WScript.StdOut.WriteLine` или `console.log` .
 
-### буфер
+### *Buffer*
 
 Может обрабатывать буферы.
 
@@ -129,7 +131,7 @@ const buff = Buffer.from(content)
 console.log(`${content} %O`, buff)
 ```
 
-### **dirname и** filename
+### `__dirname` и `__filename`
 
 `__filename` хранит путь к `__filename` файлу модуля. `__dirname` хранит каталог `__filename` .
 
@@ -141,9 +143,9 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 
 *wes* есть *built-in modules* для упрощения и стандартизации базовой обработки.
 
-### ANSI
+### *ansi*
 
-`ansi` содержит *ANSI escape code* , и вы можете изменить цвет и эффект стандартного вывода. Цвета и эффекты могут различаться в зависимости от типа и настроек используемого консольного приложения.
+`ansi` есть *ANSI escape code* который позволяет изменять цвета и эффекты стандартного вывода. Цвета и эффекты могут различаться в зависимости от типа и настроек используемого консольного приложения.
 
 ```javascript
 const { brightRed, yellow } = require('ansi')
@@ -159,7 +161,7 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
-### ARGV
+### *argv*
 
 Получает аргументы командной строки. `cscript.exe` аргументы командной строки `/` объявляет именованные аргументы в, но, *wes* в `-` и `--` объявляет именованные аргументы в.
 
@@ -181,9 +183,9 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
-### путь к файлу
+### *pathname*
 
-Управляйте тропой.
+Управляйте путем.
 
 ```javascript
 const path = require('pathname')
@@ -191,9 +193,9 @@ const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
 
-### файловая система
+### *filesystem*
 
-Управляет файлами и каталогами. `readTextFileSync` угадает кодировку файла и прочитает ее.
+Управляет файлами и каталогами. `readTextFileSync` автоматически угадывает кодировку файла и читает ее.
 
 ```javascript
 const fs = require('filesystem')
@@ -203,7 +205,7 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
-### JScript
+### *JScript*
 
 Если вы меняете двигатель сценария к *Chakra* , вы не сможете использовать *JScript* конкретные *Enumerator* . Встроенный модуль *JScript* делает их доступными. Однако *Enumerator* возвращает *Array* а не объект Enumerator.
 
@@ -228,7 +230,7 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
-### VBScript
+### *VBScript*
 
 *VBScript* предлагает некоторые функции, которых нет в *JScript* .
 
@@ -238,17 +240,17 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
-### HttpRequest
+### *httprequest*
 
 *httprequest* , как его имя, *http request* выдаст *httprequest* .
 
 ```javascript
 const request = require('httprequest')
-const content = request('GET', 'http://weather.livedoor.com/forecast/webservice/json/v1?city=130010')
+const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
 
-### MiniTest
+### *minitest*
 
 *minitest* может писать простые тесты.
 
@@ -266,7 +268,7 @@ describe( '# calc test', () => {
 })
 ```
 
-### труба
+### *pipe*
 
 *pipe* упрощает обработку трубы
 
@@ -290,7 +292,7 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
-### typecheck
+### *typecheck*
 
 Судите по типу сценария.
 
@@ -306,7 +308,7 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 
 *install* вы можете установить модуль для *wes* опубликованных на *github* . Для публикации модуля вам понадобится *github repository* на *github repository* . Кроме того, имя репозитория и имя локального каталога должны совпадать.
 
-### расслоение
+### *bundle*
 
 *github* публикации модуля на *github* , *bundle* объединяет необходимые модули и изменяет их в формат, который может быть включен *install* модулем.
 
@@ -317,11 +319,11 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 1.  *repository* одном *repository* может быть опубликован *repository* один тип модуля.
 2.  *github* репозитория *github* и имя локального рабочего каталога должны совпадать.
 3.  Репозиторий должен быть общедоступным, если вы хотите опубликовать модуль для третьей стороны.
-4.  *wes* не интерпретирует сценарий статически, поэтому модули, которые `require` только при определенных условиях, например, `if` операторы, могут не быть объединены.
-5.  *.json* каталоге *.json* файл *.json* с именем *directory_name.json* . Если вы измените имя файла или переместите файл, вы не сможете его установить.
+4.  *wes* не интерпретирует сценарий статически. Модули, которые `require` при определенных условиях, например, `if` операторы, могут не объединяться.
+5.  *.json* будет создан файл в рабочем каталоге с именем *directory_name.json* . Если вы измените имя файла или переместите файл, вы не сможете его установить.
 6.  `node_modules/directory_name` , отправка одной посылкой не удается , потому что он ссылается `directory_name.json` .
 
-### устанавливать
+### *install*
 
 Он используется для установки файла модуля для *wes* опубликованного на *github* .
 
@@ -340,7 +342,7 @@ wes install @wachaon/fmt
 | `--bare`   | `-b`         | не создавайте папку *@author*                     |
 | `--global` | `-g`         | Установите модуль в папку, где находится *wes.js* |
 
-`--bare` может опускать аргумент `require` из `author@repository` в `repository` . `--global` делает установленный модуль доступным для всех скриптов. Вышеуказанные параметры должны быть использованы с *wes* опции безопасности `--unsafe` или `--dangerous` .
+`--bare` может опустить аргумент `require` от `author@repository` к `repository` . `--global` делает установленный модуль доступным для всех скриптов. Вышеуказанные параметры должны быть использованы с *wes* опции безопасности `--unsafe` или `--dangerous` .
 
 ```shell
 wes install @wachaon/fmt --bare --unsafe
@@ -358,7 +360,7 @@ wes install @wachaon/fmt --bare --unsafe
 
 Когда вы получаете доступ к *raw* частному репозиторию с помощью браузера, *token* отображается, поэтому скопируйте *token* и используйте его.
 
-Вы также можете установить модули в своем частном репозитории, если запустите его в командной строке, пока *token* действителен.
+Если вы выполните его в командной строке в течение допустимого времени *token* , вы можете установить модуль частного репозитория.
 
 ```shell
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
@@ -408,22 +410,4 @@ wes @wachaon/fmt src/sample --write
     parser: 'babel',
     plugins: [babel]
 }
-```
-
-#### `format`
-
-| имя аргумента | тип      | описание                             |
-| ------------- | -------- | ------------------------------------ |
-| `source`      | `string` | Строка для форматирования            |
-| `option?`     | `object` | Варианты перехода к более *prettier* |
-
-```javascript
-const { format } = require('@wachaon/fmt')
-const { readTextFileSync, writeTextFileSync } = require('filesystem')
-const { resolve } = require('pathname')
-
-const spec = resolve(process.cwd(), 'sample.js')
-let source = readTextFileSync(spec)
-source = format(source)
-console.log(writeTextFileSync(spec, source))
 ```

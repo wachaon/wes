@@ -1,8 +1,9 @@
-# WES
+# *WES*
 
 *wes*是在*Windows Script Host*上執行*ECMAScript*的框架
 
-[*japanese*](README.ja.md) *README*原文會。除日語外，它將是機器翻譯的文本。請從下面選擇另一種語言的句子。
+[*japanese*](README.ja.md) *README*原文會。除日語外，文本將被機器翻譯。  
+請從以下其他語言的文本中進行選擇。
 
 -   [*簡体字*](README.zh-CN.md) <!-- 中国語 (簡体字) -->
 -   [*繁体字*](README.zh-TW.md) <!-- 中国語 (繁体字) -->
@@ -19,17 +20,17 @@
 
 ## 特徵
 
--   將腳本引擎更改為*Chakra*並啟用*ECMAScript2015* *Chakra*
--   *cscript.exe* 32位*cscript.exe* ，因此避免了64位環境中的特殊錯誤
--   您可以使用`require`導入模塊
--   彩色字符可以輸出到標準輸出
+-   將腳本引擎更改為*Chakra*並執行*ECMAScript2015* *Chakra*
+-   *cscript.exe* 32位*cscript.exe* ，不會引起任何特定於64位環境的錯誤
+-   用`require`導入模塊
+-   將彩色字符輸出到標準輸出
 -   自動猜測文件編碼
 
 ## 功能未解決
 
 -   `WScript.Quit`無法中斷程序，並且不返回錯誤代碼
 -   異步處理
--   `WScript.CreateObject`的第二個參數的*event prefix*的使用
+-   `WScript.CreateObject`的第二個參數的*event prefix*
 
 ## 安裝
 
@@ -39,7 +40,8 @@
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-*wes*在運行時使用*WScript.Shell*的`SendKeys` 。 *wes.js*保存*wes.js*的目錄的路徑包含*ascii*以外的字符，則`SendKeys`將無法正確發送它，並且腳本將無法運行。在這種情況下，請配置路徑以僅使用*ascii*保存*wes.js*
+*wes*在運行時使用*WScript.Shell*的`SendKeys` 。 *wes.js*保存*wes.js*的目錄的路徑包含*ascii*以外的字符，則`SendKeys`無法正確發送密鑰，並且腳本無法執行。  
+請僅將*ascii*配置為保存*wes.js*的路徑。
 
 ## 用法
 
@@ -49,17 +51,17 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 wes index
 ```
 
-另外，由於*wes*具有*REPL* ，您可以通過僅使用`wes`啟動腳本來執行直接在命令行上輸入的腳本。
+另外， *wes*帶有*REPL*因此，如果僅使用`wes`啟動它，則可以直接輸入腳本。
 
 ```shell
 wes
 ```
 
-接受腳本輸入，直到您輸入兩個空白行。 *README.md*還可以使用*REPL*在*README.md*檢查示例腳本的執行情況。
+接受腳本輸入，直到您輸入兩個空白行。 *README.md*也可以使用*REPL*在*README.md*檢查示例腳本的執行情況。
 
 ## 命令行命名參數
 
-*wes*下面的命名變量被接受為*wes*啟動選項。
+*wes*的啟動選項如下。
 
 | 命名                 | 描述                   |
 | ------------------ | -------------------- |
@@ -69,16 +71,16 @@ wes
 | `--unsafe`         | 在不安全模式下運行腳本          |
 | `--dangerous`      | 在危險模式下運行腳本           |
 | `--debug`          | 在調試模式下運行腳本           |
-| `--encoding=UTF-8` | 指定要首先讀取的文件的編碼。       |
+| `--encoding=UTF-8` | 指定要先讀取的文件的編碼         |
 | `--engine=Chakra`  | 此選項由*wes*自動添加        |
 
 `--safe` `--usual` `--unsafe` `--dangerous`是不完整的，但是保留了命名參數。
 
 ## 內置對象
 
-*wes*具有*JScript*沒有的*built-in objects* 。
+*wes*具有*WSH (JScript)*沒有的*built-in objects* 。
 
-### 要求
+### *require*
 
 使用*require*導入模塊。 *wes*自動猜測模塊文件的編碼，但是如果您猜對的不正確，則可以使用第二個參數指定編碼。
 
@@ -107,11 +109,11 @@ function add (a, b) {
 module.exports = add
 ```
 
-### 安慰
+### *console*
 
 *wes*在`WScript.Echo`和`WScript.StdErr.WriteLine`而不是*console*使用。
 
-您可以使用`console.log`將字符輸出到命令行。它還支持格式化的字符串。您可以使用格式運算符`%`指定格式字符串。
+使用`console.log`將字符輸出到命令行。它還支持格式化的字符串。使用格式運算符`%`輸出格式字符串。
 
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
@@ -119,7 +121,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 
 *wes*為了輸出彩色串`WScript.StdOut.WriteLine`而是`WScript.StdErr.WriteLine`使用。 `WScript.Echo`和`WScript.StdOut.WriteLine` `WScript.Echo`輸出被阻止，請使用`WScript.StdOut.WriteLine`或`console.log` 。
 
-### 緩衝
+### *Buffer*
 
 可以處理緩衝區。
 
@@ -129,7 +131,7 @@ const buff = Buffer.from(content)
 console.log(`${content} %O`, buff)
 ```
 
-### **目錄**名**和**文件名
+### `__dirname`和`__filename`
 
 `__filename`存儲當前正在執行的模塊文件的路徑。 `__dirname`存儲`__filename`目錄。
 
@@ -141,9 +143,9 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 
 *wes*具有*built-in modules* ，可簡化和標準化基本處理。
 
-### 安西
+### *ansi*
 
-`ansi`包含*ANSI escape code* ，您可以更改標準輸出的顏色和效果。顏色和效果可能會有所不同，具體取決於所使用的控制台應用程序的類型和設置。
+`ansi`具有*ANSI escape code* ，可讓您更改標準輸出的顏色和效果。顏色和效果可能會有所不同，具體取決於所使用的控制台應用程序的類型和設置。
 
 ```javascript
 const { brightRed, yellow } = require('ansi')
@@ -159,7 +161,7 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
-### 精油
+### *argv*
 
 獲取命令行參數。 `cscript.exe`的命令行參數`/`聲明了一個名為論據，但*wes*在`-`和`--`在聲明命名參數。
 
@@ -181,7 +183,7 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
-### 路徑名
+### *pathname*
 
 操作路徑。
 
@@ -191,7 +193,7 @@ const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
 
-### 文件系統
+### *filesystem*
 
 操作文件和目錄。 `readTextFileSync`將猜測文件編碼並讀取它。
 
@@ -203,7 +205,7 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
-### 腳本
+### *JScript*
 
 如果將腳本引擎更改為*Chakra* ，則將無法使用特定於*JScript* *Enumerator* 。內置模塊*JScript*使它們可用。但是， *Enumerator*返回一個*Array*而不是一個Enumerator對象。
 
@@ -228,7 +230,7 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
-### VB腳本
+### *VBScript*
 
 *VBScript*提供了*JScript*不具備的某些功能。
 
@@ -238,17 +240,17 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
-### httprequest
+### *httprequest*
 
-*httprequest*是它的名稱， *http request*將發出一個。
+*httprequest*是其名稱， *http request*將發出一個。
 
 ```javascript
 const request = require('httprequest')
-const content = request('GET', 'http://weather.livedoor.com/forecast/webservice/json/v1?city=130010')
+const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
 
-### 最小測試
+### *minitest*
 
 *minitest*可以編寫簡單的測試。
 
@@ -266,7 +268,7 @@ describe( '# calc test', () => {
 })
 ```
 
-### 管
+### *pipe*
 
 *pipe*簡化了管道處理
 
@@ -290,7 +292,7 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
-### 類型檢查
+### *typecheck*
 
 判斷腳本的類型。
 
@@ -306,7 +308,7 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 
 *install* ，您可以安裝該模塊*wes*上發布*github* 。要發布模塊，您需要*github repository* 。另外，存儲庫名稱和本地目錄名稱必須相同。
 
-### 束
+### *bundle*
 
 將模塊發佈到*github* ， *bundle*包捆綁必要的模塊並將其更改為*install*模塊可以包含的格式。
 
@@ -317,11 +319,11 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 1.  在一個*repository*只能發布一種模塊。
 2.  *github*存儲庫名稱和本地工作目錄名稱必須相同。
 3.  如果要將模塊發布給第三方，則存儲庫必須是公共的。
-4.  *wes*不會靜態地解釋腳本，因此僅在某些條件下（例如`if`語句可能未捆綁）才`require`模塊。
-5.  *.json*文件將在工作目錄中創建，名稱為*directory_name.json* 。如果更改文件名或移動文件，則無法安裝。
+4.  *wes*不會靜態解釋腳本。在某些條件下（例如`if`語句）可能`require`模塊。
+5.  *.json*文件在工作目錄中創建，名稱為*directory_name.json* 。如果更改文件名或移動文件，則無法安裝。
 6.  `node_modules/directory_name` ，綁定失敗，因為它引用`directory_name.json` 。
 
-### 安裝
+### *install*
 
 它用於為*github*發布的*wes*安裝模塊文件。
 
@@ -350,27 +352,27 @@ wes install @wachaon/fmt --bare --unsafe
 
 *install*不僅可以安裝在*github*的公共存儲庫模塊中，還可以安裝在私有存儲庫中。
 
-*install* ，使用`author@repository`指定模塊。該實現下載以下內容。
+*install* ，使用`author@repository`指定模塊。在實現中下載了以下內容。
 
 ```javascript
 `https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
 ```
 
-當您使用瀏覽器訪問私有存儲庫的*raw*時，會顯示*token* ，因此請複制並使用*token* 。
+當使用瀏覽器訪問私有存儲庫的*raw*時，會顯示*token* ，因此請複制*token*並使用它。
 
-如果在*token*有效時在命令行上運行模塊，則也可以將模塊安裝在專用存儲庫中。
+如果您在*token*的有效時間內在命令行上執行它，則可以安裝專用存儲庫的模塊。
 
 ```shell
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
-## 外部模塊
+## 外部模組
 
 在這裡，我們介紹一些外部模塊。
 
 ### *@wachaon/fmt*
 
-*@wachaon/fmt*是*@wachaon/fmt* *prettier*格式化腳本的文件。此外，在已安裝`SyntaxError`的狀態下的*@wachaon/fmt*可以在發生錯誤時顯示錯誤位置。
+*@wachaon/fmt*是*@wachaon/fmt* *prettier* ，格式化腳本的文件。此外，在已安裝`SyntaxError`的狀態下的*@wachaon/fmt*可以在發生錯誤時顯示錯誤位置。
 
 #### 安裝
 
@@ -408,22 +410,4 @@ wes @wachaon/fmt src/sample --write
     parser: 'babel',
     plugins: [babel]
 }
-```
-
-#### `format`
-
-| 參數名稱      | 類型       | 描述            |
-| --------- | -------- | ------------- |
-| `source`  | `string` | 字符串格式         |
-| `option?` | `object` | 傳遞給*prettier* |
-
-```javascript
-const { format } = require('@wachaon/fmt')
-const { readTextFileSync, writeTextFileSync } = require('filesystem')
-const { resolve } = require('pathname')
-
-const spec = resolve(process.cwd(), 'sample.js')
-let source = readTextFileSync(spec)
-source = format(source)
-console.log(writeTextFileSync(spec, source))
 ```

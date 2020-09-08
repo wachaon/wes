@@ -1,8 +1,9 @@
-# WES
+# *WES*
 
 *wes* هو إطار عمل لتنفيذ *ECMAScript* على *Windows Script Host*
 
-*README* الأصلي من [*japanese*](README.ja.md) . بخلاف اليابانية ، سيكون نصًا مترجمًا آليًا. الرجاء تحديد جملة بلغة أخرى مما يلي.
+*README* الأصلي من [*japanese*](README.ja.md) . بخلاف اليابانية ، سيكون نصًا مترجمًا آليًا.  
+الرجاء تحديد جملة بلغة أخرى مما يلي.
 
 -   [*簡体字*](README.zh-CN.md) <!-- 中国語 (簡体字) -->
 -   [*繁体字*](README.zh-TW.md) <!-- 中国語 (繁体字) -->
@@ -19,10 +20,10 @@
 
 ## المميزات
 
--   قم بتغيير محرك البرنامج النصي إلى *Chakra* وقم بتمكين تنفيذ *ECMAScript2015* *Chakra*
--   *cscript.exe* 32 بت ، لذلك يتجنب الأخطاء الغريبة في بيئة 64 بت
--   يمكنك استيراد الوحدة مع `require`
--   يمكن إخراج الأحرف الملونة إلى الإخراج القياسي
+-   قم بتغيير محرك البرنامج النصي إلى *Chakra* وتنفيذ *ECMAScript2015* *Chakra*
+-   *cscript.exe* 32 بت *cscript.exe* ولا يسبب أي أخطاء خاصة ببيئة 64 بت
+-   استيراد وحدة مع `require`
+-   لإخراج الأحرف الملونة إلى الإخراج القياسي
 -   تخمين ملف ترميز تلقائيا
 
 ## الميزات لم تحل
@@ -39,7 +40,8 @@
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-*wes* في وقت التنفيذ كما تنفيذ *WScript.Shell* من `SendKeys` استخدام. *wes.js* مسار الدليل الذي تم حفظ *wes.js* فيه يحتوي على أحرف أخرى غير *ascii* ، فلن ترسله `SendKeys` بشكل صحيح ولن يتم تشغيل البرنامج النصي. في هذه الحالة ، يرجى تكوين المسار لحفظ *wes.js* باستخدام *ascii* فقط.
+*wes* في وقت التنفيذ كما تنفيذ *WScript.Shell* من `SendKeys` استخدام. *wes.js* مسار الدليل الذي تم حفظ *wes.js* فيه يحتوي على أحرف غير *ascii* ، فلن يتمكن `SendKeys` إرسال المفتاح بشكل صحيح ولا يمكن تنفيذ البرنامج النصي.  
+يرجى تكوين *ascii* فقط للمسار لحفظ *wes.js*
 
 ## إستعمال
 
@@ -49,7 +51,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 wes index
 ```
 
-أيضًا ، نظرًا لأن *wes* لديه *REPL* ، يمكنك تنفيذ برنامج نصي تم إدخاله مباشرة في سطر الأوامر عن طريق بدء تشغيله فقط مع `wes` .
+أيضًا ، يأتي *wes* مع *REPL* لذلك إذا بدأت مع `wes` فقط ، يمكنك إدخال البرنامج النصي مباشرة.
 
 ```shell
 wes
@@ -59,7 +61,7 @@ wes
 
 ## سطر الأوامر المسمى الحجج
 
-يتم قبول الوسائط المسماة التالية كخيارات بدء تشغيل *wes* .
+خيارات بدء *wes* هي كما يلي.
 
 | اسم الشيئ          | وصف                                                |
 | ------------------ | -------------------------------------------------- |
@@ -69,18 +71,18 @@ wes
 | `--unsafe`         | قم بتشغيل البرنامج النصي في الوضع غير الآمن        |
 | `--dangerous`      | قم بتشغيل البرنامج النصي في الوضع الخطير           |
 | `--debug`          | قم بتشغيل البرنامج النصي في وضع التصحيح            |
-| `--encoding=UTF-8` | حدد ترميز الملف المراد قراءته أولاً.               |
+| `--encoding=UTF-8` | يحدد ترميز الملف المراد قراءته أولاً               |
 | `--engine=Chakra`  | يتم إضافة هذا الخيار تلقائيًا بواسطة *wes*         |
 
 تنفيذ - `--safe` `--usual` `--unsafe` `--dangerous` غير مكتمل ، لكن الحجج المسماة محفوظة.
 
 ## كائنات مدمجة
 
-يحتوي *wes* *built-in objects* *JScript* لا تحتوي عليها *JScript* .
+يحتوي *wes* *built-in objects* *WSH (JScript)* لا *WSH (JScript)* .
 
-### تطلب
+### *require*
 
-استيراد وحدة مع *require* . *wes* تلقائيًا بتخمين تشفير ملف الوحدة النمطية ، ولكن إذا لم تخمنه بشكل صحيح ، فيمكنك تحديد الترميز باستخدام الوسيطة الثانية.
+استيراد وحدة مع *require* . *wes* تلقائيًا بتخمين تشفير ملف الوحدة النمطية ، ولكن إذا لم تخمنه بشكل صحيح ، يمكنك تحديد الترميز باستخدام الوسيطة الثانية.
 
 يمكنك أيضًا الاستيراد باستخدام *require* لـ *OLE* مثل `require('WScript.Shell')` .
 
@@ -107,11 +109,11 @@ function add (a, b) {
 module.exports = add
 ```
 
-### وحدة التحكم
+### *console*
 
 استخدم *wes* في `WScript.Echo` و `WScript.StdErr.WriteLine` بدلاً من *console* .
 
-يمكنك إخراج الأحرف إلى سطر الأوامر باستخدام `console.log` . كما يدعم السلاسل المنسقة. يمكنك استخدام عامل التنسيق `%` لتحديد سلسلة تنسيق.
+إخراج الأحرف إلى سطر الأوامر باستخدام `console.log` . كما يدعم السلاسل المنسقة. إخراج سلسلة التنسيق باستخدام عامل التنسيق `%` .
 
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
@@ -119,7 +121,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 
 *wes* لإخراج سلسلة ملونة في `WScript.StdOut.WriteLine` بدلاً من ذلك ، استخدم `WScript.StdErr.WriteLine` . `WScript.Echo` إخراج `WScript.Echo` و `WScript.StdOut.WriteLine` محظور ، استخدم `WScript.StdOut.WriteLine` أو `console.log` .
 
-### متعادل
+### *Buffer*
 
 يمكن التعامل مع المخازن المؤقتة.
 
@@ -129,7 +131,7 @@ const buff = Buffer.from(content)
 console.log(`${content} %O`, buff)
 ```
 
-### **dirname واسم**
+### `__dirname` و `__filename`
 
 `__filename` يخزن مسار ملف الوحدة النمطية الجاري تنفيذه حاليًا. `__dirname` يخزن `__filename` الدليل.
 
@@ -141,9 +143,9 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 
 يحتوي *wes* *built-in modules* لتبسيط وتوحيد المعالجة الأساسية.
 
-### ansi
+### *ansi*
 
-يحتوي `ansi` على *ANSI escape code* ، ويمكنك تغيير لون الناتج القياسي وتأثيره. قد تختلف الألوان والتأثيرات وفقًا لنوع وإعدادات تطبيق وحدة التحكم المستخدمة.
+يحتوي `ansi` على *ANSI escape code* يسمح لك بتغيير ألوان وتأثيرات الإخراج القياسي. قد تختلف الألوان والتأثيرات وفقًا لنوع وإعدادات تطبيق وحدة التحكم المستخدمة.
 
 ```javascript
 const { brightRed, yellow } = require('ansi')
@@ -159,11 +161,11 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
-### أرجف
+### *argv*
 
 يحصل على وسيطات سطر الأوامر. `cscript.exe` وسيطات سطر الأوامر لـ `/` تعلن عن الوسائط المسماة في ولكن ، يعلن *wes* in `-` and `--` عن الوسائط المسماة في.
 
-*argv.unnamed* و *argv.named* يلقي نوع قيمة وسيطة سطر الأوامر إلى أحد *String* *Number* *Boolean* .
+*argv.unnamed* و *argv.named* يلقي نوع قيمة وسيطة سطر الأوامر إلى واحدة من *String* *Number* *Boolean* .
 
 أدخل وسيطات سطر الأوامر باستخدام *REPL* .
 
@@ -181,7 +183,7 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
-### اسم المسار
+### *pathname*
 
 تشغيل المسار.
 
@@ -191,7 +193,7 @@ const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
 
-### نظام الملفات
+### *filesystem*
 
 يدير الملفات والدلائل. سيقوم `readTextFileSync` بتخمين تشفير الملف وقراءته.
 
@@ -203,7 +205,7 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
-### JScript
+### *JScript*
 
 إذا قمت بتغيير محرك البرنامج النصي إلى *Chakra* ، فلن تتمكن من استخدام *Enumerator* الخاصة بـ *JScript* . وحدة *JScript* المدمجة تجعلها متاحة. ومع ذلك ، يقوم *Enumerator* بإرجاع *Array* بدلاً من كائن Enumerator.
 
@@ -228,7 +230,7 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
-### VBScript
+### *VBScript*
 
 يقدم *VBScript* بعض الميزات التي لا تتوفر في *JScript* .
 
@@ -238,17 +240,17 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
-### طلب http
+### *httprequest*
 
 *httprequest* كما سيصدر *http request* اسمها.
 
 ```javascript
 const request = require('httprequest')
-const content = request('GET', 'http://weather.livedoor.com/forecast/webservice/json/v1?city=130010')
+const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
 
-### أصغر
+### *minitest*
 
 *minitest* يمكنه كتابة اختبارات بسيطة.
 
@@ -266,7 +268,7 @@ describe( '# calc test', () => {
 })
 ```
 
-### يضخ
+### *pipe*
 
 *pipe* يبسط تجهيز الأنابيب
 
@@ -290,7 +292,7 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
-### فحص نوع
+### *typecheck*
 
 احكم على نوع السيناريو.
 
@@ -306,7 +308,7 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 
 *install* ، يمكنك تثبيت وحدة ل *wes* نشرت يوم *github* . لنشر الوحدة ، تحتاج إلى *github repository* . أيضًا ، يجب أن يكون اسم المستودع واسم الدليل المحلي متماثلين.
 
-### حزمة
+### *bundle*
 
 *github* نشر وحدة ل *github* ، *bundle* حزم الوحدات اللازمة وتغير قبل أن تتحول إلى شكل يمكن أن يدرج من قبل *install* وحدة.
 
@@ -317,11 +319,11 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 1.  يمكن نشر نوع واحد *repository* من الوحدات في *repository* واحد.
 2.  يجب أن يكون اسم مستودع *github* واسم دليل العمل المحلي *github* .
 3.  يجب أن يكون المستودع عامًا إذا كنت تريد نشر الوحدة إلى جهة خارجية.
-4.  لا يفسر *wes* بشكل ثابت ، لذلك الوحدات التي `require` فقط في ظل ظروف معينة مثل عبارات `if` قد لا تكون مجمعة.
+4.  *wes* لا يفسر بشكل ثابت النصي. الوحدات النمطية التي `require` ظل ظروف معينة ، مثل `if` عدم إمكانية تجميع العبارات.
 5.  سيتم إنشاء ملف *.json* في دليل العمل بالاسم *directory_name.json* . إذا قمت بتغيير اسم الملف أو نقل الملف ، فلا يمكنك تثبيته.
 6.  `node_modules/directory_name` ، يفشل التجميع لأنه يشير إلى `directory_name.json` .
 
-### تثبيت
+### *install*
 
 يتم استخدامه لتثبيت ملف الوحدة النمطية لـ *wes* المنشور على *github* .
 
@@ -350,7 +352,7 @@ wes install @wachaon/fmt --bare --unsafe
 
 *install* يمكن تركيبها ليس فقط في وحدة مستودع العامة *github* ولكن أيضا في المستودع الخاص.
 
-*install* ، حدد الوحدة مع `author@repository` . يقوم التطبيق بتنزيل ما يلي.
+*install* ، حدد الوحدة مع `author@repository` . يتم تنزيل ما يلي في التنفيذ.
 
 ```javascript
 `https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
@@ -358,7 +360,7 @@ wes install @wachaon/fmt --bare --unsafe
 
 عندما تصل إلى النسخة *raw* من المستودع الخاص باستخدام متصفح ، يتم عرض *token* ، لذا انسخ *token* .
 
-يمكنك أيضًا تثبيت الوحدات النمطية في مستودعك الخاص إذا قمت بتشغيلها على سطر الأوامر بينما يكون *token* صالحًا.
+إذا قمت بتنفيذه على سطر الأوامر خلال الوقت الصحيح *token* ، فيمكنك تثبيت الوحدة النمطية للمستودع الخاص.
 
 ```shell
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
@@ -370,7 +372,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
 ### *@wachaon/fmt*
 
-*@wachaon/fmt* عبارة عن حزمة *prettier* تقوم *@wachaon/fmt* النص. بالإضافة إلى ذلك ، يمكن لـ *@wachaon/fmt* في حالة تم تثبيتها `SyntaxError` تقديم موقع الخطأ عند حدوثه.
+*@wachaon/fmt* عبارة عن حزمة *prettier* تقوم *@wachaon/fmt* النص. أيضًا ، في حالة حدوث `SyntaxError` أثناء *@wachaon/fmt* ، يمكن تقديم موقع الخطأ.
 
 #### تثبيت
 
@@ -408,22 +410,4 @@ wes @wachaon/fmt src/sample --write
     parser: 'babel',
     plugins: [babel]
 }
-```
-
-#### `format`
-
-| اسم الحجة | اكتب     | وصف                            |
-| --------- | -------- | ------------------------------ |
-| `source`  | `string` | سلسلة للتنسيق                  |
-| `option?` | `object` | خيارات لتمريرها إلى *prettier* |
-
-```javascript
-const { format } = require('@wachaon/fmt')
-const { readTextFileSync, writeTextFileSync } = require('filesystem')
-const { resolve } = require('pathname')
-
-const spec = resolve(process.cwd(), 'sample.js')
-let source = readTextFileSync(spec)
-source = format(source)
-console.log(writeTextFileSync(spec, source))
 ```

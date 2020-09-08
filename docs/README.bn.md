@@ -1,8 +1,9 @@
-# Wes
+# *WES*
 
 *wes* *Windows Script Host* *wes* *ECMAScript* কার্যকর করার জন্য একটি কাঠামো
 
-*README* মূল [*japanese*](README.ja.md) হবে। জাপানি ছাড়া অন্য পাঠ্যটি মেশিন অনুবাদ করা হবে। নিম্নলিখিত ভাষাগুলি থেকে অন্যান্য ভাষায় নির্বাচন করুন select
+*README* মূল [*japanese*](README.ja.md) হবে। জাপানি ছাড়া অন্য পাঠ্যটি মেশিন অনুবাদ করা হবে।  
+নিম্নলিখিত ভাষাগুলি থেকে অন্যান্য ভাষায় নির্বাচন করুন select
 
 -   [*簡体字*](README.zh-CN.md) <!-- 中国語 (簡体字) -->
 -   [*繁体字*](README.zh-TW.md) <!-- 中国語 (繁体字) -->
@@ -19,17 +20,17 @@
 
 ## বৈশিষ্ট্য
 
--   স্ক্রিপ্ট ইঞ্জিনটিকে *Chakra* পরিবর্তন করুন এবং *ECMAScript2015* *Chakra* কার্যকরকরণ সক্ষম করুন
--   32-বিট *cscript.exe* , তাই 64-বিট পরিবেশে অদ্ভুত বাগগুলি এড়ানো যায়
--   আপনি `require` সহ মডিউলটি আমদানি করতে পারেন
--   বর্ণযুক্ত অক্ষরগুলি স্ট্যান্ডার্ড আউটপুট থেকে আউটপুট হতে পারে
+-   স্ক্রিপ্ট ইঞ্জিনটিকে *Chakra* পরিবর্তন করুন এবং *ECMAScript2015* *Chakra* কার্যকর করুন
+-   32 বিট *cscript.exe* করে এবং 64 বিট পরিবেশের সাথে নির্দিষ্ট কোনও বাগের কারণ হয় না
+-   `require` সহ মডিউলটি আমদানি করুন
+-   স্ট্যান্ডার্ড আউটপুটে রঙিন বর্ণগুলি আউটপুট দেয়
 -   স্বয়ংক্রিয়ভাবে ফাইল এনকোডিং অনুমান করুন
 
 ## বৈশিষ্ট্যগুলি সমাধান করা হয়নি
 
 -   `WScript.Quit` প্রোগ্রামটিতে বাধা দিতে পারে না এবং একটি ত্রুটি কোড দেয় না
 -   অ্যাসিনক্রোনাস প্রসেসিং
--   `WScript.CreateObject` দ্বিতীয় আর্গুমেন্টের *event prefix* ব্যবহার
+-   `WScript.CreateObject` দ্বিতীয় আর্গুমেন্টের *event prefix* `WScript.CreateObject`
 
 ## ইনস্টল করুন
 
@@ -39,7 +40,8 @@
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-*wes* ব্যবহার করে *WScript.Shell* রানটাইমের সময় `SendKeys` এর `SendKeys` । *wes.js* ডিরেক্টরির যেখানে পথ *wes.js* সংরক্ষিত হয় ব্যতীত অন্য অক্ষর রয়েছে *ascii* , `SendKeys` এটি সঠিকভাবে পাঠাব না এবং স্ক্রিপ্ট চলবে না। সেক্ষেত্রে, সংরক্ষণ পাথ দয়া করে কনফিগার করুন *wes.js* শুধুমাত্র সঙ্গে *ascii* ।
+*wes* ব্যবহার করে *WScript.Shell* রানটাইমের সময় `SendKeys` এর `SendKeys` । *wes.js* ডিরেক্টরির যেখানে পথ *wes.js* সংরক্ষিত হয় ব্যতীত অন্য অক্ষর রয়েছে *ascii* , `SendKeys` কী সঠিকভাবে পাঠাতে পারবেন না এবং স্ক্রিপ্ট মৃত্যুদন্ড কার্যকর করা যাবে না।  
+দয়া করে কনফিগার করুন *ascii* পথ সংরক্ষণ করতে শুধুমাত্র *wes.js*
 
 ## ব্যবহার
 
@@ -49,7 +51,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 wes index
 ```
 
-এছাড়াও, যেহেতু *wes* টি *REPL* , আপনি একটি স্ক্রিপ্ট কমান্ড লাইন সরাসরি প্রবেশ এটি শুধুমাত্র দিয়ে শুরু দ্বারা নির্বাহ করতে পারেন `wes` ।
+এছাড়াও, *wes* একটি *REPL* সুতরাং আপনি যদি এটি কেবল `wes` দিয়ে শুরু করেন তবে আপনি সরাসরি স্ক্রিপ্টটি প্রবেশ করতে পারেন।
 
 ```shell
 wes
@@ -59,7 +61,7 @@ wes
 
 ## কমান্ড-লাইন নাম যুক্তি
 
-নিম্নলিখিত নামযুক্ত যুক্তিগুলি *wes* স্টার্টআপ বিকল্প হিসাবে স্বীকৃত।
+*wes* শুরু বিকল্পগুলি নিম্নরূপ।
 
 | নামে               | বিবরণ                                               |
 | ------------------ | --------------------------------------------------- |
@@ -69,20 +71,20 @@ wes
 | `--unsafe`         | অনিরাপদ মোডে স্ক্রিপ্টটি চালান                      |
 | `--dangerous`      | স্ক্রিপ্টটি বিপজ্জনক মোডে চালান                     |
 | `--debug`          | স্ক্রিপ্টটি ডিবাগ মোডে চালান                        |
-| `--encoding=UTF-8` | প্রথমে পড়ার জন্য ফাইলটির এনকোডিং নির্দিষ্ট করুন।   |
+| `--encoding=UTF-8` | প্রথমে পড়ার জন্য ফাইলের এনকোডিং নির্দিষ্ট করে      |
 | `--engine=Chakra`  | এই বিকল্পটি *wes* দ্বারা স্বয়ংক্রিয়ভাবে যুক্ত হয় |
 
 `--safe` `--usual` `--unsafe` `--dangerous` `--safe` এর প্রয়োগ অসম্পূর্ণ, তবে নাম যুক্তিগুলি সংরক্ষিত।
 
 ## অন্তর্নির্মিত বস্তু
 
-*wes* করেছে *built-in objects* যে *JScript* নেই।
+*wes* *built-in objects* যা *wes* ( *wes* *WSH (JScript)* নেই।
 
-### প্রয়োজন
+### *require*
 
 *require* সহ মডিউলটি আমদানি করুন। *wes* স্বয়ংক্রিয়ভাবে মডিউল ফাইলটির এনকোডিং অনুমান করে, তবে আপনি যদি এটি সঠিকভাবে অনুমান না করেন তবে আপনি দ্বিতীয় যুক্তির সাহায্যে এনকোডিং নির্দিষ্ট করতে পারবেন।
 
-আপনি *OLE* মতো `require('WScript.Shell')` সাথে *require* আমদানি করতে পারেন।
+এছাড়াও আপনি আমদানি করতে পারেন সঙ্গে *require* জন্য *OLE* মত `require('WScript.Shell')` ।
 
 ```javascript
 const WShell = require('WScript.Shell')
@@ -107,11 +109,11 @@ function add (a, b) {
 module.exports = add
 ```
 
-### কনসোল
+### *console*
 
 *wes* `WScript.Echo` এবং `WScript.StdErr.WriteLine` এ *console* পরিবর্তে ব্যবহার করুন।
 
-আপনি `console.log` দিয়ে কমান্ড লাইনে অক্ষরগুলি আউটপুট করতে পারেন। এটি ফর্ম্যাটযুক্ত স্ট্রিংগুলিকে সমর্থন করে। বিন্যাসের স্ট্রিং নির্দিষ্ট করতে আপনি বিন্যাস অপারেটর `%` ব্যবহার করতে পারেন।
+`console.log` সহ কমান্ড লাইনে অক্ষরগুলি আউটপুট দেয়। এটি ফর্ম্যাটযুক্ত স্ট্রিংগুলিকে সমর্থন করে। অপারেটর `%` বিন্যাস ব্যবহার করে ফর্ম্যাট স্ট্রিং আউটপুট করুন।
 
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
@@ -119,7 +121,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 
 *wes* , `WScript.StdErr.WriteLine` পরিবর্তে `WScript.StdErr.WriteLine` ব্যবহার করে স্ট্রিং রঙিন স্ট্রিং আউটপুট দেওয়ার জন্য `WScript.StdOut.WriteLine` `WScript.Echo` আউটপুট `WScript.Echo` এবং `WScript.StdOut.WriteLine` অবরুদ্ধ করা হয়েছে, ব্যবহার `WScript.StdOut.WriteLine` বা `console.log` ।
 
-### বাফার
+### *Buffer*
 
 বাফারগুলি পরিচালনা করতে পারে।
 
@@ -129,7 +131,7 @@ const buff = Buffer.from(content)
 console.log(`${content} %O`, buff)
 ```
 
-### নাম **এবং** ফাইলের নাম
+### `__dirname` এবং `__filename`
 
 `__filename` বর্তমানে কার্যকর করা মডিউল ফাইলের পথ সঞ্চয় করে। `__dirname` ডিরেক্টরিটি `__filename` ডিরেক্টরি ডিরেক্টরি সঞ্চয় করে।
 
@@ -141,9 +143,9 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 
 *wes* বেসিক প্রসেসিং সহজতর এবং মানক করার জন্য *built-in modules* ।
 
-### ANSI
+### *ansi*
 
-`ansi` একটি *ANSI escape code* রয়েছে এবং আপনি স্ট্যান্ডার্ড আউটপুট রঙ এবং প্রভাব পরিবর্তন করতে পারেন। ব্যবহৃত কনসোল অ্যাপ্লিকেশনটির ধরণ এবং সেটিংসের উপর নির্ভর করে রঙ এবং প্রভাবগুলি পৃথক হতে পারে।
+`ansi` একটি *ANSI escape code* যা আপনাকে স্ট্যান্ডার্ড আউটপুটটির রঙ এবং প্রভাব পরিবর্তন করতে দেয়। ব্যবহৃত কনসোল অ্যাপ্লিকেশনটির ধরণ এবং সেটিংসের উপর নির্ভর করে রঙ এবং প্রভাবগুলি পৃথক হতে পারে।
 
 ```javascript
 const { brightRed, yellow } = require('ansi')
@@ -159,7 +161,7 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
-### argv হয়
+### *argv*
 
 কমান্ড লাইন আর্গুমেন্ট পেতে। `cscript.exe` কমান্ড-লাইন আর্গুমেন্টগুলি `/` নামযুক্ত আর্গুমেন্টগুলি ঘোষনা করে তবে, *wes* ইন `-` এবং `--` নামক যুক্তিগুলিকে ভিতরে ঘোষণা করে।
 
@@ -181,7 +183,7 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
-### পথনাম
+### *pathname*
 
 পথ পরিচালনা করুন।
 
@@ -191,7 +193,7 @@ const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
 
-### নথি ব্যবস্থা
+### *filesystem*
 
 ফাইল এবং ডিরেক্টরি পরিচালনা করে। `readTextFileSync` ফাইল এনকোডিং অনুমান করে এটি পড়বে।
 
@@ -203,9 +205,9 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
-### JScript
+### *JScript*
 
-আপনাকে স্ক্রিপ্ট ইঞ্জিন পরিবর্তন করেন তাহলে *Chakra* , আপনি ব্যবহার করতে সক্ষম হবেন না *JScript* নির্দিষ্ট *Enumerator* । অন্তর্নির্মিত মডিউল *JScript* তাদের উপলব্ধ করে। তবে, *Enumerator* একটি এনুমুরেটর বস্তুর পরিবর্তে একটি *Array* ।
+আপনাকে স্ক্রিপ্ট ইঞ্জিন পরিবর্তন করেন তাহলে *Chakra* , আপনি ব্যবহার করতে সক্ষম হবেন না *JScript* নির্দিষ্ট *Enumerator* । অন্তর্নির্মিত মডিউল *JScript* তাদের উপলব্ধ করে। যাইহোক, *Enumerator* একটি এনুমুরেটর বস্তুর পরিবর্তে একটি *Array* ।
 
 ```javascript
 const { Enumerator, ActiveXObject } = require('JScript')
@@ -228,7 +230,7 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
-### VB স্ক্রিপ্ট
+### *VBScript*
 
 *VBScript* *JScript* নেই এমন কিছু বৈশিষ্ট্য সরবরাহ করে।
 
@@ -238,17 +240,17 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
-### HTTPrequest
+### *httprequest*
 
 *httprequest* এর নাম হিসাবে *http request* একটি জারি করবে।
 
 ```javascript
 const request = require('httprequest')
-const content = request('GET', 'http://weather.livedoor.com/forecast/webservice/json/v1?city=130010')
+const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
 
-### minitest
+### *minitest*
 
 *minitest* সহজ পরীক্ষা লিখতে পারে।
 
@@ -266,7 +268,7 @@ describe( '# calc test', () => {
 })
 ```
 
-### নল
+### *pipe*
 
 *pipe* পাইপ প্রক্রিয়াকরণ সহজ করে তোলে
 
@@ -290,7 +292,7 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
-### typecheck
+### *typecheck*
 
 স্ক্রিপ্টের ধরণের বিচার করুন।
 
@@ -306,7 +308,7 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 
 *install* , আপনার জন্য মডিউল ইনস্টল করতে পারেন *wes* প্রকাশিত *github* । মডিউলটি প্রকাশ করতে আপনার *github repository* প্রয়োজন। এছাড়াও, সংগ্রহস্থলের নাম এবং স্থানীয় ডিরেক্টরি নাম একই হতে হবে।
 
-### পাঁজা
+### *bundle*
 
 *github* কোনও মডিউল প্রকাশ করার সময়, *bundle* প্রয়োজনীয় মডিউলগুলি বান্ডিল করে এবং এটিকে *install* মডিউল দ্বারা অন্তর্ভুক্ত করা যায় এমন একটি ফর্ম্যাটে রূপান্তরিত করে।
 
@@ -315,13 +317,13 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 বান্ডিলিং মডিউলগুলির জন্য কিছু শর্ত রয়েছে।
 
 1.  একটি *repository* এক ধরণের মডিউল প্রকাশিত হতে পারে।
-2.  *github* সংগ্রহস্থলের নাম এবং স্থানীয় কর্মরত ডিরেক্টরি নাম অবশ্যই একই হতে হবে।
+2.  *github* সংগ্রহস্থলের নাম এবং স্থানীয় কার্যনির্বাহী ডিরেক্টরি নাম একই হতে হবে।
 3.  মডিউলটি তৃতীয় পক্ষের কাছে প্রকাশ করতে চাইলে অবশ্যই সংগ্রহস্থলটি সর্বজনীন হতে হবে।
-4.  *wes* স্ট্যাটিক্যালি, স্ক্রিপ্ট ব্যাখ্যা না, তাই মডিউল যা `require` শুধুমাত্র যেমন কিছু অবস্থার অধীনে `if` বিবৃতি বান্ডেল করা যাবে না।
-5.  *.json* ফাইল নামের মধ্যে কাজের ডিরেক্টরির মধ্যে তৈরি করা হবে *directory_name.json* । আপনি যদি ফাইলের নাম পরিবর্তন করেন বা ফাইলটি সরান, আপনি এটি ইনস্টল করতে পারবেন না।
+4.  *wes* স্থিতিশীলভাবে স্ক্রিপ্টটির ব্যাখ্যা দেয় না। মডিউল যে `require` যেমন কিছু অবস্থার অধীনে `if` বিবৃতি বান্ডেল করা যাবে না।
+5.  *.json* ফাইল নাম নিয়ে কাজ ডিরেক্টরির মধ্যে তৈরি করা হয় *directory_name.json* । আপনি যদি ফাইলের নাম পরিবর্তন করেন বা ফাইলটি সরান, আপনি এটি ইনস্টল করতে পারবেন না।
 6.  `node_modules/directory_name` , বান্ডিলিং ব্যর্থ হয় কারণ এটি `directory_name.json` উল্লেখ করে।
 
-### ইনস্টল
+### *install*
 
 এটা তোলে জন্য মডিউল ফাইল ইনস্টল করার জন্য ব্যবহৃত হয় *wes* প্রকাশিত *github* ।
 
@@ -358,7 +360,7 @@ wes install @wachaon/fmt --bare --unsafe
 
 আপনি অ্যাক্সেস যখন *raw* একটি ব্রাউজার সাথে ব্যক্তিগত সংগ্রহস্থলের, *token* প্রদর্শন করা হয়, তাই কপি *token* এবং এটি ব্যবহার।
 
-*token* বৈধ হওয়ার সময় আপনি যদি কমান্ড লাইনে এটি চালান তবে আপনি আপনার ব্যক্তিগত সংগ্রহস্থলের মডিউলগুলি ইনস্টল করতে পারেন।
+আপনি যদি *token* বৈধ সময়ের মধ্যে কমান্ড লাইনে এটি *token* আপনি ব্যক্তিগত সংগ্রহস্থলের মডিউলটি ইনস্টল করতে পারেন।
 
 ```shell
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
@@ -397,9 +399,9 @@ wes @wachaon/fmt src/sample --write
 | --------- | ------------- | ------------------------- |
 | `--write` | `-w`          | ওভাররাইটিংয়ের অনুমতি দিন |
 
-`--write` বা `-w` নামক যুক্তি দেওয়া থাকলে ফর্ম্যাট লিপি দিয়ে ফাইলটি ওভাররাইট করে `-w`
+`--write` বা `-w` নামক যুক্তি দেওয়া থাকলে ফর্ম্যাট স্ক্রিপ্টের সাহায্যে ফাইলটি ওভাররাইট করে।
 
-#### *module* হিসাবে ব্যবহৃত হয়
+#### *module* হিসাবে ব্যবহার করার *module*
 
 #### `option`
 
@@ -408,22 +410,4 @@ wes @wachaon/fmt src/sample --write
     parser: 'babel',
     plugins: [babel]
 }
-```
-
-#### `format`
-
-| যুক্তির নাম | আদর্শ    | বিবরণ                          |
-| ----------- | -------- | ------------------------------ |
-| `source`    | `string` | বিন্যাসে স্ট্রিং               |
-| `option?`   | `object` | *prettier* পাস করার বিকল্পগুলি |
-
-```javascript
-const { format } = require('@wachaon/fmt')
-const { readTextFileSync, writeTextFileSync } = require('filesystem')
-const { resolve } = require('pathname')
-
-const spec = resolve(process.cwd(), 'sample.js')
-let source = readTextFileSync(spec)
-source = format(source)
-console.log(writeTextFileSync(spec, source))
 ```

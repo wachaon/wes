@@ -1,8 +1,9 @@
-# वेस
+# *WES*
 
 *wes* *Windows Script Host* पर *ECMAScript* निष्पादित करने के लिए एक रूपरेखा है
 
-[*japanese*](README.ja.md) का *README* मूल होगा। जापानी के अलावा, यह मशीन अनुवादित पाठ होगा। कृपया निम्नलिखित में से किसी अन्य भाषा में एक वाक्य चुनें।
+[*japanese*](README.ja.md) का *README* मूल होगा। जापानी के अलावा, यह मशीन अनुवादित पाठ होगा।  
+कृपया निम्नलिखित में से किसी अन्य भाषा में एक वाक्य चुनें।
 
 -   [*簡体字*](README.zh-CN.md) <!-- 中国語 (簡体字) -->
 -   [*繁体字*](README.zh-TW.md) <!-- 中国語 (繁体字) -->
@@ -19,17 +20,17 @@
 
 ## विशेषताएं
 
--   स्क्रिप्ट इंजन को *Chakra* बदलें और *ECMAScript2015* *Chakra* निष्पादन को सक्षम करें
--   32-बिट *cscript.exe* , इसलिए 64-बिट वातावरण में अजीबोगरीब कीड़े से बचा जाता है
--   आप `require` साथ मॉड्यूल आयात कर सकते हैं
--   रंगीन वर्ण मानक आउटपुट के लिए आउटपुट हो सकते हैं
+-   स्क्रिप्ट इंजन को *Chakra* बदलें और *ECMAScript2015* *Chakra* निष्पादित करें
+-   32bit *cscript.exe* और 64 बिट वातावरण के लिए विशिष्ट किसी भी कीड़े का कारण नहीं है
+-   `require` साथ मॉड्यूल आयात करें
+-   मानक वर्णों को रंगीन वर्ण आउटपुट करता है
 -   फ़ाइल एन्कोडिंग स्वचालित रूप से लगता है
 
 ## सुविधाएँ हल नहीं हुई हैं
 
 -   `WScript.Quit` प्रोग्राम को बाधित नहीं कर सकता है और एक त्रुटि कोड वापस नहीं करता है
 -   अतुल्यकालिक प्रसंस्करण
--   `WScript.CreateObject` के दूसरे तर्क के *event prefix* का उपयोग
+-   `WScript.CreateObject` के दूसरे तर्क के *event prefix* का `WScript.CreateObject`
 
 ## इंस्टॉल
 
@@ -39,7 +40,8 @@
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-कार्यान्वयन के समय *wes* कार्यान्वयन के रूप में *WScript.Shell* का `SendKeys` उपयोग करते हैं। *wes.js* निर्देशिका का पथ जहाँ *wes.js* सहेजा गया है, उसमें *ascii* अलावा वर्ण हैं, `SendKeys` इसे सही ढंग से नहीं भेजेंगे और स्क्रिप्ट नहीं चलेगी। उस स्थिति में, केवल *ascii* साथ *wes.js* को बचाने के लिए पथ को कॉन्फ़िगर करें।
+कार्यान्वयन के समय *wes* कार्यान्वयन के रूप में *WScript.Shell* का `SendKeys` उपयोग करते हैं। *wes.js* निर्देशिका का पथ जहाँ *wes.js* सहेजा गया है, उसमें *ascii* अलावा वर्ण हैं, `SendKeys` कुंजी को सही ढंग से नहीं भेज सकता है और स्क्रिप्ट निष्पादित नहीं की जा सकती है।  
+कृपया केवल *wes.js* को बचाने के लिए *ascii* कॉन्फ़िगर करें
 
 ## प्रयोग
 
@@ -49,7 +51,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 wes index
 ```
 
-इसके अतिरिक्त, क्योंकि *wes* एक है *REPL* , आप एक स्क्रिप्ट कमांड लाइन पर सीधे प्रवेश किया यह केवल के साथ शुरू द्वारा निष्पादित कर सकते हैं `wes` ।
+इसके अलावा, *wes* *REPL* साथ आता है *REPL* इसलिए यदि आप इसे केवल `wes` शुरू करते हैं, तो आप सीधे स्क्रिप्ट में प्रवेश कर सकते हैं।
 
 ```shell
 wes
@@ -59,28 +61,28 @@ wes
 
 ## कमांड-लाइन जिसका नाम तर्कों है
 
-निम्नलिखित नामित तर्क *wes* स्टार्टअप विकल्पों के रूप में स्वीकार किए जाते हैं।
+*wes* आरंभिक विकल्प इस प्रकार हैं।
 
-| नामित              | विवरण                                                   |
-| ------------------ | ------------------------------------------------------- |
-| `--monotone`       | *ANSI escape code* हटा दें                              |
-| `--safe`           | स्क्रिप्ट को सुरक्षित मोड में चलाएँ                     |
-| `--usual`          | सामान्य मोड में स्क्रिप्ट चलाएँ (डिफ़ॉल्ट)              |
-| `--unsafe`         | स्क्रिप्ट को असुरक्षित मोड में चलाएँ                    |
-| `--dangerous`      | स्क्रिप्ट को खतरनाक मोड में चलाएँ                       |
-| `--debug`          | स्क्रिप्ट को डीबग मोड में चलाएँ                         |
-| `--encoding=UTF-8` | पहले पढ़ने के लिए फ़ाइल के एन्कोडिंग को निर्दिष्ट करें। |
-| `--engine=Chakra`  | यह विकल्प स्वचालित रूप से *wes* द्वारा जोड़ा जाता *wes* |
+| नामित              | विवरण                                                     |
+| ------------------ | --------------------------------------------------------- |
+| `--monotone`       | *ANSI escape code* हटा दें                                |
+| `--safe`           | स्क्रिप्ट को सुरक्षित मोड में चलाएँ                       |
+| `--usual`          | सामान्य मोड में स्क्रिप्ट चलाएँ (डिफ़ॉल्ट)                |
+| `--unsafe`         | स्क्रिप्ट को असुरक्षित मोड में चलाएँ                      |
+| `--dangerous`      | स्क्रिप्ट को खतरनाक मोड में चलाएँ                         |
+| `--debug`          | स्क्रिप्ट को डीबग मोड में चलाएँ                           |
+| `--encoding=UTF-8` | पहले पढ़ने के लिए फ़ाइल के एन्कोडिंग को निर्दिष्ट करता है |
+| `--engine=Chakra`  | यह विकल्प स्वचालित रूप से *wes* द्वारा जोड़ा जाता *wes*   |
 
 `--safe` `--usual` `--unsafe` `--dangerous` का कार्यान्वयन अधूरा है, लेकिन नामित तर्क आरक्षित हैं।
 
 ## निर्मित वस्तुओं में
 
-*wes* में *built-in objects* जो *JScript* पास नहीं हैं।
+*wes* में *built-in objects* जो *WSH (JScript)* में नहीं हैं।
 
-### की आवश्यकता होती है
+### *require*
 
-*require* साथ मॉड्यूल आयात करें। *wes* स्वचालित रूप से मॉड्यूल फ़ाइल के एन्कोडिंग का अनुमान लगाता है, लेकिन यदि आप सही तरीके से अनुमान नहीं लगाते हैं, तो आप दूसरे तर्क के साथ एन्कोडिंग निर्दिष्ट कर सकते हैं।
+*require* साथ मॉड्यूल आयात करें। *wes* स्वचालित रूप से मॉड्यूल फ़ाइल के एन्कोडिंग का अनुमान लगाता है, लेकिन यदि आप इसे सही तरीके से अनुमान नहीं लगाते हैं, तो आप दूसरे तर्क के साथ एन्कोडिंग को निर्दिष्ट कर सकते हैं।
 
 आप `require('WScript.Shell')` जैसे *OLE* लिए *require* के साथ भी आयात कर सकते हैं।
 
@@ -107,11 +109,11 @@ function add (a, b) {
 module.exports = add
 ```
 
-### कंसोल
+### *console*
 
 *wes* इन `WScript.Echo` और `WScript.StdErr.WriteLine` *console* बजाय का उपयोग करें।
 
-आप `console.log` साथ कमांड लाइन में वर्णों को आउटपुट कर सकते हैं। यह स्वरूपित स्ट्रिंग्स का भी समर्थन करता है। प्रारूप स्ट्रिंग निर्दिष्ट करने के लिए आप प्रारूप ऑपरेटर `%` का उपयोग कर सकते हैं।
+साथ कमांड लाइन के लिए उत्पादन पात्रों `console.log` । यह स्वरूपित स्ट्रिंग्स का भी समर्थन करता है। प्रारूप ऑपरेटर `%` का उपयोग करके प्रारूप स्ट्रिंग का उत्पादन करें।
 
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
@@ -119,7 +121,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 
 `WScript.StdOut.WriteLine` बजाय एक स्ट्रिंग रंगीन आउटपुट के लिए *wes* , `WScript.StdErr.WriteLine` उपयोग। `WScript.Echo` के उत्पादन `WScript.Echo` और `WScript.StdOut.WriteLine` अवरुद्ध है, उपयोग `WScript.StdOut.WriteLine` या `console.log` ।
 
-### बफर
+### *Buffer*
 
 बफ़र्स संभाल सकते हैं।
 
@@ -129,7 +131,7 @@ const buff = Buffer.from(content)
 console.log(`${content} %O`, buff)
 ```
 
-### **dirname और** फ़ाइल नाम
+### `__dirname` और `__filename`
 
 `__filename` वर्तमान में निष्पादित की जा रही मॉड्यूल फ़ाइल का पथ संग्रहीत करता है। `__dirname` , `__filename` निर्देशिका को संग्रहीत करता है।
 
@@ -141,9 +143,9 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 
 *wes* में बुनियादी प्रसंस्करण को सरल और मानकीकृत करने के लिए *built-in modules* ।
 
-### एएनएसआई
+### *ansi*
 
-`ansi` में एक *ANSI escape code* , और आप मानक आउटपुट के रंग और प्रभाव को बदल सकते हैं। उपयोग किए गए कंसोल एप्लिकेशन के प्रकार और सेटिंग्स के आधार पर रंग और प्रभाव भिन्न हो सकते हैं।
+`ansi` में एक *ANSI escape code* है जो आपको मानक आउटपुट के रंगों और प्रभावों को बदलने की अनुमति देता है। उपयोग किए गए कंसोल एप्लिकेशन के प्रकार और सेटिंग्स के आधार पर रंग और प्रभाव भिन्न हो सकते हैं।
 
 ```javascript
 const { brightRed, yellow } = require('ansi')
@@ -159,7 +161,7 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
-### argv
+### *argv*
 
 कमांड लाइन की दलीलें मिलती हैं। `cscript.exe` कमांड-लाइन की दलीलों को `/` लेकिन, *wes* इन `-` और `--` में नामित तर्कों को घोषित करता है।
 
@@ -181,7 +183,7 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
-### पथ नाम
+### *pathname*
 
 पथ का संचालन करें।
 
@@ -191,7 +193,7 @@ const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
 
-### फाइल सिस्टम
+### *filesystem*
 
 फ़ाइलों और निर्देशिकाओं का संचालन करता है। `readTextFileSync` फ़ाइल एन्कोडिंग का अनुमान `readTextFileSync` और इसे पढ़ेगा।
 
@@ -203,7 +205,7 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
-### JScript
+### *JScript*
 
 यदि आप स्क्रिप्ट इंजन को *Chakra* बदलते हैं, तो आप *JScript* विशिष्ट *Enumerator* का उपयोग नहीं कर पाएंगे। अंतर्निहित मॉड्यूल *JScript* उन्हें उपलब्ध कराता है। हालाँकि, *Enumerator* एक एन्यूमरेटर ऑब्जेक्ट के बजाय एक *Array* लौटाता है।
 
@@ -228,7 +230,7 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
-### VBScript
+### *VBScript*
 
 *VBScript* कुछ ऐसी सुविधाएँ प्रदान करता है जो *JScript* पास नहीं है।
 
@@ -238,17 +240,17 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
-### HttpRequest
+### *httprequest*
 
 *httprequest* है क्योंकि इसका नाम *http request* जारी करेगा।
 
 ```javascript
 const request = require('httprequest')
-const content = request('GET', 'http://weather.livedoor.com/forecast/webservice/json/v1?city=130010')
+const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
 
-### minitest
+### *minitest*
 
 *minitest* सरल परीक्षण लिख सकता है।
 
@@ -266,7 +268,7 @@ describe( '# calc test', () => {
 })
 ```
 
-### पाइप
+### *pipe*
 
 *pipe* पाइप प्रसंस्करण को सरल करता है
 
@@ -290,7 +292,7 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
-### typecheck
+### *typecheck*
 
 स्क्रिप्ट के प्रकार का न्याय करें।
 
@@ -306,22 +308,22 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 
 *install* , आप के लिए मॉड्यूल स्थापित कर सकते हैं *wes* पर प्रकाशित *github* । मॉड्यूल प्रकाशित करने के लिए, आपको *github repository* आवश्यकता *github repository* । साथ ही, रिपॉजिटरी का नाम और स्थानीय निर्देशिका का नाम समान होना चाहिए।
 
-### बंडल
+### *bundle*
 
-*github* एक मॉड्यूल को *github* प्रकाशित किया जा रहा है, तो *bundle* आवश्यक मॉड्यूल को बंडल करता है और इसे एक प्रारूप में बदलता है जिसे *install* मॉड्यूल द्वारा शामिल किया जा सकता है।
+एक मॉड्यूल को *github* प्रकाशित करते समय, *bundle* आवश्यक मॉड्यूल को बंडल करता है और इसे एक प्रारूप में बदलता है जिसे *install* मॉड्यूल द्वारा शामिल किया जा सकता है।
 
 सुरक्षा के *wes* , *wes* मॉड्यूल को आयात नहीं करता है जिसे सीधे निष्पादित किया जा सकता है, इसलिए *bundle* मॉड्यूल में *.json* फ़ाइल बनाएं।
 
 मॉड्यूल बांधने के लिए कुछ शर्तें हैं।
 
-1.  *repository* एक प्रकार के मॉड्यूल को एक *repository* में प्रकाशित किया जा सकता *repository* ।
+1.  एक *repository* में *repository* एक प्रकार के मॉड्यूल को प्रकाशित किया जा सकता *repository* ।
 2.  *github* रिपॉजिटरी नाम और स्थानीय कामकाजी निर्देशिका नाम समान होना चाहिए।
 3.  यदि आप मॉड्यूल को किसी तीसरे पक्ष को प्रकाशित करना चाहते हैं तो रिपॉजिटरी सार्वजनिक होनी चाहिए।
-4.  *wes* स्क्रिप्ट की व्याख्या नहीं करता है, इसलिए मॉड्यूल `require` केवल कुछ शर्तों के तहत `require` जैसे `if` बयानों को बंडल नहीं किया जा सकता है।
-5.  *.json* फ़ाइल नाम के साथ काम कर रहे निर्देशिका में बनाया जाएगा *directory_name.json* । यदि आप फ़ाइल का नाम बदलते हैं या फ़ाइल को स्थानांतरित करते हैं, तो आप उसे स्थापित नहीं कर सकते।
+4.  *wes* स्क्रिप्ट की व्याख्या नहीं करते हैं। ऐसे मॉड्यूल `require` कुछ शर्तों के तहत `require` जैसे `if` बयानों को बंडल नहीं किया जा सकता है।
+5.  *.json* फ़ाइल नाम के साथ काम करने निर्देशिका में बनाई गई है *directory_name.json* । यदि आप फ़ाइल का नाम बदलते हैं या फ़ाइल को स्थानांतरित करते हैं, तो आप उसे स्थापित नहीं कर सकते।
 6.  `node_modules/directory_name` को बंडल करते हैं, तो बंडलिंग विफल हो जाता है क्योंकि यह `directory_name.json` संदर्भित करता है।
 
-### इंस्टॉल
+### *install*
 
 इसके लिए मॉड्यूल फ़ाइल को स्थापित किया जाता है *wes* पर प्रकाशित *github* ।
 
@@ -340,7 +342,7 @@ wes install @wachaon/fmt
 | `--bare`   | `-b`     | *@author* फ़ोल्डर बनाएँ नहीं                         |
 | `--global` | `-g`     | उस फ़ोल्डर में मॉड्यूल स्थापित करें जहां *wes.js* है |
 
-`--bare` विकल्प `author@repository` से `repository` लिए `require` तर्क को छोड़ सकता `repository` । `--global` विकल्प स्थापित स्क्रिप्ट को सभी लिपियों के लिए उपलब्ध कराता है। उपरोक्त विकल्पों का उपयोग *wes* सिक्योरिटी विकल्प `--unsafe` या - `--dangerous` साथ किया जाना चाहिए।
+`--bare` विकल्प `author@repository` से `repository` लिए `require` तर्क को छोड़ सकता `repository` । `--global` विकल्प स्थापित स्क्रिप्ट को सभी लिपियों के लिए उपलब्ध कराता है। उपरोक्त विकल्पों को *wes* सिक्योरिटी विकल्प `--unsafe` या `--dangerous` साथ निर्दिष्ट किया जाना चाहिए।
 
 ```shell
 wes install @wachaon/fmt --bare --unsafe
@@ -350,7 +352,7 @@ wes install @wachaon/fmt --bare --unsafe
 
 *install* जा सकता है न केवल *github* के सार्वजनिक भंडार मॉड्यूल में, बल्कि निजी भंडार में भी *install* जा सकता है।
 
-*install* , `author@repository` साथ मॉड्यूल निर्दिष्ट करें। कार्यान्वयन निम्न डाउनलोड करता है।
+*install* , `author@repository` साथ मॉड्यूल निर्दिष्ट करें। कार्यान्वयन में निम्न डाउनलोड किया गया है।
 
 ```javascript
 `https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
@@ -358,7 +360,7 @@ wes install @wachaon/fmt --bare --unsafe
 
 आप का उपयोग करते हैं *raw* एक ब्राउज़र के साथ निजी भंडार की, *token* प्रदर्शित किया जाता है, तो कॉपी *token* और इसका इस्तेमाल करते हैं।
 
-यदि आप *token* को मान्य करते हुए कमांड लाइन पर चलाते हैं तो आप अपने निजी भंडार में मॉड्यूल भी स्थापित कर सकते हैं।
+यदि आप *token* के वैध समय के भीतर कमांड लाइन पर इसे निष्पादित करते हैं, तो आप निजी रिपॉजिटरी के मॉड्यूल को स्थापित कर सकते हैं।
 
 ```shell
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
@@ -408,22 +410,4 @@ wes @wachaon/fmt src/sample --write
     parser: 'babel',
     plugins: [babel]
 }
-```
-
-#### `format`
-
-| तर्क का नाम | प्रकार   | विवरण                             |
-| ----------- | -------- | --------------------------------- |
-| `source`    | `string` | प्रारूप करने के लिए स्ट्रिंग      |
-| `option?`   | `object` | *prettier* पास करने के लिए विकल्प |
-
-```javascript
-const { format } = require('@wachaon/fmt')
-const { readTextFileSync, writeTextFileSync } = require('filesystem')
-const { resolve } = require('pathname')
-
-const spec = resolve(process.cwd(), 'sample.js')
-let source = readTextFileSync(spec)
-source = format(source)
-console.log(writeTextFileSync(spec, source))
 ```
