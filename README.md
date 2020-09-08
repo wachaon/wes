@@ -1,8 +1,8 @@
-# WES
+# *WES*
 
 *wes* は *Windows Script Host* で *ECMAScript* を実行するフレームワークです
 
-*README* の原文は [*japanese*](docs/README.ja.md) になります。日本語以外は機械翻訳の文章になります。
+*README* の原文は [*japanese*](docs/README.ja.md) になります。日本語以外は機械翻訳の文章になります。  
 他言語の文章は下記から選択してください。
 
 -   [*簡体字*](docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -20,10 +20,10 @@
 
 ## Features
 
--   スクリプトエンジンを *Chakra* に変更し *ECMAScript2015+* の実行を可能にします
--   32bit の *cscript.exe* を使用するので、64bit環境 の固有の不具合を回避します
--   `require` でモジュールをインポートできます
--   標準出力に色付き文字を出力できます
+-   スクリプトエンジンを *Chakra* に変更し *ECMAScript2015+* の実行します
+-   32bit の *cscript.exe* を使用し、64bit環境 の固有のバグは発生しません
+-   `require` でモジュールをインポートします
+-   標準出力に色付き文字を出力します
 -   ファイルのエンコードを自動で推測します
 
 ## Features not resolved
@@ -42,9 +42,9 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 *wes* は実装として実行時に *WScript.Shell* の `SendKeys` を使用します。
-*wes.js* を保存するディレクトリのパスに *ascii* 以外文字が含まれていると `SendKeys` で正しく送れず、
-スクリプトが実行できません。
-その場合は *wes.js* の保存先のパスを *ascii* のみで構成してください。
+*wes.js* を保存するディレクトリのパスに *ascii* 以外文字が含まれていると `SendKeys` で正しくキーが送れず、
+スクリプトが実行できません。  
+*wes.js* の保存先のパスは *ascii* のみで構成してください。
 
 ## Usage
 
@@ -55,8 +55,8 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 wes index
 ```
 
-また、*wes* には *REPL* が備わっているので、`wes` のみで起動させることで、
-コマンドラインに直接入力したスクリプトを実行出来ます。
+また、*wes* には *REPL* が備わっているので、`wes` のみで起動させると、
+スクリプトを直接入力できます。
 
 ```shell
 wes
@@ -67,7 +67,7 @@ wes
 
 ## command-line named arguments
 
-*wes* の起動オプションとして下記の名前付き引数を受け付けします。
+*wes* の起動オプションは下記になります。
 
 | named              | description                  |
 | ------------------ | ---------------------------- |
@@ -77,16 +77,16 @@ wes
 | `--unsafe`         | スクリプトを安全ではないモードで実行します        |
 | `--dangerous`      | スクリプトを危険なモードで実行します           |
 | `--debug`          | スクリプトをデバックモードで実行します          |
-| `--encoding=UTF-8` | 最初に読み込むファイルのエンコードを指定します。     |
+| `--encoding=UTF-8` | 最初に読み込むファイルのエンコードを指定します      |
 | `--engine=Chakra`  | このオプションは *wes* によって自動で付加されます |
 
 `--safe` `--usual` `--unsafe` `--dangerous` の実装は不完全ですが、名前付き引数は予約されています。
 
 ## built-in objects
 
-*wes* には *JScript* には無い *built-in objects* があります。
+*wes* には *WSH (JScript)* には無い *built-in objects* があります。
 
-### require
+### *require*
 
 *require* でモジュールをインポートします。*wes* ではモジュールファイルのエンコードを自動推測しますが、
 正しく推測しない場合に第二引数でエンコードを指定することも可能です。
@@ -116,12 +116,12 @@ function add (a, b) {
 module.exports = add
 ```
 
-### console
+### *console*
 
 *wes* では `WScript.Echo` や `WScript.StdErr.WriteLine` の代わりに *console* を使用します。
 
-`console.log` でコマンドラインに文字を出力出来ます。また書式化文字列にも対応しています。
-書式化演算子 `%` 使用して書式化文字列を指定できます。
+`console.log` でコマンドラインに文字を出力します。また書式化文字列にも対応しています。
+書式化演算子 `%` 使用して書式化文字列を出力します。
 
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
@@ -130,7 +130,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 *wes* では色付き文字列を出力する為に `WScript.StdOut.WriteLine` ではなく、`WScript.StdErr.WriteLine` を使用します。
 `WScript.Echo`　や `WScript.StdOut.WriteLine` は出力を遮断されているので、`WScript.StdOut.WriteLine` もしくは `console.log` を使用してください。
 
-### Buffer
+### *Buffer*
 
 バッファーを扱うことができます。
 
@@ -140,7 +140,7 @@ const buff = Buffer.from(content)
 console.log(`${content} %O`, buff)
 ```
 
-### **dirname and **filename
+### `__dirname` and `__filename`
 
 `__filename` は現在実行しているモジュールファイルのパスが格納されています。
 `__dirname` は `__filename` のディレクトリが格納されています。
@@ -153,9 +153,9 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 
 *wes* では基本的な処理を簡略・共通化するための *built-in modules* があります。
 
-### ansi
+### *ansi*
 
-`ansi` には *ANSI escape code* が格納されており、標準出力の色や効果を変更できます。
+`ansi` には *ANSI escape code* があり、標準出力の色や効果を変更できます。
 使用するコンソールアプリケーションの種類や設定によって色や効果などは異なる場合があります。
 
 ```javascript
@@ -174,7 +174,7 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
-### argv
+### *argv*
 
 コマンドライン引数のを取得します。
 `cscript.exe` のコマンドライン引数は `/` で名前付き引数を宣言しますが、*wes* では `-` および `--` で
@@ -198,7 +198,7 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
-### pathname
+### *pathname*
 
 パスの操作をします。
 
@@ -208,7 +208,7 @@ const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
 
-### filesystem
+### *filesystem*
 
 ファイルの操作やディレクトリの操作をします。
 `readTextFileSync` はファイルのエンコードを自動推測して読み込みます。
@@ -221,7 +221,7 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
-### JScript
+### *JScript*
 
 スクリプトエンジンを *Chakra* に変更すると、*JScript* 固有の *Enumerator* などが使用できなくなります。
 ビルトインモジュールの *JScript* はそれらを使用可能にします。
@@ -248,7 +248,7 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
-### VBScript
+### *VBScript*
 
 *VBScript* は *JScript* にはない機能のいくつかを提供します。
 
@@ -258,17 +258,17 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
-### httprequest
+### *httprequest*
 
 *httprequest* はその名の通り *http request* を発行します。
 
 ```javascript
 const request = require('httprequest')
-const content = request('GET', 'http://weather.livedoor.com/forecast/webservice/json/v1?city=130010')
+const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
 
-### minitest
+### *minitest*
 
 *minitest* は簡易的なテストを記述できます。
 
@@ -286,7 +286,7 @@ describe( '# calc test', () => {
 })
 ```
 
-### pipe
+### *pipe*
 
 *pipe* はパイプ処理を簡素化します
 
@@ -310,7 +310,7 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
-### typecheck
+### *typecheck*
 
 スクリプトの型の判定をします。
 
@@ -328,7 +328,7 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 モジュールを公開する為には *github repository* が必要になります。
 またリポジトリ名とローカルのディレクトリ名は同名にする必要があります。
 
-### bundle
+### *bundle*
 
  *github* にモジュールを公開するにあたり、*bundle* は必要なモジュールをバンドルし、*install* モジュールで取り込める形式に変更します。
 
@@ -339,11 +339,11 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 1.  一つの *repository* で公開できるモジュールは一種類になります。
 2.  *github* のリポジトリ名とローカルのワーキングディレクトリ名は同名である必要があります。
 3.  第三者にモジュールを公開する場合にはリポジトリはパブリックである必要があります。
-4.  *wes* ではスクリプトの静的解釈はしないので、`if` ステートメントなど特定条件時のみに `require` をしたモジュールはバンドルされない可能性があります。
+4.  *wes* はスクリプトの静的解釈はしません。`if` ステートメントなど特定条件時に `require` をしたモジュールはバンドルされない可能性があります。
 5.  *.json* ファイルはワーキングディレクトリに *directory_name.json* という名前で作成されます。ファイル名の変更やファイルを移動するとインストールできません。
 6.  `node_modules/directory_name` をバンドルする場合 `directory_name.json` を参照するのでバンドルが失敗します。
 
-### install
+### *install*
 
 *github* に公開されている *wes* 用のモジュールファイルをインストールするのに使用します。
 
@@ -385,7 +385,7 @@ wes install @wachaon/fmt --bare --unsafe
 ブラウザでプライベートリポジトリの *raw* にアクセスすると *token* が表示されますので、
 その *token* をコピーして使用します。
 
-*token* が有効な時間内にコマンドラインで実行すれば、プライベートリポジトリのモジュールもインストールできます。
+*token* の有効時間内にコマンドラインで実行すれば、プライベートリポジトリのモジュールもインストールできます。
 
 ```shell
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
@@ -438,22 +438,4 @@ wes @wachaon/fmt src/sample --write
     parser: 'babel',
     plugins: [babel]
 }
-```
-
-#### `format`
-
-| argument name | type     | description         |
-| ------------- | -------- | ------------------- |
-| `source`      | `string` | フォーマットしたい文字列        |
-| `option?`     | `object` | *prettier* に渡すオプション |
-
-```javascript
-const { format } = require('@wachaon/fmt')
-const { readTextFileSync, writeTextFileSync } = require('filesystem')
-const { resolve } = require('pathname')
-
-const spec = resolve(process.cwd(), 'sample.js')
-let source = readTextFileSync(spec)
-source = format(source)
-console.log(writeTextFileSync(spec, source))
 ```

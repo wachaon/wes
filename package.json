@@ -1,6 +1,6 @@
 {
   "name": "wes",
-  "version": "0.8.68",
+  "version": "0.8.69",
   "description": "Windows Ecma Script host",
   "main": "wes.js",
   "directories": {
@@ -9,7 +9,9 @@
     "test": "test"
   },
   "dependencies": {
-    "@types/windows-script-host": "^5.8.3"
+    "markdown-translate": "^0.0.3",
+    "markdown-actions": "^0.0.3",
+    "fmt": "^0.0.3"
   },
   "devDependencies": {},
   "scripts": {
