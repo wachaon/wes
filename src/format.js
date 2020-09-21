@@ -1,19 +1,17 @@
-const { readdirSync, readTextFileSync, writeTextFileSync } = require('filesystem')
+const { readdirSync, readdirsSync, readFileSync, writeFileSync } = require('filesystem')
 const { resolve } = require('pathname')
-const fmt = require('fmt')
-const ansi = require('ansi')
+const { format } = require('fmt')
 
-const successColor = ansi.brightGreen
+const UTF8 = 'UTF-8N'
 
-const libspec = resolve(process.cwd(), 'lib')
-const srcspec = resolve(process.cwd(), 'src')
+function formatter(dir) {
+    readdirsSync(resolve(process.cwd(), dir), UTF8)
+        .filter((spec) => spec.type === 'file' && spec.path.endsWith('.js'))
+        .forEach((spec) => {
+            const { path } = spec
+            console.log(writeFileSync(path, format(readFileSync(path, UTF8)), UTF8))
+        })
+}
 
-const lib = readdirSync(libspec).map((file) => resolve(libspec, file))
-const src = readdirSync(srcspec).map((file) => resolve(srcspec, file))
-const dir = [...lib, ...src, resolve(process.cwd(), 'wes.js')]
-
-dir.forEach((file) => {
-    const source = readTextFileSync(file)
-    const res = fmt.format(source)
-    console.log(successColor + writeTextFileSync(file, res))
-})
+formatter('lib')
+formatter('src')

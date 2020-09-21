@@ -18,21 +18,21 @@
 -   [*français*](docs/README.fr.md) <!-- フランス語 -->
 -   [*italiano*](docs/README.it.md)　<!-- イタリア語 -->
 
-## Features
+# Features
 
--   スクリプトエンジンを *Chakra* に変更し *ECMAScript2015+* の実行します
--   32bit の *cscript.exe* を使用し、64bit環境 の固有のバグは発生しません
+-   *Windows Script Host* のスクリプトエンジンを *Chakra* して *ECMAScript2015+* を実行します
+-   32bit の *cscript.exe* を実行するので、64bit環境 の固有のバグは発生しません
 -   `require` でモジュールをインポートします
 -   標準出力に色付き文字を出力します
 -   ファイルのエンコードを自動で推測します
 
-## Features not resolved
+# Features not resolved
 
 -   `WScript.Quit` はプログラムを中断出来ず、エラーコードも返しません
 -   非同期処理
 -   `WScript.CreateObject` の第二引数の *event prefix* の活用
 
-## Install
+# Install
 
 *wes* に必要なのは *wes.js* ファイルのみです。
 ダウンロードするにはコマンドプロンプトを起動して次のコマンドを入力してください。
@@ -69,24 +69,24 @@ wes
 
 *wes* の起動オプションは下記になります。
 
-| named              | description                  |
-| ------------------ | ---------------------------- |
-| `--monotone`       | *ANSI escape code* を排除します    |
-| `--safe`           | スクリプトを安全モードで実行します            |
-| `--usual`          | スクリプトを通常モードで実行します (デフォルト)    |
+| named              | description                                       |
+| ------------------ | ------------------------------------------------- |
+| `--monotone`       | *ANSI escape code* を排除します                   |
+| `--safe`           | スクリプトを安全モードで実行します                |
+| `--usual`          | スクリプトを通常モードで実行します (デフォルト)   |
 | `--unsafe`         | スクリプトを安全ではないモードで実行します        |
-| `--dangerous`      | スクリプトを危険なモードで実行します           |
-| `--debug`          | スクリプトをデバックモードで実行します          |
-| `--encoding=UTF-8` | 最初に読み込むファイルのエンコードを指定します      |
+| `--dangerous`      | スクリプトを危険なモードで実行します              |
+| `--debug`          | スクリプトをデバックモードで実行します            |
+| `--encoding=UTF-8` | 最初に読み込むファイルのエンコードを指定します    |
 | `--engine=Chakra`  | このオプションは *wes* によって自動で付加されます |
 
 `--safe` `--usual` `--unsafe` `--dangerous` の実装は不完全ですが、名前付き引数は予約されています。
 
-## built-in objects
+# built-in objects
 
 *wes* には *WSH (JScript)* には無い *built-in objects* があります。
 
-### *require*
+## *require*
 
 *require* でモジュールをインポートします。*wes* ではモジュールファイルのエンコードを自動推測しますが、
 正しく推測しない場合に第二引数でエンコードを指定することも可能です。
@@ -104,7 +104,7 @@ while (ie.Busy || ie.readystate != 4) {
 WShell.AppActivate(ie.LocationName)
 ```
 
-### module and module.exports
+## `module` and `module.exports`
 
 モジュールとして定義したい場合は `module.exports` に代入します。
 
@@ -116,7 +116,7 @@ function add (a, b) {
 module.exports = add
 ```
 
-### *console*
+## *console*
 
 *wes* では `WScript.Echo` や `WScript.StdErr.WriteLine` の代わりに *console* を使用します。
 
@@ -130,7 +130,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 *wes* では色付き文字列を出力する為に `WScript.StdOut.WriteLine` ではなく、`WScript.StdErr.WriteLine` を使用します。
 `WScript.Echo`　や `WScript.StdOut.WriteLine` は出力を遮断されているので、`WScript.StdOut.WriteLine` もしくは `console.log` を使用してください。
 
-### *Buffer*
+## *Buffer*
 
 バッファーを扱うことができます。
 
@@ -140,7 +140,7 @@ const buff = Buffer.from(content)
 console.log(`${content} %O`, buff)
 ```
 
-### `__dirname` and `__filename`
+## `__dirname` and `__filename`
 
 `__filename` は現在実行しているモジュールファイルのパスが格納されています。
 `__dirname` は `__filename` のディレクトリが格納されています。
@@ -149,11 +149,11 @@ console.log(`${content} %O`, buff)
 console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 ```
 
-## built-in modules
+# built-in modules
 
 *wes* では基本的な処理を簡略・共通化するための *built-in modules* があります。
 
-### *ansi*
+## *ansi*
 
 `ansi` には *ANSI escape code* があり、標準出力の色や効果を変更できます。
 使用するコンソールアプリケーションの種類や設定によって色や効果などは異なる場合があります。
@@ -174,7 +174,7 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
-### *argv*
+## *argv*
 
 コマンドライン引数のを取得します。
 `cscript.exe` のコマンドライン引数は `/` で名前付き引数を宣言しますが、*wes* では `-` および `--` で
@@ -198,7 +198,7 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
-### *pathname*
+## *pathname*
 
 パスの操作をします。
 
@@ -208,7 +208,7 @@ const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
 
-### *filesystem*
+## *filesystem*
 
 ファイルの操作やディレクトリの操作をします。
 `readTextFileSync` はファイルのエンコードを自動推測して読み込みます。
@@ -221,7 +221,7 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
-### *JScript*
+## *JScript*
 
 スクリプトエンジンを *Chakra* に変更すると、*JScript* 固有の *Enumerator* などが使用できなくなります。
 ビルトインモジュールの *JScript* はそれらを使用可能にします。
@@ -248,7 +248,7 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
-### *VBScript*
+## *VBScript*
 
 *VBScript* は *JScript* にはない機能のいくつかを提供します。
 
@@ -258,7 +258,7 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
-### *httprequest*
+## *httprequest*
 
 *httprequest* はその名の通り *http request* を発行します。
 
@@ -268,7 +268,7 @@ const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
 
-### *minitest*
+## *minitest*
 
 *minitest* は簡易的なテストを記述できます。
 
@@ -286,7 +286,7 @@ describe( '# calc test', () => {
 })
 ```
 
-### *pipe*
+## *pipe*
 
 *pipe* はパイプ処理を簡素化します
 
@@ -310,7 +310,7 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
-### *typecheck*
+## *typecheck*
 
 スクリプトの型の判定をします。
 
@@ -322,13 +322,13 @@ console.log('isNumber(43.5) // => %O', isNumber(43.5))
 console.log('isBoolean(false) // => %O', isBoolean(false))
 ```
 
-## Module bundle and install
+# Module bundle and install
 
 *install* では *github* で公開されている *wes* 用のモジュールをインストール出来ます。
 モジュールを公開する為には *github repository* が必要になります。
 またリポジトリ名とローカルのディレクトリ名は同名にする必要があります。
 
-### *bundle*
+## *bundle*
 
  *github* にモジュールを公開するにあたり、*bundle* は必要なモジュールをバンドルし、*install* モジュールで取り込める形式に変更します。
 
@@ -343,11 +343,11 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 5.  *.json* ファイルはワーキングディレクトリに *directory_name.json* という名前で作成されます。ファイル名の変更やファイルを移動するとインストールできません。
 6.  `node_modules/directory_name` をバンドルする場合 `directory_name.json` を参照するのでバンドルが失敗します。
 
-### *install*
+## *install*
 
 *github* に公開されている *wes* 用のモジュールファイルをインストールするのに使用します。
 
-## usage
+### usage
 
 *install* には `@author/repository` という書式で引数を渡します
 
@@ -391,23 +391,23 @@ wes install @wachaon/fmt --bare --unsafe
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
-## External module
+# External module
 
 ここではいくつかの外部モジュールを紹介します。
 
-### *@wachaon/fmt*
+## *@wachaon/fmt*
 
 *@wachaon/fmt* は *prettier* をバンドルしたもので、スクリプトのフォーマットをします。
 また、*@wachaon/fmt* がインストールされている状態で `SyntaxError` が発生した場合に
 そのエラー箇所を提示できます。
 
-#### install
+### install
 
 ```shell
 wes install @wachaon/fmt
 ```
 
-#### usage
+### usage
 
 ワーキングディレクトリに *.prettierrc* (JSONフォーマット) があれば設定に反映させます。
 *fmt* では *CLI*（コマンドラインインターフェース）と *module* の両方で使用できます。
@@ -418,20 +418,20 @@ wes install @wachaon/fmt
 wes @wachaon/fmt src/sample --write
 ```
 
-| unnamed number | description         |
-| -------------- | ------------------- |
-| 0              | -                   |
+| unnamed number | description                            |
+| -------------- | -------------------------------------- |
+| 0              | -                                      |
 | 1              | 必須。フォーマットしたいファイルのパス |
 
-| named     | short named | description |
-| --------- | ----------- | ----------- |
-| `--write` | `-w`        | 上書きを許可する    |
+| named     | short named | description      |
+| --------- | ----------- | ---------------- |
+| `--write` | `-w`        | 上書きを許可する |
 
  `--write` もしくは `-w` の名前付き引数の指定があればフォーマットしたスクリプトでファイルを上書きします。
 
-#### *module* として使う場合
+### *module* として使う場合
 
-#### `option`
+### `option`
 
 ```javascript
 {

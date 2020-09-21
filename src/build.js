@@ -3,6 +3,10 @@ const fs = require('filesystem')
 const path = require('pathname')
 const { rLINE_SEP, rCRLF, rCR, CRLF, SPACE, NONE, LF } = require('text')
 const { Enumerator } = require('JScript')
+const { format } = require('fmt')
+
+const test = require('/src/test')
+if (!test) throw new Error('Must pass all tests')
 
 let files = new Enumerator(FSO.GetFolder('lib').Files)
 
@@ -12,7 +16,7 @@ files.forEach((file) => {
     let filename = path.basename(file.name, '.js')
     let ext = path.extname(file.name)
     if (ext !== '.js') return
-    let source = fs.readTextFileSync(file.Path).replace(rCR, NONE)
+    let source = fs.readFileSync(file.Path, 'UTF-8N').replace(rCR, NONE)
     result[filename] = { source, mapping: {}, path: `{wes}/${filename}` }
 })
 
@@ -34,15 +38,17 @@ let sep = rCRLF.test(template) ? CRLF : LF
 let line = template.split(sep)
 const match = /^\s+var Modules = \{\}$/
 
-let res = line
-    .map((value) => {
-        if (!match.test(value)) {
-            return value
-        } else {
-            return '        var Modules = ' + graph.trim()
-        }
-    })
-    .join(sep)
+let res = format(
+    line
+        .map((value) => {
+            if (!match.test(value)) {
+                return value
+            } else {
+                return 'var Modules = ' + graph.trim()
+            }
+        })
+        .join(sep)
+)
 
 log(() => fs.writeTextFileSync('wes.js', res))
 

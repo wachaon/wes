@@ -1,6 +1,6 @@
 {
   "name": "wes",
-  "version": "0.8.70",
+  "version": "0.8.71",
   "description": "Windows Ecma Script host",
   "main": "wes.js",
   "directories": {
