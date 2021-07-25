@@ -61,6 +61,23 @@ describe('# test pathname', () => {
             assert(path.isAbsolute('d:/bin/github/../Desktop/log/log.json') === true)
         })
     })
+
+    describe('## test dirname', () => {
+        it('C:/bin/github/wes', () => {
+            assert(path.dirname('C:/bin/github/wes') === 'C:/bin/github')
+        })
+        /*
+        it('C:/bin', () => {
+            assert(path.dirname('C:/bin') === 'C:/')
+        })
+        it('C:/', () => {
+            assert(path.dirname('C:/') === 'C:/')
+        })
+        it('C:', () => {
+            assert(path.dirname('C:') === 'C:')
+        })
+        */
+    })
 })
 
 return pass
