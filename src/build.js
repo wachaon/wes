@@ -5,6 +5,7 @@ const { rLINE_SEP, rCRLF, rCR, CRLF, SPACE, NONE, LF } = require('text')
 const { Enumerator } = require('JScript')
 const { format } = require('fmt')
 
+require('/src/format')
 const test = require('/src/test')
 if (!test) throw new Error('Must pass all tests')
 
