@@ -342,8 +342,6 @@ try {
 
         WScript.Quit()
     } else {
-        console.log('') // Send a line
-
         var Modules = {
             ansi: {
                 source:
@@ -490,7 +488,7 @@ try {
                 path: '{wes}/VBScript'
             },
             version: {
-                source: "module.exports = console.log('0.8.78')",
+                source: "module.exports = console.log('0.8.79')",
                 mapping: {},
                 path: '{wes}/version'
             }
@@ -681,8 +679,13 @@ try {
             var entry = mod.path || sep
             if (!has(mod, 'exports')) {
                 if (!has(mod, 'module')) {
-                    var dirname = entry.split(sep).slice(0, -1).join(sep)
                     mod.module = { exports: {} }
+                    if (mod.path.endsWith('.json')) {
+                        mod.module.exports = JSON.parse(mod.source)
+                        mod.exports = mod.module.exports
+                        return mod.exports
+                    }
+                    var dirname = entry.split(sep).slice(0, -1).join(sep)
                     mod.mapping = mod.mapping || {}
                     new Function(
                         'require',
