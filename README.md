@@ -128,7 +128,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
 *wes* では色付き文字列を出力する為に `WScript.StdOut.WriteLine` ではなく、`WScript.StdErr.WriteLine` を使用します。
-`WScript.Echo`　や `WScript.StdOut.WriteLine` は出力を遮断されているので、`WScript.StdErr.WriteLine` もしくは `console.log` を使用してください。
+`WScript.Echo` や `WScript.StdOut.WriteLine` は出力を遮断されているので、`WScript.StdErr.WriteLine` もしくは `console.log` を使用してください。
 
 ## *Buffer*
 
