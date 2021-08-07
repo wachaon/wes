@@ -21,7 +21,7 @@
 # Features
 
 -   *Windows Script Host* のスクリプトエンジンを *Chakra* して *ECMAScript2015+* を実行します
--   32bit の *cscript.exe* を実行するので、64bit環境 の固有のバグは発生しません
+-   32bit の *cscript.exe* を実行するので、64bit環境での固有の不具合は発生しません
 -   `require` でモジュールをインポートします
 -   標準出力に色付き文字を出力します
 -   ファイルのエンコードを自動で推測します
@@ -30,7 +30,7 @@
 
 -   `WScript.Quit` はプログラムを中断出来ず、エラーコードも返しません
 -   非同期処理
--   `WScript.CreateObject` の第二引数の *event prefix* の活用
+-   `WScript.CreateObject` の第二引数の *event prefix* の使用は出来ません
 
 # Install
 
@@ -339,7 +339,7 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 1.  一つの *repository* で公開できるモジュールは一種類になります。
 2.  *github* のリポジトリ名とローカルのワーキングディレクトリ名は同名である必要があります。
 3.  第三者にモジュールを公開する場合にはリポジトリはパブリックである必要があります。
-4.  *wes* はスクリプトの静的解釈はしません。`if` ステートメントなど特定条件時に `require` をしたモジュールはバンドルされない可能性があります。
+4.  *wes* はスクリプトの静的解釈はしません。`if` ステートメントなど特定条件時に `require` で取得したモジュールはバンドルされない可能性があります。
 5.  *.json* ファイルはワーキングディレクトリに *directory_name.json* という名前で作成されます。ファイル名の変更やファイルを移動するとインストールできません。
 6.  `node_modules/directory_name` をバンドルする場合 `directory_name.json` を参照するのでバンドルが失敗します。
 
@@ -357,9 +357,9 @@ wes install @wachaon/fmt
 
 *install* にはオプションがあります
 
-| named      | short named | description                     |
-| ---------- | ----------- | ------------------------------- |
-| `--bare`   | `-b`        | *@author* フォルダを作成しない            |
+| named      | short named | description                                           |
+| ---------- | ----------- | ------------------------------------------------------|
+| `--bare`   | `-b`        | *@author* フォルダを作成しない                        |
 | `--global` | `-g`        | *wes.js* があるフォルダにモジュールをインストールする |
 
 `--bare` オプションは `require` の引数を `author@repository` から `repository` に省略できます。
@@ -434,8 +434,10 @@ wes @wachaon/fmt src/sample --write
 ### `option`
 
 ```javascript
-{
-    parser: 'babel',
-    plugins: [babel]
-}
+const fmt = require('@wachaon/fmt')
+const { readTextFileSync, writeTextFileSync } = require('filesystem')
+const { join, workingDirectory } = require('pathname')
+
+const target = join(workingDirectory, 'index.js')
+console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
