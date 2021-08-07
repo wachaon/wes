@@ -1,27 +1,27 @@
-# *WES*
+# _WES_
 
-*wes* は *Windows Script Host* で *ECMAScript* を実行するフレームワークです
+_wes_ は _Windows Script Host_ で _ECMAScript_ を実行するフレームワークです
 
-*README* の原文は [*japanese*](README.ja.md) になります。日本語以外は機械翻訳の文章になります。  
+_README_ の原文は [_japanese_](README.ja.md) になります。日本語以外は機械翻訳の文章になります。  
 他言語の文章は下記から選択してください。
 
--   [*簡体字*](README.zh-CN.md) <!-- 中国語 (簡体字) -->
--   [*繁体字*](README.zh-TW.md) <!-- 中国語 (繁体字) -->
--   [*English*](README.en.md) <!-- 英語 -->
--   [*हिन्दी*](README.hi.md)　<!-- ヒンディー語 -->
--   [*Español*](README.es.md) <!-- スペイン語 -->
--   [*عربى*](README.ar.md) <!-- アラビア語 -->
--   [*বাংলা*](README.bn.md) <!-- ベンガル語 -->
--   [*Português*](README.pt.md) <!-- ポルトガル語 -->
--   [*русский язык*](README.ru.md) <!-- ロシア語 -->
--   [*Deutsch*](README.de.md) <!-- ドイツ語 -->
--   [*français*](README.fr.md) <!-- フランス語 -->
--   [*italiano*](README.it.md)　<!-- イタリア語 -->
+-   [_簡体字_](README.zh-CN.md) <!-- 中国語 (簡体字) -->
+-   [_繁体字_](README.zh-TW.md) <!-- 中国語 (繁体字) -->
+-   [_English_](README.en.md) <!-- 英語 -->
+-   [_हिन्दी_](README.hi.md)　<!-- ヒンディー語 -->
+-   [_Español_](README.es.md) <!-- スペイン語 -->
+-   [_عربى_](README.ar.md) <!-- アラビア語 -->
+-   [_বাংলা_](README.bn.md) <!-- ベンガル語 -->
+-   [_Português_](README.pt.md) <!-- ポルトガル語 -->
+-   [_русский язык_](README.ru.md) <!-- ロシア語 -->
+-   [_Deutsch_](README.de.md) <!-- ドイツ語 -->
+-   [_français_](README.fr.md) <!-- フランス語 -->
+-   [_italiano_](README.it.md)　<!-- イタリア語 -->
 
 ## Features
 
--   スクリプトエンジンを *Chakra* に変更し *ECMAScript2015+* の実行します
--   32bit の *cscript.exe* を使用し、64bit環境 の固有のバグは発生しません
+-   スクリプトエンジンを _Chakra_ に変更し _ECMAScript2015+_ の実行します
+-   32bit の _cscript.exe_ を使用し、64bit環境 の固有のバグは発生しません
 -   `require` でモジュールをインポートします
 -   標準出力に色付き文字を出力します
 -   ファイルのエンコードを自動で推測します
@@ -30,68 +30,68 @@
 
 -   `WScript.Quit` はプログラムを中断出来ず、エラーコードも返しません
 -   非同期処理
--   `WScript.CreateObject` の第二引数の *event prefix* の活用
+-   `WScript.CreateObject` の第二引数の _event prefix_ の活用
 
 ## Install
 
-*wes* に必要なのは *wes.js* ファイルのみです。
+_wes_ に必要なのは _wes.js_ ファイルのみです。
 ダウンロードするにはコマンドプロンプトを起動して次のコマンドを入力してください。
 
 ```shell
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-*wes* は実装として実行時に *WScript.Shell* の `SendKeys` を使用します。
-*wes.js* を保存するディレクトリのパスに *ascii* 以外文字が含まれていると `SendKeys` で正しくキーが送れず、
+_wes_ は実装として実行時に _WScript.Shell_ の `SendKeys` を使用します。
+_wes.js_ を保存するディレクトリのパスに _ascii_ 以外文字が含まれていると `SendKeys` で正しくキーが送れず、
 スクリプトが実行できません。  
-*wes.js* の保存先のパスは *ascii* のみで構成してください。
+_wes.js_ の保存先のパスは _ascii_ のみで構成してください。
 
 ## Usage
 
 コマンドラインにて `wes` に続けてプログラムの起点となるファイルを指定します。
-スクリプトの拡張子 *.js* は省略できます。
+スクリプトの拡張子 _.js_ は省略できます。
 
 ```shell
 wes index
 ```
 
-また、*wes* には *REPL* が備わっているので、`wes` のみで起動させると、
+また、_wes_ には _REPL_ が備わっているので、`wes` のみで起動させると、
 スクリプトを直接入力できます。
 
 ```shell
 wes
 ```
 
-空白行を２つ入力するまでスクリプトの入力を受け付けます。*README.md* でのサンプルスクリプトの
-実行も *REPL* で確認出来ます。
+空白行を２つ入力するまでスクリプトの入力を受け付けます。_README.md_ でのサンプルスクリプトの
+実行も _REPL_ で確認出来ます。
 
 ## command-line named arguments
 
-*wes* の起動オプションは下記になります。
+_wes_ の起動オプションは下記になります。
 
 | named              | description                  |
 | ------------------ | ---------------------------- |
-| `--monotone`       | *ANSI escape code* を排除します    |
+| `--monotone`       | _ANSI escape code_ を排除します    |
 | `--safe`           | スクリプトを安全モードで実行します            |
 | `--usual`          | スクリプトを通常モードで実行します (デフォルト)    |
 | `--unsafe`         | スクリプトを安全ではないモードで実行します        |
 | `--dangerous`      | スクリプトを危険なモードで実行します           |
 | `--debug`          | スクリプトをデバックモードで実行します          |
 | `--encoding=UTF-8` | 最初に読み込むファイルのエンコードを指定します      |
-| `--engine=Chakra`  | このオプションは *wes* によって自動で付加されます |
+| `--engine=Chakra`  | このオプションは _wes_ によって自動で付加されます |
 
 `--safe` `--usual` `--unsafe` `--dangerous` の実装は不完全ですが、名前付き引数は予約されています。
 
 ## built-in objects
 
-*wes* には *WSH (JScript)* には無い *built-in objects* があります。
+_wes_ には _WSH (JScript)_ には無い _built-in objects_ があります。
 
-### *require*
+### _require_
 
-*require* でモジュールをインポートします。*wes* ではモジュールファイルのエンコードを自動推測しますが、
+_require_ でモジュールをインポートします。_wes_ ではモジュールファイルのエンコードを自動推測しますが、
 正しく推測しない場合に第二引数でエンコードを指定することも可能です。
 
-また、`require('WScript.Shell')` の様に *OLE* に対しても *require* でインポート可能です。
+また、`require('WScript.Shell')` の様に _OLE_ に対しても _require_ でインポート可能です。
 
 ```javascript
 const WShell = require('WScript.Shell')
@@ -116,9 +116,9 @@ function add (a, b) {
 module.exports = add
 ```
 
-### *console*
+### _console_
 
-*wes* では `WScript.Echo` や `WScript.StdErr.WriteLine` の代わりに *console* を使用します。
+_wes_ では `WScript.Echo` や `WScript.StdErr.WriteLine` の代わりに _console_ を使用します。
 
 `console.log` でコマンドラインに文字を出力します。また書式化文字列にも対応しています。
 書式化演算子 `%` 使用して書式化文字列を出力します。
@@ -127,10 +127,10 @@ module.exports = add
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
-*wes* では色付き文字列を出力する為に `WScript.StdOut.WriteLine` ではなく、`WScript.StdErr.WriteLine` を使用します。
+_wes_ では色付き文字列を出力する為に `WScript.StdOut.WriteLine` ではなく、`WScript.StdErr.WriteLine` を使用します。
 `WScript.Echo`　や `WScript.StdOut.WriteLine` は出力を遮断されているので、`WScript.StdOut.WriteLine` もしくは `console.log` を使用してください。
 
-### *Buffer*
+### _Buffer_
 
 バッファーを扱うことができます。
 
@@ -151,11 +151,11 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 
 ## built-in modules
 
-*wes* では基本的な処理を簡略・共通化するための *built-in modules* があります。
+_wes_ では基本的な処理を簡略・共通化するための _built-in modules_ があります。
 
-### *ansi*
+### _ansi_
 
-`ansi` には *ANSI escape code* があり、標準出力の色や効果を変更できます。
+`ansi` には _ANSI escape code_ があり、標準出力の色や効果を変更できます。
 使用するコンソールアプリケーションの種類や設定によって色や効果などは異なる場合があります。
 
 ```javascript
@@ -165,8 +165,8 @@ console.log(brightRed + 'Error: ' + yellow + message)
 ```
 
 また、`ansi.color()` や `ansi.bgColor()` で独自の色の作成ができます。
-引数は `255, 165, 0` などの *RGB* や `'#FFA500'` などの *color code* を使用します。
-`orange` などの *color name* は使用できません。
+引数は `255, 165, 0` などの _RGB_ や `'#FFA500'` などの _color code_ を使用します。
+`orange` などの _color name_ は使用できません。
 
 ```javascript
 const { color } = require('ansi')
@@ -174,21 +174,21 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
-### *argv*
+### _argv_
 
 コマンドライン引数のを取得します。
-`cscript.exe` のコマンドライン引数は `/` で名前付き引数を宣言しますが、*wes* では `-` および `--` で
+`cscript.exe` のコマンドライン引数は `/` で名前付き引数を宣言しますが、_wes_ では `-` および `--` で
 名前付き引数を宣言します。
 
-*argv.unnamed* および *argv.named* はコマンドライン引数の値の型を *String* *Number* *Boolean* の何れかにキャストします。
+_argv.unnamed_ および _argv.named_ はコマンドライン引数の値の型を _String_ _Number_ _Boolean_ の何れかにキャストします。
 
-*REPL* と一緒にコマンドライン引数を入力します。
+_REPL_ と一緒にコマンドライン引数を入力します。
 
 ```shell
 wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
-*REPL* で次のスクリプトを実行します。
+_REPL_ で次のスクリプトを実行します。
 
 ```javascript
 const argv = require('argv')
@@ -198,7 +198,7 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
-### *pathname*
+### _pathname_
 
 パスの操作をします。
 
@@ -208,7 +208,7 @@ const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
 
-### *filesystem*
+### _filesystem_
 
 ファイルの操作やディレクトリの操作をします。
 `readTextFileSync` はファイルのエンコードを自動推測して読み込みます。
@@ -221,11 +221,11 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
-### *JScript*
+### _JScript_
 
-スクリプトエンジンを *Chakra* に変更すると、*JScript* 固有の *Enumerator* などが使用できなくなります。
-ビルトインモジュールの *JScript* はそれらを使用可能にします。
-ただし、*Enumerator* は Enumeratorオブジェクトではなく *Array* を返します。
+スクリプトエンジンを _Chakra_ に変更すると、_JScript_ 固有の _Enumerator_ などが使用できなくなります。
+ビルトインモジュールの _JScript_ はそれらを使用可能にします。
+ただし、_Enumerator_ は Enumeratorオブジェクトではなく _Array_ を返します。
 
 ```javascript
 const { Enumerator, ActiveXObject } = require('JScript')
@@ -235,7 +235,7 @@ const files = new Enumerator(dir)
 files.forEach(file => console.log(file.Name))
 ```
 
-*GetObject* は `WScript.GetObject` の代替として機能します。
+_GetObject_ は `WScript.GetObject` の代替として機能します。
 
 ```javascript
 const { GetObject, Enumerator } = require('JScript')
@@ -248,9 +248,9 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
-### *VBScript*
+### _VBScript_
 
-*VBScript* は *JScript* にはない機能のいくつかを提供します。
+_VBScript_ は _JScript_ にはない機能のいくつかを提供します。
 
 ```javascript
 const { TypeName } = require('VBScript')
@@ -258,9 +258,9 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
-### *httprequest*
+### _httprequest_
 
-*httprequest* はその名の通り *http request* を発行します。
+_httprequest_ はその名の通り _http request_ を発行します。
 
 ```javascript
 const request = require('httprequest')
@@ -268,9 +268,9 @@ const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
 
-### *minitest*
+### _minitest_
 
-*minitest* は簡易的なテストを記述できます。
+_minitest_ は簡易的なテストを記述できます。
 
 ```javascript
 const { describe, it, assert } = require('minitest')
@@ -286,9 +286,9 @@ describe( '# calc test', () => {
 })
 ```
 
-### *pipe*
+### _pipe_
 
-*pipe* はパイプ処理を簡素化します
+_pipe_ はパイプ処理を簡素化します
 
 ```javascript
 const pipe = require('pipe')
@@ -310,7 +310,7 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
-### *typecheck*
+### _typecheck_
 
 スクリプトの型の判定をします。
 
@@ -324,47 +324,47 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 
 ## Module bundle and install
 
-*install* では *github* で公開されている *wes* 用のモジュールをインストール出来ます。
-モジュールを公開する為には *github repository* が必要になります。
+_install_ では _github_ で公開されている _wes_ 用のモジュールをインストール出来ます。
+モジュールを公開する為には _github repository_ が必要になります。
 またリポジトリ名とローカルのディレクトリ名は同名にする必要があります。
 
-### *bundle*
+### _bundle_
 
- *github* にモジュールを公開するにあたり、*bundle* は必要なモジュールをバンドルし、*install* モジュールで取り込める形式に変更します。
+ _github_ にモジュールを公開するにあたり、_bundle_ は必要なモジュールをバンドルし、_install_ モジュールで取り込める形式に変更します。
 
-安全性を考え、*wes* では直接実行できる形式のモジュールを取り込みをさせないため、*bundle* モジュールにて *.json* ファイルを作成します。
+安全性を考え、_wes_ では直接実行できる形式のモジュールを取り込みをさせないため、_bundle_ モジュールにて _.json_ ファイルを作成します。
 
 モジュールをバンドルさせるにはいくつかの条件があります。
 
-1.  一つの *repository* で公開できるモジュールは一種類になります。
-2.  *github* のリポジトリ名とローカルのワーキングディレクトリ名は同名である必要があります。
+1.  一つの _repository_ で公開できるモジュールは一種類になります。
+2.  _github_ のリポジトリ名とローカルのワーキングディレクトリ名は同名である必要があります。
 3.  第三者にモジュールを公開する場合にはリポジトリはパブリックである必要があります。
-4.  *wes* はスクリプトの静的解釈はしません。`if` ステートメントなど特定条件時に `require` をしたモジュールはバンドルされない可能性があります。
-5.  *.json* ファイルはワーキングディレクトリに *directory_name.json* という名前で作成されます。ファイル名の変更やファイルを移動するとインストールできません。
+4.  _wes_ はスクリプトの静的解釈はしません。`if` ステートメントなど特定条件時に `require` をしたモジュールはバンドルされない可能性があります。
+5.  _.json_ ファイルはワーキングディレクトリに _directory_name.json_ という名前で作成されます。ファイル名の変更やファイルを移動するとインストールできません。
 6.  `node_modules/directory_name` をバンドルする場合 `directory_name.json` を参照するのでバンドルが失敗します。
 
-### *install*
+### _install_
 
-*github* に公開されている *wes* 用のモジュールファイルをインストールするのに使用します。
+_github_ に公開されている _wes_ 用のモジュールファイルをインストールするのに使用します。
 
 ## usage
 
-*install* には `@author/repository` という書式で引数を渡します
+_install_ には `@author/repository` という書式で引数を渡します
 
 ```shell
 wes install @wachaon/fmt
 ```
 
-*install* にはオプションがあります
+_install_ にはオプションがあります
 
 | named      | short named | description                     |
 | ---------- | ----------- | ------------------------------- |
-| `--bare`   | `-b`        | *@author* フォルダを作成しない            |
-| `--global` | `-g`        | *wes.js* があるフォルダにモジュールをインストールする |
+| `--bare`   | `-b`        | _@author_ フォルダを作成しない            |
+| `--global` | `-g`        | _wes.js_ があるフォルダにモジュールをインストールする |
 
 `--bare` オプションは `require` の引数を `author@repository` から `repository` に省略できます。
 `--global` オプションはインストールしたモジュールを全てのスクリプトから利用できます。
-上記のオプションは *wes* のセキュリティーオプション `--unsafe` もしくは `--dangerous` と
+上記のオプションは _wes_ のセキュリティーオプション `--unsafe` もしくは `--dangerous` と
 同時に指定する必要があります。
 
 ```shell
@@ -373,19 +373,19 @@ wes install @wachaon/fmt --bare --unsafe
 
 # プライベートリポジトリのモジュールをインストール
 
-*install* は *github* のパブリックリポジトリのモジュールだけでなく、プライベートリポジトリでもインストール可能です。
+_install_ は _github_ のパブリックリポジトリのモジュールだけでなく、プライベートリポジトリでもインストール可能です。
 
-*install* では `author@repository` でモジュールを指定します。
+_install_ では `author@repository` でモジュールを指定します。
 実装では下記をダウンロードしています。
 
 ```javascript
 `https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
 ```
 
-ブラウザでプライベートリポジトリの *raw* にアクセスすると *token* が表示されますので、
-その *token* をコピーして使用します。
+ブラウザでプライベートリポジトリの _raw_ にアクセスすると _token_ が表示されますので、
+その _token_ をコピーして使用します。
 
-*token* の有効時間内にコマンドラインで実行すれば、プライベートリポジトリのモジュールもインストールできます。
+_token_ の有効時間内にコマンドラインで実行すれば、プライベートリポジトリのモジュールもインストールできます。
 
 ```shell
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
@@ -395,10 +395,10 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
 ここではいくつかの外部モジュールを紹介します。
 
-### *@wachaon/fmt*
+### _@wachaon/fmt_
 
-*@wachaon/fmt* は *prettier* をバンドルしたもので、スクリプトのフォーマットをします。
-また、*@wachaon/fmt* がインストールされている状態で `SyntaxError` が発生した場合に
+_@wachaon/fmt_ は _prettier_ をバンドルしたもので、スクリプトのフォーマットをします。
+また、_@wachaon/fmt_ がインストールされている状態で `SyntaxError` が発生した場合に
 そのエラー箇所を提示できます。
 
 #### install
@@ -409,10 +409,10 @@ wes install @wachaon/fmt
 
 #### usage
 
-ワーキングディレクトリに *.prettierrc* (JSONフォーマット) があれば設定に反映させます。
-*fmt* では *CLI*（コマンドラインインターフェース）と *module* の両方で使用できます。
+ワーキングディレクトリに _.prettierrc_ (JSONフォーマット) があれば設定に反映させます。
+_fmt_ では _CLI_（コマンドラインインターフェース）と _module_ の両方で使用できます。
 
-*CLI* として使用する
+_CLI_ として使用する
 
 ```shell
 wes @wachaon/fmt src/sample --write
@@ -429,7 +429,7 @@ wes @wachaon/fmt src/sample --write
 
  `--write` もしくは `-w` の名前付き引数の指定があればフォーマットしたスクリプトでファイルを上書きします。
 
-#### *module* として使う場合
+#### _module_ として使う場合
 
 #### `option`
 

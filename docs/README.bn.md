@@ -1,90 +1,82 @@
-# *WES*
+# _WES_
 
-*wes* *Windows Script Host* *wes* *ECMAScript* কার্যকর করার জন্য একটি কাঠামো
+_wes_ _Windows Script Host_ _wes_ _ECMAScript_ চালানোর জন্য একটি কাঠামো
 
-*README* মূল [*japanese*](README.ja.md) হবে। জাপানি ছাড়া অন্য পাঠ্যটি মেশিন অনুবাদ করা হবে।  
-নিম্নলিখিত ভাষাগুলি থেকে অন্যান্য ভাষায় নির্বাচন করুন select
-
--   [*簡体字*](README.zh-CN.md) <!-- 中国語 (簡体字) -->
--   [*繁体字*](README.zh-TW.md) <!-- 中国語 (繁体字) -->
--   [*English*](README.en.md) <!-- 英語 -->
--   [*हिन्दी*](README.hi.md)　<!-- ヒンディー語 -->
--   [*Español*](README.es.md) <!-- スペイン語 -->
--   [*عربى*](README.ar.md) <!-- アラビア語 -->
--   [*বাংলা*](README.bn.md) <!-- ベンガル語 -->
--   [*Português*](README.pt.md) <!-- ポルトガル語 -->
--   [*русский язык*](README.ru.md) <!-- ロシア語 -->
--   [*Deutsch*](README.de.md) <!-- ドイツ語 -->
--   [*français*](README.fr.md) <!-- フランス語 -->
--   [*italiano*](README.it.md)　<!-- イタリア語 -->
+_README_ এর মূল লেখাটি [_japanese_](README.ja.md) । জাপানি ব্যতীত, এটি একটি মেশিন-অনুবাদিত বাক্য।  
+অনুগ্রহ করে নিচের থেকে অন্য ভাষায় বাক্য নির্বাচন করুন।
 
 ## বৈশিষ্ট্য
 
--   স্ক্রিপ্ট ইঞ্জিনটিকে *Chakra* পরিবর্তন করুন এবং *ECMAScript2015* *Chakra* কার্যকর করুন
--   32 বিট *cscript.exe* করে এবং 64 বিট পরিবেশের সাথে নির্দিষ্ট কোনও বাগের কারণ হয় না
--   `require` সহ মডিউলটি আমদানি করুন
--   স্ট্যান্ডার্ড আউটপুটে রঙিন বর্ণগুলি আউটপুট দেয়
--   স্বয়ংক্রিয়ভাবে ফাইল এনকোডিং অনুমান করুন
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
 
-## বৈশিষ্ট্যগুলি সমাধান করা হয়নি
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
 
--   `WScript.Quit` প্রোগ্রামটিতে বাধা দিতে পারে না এবং একটি ত্রুটি কোড দেয় না
--   অ্যাসিনক্রোনাস প্রসেসিং
--   `WScript.CreateObject` দ্বিতীয় আর্গুমেন্টের *event prefix* `WScript.CreateObject`
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
 
 ## ইনস্টল করুন
 
-*wes* প্রয়োজন নেই *wes.js* শুধুমাত্র ফাইল। ডাউনলোড করতে, কমান্ড প্রম্পটটি শুরু করুন এবং নিম্নলিখিত কমান্ডটি প্রবেশ করুন।
+_wes_ প্রয়োজন শুধু _wes.js_ ফাইল। ডাউনলোড করতে, একটি কমান্ড প্রম্পট শুরু করুন এবং নিম্নলিখিত কমান্ডটি প্রবেশ করুন।
 
 ```shell
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-*wes* ব্যবহার করে *WScript.Shell* রানটাইমের সময় `SendKeys` এর `SendKeys` । *wes.js* ডিরেক্টরির যেখানে পথ *wes.js* সংরক্ষিত হয় ব্যতীত অন্য অক্ষর রয়েছে *ascii* , `SendKeys` কী সঠিকভাবে পাঠাতে পারবেন না এবং স্ক্রিপ্ট মৃত্যুদন্ড কার্যকর করা যাবে না।  
-দয়া করে কনফিগার করুন *ascii* পথ সংরক্ষণ করতে শুধুমাত্র *wes.js*
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
 
 ## ব্যবহার
 
-কমান্ড লাইনে, ফাইলটি নির্দিষ্ট করুন যা `wes` পরে প্রোগ্রামের প্রারম্ভিক পয়েন্ট। স্ক্রিপ্ট এক্সটেনশন *.js* বাদ দেওয়া যেতে পারে।
+কমান্ড লাইনে, ফাইলটি নির্দিষ্ট করুন যা `wes` পরে প্রোগ্রামের প্রারম্ভিক বিন্দু হবে। স্ক্রিপ্ট এক্সটেনশন _.js_ বাদ দেওয়া যেতে পারে।
 
 ```shell
 wes index
 ```
 
-এছাড়াও, *wes* একটি *REPL* সুতরাং আপনি যদি এটি কেবল `wes` দিয়ে শুরু করেন তবে আপনি সরাসরি স্ক্রিপ্টটি প্রবেশ করতে পারেন।
+এছাড়াও, _wes_ একটি _REPL_ তাই যদি আপনি এটি শুধুমাত্র `wes` দিয়ে শুরু করেন, আপনি সরাসরি স্ক্রিপ্টটি প্রবেশ করতে পারেন।
 
-```shell
-wes
-```
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
 
-আপনি দুটি ফাঁকা রেখা প্রবেশ না করা পর্যন্ত স্ক্রিপ্ট ইনপুট গ্রহণ করা হবে। *README.md* *REPL* সাথে *README.md* স্যাম্পল স্ক্রিপ্টটির সম্পাদনাও পরীক্ষা করতে পারেন।
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
 
-## কমান্ড-লাইন নাম যুক্তি
+আপনি দুটি ফাঁকা লাইন প্রবেশ না করা পর্যন্ত স্ক্রিপ্ট গ্রহণ করা হবে। _README.md_ _REPL_ সাথে _README.md_ এ নমুনা স্ক্রিপ্টের বাস্তবায়নও পরীক্ষা করতে পারেন।
 
-*wes* শুরু বিকল্পগুলি নিম্নরূপ।
+## কমান্ড লাইন নাম যুক্তি
 
-| নামে               | বিবরণ                                               |
-| ------------------ | --------------------------------------------------- |
-| `--monotone`       | *ANSI escape code* বাদ দিন                          |
-| `--safe`           | স্ক্রিপ্টটি নিরাপদ মোডে চালান                       |
-| `--usual`          | সাধারণ মোডে স্ক্রিপ্টটি চালান (ডিফল্ট)              |
-| `--unsafe`         | অনিরাপদ মোডে স্ক্রিপ্টটি চালান                      |
-| `--dangerous`      | স্ক্রিপ্টটি বিপজ্জনক মোডে চালান                     |
-| `--debug`          | স্ক্রিপ্টটি ডিবাগ মোডে চালান                        |
-| `--encoding=UTF-8` | প্রথমে পড়ার জন্য ফাইলের এনকোডিং নির্দিষ্ট করে      |
-| `--engine=Chakra`  | এই বিকল্পটি *wes* দ্বারা স্বয়ংক্রিয়ভাবে যুক্ত হয় |
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
 
-`--safe` `--usual` `--unsafe` `--dangerous` `--safe` এর প্রয়োগ অসম্পূর্ণ, তবে নাম যুক্তিগুলি সংরক্ষিত।
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+
+| নামযুক্ত           | বর্ণনা                                                  |
+| ------------------ | ------------------------------------------------------- |
+| `--monotone`       | _ANSI escape code_ বাদ দিন                              |
+| `--safe`           | নিরাপদ মোডে স্ক্রিপ্ট চালান                             |
+| `--usual`          | স্ক্রিপ্টটি স্বাভাবিক মোডে চালান (ডিফল্ট)               |
+| `--unsafe`         | অনিরাপদ মোডে স্ক্রিপ্ট চালান                            |
+| `--dangerous`      | স্ক্রিপ্টটি বিপজ্জনক মোডে চালান                         |
+| `--debug`          | স্ক্রিপ্টটি ডিবাগ মোডে চালান                            |
+| `--encoding=UTF-8` | পড়ার জন্য প্রথম ফাইলের এনকোডিং নির্দিষ্ট করে           |
+| `--engine=Chakra`  | এই বিকল্পটি স্বয়ংক্রিয়ভাবে _wes_ দ্বারা যুক্ত করা হয় |
+
+`--safe` `--usual` `--unsafe` `--dangerous` এর বাস্তবায়ন অসম্পূর্ণ, কিন্তু নামযুক্ত আর্গুমেন্ট সংরক্ষিত আছে।
 
 ## অন্তর্নির্মিত বস্তু
 
-*wes* *built-in objects* যা *wes* ( *wes* *WSH (JScript)* নেই।
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
 
-### *require*
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
 
-*require* সহ মডিউলটি আমদানি করুন। *wes* স্বয়ংক্রিয়ভাবে মডিউল ফাইলটির এনকোডিং অনুমান করে, তবে আপনি যদি এটি সঠিকভাবে অনুমান না করেন তবে আপনি দ্বিতীয় যুক্তির সাহায্যে এনকোডিং নির্দিষ্ট করতে পারবেন।
+### _require_
 
-এছাড়াও আপনি আমদানি করতে পারেন সঙ্গে *require* জন্য *OLE* মত `require('WScript.Shell')` ।
+_require_ সাথে মডিউল আমদানি করুন। _wes_ স্বয়ংক্রিয়ভাবে মডিউল ফাইলের এনকোডিং অনুমান করে, কিন্তু যদি আপনি সঠিকভাবে অনুমান না করেন তবে আপনি দ্বিতীয় যুক্তি দিয়ে এনকোডিং নির্দিষ্ট করতে পারেন।
+
+উপরন্তু, `require('WScript.Shell')` _OLE_ হিসাবে `require('WScript.Shell')` _require_ এমনকি আমদানি করা সম্ভব।
 
 ```javascript
 const WShell = require('WScript.Shell')
@@ -97,9 +89,9 @@ while (ie.Busy || ie.readystate != 4) {
 WShell.AppActivate(ie.LocationName)
 ```
 
-### মডিউল এবং মডিউল
+### মডিউল এবং module.exports
 
-আপনি যদি এটি মডিউল হিসাবে সংজ্ঞায়িত করতে চান তবে এটি `module.exports` প্রতিস্থাপন করুন।
+আপনি যদি এটি একটি মডিউল হিসাবে সংজ্ঞায়িত করতে চান, তাহলে এটি `module.exports` বরাদ্দ করুন।
 
 ```javascript
 function add (a, b) {
@@ -109,21 +101,25 @@ function add (a, b) {
 module.exports = add
 ```
 
-### *console*
+### _console_
 
-*wes* `WScript.Echo` এবং `WScript.StdErr.WriteLine` এ *console* পরিবর্তে ব্যবহার করুন।
+_wes_ `WScript.Echo` এবং `WScript.StdErr.WriteLine` পরিবর্তে _console_ ব্যবহার করে।
 
-`console.log` সহ কমান্ড লাইনে অক্ষরগুলি আউটপুট দেয়। এটি ফর্ম্যাটযুক্ত স্ট্রিংগুলিকে সমর্থন করে। অপারেটর `%` বিন্যাস ব্যবহার করে ফর্ম্যাট স্ট্রিং আউটপুট করুন।
+`console.log` এ কমান্ড লাইনে অক্ষর মুদ্রণ করুন। এটি ফরম্যাট করা স্ট্রিংগুলিকেও সমর্থন করে। ফরম্যাটিং অপারেটর `%` ব্যবহার করে একটি ফরম্যাট করা স্ট্রিং প্রিন্ট করে।
 
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
-*wes* , `WScript.StdErr.WriteLine` পরিবর্তে `WScript.StdErr.WriteLine` ব্যবহার করে স্ট্রিং রঙিন স্ট্রিং আউটপুট দেওয়ার জন্য `WScript.StdOut.WriteLine` `WScript.Echo` আউটপুট `WScript.Echo` এবং `WScript.StdOut.WriteLine` অবরুদ্ধ করা হয়েছে, ব্যবহার `WScript.StdOut.WriteLine` বা `console.log` ।
+_wes_ অনুক্রমে আউটপুট একটি স্ট্রিং রঙ্গিন `WScript.StdOut.WriteLine` পরিবর্তে, `WScript.StdErr.WriteLine` ব্যবহার। `WScript.Echo` এবং `WScript.StdOut.WriteLine` আউটপুট থেকে ব্লক করা আছে, তাই `WScript.StdOut.WriteLine` বা `console.log` ব্যবহার করুন।
 
-### *Buffer*
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
 
-বাফারগুলি পরিচালনা করতে পারে।
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
 
 ```javascript
 const content = 'Hello World'
@@ -133,7 +129,9 @@ console.log(`${content} %O`, buff)
 
 ### `__dirname` এবং `__filename`
 
-`__filename` বর্তমানে কার্যকর করা মডিউল ফাইলের পথ সঞ্চয় করে। `__dirname` ডিরেক্টরিটি `__filename` ডিরেক্টরি ডিরেক্টরি সঞ্চয় করে।
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
 
 ```javascript
 console.log('dirname: %O\nfilename: %O', __dirname, __filename)
@@ -141,11 +139,11 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 
 ## অন্তর্নির্মিত মডিউল
 
-*wes* বেসিক প্রসেসিং সহজতর এবং মানক করার জন্য *built-in modules* ।
+মৌলিক প্রক্রিয়াকরণকে সহজ এবং মানসম্মত করার জন্য _wes_ _built-in modules_ ।
 
-### *ansi*
+### _ansi_
 
-`ansi` একটি *ANSI escape code* যা আপনাকে স্ট্যান্ডার্ড আউটপুটটির রঙ এবং প্রভাব পরিবর্তন করতে দেয়। ব্যবহৃত কনসোল অ্যাপ্লিকেশনটির ধরণ এবং সেটিংসের উপর নির্ভর করে রঙ এবং প্রভাবগুলি পৃথক হতে পারে।
+`ansi` একটি _ANSI escape code_ যা আপনাকে স্ট্যান্ডার্ড আউটপুটের রঙ এবং প্রভাব পরিবর্তন করতে দেয়। ব্যবহৃত কনসোল অ্যাপ্লিকেশনের ধরন এবং সেটিংসের উপর নির্ভর করে রঙ এবং প্রভাবগুলি পরিবর্তিত হতে পারে।
 
 ```javascript
 const { brightRed, yellow } = require('ansi')
@@ -153,7 +151,7 @@ const message = 'File does not exist'
 console.log(brightRed + 'Error: ' + yellow + message)
 ```
 
-আপনি `ansi.color()` বা `ansi.bgColor()` দিয়ে নিজের রঙ তৈরি করতে পারেন। আর্গুমেন্টগুলি *RGB* যেমন `255, 165, 0` বা *color code* যেমন `'#FFA500'` । আপনি `orange` মতো *color name* ব্যবহার করতে পারবেন না।
+আপনি `ansi.color()` এবং `ansi.bgColor()` দিয়ে আপনার নিজের রং তৈরি করতে পারেন। যুক্তি ব্যবহার _RGB_ যেমন `255, 165, 0` বা _color code_ যেমন `'#FFA500'` । আপনি `orange` মতো _color name_ ব্যবহার করতে পারবেন না।
 
 ```javascript
 const { color } = require('ansi')
@@ -161,41 +159,39 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
-### *argv*
+### _argv_
 
-কমান্ড লাইন আর্গুমেন্ট পেতে। `cscript.exe` কমান্ড-লাইন আর্গুমেন্টগুলি `/` নামযুক্ত আর্গুমেন্টগুলি ঘোষনা করে তবে, *wes* ইন `-` এবং `--` নামক যুক্তিগুলিকে ভিতরে ঘোষণা করে।
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
 
-*argv.unnamed* এবং *argv.named* কমান্ড লাইন আর্গুমেন্টের মান *argv.named* *String* *Number* *Boolean* মধ্যে *argv.named* ফেলে দেয়।
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
 
-*REPL* সহ কমান্ড লাইন আর্গুমেন্ট লিখুন।
+_argv.unnamed_ এবং _argv.named_ একটি _String_ _Number_ _Boolean_ কমান্ড লাইন আর্গুমেন্টের ভ্যালু টাইপ নিক্ষেপ করে।
+
+_REPL_ সহ কমান্ড লাইন আর্গুমেন্ট লিখুন।
 
 ```shell
 wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
-*REPL* নিম্নলিখিত স্ক্রিপ্টটি চালান।
+_REPL_ এ নিম্নলিখিত স্ক্রিপ্টটি চালান।
 
-```javascript
-const argv = require('argv')
-console.log(`argv: %O
-argv.unnamed: %O
-argv.named: %O`,
-argv, argv.unnamed, argv.named)
-```
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
 
-### *pathname*
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
 
 পথ পরিচালনা করুন।
 
-```javascript
-const path = require('pathname')
-const file = path.resolve(__dirname, 'index.js')
-console.log('file %O', file)
-```
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
 
-### *filesystem*
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
 
-ফাইল এবং ডিরেক্টরি পরিচালনা করে। `readTextFileSync` ফাইল এনকোডিং অনুমান করে এটি পড়বে।
+### _filesystem_
+
+ফাইল এবং ডিরেক্টরি হেরফের। `readTextFileSync` স্বয়ংক্রিয়ভাবে ফাইল এনকোডিং অনুমান করে এবং এটি পড়ে।
 
 ```javascript
 const fs = require('filesystem')
@@ -205,9 +201,9 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
-### *JScript*
+### _JScript_
 
-আপনাকে স্ক্রিপ্ট ইঞ্জিন পরিবর্তন করেন তাহলে *Chakra* , আপনি ব্যবহার করতে সক্ষম হবেন না *JScript* নির্দিষ্ট *Enumerator* । অন্তর্নির্মিত মডিউল *JScript* তাদের উপলব্ধ করে। যাইহোক, *Enumerator* একটি এনুমুরেটর বস্তুর পরিবর্তে একটি *Array* ।
+আপনাকে স্ক্রিপ্ট ইঞ্জিন পরিবর্তন করেন তাহলে _Chakra_ , আপনি ব্যবহার করতে সক্ষম হবেন না _JScript_ নির্দিষ্ট _Enumerator_ ইত্যাদি অন্তর্নির্মিত মডিউল _JScript_ তাদের উপলব্ধ করে। যাইহোক, _Enumerator_ একটি Enumerator বস্তুর পরিবর্তে একটি _Array_ প্রদান করে।
 
 ```javascript
 const { Enumerator, ActiveXObject } = require('JScript')
@@ -217,7 +213,7 @@ const files = new Enumerator(dir)
 files.forEach(file => console.log(file.Name))
 ```
 
-*GetObject* `WScript.GetObject` বিকল্প হিসেবে `WScript.GetObject` ।
+_GetObject_ `WScript.GetObject` বিকল্প হিসেবে `WScript.GetObject` ।
 
 ```javascript
 const { GetObject, Enumerator } = require('JScript')
@@ -230,9 +226,13 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
-### *VBScript*
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
 
-*VBScript* *JScript* নেই এমন কিছু বৈশিষ্ট্য সরবরাহ করে।
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
 
 ```javascript
 const { TypeName } = require('VBScript')
@@ -240,9 +240,11 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
-### *httprequest*
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
 
-*httprequest* এর নাম হিসাবে *http request* একটি জারি করবে।
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+
+_httprequest_ তার _http request_ ।
 
 ```javascript
 const request = require('httprequest')
@@ -250,9 +252,9 @@ const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
 
-### *minitest*
+### _minitest_
 
-*minitest* সহজ পরীক্ষা লিখতে পারে।
+_minitest_ সহজ পরীক্ষা লিখতে পারে।
 
 ```javascript
 const { describe, it, assert } = require('minitest')
@@ -268,9 +270,9 @@ describe( '# calc test', () => {
 })
 ```
 
-### *pipe*
+### _pipe_
 
-*pipe* পাইপ প্রক্রিয়াকরণ সহজ করে তোলে
+_pipe_ পাইপ প্রক্রিয়াকরণ সহজ করে
 
 ```javascript
 const pipe = require('pipe')
@@ -292,9 +294,9 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
-### *typecheck*
+### _typecheck_
 
-স্ক্রিপ্টের ধরণের বিচার করুন।
+স্ক্রিপ্টের ধরন নির্ধারণ করুন।
 
 ```javascript
 const { isString, isNumber, isBoolean } = require('typecheck')
@@ -304,77 +306,86 @@ console.log('isNumber(43.5) // => %O', isNumber(43.5))
 console.log('isBoolean(false) // => %O', isBoolean(false))
 ```
 
-## মডিউল বান্ডিল এবং ইনস্টল
+## মডিউল বান্ডেল এবং ইনস্টল করুন
 
-*install* , আপনার জন্য মডিউল ইনস্টল করতে পারেন *wes* প্রকাশিত *github* । মডিউলটি প্রকাশ করতে আপনার *github repository* প্রয়োজন। এছাড়াও, সংগ্রহস্থলের নাম এবং স্থানীয় ডিরেক্টরি নাম একই হতে হবে।
+_install_ , আপনার জন্য মডিউল ইনস্টল করতে পারেন _wes_ প্রকাশিত _github_ । মডিউলটি প্রকাশ করতে আপনার _github repository_ প্রয়োজন হবে। এছাড়াও, সংগ্রহস্থলের নাম এবং স্থানীয় ডিরেক্টরি নাম একই হতে হবে।
 
-### *bundle*
+### _bundle_
 
-*github* কোনও মডিউল প্রকাশ করার সময়, *bundle* প্রয়োজনীয় মডিউলগুলি বান্ডিল করে এবং এটিকে *install* মডিউল দ্বারা অন্তর্ভুক্ত করা যায় এমন একটি ফর্ম্যাটে রূপান্তরিত করে।
+_github_ একটি মডিউল প্রকাশ করার সময়, _bundle_ প্রয়োজনীয় মডিউল বান্ডিল করে এবং এটি একটি বিন্যাসে পরিবর্তন করে যা _install_ মডিউল দ্বারা আমদানি করা যায়।
 
-সুরক্ষার বিবেচনায় *wes* সরাসরি সম্পাদন করা যেতে পারে এমন মডিউলটি আমদানি করে না, তাই *bundle* মডিউলটিতে *.json* ফাইল তৈরি করুন।
+নিরাপত্তার কারণে, _wes_ এমন একটি ফরম্যাটে মডিউল আমদানি করে না যা সরাসরি চালানো যায়, তাই _bundle_ মডিউল দিয়ে একটি _.json_ ফাইল তৈরি করুন।
 
-বান্ডিলিং মডিউলগুলির জন্য কিছু শর্ত রয়েছে।
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
 
-1.  একটি *repository* এক ধরণের মডিউল প্রকাশিত হতে পারে।
-2.  *github* সংগ্রহস্থলের নাম এবং স্থানীয় কার্যনির্বাহী ডিরেক্টরি নাম একই হতে হবে।
-3.  মডিউলটি তৃতীয় পক্ষের কাছে প্রকাশ করতে চাইলে অবশ্যই সংগ্রহস্থলটি সর্বজনীন হতে হবে।
-4.  *wes* স্থিতিশীলভাবে স্ক্রিপ্টটির ব্যাখ্যা দেয় না। মডিউল যে `require` যেমন কিছু অবস্থার অধীনে `if` বিবৃতি বান্ডেল করা যাবে না।
-5.  *.json* ফাইল নাম নিয়ে কাজ ডিরেক্টরির মধ্যে তৈরি করা হয় *directory_name.json* । আপনি যদি ফাইলের নাম পরিবর্তন করেন বা ফাইলটি সরান, আপনি এটি ইনস্টল করতে পারবেন না।
-6.  `node_modules/directory_name` , বান্ডিলিং ব্যর্থ হয় কারণ এটি `directory_name.json` উল্লেখ করে।
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
 
-### *install*
+1.  একটি _repository_ এক ধরনের মডিউল প্রকাশিত হতে পারে।
+2.  _github_ রিপোজিটরির নাম এবং স্থানীয় ওয়ার্কিং ডিরেক্টরির নাম একই হতে হবে।
+3.  আপনি যদি তৃতীয় পক্ষের কাছে মডিউলটি প্রকাশ করতে চান তবে সংগ্রহস্থলটি সর্বজনীন হতে হবে।
+4.  _wes_ স্থিরভাবে স্ক্রিপ্ট ব্যাখ্যা করে না। মডিউল যা নির্দিষ্ট অবস্থার অধীনে `require` , যেমন `if` বিবৃতি, একত্রিত নাও হতে পারে।
+5.  _.json_ ফাইল নামের মধ্যে আপনার কাজের ডিরেক্টরির মধ্যে তৈরি করা হবে _directory_name.json_ । আপনি যদি ফাইলটির নাম পরিবর্তন করেন বা ফাইলটি সরান, আপনি এটি ইনস্টল করতে পারবেন না।
+6.  `node_modules/directory_name` ব্যর্থ হয় কারণ এটি `directory_name.json` । `node_modules/directory_name` উল্লেখ করে।
 
-এটা তোলে জন্য মডিউল ফাইল ইনস্টল করার জন্য ব্যবহৃত হয় *wes* প্রকাশিত *github* ।
+### _install_
+
+এটা তোলে জন্য মডিউল ফাইল ইনস্টল করার জন্য ব্যবহৃত হয় _wes_ প্রকাশিত _github_ ।
 
 ## ব্যবহার
 
-`@author/repository` বিন্যাসে *install* করার *install* আর্গুমেন্টগুলি পাস করুন
+`@author/repository` বিন্যাসে _install_ করার _install_ আর্গুমেন্ট পাস করুন
 
 ```shell
 wes install @wachaon/fmt
 ```
 
-*install* বিকল্প আছে
+_install_ বিকল্প আছে
 
-| নামে       | সংক্ষিপ্ত নাম | বিবরণ                                 |
-| ---------- | ------------- | ------------------------------------- |
-| `--bare`   | `-b`          | *@author* ফোল্ডারটি তৈরি করবেন না     |
-| `--global` | `-g`          | *wes.js* ফোল্ডারে মডিউলটি ইনস্টল করুন |
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
 
-`--bare` বিকল্পটি `author@repository` থেকে `repository` থেকে `require` যুক্তি বাদ দিতে `require` । `--global` বিকল্পটি ইনস্টল করা মডিউলটি সমস্ত স্ক্রিপ্টের জন্য উপলব্ধ করে। উপরের বিকল্পগুলি *wes* সুরক্ষা বিকল্পের সাথে ব্যবহার করা আবশ্যক - `--unsafe` বা - `--dangerous`
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
 
 ```shell
 wes install @wachaon/fmt --bare --unsafe
 ```
 
-# ব্যক্তিগত সংগ্রহস্থল মডিউল ইনস্টল করুন
+# ব্যক্তিগত সংগ্রহস্থলের মডিউল ইনস্টল করুন
 
-*install* কেবল *github* পাবলিক রিপোজিটরি মডিউলগুলিতেই নয়, বেসরকারী সংগ্রহস্থলগুলিতেও *install* যেতে পারে।
+_github_ কেবল _github_ পাবলিক রিপোজিটরি মডিউলগুলিতেই নয়, ব্যক্তিগত সংগ্রহস্থলেও _install_ যেতে পারে।
 
-*install* করার সময় `author@repository` সহ মডিউলটি নির্দিষ্ট করুন specify নিম্নলিখিতটি বাস্তবায়নে ডাউনলোড করা হয়েছে।
+_install_ , `author@repository` সাথে মডিউলটি নির্দিষ্ট করুন। বাস্তবায়ন নিম্নলিখিত ডাউনলোড করে।
 
 ```javascript
 `https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
 ```
 
-আপনি অ্যাক্সেস যখন *raw* একটি ব্রাউজার সাথে ব্যক্তিগত সংগ্রহস্থলের, *token* প্রদর্শন করা হয়, তাই কপি *token* এবং এটি ব্যবহার।
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
 
-আপনি যদি *token* বৈধ সময়ের মধ্যে কমান্ড লাইনে এটি *token* আপনি ব্যক্তিগত সংগ্রহস্থলের মডিউলটি ইনস্টল করতে পারেন।
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
 
-```shell
-wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
-```
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
 
 ## বাহ্যিক মডিউল
 
-এখানে আমরা কয়েকটি বাহ্যিক মডিউল প্রবর্তন করি।
+এখানে কিছু বাহ্যিক মডিউল রয়েছে।
 
-### *@wachaon/fmt*
+### _@wachaon/fmt_
 
-*@wachaon/fmt* এর একটি বান্ডিল *prettier* স্ক্রিপ্ট বিন্যাস করা হয়। উপরন্তু, *@wachaon/fmt* একটি রাষ্ট্র ইনস্টল হয়েছে `SyntaxError` যখন ঘটে ত্রুটি অবস্থান উপস্থাপন করতে পারেন।
+_@wachaon/fmt_ এর একটি বান্ডিল _prettier_ স্ক্রিপ্ট বিন্যাস করা হয়। এছাড়াও, যদি `SyntaxError` ক্ষেত্রেও একই ঘটনা ঘটে _@wachaon/fmt_ ইনস্টল, আপনার ত্রুটিটি অবস্থান নির্দেশ করতে পারেন।
 
-#### ইনস্টল
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
 
 ```shell
 wes install @wachaon/fmt
@@ -382,26 +393,26 @@ wes install @wachaon/fmt
 
 #### ব্যবহার
 
-যদি ওয়ার্কিং ডিরেক্টরিতে। *.prettierrc* ( *.prettierrc* ফর্ম্যাট) থাকে তবে সেটিংসে এটি প্রতিফলিত করুন। *fmt* উভয় *CLI* (কমান্ড লাইন ইন্টারফেস) এবং *module* সঙ্গে ব্যবহার করা যেতে পারে।
+যদি ওয়ার্কিং ডিরেক্টরিতে _.prettierrc_ (JSON ফরম্যাট) থাকে, সেটি সেটিংসে প্রতিফলিত হবে। _fmt_ _CLI_ (কমান্ড লাইন ইন্টারফেস) এবং _fmt_ _module_ উভয়ের সাথে ব্যবহার করা যেতে পারে।
 
-*CLI* হিসাবে ব্যবহার করুন
+_CLI_ হিসাবে ব্যবহার করুন
 
 ```shell
 wes @wachaon/fmt src/sample --write
 ```
 
-| নামবিহীন সংখ্যা | বিবরণ                                           |
-| --------------- | ----------------------------------------------- |
-| 0               | -                                               |
-| 1               | আবশ্যক। আপনি যে ফাইলটি ফর্ম্যাট করতে চান তার পথ |
+| নামহীন নাম্বার | বর্ণনা                                         |
+| -------------- | ---------------------------------------------- |
+| 0              | ---                                            |
+| ঘ              | আবশ্যক। আপনি যে ফাইলটি ফরম্যাট করতে চান তার পথ |
 
-| নামে      | সংক্ষিপ্ত নাম | বিবরণ                     |
-| --------- | ------------- | ------------------------- |
-| `--write` | `-w`          | ওভাররাইটিংয়ের অনুমতি দিন |
+| নামযুক্ত  | সংক্ষিপ্ত নাম | বর্ণনা                   |
+| --------- | ------------- | ------------------------ |
+| `--write` | `-w`          | ওভাররাইট করার অনুমতি দিন |
 
-`--write` বা `-w` নামক যুক্তি দেওয়া থাকলে ফর্ম্যাট স্ক্রিপ্টের সাহায্যে ফাইলটি ওভাররাইট করে।
+যদি `--write` বা `-w` এর একটি নামযুক্ত যুক্তি নির্দিষ্ট করা হয় তবে একটি ফরম্যাট স্ক্রিপ্ট দিয়ে ফাইলটি ওভাররাইট করে।
 
-#### *module* হিসাবে ব্যবহার করার *module*
+#### _module_ হিসাবে ব্যবহার করার _module_
 
 #### `option`
 

@@ -1,90 +1,77 @@
-# *WES*
+# _WES_
 
-*wes* هو إطار عمل لتنفيذ *ECMAScript* على *Windows Script Host*
+_wes_ هو إطار عمل لتنفيذ _ECMAScript_ على _Windows Script Host_
 
-*README* الأصلي من [*japanese*](README.ja.md) . بخلاف اليابانية ، سيكون نصًا مترجمًا آليًا.  
-الرجاء تحديد جملة بلغة أخرى مما يلي.
+النص الأصلي _README_ هو [_japanese_](README.ja.md) . بخلاف اليابانية ، إنها جملة مترجمة آليًا.  
+يرجى تحديد الجمل بلغات أخرى مما يلي.
 
--   [*簡体字*](README.zh-CN.md) <!-- 中国語 (簡体字) -->
--   [*繁体字*](README.zh-TW.md) <!-- 中国語 (繁体字) -->
--   [*English*](README.en.md) <!-- 英語 -->
--   [*हिन्दी*](README.hi.md)　<!-- ヒンディー語 -->
--   [*Español*](README.es.md) <!-- スペイン語 -->
--   [*عربى*](README.ar.md) <!-- アラビア語 -->
--   [*বাংলা*](README.bn.md) <!-- ベンガル語 -->
--   [*Português*](README.pt.md) <!-- ポルトガル語 -->
--   [*русский язык*](README.ru.md) <!-- ロシア語 -->
--   [*Deutsch*](README.de.md) <!-- ドイツ語 -->
--   [*français*](README.fr.md) <!-- フランス語 -->
--   [*italiano*](README.it.md)　<!-- イタリア語 -->
+## سمات
 
-## المميزات
-
--   قم بتغيير محرك البرنامج النصي إلى *Chakra* وتنفيذ *ECMAScript2015* *Chakra*
--   *cscript.exe* 32 بت *cscript.exe* ولا يسبب أي أخطاء خاصة ببيئة 64 بت
--   استيراد وحدة مع `require`
+-   قم بتغيير محرك البرنامج النصي إلى _Chakra_ وقم بتشغيل _ECMAScript2015_ _Chakra_
+-   _cscript.exe_ 32 بت _cscript.exe_ وليس لديه أي أخطاء خاصة ببيئة 64 بت
+-   استيراد الوحدة مع `require`
 -   لإخراج الأحرف الملونة إلى الإخراج القياسي
--   تخمين ملف ترميز تلقائيا
+-   تخمين ترميز الملف تلقائيًا
 
 ## الميزات لم تحل
 
 -   لا يمكن لـ `WScript.Quit` مقاطعة البرنامج ولا يُرجع رمز خطأ
 -   المعالجة غير المتزامنة
--   استخدام *event prefix* للوسيطة الثانية من `WScript.CreateObject`
+-   استخدام _event prefix_ للوسيطة الثانية من `WScript.CreateObject`
 
-## تثبيت
+## ثبت
 
-*wes* حاجة غير *wes.js* الملف الوحيد. للتنزيل ، ابدأ موجه الأوامر وأدخل الأمر التالي.
+_wes_ حاجة غير _wes.js_ الملف الوحيد. للتنزيل ، ابدأ موجه الأوامر وأدخل الأمر التالي.
 
 ```shell
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-*wes* في وقت التنفيذ كما تنفيذ *WScript.Shell* من `SendKeys` استخدام. *wes.js* مسار الدليل الذي تم حفظ *wes.js* فيه يحتوي على أحرف غير *ascii* ، فلن يتمكن `SendKeys` إرسال المفتاح بشكل صحيح ولا يمكن تنفيذ البرنامج النصي.  
-يرجى تكوين *ascii* فقط للمسار لحفظ *wes.js*
+_wes_ في وقت التنفيذ كما تنفيذ _WScript.Shell_ من `SendKeys` استخدام. _wes.js_ مسار الدليل الذي تم حفظ _wes.js_ فيه يحتوي على أحرف غير _ascii_ ، فلن تتمكن `SendKeys` من إرسال المفتاح بشكل صحيح ولن يتم تنفيذ البرنامج النصي.  
+يرجى تكوين مسار وجهة الحفظ لـ _wes.js_ فقط _ascii_ .
 
 ## إستعمال
 
-في سطر الأوامر ، حدد الملف الذي يمثل نقطة بداية البرنامج بعد `wes` . يمكن حذف ملحق البرنامج النصي *.js* .
+في سطر الأوامر ، حدد الملف الذي سيكون نقطة انطلاق البرنامج بعد `wes` . يمكن حذف ملحق البرنامج النصي _.js_ .
 
 ```shell
 wes index
 ```
 
-أيضًا ، يأتي *wes* مع *REPL* لذلك إذا بدأت مع `wes` فقط ، يمكنك إدخال البرنامج النصي مباشرة.
+أيضًا ، يحتوي _wes_ على _REPL_ لذلك إذا بدأت باستخدام `wes` فقط ، يمكنك إدخال البرنامج النصي مباشرة.
 
 ```shell
 wes
 ```
 
-يتم قبول إدخال البرنامج النصي حتى تقوم بإدخال سطرين فارغين. *README.md* أيضًا التحقق من تنفيذ نموذج البرنامج النصي في *README.md* باستخدام *REPL* .
+سيتم قبول البرنامج النصي حتى تقوم بإدخال سطرين فارغين. _README.md_ أيضًا التحقق من تنفيذ نموذج البرنامج النصي في _README.md_ باستخدام _REPL_ .
 
-## سطر الأوامر المسمى الحجج
+## سطر الأوامر المسمى الوسيطات
 
-خيارات بدء *wes* هي كما يلي.
+خيارات بدء التشغيل الخاصة بـ _wes_ هي كما يلي.
 
 | اسم الشيئ          | وصف                                                |
 | ------------------ | -------------------------------------------------- |
-| `--monotone`       | القضاء على *ANSI escape code*                      |
+| `--monotone`       | القضاء على _ANSI escape code_                      |
 | `--safe`           | قم بتشغيل البرنامج النصي في الوضع الآمن            |
 | `--usual`          | قم بتشغيل البرنامج النصي في الوضع العادي (افتراضي) |
 | `--unsafe`         | قم بتشغيل البرنامج النصي في الوضع غير الآمن        |
 | `--dangerous`      | قم بتشغيل البرنامج النصي في الوضع الخطير           |
 | `--debug`          | قم بتشغيل البرنامج النصي في وضع التصحيح            |
-| `--encoding=UTF-8` | يحدد ترميز الملف المراد قراءته أولاً               |
-| `--engine=Chakra`  | يتم إضافة هذا الخيار تلقائيًا بواسطة *wes*         |
+| `--encoding=UTF-8` | يحدد ترميز الملف الأول المراد قراءته               |
+| `--engine=Chakra`  | يتم إضافة هذا الخيار تلقائيًا بواسطة _wes_         |
 
 تنفيذ - `--safe` `--usual` `--unsafe` `--dangerous` غير مكتمل ، لكن الحجج المسماة محفوظة.
 
 ## كائنات مدمجة
 
-يحتوي *wes* *built-in objects* *WSH (JScript)* لا *WSH (JScript)* .
+يحتوي _wes_ _built-in objects_ _WSH (JScript)_ لا _WSH (JScript)_ .
 
-### *require*
+### _require_
 
-استيراد وحدة مع *require* . *wes* تلقائيًا بتخمين تشفير ملف الوحدة النمطية ، ولكن إذا لم تخمنه بشكل صحيح ، يمكنك تحديد الترميز باستخدام الوسيطة الثانية.
+استيراد الوحدة مع _require_ . يخمن _wes_ تلقائيًا ترميز ملف الوحدة النمطية ، ولكن إذا لم تخمن بشكل صحيح ، فيمكنك تحديد الترميز باستخدام الوسيطة الثانية.
 
-يمكنك أيضًا الاستيراد باستخدام *require* لـ *OLE* مثل `require('WScript.Shell')` .
+بالإضافة إلى ذلك ، `require('WScript.Shell')` اعتبارًا من _OLE_ حتى يمكن _require_ الاستيراد باستخدام.
 
 ```javascript
 const WShell = require('WScript.Shell')
@@ -99,7 +86,7 @@ WShell.AppActivate(ie.LocationName)
 
 ### وحدة و وحدة الصادرات
 
-إذا كنت تريد تعريفها كوحدة نمطية ، `module.exports` في `module.exports` .
+إذا كنت تريد تعريفها كوحدة نمطية ، `module.exports` بتعيينها إلى `module.exports` .
 
 ```javascript
 function add (a, b) {
@@ -109,19 +96,19 @@ function add (a, b) {
 module.exports = add
 ```
 
-### *console*
+### _console_
 
-استخدم *wes* في `WScript.Echo` و `WScript.StdErr.WriteLine` بدلاً من *console* .
+يستخدم _wes_ _console_ بدلاً من `WScript.Echo` و `WScript.StdErr.WriteLine` .
 
-إخراج الأحرف إلى سطر الأوامر باستخدام `console.log` . كما يدعم السلاسل المنسقة. إخراج سلسلة التنسيق باستخدام عامل التنسيق `%` .
+طباعة الأحرف إلى سطر الأوامر في `console.log` . كما يدعم السلاسل المنسقة. يطبع سلسلة منسقة باستخدام عامل التنسيق `%` .
 
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
-*wes* لإخراج سلسلة ملونة في `WScript.StdOut.WriteLine` بدلاً من ذلك ، استخدم `WScript.StdErr.WriteLine` . `WScript.Echo` إخراج `WScript.Echo` و `WScript.StdOut.WriteLine` محظور ، استخدم `WScript.StdOut.WriteLine` أو `console.log` .
+_wes_ لإخراج سلسلة ملونة في `WScript.StdOut.WriteLine` بدلاً من ذلك ، استخدم `WScript.StdErr.WriteLine` . يتم حظر `WScript.Echo` و `WScript.StdOut.WriteLine` من الإخراج ، لذلك استخدم `WScript.StdOut.WriteLine` أو `console.log` .
 
-### *Buffer*
+### _Buffer_
 
 يمكن التعامل مع المخازن المؤقتة.
 
@@ -133,7 +120,7 @@ console.log(`${content} %O`, buff)
 
 ### `__dirname` و `__filename`
 
-`__filename` يخزن مسار ملف الوحدة النمطية الجاري تنفيذه حاليًا. `__dirname` يخزن `__filename` الدليل.
+`__filename` يحتوي على مسار ملف الوحدة النمطية قيد التشغيل حاليًا. `__filename` `__dirname` `__filename` دليل `__filename` .
 
 ```javascript
 console.log('dirname: %O\nfilename: %O', __dirname, __filename)
@@ -141,11 +128,11 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 
 ## وحدات مدمجة
 
-يحتوي *wes* *built-in modules* لتبسيط وتوحيد المعالجة الأساسية.
+يحتوي _wes_ _built-in modules_ لتبسيط وتوحيد المعالجة الأساسية.
 
-### *ansi*
+### _ansi_
 
-يحتوي `ansi` على *ANSI escape code* يسمح لك بتغيير ألوان وتأثيرات الإخراج القياسي. قد تختلف الألوان والتأثيرات وفقًا لنوع وإعدادات تطبيق وحدة التحكم المستخدمة.
+يحتوي `ansi` على _ANSI escape code_ يسمح لك بتغيير لون وتأثير الإخراج القياسي. قد تختلف الألوان والتأثيرات وفقًا لنوع وإعدادات تطبيق وحدة التحكم المستخدمة.
 
 ```javascript
 const { brightRed, yellow } = require('ansi')
@@ -153,7 +140,7 @@ const message = 'File does not exist'
 console.log(brightRed + 'Error: ' + yellow + message)
 ```
 
-يمكنك أيضًا إنشاء اللون الخاص بك باستخدام `ansi.color()` أو `ansi.bgColor()` . تستخدم الوسيطات *RGB* مثل `255, 165, 0` أو `255, 165, 0` أو *color code* مثل `'#FFA500'` . لا يمكنك استخدام *color name* مثل `orange` .
+يمكنك أيضًا إنشاء الألوان الخاصة بك باستخدام `ansi.color()` و `ansi.bgColor()` . تستخدم الوسيطة _RGB_ مثل `255, 165, 0` أو `255, 165, 0` أو _color code_ مثل `'#FFA500'` . لا يمكنك استخدام _color name_ مثل `orange` .
 
 ```javascript
 const { color } = require('ansi')
@@ -161,19 +148,19 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
-### *argv*
+### _argv_
 
-يحصل على وسيطات سطر الأوامر. `cscript.exe` وسيطات سطر الأوامر لـ `/` تعلن عن الوسائط المسماة في ولكن ، يعلن *wes* in `-` and `--` عن الوسائط المسماة في.
+يحصل على وسيطة سطر الأوامر. `cscript.exe` وسيطات سطر الأوامر لـ `/` تعلن عن الوسائط المسماة في ولكن ، يعلن _wes_ in `-` and `--` عن الوسائط المسماة في.
 
-*argv.unnamed* و *argv.named* يلقي نوع قيمة وسيطة سطر الأوامر إلى واحدة من *String* *Number* *Boolean* .
+_argv.unnamed_ و _argv.named_ يلقي نوع قيمة وسيطة سطر الأوامر إلى أحد _Boolean_ _String_ _Number_ _Boolean_ .
 
-أدخل وسيطات سطر الأوامر باستخدام *REPL* .
+أدخل وسيطات سطر الأوامر مع _REPL_ .
 
 ```shell
 wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
-قم بتشغيل البرنامج النصي التالي في *REPL* .
+قم بتشغيل البرنامج النصي التالي في _REPL_ .
 
 ```javascript
 const argv = require('argv')
@@ -183,7 +170,7 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
-### *pathname*
+### _pathname_
 
 تشغيل المسار.
 
@@ -193,9 +180,9 @@ const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
 
-### *filesystem*
+### _filesystem_
 
-يدير الملفات والدلائل. سيقوم `readTextFileSync` بتخمين تشفير الملف وقراءته.
+معالجة الملفات والدلائل. `readTextFileSync` تلقائيًا بتخمين ترميز الملف `readTextFileSync` .
 
 ```javascript
 const fs = require('filesystem')
@@ -205,9 +192,9 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
-### *JScript*
+### _JScript_
 
-إذا قمت بتغيير محرك البرنامج النصي إلى *Chakra* ، فلن تتمكن من استخدام *Enumerator* الخاصة بـ *JScript* . وحدة *JScript* المدمجة تجعلها متاحة. ومع ذلك ، يقوم *Enumerator* بإرجاع *Array* بدلاً من كائن Enumerator.
+إذا قمت بتغيير محرك البرنامج النصي إلى _Chakra_ ، فلن تتمكن من استخدام _Enumerator_ الخاص بـ _JScript_ وما إلى ذلك. وحدة _JScript_ المدمجة تجعلها متاحة. ومع ذلك ، يقوم _Enumerator_ بإرجاع _Array_ بدلاً من كائن العداد.
 
 ```javascript
 const { Enumerator, ActiveXObject } = require('JScript')
@@ -217,7 +204,7 @@ const files = new Enumerator(dir)
 files.forEach(file => console.log(file.Name))
 ```
 
-`WScript.GetObject` *GetObject* كبديل لـ `WScript.GetObject` .
+`WScript.GetObject` _GetObject_ كبديل لـ `WScript.GetObject` .
 
 ```javascript
 const { GetObject, Enumerator } = require('JScript')
@@ -230,9 +217,9 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
-### *VBScript*
+### _VBScript_
 
-يقدم *VBScript* بعض الميزات التي لا تتوفر في *JScript* .
+يقدم _VBScript_ بعض الميزات التي لا تتوفر في _JScript_ .
 
 ```javascript
 const { TypeName } = require('VBScript')
@@ -240,9 +227,9 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
-### *httprequest*
+### _httprequest_
 
-*httprequest* كما سيصدر *http request* اسمها.
+_httprequest_ قضايا _http request_ كما يوحي اسمه.
 
 ```javascript
 const request = require('httprequest')
@@ -250,9 +237,9 @@ const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
 
-### *minitest*
+### _minitest_
 
-*minitest* يمكنه كتابة اختبارات بسيطة.
+يمكن أن يكتب _minitest_ اختبارات بسيطة.
 
 ```javascript
 const { describe, it, assert } = require('minitest')
@@ -268,9 +255,9 @@ describe( '# calc test', () => {
 })
 ```
 
-### *pipe*
+### _pipe_
 
-*pipe* يبسط تجهيز الأنابيب
+_pipe_ يبسط تجهيز الأنابيب
 
 ```javascript
 const pipe = require('pipe')
@@ -292,9 +279,9 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
-### *typecheck*
+### _typecheck_
 
-احكم على نوع السيناريو.
+تحديد نوع البرنامج النصي.
 
 ```javascript
 const { isString, isNumber, isBoolean } = require('typecheck')
@@ -306,43 +293,43 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 
 ## حزمة الوحدة النمطية والتثبيت
 
-*install* ، يمكنك تثبيت وحدة ل *wes* نشرت يوم *github* . لنشر الوحدة ، تحتاج إلى *github repository* . أيضًا ، يجب أن يكون اسم المستودع واسم الدليل المحلي متماثلين.
+_install_ ، يمكنك تثبيت الوحدة النمطية لـ _wes_ المنشورة على _github_ . ستحتاج إلى _github repository_ لنشر الوحدة. أيضًا ، يجب أن يكون اسم المستودع واسم الدليل المحلي متماثلين.
 
-### *bundle*
+### _bundle_
 
-*github* نشر وحدة ل *github* ، *bundle* حزم الوحدات اللازمة وتغير قبل أن تتحول إلى شكل يمكن أن يدرج من قبل *install* وحدة.
+_github_ نشر وحدة ل _github_ ، _bundle_ حزم وحدة المطلوبة والتغييرات إلى تنسيق التي يمكن استيرادها من قبل _install_ وحدة.
 
-في النظر في السلامة، *wes* لا تستورد الوحدة النمطية التي يمكن تنفيذها مباشرة، لذلك إنشاء *.json* الملف في *bundle* حدة.
+لأسباب تتعلق بالسلامة، _wes_ لا تستورد الوحدات النمطية في الشكل الذي يمكن تنفيذه مباشرة، لذلك إنشاء _.json_ الملف مع _bundle_ حدة.
 
 هناك بعض الشروط لتجميع الوحدات.
 
-1.  يمكن نشر نوع واحد *repository* من الوحدات في *repository* واحد.
-2.  يجب أن يكون اسم مستودع *github* واسم دليل العمل المحلي *github* .
+1.  يمكن نشر نوع واحد _repository_ من الوحدات في _repository_ واحد.
+2.  يجب أن يكون اسم مستودع _github_ واسم دليل العمل المحلي _github_ .
 3.  يجب أن يكون المستودع عامًا إذا كنت تريد نشر الوحدة إلى جهة خارجية.
-4.  *wes* لا يفسر بشكل ثابت النصي. الوحدات النمطية التي `require` ظل ظروف معينة ، مثل `if` عدم إمكانية تجميع العبارات.
-5.  سيتم إنشاء ملف *.json* في دليل العمل بالاسم *directory_name.json* . إذا قمت بتغيير اسم الملف أو نقل الملف ، فلا يمكنك تثبيته.
-6.  `node_modules/directory_name` ، يفشل التجميع لأنه يشير إلى `directory_name.json` .
+4.  _wes_ لا يفسر بشكل ثابت النصي. الوحدات النمطية التي `require` ظل ظروف معينة ، مثل عبارات `if` ، قد لا يتم تجميعها.
+5.  سيتم إنشاء ملف _.json_ في دليل العمل الخاص بك بالاسم _directory_name.json_ . إذا أعدت تسمية الملف أو نقلته ، فلا يمكنك تثبيته.
+6.  `node_modules/directory_name` يفشل التجميع لأنه يشير إلى `directory_name.json` .
 
-### *install*
+### _install_
 
-يتم استخدامه لتثبيت ملف الوحدة النمطية لـ *wes* المنشور على *github* .
+يتم استخدامه لتثبيت ملف الوحدة النمطية لـ _wes_ المنشور على _github_ .
 
 ## الاستخدام
 
-قم بتمرير الوسائط *install* بالتنسيق `@author/repository`
+قم بتمرير الوسائط _install_ بالتنسيق `@author/repository`
 
 ```shell
 wes install @wachaon/fmt
 ```
 
-*install* لديه خيارات
+_install_ لديه خيارات
 
 | اسم الشيئ  | اسم قصير | وصف                                                  |
 | ---------- | -------- | ---------------------------------------------------- |
-| `--bare`   | `-b`     | لا تقم بإنشاء مجلد *@author*                         |
-| `--global` | `-g`     | قم بتثبيت الوحدة النمطية في المجلد حيث يوجد *wes.js* |
+| `--bare`   | `-b`     | لا تقم بإنشاء مجلد _@author_                         |
+| `--global` | `-g`     | قم بتثبيت الوحدة النمطية في المجلد حيث يوجد _wes.js_ |
 
-يمكن أن يحذف الخيار `--bare` الوسيطة `require` من `author@repository` إلى `repository` . يجعل الخيار `--global` الوحدة النمطية المثبتة متاحة لجميع البرامج النصية. يجب استخدام الخيارات أعلاه مع *wes* الخيار الأمني `--unsafe` أو `--dangerous` .
+يمكن أن يحذف الخيار `--bare` الوسيطة `require` من `author@repository` إلى `repository` . `--global` الخيار `--global` الوحدات النمطية المثبتة لجميع البرامج النصية. يجب تحديد الخيارات المذكورة أعلاه في نفس الوقت الذي _wes_ الخيار الأمني `--unsafe` أو `--dangerous` .
 
 ```shell
 wes install @wachaon/fmt --bare --unsafe
@@ -350,17 +337,17 @@ wes install @wachaon/fmt --bare --unsafe
 
 # قم بتثبيت وحدة المستودع الخاص
 
-*install* يمكن تركيبها ليس فقط في وحدة مستودع العامة *github* ولكن أيضا في المستودع الخاص.
+_install_ يمكن تركيبها ليس فقط على _github_ وحدات مخزون العامة، ولكن أيضا على مستودعات خاصة.
 
-*install* ، حدد الوحدة مع `author@repository` . يتم تنزيل ما يلي في التنفيذ.
+_install_ ، حدد الوحدة مع `author@repository` . يقوم التطبيق بتنزيل ما يلي.
 
 ```javascript
 `https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
 ```
 
-عندما تصل إلى النسخة *raw* من المستودع الخاص باستخدام متصفح ، يتم عرض *token* ، لذا انسخ *token* .
+عند الوصول إلى النسخة _raw_ من المستودع الخاص باستخدام متصفح ، سيتم عرض _token_ ، لذا انسخ _token_ .
 
-إذا قمت بتنفيذه على سطر الأوامر خلال الوقت الصحيح *token* ، فيمكنك تثبيت الوحدة النمطية للمستودع الخاص.
+يمكنك أيضًا تثبيت الوحدة النمطية في المستودع الخاص عن طريق تشغيلها على سطر الأوامر خلال _token_ .
 
 ```shell
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
@@ -368,13 +355,13 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
 ## الوحدة الخارجية
 
-نقدم هنا بعض الوحدات الخارجية.
+فيما يلي بعض الوحدات الخارجية.
 
-### *@wachaon/fmt*
+### _@wachaon/fmt_
 
-*@wachaon/fmt* عبارة عن حزمة *prettier* تقوم *@wachaon/fmt* النص. أيضًا ، في حالة حدوث `SyntaxError` أثناء *@wachaon/fmt* ، يمكن تقديم موقع الخطأ.
+_@wachaon/fmt_ عبارة عن حزمة _prettier_ تقوم _@wachaon/fmt_ النص. أيضًا ، في حالة حدوث `SyntaxError` مع تثبيت _@wachaon/fmt_ ، يمكنك الإشارة إلى موقع الخطأ.
 
-#### تثبيت
+#### ثبيت
 
 ```shell
 wes install @wachaon/fmt
@@ -382,13 +369,13 @@ wes install @wachaon/fmt
 
 #### الاستخدام
 
-إذا كان هناك تنسيق *.prettierrc* (تنسيق JSON) في دليل العمل ، *.prettierrc* في الإعداد. يمكن استخدام *fmt* مع كل من *CLI* (واجهة سطر الأوامر) *module* .
+إذا كان هناك _.prettierrc_ (تنسيق JSON) في دليل العمل ، فسوف ينعكس في الإعدادات. _fmt_ يمكن استخدامها مع كل من _CLI_ (واجهة سطر الأوامر) و _module_ في _fmt_ .
 
-استخدام *CLI*
+استخدام _CLI_
 
-```shell
-wes @wachaon/fmt src/sample --write
-```
+![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+
+Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
 
 | رقم غير مسمى | وصف                                |
 | ------------ | ---------------------------------- |
@@ -399,9 +386,9 @@ wes @wachaon/fmt src/sample --write
 | --------- | -------- | --------------- |
 | `--write` | `-w`     | السماح بالكتابة |
 
-`--write` فوق الملف ببرنامج نصي منسق إذا أعطيت وسيطة باسم `--write` or `-w` .
+`--write` فوق الملف ببرنامج نصي منسق إذا تم تحديد وسيطة مسماة `--write` or `-w` .
 
-#### *module* استخدامها كوحدة *module*
+#### _module_ استخدامها كوحدة _module_
 
 #### `option`
 
