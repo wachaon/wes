@@ -5,7 +5,7 @@
 *README* の原文は [*japanese*](docs/README.ja.md) になります。日本語以外は機械翻訳の文章になります。  
 他言語の文章は下記から選択してください。
 
-*imports document*
+*import document*
 
 # Features
 
