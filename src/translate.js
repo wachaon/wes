@@ -24,6 +24,6 @@ charset.forEach((list) => {
     const spec = resolve(process.cwd(), `docs/README.${lang}.md`)
     let res = md_translate(api, readme, { target: lang })
     const content = readTextFileSync(resolve(process.cwd(), 'src/lang.md'))
-    res = res.replace('*imports document*', content)
+    res = res.replace('*import document*', content)
     console.log(writeTextFileSync(spec, res, 'UTF-8N'))
 })
