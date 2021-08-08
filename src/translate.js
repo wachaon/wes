@@ -26,5 +26,4 @@ charset.forEach((list) => {
     const content = readTextFileSync(resolve(process.cwd(), 'src/lang.md'))
     res = res.replace('*imports document*', content)
     console.log(writeTextFileSync(spec, res, 'UTF-8N'))
-
 })
