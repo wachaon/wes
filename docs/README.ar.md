@@ -21,7 +21,7 @@ _wes_ هو إطار عمل لتنفيذ _ECMAScript_ على _Windows Script Host
 
 ## ثبت
 
-_wes_ حاجة غير _wes.js_ الملف الوحيد. للتنزيل ، ابدأ موجه الأوامر وأدخل الأمر التالي.
+_wes_ حاجة غير _wes.js_ ملف فقط. للتنزيل ، ابدأ موجه الأوامر وأدخل الأمر التالي.
 
 ```shell
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -150,7 +150,7 @@ console.log(orange + 'Hello World')
 
 ### _argv_
 
-يحصل على وسيطة سطر الأوامر. `cscript.exe` وسيطات سطر الأوامر لـ `/` تعلن عن الوسائط المسماة في ولكن ، يعلن _wes_ in `-` and `--` عن الوسائط المسماة في.
+يحصل على وسيطة سطر الأوامر. `cscript.exe` وسيطات سطر الأوامر الخاصة بـ `/` تعلن عن الوسائط المسماة في ولكن ، يعلن _wes_ in `-` and `--` عن الوسائط المسماة في.
 
 _argv.unnamed_ و _argv.named_ يلقي نوع قيمة وسيطة سطر الأوامر إلى أحد _Boolean_ _String_ _Number_ _Boolean_ .
 
@@ -239,7 +239,7 @@ console.log('%O', JSON.parse(content))
 
 ### _minitest_
 
-يمكن أن يكتب _minitest_ اختبارات بسيطة.
+_minitest_ يمكنه كتابة اختبارات بسيطة.
 
 ```javascript
 const { describe, it, assert } = require('minitest')
@@ -359,7 +359,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
 ### _@wachaon/fmt_
 
-_@wachaon/fmt_ عبارة عن حزمة _prettier_ تقوم _@wachaon/fmt_ النص. أيضًا ، في حالة حدوث `SyntaxError` مع تثبيت _@wachaon/fmt_ ، يمكنك الإشارة إلى موقع الخطأ.
+_@wachaon/fmt_ عبارة عن حزمة _prettier_ تقوم _@wachaon/fmt_ البرنامج النصي. أيضًا ، إذا حدث `SyntaxError` مع تثبيت _@wachaon/fmt_ ، يمكنك الإشارة إلى موقع الخطأ.
 
 #### ثبيت
 
@@ -371,11 +371,11 @@ wes install @wachaon/fmt
 
 إذا كان هناك _.prettierrc_ (تنسيق JSON) في دليل العمل ، فسوف ينعكس في الإعدادات. _fmt_ يمكن استخدامها مع كل من _CLI_ (واجهة سطر الأوامر) و _module_ في _fmt_ .
 
-استخدام _CLI_
+استخدم _CLI_
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+```shell
+wes @wachaon/fmt src/sample --write
+```
 
 | رقم غير مسمى | وصف                                |
 | ------------ | ---------------------------------- |

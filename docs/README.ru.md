@@ -5,9 +5,7 @@ _wes_ - это фреймворк для выполнения _ECMAScript_ на 
 Оригинальный текст _README_ - [_japanese_](README.ja.md) . Помимо японского, это предложение машинного перевода.  
 Пожалуйста, выберите предложения на других языках из следующих.
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+## Функции
 
 -   Измените движок скрипта на _Chakra_ и запустите _ECMAScript2015_ _Chakra_
 -   _cscript.exe_ 32- _cscript.exe_ и не имеет ошибок, характерных для 64-битной среды.
@@ -25,16 +23,14 @@ Exception: 1 日にサービス translate を実行した回数が多すぎま�
 
 _wes_ потребность _wes.js_ только файл. Для загрузки запустите командную строку и введите следующую команду.
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+```shell
+bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
+```
 
 _wes_ во время выполнения, поскольку реализация _WScript.Shell_ использует `SendKeys` . _wes.js_ путь к каталогу, в котором _wes.js_ содержит символы, отличные от _ascii_ , `SendKeys` не сможет правильно отправить ключ и скрипт не сможет быть выполнен.  
 _wes.js_ путь для _wes.js_ только в _wes.js_ _ascii_ .
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+## использование
 
 В командной строке укажите файл, который будет отправной точкой программы после `wes` . Расширение скрипта _.js_ можно не указывать.
 
@@ -42,376 +38,216 @@ Exception: 1 日にサービス translate を実行した回数が多すぎま�
 wes index
 ```
 
-Кроме того, в _wes_ есть _REPL_ поэтому, если вы запускаете его только с `wes` , вы можете напрямую войти в скрипт.
+Кроме того, в _wes_ есть _REPL_ поэтому, если вы запустите его только с помощью `wes` , вы можете напрямую ввести скрипт.
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+```shell
+wes
+```
 
 Скрипт будет принят, пока вы не введете две пустые строки. _README.md_ также можете проверить выполнение примера сценария в _README.md_ с помощью _REPL_ .
 
-## именованные аргументы командной строки
+undefined
 
-Варианты запуска _wes_ следующие.
+undefined
 
-| названный          | описание                                         |
-| ------------------ | ------------------------------------------------ |
-| `--monotone`       | Устранение _ANSI escape code_                    |
-| `--safe`           | Запустить скрипт в безопасном режиме             |
-| `--usual`          | Запустить скрипт в обычном режиме (по умолчанию) |
-| `--unsafe`         | Запустить скрипт в небезопасном режиме           |
-| `--dangerous`      | Запустить скрипт в опасном режиме                |
-| `--debug`          | Запустить скрипт в режиме отладки                |
-| `--encoding=UTF-8` | Задает кодировку первого файла для чтения        |
-| `--engine=Chakra`  | Эта опция автоматически добавляется _wes_        |
+undefined
 
-Реализация `--safe` `--usual` `--unsafe` `--dangerous` не завершена, но именованные аргументы зарезервированы.
+undefined
 
-## встроенные объекты
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-Импортируйте модуль с помощью _require_ . _wes_ автоматически угадывает кодировку файла модуля, но если вы не угадали правильно, вы можете указать кодировку с помощью второго аргумента.
+undefined
 
-Кроме того, для _OLE_ `require('WScript.Shell')` даже если _require_ импорт, возможен с.
+undefined
 
-```javascript
-const WShell = require('WScript.Shell')
-const ie = require('InternetExplorer.Application')
-ie.Visible = true
-ie.Navigate('https://google.com/')
-while (ie.Busy || ie.readystate != 4) {
-    WScript.Sleep( 100 )
-}
-WShell.AppActivate(ie.LocationName)
-```
+undefined
 
-### модуль и module.exports
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-```javascript
-function add (a, b) {
-    return a + b
-}
+undefined
 
-module.exports = add
-```
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-_wes_ использует _console_ вместо `WScript.Echo` и `WScript.StdErr.WriteLine` .
+undefined
 
-Печатайте символы в командной строке в `console.log` . Он также поддерживает форматированные строки. Печатает отформатированную строку с помощью оператора форматирования `%` .
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-_wes_ для того , чтобы вывести строку в цветной `WScript.StdOut.WriteLine` вместо того, чтобы , `WScript.StdErr.WriteLine` использование. `WScript.Echo` и `WScript.StdOut.WriteLine` заблокированы для вывода, поэтому используйте `WScript.StdOut.WriteLine` или `console.log` .
+undefined
 
-### _Buffer_
+undefined
 
-Может обрабатывать буферы.
+undefined
 
-```javascript
-const content = 'Hello World'
-const buff = Buffer.from(content)
-console.log(`${content} %O`, buff)
-```
+undefined
 
-### `__dirname` и `__filename`
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-```javascript
-console.log('dirname: %O\nfilename: %O', __dirname, __filename)
-```
+undefined
 
-## встроенные модули
+undefined
 
-_wes_ есть _built-in modules_ для упрощения и стандартизации базовой обработки.
+undefined
 
-### _ansi_
+undefined
 
-`ansi` есть _ANSI escape code_ который позволяет изменять цвет и эффект стандартного вывода. Цвета и эффекты могут различаться в зависимости от типа и настроек используемого консольного приложения.
+undefined
 
-```javascript
-const { brightRed, yellow } = require('ansi')
-const message = 'File does not exist'
-console.log(brightRed + 'Error: ' + yellow + message)
-```
+undefined
 
-Вы также можете создавать свои собственные цвета с помощью `ansi.color()` и `ansi.bgColor()` . В аргументе используется _RGB_ например `255, 165, 0` или _color code_ например `'#FFA500'` . Вы не можете использовать _color name_ например, `orange` .
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-### _argv_
+undefined
 
-Получает аргумент командной строки. `cscript.exe` аргументы командной строки `/` объявляет именованные аргументы в но, _wes_ в `-` и `--` объявить именованные аргументы.
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-Введите аргументы командной строки вместе с _REPL_ .
+undefined
 
-```shell
-wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
-```
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-### _pathname_
+undefined
 
-Управляйте тропой.
+undefined
 
-```javascript
-const path = require('pathname')
-const file = path.resolve(__dirname, 'index.js')
-console.log('file %O', file)
-```
+undefined
 
-### _filesystem_
+undefined
 
-Управляйте файлами и каталогами. `readTextFileSync` автоматически угадывает и считывает кодировку файла.
+undefined
 
-```javascript
-const fs = require('filesystem')
-const path = require('pathname')
-const readme = path.resolve(__dirname, 'README.md')
-const contents = fs.readTextFileSync(readme)
-console.log(contents)
-```
+undefined
 
-### _JScript_
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-```javascript
-const { Enumerator, ActiveXObject } = require('JScript')
-const FSO = new ActiveXObject('Scripting.FileSystemObject')
-const dir = FSO.getFolder(__dirname).Files
-const files = new Enumerator(dir)
-files.forEach(file => console.log(file.Name))
-```
+undefined
 
-_GetObject_ `WScript.GetObject` как альтернатива `WScript.GetObject` .
+undefined
 
-```javascript
-const { GetObject, Enumerator } = require('JScript')
+undefined
 
-const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service")
-new Enumerator(ServiceSet).forEach(service => console.log(
-    'Name: %O\nDescription: %O\n',
-    service.Name,
-    service.Description
-))
-```
+undefined
 
-### _VBScript_
+undefined
 
-_VBScript_ предлагает некоторые функции, которых нет в _JScript_ .
+undefined
 
-```javascript
-const { TypeName } = require('VBScript')
-const FSO = require('Scripting.FileSystemObject')
-console.log(TypeName(FSO))
-```
+undefined
 
-### _httprequest_
+undefined
 
-_httprequest_ выдает _http request_ как следует из названия.
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-### _minitest_
+undefined
 
-_minitest_ может писать простые тесты.
+undefined
 
-```javascript
-const { describe, it, assert } = require('minitest')
+undefined
 
-function add (a, b) {
-  return a + b
-}
+undefined
 
-describe( '# calc test', () => {
-  it('add(2, 5) === 7', () => {
-    assert(add(2, 5) === 7)
-  })
-})
-```
+undefined
 
-### _pipe_
+undefined
 
-_pipe_ упрощает обработку трубы
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-### _typecheck_
+undefined
 
-Определите тип сценария.
+undefined
 
-```javascript
-const { isString, isNumber, isBoolean } = require('typecheck')
+undefined
 
-console.log('isString("ECMAScript") // => %O', isString("ECMAScript"))
-console.log('isNumber(43.5) // => %O', isNumber(43.5))
-console.log('isBoolean(false) // => %O', isBoolean(false))
-```
+undefined
 
-## Комплектация и установка модуля
+undefined
 
-_install_ вы можете установить модуль для _wes_ опубликованных на _github_ . Для публикации модуля вам понадобится _github repository_ . Кроме того, имя репозитория и имя локального каталога должны совпадать.
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-1.  _repository_ одном _repository_ может быть опубликован _repository_ один тип модуля.
-2.  _github_ репозитория _github_ и имя локального рабочего каталога должны совпадать.
-3.  Репозиторий должен быть общедоступным, если вы хотите опубликовать модуль для третьей стороны.
-4.  _wes_ не интерпретирует сценарий статически. Модули, которые `require` при определенных условиях, например операторы `if` , не могут быть объединены.
-5.  _.json_ каталоге будет создан файл _.json_ с именем _directory_name.json_ . Если вы переименуете файл или переместите файл, вы не сможете его установить.
-6.  `node_modules/directory_name` отправка одной посылкой не может, потому что он ссылается `directory_name.json` .
+undefined
 
-### _install_
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-## использование
+undefined
 
-Передайте аргументы для _install_ в формате `@author/repository`
+undefined
 
-```shell
-wes install @wachaon/fmt
-```
+undefined
 
-_install_ имеет параметры
+undefined
 
-| названный  | короткое имя | описание                                          |
-| ---------- | ------------ | ------------------------------------------------- |
-| `--bare`   | `-b`         | Не создавайте папку _@author_                     |
-| `--global` | `-g`         | Установите модуль в папку, где находится _wes.js_ |
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-# Установите модуль частного репозитория
-
-_install_ можно установить не только на модули публичного репозитория _github_ , но и на частные репозитории.
-
-_install_ укажите модуль с `author@repository` . Реализация загружает следующее.
-
-```javascript
-`https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
-```
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-```shell
-wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
-```
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-### _@wachaon/fmt_
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-#### установить
-
-```shell
-wes install @wachaon/fmt
-```
-
-#### использование
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-Использовать как _CLI_
-
-```shell
-wes @wachaon/fmt src/sample --write
-```
-
-| безымянный номер | описание                                                     |
-| ---------------- | ------------------------------------------------------------ |
-| 0                | ---                                                          |
-| 1                | Необходимые. Путь к файлу, который вы хотите отформатировать |
-
-| названный | короткое имя | описание             |
-| --------- | ------------ | -------------------- |
-| `--write` | `-w`         | Разрешить перезапись |
-
-Перезаписывает файл отформатированным сценарием, если указан именованный аргумент `--write` или `-w` .
-
-#### _module_ использовании в качестве _module_
-
-#### `option`
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined

@@ -1,118 +1,66 @@
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-Le texte original du _README_ est [_japanese_](README.ja.md) . À part le japonais, c'est une phrase traduite automatiquement.  
-Veuillez sélectionner des phrases dans d'autres langues parmi les suivantes.
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
--   Changez le moteur de script en _Chakra_ et exécutez _ECMAScript2015_ _Chakra_
--   _cscript.exe_ 32 bits et n'a aucun bogue spécifique à l'environnement 64 bits
--   Importer le module avec `require`
--   Sort les caractères colorés sur la sortie standard
--   Devinez automatiquement l'encodage du fichier
+undefined
 
-## Fonctionnalités non résolues
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-## Installer
+undefined
 
-_wes_ besoin est le seul fichier _wes.js_ Pour télécharger, lancez une invite de commande et entrez la commande suivante.
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-## Usage
+undefined
 
-Sur la ligne de commande, spécifiez le fichier qui sera le point de départ du programme après `wes` . L'extension de script _.js_ peut être omise.
+undefined
 
-```shell
-wes index
-```
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-```shell
-wes
-```
+undefined
 
-Le script sera accepté jusqu'à ce que vous entriez deux lignes vierges. _README.md_ pouvez également vérifier l'exécution de l'exemple de script dans _README.md_ avec _REPL_ .
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+undefined
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+undefined
 
-L'implémentation de `--safe` `--usual` `--unsafe` `--dangerous` est incomplète, mais les arguments nommés sont réservés.
+### _console_
 
-## objets intégrés
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-### _require_
-
-Importez le module avec _require_ . _wes_ devine automatiquement l'encodage du fichier module, mais si vous ne devinez pas correctement, vous pouvez spécifier l'encodage avec le deuxième argument.
-
-De plus, `require('WScript.Shell')` partir de _OLE_ même _require_ importation est possible avec.
-
-```javascript
-const WShell = require('WScript.Shell')
-const ie = require('InternetExplorer.Application')
-ie.Visible = true
-ie.Navigate('https://google.com/')
-while (ie.Busy || ie.readystate != 4) {
-    WScript.Sleep( 100 )
-}
-WShell.AppActivate(ie.LocationName)
-```
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-Si vous souhaitez le définir en tant que module, affectez-le à `module.exports` .
-
-```javascript
-function add (a, b) {
-    return a + b
-}
-
-module.exports = add
-```
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+_wes_ utilise la _console_ au lieu de `WScript.Echo` et `WScript.StdErr.WriteLine` .
 
 Imprimer des caractères sur la ligne de commande dans `console.log` . Il prend également en charge les chaînes formatées. Imprime une chaîne formatée à l'aide de l'opérateur de formatage `%` .
 
@@ -122,13 +70,9 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 
 _wes_ afin de produire une chaîne colorée dans `WScript.StdOut.WriteLine` place, `WScript.StdErr.WriteLine` utilise. `WScript.Echo` et `WScript.StdOut.WriteLine` sont bloqués en sortie, utilisez donc `WScript.StdOut.WriteLine` ou `console.log` .
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+### _Buffer_
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+Peut gérer les tampons.
 
 ```javascript
 const content = 'Hello World'
@@ -136,25 +80,17 @@ const buff = Buffer.from(content)
 console.log(`${content} %O`, buff)
 ```
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+### `__dirname` et `__filename`
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+`__filename` contient le chemin du fichier du module en cours d'exécution. `__dirname` `__filename` le répertoire de `__filename` .
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+```javascript
+console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+```
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+## modules intégrés
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+_wes_ a _built-in modules_ pour simplifier et standardiser le traitement de base.
 
 ### _ansi_
 
@@ -166,21 +102,17 @@ const message = 'File does not exist'
 console.log(brightRed + 'Error: ' + yellow + message)
 ```
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+Vous pouvez également créer vos propres couleurs avec `ansi.color()` et `ansi.bgColor()` . L'argument utilise _RGB_ tel que `255, 165, 0` ou _color code_ tel que `'#FFA500'` . Vous ne pouvez pas utiliser un _color name_ tel que `orange` .
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+```javascript
+const { color } = require('ansi')
+const orange = color(255, 165, 0)
+console.log(orange + 'Hello World')
+```
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+### _argv_
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+Obtient l'argument de ligne de commande. `cscript.exe` arguments de ligne de commande `cscript.exe` de `/` déclarent les arguments nommés dans mais, _wes_ dans `-` et `--` déclarent les arguments nommés dans.
 
 _argv.unnamed_ et _argv.named_ le type de valeur de l'argument de ligne de commande en l'un des _Boolean_ _String_ _Number_ .
 
@@ -190,21 +122,19 @@ Entrez les arguments de la ligne de commande avec le _REPL_ .
 wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+Exécutez le script suivant dans le _REPL_ .
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+```javascript
+const argv = require('argv')
+console.log(`argv: %O
+argv.unnamed: %O
+argv.named: %O`,
+argv, argv.unnamed, argv.named)
+```
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+### _pathname_
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+Exploiter le chemin.
 
 ```javascript
 const path = require('pathname')
@@ -214,9 +144,7 @@ console.log('file %O', file)
 
 ### _filesystem_
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+Manipuler des fichiers et des répertoires. `readTextFileSync` devine automatiquement l'encodage du fichier et le lit.
 
 ```javascript
 const fs = require('filesystem')
@@ -226,9 +154,7 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+### _JScript_
 
 Si vous modifiez le moteur de script à _Chakra_ , vous ne serez pas en mesure d'utiliser _JScript_ spécifique _Enumerator_ etc. Le module intégré _JScript_ rend disponibles. Cependant, _Enumerator_ renvoie un _Array_ au lieu d'un objet Enumerator.
 
@@ -240,19 +166,22 @@ const files = new Enumerator(dir)
 files.forEach(file => console.log(file.Name))
 ```
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+_GetObject_ `WScript.GetObject` comme une alternative à `WScript.GetObject` .
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+```javascript
+const { GetObject, Enumerator } = require('JScript')
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service")
+new Enumerator(ServiceSet).forEach(service => console.log(
+    'Name: %O\nDescription: %O\n',
+    service.Name,
+    service.Description
+))
+```
 
 ### _VBScript_
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+_VBScript_ offre certaines fonctionnalités que _JScript_ n'a pas.
 
 ```javascript
 const { TypeName } = require('VBScript')
@@ -270,27 +199,47 @@ const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+### _minitest_
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+_minitest_ peut écrire des tests simples.
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+```javascript
+const { describe, it, assert } = require('minitest')
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+function add (a, b) {
+  return a + b
+}
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+describe( '# calc test', () => {
+  it('add(2, 5) === 7', () => {
+    assert(add(2, 5) === 7)
+  })
+})
+```
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+### _pipe_
 
 _pipe_ simplifie le traitement des tuyaux
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+```javascript
+const pipe = require('pipe')
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+function add (a, b) {
+    return b + a
+}
+
+function sub (a, b) {
+    return b - a
+}
+
+const add5 = add.bind(null, 5)
+const sub3 = sub.bind(null, 3)
+
+pipe()
+  .use(add5)
+  .use(sub3)
+  .process(10, (err, res) => console.log('res: %O', res))
+```
 
 ### _typecheck_
 
@@ -306,47 +255,36 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 
 ## Ensemble de modules et installation
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+_install_ , vous pouvez installer le module pour _wes_ publié sur _github_ . Vous aurez besoin du _github repository_ pour publier le module. De plus, le nom du référentiel et le nom du répertoire local doivent être identiques.
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+### _bundle_
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+_github_ publication d'un module sur _github_ , _bundle_ regroupe le module requis et le modifie dans un format pouvant être importé par le module d' _install_ .
 
 Pour des raisons de sécurité, _wes_ n'importe pas les modules dans un format qui peut être exécuté directement, alors créez un fichier _.json_ avec le module _bundle_ .
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+Il existe certaines conditions pour le regroupement de modules.
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+1.  _repository_ seul type de module peut être publié dans un _repository_ .
+2.  _github_ nom du référentiel _github_ et le nom du répertoire de travail local doivent être identiques.
+3.  Le référentiel doit être public si vous souhaitez publier le module vers un tiers.
+4.  _wes_ n'interprète pas statiquement le script. Les modules qui `require` dans certaines conditions, comme les instructions `if` , peuvent ne pas être regroupés.
+5.  _.json_ fichier _.json_ sera créé dans votre répertoire de travail avec le nom _directory_name.json_ . Si vous renommez le fichier ou déplacez le fichier, vous ne pouvez pas l'installer.
+6.  `node_modules/directory_name` regroupement échoue car il fait référence à `directory_name.json` .
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+### _install_
 
 Il est utilisé pour installer le fichier du module pour _wes_ publié sur _github_ .
 
 ## usage
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+Passer des arguments à _install_ au format `@author/repository`
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+```shell
+wes install @wachaon/fmt
+```
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+_install_ a des options
 
 | nommé      | court nommé | la description                                                  |
 | ---------- | ----------- | --------------------------------------------------------------- |
@@ -361,27 +299,23 @@ wes install @wachaon/fmt --bare --unsafe
 
 # Installer le module de dépôt privé
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+_install_ peut être installé non seulement sur les modules de référentiel public _github_ , mais également sur des référentiels privés.
 
 _install_ , spécifiez le module avec `author@repository` . L'implémentation télécharge les éléments suivants.
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+```javascript
+`https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
+```
 
 Lorsque vous accédez au _raw_ du référentiel privé avec un navigateur, le _token_ sera affiché, alors copiez le _token_ et utilisez-le.
 
 Vous pouvez également installer le module dans le référentiel privé en l'exécutant sur la ligne de commande pendant la _token_ du _token_ .
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+```shell
+wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
+```
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+## Module externe
 
 Voici quelques modules externes.
 
@@ -389,9 +323,7 @@ Voici quelques modules externes.
 
 _@wachaon/fmt_ est un ensemble de _prettier_ qui formate le script. De plus, si une `SyntaxError` se produit avec _@wachaon/fmt_ installé, vous pouvez indiquer l'emplacement de l'erreur.
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+#### installer
 
 ```shell
 wes install @wachaon/fmt
@@ -412,15 +344,13 @@ wes @wachaon/fmt src/sample --write
 | 0               | ---                                                           |
 | 1               | Obligatoire. Le chemin du fichier que vous souhaitez formater |
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+| nommé     | court nommé | la description         |
+| --------- | ----------- | ---------------------- |
+| `--write` | `-w`        | Autoriser l'écrasement |
 
 Remplace le fichier par un script formaté si un argument nommé `--write` ou `-w` est spécifié.
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+#### _module_ utilisation en tant que _module_
 
 #### `option`
 
