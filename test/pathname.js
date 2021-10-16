@@ -66,7 +66,6 @@ describe('# test pathname', () => {
         it('C:/bin/github/wes', () => {
             assert(path.dirname('C:/bin/github/wes') === 'C:/bin/github')
         })
-        /*
         it('C:/bin', () => {
             assert(path.dirname('C:/bin') === 'C:/')
         })
@@ -76,7 +75,6 @@ describe('# test pathname', () => {
         it('C:', () => {
             assert(path.dirname('C:') === 'C:')
         })
-        */
     })
 })
 
