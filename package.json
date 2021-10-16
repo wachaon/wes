@@ -1,6 +1,6 @@
 {
   "name": "wes",
-  "version": "0.8.89",
+  "version": "0.8.90",
   "description": "Windows Ecma Script host",
   "main": "wes.js",
   "directories": {
@@ -12,8 +12,9 @@
     "fmt": "^0.0.3",
     "markdown-actions": "^0.0.3",
     "markdown-translate": "^0.0.3",
-    "translate": "^0.0.3",
     "remark": "^12.0.1",
+    "translate": "^0.0.3",
+    "unified": "^9.2.0",
     "unist-util-visit": "^2.0.3"
   },
   "devDependencies": {},
