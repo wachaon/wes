@@ -488,7 +488,7 @@ try {
                 path: '{wes}/VBScript'
             },
             version: {
-                source: "module.exports = console.log('0.8.91')",
+                source: "module.exports = console.log('0.8.92')",
                 mapping: {},
                 path: '{wes}/version'
             }
@@ -545,7 +545,9 @@ try {
 
                 while (hierarchy !== '') {
                     areas.push(join(hierarchy, node_modules, query))
-                    hierarchy = dirname(hierarchy)
+                    var _hierarchy = dirname(hierarchy)
+                    if (hierarchy === _hierarchy) break
+                    hierarchy = _hierarchy
                 }
                 var ScriptFullName = WScript.ScriptFullName
                 areas.push(join(dirname(ScriptFullName), node_modules, query))
