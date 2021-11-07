@@ -9,14 +9,16 @@
     "test": "test"
   },
   "dependencies": {
+    "compare": "0.0.1",
     "fmt": "^0.0.3",
     "markdown-actions": "^0.0.3",
     "markdown-translate": "^0.0.3",
+    "path": "^0.12.7",
     "remark": "^12.0.1",
     "translate": "^0.0.3",
     "unified": "^9.2.0",
     "unist-util-visit": "^2.0.3",
-    "compare": "0.0.1"
+    "util": "0.12.1"
   },
   "devDependencies": {},
   "scripts": {
