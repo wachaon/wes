@@ -22,11 +22,12 @@
 +  [*italiano*](README.it.md) <!-- イタリア語 -->
 
 
+
 # 特徵
 
 
 -   *Chakra*是*Windows Script Host*的腳本引擎，用於運行*ECMAScript2015* *Chakra*
--   由於執行的是 32bit *cscript.exe* ，所以在 64bit 環境下沒有具體問題。
+-   由於執行的是 32bit *cscript.exe* ，所以沒有特定於 64bit 環境的問題。
 -   使用`require`導入模塊
 -   將彩色字符輸出到標準輸出
 -   自動猜測文件編碼
@@ -37,7 +38,7 @@
 
 -   `WScript.Quit`不能中斷程序並且不返回錯誤代碼
 -   異步處理
--   不能使用`WScript.CreateObject`的第二個參數的*event prefix*
+-   不能使用`WScript.CreateObject`的第二個參數*event prefix*
 
 
 # 安裝
@@ -51,14 +52,14 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*wes*在執行的時候作為實現*WScript.Shell*的`SendKeys`使用。 *wes.js*保存的目錄路徑包含*ascii*以外的字符，則`SendKeys`將無法正確發送密鑰，腳本將無法執行。  
+*wes*在執行時作為*WScript.Shell*的`SendKeys`執行使用。 *wes.js*保存的目錄路徑包含*ascii*以外的字符，則`SendKeys`將無法正確發送密鑰，腳本將無法執行。  
 請只配置*wes.js*的保存目標路徑*ascii* 。
 
 
 ## 用法
 
 
-在命令行上，在`wes`之後指定將成為程序起點的文件。腳本擴展名*.js*可以省略。
+在命令行中，在`wes`之後指定將成為程序起點的文件。腳本擴展名*.js*可以省略。
 
 
 ```shell
@@ -110,7 +111,7 @@ wes
 使用*require*導入模塊。 *wes*自動猜測模塊文件的編碼，但如果你沒有猜對，你可以用第二個參數指定編碼。
 
 
-此外， `require('WScript.Shell')`作為*OLE*甚至*require*導入是可能的。
+您還可以導入到*OLE*像`require('WScript.Shell')`與*require* 。
 
 
 ```javascript
@@ -143,7 +144,7 @@ module.exports = add
 ## *console*
 
 
-*wes*使用*console*而不是`WScript.Echo`和`WScript.StdErr.WriteLine` 。
+*wes*在`WScript.Echo`和`WScript.StdErr.WriteLine`代替*console*使用。
 
 
 將字符打印到`console.log`的命令行。它還支持格式化字符串。使用格式化運算符`%`打印格式化字符串。
@@ -200,7 +201,7 @@ console.log(brightRed + 'Error: ' + yellow + message)
 ```
 
 
-您還可以使用`ansi.color()`和`ansi.bgColor()`創建自己的顏色。所述參數使用*RGB*如`255, 165, 0`或*color code*如`'#FFA500'`您不能使用諸如`orange`類的*color name* 。
+您還可以使用`ansi.color()`和`ansi.bgColor()`創建自己的顏色。所述參數使用*RGB*如`255, 165, 0`或*color code*如`'#FFA500'`您不能使用諸如`orange` *color name* 。
 
 
 ```javascript
@@ -255,7 +256,7 @@ console.log('file %O', file)
 ## *filesystem*
 
 
-操作文件和目錄。 `readTextFileSync`自動猜測文件編碼並讀取它。
+操作文件和目錄。 `readTextFileSync`自動猜測並讀取文件的編碼。
 
 
 ```javascript
@@ -313,7 +314,7 @@ console.log(TypeName(FSO))
 ## *httprequest*
 
 
-*httprequest*發出*http request* 。
+*httprequest*顧名思義， *http request*會發出一個。
 
 
 ```javascript
@@ -347,7 +348,7 @@ describe( '# calc test', () => {
 ## *pipe*
 
 
-*pipe*簡化管道加工
+*pipe*簡化了管道加工
 
 
 ```javascript
@@ -389,7 +390,7 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 # 模塊捆綁和安裝
 
 
-*install* ，您可以安裝該模塊*wes*上發布*github* 。您將需要*github repository*來發布模塊。此外，存儲庫名稱和本地目錄名稱必須相同。
+*install* ，您可以安裝該模塊*wes*上發布*github* 。您將需要一個*github repository*來發布模塊。此外，存儲庫名稱和本地目錄名稱必須相同。
 
 
 ## *bundle*
@@ -398,18 +399,18 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 將模塊發佈到*github* ， *bundle*捆綁所需的模塊並將其更改為可由*install*模塊導入的格式。
 
 
-出於安全原因， *wes*不會以可以直接執行的格式導入模塊，因此使用*bundle*模塊創建一個*.json*文件。
+出於安全考慮， *wes*不會以可以直接執行的格式導入模塊，因此使用*bundle*模塊創建一個*.json*文件。
 
 
 捆綁模塊有一些條件。
 
 
 1.  在一個*repository*只能發布一種類型的模塊。
-2.  *github*倉庫名稱和​​本地工作目錄名稱必須相同。
+2.  *github*上的倉庫名稱和​​本地工作目錄名稱必須相同。
 3.  如果要將模塊發布給第三方，存儲庫必須是公開的。
 4.  *wes*不會靜態地解釋腳本。 `require`在特定條件下獲取的模塊，例如`if`語句可能不捆綁。
-5.  *.json*文件將在您的工作目錄中創建，名稱為*directory_name.json* 。如果重命名文件或移動文件，則無法安裝它。
-6.  `node_modules/directory_name`綁定失敗，因為它引用了`directory_name.json` 。
+5.  *.json*文件將在您的工作目錄中創建，名稱為*directory_name.json* 。如果文件被重命名或文件被移動，則無法安裝。
+6.  `node_modules/directory_name` ，捆綁失敗，因為它引用`directory_name.json` 。
 
 
 ## *install*
@@ -449,7 +450,7 @@ wes install @wachaon/fmt --bare --unsafe
 # 安裝私有倉庫模塊
 
 
-*install*不僅可以安裝在*github*公共存儲庫模塊上，還可以安裝在私有存儲庫上。
+*install*不僅可以安裝在*github*上公共存儲庫的模塊中，還可以安裝在私有存儲庫中。
 
 
 *install* ，使用`author@repository`指定模塊。該實現下載以下內容。
@@ -474,13 +475,13 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 # 外部模塊
 
 
-下面是一些外部模塊。
+這裡有一些外部模塊。
 
 
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt*是一組*prettier*的腳本格式。此外，如果安裝了*@wachaon/fmt*時出現`SyntaxError` ，您可以指出錯誤位置。
+*@wachaon/fmt*捆綁*prettier*並格式化腳本。此外，如果安裝了*@wachaon/fmt*並且出現`SyntaxError`錯誤，則可以指示錯誤位置。
 
 
 ### 安裝
@@ -507,7 +508,7 @@ wes @wachaon/fmt src/sample --write
 
 | 無名號碼 | 描述             |
 | ---- | -------------- |
-| 0    | ---            |
+| 0    | ――――           |
 | 1    | 必需的。要格式化的文件的路徑 |
 
 
@@ -516,7 +517,7 @@ wes @wachaon/fmt src/sample --write
 | `--write` | `-w` | 允許覆蓋 |
 
 
-如果指定了`--write`或`-w`的命名參數，則使用格式化腳本覆蓋文件。
+如果指定`--write`或`-w`的命名參數，則使用格式化腳本覆蓋文件。
 
 
 ### 作為*module*

@@ -22,11 +22,12 @@ Please select sentences in other languages ​​from the following.
 +  [*italiano*](README.it.md) <!-- イタリア語 -->
 
 
+
 # Features
 
 
--   *Chakra* the script engine of *Windows Script Host* to run *ECMAScript2015* *Chakra*
--   Since 32bit *cscript.exe* is executed, there is no specific problem in 64bit environment.
+-   *Chakra* the scripting engine of *Windows Script Host* to run *ECMAScript2015* *Chakra*
+-   Since 32bit *cscript.exe* is executed, there is no problem specific to 64bit environment.
 -   Import the module with `require`
 -   Outputs colored characters to standard output
 -   Automatically guess the file encoding
@@ -35,9 +36,9 @@ Please select sentences in other languages ​​from the following.
 # Features not resolved
 
 
--   `WScript.Quit` cannot interrupt the program and does not return an error code
+-   `WScript.Quit` can't interrupt the program and doesn't return an error code
 -   Asynchronous processing
--   The *event prefix* of the second argument of `WScript.CreateObject` cannot be used
+-   The second argument *event prefix* of `WScript.CreateObject` cannot be used
 
 
 # Install
@@ -74,7 +75,7 @@ wes
 ```
 
 
-The script will be accepted until you enter two blank lines. *README.md* can also check the execution of the sample script in *README.md* with *REPL* .
+Scripts will be accepted until you enter two blank lines. *README.md* can also check the execution of the sample script in *README.md* with *REPL* .
 
 
 ## command-line named arguments
@@ -110,7 +111,7 @@ The implementation of `--safe` `--usual` `--unsafe` `--dangerous` is incomplete,
 Import the module with *require* . *wes* automatically guesses the encoding of the module file, but if you don't guess correctly, you can specify the encoding with the second argument.
 
 
-In addition, `require('WScript.Shell')` as of *OLE* even to *require* import is possible with.
+You can also import to *OLE* like `require('WScript.Shell')` with *require* .
 
 
 ```javascript
@@ -143,7 +144,7 @@ module.exports = add
 ## *console*
 
 
-*wes* uses *console* instead of `WScript.Echo` and `WScript.StdErr.WriteLine` .
+*wes* In `WScript.Echo` and `WScript.StdErr.WriteLine` instead of the *console* use the.
 
 
 Print characters to the command line in `console.log` . It also supports formatted strings. Prints a formatted string using the formatting operator `%` .
@@ -200,7 +201,7 @@ console.log(brightRed + 'Error: ' + yellow + message)
 ```
 
 
-You can also create your own colors with `ansi.color()` and `ansi.bgColor()` . The argument uses *RGB* such as `255, 165, 0` or *color code* such as `'#FFA500'` . You cannot use a *color name* such as `orange` .
+You can also create your own colors with `ansi.color()` and `ansi.bgColor()` . The argument uses *RGB* such as `255, 165, 0` or *color code* such as `'#FFA500'` . You cannot use *color name* such as `orange` .
 
 
 ```javascript
@@ -255,7 +256,7 @@ console.log('file %O', file)
 ## *filesystem*
 
 
-Manipulate files and directories. `readTextFileSync` automatically guesses and reads the file's encoding.
+Operate files and directories. `readTextFileSync` automatically guesses and reads the file's encoding.
 
 
 ```javascript
@@ -300,7 +301,7 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ## *VBScript*
 
 
-*VBScript* offers some features that *JScript* doesn't have.
+*VBScript* provides some features that *JScript* does not have.
 
 
 ```javascript
@@ -313,7 +314,7 @@ console.log(TypeName(FSO))
 ## *httprequest*
 
 
-*httprequest* issues *http request* as its name suggests.
+*httprequest* is as its name *http request* will issue a.
 
 
 ```javascript
@@ -389,7 +390,7 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 # Module bundle and install
 
 
-*install* , you can install the module for *wes* published on *github* . You will need the *github repository* to publish the module. Also, the repository name and the local directory name must be the same.
+*install* , you can install the module for *wes* published on *github* . You will need a *github repository* to publish the module. Also, the repository name and the local directory name must be the same.
 
 
 ## *bundle*
@@ -405,17 +406,17 @@ There are some conditions for bundling modules.
 
 
 1.  *repository* one type of module can be published in one *repository* .
-2.  *github* repository name and the local working directory name must be the same.
+2.  The repository name on *github* and the local working directory name must be the same.
 3.  The repository must be public if you want to publish the module to a third party.
 4.  *wes* does not statically interpret the script. Modules acquired by `require` under specific conditions such as `if` statements may not be bundled.
-5.  *.json* file will be created in your working directory with the name *directory_name.json* . If you rename the file or move the file, you cannot install it.
-6.  `node_modules/directory_name` bundling fails because it references `directory_name.json` .
+5.  *.json* file will be created in your working directory with the name *directory_name.json* . It cannot be installed if the file is renamed or the file is moved.
+6.  `node_modules/directory_name` , the bundle fails because it refers to `directory_name.json` .
 
 
 ## *install*
 
 
-It is used to install the module file for *wes* published on *github* .
+Used to install the module file for *wes* published on *github* .
 
 
 ### usage
@@ -449,7 +450,7 @@ wes install @wachaon/fmt --bare --unsafe
 # Install the module of private repository
 
 
-*install* can be installed not only on *github* public repository modules, but also on private repositories.
+*install* can be installed not only in modules in public repositories on *github* , but also in private repositories.
 
 
 *install* , specify the module with `author@repository` . The implementation downloads the following.
@@ -463,7 +464,7 @@ wes install @wachaon/fmt --bare --unsafe
 When you access the *raw* of the private repository with a browser, the *token* will be displayed, so copy the *token* and use it.
 
 
-You can also install the module in the private repository by running it on the command line within the *token* 's *token* .
+You can also install a module in a private repository by running it on the command line within the *token* 's *token* .
 
 
 ```shell
@@ -480,7 +481,7 @@ Here are some external modules.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* is a bundle of *prettier* that formats the script. Also, if a `SyntaxError` occurs with *@wachaon/fmt* installed, you can indicate the error location.
+*@wachaon/fmt* bundles *prettier* and formats the script. Also, if *@wachaon/fmt* is installed and a `SyntaxError` Error occurs, the error location can be indicated.
 
 
 ### install
@@ -494,7 +495,7 @@ wes install @wachaon/fmt
 ### usage
 
 
-If there is *.prettierrc* (JSON format) in the working directory, it will be reflected in the settings. *fmt* can be used with both *CLI* (command line interface) and *module* in *fmt* .
+If there is *.prettierrc* (JSON format) in the working directory, it will be reflected in the setting. *fmt* can be used with both *CLI* (command line interface) and *module* in *fmt* .
 
 
 Use as *CLI*
@@ -507,7 +508,7 @@ wes @wachaon/fmt src/sample --write
 
 | unnamed number | description                                       |
 | -------------- | ------------------------------------------------- |
-| 0              | ---                                               |
+| 0              | ――――                                              |
 | 1              | Required. The path of the file you want to format |
 
 
@@ -516,7 +517,7 @@ wes @wachaon/fmt src/sample --write
 | `--write` | `-w`        | Allow overwriting |
 
 
-Overwrites the file with a formatted script if a named argument of `--write` or `-w` is specified.
+Overwrite the file with a formatted script if you specify a named argument of `--write` or `-w` .
 
 
 ### *module* using as a *module*

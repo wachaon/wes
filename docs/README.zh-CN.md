@@ -22,11 +22,12 @@
 +  [*italiano*](README.it.md) <!-- イタリア語 -->
 
 
+
 # 特征
 
 
 -   *Chakra*是*Windows Script Host*的脚本引擎，用于运行*ECMAScript2015* *Chakra*
--   由于执行的是 32bit *cscript.exe* ，所以在 64bit 环境下没有具体问题。
+-   由于执行的是 32bit *cscript.exe* ，所以没有特定于 64bit 环境的问题。
 -   使用`require`导入模块
 -   将彩色字符输出到标准输出
 -   自动猜测文件编码
@@ -37,7 +38,7 @@
 
 -   `WScript.Quit`不能中断程序并且不返回错误代码
 -   异步处理
--   不能使用`WScript.CreateObject`的第二个参数的*event prefix*
+-   不能使用`WScript.CreateObject`的第二个参数*event prefix*
 
 
 # 安装
@@ -51,14 +52,14 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*wes*在执行的时候作为实现*WScript.Shell*的`SendKeys`使用。 *wes.js*保存的目录路径包含*ascii*以外的字符，则`SendKeys`将无法正确发送密钥，脚本将无法执行。  
+*wes*在执行时作为*WScript.Shell*的`SendKeys`执行使用。 *wes.js*保存的目录路径包含*ascii*以外的字符，则`SendKeys`将无法正确发送密钥，脚本将无法执行。  
 请只配置*wes.js*的保存目标路径*ascii* 。
 
 
 ## 用法
 
 
-在命令行上，在`wes`之后指定将成为程序起点的文件。脚本扩展名*.js*可以省略。
+在命令行中，在`wes`之后指定将成为程序起点的文件。脚本扩展名*.js*可以省略。
 
 
 ```shell
@@ -74,7 +75,7 @@ wes
 ```
 
 
-该脚本将被接受，直到您输入两个空行。 *README.md*还可以使用*REPL*检查*README.md*示例脚本的执行情况。
+脚本将被接受，直到您输入两个空行。 *README.md*还可以使用*REPL*检查*README.md*示例脚本的执行情况。
 
 
 ## 命令行命名参数
@@ -110,7 +111,7 @@ wes
 使用*require*导入模块。 *wes*自动猜测模块文件的编码，但如果你没有猜对，你可以用第二个参数指定编码。
 
 
-此外， `require('WScript.Shell')`作为*OLE*甚至*require*导入是可能的。
+您还可以导入到*OLE*像`require('WScript.Shell')`与*require* 。
 
 
 ```javascript
@@ -143,7 +144,7 @@ module.exports = add
 ## *console*
 
 
-*wes*使用*console*而不是`WScript.Echo`和`WScript.StdErr.WriteLine` 。
+*wes*在`WScript.Echo`和`WScript.StdErr.WriteLine`代替*console*使用。
 
 
 将字符打印到`console.log`的命令行。它还支持格式化字符串。使用格式化运算符`%`打印格式化字符串。
@@ -200,7 +201,7 @@ console.log(brightRed + 'Error: ' + yellow + message)
 ```
 
 
-您还可以使用`ansi.color()`和`ansi.bgColor()`创建自己的颜色。所述参数使用*RGB*如`255, 165, 0`或*color code*如`'#FFA500'` 。您不能使用诸如`orange`类的*color name* 。
+您还可以使用`ansi.color()`和`ansi.bgColor()`创建自己的颜色。所述参数使用*RGB*如`255, 165, 0`或*color code*如`'#FFA500'` 。您不能使用诸如`orange` *color name* 。
 
 
 ```javascript
@@ -255,7 +256,7 @@ console.log('file %O', file)
 ## *filesystem*
 
 
-操作文件和目录。 `readTextFileSync`自动猜测文件编码并读取它。
+操作文件和目录。 `readTextFileSync`自动猜测并读取文件的编码。
 
 
 ```javascript
@@ -313,7 +314,7 @@ console.log(TypeName(FSO))
 ## *httprequest*
 
 
-*httprequest*发出*http request* 。
+*httprequest*顾名思义， *http request*会发出一个。
 
 
 ```javascript
@@ -347,7 +348,7 @@ describe( '# calc test', () => {
 ## *pipe*
 
 
-*pipe*简化管道加工
+*pipe*简化了管道加工
 
 
 ```javascript
@@ -389,7 +390,7 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 # 模块捆绑和安装
 
 
-*install* ，您可以安装该模块*wes*上发布*github* 。您将需要*github repository*来发布模块。此外，存储库名称和本地目录名称必须相同。
+*install* ，您可以安装该模块*wes*上发布*github* 。您将需要一个*github repository*来发布模块。此外，存储库名称和本地目录名称必须相同。
 
 
 ## *bundle*
@@ -398,18 +399,18 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 将模块发布到*github* ， *bundle*捆绑所需的模块并将其更改为可由*install*模块导入的格式。
 
 
-出于安全原因， *wes*不会以可以直接执行的格式导入模块，因此使用*bundle*模块创建一个*.json*文件。
+出于安全考虑， *wes*不会以可以直接执行的格式导入模块，因此使用*bundle*模块创建一个*.json*文件。
 
 
 捆绑模块有一些条件。
 
 
 1.  在一个*repository*只能发布一种类型的模块。
-2.  *github*仓库名称和本地工作目录名称必须相同。
+2.  *github*上的仓库名称和本地工作目录名称必须相同。
 3.  如果要将模块发布给第三方，存储库必须是公开的。
-4.  *wes*不会静态地解释脚本。 `require`在特定条件下获取的模块，例如`if`语句可能不捆绑。
-5.  *.json*文件将在您的工作目录中创建，名为*directory_name.json* 。如果重命名文件或移动文件，则无法安装它。
-6.  `node_modules/directory_name`绑定失败，因为它引用了`directory_name.json` 。
+4.  *wes*不会静态解释脚本。 `require`在特定条件下获取的模块，例如`if`语句可能不捆绑。
+5.  *.json*文件将在您的工作目录中创建，名称为*directory_name.json* 。如果文件被重命名或文件被移动，则无法安装。
+6.  `node_modules/directory_name` ，捆绑失败，因为它引用`directory_name.json` 。
 
 
 ## *install*
@@ -449,7 +450,7 @@ wes install @wachaon/fmt --bare --unsafe
 # 安装私有仓库模块
 
 
-*install*不仅可以安装在*github*公共存储库模块上，还可以安装在私有存储库上。
+*install*不仅可以安装在*github*上公共存储库的模块中，还可以安装在私有存储库中。
 
 
 *install* ，使用`author@repository`指定模块。该实现下载以下内容。
@@ -474,13 +475,13 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 # 外部模块
 
 
-下面是一些外部模块。
+这里有一些外部模块。
 
 
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt*是一组*prettier*的脚本格式。此外，如果安装了*@wachaon/fmt*时出现`SyntaxError` ，您可以指出错误位置。
+*@wachaon/fmt*捆绑*prettier*并格式化脚本。此外，如果安装了*@wachaon/fmt*并且出现`SyntaxError`错误，则可以指示错误位置。
 
 
 ### 安装
@@ -507,7 +508,7 @@ wes @wachaon/fmt src/sample --write
 
 | 无名号码 | 描述             |
 | ---- | -------------- |
-| 0    | ---            |
+| 0    | ――――           |
 | 1    | 必需的。要格式化的文件的路径 |
 
 
@@ -516,7 +517,7 @@ wes @wachaon/fmt src/sample --write
 | `--write` | `-w` | 允许覆盖 |
 
 
-如果指定了`--write`或`-w`的命名参数，则使用格式化脚本覆盖文件。
+如果指定`--write`或`-w`的命名参数，则使用格式化脚本覆盖文件。
 
 
 ### 作为*module*

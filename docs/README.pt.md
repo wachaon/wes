@@ -1,77 +1,118 @@
-# _WES_
+# *WES*
 
-_wes_ é uma estrutura para executar _ECMAScript_ no _Windows Script Host_
 
-O texto original do _README_ é o [_japanese_](README.ja.md) . Além do japonês, é uma frase traduzida automaticamente.  
+*wes* é uma estrutura para executar *ECMAScript* no *Windows Script Host*
+
+
+O texto original do *README* é o [*japanese*](docs/README.ja.md) . Além do japonês, é uma frase traduzida automaticamente.  
 Selecione frases em outros idiomas entre os seguintes.
 
-## Recursos
 
--   Mude o mecanismo de script para _Chakra_ e execute _ECMAScript2015_ _Chakra_
--   _cscript.exe_ 32 bits e não tem nenhum bug específico para o ambiente de 64 bits
++  [*簡体字*](README.zh-CN.md) <!-- 中国語 (簡体字) -->
++  [*繁体字*](README.zh-TW.md) <!-- 中国語 (繁体字) -->
++  [*English*](README.en.md) <!-- 英語 -->
++  [*हिन्दी*](README.hi.md) <!-- ヒンディー語 -->
++  [*Español*](README.es.md) <!-- スペイン語 -->
++  [*عربى*](README.ar.md) <!-- アラビア語 -->
++  [*বাংলা*](README.bn.md) <!-- ベンガル語 -->
++  [*Português*](README.pt.md) <!-- ポルトガル語 -->
++  [*русский язык*](README.ru.md) <!-- ロシア語 -->
++  [*Deutsch*](README.de.md) <!-- ドイツ語 -->
++  [*français*](README.fr.md) <!-- フランス語 -->
++  [*italiano*](README.it.md) <!-- イタリア語 -->
+
+
+
+# Recursos
+
+
+-   *Chakra* o mecanismo de *Windows Script Host* do *Windows Script Host* para executar o *ECMAScript2015* *Chakra*
+-   Como o *cscript.exe* 32 bits é executado, não há nenhum problema específico para o ambiente de 64 bits.
 -   Importe o módulo com `require`
 -   Produz caracteres coloridos para a saída padrão
 -   Adivinhe automaticamente a codificação do arquivo
 
-## Recursos não resolvidos
+
+# Recursos não resolvidos
+
 
 -   `WScript.Quit` não pode interromper o programa e não retorna um código de erro
 -   Processamento assíncrono
--   Utilização do _event prefix_ do _event prefix_ do segundo argumento de `WScript.CreateObject`
+-   O segundo *event prefix* de *event prefix* argumento de `WScript.CreateObject` não pode ser usado
 
-## Instalar
 
-_wes_ precisa é o único arquivo _wes.js_ Para fazer o download, inicie um prompt de comando e digite o seguinte comando.
+# Instalar
+
+
+*wes* precisa é o único arquivo *wes.js* Para fazer o download, inicie um prompt de comando e digite o seguinte comando.
+
 
 ```shell
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-_wes_ no momento da execução conforme a implementação _WScript.Shell_ de `SendKeys` usa. _wes.js_ o caminho do diretório onde _wes.js_ foi salvo contiver caracteres diferentes de _ascii_ , `SendKeys` não poderá enviar a chave corretamente e o script não poderá ser executado.  
-Configure o caminho de destino de _wes.js_ de _wes.js_ apenas _ascii_ .
+
+*wes* no momento da execução conforme a implementação *WScript.Shell* de `SendKeys` usa. *wes.js* o caminho do diretório onde *wes.js* foi salvo contiver caracteres diferentes de *ascii* , `SendKeys` não conseguirá enviar a chave corretamente e o script não poderá ser executado.  
+Configure o caminho de destino de *wes.js* de *wes.js* apenas *ascii* .
+
 
 ## Uso
 
-Na linha de comando, especifique o arquivo que será o ponto de partida do programa após `wes` . A extensão do script _.js_ pode ser omitida.
+
+Na linha de comando, especifique o arquivo que será o ponto de partida do programa após `wes` . A extensão do script *.js* pode ser omitida.
+
 
 ```shell
 wes index
 ```
 
-Além disso, o _wes_ tem _REPL_ portanto _REPL_ se você iniciá-lo apenas com o `wes` , poderá inserir o script diretamente.
+
+Além disso, o *wes* tem um *REPL* portanto *REPL* se você iniciá-lo apenas com o `wes` , poderá inserir o script diretamente.
+
 
 ```shell
 wes
 ```
 
-O script será aceito até que você insira duas linhas em branco. _README.md_ também pode verificar a execução do script de amostra em _README.md_ com _REPL_ .
+
+Os scripts serão aceitos até você inserir duas linhas em branco. *README.md* também pode verificar a execução do script de amostra em *README.md* com *REPL* .
+
 
 ## argumentos nomeados de linha de comando
 
-As opções de inicialização do _wes_ são as seguintes.
+
+As opções de inicialização do *wes* são as seguintes.
+
 
 | nomeado            | Descrição                                               |
 | ------------------ | ------------------------------------------------------- |
-| `--monotone`       | Elimine o _ANSI escape code_                            |
+| `--monotone`       | Elimine o *ANSI escape code*                            |
 | `--safe`           | Execute o script em modo de segurança                   |
 | `--usual`          | Execute o script no modo normal (padrão)                |
 | `--unsafe`         | Execute o script em modo inseguro                       |
 | `--dangerous`      | Execute o script em modo perigoso                       |
 | `--debug`          | Execute o script em modo de depuração                   |
 | `--encoding=UTF-8` | Especifica a codificação do primeiro arquivo a ser lido |
-| `--engine=Chakra`  | Esta opção é adicionada automaticamente pelo _wes_      |
+| `--engine=Chakra`  | Esta opção é adicionada automaticamente pelo *wes*      |
+
 
 A implementação de `--safe` `--usual` `--unsafe` `--dangerous` está incompleta, mas os argumentos nomeados são reservados.
 
-## objetos embutidos
 
-_wes_ possui _built-in objects_ que _WSH (JScript)_ não possui.
+# objetos embutidos
 
-### _require_
 
-Importe o módulo com _require_ . _wes_ adivinha automaticamente a codificação do arquivo do módulo, mas se você não adivinhar corretamente, pode especificar a codificação com o segundo argumento.
+*wes* possui *built-in objects* que *WSH (JScript)* não possui.
 
-Além disso, `require('WScript.Shell')` como do _OLE_ mesmo para _require_ importação seja possível com.
+
+## *require*
+
+
+Importe o módulo com *require* . *wes* adivinha automaticamente a codificação do arquivo do módulo, mas se você não adivinhar corretamente, pode especificar a codificação com o segundo argumento.
+
+
+Além disso, `require('WScript.Shell')` como do *OLE* mesmo para *require* importação seja possível com.
+
 
 ```javascript
 const WShell = require('WScript.Shell')
@@ -84,9 +125,12 @@ while (ie.Busy || ie.readystate != 4) {
 WShell.AppActivate(ie.LocationName)
 ```
 
-### módulo e módulo.exportações
+
+## `module` e `module.exports`
+
 
 Se você deseja defini-lo como um módulo, atribua-o a `module.exports` .
+
 
 ```javascript
 function add (a, b) {
@@ -96,21 +140,29 @@ function add (a, b) {
 module.exports = add
 ```
 
-### _console_
 
-_wes_ usa _console_ vez de `WScript.Echo` e `WScript.StdErr.WriteLine` .
+## *console*
+
+
+*wes* Em `WScript.Echo` e `WScript.StdErr.WriteLine` vez do *console* use o.
+
 
 Imprime caracteres na linha de comando em `console.log` . Ele também oferece suporte a strings formatadas. Imprime uma string formatada usando o operador de formatação `%` .
+
 
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
-_wes_ para gerar uma string colorida em `WScript.StdOut.WriteLine` , em vez disso, usar `WScript.StdErr.WriteLine` . `WScript.Echo` e `WScript.StdOut.WriteLine` são bloqueados na saída, portanto, use `WScript.StdOut.WriteLine` ou `console.log` .
 
-### _Buffer_
+*wes* para gerar uma string colorida em `WScript.StdOut.WriteLine` , em vez disso, usar `WScript.StdErr.WriteLine` . `WScript.Echo` e `WScript.StdOut.WriteLine` são bloqueados na saída, portanto, use `WScript.StdErr.WriteLine` ou `console.log` .
+
+
+## *Buffer*
+
 
 Pode lidar com buffers.
+
 
 ```javascript
 const content = 'Hello World'
@@ -118,21 +170,29 @@ const buff = Buffer.from(content)
 console.log(`${content} %O`, buff)
 ```
 
-### `__dirname` e `__filename`
+
+## `__dirname` e `__filename`
+
 
 `__filename` contém o caminho do arquivo de módulo atualmente em execução. `__dirname` `__filename` o diretório de `__filename` .
+
 
 ```javascript
 console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 ```
 
-## módulos embutidos
 
-_wes_ tem _built-in modules_ para simplificar e padronizar o processamento básico.
+# módulos embutidos
 
-### _ansi_
 
-`ansi` tem um _ANSI escape code_ que permite alterar a cor e o efeito da saída padrão. As cores e os efeitos podem variar dependendo do tipo e das configurações do aplicativo de console usado.
+*wes* tem *built-in modules* para simplificar e padronizar o processamento básico.
+
+
+## *ansi*
+
+
+`ansi` possui um *ANSI escape code* que permite alterar a cor e o efeito da saída padrão. As cores e os efeitos podem variar dependendo do tipo e das configurações do aplicativo de console usado.
+
 
 ```javascript
 const { brightRed, yellow } = require('ansi')
@@ -140,7 +200,9 @@ const message = 'File does not exist'
 console.log(brightRed + 'Error: ' + yellow + message)
 ```
 
-Você também pode criar suas próprias cores com `ansi.color()` e `ansi.bgColor()` . O argumento usa _RGB_ como `255, 165, 0` ou _color code_ como `'#FFA500'` . Você não pode usar um _color name_ como `orange` .
+
+Você também pode criar suas próprias cores com `ansi.color()` e `ansi.bgColor()` . O argumento usa *RGB* como `255, 165, 0` ou *color code* como `'#FFA500'` . Você não pode usar *color name* como `orange` .
+
 
 ```javascript
 const { color } = require('ansi')
@@ -148,19 +210,26 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
-### _argv_
 
-Obtém o argumento da linha de comando. Os argumentos da linha de comando `cscript.exe` de `/` declara os argumentos nomeados em, mas, _wes_ em `-` e `--` declara os argumentos nomeados em.
+## *argv*
 
-_argv.unnamed_ e _argv.named_ convertem o tipo de valor do argumento da linha de comando em um dos _String_ _Number_ _Boolean_ .
 
-Insira os argumentos da linha de comando junto com o _REPL_ .
+Obtém o argumento da linha de comando. Os argumentos da linha de comando `cscript.exe` de `/` declara os argumentos nomeados em, mas, *wes* em `-` e `--` declara os argumentos nomeados em.
+
+
+*argv.unnamed* e *argv.named* convertem o tipo de valor do argumento da linha de comando em um dos *String* *Number* *Boolean* .
+
+
+Insira os argumentos da linha de comando junto com o *REPL* .
+
 
 ```shell
 wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
-Execute o seguinte script no _REPL_ .
+
+Execute o seguinte script no *REPL* .
+
 
 ```javascript
 const argv = require('argv')
@@ -170,9 +239,12 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
-### _pathname_
+
+## *pathname*
+
 
 Opere o caminho.
+
 
 ```javascript
 const path = require('pathname')
@@ -180,9 +252,12 @@ const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
 
-### _filesystem_
 
-Manipule arquivos e diretórios. `readTextFileSync` adivinha e lê automaticamente a codificação do arquivo.
+## *filesystem*
+
+
+Operar arquivos e diretórios. `readTextFileSync` adivinha e lê automaticamente a codificação do arquivo.
+
 
 ```javascript
 const fs = require('filesystem')
@@ -192,9 +267,12 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
-### _JScript_
 
-Se você alterar o motor de script para _Chakra_ , você não será capaz de usar _JScript_ específica _Enumerator_ etc. O módulo integrado _JScript_ os disponibiliza. No entanto, _Enumerator_ retorna um _Array_ vez de um objeto Enumerator.
+## *JScript*
+
+
+Se você alterar o motor de script para *Chakra* , você não será capaz de usar *JScript* específica *Enumerator* etc. O módulo integrado *JScript* os disponibiliza. No entanto, *Enumerator* retorna um *Array* vez de um objeto Enumerator.
+
 
 ```javascript
 const { Enumerator, ActiveXObject } = require('JScript')
@@ -204,7 +282,9 @@ const files = new Enumerator(dir)
 files.forEach(file => console.log(file.Name))
 ```
 
-_GetObject_ `WScript.GetObject` como uma alternativa para `WScript.GetObject` .
+
+*GetObject* `WScript.GetObject` como uma alternativa para `WScript.GetObject` .
+
 
 ```javascript
 const { GetObject, Enumerator } = require('JScript')
@@ -217,9 +297,12 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
-### _VBScript_
 
-_VBScript_ oferece alguns recursos que o _JScript_ não possui.
+## *VBScript*
+
+
+*VBScript* fornece alguns recursos que o *JScript* não possui.
+
 
 ```javascript
 const { TypeName } = require('VBScript')
@@ -227,9 +310,12 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
-### _httprequest_
 
-_httprequest_ emite _http request_ como seu nome sugere.
+## *httprequest*
+
+
+*httprequest* é como seu nome a *http request* emitirá um.
+
 
 ```javascript
 const request = require('httprequest')
@@ -237,9 +323,12 @@ const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
 
-### _minitest_
 
-_minitest_ pode escrever testes simples.
+## *minitest*
+
+
+*minitest* pode escrever testes simples.
+
 
 ```javascript
 const { describe, it, assert } = require('minitest')
@@ -255,9 +344,12 @@ describe( '# calc test', () => {
 })
 ```
 
-### _pipe_
 
-_pipe_ simplifica o processamento de tubo
+## *pipe*
+
+
+*pipe* simplifica o processamento de tubo
+
 
 ```javascript
 const pipe = require('pipe')
@@ -279,9 +371,12 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
-### _typecheck_
+
+## *typecheck*
+
 
 Determine o tipo de script.
+
 
 ```javascript
 const { isString, isNumber, isBoolean } = require('typecheck')
@@ -291,110 +386,151 @@ console.log('isNumber(43.5) // => %O', isNumber(43.5))
 console.log('isBoolean(false) // => %O', isBoolean(false))
 ```
 
-## Pacote de módulo e instalação
 
-_install_ , você pode instalar o módulo para _wes_ publicado no _github_ . Você precisará do _github repository_ para publicar o módulo. Além disso, o nome do repositório e o nome do diretório local devem ser iguais.
+# Pacote de módulo e instalação
 
-### _bundle_
 
-_github_ publicar um módulo no _github_ , _bundle_ o módulo necessário e altere-o para um formato que pode ser importado pelo módulo de _install_ .
+*install* , você pode instalar o módulo para *wes* publicado no *github* . Você precisará de um *github repository* para publicar o módulo. Além disso, o nome do repositório e o nome do diretório local devem ser iguais.
 
-Por razões de segurança, _wes_ não importa módulos em um formato que pode ser executado diretamente, então crie um arquivo _.json_ com o módulo de _bundle_ .
+
+## *bundle*
+
+
+*github* publicar um módulo no *github* , *bundle* o módulo necessário e altere-o para um formato que pode ser importado pelo módulo de *install* .
+
+
+Por razões de segurança, *wes* não importa módulos em um formato que pode ser executado diretamente, então crie um arquivo *.json* com o módulo de *bundle* .
+
 
 Existem algumas condições para agrupar módulos.
 
-1.  _repository_ um tipo de módulo pode ser publicado em um _repository_ .
-2.  _github_ nome do repositório _github_ e o nome do diretório de trabalho local devem ser iguais.
+
+1.  *repository* um tipo de módulo pode ser publicado em um *repository* .
+2.  O nome do repositório no *github* e o nome do diretório de trabalho local devem ser iguais.
 3.  O repositório deve ser público se você quiser publicar o módulo para terceiros.
-4.  _wes_ não interpreta estaticamente o script. Módulos que `require` sob certas condições, como instruções `if` , não podem ser agrupados.
-5.  _.json_ arquivo _.json_ será criado em seu diretório de trabalho com o nome _directory_name.json_ . Se você renomear ou mover o arquivo, não poderá instalá-lo.
-6.  `node_modules/directory_name` empacotamento falha porque faz referência a `directory_name.json` .
+4.  *wes* não interpreta estaticamente o script. Módulos adquiridos por `require` em condições específicas, como `if` declarações não podem ser agrupadas.
+5.  *.json* arquivo *.json* será criado em seu diretório de trabalho com o nome *directory_name.json* . Ele não pode ser instalado se o arquivo for renomeado ou se o arquivo for movido.
+6.  `node_modules/directory_name` , o pacote falha porque se refere a `directory_name.json` .
 
-### _install_
 
-Ele é usado para instalar o arquivo de módulo para _wes_ publicado no _github_ .
+## *install*
 
-## uso
 
-Passe argumentos para _install_ no formato `@author/repository`
+Usado para instalar o arquivo de módulo para *wes* publicado no *github* .
+
+
+### uso
+
+
+Passe argumentos para *install* no formato `@author/repository`
+
 
 ```shell
 wes install @wachaon/fmt
 ```
 
-_install_ tem opções
+
+*install* tem opções
+
 
 | nomeado    | nome curto | Descrição                                    |
 | ---------- | ---------- | -------------------------------------------- |
-| `--bare`   | `-b`       | Não crie a pasta _@author_                   |
-| `--global` | `-g`       | Instale o módulo na pasta onde _wes.js_ está |
+| `--bare`   | `-b`       | Não crie a pasta *@author*                   |
+| `--global` | `-g`       | Instale o módulo na pasta onde *wes.js* está |
 
-`--bare` opção `--bare` pode omitir o argumento `require` de `author@repository` para `repository` . `--global` opção `--global` torna os módulos instalados disponíveis para todos os scripts. As opções acima devem ser especificadas ao mesmo tempo que a opção de segurança do _wes_ `--unsafe` ou `--dangerous` .
+
+`--bare` opção `--bare` pode omitir o argumento `require` de `author@repository` para `repository` . `--global` opção `--global` torna os módulos instalados disponíveis para todos os scripts. As opções acima devem ser especificadas ao mesmo tempo que a opção de segurança do *wes* `--unsafe` ou `--dangerous` .
+
 
 ```shell
 wes install @wachaon/fmt --bare --unsafe
 ```
 
+
 # Instale o módulo de repositório privado
 
-_install_ pode ser instalado não apenas em módulos de repositório público _github_ , mas também em repositórios privados.
 
-_install_ , especifique o módulo com `author@repository` . A implementação baixa o seguinte.
+*install* pode ser instalado não apenas em módulos em repositórios públicos no *github* , mas também em repositórios privados.
+
+
+*install* , especifique o módulo com `author@repository` . A implementação baixa o seguinte.
+
 
 ```javascript
 `https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
 ```
 
-Ao acessar o _raw_ do repositório privado com um navegador, o _token_ será exibido, portanto, copie o _token_ e use-o.
 
-Você também pode instalar o módulo no repositório privado, executando-o na linha de comando durante a _token_ do _token_ .
+Quando você acessa *raw* do repositório privado com um navegador, o *token* será exibido, então copie o *token* e use-o.
+
+
+Você também pode instalar um módulo em um repositório privado, executando-o na linha de comando durante a *token* do *token* .
+
 
 ```shell
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
-## Módulo Externo
+
+# Módulo Externo
+
 
 Aqui estão alguns módulos externos.
 
-### _@wachaon/fmt_
 
-_@wachaon/fmt_ é um pacote _prettier_ que formata o script. Além disso, se ocorrer um `SyntaxError` com _@wachaon/fmt_ instalado, você pode indicar a localização do erro.
+## *@wachaon/fmt*
 
-#### instalar
+
+*@wachaon/fmt* agrupa *prettier* e formata o script. Além disso, se *@wachaon/fmt* estiver instalado e ocorrer um erro de `SyntaxError` , o local do erro pode ser indicado.
+
+
+### instalar
+
 
 ```shell
 wes install @wachaon/fmt
 ```
 
-#### uso
 
-Se houver _.prettierrc_ (formato JSON) no diretório de trabalho, isso será refletido nas configurações. _fmt_ pode ser usado com _CLI_ (interface de linha de comando) e _module_ em _fmt_ .
+### uso
 
-Use como _CLI_
+
+Se houver *.prettierrc* (formato JSON) no diretório de trabalho, isso será refletido na configuração. *fmt* pode ser usado com *CLI* (interface de linha de comando) e *module* em *fmt* .
+
+
+Use como *CLI*
+
 
 ```shell
 wes @wachaon/fmt src/sample --write
 ```
 
-| número sem nome | Descrição                                                 |
-| --------------- | --------------------------------------------------------- |
-| 0               | ---                                                       |
-| 1               | Requeridos. O caminho do arquivo que você deseja formatar |
+
+| número sem nome | Descrição                                                  |
+| --------------- | ---------------------------------------------------------- |
+| 0               | ――――                                                       |
+| 1               | Obrigatório. O caminho do arquivo que você deseja formatar |
+
 
 | nomeado   | nome curto | Descrição             |
 | --------- | ---------- | --------------------- |
 | `--write` | `-w`       | Permitir substituição |
 
-Substitui o arquivo com um script formatado se um argumento nomeado de `--write` ou `-w` for especificado.
 
-#### _module_ usar como um _module_
+Substitua o arquivo por um script formatado se você especificar um argumento nomeado de `--write` ou `-w` .
 
-#### `option`
+
+### *module* usar como um *module*
+
+
+### `option`
+
 
 ```javascript
-{
-    parser: 'babel',
-    plugins: [babel]
-}
+const fmt = require('@wachaon/fmt')
+const { readTextFileSync, writeTextFileSync } = require('filesystem')
+const { join, workingDirectory } = require('pathname')
+
+const target = join(workingDirectory, 'index.js')
+console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
