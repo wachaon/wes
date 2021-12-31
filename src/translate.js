@@ -15,15 +15,18 @@ const charset = `簡体	zh-CN
 const api = require('/account').google_apps_script.translate
 const md_translate = require('markdown-translate')
 const { readTextFileSync, writeTextFileSync } = require('filesystem')
-const { resolve } = require('pathname')
+const { resolve, WorkingDirectory } = require('pathname')
+
+const content = readTextFileSync(resolve(process.cwd(), 'src/lang.md'))
 
 const readme = readTextFileSync(resolve(process.cwd(), 'docs/README.ja.md'), 'UTF-8N')
+const README = readme.replace('*import document*', content)
+console.log(writeTextFileSync(resolve(WorkingDirectory, 'README.md'), README, 'UTF-8N'))
 
 charset.forEach((list) => {
     const lang = list[1]
     const spec = resolve(process.cwd(), `docs/README.${lang}.md`)
     let res = md_translate(api, readme, { target: lang })
-    const content = readTextFileSync(resolve(process.cwd(), 'src/lang.md'))
     res = res.replace('*import document*', content)
     console.log(writeTextFileSync(spec, res, 'UTF-8N'))
 })
