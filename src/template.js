@@ -345,11 +345,6 @@ try {
         var Modules = {}
 
         // util
-        function genGUID() {
-            var typelib = WScript.CreateObject('Scriptlet.Typelib')
-            return typelib.GUID.replace(/[^\}]+$/, '')
-        }
-
         function has(cls, prop) {
             if (cls == null) throw new Error(prop + ' is null')
             return cls.hasOwnProperty(prop)
@@ -605,7 +600,7 @@ try {
                     'no module:\n' + 'caller: ' + caller + '\nquery: ' + query + '\n' + JSON.stringify(areas, null, 2)
                 )
 
-            var modId = genGUID()
+            var modId = req('genGUID')()
             if (wes.main == null) wes.main = modId
             var mod = createModule(modId, entry, query, parentModule, encode)
             mod.exports = mod.module.exports
