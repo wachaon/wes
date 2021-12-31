@@ -4,7 +4,7 @@
 *wes*是一个在*Windows Script Host*上执行*ECMAScript*的框架
 
 
-*README*的原文是[*japanese*](docs/README.ja.md) 。除了日语，它是一个机器翻译的句子。  
+*README*的原文是[*japanese*](/README.md) 。除了日语，它是一个机器翻译的句子。  
 请从以下选择其他语言的句子。
 
 
@@ -26,19 +26,19 @@
 # 特征
 
 
--   *Chakra*是*Windows Script Host*的脚本引擎，用于运行*ECMAScript2015* *Chakra*
--   由于执行的是 32bit *cscript.exe* ，所以没有特定于 64bit 环境的问题。
+-   将*Windows Script Host*的脚本引擎改为*Chakra*并运行*ECMAScript2015* *Chakra*
+-   它始终运行 32 位*cscript.exe* ，因此在 64 位环境中没有固有的错误。
 -   使用`require`导入模块
 -   将彩色字符输出到标准输出
--   自动猜测文件编码
+-   自动猜测和读取文本文件的编码
 
 
 # 未解决的功能
 
 
 -   `WScript.Quit`不能中断程序并且不返回错误代码
--   异步处理
--   不能使用`WScript.CreateObject`的第二个参数*event prefix*
+-   无法进行`setTimeout`和`Promise`等异步处理
+-   不能使用`WScript.CreateObject`的第二个参数的*event prefix* 。
 
 
 # 安装
@@ -53,13 +53,13 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 
 
 *wes*在执行时作为*WScript.Shell*的`SendKeys`执行使用。 *wes.js*保存的目录路径包含*ascii*以外的字符，则`SendKeys`将无法正确发送密钥，脚本将无法执行。  
-请只配置*wes.js*的保存目标路径*ascii* 。
+请配置路径以将*wes.js*保存*wes.js*仅*ascii* 。
 
 
 ## 用法
 
 
-在命令行中，在`wes`之后指定将成为程序起点的文件。脚本扩展名*.js*可以省略。
+在命令行中，在`wes`之后指定将成为程序起点的文件。可以省略脚本扩展名*.js* 。
 
 
 ```shell
@@ -96,7 +96,7 @@ wes
 | `--engine=Chakra`  | 这个选项是由*wes*自动添加的     |
 
 
-`--safe` `--usual` `--unsafe` `--dangerous`的实现不完整，但保留了命名参数。
+`--safe` `--usual` `--unsafe` `--dangerous` `--debug`的实现不完整，但保留了命名参数。
 
 
 # 内置对象
@@ -111,7 +111,7 @@ wes
 使用*require*导入模块。 *wes*自动猜测模块文件的编码，但如果你没有猜对，你可以用第二个参数指定编码。
 
 
-您还可以导入到*OLE*像`require('WScript.Shell')`与*require* 。
+此外， `require('WScript.Shell')`作为*OLE*甚至*require*导入是可能的。
 
 
 ```javascript
@@ -201,7 +201,7 @@ console.log(brightRed + 'Error: ' + yellow + message)
 ```
 
 
-您还可以使用`ansi.color()`和`ansi.bgColor()`创建自己的颜色。所述参数使用*RGB*如`255, 165, 0`或*color code*如`'#FFA500'` 。您不能使用诸如`orange` *color name* 。
+您还可以使用`ansi.color()`和`ansi.bgColor()`创建自己的颜色。所述参数使用*RGB*如`255, 165, 0`或*color code*如`'#FFA500'` 。它不支持诸如`orange` *color name* 。
 
 
 ```javascript
@@ -271,7 +271,7 @@ console.log(contents)
 ## *JScript*
 
 
-如果您将脚本引擎更改为*Chakra* ，您将无法使用*JScript*特定的*Enumerator*等。内置模块*JScript*使它们可用。但是， *Enumerator*返回一个*Array*而不是 Enumerator 对象。
+如果您将脚本引擎更改为*Chakra* ，您将无法使用*JScript*特定的*Enumerator*等。内置模块*JScript*使它们可用。但是， *Enumerator*返回的是*Array*而不是 Enumerator 对象。
 
 
 ```javascript
@@ -408,7 +408,7 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 1.  在一个*repository*只能发布一种类型的模块。
 2.  *github*上的仓库名称和本地工作目录名称必须相同。
 3.  如果要将模块发布给第三方，存储库必须是公开的。
-4.  *wes*不会静态解释脚本。 `require`在特定条件下获取的模块，例如`if`语句可能不捆绑。
+4.  *wes*不会静态地解释脚本。 `require`在特定条件下获取的模块，例如`if`语句可能不捆绑。
 5.  *.json*文件将在您的工作目录中创建，名称为*directory_name.json* 。如果文件被重命名或文件被移动，则无法安装。
 6.  `node_modules/directory_name` ，捆绑失败，因为它引用`directory_name.json` 。
 

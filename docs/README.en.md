@@ -4,7 +4,7 @@
 *wes* is a framework for executing *ECMAScript* on *Windows Script Host*
 
 
-The original text of the *README* is [*japanese*](docs/README.ja.md) . Other than Japanese, it is a machine-translated sentence.  
+The original text of the *README* is [*japanese*](/README.md) . Other than Japanese, it is a machine-translated sentence.  
 Please select sentences in other languages ​​from the following.
 
 
@@ -26,19 +26,19 @@ Please select sentences in other languages ​​from the following.
 # Features
 
 
--   *Chakra* the scripting engine of *Windows Script Host* to run *ECMAScript2015* *Chakra*
--   Since 32bit *cscript.exe* is executed, there is no problem specific to 64bit environment.
+-   Change the script engine of *Windows Script Host* to *Chakra* and run *ECMAScript2015* *Chakra*
+-   It always runs 32bit *cscript.exe* , so there are no inherent bugs in 64bit environment.
 -   Import the module with `require`
 -   Outputs colored characters to standard output
--   Automatically guess the file encoding
+-   Automatically guess and read the encoding of the text file
 
 
 # Features not resolved
 
 
--   `WScript.Quit` can't interrupt the program and doesn't return an error code
--   Asynchronous processing
--   The second argument *event prefix* of `WScript.CreateObject` cannot be used
+-   `WScript.Quit` cannot interrupt the program and does not return an error code
+-   Asynchronous processing such as `setTimeout` and `Promise` is not possible
+-   The *event prefix* of the second argument of `WScript.CreateObject` cannot be used.
 
 
 # Install
@@ -53,7 +53,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 
 
 *wes* at the time of execution as the implementation *WScript.Shell* of `SendKeys` use. *wes.js* the path of the directory where *wes.js* is saved contains characters other than *ascii* , `SendKeys` will not be able to send the key correctly and the script will not be able to be executed.  
-Please configure the save destination path of *wes.js* only *ascii* .
+Please configure the path to save *wes.js* only *ascii* .
 
 
 ## Usage
@@ -96,7 +96,7 @@ The startup options for *wes* are as follows.
 | `--engine=Chakra`  | This option is automatically added by *wes*      |
 
 
-The implementation of `--safe` `--usual` `--unsafe` `--dangerous` is incomplete, but named arguments are reserved.
+The implementation of `--safe` `--usual` `--unsafe` `--dangerous` `--debug` is incomplete, but named arguments are reserved.
 
 
 # built-in objects
@@ -111,7 +111,7 @@ The implementation of `--safe` `--usual` `--unsafe` `--dangerous` is incomplete,
 Import the module with *require* . *wes* automatically guesses the encoding of the module file, but if you don't guess correctly, you can specify the encoding with the second argument.
 
 
-You can also import to *OLE* like `require('WScript.Shell')` with *require* .
+In addition, `require('WScript.Shell')` as of *OLE* even to *require* import is possible with.
 
 
 ```javascript
@@ -201,7 +201,7 @@ console.log(brightRed + 'Error: ' + yellow + message)
 ```
 
 
-You can also create your own colors with `ansi.color()` and `ansi.bgColor()` . The argument uses *RGB* such as `255, 165, 0` or *color code* such as `'#FFA500'` . You cannot use *color name* such as `orange` .
+You can also create your own colors with `ansi.color()` and `ansi.bgColor()` . The argument uses *RGB* such as `255, 165, 0` or *color code* such as `'#FFA500'` . It does not support *color name* such as `orange` .
 
 
 ```javascript
@@ -461,7 +461,7 @@ wes install @wachaon/fmt --bare --unsafe
 ```
 
 
-When you access the *raw* of the private repository with a browser, the *token* will be displayed, so copy the *token* and use it.
+When you access *raw* of the private repository with a browser, the *token* will be displayed, so copy the *token* and use it.
 
 
 You can also install a module in a private repository by running it on the command line within the *token* 's *token* .

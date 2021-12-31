@@ -4,7 +4,7 @@
 *wes* es un marco para ejecutar *ECMAScript* en *Windows Script Host*
 
 
-El texto original del *README* es [*japanese*](docs/README.ja.md) . Aparte del japonés, es una oración traducida automáticamente.  
+El texto original del *README* es [*japanese*](/README.md) . Aparte del japonés, es una oración traducida automáticamente.  
 Seleccione oraciones en otros idiomas de los siguientes.
 
 
@@ -26,19 +26,19 @@ Seleccione oraciones en otros idiomas de los siguientes.
 # Características
 
 
--   *Chakra* el motor de scripting de *Windows Script Host* para ejecutar *ECMAScript2015* *Chakra*
--   Dado que se ejecuta *cscript.exe* 32 bits, no hay ningún problema específico para el entorno de 64 bits.
+-   Cambie el motor de *Windows Script Host* de *Windows Script Host* de *Windows Script Host* a *Chakra* y ejecute *ECMAScript2015* *Chakra*
+-   Siempre ejecuta *cscript.exe* 32 bits, por lo que no hay errores inherentes en el entorno de 64 bits.
 -   Importar el módulo con `require`
 -   Envía caracteres de colores a la salida estándar
--   Adivina automáticamente la codificación del archivo
+-   Adivina y lee automáticamente la codificación del archivo de texto
 
 
 # Funciones no resueltas
 
 
 -   `WScript.Quit` no puede interrumpir el programa y no devuelve un código de error
--   Procesamiento asincrónico
--   No se puede utilizar el segundo *event prefix* de *event prefix* argumento de `WScript.CreateObject`
+-   El procesamiento asincrónico como `setTimeout` y `Promise` no es posible
+-   No se puede utilizar el *event prefix* de *event prefix* del segundo argumento de `WScript.CreateObject` .
 
 
 # Instalar en pc
@@ -53,7 +53,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 
 
 *wes* en el momento de la ejecución como la implementación que *WScript.Shell* de `SendKeys` . *wes.js* la ruta del directorio donde se guarda *wes.js* contiene caracteres que no sean *ascii* , `SendKeys` no podrá enviar la clave correctamente y el script no podrá ejecutarse.  
-Configure la ruta de destino para guardar de *wes.js* solo *ascii* .
+Configure la ruta para guardar *wes.js* solo *ascii* .
 
 
 ## Uso
@@ -84,7 +84,7 @@ Se aceptarán scripts hasta que ingrese dos líneas en blanco. *README.md* puede
 Las opciones de inicio para *wes* son las siguientes.
 
 
-| llamado            | descripción                                           |
+| nombrada           | descripción                                           |
 | ------------------ | ----------------------------------------------------- |
 | `--monotone`       | Elimina el *ANSI escape code*                         |
 | `--safe`           | Ejecute el script en modo seguro                      |
@@ -96,7 +96,7 @@ Las opciones de inicio para *wes* son las siguientes.
 | `--engine=Chakra`  | Esta opción es agregada automáticamente por *wes*     |
 
 
-La implementación de `--safe` `--usual` `--unsafe` `--dangerous` está incompleta, pero los argumentos con nombre están reservados.
+La implementación de `--safe` `--usual` `--unsafe` `--dangerous` `--debug` está incompleta, pero los argumentos con nombre están reservados.
 
 
 # objetos incorporados
@@ -111,7 +111,7 @@ La implementación de `--safe` `--usual` `--unsafe` `--dangerous` está incomple
 Importe el módulo con *require* . *wes* adivina automáticamente la codificación del archivo del módulo, pero si no adivina correctamente, puede especificar la codificación con el segundo argumento.
 
 
-También puede importar a *OLE* como `require('WScript.Shell')` con *require* .
+Además, `require('WScript.Shell')` partir de *OLE* incluso para *require* importación es posible con.
 
 
 ```javascript
@@ -201,7 +201,7 @@ console.log(brightRed + 'Error: ' + yellow + message)
 ```
 
 
-También puede crear sus propios colores con `ansi.color()` y `ansi.bgColor()` . El argumento usa *RGB* como `255, 165, 0` o *color code* como `'#FFA500'` . No puede utilizar *color name* como `orange` .
+También puede crear sus propios colores con `ansi.color()` y `ansi.bgColor()` . El argumento usa *RGB* como `255, 165, 0` o *color code* como `'#FFA500'` . No admite *color name* como `orange` .
 
 
 ```javascript
@@ -214,10 +214,10 @@ console.log(orange + 'Hello World')
 ## *argv*
 
 
-Obtiene el argumento de la línea de comandos. `cscript.exe` argumentos de línea de comandos de `/` declara argumentos con nombre en pero, *wes* en `-` y `--` declara los argumentos con nombre en.
+Obtiene el argumento de la línea de comando. `cscript.exe` argumentos de línea de comando de `/` declara argumentos con nombre en pero, *wes* en `-` y `--` declara los argumentos con nombre en.
 
 
-*argv.unnamed* y *argv.named* el tipo de valor del argumento de la línea de comando en uno de los *Boolean* *Number* *String* .
+*argv.unnamed* y *argv.named* emiten el tipo de valor del argumento de la línea de comando a uno de los *Number* *Boolean* *String* .
 
 
 Ingrese los argumentos de la línea de comando junto con el *REPL* .
@@ -396,7 +396,7 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 ## *bundle*
 
 
-*github* publicar un módulo en *github* , *bundle* el módulo requerido y lo cambia a un formato que pueda ser importado por el módulo de *install* .
+*github* publicar un módulo en *github* , *bundle* agrupa el módulo requerido y lo cambia a un formato que pueda ser importado por el módulo de *install* .
 
 
 Por razones de seguridad, *wes* no importa módulos en un formato que se pueda ejecutar directamente, así que cree un archivo *.json* con el módulo del *bundle* .
@@ -433,7 +433,7 @@ wes install @wachaon/fmt
 *install* tiene opciones
 
 
-| llamado    | nombre corto | descripción                                                 |
+| nombrada   | nombre corto | descripción                                                 |
 | ---------- | ------------ | ----------------------------------------------------------- |
 | `--bare`   | `-b`         | No cree la carpeta *@author*                                |
 | `--global` | `-g`         | Instale el módulo en la carpeta donde se encuentra *wes.js* |
@@ -512,7 +512,7 @@ wes @wachaon/fmt src/sample --write
 | 1                 | Requerido. La ruta del archivo que desea formatear |
 
 
-| llamado   | nombre corto | descripción           |
+| nombrada  | nombre corto | descripción           |
 | --------- | ------------ | --------------------- |
 | `--write` | `-w`         | Permitir sobrescribir |
 

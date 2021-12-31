@@ -4,7 +4,7 @@
 *wes* هو إطار عمل لتنفيذ *ECMAScript* على *Windows Script Host*
 
 
-النص الأصلي *README* هو [*japanese*](docs/README.ja.md) . بخلاف اليابانية ، إنها جملة مترجمة آليًا.  
+النص الأصلي *README* هو [*japanese*](/README.md) . بخلاف اليابانية ، إنها جملة مترجمة آليًا.  
 يرجى تحديد الجمل بلغات أخرى مما يلي.
 
 
@@ -26,19 +26,19 @@
 # سمات
 
 
--   *Chakra* محرك البرمجة النصية لـ *Windows Script Host* لتشغيل *ECMAScript2015* *Chakra*
--   منذ تنفيذ 32bit *cscript.exe* ، لا توجد مشكلة خاصة ببيئة 64 بت.
+-   قم بتغيير محرك البرنامج النصي لـ *Windows Script Host* إلى *Chakra* وقم بتشغيل *ECMAScript2015* *Chakra*
+-   يتم تشغيله دائمًا *cscript.exe* 32 بت ، لذلك لا توجد أخطاء متأصلة في بيئة 64 بت.
 -   استيراد وحدة مع `require`
 -   لإخراج الأحرف الملونة إلى الإخراج القياسي
--   تخمين ترميز الملف تلقائيًا
+-   قم بتخمين وقراءة تشفير الملف النصي تلقائيًا
 
 
 # الميزات لم تحل
 
 
--   لا يمكن لـ `WScript.Quit` مقاطعة البرنامج ولا يعرض رمز خطأ
--   المعالجة غير المتزامنة
--   لا يمكن استخدام *event prefix* الوسيطة الثانية لـ `WScript.CreateObject`
+-   لا يمكن لـ `WScript.Quit` مقاطعة البرنامج ولا يُرجع رمز خطأ
+-   المعالجة غير المتزامنة مثل `setTimeout` و `Promise` غير ممكنة
+-   لا يمكن استخدام *event prefix* للوسيطة الثانية لـ `WScript.CreateObject` .
 
 
 # تثبيت
@@ -53,7 +53,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 
 
 *wes* في وقت التنفيذ كما تنفيذ *WScript.Shell* من `SendKeys` استخدام. *wes.js* مسار الدليل الذي تم حفظ *wes.js* فيه يحتوي على أحرف غير *ascii* ، فلن تتمكن `SendKeys` من إرسال المفتاح بشكل صحيح ولن يتم تنفيذ البرنامج النصي.  
-يرجى تكوين مسار وجهة الحفظ لـ *wes.js* فقط *ascii* .
+يرجى تكوين مسار لتوفير *wes.js* الوحيد *ascii* .
 
 
 ## إستعمال
@@ -96,7 +96,7 @@ wes
 | `--engine=Chakra`  | يتم إضافة هذا الخيار تلقائيًا بواسطة *wes*         |
 
 
-تنفيذ - `--safe` `--usual` `--unsafe` `--dangerous` غير مكتمل ، لكن الحجج المسماة محفوظة.
+تنفيذ - `--safe` `--usual` `--unsafe` `--dangerous` `--debug` غير مكتمل ، لكن الحجج المسماة محفوظة.
 
 
 # كائنات مدمجة
@@ -201,7 +201,7 @@ console.log(brightRed + 'Error: ' + yellow + message)
 ```
 
 
-يمكنك أيضًا إنشاء الألوان الخاصة بك باستخدام `ansi.color()` و `ansi.bgColor()` . تستخدم الوسيطة *RGB* مثل `255, 165, 0` أو `255, 165, 0` أو *color code* مثل `'#FFA500'` . لا يمكنك استخدام *color name* مثل `orange` .
+يمكنك أيضًا إنشاء الألوان الخاصة بك باستخدام `ansi.color()` و `ansi.bgColor()` . تستخدم الوسيطة *RGB* مثل `255, 165, 0` أو `255, 165, 0` أو *color code* مثل `'#FFA500'` . لا يدعم *color name* مثل `orange` .
 
 
 ```javascript
@@ -520,7 +520,7 @@ wes @wachaon/fmt src/sample --write
 الكتابة فوق الملف باستخدام برنامج نصي منسق إذا قمت بتحديد وسيطة مسماة `--write` or `-w` .
 
 
-### *module* استخدامها كوحدة *module*
+### *module* استخدام كوحدة *module*
 
 
 ### `option`

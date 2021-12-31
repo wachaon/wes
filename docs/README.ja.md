@@ -362,7 +362,7 @@ wes install @wachaon/fmt
 wes install @wachaon/fmt --bare --unsafe
 ```
 
-# プライベートリポジトリのモジュールをインストール
+# Install the module of private repository
 
 *install* は *github* のパブリックリポジトリのモジュールだけでなく、プライベートリポジトリでもインストール可能です。
 

@@ -4,7 +4,7 @@
 *wes* è un framework per l'esecuzione di *ECMAScript* su *Windows Script Host*
 
 
-Il testo originale del *README* è [*japanese*](docs/README.ja.md) . Oltre al giapponese, è una frase tradotta automaticamente.  
+Il testo originale del *README* è [*japanese*](/README.md) . Oltre al giapponese, è una frase tradotta automaticamente.  
 Si prega di selezionare le frasi in altre lingue dalle seguenti.
 
 
@@ -26,25 +26,25 @@ Si prega di selezionare le frasi in altre lingue dalle seguenti.
 # Caratteristiche
 
 
--   *Chakra* il motore di scripting di *Windows Script Host* per eseguire *ECMAScript2015* *Chakra*
--   Poiché viene eseguito *cscript.exe* 32 bit, non ci sono problemi specifici per l'ambiente a 64 bit.
+-   Cambia il motore di script di *Windows Script Host* in *Chakra* ed esegui *ECMAScript2015* *Chakra*
+-   Esegue sempre *cscript.exe* 32 bit, quindi non ci sono bug intrinseci nell'ambiente a 64 bit.
 -   Importa il modulo con `require`
--   Emette caratteri colorati sull'output standard
--   Indovina automaticamente la codifica del file
+-   Emette i caratteri colorati sull'output standard
+-   Indovina e leggi automaticamente la codifica del file di testo
 
 
 # Funzionalità non risolte
 
 
 -   `WScript.Quit` non può interrompere il programma e non restituisce un codice di errore
--   Elaborazione asincrona
--   Il *event prefix* secondo argomento di `WScript.CreateObject` non può essere utilizzato
+-   L'elaborazione asincrona come `setTimeout` e `Promise` non è possibile
+-   Non è possibile utilizzare il *event prefix* del secondo argomento di `WScript.CreateObject` .
 
 
 # Installare
 
 
-*wes* bisogno del solo file *wes.js* Per scaricare, avvia un prompt dei comandi e inserisci il seguente comando.
+*wes* bisogno è solo il file *wes.js* Per scaricare, avvia un prompt dei comandi e inserisci il seguente comando.
 
 
 ```shell
@@ -52,8 +52,8 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*wes* al momento dell'esecuzione in quanto utilizza l'implementazione *WScript.Shell* di `SendKeys` . *wes.js* il percorso della directory in cui è salvato *wes.js* contiene caratteri diversi da *ascii* , `SendKeys` non sarà in grado di inviare correttamente la chiave e lo script non potrà essere eseguito.  
-Si prega di configurare il percorso di destinazione di *wes.js* di *wes.js* only *ascii* .
+*wes* al momento dell'esecuzione in quanto utilizza l'implementazione *WScript.Shell* di `SendKeys` . *wes.js* il percorso della directory in cui è salvato *wes.js* contiene caratteri diversi da *ascii* , `SendKeys` non sarà in grado di inviare la chiave correttamente e lo script non potrà essere eseguito.  
+Si prega di configurare il percorso per salvare *wes.js* solo *ascii* .
 
 
 ## utilizzo
@@ -96,7 +96,7 @@ Le opzioni di avvio per *wes* sono le seguenti.
 | `--engine=Chakra`  | Questa opzione viene aggiunta automaticamente da *wes*          |
 
 
-L'implementazione di `--safe` `--usual` `--unsafe` `--dangerous` è incompleta, ma gli argomenti con nome sono riservati.
+L'implementazione di `--safe` `--usual` `--unsafe` `--dangerous` `--debug` è incompleta, ma gli argomenti con nome sono riservati.
 
 
 # oggetti incorporati
@@ -111,7 +111,7 @@ L'implementazione di `--safe` `--usual` `--unsafe` `--dangerous` è incompleta, 
 Importa il modulo con *require* . *wes* indovina automaticamente la codifica del file del modulo, ma se non indovini correttamente, puoi specificare la codifica con il secondo argomento.
 
 
-Puoi anche importare in *OLE* come `require('WScript.Shell')` con *require* .
+Inoltre, `require('WScript.Shell')` partire da *OLE* anche per *require* importazione è possibile con.
 
 
 ```javascript
@@ -201,7 +201,7 @@ console.log(brightRed + 'Error: ' + yellow + message)
 ```
 
 
-Puoi anche creare i tuoi colori con `ansi.color()` e `ansi.bgColor()` . L'argomento utilizza *RGB* come `255, 165, 0` o *color code* come `'#FFA500'` . Non è possibile utilizzare *color name* come `orange` .
+Puoi anche creare i tuoi colori con `ansi.color()` e `ansi.bgColor()` . L'argomento utilizza *RGB* come `255, 165, 0` o *color code* come `'#FFA500'` . Non supporta *color name* come `orange` .
 
 
 ```javascript
@@ -430,7 +430,7 @@ wes install @wachaon/fmt
 ```
 
 
-*install* ha delle opzioni
+*install* ha opzioni
 
 
 | di nome    | nome breve | descrizione                                                      |
@@ -461,7 +461,7 @@ wes install @wachaon/fmt --bare --unsafe
 ```
 
 
-Quando si accede *raw* del repository privata con un browser, la *token* viene visualizzata, in modo da copiare la *token* e usarlo.
+Quando si accede al *raw* del repository privata con un browser, la *token* viene visualizzata, in modo da copiare la *token* e usarlo.
 
 
 È inoltre possibile installare un modulo in un repository privato eseguendolo sulla riga di comando durante la *token* del *token* .

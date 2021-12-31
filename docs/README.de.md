@@ -1,10 +1,10 @@
 # *WES*
 
 
-*wes* ist ein Framework zum Ausführen von *ECMAScript* auf *Windows Script Host*
+*wes* ist ein Framework zum Ausführen von *ECMAScript* auf dem *Windows Script Host*
 
 
-Der Originaltext der *README* ist [*japanese*](docs/README.ja.md) . Anders als Japanisch ist es ein maschinell übersetzter Satz.  
+Der Originaltext der *README* ist [*japanese*](/README.md) . Anders als Japanisch ist es ein maschinell übersetzter Satz.  
 Bitte wählen Sie aus den folgenden Sätzen in anderen Sprachen aus.
 
 
@@ -26,19 +26,19 @@ Bitte wählen Sie aus den folgenden Sätzen in anderen Sprachen aus.
 # Merkmale
 
 
--   *Chakra* die Skript-Engine von *Windows Script Host* zum Ausführen von *ECMAScript2015* *Chakra*
--   Da 32bit *cscript.exe* ausgeführt wird, gibt es kein spezifisches Problem für 64bit Umgebungen.
+-   Ändern Sie die Skript-Engine von *Windows Script Host* in *Chakra* und führen Sie *ECMAScript2015* *Chakra*
+-   Es führt immer 32- *cscript.exe* , daher gibt es keine inhärenten Fehler in einer 64-Bit-Umgebung.
 -   Importieren Sie das Modul mit `require`
 -   Gibt farbige Zeichen auf der Standardausgabe aus
--   Erraten Sie automatisch die Dateicodierung
+-   Erraten und lesen Sie automatisch die Kodierung der Textdatei
 
 
 # Funktionen nicht behoben
 
 
 -   `WScript.Quit` kann das Programm nicht unterbrechen und gibt keinen Fehlercode zurück
--   Asynchrone Verarbeitung
--   Das *event prefix* des zweiten Arguments von `WScript.CreateObject` kann nicht verwendet werden
+-   Eine asynchrone Verarbeitung wie `setTimeout` und `Promise` ist nicht möglich
+-   Das *event prefix* des zweiten Arguments von `WScript.CreateObject` kann nicht verwendet werden.
 
 
 # Installieren
@@ -53,10 +53,10 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 
 
 *wes* zum Zeitpunkt der Ausführung als Implementierung *WScript.Shell* von `SendKeys` verwenden. *wes.js* der Pfad des Verzeichnisses, in dem *wes.js* gespeichert ist, andere Zeichen als *ascii* , kann `SendKeys` den Schlüssel nicht korrekt senden und das Skript kann nicht ausgeführt werden.  
-Bitte konfigurieren Sie den Speicherzielpfad von *wes.js* nur *ascii* .
+Bitte konfigurieren Sie den Pfad, um *wes.js* nur *ascii* zu speichern.
 
 
-## Verwendungszweck
+## Verwendung
 
 
 Geben Sie in der Befehlszeile die Datei an, die nach `wes` der Startpunkt des Programms sein soll. Die *.js* kann weggelassen werden.
@@ -96,7 +96,7 @@ Die Startoptionen für *wes* sind wie folgt.
 | `--engine=Chakra`  | Diese Option wird von *wes* automatisch hinzugefügt    |
 
 
-Die Implementierung von `--safe` `--usual` `--unsafe` `--dangerous` ist unvollständig, aber benannte Argumente sind reserviert.
+Die Implementierung von `--safe` `--usual` `--unsafe` `--dangerous` `--debug` ist unvollständig, aber benannte Argumente sind reserviert.
 
 
 # eingebaute Objekte
@@ -111,7 +111,7 @@ Die Implementierung von `--safe` `--usual` `--unsafe` `--dangerous` ist unvollst
 Importieren Sie das Modul mit *require* . *wes* errät automatisch die Kodierung der Moduldatei, aber wenn Sie nicht richtig raten, können Sie die Kodierung mit dem zweiten Argument angeben.
 
 
-Sie können auch wie `require('WScript.Shell')` mit *require* in *OLE* importieren.
+Außerdem `require('WScript.Shell')` ab *OLE* sogar *require* Import *require* ist mit möglich.
 
 
 ```javascript
@@ -144,10 +144,10 @@ module.exports = add
 ## *console*
 
 
-*wes* `WScript.Echo` `WScript.StdErr.WriteLine` in `WScript.Echo` und `WScript.StdErr.WriteLine` anstelle der *console* die.
+*wes* In `WScript.Echo` und `WScript.StdErr.WriteLine` anstelle der *console* die.
 
 
-`console.log` Zeichen in der Befehlszeile in `console.log` . Es unterstützt auch formatierte Zeichenfolgen. Gibt eine formatierte Zeichenfolge mit dem Formatierungsoperator `%` .
+`console.log` Zeichen in die Befehlszeile in `console.log` . Es unterstützt auch formatierte Zeichenfolgen. Gibt eine formatierte Zeichenfolge mit dem Formatierungsoperator `%` .
 
 
 ```javascript
@@ -201,7 +201,7 @@ console.log(brightRed + 'Error: ' + yellow + message)
 ```
 
 
-Sie können mit `ansi.color()` und `ansi.bgColor()` auch eigene Farben `ansi.color()` . Das Argument verwendet *RGB* wie `255, 165, 0` oder *color code* wie `'#FFA500'` . Sie können keine *color name* wie `orange` .
+Sie können mit `ansi.color()` und `ansi.bgColor()` auch eigene Farben `ansi.color()` . Das Argument verwendet *RGB* wie `255, 165, 0` oder *color code* wie `'#FFA500'` . *color name* wie `orange` nicht unterstützt.
 
 
 ```javascript
@@ -314,7 +314,7 @@ console.log(TypeName(FSO))
 ## *httprequest*
 
 
-*httprequest* ist der Name, den *http request* *httprequest* .
+*httprequest* ist wie der Name, den *http request* *httprequest* a.
 
 
 ```javascript
@@ -390,7 +390,7 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 # Modul bündeln und installieren
 
 
-*install* können Sie das auf *github* veröffentlichte Modul für *wes* *github* . Sie benötigen ein *github repository* , um das Modul zu veröffentlichen. Außerdem müssen der Repository-Name und der lokale Verzeichnisname identisch sein.
+*install* können Sie das auf *github* veröffentlichte Modul für *wes* *github* . Sie benötigen ein *github repository* , um das Modul zu veröffentlichen. Außerdem müssen der Repository-Name und der lokale Verzeichnisname gleich sein.
 
 
 ## *bundle*
@@ -408,7 +408,7 @@ Es gibt einige Bedingungen für das Bündeln von Modulen.
 1.  In einem *repository* kann *repository* ein Modultyp veröffentlicht werden.
 2.  Der Name des Repositorys auf *github* und der Name des lokalen Arbeitsverzeichnisses müssen gleich sein.
 3.  Das Repository muss öffentlich sein, wenn Sie das Modul an Dritte veröffentlichen möchten.
-4.  *wes* interpretiert das Skript nicht statisch. Module, die von erworben wurden, `require` unter bestimmten Bedingungen, z. B. `if` Aussagen nicht gebündelt werden dürfen.
+4.  *wes* interpretiert das Skript nicht statisch. Module, die von erworben werden, `require` unter bestimmten Bedingungen, z. B. `if` Aussagen nicht gebündelt werden dürfen.
 5.  *.json* Datei wird in Ihrem Arbeitsverzeichnis mit dem Namen *directory_name.json* . Es kann nicht installiert werden, wenn die Datei umbenannt oder verschoben wird.
 6.  `node_modules/directory_name` schlägt das Bundle fehl, weil es auf `directory_name.json` verweist.
 
@@ -419,7 +419,7 @@ Es gibt einige Bedingungen für das Bündeln von Modulen.
 Wird verwendet, um die auf *github* veröffentlichte *github* für *wes* zu *github* .
 
 
-### Verwendungszweck
+### Verwendung
 
 
 Übergeben Sie die zu *install* Argumente im Format `@author/repository`
@@ -461,7 +461,7 @@ Geben Sie bei der *install* das Modul mit `author@repository` . Die Implementier
 ```
 
 
-Wenn Sie mit einem Browser auf das *raw* des privaten Repositorys zugreifen, wird das *token* angezeigt. Kopieren Sie also das *token* und verwenden Sie es.
+Wenn Sie mit einem Browser auf das *raw* des privaten Repositorys zugreifen, wird das *token* angezeigt, also kopieren Sie das *token* und verwenden Sie es.
 
 
 Sie können ein Modul auch in einem privaten Repository installieren, indem Sie es innerhalb der *token* des *token* auf der Befehlszeile *token* .
@@ -492,10 +492,10 @@ wes install @wachaon/fmt
 ```
 
 
-### Verwendungszweck
+### Verwendung
 
 
-Wenn im Arbeitsverzeichnis *.prettierrc* (JSON-Format) vorhanden ist, wird dies in der Einstellung widergespiegelt. *fmt* kann sowohl mit *CLI* (Befehlszeilenschnittstelle) als auch mit *module* in *fmt* .
+Wenn *.prettierrc* (JSON-Format) im Arbeitsverzeichnis vorhanden ist, wird dies in der Einstellung widergespiegelt. *fmt* kann sowohl mit *CLI* (Befehlszeilenschnittstelle) als auch mit *module* in *fmt* .
 
 
 Als *CLI*

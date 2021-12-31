@@ -4,7 +4,7 @@
 *wes*是一個在*Windows Script Host*上執行*ECMAScript*的框架
 
 
-*README*的原文是[*japanese*](docs/README.ja.md) 。除了日語，它是一個機器翻譯的句子。  
+*README*的原文是[*japanese*](/README.md) 。除了日語，它是一個機器翻譯的句子。  
 請從以下選擇其他語言的句子。
 
 
@@ -26,19 +26,19 @@
 # 特徵
 
 
--   *Chakra*是*Windows Script Host*的腳本引擎，用於運行*ECMAScript2015* *Chakra*
--   由於執行的是 32bit *cscript.exe* ，所以沒有特定於 64bit 環境的問題。
+-   將*Windows Script Host*的腳本引擎改為*Chakra*並運行*ECMAScript2015* *Chakra*
+-   它始終運行 32 位*cscript.exe* ，因此在 64 位環境中沒有固有的錯誤。
 -   使用`require`導入模塊
 -   將彩色字符輸出到標準輸出
--   自動猜測文件編碼
+-   自動猜測和讀取文本文件的編碼
 
 
 # 未解決的功能
 
 
 -   `WScript.Quit`不能中斷程序並且不返回錯誤代碼
--   異步處理
--   不能使用`WScript.CreateObject`的第二個參數*event prefix*
+-   無法進行`setTimeout`和`Promise`等異步處理
+-   不能使用`WScript.CreateObject`的第二個參數的*event prefix* 。
 
 
 # 安裝
@@ -53,13 +53,13 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 
 
 *wes*在執行時作為*WScript.Shell*的`SendKeys`執行使用。 *wes.js*保存的目錄路徑包含*ascii*以外的字符，則`SendKeys`將無法正確發送密鑰，腳本將無法執行。  
-請只配置*wes.js*的保存目標路徑*ascii* 。
+請配置路徑以將*wes.js*保存*wes.js*僅*ascii* 。
 
 
 ## 用法
 
 
-在命令行中，在`wes`之後指定將成為程序起點的文件。腳本擴展名*.js*可以省略。
+在命令行中，在`wes`之後指定將成為程序起點的文件。可以省略腳本擴展名*.js* 。
 
 
 ```shell
@@ -96,7 +96,7 @@ wes
 | `--engine=Chakra`  | 這個選項是由*wes*自動添加的     |
 
 
-`--safe` `--usual` `--unsafe` `--dangerous`的實現不完整，但保留了命名參數。
+`--safe` `--usual` `--unsafe` `--dangerous` `--debug`的實現不完整，但保留了命名參數。
 
 
 # 內置對象
@@ -111,7 +111,7 @@ wes
 使用*require*導入模塊。 *wes*自動猜測模塊文件的編碼，但如果你沒有猜對，你可以用第二個參數指定編碼。
 
 
-您還可以導入到*OLE*像`require('WScript.Shell')`與*require* 。
+此外， `require('WScript.Shell')`作為*OLE*甚至*require*導入是可能的。
 
 
 ```javascript
@@ -201,7 +201,7 @@ console.log(brightRed + 'Error: ' + yellow + message)
 ```
 
 
-您還可以使用`ansi.color()`和`ansi.bgColor()`創建自己的顏色。所述參數使用*RGB*如`255, 165, 0`或*color code*如`'#FFA500'`您不能使用諸如`orange` *color name* 。
+您還可以使用`ansi.color()`和`ansi.bgColor()`創建自己的顏色。所述參數使用*RGB*如`255, 165, 0`或*color code*如`'#FFA500'`它不支持諸如`orange` *color name* 。
 
 
 ```javascript
@@ -271,7 +271,7 @@ console.log(contents)
 ## *JScript*
 
 
-如果您將腳本引擎更改為*Chakra* ，您將無法使用*JScript*特定的*Enumerator*等。內置模塊*JScript*使它們可用。但是， *Enumerator*返回的是*Array*而不是 Enumerator 對象。
+如果您將腳本引擎更改為*Chakra* ，您將無法使用*JScript*特定的*Enumerator*等。內置模塊*JScript*使它們可用。但是， *Enumerator*返回一個*Array*而不是 Enumerator 對象。
 
 
 ```javascript

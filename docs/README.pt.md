@@ -4,7 +4,7 @@
 *wes* é uma estrutura para executar *ECMAScript* no *Windows Script Host*
 
 
-O texto original do *README* é o [*japanese*](docs/README.ja.md) . Além do japonês, é uma frase traduzida automaticamente.  
+O texto original do *README* é o [*japanese*](/README.md) . Além do japonês, é uma frase traduzida automaticamente.  
 Selecione frases em outros idiomas entre os seguintes.
 
 
@@ -26,19 +26,19 @@ Selecione frases em outros idiomas entre os seguintes.
 # Recursos
 
 
--   *Chakra* o mecanismo de *Windows Script Host* do *Windows Script Host* para executar o *ECMAScript2015* *Chakra*
--   Como o *cscript.exe* 32 bits é executado, não há nenhum problema específico para o ambiente de 64 bits.
+-   Altere o mecanismo de script do *Windows Script Host* para *Chakra* e execute *ECMAScript2015* *Chakra*
+-   Ele sempre executa o *cscript.exe* 32 bits, portanto, não há bugs inerentes ao ambiente de 64 bits.
 -   Importe o módulo com `require`
 -   Produz caracteres coloridos para a saída padrão
--   Adivinhe automaticamente a codificação do arquivo
+-   Adivinhe e leia automaticamente a codificação do arquivo de texto
 
 
 # Recursos não resolvidos
 
 
 -   `WScript.Quit` não pode interromper o programa e não retorna um código de erro
--   Processamento assíncrono
--   O segundo *event prefix* de *event prefix* argumento de `WScript.CreateObject` não pode ser usado
+-   O processamento assíncrono como `setTimeout` e `Promise` não é possível
+-   O *event prefix* do *event prefix* do segundo argumento de `WScript.CreateObject` não pode ser usado.
 
 
 # Instalar
@@ -53,7 +53,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 
 
 *wes* no momento da execução conforme a implementação *WScript.Shell* de `SendKeys` usa. *wes.js* o caminho do diretório onde *wes.js* foi salvo contiver caracteres diferentes de *ascii* , `SendKeys` não conseguirá enviar a chave corretamente e o script não poderá ser executado.  
-Configure o caminho de destino de *wes.js* de *wes.js* apenas *ascii* .
+Configure o caminho para salvar *wes.js* apenas *ascii* .
 
 
 ## Uso
@@ -96,7 +96,7 @@ As opções de inicialização do *wes* são as seguintes.
 | `--engine=Chakra`  | Esta opção é adicionada automaticamente pelo *wes*      |
 
 
-A implementação de `--safe` `--usual` `--unsafe` `--dangerous` está incompleta, mas os argumentos nomeados são reservados.
+A implementação de `--safe` `--usual` `--unsafe` `--dangerous` `--debug` está incompleta, mas os argumentos nomeados são reservados.
 
 
 # objetos embutidos
@@ -185,7 +185,7 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 # módulos embutidos
 
 
-*wes* tem *built-in modules* para simplificar e padronizar o processamento básico.
+*wes* possui *built-in modules* para simplificar e padronizar o processamento básico.
 
 
 ## *ansi*
@@ -201,7 +201,7 @@ console.log(brightRed + 'Error: ' + yellow + message)
 ```
 
 
-Você também pode criar suas próprias cores com `ansi.color()` e `ansi.bgColor()` . O argumento usa *RGB* como `255, 165, 0` ou *color code* como `'#FFA500'` . Você não pode usar *color name* como `orange` .
+Você também pode criar suas próprias cores com `ansi.color()` e `ansi.bgColor()` . O argumento usa *RGB* como `255, 165, 0` ou *color code* como `'#FFA500'` . Ele não oferece suporte *color name* como `orange` .
 
 
 ```javascript
@@ -506,10 +506,10 @@ wes @wachaon/fmt src/sample --write
 ```
 
 
-| número sem nome | Descrição                                                  |
-| --------------- | ---------------------------------------------------------- |
-| 0               | ――――                                                       |
-| 1               | Obrigatório. O caminho do arquivo que você deseja formatar |
+| número sem nome | Descrição                                                 |
+| --------------- | --------------------------------------------------------- |
+| 0               | ――――                                                      |
+| 1               | Requeridos. O caminho do arquivo que você deseja formatar |
 
 
 | nomeado   | nome curto | Descrição             |
