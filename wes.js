@@ -488,7 +488,7 @@ try {
                 path: '{wes}/VBScript'
             },
             version: {
-                source: "module.exports = console.log('0.8.96')",
+                source: "module.exports = console.log('0.8.97')",
                 mapping: {},
                 path: '{wes}/version'
             }
