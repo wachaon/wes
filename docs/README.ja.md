@@ -2,23 +2,23 @@
 
 *wes* は *Windows Script Host* で *ECMAScript* を実行するフレームワークです
 
-*README* の原文は [*japanese*](docs/README.ja.md) になります。日本語以外は機械翻訳の文章になります。  
+*README* の原文は [*japanese*](/README.md) になります。日本語以外は機械翻訳の文章になります。  
 他言語の文章は下記から選択してください。
 
 *import document*
 
 # Features
 
--   *Windows Script Host* のスクリプトエンジンを *Chakra* して *ECMAScript2015+* を実行します
--   32bit の *cscript.exe* を実行するので、64bit環境での固有の不具合は発生しません
+-   *Windows Script Host* のスクリプトエンジンを *Chakra* に変更し *ECMAScript2015+* を実行します
+-   常に 32bit の *cscript.exe* を実行するので、64bit環境での固有の不具合はありません
 -   `require` でモジュールをインポートします
 -   標準出力に色付き文字を出力します
--   ファイルのエンコードを自動で推測します
+-   テキストファイルのエンコードを自動で推測し読み込みます
 
 # Features not resolved
 
 -   `WScript.Quit` はプログラムを中断出来ず、エラーコードも返しません
--   非同期処理
+-   `setTimeout` や `Promise` など非同期処理は出来ません
 -   `WScript.CreateObject` の第二引数の *event prefix* の使用は出来ません
 
 # Install
@@ -69,7 +69,7 @@ wes
 | `--encoding=UTF-8` | 最初に読み込むファイルのエンコードを指定します    |
 | `--engine=Chakra`  | このオプションは *wes* によって自動で付加されます |
 
-`--safe` `--usual` `--unsafe` `--dangerous` の実装は不完全ですが、名前付き引数は予約されています。
+`--safe` `--usual` `--unsafe` `--dangerous` `--debug` の実装は不完全ですが、名前付き引数は予約されています。
 
 # built-in objects
 
@@ -155,7 +155,7 @@ console.log(brightRed + 'Error: ' + yellow + message)
 
 また、`ansi.color()` や `ansi.bgColor()` で独自の色の作成ができます。
 引数は `255, 165, 0` などの *RGB* や `'#FFA500'` などの *color code* を使用します。
-`orange` などの *color name* は使用できません。
+`orange` などの *color name* には対応していません。
 
 ```javascript
 const { color } = require('ansi')
@@ -190,6 +190,8 @@ argv, argv.unnamed, argv.named)
 ## *pathname*
 
 パスの操作をします。
+
+
 
 ```javascript
 const path = require('pathname')
