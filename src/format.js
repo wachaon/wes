@@ -5,13 +5,13 @@ const { brightBlue } = require('ansi')
 
 const UTF8 = 'UTF-8N'
 
-console.log('%OStart formatting', brightBlue)
+console.log('%SStart formatting', brightBlue)
 function formatter(dir) {
     readdirsSync(resolve(process.cwd(), dir), UTF8)
         .filter((spec) => spec.type === 'file' && spec.path.endsWith('.js'))
         .forEach((spec) => {
             const { path } = spec
-            console.log(writeFileSync(path, format(readFileSync(path, UTF8)), UTF8))
+            console.log('%O', writeFileSync(path, format(readFileSync(path, UTF8)), UTF8))
         })
 }
 
