@@ -1,4 +1,4 @@
-const { readdirSync, readdirsSync, readFileSync, writeFileSync } = require('filesystem')
+const { readdirsSync, readFileSync, writeFileSync } = require('filesystem')
 const { resolve } = require('pathname')
 const { format } = require('fmt')
 const { brightBlue } = require('ansi')
