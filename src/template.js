@@ -453,7 +453,6 @@ try {
         function createModule(GUID, entry, query, parentModule, encode) {
             var pathname = req('pathname')
             var dirname = pathname.dirname
-            var basename = pathname.basename
             var extname = pathname.extname
             var parse = JSON.parse
             var readTextFileSync = req('filesystem').readTextFileSync
