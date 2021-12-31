@@ -488,18 +488,13 @@ try {
                 path: '{wes}/VBScript'
             },
             version: {
-                source: "module.exports = console.log('0.8.95')",
+                source: "module.exports = console.log('0.8.96')",
                 mapping: {},
                 path: '{wes}/version'
             }
         }
 
         // util
-        function genGUID() {
-            var typelib = WScript.CreateObject('Scriptlet.Typelib')
-            return typelib.GUID.replace(/[^\}]+$/, '')
-        }
-
         function has(cls, prop) {
             if (cls == null) throw new Error(prop + ' is null')
             return cls.hasOwnProperty(prop)
@@ -603,7 +598,6 @@ try {
         function createModule(GUID, entry, query, parentModule, encode) {
             var pathname = req('pathname')
             var dirname = pathname.dirname
-            var basename = pathname.basename
             var extname = pathname.extname
             var parse = JSON.parse
             var readTextFileSync = req('filesystem').readTextFileSync
@@ -756,7 +750,7 @@ try {
                     'no module:\n' + 'caller: ' + caller + '\nquery: ' + query + '\n' + JSON.stringify(areas, null, 2)
                 )
 
-            var modId = genGUID()
+            var modId = req('genGUID')()
             if (wes.main == null) wes.main = modId
             var mod = createModule(modId, entry, query, parentModule, encode)
             mod.exports = mod.module.exports
