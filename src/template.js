@@ -362,10 +362,22 @@ try {
             return Modules[mod]
         }
 
+        function getField(json, path) {
+            var parts = path.split('/')
+            var part = null
+            var curr = json
+            while (parts.length) {
+                part = parts.shift()
+                if (part in curr) curr = curr[part]
+                else return undefined
+            }
+            return curr
+        }
+
         function getAreas(caller, _query) {
             var pathname = req('pathname')
             var CurrentDirectory = pathname.CurrentDirectory
-            var join = pathname.join
+            var resolve = pathname.resolve
             var dirname = pathname.dirname
             var rd = '/' // root directory
             var cd = './' // current directory
@@ -376,32 +388,32 @@ try {
 
             // Replace '/' with Current Directory if query starts with '/'
             if (starts(query, rd)) {
-                areas.push(join(CurrentDirectory, query.replace(rd, '')))
+                areas.push(resolve(CurrentDirectory, query.replace(rd, '')))
 
                 // combine the caller's path and the query, if relative path
             } else if (starts(query, cd) || starts(query, pd)) {
-                areas.push(join(dirname(caller), query))
+                areas.push(resolve(dirname(caller), query))
             } else {
-                areas.push(join(dirname(caller), query))
+                areas.push(resolve(dirname(caller), query))
 
                 // Otherwise, combine node_module while going back directory
                 var hierarchy = dirname(caller)
                 var node_modules = 'node_modules'
 
                 while (hierarchy !== '') {
-                    areas.push(join(hierarchy, node_modules, query))
+                    areas.push(resolve(hierarchy, node_modules, query))
                     var _hierarchy = dirname(hierarchy)
                     if (hierarchy === _hierarchy) break
                     hierarchy = _hierarchy
                 }
                 var ScriptFullName = WScript.ScriptFullName
-                areas.push(join(dirname(ScriptFullName), node_modules, query))
+                areas.push(resolve(dirname(ScriptFullName), node_modules, query))
             }
             return areas
         }
 
         function getEntry(areas) {
-            var join = req('pathname').join
+            var resolve = req('pathname').resolve
             var filesystem = req('filesystem')
             var exists = filesystem.exists
             var readTextFileSync = filesystem.readTextFileSync
@@ -428,18 +440,18 @@ try {
                     entry = temp
                     break
                 }
-                if (exists((temp = join(area, index)))) {
+                if (exists((temp = resolve(area, index)))) {
                     entry = temp
                     break
                 }
-                if (exists((temp = join(area, indexjson)))) {
+                if (exists((temp = resolve(area, indexjson)))) {
                     entry = temp
                     break
                 }
-                if (exists((temp = join(area, packagejson)))) {
-                    var main = parse(readTextFileSync(temp)).main
+                if (exists((temp = resolve(area, packagejson)))) {
+                    var main = getField(parse(readTextFileSync(temp)), 'main')
                     if (main == null) continue
-                    areas.unshift(join(area, main))
+                    areas.unshift(resolve(area, main))
                 }
             }
             return entry
