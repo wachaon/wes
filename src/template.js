@@ -665,9 +665,9 @@ try {
                     })[0]
                     source = wes.Modules[file].source
                 } else {
-                    var fs = require('*', 'filesystem')
+                    var fs = req('filesystem')
                     source = fs.readTextFileSync(current)
-                    console.log('\n' + ansi.yellow + current)
+                    console.log('\n%SWhere the error occurred: %S', ansi.yellow, current)
                 }
                 fmt.format(source)
             }
