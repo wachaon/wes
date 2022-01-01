@@ -1,7 +1,12 @@
 try {
+    var NONE = ''
+    var SPACE = ' '
+    var POSIXSEP = '/'
+    var WIN32SEP = '\\'
+
     var WShell = WScript.CreateObject('WScript.Shell')
     var wes = {
-        filestack: [WScript.ScriptFullName.split('\\').join('/')]
+        filestack: [WScript.ScriptFullName.split(WIN32SEP).join(POSIXSEP)]
     }
     var argv = (function () {
         var module = { exports: {} }
@@ -64,17 +69,17 @@ try {
                     var target = params.named[name]
                     if (name.length === 1) {
                         if (target === true) short.push(name)
-                        else res.push('-' + key + ' ' + inner(escape(String(target))))
+                        else res.push('-' + key + SPACE + inner(escape(String(target))))
                     } else {
                         if (target === true) res.push('--' + escape(name))
                         else res.push('--' + key + '=' + inner(escape(String(target))))
                     }
                 }
 
-                if (short.length) res.unshift('-' + short.join(''))
-                if (params.unnamed.length) res.unshift(params.unnamed.join(' '))
+                if (short.length) res.unshift('-' + short.join(NONE))
+                if (params.unnamed.length) res.unshift(params.unnamed.join(SPACE))
                 // console.log('-----------\n' + inspect(res))
-                return res.join(' ')
+                return res.join(SPACE)
             }
 
             // bind
@@ -103,7 +108,7 @@ try {
             }
 
             function setShortNamed(arg, name) {
-                var args = arg.substring(1).split('')
+                var args = arg.substring(1).split(NONE)
                 for (var j = 0; j < args.length; j++) {
                     if (name != null) named[name] = true
                     name = args[j]
@@ -244,8 +249,8 @@ try {
     var console = (function () {
         var module = { exports: {} }
         ;(function () {
-            var NONE = ''
-            var SPACE = ' '
+            var NONE = NONE
+            var SPACE = SPACE
             var rSPECIFIER = /(%[sdfoj])/i
             var rSEQ = /\u001B\[[\d;]+m/g
             var clear = '\u001B[0m'
@@ -328,7 +333,7 @@ try {
         var nologo = '//nologo'
         var engin = '--engine=Chakra'
         var chakra = '//E:{{}1b7cd997-e5ff-4932-a7a6-2a9e636da385{}}'
-        var monotone = argv.has('monotone') ? '' : '| echo off'
+        var monotone = argv.has('monotone') ? NONE : '| echo off'
         var enter = '{ENTER}'
 
         var parameters = []
@@ -337,7 +342,7 @@ try {
         }
 
         WShell.SendKeys(
-            [cpu, WScript.ScriptFullName, parameters.join(' '), nologo, chakra, engin, monotone, enter].join(' ')
+            [cpu, WScript.ScriptFullName, parameters.join(SPACE), nologo, chakra, engin, monotone, enter].join(SPACE)
         )
 
         WScript.Quit()
@@ -363,7 +368,7 @@ try {
         }
 
         function getField(json, path) {
-            var parts = path.split('/')
+            var parts = path.split(POSIXSEP)
             var part = null
             var curr = json
             while (parts.length) {
@@ -382,13 +387,13 @@ try {
             var rd = '/' // root directory
             var cd = './' // current directory
             var pd = '../' // parent directory
-            var query = _query.replace(/\\/g, '/')
+            var query = _query.replace(/\\/g, POSIXSEP)
 
             var areas = []
 
             // Replace '/' with Current Directory if query starts with '/'
             if (starts(query, rd)) {
-                areas.push(resolve(CurrentDirectory, query.replace(rd, '')))
+                areas.push(resolve(CurrentDirectory, query.replace(rd, NONE)))
 
                 // combine the caller's path and the query, if relative path
             } else if (starts(query, cd) || starts(query, pd)) {
@@ -400,7 +405,7 @@ try {
                 var hierarchy = dirname(caller)
                 var node_modules = 'node_modules'
 
-                while (hierarchy !== '') {
+                while (hierarchy !== NONE) {
                     areas.push(resolve(hierarchy, node_modules, query))
                     var _hierarchy = dirname(hierarchy)
                     if (hierarchy === _hierarchy) break
@@ -483,11 +488,11 @@ try {
             switch (extname(entry)) {
                 case js:
                     var name = entry
-                        .split('')
+                        .split(NONE)
                         .map(function (ch) {
                             return '$' + ch.codePointAt().toString(16).toUpperCase()
                         })
-                        .join('')
+                        .join(NONE)
                     wes.filestack.push(entry)
                     var code = new Function(
                         'require',
@@ -525,16 +530,15 @@ try {
 
         // local require
         var process = {
-            env: { NODE_ENV: '' },
+            env: { NODE_ENV: NONE },
             cwd: function () {
                 return req('pathname').CurrentDirectory
             },
             platform: 'win32'
         }
         function req(moduleID) {
-            var sep = '/'
             var mod = Modules[moduleID]
-            var entry = mod.path || sep
+            var entry = mod.path || POSIXSEP
             if (!has(mod, 'exports')) {
                 if (!has(mod, 'module')) {
                     mod.module = { exports: {} }
@@ -543,7 +547,7 @@ try {
                         mod.exports = mod.module.exports
                         return mod.exports
                     }
-                    var dirname = entry.split(sep).slice(0, -1).join(sep)
+                    var dirname = entry.split(POSIXSEP).slice(0, -1).join(POSIXSEP)
                     mod.mapping = mod.mapping || {}
                     new Function(
                         'require',
@@ -577,10 +581,8 @@ try {
 
         // require
         function require(caller, query, encode) {
-            var posixSep = req('pathname').posixSep
-
             // execute req function, if it is a core module
-            if (!query.includes(posixSep)) {
+            if (!query.includes(POSIXSEP)) {
                 if (has(Modules, query)) {
                     return req(query)
                 }
@@ -621,11 +623,13 @@ try {
         }
 
         wes.Modules = Modules
-        var path = req('pathname')
+        var pathname = req('pathname')
+        var resolve = pathname.resolve
+        var CurrentDirectory = pathname.CurrentDirectory
 
         var main = argv.unnamed[0] != null ? argv.unnamed[0] : 'REPL'
         if (main in wes.Modules) wes.main = main
-        require(path.join(path.CurrentDirectory, '_'), main, argv.get('encoding'))
+        require(resolve(CurrentDirectory, '_'), main, argv.get('encoding'))
     }
 } catch (error) {
     if (!!console) {
@@ -640,7 +644,7 @@ try {
         })
         var current = wes.filestack.slice(-1)
 
-        console.log(ansi.color(255, 165, 0) + errorStack.join('\r\n').split('Function code:').join(''))
+        console.log(ansi.color(255, 165, 0) + errorStack.join('\r\n').split('Function code:').join(NONE))
 
         if (error instanceof SyntaxError) {
             var fmt
