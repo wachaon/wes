@@ -486,7 +486,8 @@ try {
             var dirname = pathname.dirname
             var extname = pathname.extname
             var parse = JSON.parse
-            var readTextFileSync = req('filesystem').readTextFileSync
+            var filesystem = req('filesystem')
+            var readTextFileSync = filesystem.readTextFileSync
 
             if (parentModule) parentModule.mapping[query] = GUID
 
@@ -689,8 +690,9 @@ try {
                     })[0]
                     source = wes.Modules[file].source
                 } else {
-                    var fs = req('filesystem')
-                    source = fs.readTextFileSync(current)
+                    var filesystem = req('filesystem')
+                    var readTextFileSync = filesystem.readTextFileSync
+                    source = readTextFileSync(current)
                     console.log('\n%SWhere the error occurred: %S', ansi.yellow, current)
                 }
                 fmt.format(source)
