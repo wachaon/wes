@@ -28,12 +28,12 @@ Si prega di selezionare le frasi in altre lingue dalle seguenti.
 
 -   Cambia il motore di script di *Windows Script Host* in *Chakra* ed esegui *ECMAScript2015* *Chakra*
 -   Esegue sempre *cscript.exe* 32 bit, quindi non ci sono bug intrinseci nell'ambiente a 64 bit.
--   Importa il modulo con `require`
+-   Importa il modulo con `require` (corrispondente al *es module* dalla *ver 0.9.0* )
 -   Emette i caratteri colorati sull'output standard
 -   Indovina e leggi automaticamente la codifica del file di testo
 
 
-# Funzionalità non risolte
+# Problemi noti che non possiamo risolvere
 
 
 -   `WScript.Quit` non può interrompere il programma e non restituisce un codice di errore
@@ -53,7 +53,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 
 
 *wes* al momento dell'esecuzione in quanto utilizza l'implementazione *WScript.Shell* di `SendKeys` . *wes.js* il percorso della directory in cui è salvato *wes.js* contiene caratteri diversi da *ascii* , `SendKeys` non sarà in grado di inviare la chiave correttamente e lo script non potrà essere eseguito.  
-Si prega di configurare il percorso per salvare *wes.js* solo *ascii* .
+Si prega di configurare il percorso di destinazione di *wes.js* di *wes.js* only *ascii* .
 
 
 ## utilizzo
@@ -246,6 +246,9 @@ argv, argv.unnamed, argv.named)
 Opera il percorso.
 
 
+In genere, i percorsi che iniziano con `/` e `\` riferiscono a percorsi relativi dalla radice dell'unità (ad esempio, `/filename` può essere lo stesso percorso di `C:/filename` ), ma per sicurezza in `wes` `/` e i percorsi che iniziano con `\` sono interpretati come relativi a la directory di lavoro.
+
+
 ```javascript
 const path = require('pathname')
 const file = path.resolve(__dirname, 'index.js')
@@ -266,6 +269,15 @@ const readme = path.resolve(__dirname, 'README.md')
 const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
+
+
+## *chardet*
+
+
+Sto usando alcune funzionalità di <https://github.com/runk/node-chardet> .
+
+
+È possibile migliorare la precisione dell'ipotesi automatica aumentando i caratteri specifici della codifica.
 
 
 ## *JScript*
@@ -408,7 +420,7 @@ Ci sono alcune condizioni per il raggruppamento dei moduli.
 1.  *repository* tipo di modulo può essere pubblicato in un *repository* .
 2.  Il nome del repository su *github* e il nome della directory di lavoro locale devono essere gli stessi.
 3.  Il repository deve essere pubblico se si desidera pubblicare il modulo su una terza parte.
-4.  *wes* non interpreta staticamente lo script. I moduli acquisiti da `require` in condizioni specifiche, ad esempio `if` istruzioni non possono essere raggruppate.
+4.  *wes* interpreta dinamicamente il percorso del modulo. I moduli acquisiti da `require` in condizioni specifiche, ad esempio `if` istruzioni non possono essere raggruppate.
 5.  *.json* file *.json* verrà creato nella directory di lavoro con il nome *directory_name.json* . Non può essere installato se il file viene rinominato o se il file viene spostato.
 6.  `node_modules/directory_name` , il bundle non riesce perché fa riferimento a `directory_name.json` .
 
@@ -461,7 +473,7 @@ wes install @wachaon/fmt --bare --unsafe
 ```
 
 
-Quando si accede al *raw* del repository privata con un browser, la *token* viene visualizzata, in modo da copiare la *token* e usarlo.
+Quando si accede *raw* del repository privata con un browser, la *token* viene visualizzata, in modo da copiare la *token* e usarlo.
 
 
 È inoltre possibile installare un modulo in un repository privato eseguendolo sulla riga di comando durante la *token* del *token* .
@@ -481,7 +493,7 @@ Ecco alcuni moduli esterni.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* raggruppa in modo *prettier* *@wachaon/fmt* e formatta lo script. Inoltre, se *@wachaon/fmt* è installato e si verifica un errore di `SyntaxError` , è possibile indicare la posizione dell'errore.
+*@wachaon/fmt* raggruppa in modo *prettier* *@wachaon/fmt* e formatta lo script. Inoltre, se si verifica un errore di `SyntaxError` con *@wachaon/fmt* installato, è possibile indicare la posizione dell'errore.
 
 
 ### installare
@@ -520,7 +532,7 @@ wes @wachaon/fmt src/sample --write
 Sovrascrivi il file con uno script formattato se specifichi un argomento denominato `--write` o `-w` .
 
 
-### *module* utilizza come *module*
+### Quando usato come *module*
 
 
 ### `option`

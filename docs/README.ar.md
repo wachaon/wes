@@ -28,12 +28,12 @@
 
 -   قم بتغيير محرك البرنامج النصي لـ *Windows Script Host* إلى *Chakra* وقم بتشغيل *ECMAScript2015* *Chakra*
 -   يتم تشغيله دائمًا *cscript.exe* 32 بت ، لذلك لا توجد أخطاء متأصلة في بيئة 64 بت.
--   استيراد وحدة مع `require`
+-   استيراد الوحدة مع `require` (المطابق *es module* من *ver 0.9.0* )
 -   لإخراج الأحرف الملونة إلى الإخراج القياسي
 -   قم بتخمين وقراءة تشفير الملف النصي تلقائيًا
 
 
-# الميزات لم تحل
+# المشكلات المعروفة لا يمكن حلها
 
 
 -   لا يمكن لـ `WScript.Quit` مقاطعة البرنامج ولا يُرجع رمز خطأ
@@ -246,6 +246,9 @@ argv, argv.unnamed, argv.named)
 تشغيل المسار.
 
 
+بشكل عام ، المسارات التي تبدأ بـ `/` و `\` تشير إلى المسارات النسبية من جذر محرك الأقراص (على سبيل المثال ، يمكن أن يكون `/filename` هو نفس المسار مثل `C:/filename` ) ، ولكن للأمان في `wes` `/` والمسارات التي تبدأ بـ `\` يتم تفسيرها على أنها مرتبطة بـ دليل العمل.
+
+
 ```javascript
 const path = require('pathname')
 const file = path.resolve(__dirname, 'index.js')
@@ -266,6 +269,15 @@ const readme = path.resolve(__dirname, 'README.md')
 const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
+
+
+## *chardet*
+
+
+أنا أستخدم بعض ميزات <https://github.com/runk/node-chardet> .
+
+
+يمكنك تحسين دقة التخمين التلقائي عن طريق زيادة الأحرف الخاصة بالتشفير.
 
 
 ## *JScript*
@@ -408,7 +420,7 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 1.  يمكن نشر نوع واحد *repository* من الوحدات في *repository* واحد.
 2.  يجب أن يكون اسم المستودع على *github* واسم دليل العمل المحلي *github* .
 3.  يجب أن يكون المستودع عامًا إذا كنت تريد نشر الوحدة إلى جهة خارجية.
-4.  *wes* لا يفسر بشكل ثابت النصي. `require` الوحدات النمطية التي تم الحصول عليها بموجب شروط محددة مثل ما `if` العبارات لا يمكن تجميعها.
+4.  يفسر *wes* مسار الوحدة بشكل ديناميكي. `require` الوحدات النمطية التي تم الحصول عليها بموجب شروط محددة مثل ما `if` العبارات لا يمكن تجميعها.
 5.  سيتم إنشاء ملف *.json* في دليل العمل الخاص بك بالاسم *directory_name.json* . لا يمكن تثبيته في حالة إعادة تسمية الملف أو نقل الملف.
 6.  `node_modules/directory_name` ، تفشل الحزمة لأنها تشير إلى `directory_name.json` .
 
@@ -481,7 +493,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ## *@wachaon/fmt*
 
 
-حزم *@wachaon/fmt* *prettier* *@wachaon/fmt* البرنامج النصي. أيضا، إذا *@wachaon/fmt* تثبيت و `SyntaxError` يحدث خطأ، وموقع الخطأ يمكن الإشارة.
+حزم *@wachaon/fmt* *prettier* *@wachaon/fmt* البرنامج النصي. أيضًا ، في حالة حدوث خطأ في `SyntaxError` مع تثبيت *@wachaon/fmt* ، يمكنك الإشارة إلى موقع الخطأ.
 
 
 ### تثبيت
@@ -520,7 +532,7 @@ wes @wachaon/fmt src/sample --write
 الكتابة فوق الملف باستخدام برنامج نصي منسق إذا قمت بتحديد وسيطة مسماة `--write` or `-w` .
 
 
-### *module* استخدام كوحدة *module*
+### عند استخدامها كوحدة *module*
 
 
 ### `option`

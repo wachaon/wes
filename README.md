@@ -23,11 +23,11 @@
 
 -   *Windows Script Host* のスクリプトエンジンを *Chakra* に変更し *ECMAScript2015+* を実行します
 -   常に 32bit の *cscript.exe* を実行するので、64bit環境での固有の不具合はありません
--   `require` でモジュールをインポートします
+-   `require` でモジュールをインポートします (*ver 0.9.0* から *es module* に対応しました)
 -   標準出力に色付き文字を出力します
 -   テキストファイルのエンコードを自動で推測し読み込みます
 
-# Features not resolved
+# Known issues wes can't solve
 
 -   `WScript.Quit` はプログラムを中断出来ず、エラーコードも返しません
 -   `setTimeout` や `Promise` など非同期処理は出来ません
@@ -203,7 +203,7 @@ argv, argv.unnamed, argv.named)
 
 パスの操作をします。
 
-
+一般的には `/` および `\` から開始されるパスはドライブルートからの相対パスを指しますが、(例えば `/filename` は `C:/filename` と同じパスになる場合があります) `wes` ではセキュリティーの観点から `/` および `\` から開始されるパスはワーキングディレクトリからの相対パスと解釈されます。 
 
 ```javascript
 const path = require('pathname')
@@ -216,6 +216,7 @@ console.log('file %O', file)
 ファイルの操作やディレクトリの操作をします。
 `readTextFileSync` はファイルのエンコードを自動推測して読み込みます。
 
+
 ```javascript
 const fs = require('filesystem')
 const path = require('pathname')
@@ -223,6 +224,12 @@ const readme = path.resolve(__dirname, 'README.md')
 const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
+
+## *chardet*
+
+https://github.com/runk/node-chardet の一部の機能を使用しています。
+
+エンコード固有の文字を増やすことで自動推測の精度を上げれます。
 
 ## *JScript*
 
@@ -342,7 +349,7 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 1.  一つの *repository* で公開できるモジュールは一種類になります。
 2.  *github* のリポジトリ名とローカルのワーキングディレクトリ名は同名である必要があります。
 3.  第三者にモジュールを公開する場合にはリポジトリはパブリックである必要があります。
-4.  *wes* はスクリプトの静的解釈はしません。`if` ステートメントなど特定条件時に `require` で取得したモジュールはバンドルされない可能性があります。
+4.  *wes* はモジュールのパスを動的に解釈します。`if` ステートメントなど特定条件時に `require` で取得したモジュールはバンドルされない可能性があります。
 5.  *.json* ファイルはワーキングディレクトリに *directory_name.json* という名前で作成されます。ファイル名の変更やファイルを移動するとインストールできません。
 6.  `node_modules/directory_name` をバンドルする場合 `directory_name.json` を参照するのでバンドルが失敗します。
 
@@ -374,7 +381,7 @@ wes install @wachaon/fmt
 wes install @wachaon/fmt --bare --unsafe
 ```
 
-# プライベートリポジトリのモジュールをインストール
+# Install the module of private repository
 
 *install* は *github* のパブリックリポジトリのモジュールだけでなく、プライベートリポジトリでもインストール可能です。
 
@@ -432,7 +439,7 @@ wes @wachaon/fmt src/sample --write
 
  `--write` もしくは `-w` の名前付き引数の指定があればフォーマットしたスクリプトでファイルを上書きします。
 
-### *module* として使う場合
+### When used as *module*
 
 ### `option`
 

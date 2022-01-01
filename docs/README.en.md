@@ -28,12 +28,12 @@ Please select sentences in other languages ​​from the following.
 
 -   Change the script engine of *Windows Script Host* to *Chakra* and run *ECMAScript2015* *Chakra*
 -   It always runs 32bit *cscript.exe* , so there are no inherent bugs in 64bit environment.
--   Import the module with `require`
+-   Import the module with `require` (corresponding to *es module* from *ver 0.9.0* )
 -   Outputs colored characters to standard output
 -   Automatically guess and read the encoding of the text file
 
 
-# Features not resolved
+# Known issues wes can't solve
 
 
 -   `WScript.Quit` cannot interrupt the program and does not return an error code
@@ -53,7 +53,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 
 
 *wes* at the time of execution as the implementation *WScript.Shell* of `SendKeys` use. *wes.js* the path of the directory where *wes.js* is saved contains characters other than *ascii* , `SendKeys` will not be able to send the key correctly and the script will not be able to be executed.  
-Please configure the path to save *wes.js* only *ascii* .
+Please configure the save destination path of *wes.js* only *ascii* .
 
 
 ## Usage
@@ -246,6 +246,9 @@ argv, argv.unnamed, argv.named)
 Operate the path.
 
 
+Generally, paths starting with `/` and `\` refer to relative paths from the drive root (for example, `/filename` can be the same path as `C:/filename` ), but for security in `wes` `/` and Paths starting with `\` are interpreted as relative to the working directory.
+
+
 ```javascript
 const path = require('pathname')
 const file = path.resolve(__dirname, 'index.js')
@@ -266,6 +269,15 @@ const readme = path.resolve(__dirname, 'README.md')
 const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
+
+
+## *chardet*
+
+
+I am using some features of <https://github.com/runk/node-chardet> .
+
+
+You can improve the accuracy of automatic guessing by increasing the characters specific to the encoding.
 
 
 ## *JScript*
@@ -408,7 +420,7 @@ There are some conditions for bundling modules.
 1.  *repository* one type of module can be published in one *repository* .
 2.  The repository name on *github* and the local working directory name must be the same.
 3.  The repository must be public if you want to publish the module to a third party.
-4.  *wes* does not statically interpret the script. Modules acquired by `require` under specific conditions such as `if` statements may not be bundled.
+4.  *wes* dynamically interprets the module path. Modules acquired by `require` under specific conditions such as `if` statements may not be bundled.
 5.  *.json* file will be created in your working directory with the name *directory_name.json* . It cannot be installed if the file is renamed or the file is moved.
 6.  `node_modules/directory_name` , the bundle fails because it refers to `directory_name.json` .
 
@@ -520,7 +532,7 @@ wes @wachaon/fmt src/sample --write
 Overwrite the file with a formatted script if you specify a named argument of `--write` or `-w` .
 
 
-### *module* using as a *module*
+### When used as *module*
 
 
 ### `option`

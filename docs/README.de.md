@@ -28,12 +28,12 @@ Bitte wählen Sie aus den folgenden Sätzen in anderen Sprachen aus.
 
 -   Ändern Sie die Skript-Engine von *Windows Script Host* in *Chakra* und führen Sie *ECMAScript2015* *Chakra*
 -   Es führt immer 32- *cscript.exe* , daher gibt es keine inhärenten Fehler in einer 64-Bit-Umgebung.
--   Importieren Sie das Modul mit `require`
+-   Importieren Sie das Modul mit `require` (entspricht *es module* ab *ver 0.9.0* )
 -   Gibt farbige Zeichen auf der Standardausgabe aus
 -   Erraten und lesen Sie automatisch die Kodierung der Textdatei
 
 
-# Funktionen nicht behoben
+# Bekannte Probleme, die wir nicht lösen können
 
 
 -   `WScript.Quit` kann das Programm nicht unterbrechen und gibt keinen Fehlercode zurück
@@ -246,6 +246,9 @@ argv, argv.unnamed, argv.named)
 Bedienen Sie den Pfad.
 
 
+Im Allgemeinen beziehen sich Pfade, die mit `/` und `\` auf relative Pfade vom Stammverzeichnis des Laufwerks (z. B. kann `/filename` derselbe Pfad sein wie `C:/filename` ), aber aus Sicherheitsgründen werden in `wes` `/` und Pfade, die mit `\` beginnen, als relativ zu . interpretiert das Arbeitsverzeichnis.
+
+
 ```javascript
 const path = require('pathname')
 const file = path.resolve(__dirname, 'index.js')
@@ -266,6 +269,15 @@ const readme = path.resolve(__dirname, 'README.md')
 const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
+
+
+## *chardet*
+
+
+Ich verwende einige Funktionen von <https://github.com/runk/node-chardet> .
+
+
+Sie können die Genauigkeit des automatischen Erratens verbessern, indem Sie die für die Kodierung spezifischen Zeichen erhöhen.
 
 
 ## *JScript*
@@ -408,7 +420,7 @@ Es gibt einige Bedingungen für das Bündeln von Modulen.
 1.  In einem *repository* kann *repository* ein Modultyp veröffentlicht werden.
 2.  Der Name des Repositorys auf *github* und der Name des lokalen Arbeitsverzeichnisses müssen gleich sein.
 3.  Das Repository muss öffentlich sein, wenn Sie das Modul an Dritte veröffentlichen möchten.
-4.  *wes* interpretiert das Skript nicht statisch. Module, die von erworben werden, `require` unter bestimmten Bedingungen, z. B. `if` Aussagen nicht gebündelt werden dürfen.
+4.  *wes* interpretiert den *wes* dynamisch. Module, die von erworben werden, `require` unter bestimmten Bedingungen, z. B. `if` Aussagen nicht gebündelt werden dürfen.
 5.  *.json* Datei wird in Ihrem Arbeitsverzeichnis mit dem Namen *directory_name.json* . Es kann nicht installiert werden, wenn die Datei umbenannt oder verschoben wird.
 6.  `node_modules/directory_name` schlägt das Bundle fehl, weil es auf `directory_name.json` verweist.
 
@@ -520,7 +532,7 @@ wes @wachaon/fmt src/sample --write
 Überschreiben Sie die Datei mit einem formatierten Skript, wenn Sie ein benanntes Argument von `--write` oder `-w` angeben.
 
 
-### *module* Verwendung als *module*
+### Bei Verwendung als *module*
 
 
 ### `option`

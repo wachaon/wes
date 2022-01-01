@@ -28,12 +28,12 @@
 
 -   将*Windows Script Host*的脚本引擎改为*Chakra*并运行*ECMAScript2015* *Chakra*
 -   它始终运行 32 位*cscript.exe* ，因此在 64 位环境中没有固有的错误。
--   使用`require`导入模块
+-   使用`require`导入模块（对应*ver 0.9.0* *es module* ）
 -   将彩色字符输出到标准输出
 -   自动猜测和读取文本文件的编码
 
 
-# 未解决的功能
+# 我们无法解决的已知问题
 
 
 -   `WScript.Quit`不能中断程序并且不返回错误代码
@@ -246,6 +246,9 @@ argv, argv.unnamed, argv.named)
 操作路径。
 
 
+通常，路径开始与`/`和`\`指相对路径从驱动器根目录（例如， `/filename`可以是相同的路径`C:/filename` ），但在安全性`wes` `/`和路径与起始`\`被解释为相对于工作目录。
+
+
 ```javascript
 const path = require('pathname')
 const file = path.resolve(__dirname, 'index.js')
@@ -266,6 +269,15 @@ const readme = path.resolve(__dirname, 'README.md')
 const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
+
+
+## *chardet*
+
+
+我正在使用[https://github.com/runk/node-chardet 的](https://github.com/runk/node-chardet)一些功能。
+
+
+您可以通过增加特定于编码的字符来提高自动猜测的准确性。
 
 
 ## *JScript*
@@ -408,7 +420,7 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 1.  在一个*repository*只能发布一种类型的模块。
 2.  *github*上的仓库名称和本地工作目录名称必须相同。
 3.  如果要将模块发布给第三方，存储库必须是公开的。
-4.  *wes*不会静态地解释脚本。 `require`在特定条件下获取的模块，例如`if`语句可能不捆绑。
+4.  *wes*动态解释模块路径。 `require`在特定条件下获取的模块，例如`if`语句可能不捆绑。
 5.  *.json*文件将在您的工作目录中创建，名称为*directory_name.json* 。如果文件被重命名或文件被移动，则无法安装。
 6.  `node_modules/directory_name` ，捆绑失败，因为它引用`directory_name.json` 。
 
@@ -517,7 +529,7 @@ wes @wachaon/fmt src/sample --write
 | `--write` | `-w` | 允许覆盖 |
 
 
-如果指定`--write`或`-w`的命名参数，则使用格式化脚本覆盖文件。
+如果您指定`--write`或`-w`的命名参数，则使用格式化脚本覆盖文件。
 
 
 ### 作为*module*

@@ -28,12 +28,12 @@
 
 -   將*Windows Script Host*的腳本引擎改為*Chakra*並運行*ECMAScript2015* *Chakra*
 -   它始終運行 32 位*cscript.exe* ，因此在 64 位環境中沒有固有的錯誤。
--   使用`require`導入模塊
+-   使用`require`導入模塊（對應*ver 0.9.0* *es module* ）
 -   將彩色字符輸出到標準輸出
 -   自動猜測和讀取文本文件的編碼
 
 
-# 未解決的功能
+# 我們無法解決的已知問題
 
 
 -   `WScript.Quit`不能中斷程序並且不返回錯誤代碼
@@ -246,6 +246,9 @@ argv, argv.unnamed, argv.named)
 操作路徑。
 
 
+通常，路徑開始與`/`和`\`指相對路徑從驅動器根目錄（例如， `/filename`可以是相同的路徑`C:/filename` ），但在安全性`wes` `/`和路徑與起始`\`被解釋為相對於工作目錄。
+
+
 ```javascript
 const path = require('pathname')
 const file = path.resolve(__dirname, 'index.js')
@@ -268,10 +271,19 @@ console.log(contents)
 ```
 
 
+## *chardet*
+
+
+我正在使用[https://github.com/runk/node-chardet 的](https://github.com/runk/node-chardet)一些功能。
+
+
+您可以通過增加特定於編碼的字符來提高自動猜測的準確性。
+
+
 ## *JScript*
 
 
-如果您將腳本引擎更改為*Chakra* ，您將無法使用*JScript*特定的*Enumerator*等。內置模塊*JScript*使它們可用。但是， *Enumerator*返回一個*Array*而不是 Enumerator 對象。
+如果您將腳本引擎更改為*Chakra* ，您將無法使用*JScript*特定的*Enumerator*等。內置模塊*JScript*使它們可用。但是， *Enumerator*返回的是*Array*而不是 Enumerator 對象。
 
 
 ```javascript
@@ -408,7 +420,7 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 1.  在一個*repository*只能發布一種類型的模塊。
 2.  *github*上的倉庫名稱和​​本地工作目錄名稱必須相同。
 3.  如果要將模塊發布給第三方，存儲庫必須是公開的。
-4.  *wes*不會靜態地解釋腳本。 `require`在特定條件下獲取的模塊，例如`if`語句可能不捆綁。
+4.  *wes*動態解釋模塊路徑。 `require`在特定條件下獲取的模塊，例如`if`語句可能不捆綁。
 5.  *.json*文件將在您的工作目錄中創建，名稱為*directory_name.json* 。如果文件被重命名或文件被移動，則無法安裝。
 6.  `node_modules/directory_name` ，捆綁失敗，因為它引用`directory_name.json` 。
 

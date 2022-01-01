@@ -28,12 +28,12 @@ Seleccione oraciones en otros idiomas de los siguientes.
 
 -   Cambie el motor de *Windows Script Host* de *Windows Script Host* de *Windows Script Host* a *Chakra* y ejecute *ECMAScript2015* *Chakra*
 -   Siempre ejecuta *cscript.exe* 32 bits, por lo que no hay errores inherentes en el entorno de 64 bits.
--   Importar el módulo con `require`
+-   Importe el módulo con `require` (correspondiente al *es module* de la *ver 0.9.0* )
 -   Envía caracteres de colores a la salida estándar
 -   Adivina y lee automáticamente la codificación del archivo de texto
 
 
-# Funciones no resueltas
+# Problemas conocidos que no podemos resolver
 
 
 -   `WScript.Quit` no puede interrumpir el programa y no devuelve un código de error
@@ -217,7 +217,7 @@ console.log(orange + 'Hello World')
 Obtiene el argumento de la línea de comando. `cscript.exe` argumentos de línea de comando de `/` declara argumentos con nombre en pero, *wes* en `-` y `--` declara los argumentos con nombre en.
 
 
-*argv.unnamed* y *argv.named* emiten el tipo de valor del argumento de la línea de comando a uno de los *Number* *Boolean* *String* .
+*argv.unnamed* y *argv.named* el tipo de valor del argumento de la línea de comando en uno de los *Boolean* *Number* *String* .
 
 
 Ingrese los argumentos de la línea de comando junto con el *REPL* .
@@ -246,6 +246,9 @@ argv, argv.unnamed, argv.named)
 Opere el camino.
 
 
+Generalmente, las rutas que comienzan con `/` y `\` refieren a rutas relativas desde la raíz de la unidad (por ejemplo, `/filename` puede ser la misma ruta que `C:/filename` ), pero por seguridad en `wes` `/` y las rutas que comienzan con `\` se interpretan como relativas a el directorio de trabajo.
+
+
 ```javascript
 const path = require('pathname')
 const file = path.resolve(__dirname, 'index.js')
@@ -266,6 +269,15 @@ const readme = path.resolve(__dirname, 'README.md')
 const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
+
+
+## *chardet*
+
+
+Estoy usando algunas funciones de <https://github.com/runk/node-chardet> .
+
+
+Puede mejorar la precisión de la adivinación automática aumentando los caracteres específicos de la codificación.
 
 
 ## *JScript*
@@ -408,7 +420,7 @@ Existen algunas condiciones para agrupar módulos.
 1.  *repository* se puede publicar un tipo de módulo en un *repository* .
 2.  El nombre del repositorio en *github* y el nombre del directorio de trabajo local deben ser el mismo.
 3.  El repositorio debe ser público si desea publicar el módulo para un tercero.
-4.  *wes* no interpreta estáticamente el guión. Los módulos adquiridos por `require` en condiciones específicas como, por ejemplo, `if` declaraciones no se pueden agrupar.
+4.  *wes* interpreta dinámicamente la ruta del módulo. Los módulos adquiridos por `require` en condiciones específicas como, por ejemplo, `if` declaraciones no se pueden agrupar.
 5.  *.json* archivo será creado en el directorio de trabajo con el nombre *directory_name.json* . No se puede instalar si se cambia el nombre del archivo o si se mueve.
 6.  `node_modules/directory_name` , el paquete falla porque hace referencia a `directory_name.json` .
 
@@ -416,7 +428,7 @@ Existen algunas condiciones para agrupar módulos.
 ## *install*
 
 
-Se utiliza para instalar el archivo de módulo para *wes* publicado en *github* .
+Se utiliza para instalar el archivo del módulo para *wes* publicado en *github* .
 
 
 ### uso
@@ -433,10 +445,10 @@ wes install @wachaon/fmt
 *install* tiene opciones
 
 
-| nombrada   | nombre corto | descripción                                                 |
-| ---------- | ------------ | ----------------------------------------------------------- |
-| `--bare`   | `-b`         | No cree la carpeta *@author*                                |
-| `--global` | `-g`         | Instale el módulo en la carpeta donde se encuentra *wes.js* |
+| nombrada   | nombre corto | descripción                                         |
+| ---------- | ------------ | --------------------------------------------------- |
+| `--bare`   | `-b`         | No cree la carpeta *@author*                        |
+| `--global` | `-g`         | Instale el módulo en la carpeta donde está *wes.js* |
 
 
 `--bare` opción `--bare` puede omitir el argumento `require` del `author@repository` al `repository` . `--global` opción `--global` hace que los módulos instalados estén disponibles para todos los scripts. Las opciones anteriores deben especificarse al mismo tiempo que la opción de seguridad *wes* `--unsafe` o `--dangerous` .
@@ -520,7 +532,7 @@ wes @wachaon/fmt src/sample --write
 Sobrescriba el archivo con una secuencia de comandos formateada si especifica un argumento con nombre de `--write` o `-w` .
 
 
-### *module* usa como *module*
+### Cuando se usa como *module*
 
 
 ### `option`

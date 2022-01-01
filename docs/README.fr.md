@@ -28,12 +28,12 @@ Veuillez sélectionner des phrases dans d'autres langues parmi les suivantes.
 
 -   Changez le moteur de script de *Windows Script Host* en *Chakra* et exécutez *ECMAScript2015* *Chakra*
 -   Il exécute toujours *cscript.exe* 32 bits, il n'y a donc pas de bogues inhérents à l'environnement 64 bits.
--   Importer le module avec `require`
+-   Importez le module avec `require` (correspondant au *es module* de la version *ver 0.9.0* )
 -   Sort les caractères colorés sur la sortie standard
 -   Devinez et lisez automatiquement l'encodage du fichier texte
 
 
-# Fonctionnalités non résolues
+# Problèmes connus que nous ne pouvons pas résoudre
 
 
 -   `WScript.Quit` ne peut pas interrompre le programme et ne renvoie pas de code d'erreur
@@ -246,6 +246,9 @@ argv, argv.unnamed, argv.named)
 Exploiter le chemin.
 
 
+Généralement, les chemins commençant par `/` et `\` font référence à des chemins relatifs à partir de la racine du lecteur (par exemple, `/filename` peut être le même chemin que `C:/filename` ), mais pour des `wes` de sécurité dans `wes` `/` et les chemins commençant par `\` sont interprétés comme relatifs à le répertoire de travail.
+
+
 ```javascript
 const path = require('pathname')
 const file = path.resolve(__dirname, 'index.js')
@@ -266,6 +269,15 @@ const readme = path.resolve(__dirname, 'README.md')
 const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
+
+
+## *chardet*
+
+
+J'utilise certaines fonctionnalités de <https://github.com/runk/node-chardet> .
+
+
+Vous pouvez améliorer la précision de la devinette automatique en augmentant les caractères spécifiques à l'encodage.
 
 
 ## *JScript*
@@ -375,7 +387,7 @@ pipe()
 ## *typecheck*
 
 
-Déterminez le type du script.
+Déterminez le type de script.
 
 
 ```javascript
@@ -408,7 +420,7 @@ Il existe certaines conditions pour le regroupement de modules.
 1.  *repository* seul type de module peut être publié dans un *repository* .
 2.  Le nom du référentiel sur *github* et le nom du répertoire de travail local doivent être identiques.
 3.  Le référentiel doit être public si vous souhaitez publier le module vers un tiers.
-4.  *wes* n'interprète pas statiquement le script. Les modules acquis par `require` dans des conditions spécifiques telles que les instructions `if` ne peuvent pas être regroupées.
+4.  *wes* interprète dynamiquement le chemin du module. Les modules acquis par `require` dans des conditions spécifiques telles que les instructions `if` ne peuvent pas être regroupées.
 5.  *.json* fichier *.json* sera créé dans votre répertoire de travail avec le nom *directory_name.json* . Il ne peut pas être installé si le fichier est renommé ou si le fichier est déplacé.
 6.  `node_modules/directory_name` , le bundle échoue car il fait référence à `directory_name.json` .
 
@@ -481,7 +493,7 @@ Voici quelques modules externes.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* regroupe *prettier* et formate le script. De plus, si *@wachaon/fmt* est installé et qu'une erreur de `SyntaxError` se produit, l'emplacement de l'erreur peut être indiqué.
+*@wachaon/fmt* regroupe *prettier* et formate le script. De plus, si une erreur de `SyntaxError` se produit avec *@wachaon/fmt* installé, vous pouvez indiquer l'emplacement de l'erreur.
 
 
 ### installer
@@ -520,7 +532,7 @@ wes @wachaon/fmt src/sample --write
 Remplacez le fichier par un script formaté si vous spécifiez un argument nommé `--write` ou `-w` .
 
 
-### *module* utilisation en tant que *module*
+### Lorsqu'il est utilisé comme *module*
 
 
 ### `option`

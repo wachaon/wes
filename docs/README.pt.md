@@ -28,12 +28,12 @@ Selecione frases em outros idiomas entre os seguintes.
 
 -   Altere o mecanismo de script do *Windows Script Host* para *Chakra* e execute *ECMAScript2015* *Chakra*
 -   Ele sempre executa o *cscript.exe* 32 bits, portanto, não há bugs inerentes ao ambiente de 64 bits.
--   Importe o módulo com `require`
+-   Importe o módulo com `require` (correspondente ao *es module* da *ver 0.9.0* )
 -   Produz caracteres coloridos para a saída padrão
 -   Adivinhe e leia automaticamente a codificação do arquivo de texto
 
 
-# Recursos não resolvidos
+# Problemas conhecidos que não podemos resolver
 
 
 -   `WScript.Quit` não pode interromper o programa e não retorna um código de erro
@@ -246,6 +246,9 @@ argv, argv.unnamed, argv.named)
 Opere o caminho.
 
 
+Geralmente, os caminhos que começam com `/` e `\` referem-se a caminhos relativos da raiz da unidade (por exemplo, `/filename` pode ser o mesmo caminho que `C:/filename` ), mas para segurança em `wes` `/` e os caminhos que começam com `\` são interpretados como relativos a o diretório de trabalho.
+
+
 ```javascript
 const path = require('pathname')
 const file = path.resolve(__dirname, 'index.js')
@@ -266,6 +269,15 @@ const readme = path.resolve(__dirname, 'README.md')
 const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
+
+
+## *chardet*
+
+
+Estou usando alguns recursos de <https://github.com/runk/node-chardet> .
+
+
+Você pode melhorar a precisão da adivinhação automática aumentando os caracteres específicos da codificação.
 
 
 ## *JScript*
@@ -408,7 +420,7 @@ Existem algumas condições para agrupar módulos.
 1.  *repository* um tipo de módulo pode ser publicado em um *repository* .
 2.  O nome do repositório no *github* e o nome do diretório de trabalho local devem ser iguais.
 3.  O repositório deve ser público se você quiser publicar o módulo para terceiros.
-4.  *wes* não interpreta estaticamente o script. Módulos adquiridos por `require` em condições específicas, como `if` declarações não podem ser agrupadas.
+4.  *wes* interpreta dinamicamente o caminho do módulo. Módulos adquiridos por `require` em condições específicas, como `if` declarações não podem ser agrupadas.
 5.  *.json* arquivo *.json* será criado em seu diretório de trabalho com o nome *directory_name.json* . Ele não pode ser instalado se o arquivo for renomeado ou se o arquivo for movido.
 6.  `node_modules/directory_name` , o pacote falha porque se refere a `directory_name.json` .
 
@@ -520,7 +532,7 @@ wes @wachaon/fmt src/sample --write
 Substitua o arquivo por um script formatado se você especificar um argumento nomeado de `--write` ou `-w` .
 
 
-### *module* usar como um *module*
+### Quando usado como *module*
 
 
 ### `option`
