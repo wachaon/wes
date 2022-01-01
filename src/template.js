@@ -1,4 +1,5 @@
 try {
+    var LF = '\n'
     var NONE = ''
     var SPACE = ' '
     var POSIXSEP = '/'
@@ -436,11 +437,13 @@ try {
             var pathname = req('pathname')
             var resolve = pathname.resolve
             var dirname = pathname.dirname
+            var extname = pathname.extname
             var filesystem = req('filesystem')
             var exists = filesystem.exists
             var js = '.js'
             var json = '.json'
             var index = 'index.js'
+            var indexmjs = 'index.mjs'
             var indexjson = 'index.json'
             var packagejson = 'package.json'
 
@@ -451,6 +454,7 @@ try {
                 var temp
                 type = getPkgField(dirname(area), 'type') || type
                 if (exists((temp = area))) {
+                    if (extname(temp) === '.mjs') type = 'module'
                     entry = temp
                     break
                 }
@@ -465,6 +469,11 @@ try {
                 }
                 if (exists((temp = resolve(area, index)))) {
                     type = getPkgField(area, 'type') || type
+                    entry = temp
+                    break
+                }
+                if (exists((temp = resolve(area, indexmjs)))) {
+                    type = 'module'
                     entry = temp
                     break
                 }
@@ -499,6 +508,7 @@ try {
                 path: entry,
                 mapping: {}
             }
+            if (mod.source.startsWith('#!')) mod.source.split(LF).slice(1).join(LF)
 
             Modules[GUID] = mod
             mod.type = type
@@ -636,7 +646,7 @@ try {
             var type = file.type
             if (entry == null)
                 throw new Error(
-                    'no module:\n' + 'caller: ' + caller + '\nquery: ' + query + '\n' + JSON.stringify(areas, null, 2)
+                    'no module:\n' + 'caller: ' + caller + '\nquery: ' + query + LF + JSON.stringify(areas, null, 2)
                 )
 
             var modId = req('genGUID')()
