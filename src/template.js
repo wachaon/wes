@@ -379,6 +379,21 @@ try {
             return curr
         }
 
+        function getPkgField(dir, field) {
+            var pathname = req('pathname')
+            var resolve = pathname.resolve
+            var filesystem = req('filesystem')
+            var exists = filesystem.exists
+            var readTextFileSync = filesystem.readTextFileSync
+            var parse = JSON.parse
+
+            var pkg = resolve(dir, 'package.json')
+            if (!exists(pkg)) return undefined
+            var file = readTextFileSync(pkg)
+            var json = parse(file)
+            return getField(json, field)
+        }
+
         function getAreas(caller, _query) {
             var pathname = req('pathname')
             var CurrentDirectory = pathname.CurrentDirectory
@@ -418,11 +433,11 @@ try {
         }
 
         function getEntry(areas) {
-            var resolve = req('pathname').resolve
+            var pathname = req('pathname')
+            var resolve = pathname.resolve
+            var dirname = pathname.dirname
             var filesystem = req('filesystem')
             var exists = filesystem.exists
-            var readTextFileSync = filesystem.readTextFileSync
-            var parse = JSON.parse
             var js = '.js'
             var json = '.json'
             var index = 'index.js'
@@ -431,8 +446,10 @@ try {
 
             var entry = null
             while (areas.length) {
+                var type = getPkgField('/', 'type') || 'commonjs'
                 var area = areas.shift()
                 var temp
+                type = getPkgField(dirname(area), 'type') || type
                 if (exists((temp = area))) {
                     entry = temp
                     break
@@ -443,9 +460,11 @@ try {
                 }
                 if (exists((temp = area + json))) {
                     entry = temp
+                    type = 'json'
                     break
                 }
                 if (exists((temp = resolve(area, index)))) {
+                    type = getPkgField(area, 'type') || type
                     entry = temp
                     break
                 }
@@ -454,15 +473,15 @@ try {
                     break
                 }
                 if (exists((temp = resolve(area, packagejson)))) {
-                    var main = getField(parse(readTextFileSync(temp)), 'main')
+                    var main = getPkgField(dirname(temp), 'main')
                     if (main == null) continue
                     areas.unshift(resolve(area, main))
                 }
             }
-            return entry
+            return { entry: entry, type: type }
         }
 
-        function createModule(GUID, entry, query, parentModule, encode) {
+        function createModule(GUID, entry, query, parentModule, encode, type) {
             var pathname = req('pathname')
             var dirname = pathname.dirname
             var extname = pathname.extname
@@ -481,7 +500,7 @@ try {
             }
 
             Modules[GUID] = mod
-
+            mod.type = type
             var js = '.js'
             var json = '.json'
 
@@ -494,6 +513,7 @@ try {
                         })
                         .join(NONE)
                     wes.filestack.push(entry)
+
                     var code = new Function(
                         'require',
                         'module',
@@ -504,7 +524,9 @@ try {
                         'wes',
                         'Buffer',
                         'global',
-                        '(function ' + name + '() { ' + '"use strict";' + mod.source + '} )()'
+                        type === 'module'
+                            ? req('babel-standalone').transform(mod.source, { presets: ['env'] }).code
+                            : '(function ' + name + '() { ' + '"use strict";' + mod.source + '} )()'
                     )
                     code(
                         require.bind(null, entry),
@@ -608,7 +630,9 @@ try {
             if (isAbsolute(query)) areas = [resolve(query)]
             else areas = getAreas(caller, query)
 
-            var entry = getEntry(areas)
+            var file = getEntry(areas)
+            var entry = file.entry
+            var type = file.type
             if (entry == null)
                 throw new Error(
                     'no module:\n' + 'caller: ' + caller + '\nquery: ' + query + '\n' + JSON.stringify(areas, null, 2)
@@ -616,7 +640,7 @@ try {
 
             var modId = req('genGUID')()
             if (wes.main == null) wes.main = modId
-            var mod = createModule(modId, entry, query, parentModule, encode)
+            var mod = createModule(modId, entry, query, parentModule, encode, type)
             mod.exports = mod.module.exports
 
             return mod.exports
