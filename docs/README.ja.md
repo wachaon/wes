@@ -15,7 +15,7 @@
 -   標準出力に色付き文字を出力します
 -   テキストファイルのエンコードを自動で推測し読み込みます
 
-# Features not resolved
+# Known issues wes can't solve
 
 -   `WScript.Quit` はプログラムを中断出来ず、エラーコードも返しません
 -   `setTimeout` や `Promise` など非同期処理は出来ません
@@ -191,7 +191,7 @@ argv, argv.unnamed, argv.named)
 
 パスの操作をします。
 
-
+一般的には `/` および `\` から開始されるパスはドライブルートからの相対パスを指しますが、(例えば `/filename` は `C:/filename` と同じパスになる場合があります) `wes` ではセキュリティーの観点から `/` および `\` から開始されるパスはワーキングディレクトリからの相対パスと解釈されます。 
 
 ```javascript
 const path = require('pathname')
@@ -204,6 +204,7 @@ console.log('file %O', file)
 ファイルの操作やディレクトリの操作をします。
 `readTextFileSync` はファイルのエンコードを自動推測して読み込みます。
 
+
 ```javascript
 const fs = require('filesystem')
 const path = require('pathname')
@@ -211,6 +212,12 @@ const readme = path.resolve(__dirname, 'README.md')
 const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
+
+## *chardet*
+
+https://github.com/runk/node-chardet の一部の機能を使用しています。
+
+エンコード固有の文字を増やすことで自動推測の精度を上げれます。
 
 ## *JScript*
 
