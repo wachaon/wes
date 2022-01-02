@@ -513,9 +513,11 @@ try {
             Modules[GUID] = mod
             mod.type = type
             var js = '.js'
+            var mjs = '.mjs'
             var json = '.json'
 
             switch (extname(entry)) {
+                case mjs:
                 case js:
                     var name = entry
                         .split(NONE)
