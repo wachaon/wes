@@ -528,15 +528,14 @@ try {
                     wes.filestack.push(entry)
 
                     var transpiledSource
-                    if (mod.type != 'transpiled') {
+                    if (mod.type === 'transpiled') transpiledSource = mod.source
+                    else {
                         transpiledSource =
                             mod.type === 'module'
                                 ? req('babel-standalone').transform(mod.source, { presets: ['env'] }).code
                                 : '(function ' + name + '() { ' + '"use strict";' + mod.source + '} )()'
                         mod.source = transpiledSource
                         mod.type = 'transpiled'
-                    } else {
-                        transpiledSource = mod.source
                     }
 
                     var code = new Function(
