@@ -494,6 +494,7 @@ try {
             var pathname = req('pathname')
             var dirname = pathname.dirname
             var extname = pathname.extname
+            var WorkingDirectory = pathname.WorkingDirectory
             var parse = JSON.parse
             var filesystem = req('filesystem')
             var readTextFileSync = filesystem.readTextFileSync
@@ -527,16 +528,17 @@ try {
                         .join(NONE)
                     wes.filestack.push(entry)
 
-                    var transpiledSource
-                    if (mod.type === 'transpiled') transpiledSource = mod.source
-                    else {
-                        transpiledSource =
-                            mod.type === 'module'
-                                ? req('babel-standalone').transform(mod.source, { presets: ['env'] }).code
-                                : '(function ' + name + '() { ' + '"use strict";' + mod.source + '} )()'
-                        mod.source = transpiledSource
-                        mod.type = 'transpiled'
-                    }
+                    if (mod.type === 'module') {
+                        var Babel
+                        try {
+                            Babel = require(WorkingDirectory, '@babel/standalone')
+                            mod.source = Babel.transform(mod.source, { presets: ['env'] }).code
+                        } catch (e) {
+                            throw new Error('`@babel-standalone` is required to recognize `es module`')
+                        }
+                    } else if (mod.type === 'commonjs')
+                        mod.source = '(function ' + name + '() { ' + '"use strict";' + mod.source + '} )()'
+                    mod.type = 'transpiled'
 
                     var code = new Function(
                         'require',
@@ -548,7 +550,7 @@ try {
                         'wes',
                         'Buffer',
                         'global',
-                        transpiledSource
+                        mod.source
                     )
                     code(
                         require.bind(null, entry),
