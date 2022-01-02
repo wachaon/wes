@@ -527,6 +527,18 @@ try {
                         .join(NONE)
                     wes.filestack.push(entry)
 
+                    var transpiledSource
+                    if (mod.type != 'transpiled') {
+                        transpiledSource =
+                            mod.type === 'module'
+                                ? req('babel-standalone').transform(mod.source, { presets: ['env'] }).code
+                                : '(function ' + name + '() { ' + '"use strict";' + mod.source + '} )()'
+                        mod.source = transpiledSource
+                        mod.type = 'transpiled'
+                    } else {
+                        transpiledSource = mod.source
+                    }
+
                     var code = new Function(
                         'require',
                         'module',
@@ -537,9 +549,7 @@ try {
                         'wes',
                         'Buffer',
                         'global',
-                        type === 'module'
-                            ? req('babel-standalone').transform(mod.source, { presets: ['env'] }).code
-                            : '(function ' + name + '() { ' + '"use strict";' + mod.source + '} )()'
+                        transpiledSource
                     )
                     code(
                         require.bind(null, entry),
