@@ -531,11 +531,23 @@ try {
                     if (mod.type === 'module') {
                         var Babel
                         try {
-                            Babel = require(WorkingDirectory, '@babel/standalone')
-                            mod.source = Babel.transform(mod.source, { presets: ['env'] }).code
+                            Babel = require(WorkingDirectory, '@wachaon/babel-standalone')
                         } catch (e) {
-                            throw new Error('`@babel-standalone` is required to recognize `es module`')
+                            try {
+                                Babel = require(WorkingDirectory, 'babel-standalone')
+                            } catch (ee) {
+                                try {
+                                    Babel = require(WorkingDirectory, '@babel/standalone')
+                                } catch (eee) {
+                                    throw new Error(
+                                        '`@babel/standalone` is required for `es module` processing in `wes`'
+                                    )
+                                }
+                            }
                         }
+                        mod.source = Babel.transform(mod.source, {
+                            presets: ['env']
+                        }).code
                     } else if (mod.type === 'commonjs')
                         mod.source = '(function ' + name + '() { ' + '"use strict";' + mod.source + '} )()'
                     mod.type = 'transpiled'
@@ -694,13 +706,16 @@ try {
 
         console.log(ansi.color(255, 165, 0) + errorStack.join('\r\n').split('Function code:').join(NONE))
 
+        var pathname = req('pathname')
+        var WorkingDirector = pathname.WorkingDirector
+
         if (error instanceof SyntaxError) {
             var fmt
             try {
-                fmt = require('*', 'fmt')
+                fmt = require(WorkingDirector, 'fmt')
             } catch (error1) {
                 try {
-                    fmt = require('*', '@wachaon/fmt')
+                    fmt = require(WorkingDirector, '@wachaon/fmt')
                 } catch (error2) {
                     fmt = null
                 }
