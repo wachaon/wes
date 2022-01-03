@@ -529,22 +529,7 @@ try {
                     wes.filestack.push(entry)
 
                     if (mod.type === 'module') {
-                        var Babel
-                        try {
-                            Babel = require(WorkingDirectory, '@wachaon/babel-standalone')
-                        } catch (e) {
-                            try {
-                                Babel = require(WorkingDirectory, 'babel-standalone')
-                            } catch (ee) {
-                                try {
-                                    Babel = require(WorkingDirectory, '@babel/standalone')
-                                } catch (eee) {
-                                    throw new Error(
-                                        '`@babel/standalone` is required for `es module` processing in `wes`'
-                                    )
-                                }
-                            }
-                        }
+                        var Babel = req('babel-standalone')
                         mod.source = Babel.transform(mod.source, {
                             presets: ['env']
                         }).code
