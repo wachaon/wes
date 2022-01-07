@@ -71,14 +71,34 @@ wes
 
 `--safe` `--usual` `--unsafe` `--dangerous` `--debug` の実装は不完全ですが、名前付き引数は予約されています。
 
-# built-in objects
+# module system
 
-*wes* には *WSH (JScript)* には無い *built-in objects* があります。
+*wes* は一般的な `require()` を使用する *commonjs module* のシステムと `import` を使用する
+*es module* のシステムに対応しています。(*dynamic import* は非同期処理の為、未対応)
 
-## *require*
+## *commonjs module*
 
-*require* でモジュールをインポートします。*wes* ではモジュールファイルのエンコードを自動推測しますが、
+`module.exports` への代入と `require()` での呼び出しでモジュールを管理します。
+利便上 *node_modules* ディレクトリへの対応もしています。
+
+*wes* の `require()` はモジュールファイルのエンコードを自動推測しますが、
 正しく推測しない場合に第二引数でエンコードを指定することも可能です。
+
+```javascript
+// ./add.js
+function add (a, b) {
+    return a + b
+}
+
+module.exports = add
+```
+
+```javascript
+// ./main.js
+const add = require('./add')
+
+console.log('add(7, 3) // => %O', add(7, 3))
+```
 
 また、`require('WScript.Shell')` の様に *OLE* に対しても *require* でインポート可能です。
 
@@ -93,17 +113,32 @@ while (ie.Busy || ie.readystate != 4) {
 WShell.AppActivate(ie.LocationName)
 ```
 
-## `module` and `module.exports`
+## *es module*
 
-モジュールとして定義したい場合は `module.exports` に代入します。
+スクリプトの実行エンジンである *Chakra* は `imoprt` などの構文を解釈しますが `cscript` としての処理方法が定義されていないのか、そのままでは実行はできません。
+*wes* では *babel* を内包。
+*es module* に対して逐次トランスパイルしながら実行しています。そのためコストとして処理のオーバーヘッドとファイルが肥大化しています。
+
+*es module* で記述されているモジュールもトランスパイルで `require()` に変換されるため、*OLE* の呼び出しも可能です。
+しかしながらモジュールファイルのエンコード指定には対応していません。全て自動推測で読み込まれます。
 
 ```javascript
-function add (a, b) {
-    return a + b
+// ./sub.mjs
+export default function sub (a, b) {
+    return a - b
 }
-
-module.exports = add
 ```
+
+```javascript
+// ./main2.js
+import sub from './sub.mjs'
+
+console.log('sub(7, 3) // => %O', sub(7, 3))
+```
+
+# built-in objects
+
+*wes* には *WSH (JScript)* には無い *built-in objects* があります。
 
 ## *console*
 
