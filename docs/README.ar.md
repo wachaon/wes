@@ -1,25 +1,25 @@
 # *WES*
 
 
-*wes* هو إطار عمل لتنفيذ *ECMAScript* على *Windows Script Host*
+*wes* هو إطار لتنفيذ *ECMAScript* على سطر الأوامر *Windows Script Host* .
 
 
 النص الأصلي *README* هو [*japanese*](/README.md) . بخلاف اليابانية ، إنها جملة مترجمة آليًا.  
 يرجى تحديد الجمل بلغات أخرى مما يلي.
 
 
-+  [*簡体字*](README.zh-CN.md) <!-- 中国語 (簡体字) -->
-+  [*繁体字*](README.zh-TW.md) <!-- 中国語 (繁体字) -->
-+  [*English*](README.en.md) <!-- 英語 -->
-+  [*हिन्दी*](README.hi.md) <!-- ヒンディー語 -->
-+  [*Español*](README.es.md) <!-- スペイン語 -->
-+  [*عربى*](README.ar.md) <!-- アラビア語 -->
-+  [*বাংলা*](README.bn.md) <!-- ベンガル語 -->
-+  [*Português*](README.pt.md) <!-- ポルトガル語 -->
-+  [*русский язык*](README.ru.md) <!-- ロシア語 -->
-+  [*Deutsch*](README.de.md) <!-- ドイツ語 -->
-+  [*français*](README.fr.md) <!-- フランス語 -->
-+  [*italiano*](README.it.md) <!-- イタリア語 -->
++  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
++  [*繁体字*](/docs/README.zh-TW.md) <!-- 中国語 (繁体字) -->
++  [*English*](/docs/README.en.md) <!-- 英語 -->
++  [*हिन्दी*](/docs/README.hi.md) <!-- ヒンディー語 -->
++  [*Español*](/docs/README.es.md) <!-- スペイン語 -->
++  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
++  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
++  [*Português*](/docs/README.pt.md) <!-- ポルトガル語 -->
++  [*русский язык*](/docs/README.ru.md) <!-- ロシア語 -->
++  [*Deutsch*](/docs/README.de.md) <!-- ドイツ語 -->
++  [*français*](/docs/README.fr.md) <!-- フランス語 -->
++  [*italiano*](/docs/README.it.md) <!-- イタリア語 -->
 
 
 
@@ -36,9 +36,9 @@
 # المشكلات المعروفة لا يمكن حلها
 
 
--   لا يمكن لـ `WScript.Quit` مقاطعة البرنامج ولا يُرجع رمز خطأ
+-   لا يمكن لـ `WScript.Quit` مقاطعة البرنامج ولا يعرض رمز خطأ
 -   المعالجة غير المتزامنة مثل `setTimeout` و `Promise` غير ممكنة
--   لا يمكن استخدام *event prefix* للوسيطة الثانية لـ `WScript.CreateObject` .
+-   لا يمكن استخدام *event prefix* الوسيطة الثانية لـ `WScript.CreateObject`
 
 
 # تثبيت
@@ -52,8 +52,8 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*wes* في وقت التنفيذ كما تنفيذ *WScript.Shell* من `SendKeys` استخدام. *wes.js* مسار الدليل الذي تم حفظ *wes.js* فيه يحتوي على أحرف غير *ascii* ، فلن تتمكن `SendKeys` من إرسال المفتاح بشكل صحيح ولن يتم تنفيذ البرنامج النصي.  
-يرجى تكوين مسار لتوفير *wes.js* الوحيد *ascii* .
+يستخدم *WScript.Shell* `SendKeys` في *wes* في وقت التشغيل كتطبيق. إذا كان مسار الدليل الذي تم حفظ *wes.js* فيه يحتوي على أحرف غير *ascii* ، فلن تتمكن `SendKeys` من إرسال المفتاح بشكل صحيح ولن يتم تنفيذ البرنامج النصي.  
+يرجى تكوين مسار وجهة الحفظ لـ *wes.js* فقط *ascii* .
 
 
 ## إستعمال
@@ -67,7 +67,7 @@ wes index
 ```
 
 
-أيضًا ، يحتوي *wes* على *REPL* لذلك إذا بدأت باستخدام `wes` فقط ، يمكنك إدخال البرنامج النصي مباشرة.
+أيضًا ، يحتوي *wes* على *REPL* ، لذلك إذا بدأت باستخدام `wes` فقط ، يمكنك إدخال البرنامج النصي مباشرة.
 
 
 ```shell
@@ -96,22 +96,43 @@ wes
 | `--engine=Chakra`  | يتم إضافة هذا الخيار تلقائيًا بواسطة *wes*         |
 
 
-تنفيذ - `--safe` `--usual` `--unsafe` `--dangerous` `--debug` غير مكتمل ، لكن الحجج المسماة محفوظة.
+تنفيذ - `--usual` - `--debug` `--unsafe` `--dangerous` `--safe` لكن الحجج المسماة محفوظة.
 
 
-# كائنات مدمجة
+# نظام الوحدة
 
 
-يحتوي *wes* *built-in objects* *WSH (JScript)* لا *WSH (JScript)* .
+*wes* الدعم *commonjs module* النظم التي تستخدم عموما `require()` و *es module* النظم التي تستخدم `import` . ( *dynamic import* غير مدعوم لأنه معالجة غير متزامنة)
 
 
-## *require*
+## *commonjs module*
 
 
-استيراد وحدة مع *require* . يخمن *wes* تلقائيًا ترميز ملف الوحدة النمطية ، ولكن إذا لم تخمن بشكل صحيح ، فيمكنك تحديد الترميز باستخدام الوسيطة الثانية.
+`module.exports` الوحدات النمطية عن طريق `module.exports` إلى `module.exports` والاتصال بـ `require()` . للراحة ، فإنه يدعم أيضًا دليل *node_modules* .
 
 
-بالإضافة إلى ذلك ، `require('WScript.Shell')` اعتبارًا من *OLE* حتى يمكن *require* الاستيراد باستخدام.
+`require()` *wes* `require()` تخمينًا تلقائيًا ترميز ملف الوحدة النمطية ، ولكن إذا لم يتم التخمين بشكل صحيح ، فيمكنك تحديد الترميز باستخدام الوسيطة الثانية.
+
+
+```javascript
+// ./add.js
+function add (a, b) {
+    return a + b
+}
+
+module.exports = add
+```
+
+
+```javascript
+// ./main.js
+const add = require('./add')
+
+console.log('add(7, 3) // => %O', add(7, 3))
+```
+
+
+يمكنك أيضا استيراد ل *OLE* مثل `require('WScript.Shell')` مع *require* .
 
 
 ```javascript
@@ -126,25 +147,41 @@ WShell.AppActivate(ie.LocationName)
 ```
 
 
-## `module` و `module` `module.exports`
+## *es module*
 
 
-إذا كنت تريد تعريفها كوحدة نمطية ، `module.exports` بتعيينها إلى `module.exports` .
+تفسر *Chakra* وهي محرك تنفيذ البرنامج النصي ، بناء الجملة مثل `imoprt` ، ولكن لا يمكن تنفيذها كما هي لأن طريقة المعالجة مثل `cscript` غير محددة. *wes* في *babel* أرفق. يتم تنفيذه أثناء *es module* التسلسلي إلى *es module* . نتيجة لذلك ، تتزايد تكاليف المعالجة ونفخ الملفات كتكلفة.
+
+
+الوحدات الموصوفة بواسطة *es module* يتم تحويلها أيضًا إلى `require()` ، لذلك يمكن استدعاء *OLE* . ومع ذلك ، فإنه لا يدعم مواصفات ترميز ملف الوحدة النمطية. تتم قراءتها جميعًا عن طريق التخمين التلقائي.
 
 
 ```javascript
-function add (a, b) {
-    return a + b
+// ./sub.mjs
+export default function sub (a, b) {
+    return a - b
 }
-
-module.exports = add
 ```
+
+
+```javascript
+// ./main2.js
+import sub from './sub.mjs'
+
+console.log('sub(7, 3) // => %O', sub(7, 3))
+```
+
+
+# كائنات مدمجة
+
+
+يحتوي *wes* *built-in objects* مضمنة لا *WSH (JScript)* .
 
 
 ## *console*
 
 
-استخدم *wes* في `WScript.Echo` و `WScript.StdErr.WriteLine` بدلاً من *console* .
+يستخدم *wes* *console* بدلاً من `WScript.Echo` أو `WScript.StdErr.WriteLine` .
 
 
 طباعة الأحرف إلى سطر الأوامر في `console.log` . كما يدعم السلاسل المنسقة. يطبع سلسلة منسقة باستخدام عامل التنسيق `%` .
@@ -214,7 +251,7 @@ console.log(orange + 'Hello World')
 ## *argv*
 
 
-يحصل على وسيطة سطر الأوامر. `cscript.exe` وسيطات سطر الأوامر الخاصة بـ `/` تعلن عن الوسائط المسماة في ولكن ، يعلن *wes* in `-` and `--` عن الوسائط المسماة في.
+يحصل على وسيطة سطر الأوامر. تعلن وسيطات سطر الأوامر في `cscript.exe` عن الوسائط المسماة مع `/` `--` بينما يعلن *wes* عن الوسائط المسماة بـ `-` و-.
 
 
 *argv.unnamed* و *argv.named* يلقي نوع قيمة وسيطة سطر الأوامر إلى أحد *Boolean* *String* *Number* *Boolean* .
@@ -295,7 +332,7 @@ files.forEach(file => console.log(file.Name))
 ```
 
 
-`WScript.GetObject` *GetObject* كبديل لـ `WScript.GetObject` .
+يعمل *GetObject* كبديل لـ `WScript.GetObject` .
 
 
 ```javascript
@@ -493,7 +530,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ## *@wachaon/fmt*
 
 
-حزم *@wachaon/fmt* *prettier* *@wachaon/fmt* البرنامج النصي. أيضًا ، في حالة حدوث خطأ في `SyntaxError` مع تثبيت *@wachaon/fmt* ، يمكنك الإشارة إلى موقع الخطأ.
+حزم *@wachaon/fmt* *prettier* وتنسيق البرنامج النصي. أيضًا ، إذا تم تثبيت @ `SyntaxError` *@wachaon/fmt* وحدث خطأ نحوي ، يمكن الإشارة إلى موقع الخطأ.
 
 
 ### تثبيت
@@ -546,3 +583,71 @@ const { join, workingDirectory } = require('pathname')
 const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
+
+
+## `@wachaon/edge`
+
+
+سيكون *Internet Explorer* متاحًا للدعم اعتبارًا من 15 يونيو 2022. نتيجة لذلك ، يصبح من المستحيل تشغيل التطبيق باستخدام `require('InternetExplorer.Application')` .
+
+
+قد يكون البديل هو تشغيل *Microsoft Edge based on Chromium* عبر *web driver* ، ولكن `@wachaon/edge` يبسط الطيار الآلي لـ *Edge* .
+
+
+### تثبيت
+
+
+أولاً ، قم بتثبيت الوحدة.
+
+
+```shell
+wes install @wachaon/edge --unsafe --bare
+```
+
+
+ثم قم بتنزيل *web driver* .
+
+
+```shell
+wes edge
+```
+
+
+قم بفك ضغط الملف *zip* تنزيله *msedgedriver.exe* إلى الدليل الحالي.
+
+
+### الاستخدام
+
+
+سيكون سهل الاستخدام.
+
+
+```javascript
+const edge = require('./index')
+
+edge((window, navi, res) => {
+    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
+    window.navigate('http://www.google.com')
+    res.exports = []
+
+    navi.on(/./, (url) => {
+        console.log('URL: %O', url)
+        res.exports.push(url)
+    })
+})
+```
+
+
+يقوم هذا البرنامج النصي بإخراج *URL* تمت زيارتها إلى موجه الأوامر بالتسلسل.
+
+
+`@wachaon/edge` حدثًا *URL* ويضيف بيانات إلى `res.exports` . يمكن *URL* تسجيله إما `String` `RegExp` ، ويمكن إجراء إعدادات مرنة.
+
+
+من خلال جعلها مدفوعة بالأحداث ، من الممكن التبديل بسهولة إلى التشغيل اليدوي من خلال عدم تعيين *URL* للعمليات التي يصعب التعامل معها باستخدام الطيار الآلي.
+
+
+إذا كنت تريد إيقاف البرنامج النصي ، `navi.emit('terminate', res)` أو إنهاء *Edge* يدويًا.
+
+
+`res.exports` عملية الإنهاء `res.exports` كملف *.json* كقيمة افتراضية. إذا كنت ترغب في ضبط المعالجة النهائية ، فإن `edge(callback, terminate)` لمجموعات `terminate` .

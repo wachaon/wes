@@ -1,25 +1,25 @@
 # *WES*
 
 
-*wes* est un framework pour exécuter *ECMAScript* sur *Windows Script Host*
+*wes* est un framework pour exécuter *ECMAScript* sur la ligne de commande *Windows Script Host* .
 
 
-Le texte original du *README* est [*japanese*](/README.md) . À part le japonais, c'est une phrase traduite automatiquement.  
+Le texte original du *README* est en [*japanese*](/README.md) . Autre que le japonais, c'est une phrase traduite automatiquement.  
 Veuillez sélectionner des phrases dans d'autres langues parmi les suivantes.
 
 
-+  [*簡体字*](README.zh-CN.md) <!-- 中国語 (簡体字) -->
-+  [*繁体字*](README.zh-TW.md) <!-- 中国語 (繁体字) -->
-+  [*English*](README.en.md) <!-- 英語 -->
-+  [*हिन्दी*](README.hi.md) <!-- ヒンディー語 -->
-+  [*Español*](README.es.md) <!-- スペイン語 -->
-+  [*عربى*](README.ar.md) <!-- アラビア語 -->
-+  [*বাংলা*](README.bn.md) <!-- ベンガル語 -->
-+  [*Português*](README.pt.md) <!-- ポルトガル語 -->
-+  [*русский язык*](README.ru.md) <!-- ロシア語 -->
-+  [*Deutsch*](README.de.md) <!-- ドイツ語 -->
-+  [*français*](README.fr.md) <!-- フランス語 -->
-+  [*italiano*](README.it.md) <!-- イタリア語 -->
++  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
++  [*繁体字*](/docs/README.zh-TW.md) <!-- 中国語 (繁体字) -->
++  [*English*](/docs/README.en.md) <!-- 英語 -->
++  [*हिन्दी*](/docs/README.hi.md) <!-- ヒンディー語 -->
++  [*Español*](/docs/README.es.md) <!-- スペイン語 -->
++  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
++  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
++  [*Português*](/docs/README.pt.md) <!-- ポルトガル語 -->
++  [*русский язык*](/docs/README.ru.md) <!-- ロシア語 -->
++  [*Deutsch*](/docs/README.de.md) <!-- ドイツ語 -->
++  [*français*](/docs/README.fr.md) <!-- フランス語 -->
++  [*italiano*](/docs/README.it.md) <!-- イタリア語 -->
 
 
 
@@ -27,10 +27,10 @@ Veuillez sélectionner des phrases dans d'autres langues parmi les suivantes.
 
 
 -   Changez le moteur de script de *Windows Script Host* en *Chakra* et exécutez *ECMAScript2015* *Chakra*
--   Il exécute toujours *cscript.exe* 32 bits, il n'y a donc pas de bogues inhérents à l'environnement 64 bits.
+-   Il exécute toujours 32 bits *cscript.exe* , il n'y a donc pas de bogues inhérents à l'environnement 64 bits.
 -   Importez le module avec `require` (correspondant au *es module* de la version *ver 0.9.0* )
--   Sort les caractères colorés sur la sortie standard
--   Devinez et lisez automatiquement l'encodage du fichier texte
+-   Sortie des caractères colorés sur la sortie standard
+-   Devine et lit automatiquement l'encodage du fichier texte
 
 
 # Problèmes connus que nous ne pouvons pas résoudre
@@ -38,13 +38,13 @@ Veuillez sélectionner des phrases dans d'autres langues parmi les suivantes.
 
 -   `WScript.Quit` ne peut pas interrompre le programme et ne renvoie pas de code d'erreur
 -   Le traitement asynchrone tel que `setTimeout` et `Promise` n'est pas possible
--   Le *event prefix* du deuxième argument de `WScript.CreateObject` ne peut pas être utilisé.
+-   Le *event prefix* deuxième argument de `WScript.CreateObject` ne peut pas être utilisé
 
 
 # Installer
 
 
-*wes* besoin est le seul fichier *wes.js* Pour télécharger, lancez une invite de commande et entrez la commande suivante.
+*wes* need est le seul fichier *wes.js* Pour télécharger, lancez une invite de commande et entrez la commande suivante.
 
 
 ```shell
@@ -52,8 +52,8 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*wes* au moment de l'exécution comme l'implémentation *WScript.Shell* de `SendKeys` utilise. *wes.js* le chemin du répertoire où *wes.js* est enregistré contient des caractères autres que *ascii* , `SendKeys` ne pourra pas envoyer la clé correctement et le script ne pourra pas être exécuté.  
-Veuillez configurer le chemin pour enregistrer *wes.js* uniquement en *ascii* .
+*wes* au moment de l'exécution que l'implémentation *WScript.Shell* de `SendKeys` utilise. *wes.js* le chemin du répertoire où *wes.js* est enregistré contient des caractères autres que *ascii* , `SendKeys` ne pourra pas envoyer la clé correctement et le script ne pourra pas être exécuté.  
+Veuillez configurer le chemin de destination de sauvegarde de *wes.js* uniquement *ascii* .
 
 
 ## Usage
@@ -75,7 +75,7 @@ wes
 ```
 
 
-Les scripts seront acceptés jusqu'à ce que vous entriez deux lignes vierges. *README.md* pouvez également vérifier l'exécution de l'exemple de script dans *README.md* avec *REPL* .
+Les scripts seront acceptés jusqu'à ce que vous saisissiez deux lignes vides. *README.md* pouvez également vérifier l'exécution de l'exemple de script dans *README.md* avec *REPL* .
 
 
 ## arguments nommés en ligne de commande
@@ -86,11 +86,11 @@ Les options de démarrage de *wes* sont les suivantes.
 
 | nommé              | la description                                     |
 | ------------------ | -------------------------------------------------- |
-| `--monotone`       | Élimine le *ANSI escape code*                      |
+| `--monotone`       | Éliminer le *ANSI escape code*                     |
 | `--safe`           | Exécutez le script en mode sans échec              |
-| `--usual`          | Exécutez le script en mode normal (par défaut)     |
-| `--unsafe`         | Exécuter le script en mode non sécurisé            |
-| `--dangerous`      | Exécuter le script en mode dangereux               |
+| `--usual`          | Exécuter le script en mode normal (par défaut)     |
+| `--unsafe`         | Exécutez le script en mode non sécurisé            |
+| `--dangerous`      | Exécutez le script en mode dangereux               |
 | `--debug`          | Exécuter le script en mode débogage                |
 | `--encoding=UTF-8` | Spécifie l'encodage du premier fichier à lire      |
 | `--engine=Chakra`  | Cette option est automatiquement ajoutée par *wes* |
@@ -99,19 +99,40 @@ Les options de démarrage de *wes* sont les suivantes.
 L'implémentation de `--safe` `--usual` `--unsafe` `--dangerous` `--debug` est incomplète, mais les arguments nommés sont réservés.
 
 
-# objets intégrés
+# système de modules
 
 
-*wes* a *built-in objects* que *WSH (JScript)* n'a pas.
+*wes* prend en *commonjs module* systèmes de *commonjs module* qui utilisent les systèmes de *commonjs module* généraux `require()` et *es module* qui utilisent `import` . ( *dynamic import* n'est pas prise en charge car il s'agit d'un traitement asynchrone)
 
 
-## *require*
+## *commonjs module*
 
 
-Importez le module avec *require* . *wes* devine automatiquement l'encodage du fichier module, mais si vous ne devinez pas correctement, vous pouvez spécifier l'encodage avec le deuxième argument.
+`module.exports` modules en attribuant à `module.exports` et en appelant avec `require()` . Pour plus de commodité, il prend également en charge le répertoire *node_modules* .
 
 
-De plus, `require('WScript.Shell')` partir de *OLE* même *require* importation est possible avec.
+*wes* `require()` devine automatiquement l'encodage du fichier de module, mais s'il ne devine pas correctement, vous pouvez spécifier l'encodage avec le deuxième argument.
+
+
+```javascript
+// ./add.js
+function add (a, b) {
+    return a + b
+}
+
+module.exports = add
+```
+
+
+```javascript
+// ./main.js
+const add = require('./add')
+
+console.log('add(7, 3) // => %O', add(7, 3))
+```
+
+
+Vous pouvez également importer vers *OLE* comme `require('WScript.Shell')` avec *require* .
 
 
 ```javascript
@@ -126,28 +147,44 @@ WShell.AppActivate(ie.LocationName)
 ```
 
 
-## `module` et `module.exports`
+## *es module*
 
 
-Si vous souhaitez le définir en tant que module, affectez-le à `module.exports` .
+*Chakra* qui est le moteur d'exécution du script, interprète la syntaxe comme `imoprt` , mais il ne peut pas être exécuté tel quel car la méthode de traitement comme `cscript` n'est pas définie. *wes* Dans *babel* enfermant. Il est exécuté lors de la *es module* séquentielle vers le *es module* . En conséquence, la surcharge de traitement et le gonflement des fichiers augmentent en tant que coût.
+
+
+Les modules décrits par le *es module* sont également convertis par transpilation en `require()` , ainsi *OLE* peut être appelé. Cependant, il ne prend pas en charge la spécification d'encodage de fichier de module. Tous sont lus par devinette automatique.
 
 
 ```javascript
-function add (a, b) {
-    return a + b
+// ./sub.mjs
+export default function sub (a, b) {
+    return a - b
 }
-
-module.exports = add
 ```
+
+
+```javascript
+// ./main2.js
+import sub from './sub.mjs'
+
+console.log('sub(7, 3) // => %O', sub(7, 3))
+```
+
+
+# objets intégrés
+
+
+*wes* a *built-in objects* que *WSH (JScript)* n'a pas.
 
 
 ## *console*
 
 
-*wes* Dans `WScript.Echo` et `WScript.StdErr.WriteLine` au lieu de la *console* utilisez le.
+*wes* utilise *console* au lieu de `WScript.Echo` ou `WScript.StdErr.WriteLine` .
 
 
-Imprimer des caractères sur la ligne de commande dans `console.log` . Il prend également en charge les chaînes formatées. Imprime une chaîne formatée à l'aide de l'opérateur de formatage `%` .
+Affiche des caractères sur la ligne de commande dans `console.log` . Il prend également en charge les chaînes formatées. Imprime une chaîne formatée à l'aide de l'opérateur de formatage `%` .
 
 
 ```javascript
@@ -155,7 +192,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
 
-*wes* afin de produire une chaîne colorée dans `WScript.StdOut.WriteLine` place, `WScript.StdErr.WriteLine` utilise. `WScript.Echo` et `WScript.StdOut.WriteLine` sont bloqués en sortie, utilisez donc `WScript.StdErr.WriteLine` ou `console.log` .
+*wes* afin de sortir une chaîne colorée dans `WScript.StdOut.WriteLine` place, utilisez `WScript.StdErr.WriteLine` . `WScript.Echo` et `WScript.StdOut.WriteLine` sont bloqués en sortie, utilisez donc `WScript.StdErr.WriteLine` ou `console.log` .
 
 
 ## *Buffer*
@@ -174,7 +211,7 @@ console.log(`${content} %O`, buff)
 ## `__dirname` et `__filename`
 
 
-`__filename` contient le chemin du fichier du module en cours d'exécution. `__dirname` `__filename` le répertoire de `__filename` .
+`__filename` contient le chemin du fichier de module en cours d'exécution. `__dirname` `__filename` le répertoire de `__filename` .
 
 
 ```javascript
@@ -191,7 +228,7 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 ## *ansi*
 
 
-`ansi` a un *ANSI escape code* qui vous permet de changer la couleur et l'effet de la sortie standard. Les couleurs et les effets peuvent varier en fonction du type et des paramètres de l'application console utilisée.
+`ansi` a un *ANSI escape code* qui vous permet de changer la couleur et l'effet de la sortie standard. Les couleurs et les effets peuvent varier selon le type et les paramètres de l'application console utilisée.
 
 
 ```javascript
@@ -214,10 +251,10 @@ console.log(orange + 'Hello World')
 ## *argv*
 
 
-Obtient l'argument de ligne de commande. `cscript.exe` arguments de ligne de commande `cscript.exe` de `/` déclarent les arguments nommés dans mais, *wes* dans `-` et `--` déclarent les arguments nommés dans.
+Obtient l'argument de ligne de commande. Les arguments de ligne de commande dans `cscript.exe` déclarent des arguments nommés avec `/` `--` tandis que *wes* des arguments nommés avec `-` et -.
 
 
-*argv.unnamed* et *argv.named* le type de valeur de l'argument de la ligne de commande en l'un des *Boolean* *String* *Number* .
+*argv.unnamed* et *argv.named* le type de valeur de l'argument de ligne de commande en l'un des *String* *Number* *Boolean* .
 
 
 Entrez les arguments de la ligne de commande avec le *REPL* .
@@ -243,7 +280,7 @@ argv, argv.unnamed, argv.named)
 ## *pathname*
 
 
-Exploiter le chemin.
+Exploitez le chemin.
 
 
 Généralement, les chemins commençant par `/` et `\` font référence à des chemins relatifs à partir de la racine du lecteur (par exemple, `/filename` peut être le même chemin que `C:/filename` ), mais pour des `wes` de sécurité dans `wes` `/` et les chemins commençant par `\` sont interprétés comme relatifs à le répertoire de travail.
@@ -277,13 +314,13 @@ console.log(contents)
 J'utilise certaines fonctionnalités de <https://github.com/runk/node-chardet> .
 
 
-Vous pouvez améliorer la précision de la devinette automatique en augmentant les caractères spécifiques à l'encodage.
+Vous pouvez améliorer la précision de l'estimation automatique en augmentant les caractères spécifiques à l'encodage.
 
 
 ## *JScript*
 
 
-Si vous modifiez le moteur de script à *Chakra* , vous ne serez pas en mesure d'utiliser *JScript* spécifique *Enumerator* etc. Le module intégré *JScript* rend disponibles. Cependant, *Enumerator* renvoie un *Array* au lieu d'un objet Enumerator.
+Si vous changez le moteur de script en *Chakra* , vous ne pourrez pas utiliser l' *Enumerator* spécifique à *JScript* , etc. Le module intégré *JScript* les rend disponibles. Cependant, *Enumerator* renvoie un *Array* au lieu d'un objet Enumerator.
 
 
 ```javascript
@@ -326,7 +363,7 @@ console.log(TypeName(FSO))
 ## *httprequest*
 
 
-*httprequest* est comme son nom la *http request* émettra un.
+*httprequest* est comme son nom *http request* émettra a.
 
 
 ```javascript
@@ -399,7 +436,7 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 ```
 
 
-# Ensemble de modules et installation
+# Regrouper et installer le module
 
 
 *install* , vous pouvez installer le module pour *wes* publié sur *github* . Vous aurez besoin d'un *github repository* pour publier le module. De plus, le nom du référentiel et le nom du répertoire local doivent être identiques.
@@ -411,16 +448,16 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 *github* publication d'un module sur *github* , *bundle* regroupe le module requis et le modifie dans un format pouvant être importé par le module d' *install* .
 
 
-Pour des raisons de sécurité, *wes* n'importe pas les modules dans un format qui peut être exécuté directement, alors créez un fichier *.json* avec le module *bundle* .
+Pour des raisons de sécurité, *wes* n'importe pas de modules dans un format exécutable directement, créez donc un fichier *.json* avec le module *bundle* .
 
 
-Il existe certaines conditions pour le regroupement de modules.
+Il y a certaines conditions pour regrouper des modules.
 
 
 1.  *repository* seul type de module peut être publié dans un *repository* .
 2.  Le nom du référentiel sur *github* et le nom du répertoire de travail local doivent être identiques.
-3.  Le référentiel doit être public si vous souhaitez publier le module vers un tiers.
-4.  *wes* interprète dynamiquement le chemin du module. Les modules acquis par `require` dans des conditions spécifiques telles que les instructions `if` ne peuvent pas être regroupées.
+3.  Le référentiel doit être public si vous souhaitez publier le module à un tiers.
+4.  *wes* interprète dynamiquement le chemin du module. Les modules acquis par `require` des conditions spécifiques telles que `if` instructions ne peuvent pas être regroupées.
 5.  *.json* fichier *.json* sera créé dans votre répertoire de travail avec le nom *directory_name.json* . Il ne peut pas être installé si le fichier est renommé ou si le fichier est déplacé.
 6.  `node_modules/directory_name` , le bundle échoue car il fait référence à `directory_name.json` .
 
@@ -428,13 +465,13 @@ Il existe certaines conditions pour le regroupement de modules.
 ## *install*
 
 
-Utilisé pour installer le fichier du module pour *wes* publié sur *github* .
+Utilisé pour installer le fichier de module pour *wes* publié sur *github* .
 
 
 ### usage
 
 
-Passer les arguments à *install* au format `@author/repository`
+Passez les arguments à *install* au format `@author/repository`
 
 
 ```shell
@@ -445,13 +482,13 @@ wes install @wachaon/fmt
 *install* a des options
 
 
-| nommé      | court nommé | la description                                                  |
-| ---------- | ----------- | --------------------------------------------------------------- |
-| `--bare`   | `-b`        | Ne pas créer de dossier *@author*                               |
-| `--global` | `-g`        | Installez le module dans le dossier où *wes.js* trouve *wes.js* |
+| nommé      | nommé court | la description                                            |
+| ---------- | ----------- | --------------------------------------------------------- |
+| `--bare`   | `-b`        | Ne pas créer de dossier *@author*                         |
+| `--global` | `-g`        | Installez le module dans le dossier où se trouve *wes.js* |
 
 
-`--bare` option `--bare` peut omettre l'argument `require` de `author@repository` vers `repository` . `--global` option `--global` rend les modules installés disponibles pour tous les scripts. Les options ci-dessus doivent être spécifiées en même temps que l'option de sécurité *wes* `--unsafe` ou `--dangerous` .
+`--bare` option `--bare` peut omettre l'argument `require` de `author@repository` à `repository` . `--global` option `--global` rend les modules installés disponibles pour tous les scripts. Les options ci-dessus doivent être spécifiées en même temps que l'option de sécurité *wes* `--unsafe` ou `--dangerous` .
 
 
 ```shell
@@ -462,7 +499,7 @@ wes install @wachaon/fmt --bare --unsafe
 # Installer le module de dépôt privé
 
 
-*install* peut être installé non seulement dans les modules des référentiels publics sur *github* , mais également dans les référentiels privés.
+*install* peut être installé non seulement dans des modules de dépôts publics sur *github* , mais également dans des dépôts privés.
 
 
 *install* , spécifiez le module avec `author@repository` . L'implémentation télécharge les éléments suivants.
@@ -473,7 +510,7 @@ wes install @wachaon/fmt --bare --unsafe
 ```
 
 
-Lorsque vous accédez au *raw* du référentiel privé avec un navigateur, le *token* sera affiché, alors copiez le *token* et utilisez-le.
+Lorsque vous accédez au *raw* du référentiel privé avec un navigateur, le *token* s'affiche, alors copiez le *token* et utilisez-le.
 
 
 Vous pouvez également installer un module dans un référentiel privé en l'exécutant sur la ligne de commande pendant la *token* du *token* .
@@ -493,7 +530,7 @@ Voici quelques modules externes.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* regroupe *prettier* et formate le script. De plus, si une erreur de `SyntaxError` se produit avec *@wachaon/fmt* installé, vous pouvez indiquer l'emplacement de l'erreur.
+*@wachaon/fmt* regroupe *prettier* *@wachaon/fmt* et formate le script. De plus, si une erreur de `SyntaxError` se produit avec *@wachaon/fmt* installé, vous pouvez indiquer l'emplacement de l'erreur.
 
 
 ### installer
@@ -507,7 +544,7 @@ wes install @wachaon/fmt
 ### usage
 
 
-S'il y a *.prettierrc* (format JSON) dans le répertoire de travail, cela sera reflété dans le paramètre. *fmt* peut être utilisé à la fois avec la *CLI* (interface de ligne de commande) et le *module* dans *fmt* .
+S'il y a *.prettierrc* (format JSON) dans le répertoire de travail, cela sera reflété dans le paramètre. *fmt* peut être utilisé à la fois avec *CLI* (interface de ligne de commande) et *module* dans *fmt* .
 
 
 Utiliser comme *CLI*
@@ -518,13 +555,13 @@ wes @wachaon/fmt src/sample --write
 ```
 
 
-| numéro sans nom | la description                                                |
-| --------------- | ------------------------------------------------------------- |
-| 0               | ??                                                            |
-| 1               | Obligatoire. Le chemin du fichier que vous souhaitez formater |
+| numéro anonyme | la description                                                |
+| -------------- | ------------------------------------------------------------- |
+| 0              | ――――                                                          |
+| 1              | Obligatoire. Le chemin du fichier que vous souhaitez formater |
 
 
-| nommé     | court nommé | la description         |
+| nommé     | nommé court | la description         |
 | --------- | ----------- | ---------------------- |
 | `--write` | `-w`        | Autoriser l'écrasement |
 
@@ -546,3 +583,71 @@ const { join, workingDirectory } = require('pathname')
 const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
+
+
+## `@wachaon/edge`
+
+
+*Internet Explorer* sera disponible pour le support à partir du 15 juin 2022. En conséquence, il devient impossible de faire fonctionner l'application avec `require('InternetExplorer.Application')` .
+
+
+Une alternative serait de faire fonctionner *Microsoft Edge based on Chromium* via un *web driver* , mais `@wachaon/edge` simplifie le pilote automatique d' *Edge* .
+
+
+### installer
+
+
+Tout d'abord, installez le module.
+
+
+```shell
+wes install @wachaon/edge --unsafe --bare
+```
+
+
+Ensuite, téléchargez le *web driver* .
+
+
+```shell
+wes edge
+```
+
+
+Décompressez le *zip* téléchargé et déplacez *msedgedriver.exe* dans le répertoire actuel.
+
+
+### usage
+
+
+Il sera facile à utiliser.
+
+
+```javascript
+const edge = require('./index')
+
+edge((window, navi, res) => {
+    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
+    window.navigate('http://www.google.com')
+    res.exports = []
+
+    navi.on(/./, (url) => {
+        console.log('URL: %O', url)
+        res.exports.push(url)
+    })
+})
+```
+
+
+Ce script génère les *URL* visitées à l'invite de commande dans l'ordre.
+
+
+`@wachaon/edge` enregistre un événement pour l' *URL* et ajoute des données à `res.exports` . L' *URL* enregistrer peut être soit `String` `RegExp` , et des paramètres flexibles peuvent être définis.
+
+
+En le rendant piloté par les événements, il est possible de passer facilement au fonctionnement manuel en ne définissant pas l' *URL* pour les processus difficiles à gérer avec le pilote automatique.
+
+
+Si vous souhaitez arrêter le script, `navi.emit('terminate', res)` ou `navi.emit('terminate', res)` manuellement *Edge* .
+
+
+Le processus de terminaison `res.exports` sous la forme d'un fichier *.json* comme valeur par défaut. Si vous souhaitez définir le traitement de fin, `edge(callback, terminate)` de `terminate` ensembles.

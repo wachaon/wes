@@ -1,32 +1,32 @@
 # *WES*
 
 
-*wes* is a framework for executing *ECMAScript* on *Windows Script Host*
+*wes* is a framework for executing *ECMAScript* on the command line *Windows Script Host* .
 
 
 The original text of the *README* is [*japanese*](/README.md) . Other than Japanese, it is a machine-translated sentence.  
 Please select sentences in other languages ​​from the following.
 
 
-+  [*簡体字*](README.zh-CN.md) <!-- 中国語 (簡体字) -->
-+  [*繁体字*](README.zh-TW.md) <!-- 中国語 (繁体字) -->
-+  [*English*](README.en.md) <!-- 英語 -->
-+  [*हिन्दी*](README.hi.md) <!-- ヒンディー語 -->
-+  [*Español*](README.es.md) <!-- スペイン語 -->
-+  [*عربى*](README.ar.md) <!-- アラビア語 -->
-+  [*বাংলা*](README.bn.md) <!-- ベンガル語 -->
-+  [*Português*](README.pt.md) <!-- ポルトガル語 -->
-+  [*русский язык*](README.ru.md) <!-- ロシア語 -->
-+  [*Deutsch*](README.de.md) <!-- ドイツ語 -->
-+  [*français*](README.fr.md) <!-- フランス語 -->
-+  [*italiano*](README.it.md) <!-- イタリア語 -->
++  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
++  [*繁体字*](/docs/README.zh-TW.md) <!-- 中国語 (繁体字) -->
++  [*English*](/docs/README.en.md) <!-- 英語 -->
++  [*हिन्दी*](/docs/README.hi.md) <!-- ヒンディー語 -->
++  [*Español*](/docs/README.es.md) <!-- スペイン語 -->
++  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
++  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
++  [*Português*](/docs/README.pt.md) <!-- ポルトガル語 -->
++  [*русский язык*](/docs/README.ru.md) <!-- ロシア語 -->
++  [*Deutsch*](/docs/README.de.md) <!-- ドイツ語 -->
++  [*français*](/docs/README.fr.md) <!-- フランス語 -->
++  [*italiano*](/docs/README.it.md) <!-- イタリア語 -->
 
 
 
 # Features
 
 
--   Change the script engine of *Windows Script Host* to *Chakra* and run *ECMAScript2015* *Chakra*
+-   Change the script engine of *Windows Script Host* to *Chakra* and run *ECMAScript2015* 2015
 -   It always runs 32bit *cscript.exe* , so there are no inherent bugs in 64bit environment.
 -   Import the module with `require` (corresponding to *es module* from *ver 0.9.0* )
 -   Outputs colored characters to standard output
@@ -36,9 +36,9 @@ Please select sentences in other languages ​​from the following.
 # Known issues wes can't solve
 
 
--   `WScript.Quit` cannot interrupt the program and does not return an error code
+-   `WScript.Quit` can't interrupt the program and doesn't return an error code
 -   Asynchronous processing such as `setTimeout` and `Promise` is not possible
--   The *event prefix* of the second argument of `WScript.CreateObject` cannot be used.
+-   The second argument *event prefix* of `WScript.CreateObject` cannot be used
 
 
 # Install
@@ -99,19 +99,40 @@ The startup options for *wes* are as follows.
 The implementation of `--safe` `--usual` `--unsafe` `--dangerous` `--debug` is incomplete, but named arguments are reserved.
 
 
-# built-in objects
+# module system
 
 
-*wes* has *built-in objects* that *WSH (JScript)* doesn't have.
+*wes* supports *commonjs module* systems that use the general `require()` and *es module* systems that use `import` . ( *dynamic import* is not supported because it is asynchronous processing)
 
 
-## *require*
+## *commonjs module*
 
 
-Import the module with *require* . *wes* automatically guesses the encoding of the module file, but if you don't guess correctly, you can specify the encoding with the second argument.
+`module.exports` modules by assigning to `module.exports` and calling with `require()` . For convenience, it also supports the *node_modules* directory.
 
 
-In addition, `require('WScript.Shell')` as of *OLE* even to *require* import is possible with.
+*wes* `require()` automatically guesses the encoding of the module file, but if it doesn't guess correctly, you can specify the encoding with the second argument.
+
+
+```javascript
+// ./add.js
+function add (a, b) {
+    return a + b
+}
+
+module.exports = add
+```
+
+
+```javascript
+// ./main.js
+const add = require('./add')
+
+console.log('add(7, 3) // => %O', add(7, 3))
+```
+
+
+You can also import to *OLE* like `require('WScript.Shell')` with *require* .
 
 
 ```javascript
@@ -126,25 +147,41 @@ WShell.AppActivate(ie.LocationName)
 ```
 
 
-## `module` and `module.exports`
+## *es module*
 
 
-If you want to define it as a module, assign it to `module.exports` .
+*Chakra* which is the execution engine of the script, interprets the syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. *wes* In *babel* enclosing. It is executed while sequentially *es module* to the *es module* . As a result, the processing overhead and file bloat are increasing as a cost.
+
+
+Modules described by *es module* are also `require()` converted to `require()` , so *OLE* can be called. However, it does not support the module file encoding specification. All are read by automatic guessing.
 
 
 ```javascript
-function add (a, b) {
-    return a + b
+// ./sub.mjs
+export default function sub (a, b) {
+    return a - b
 }
-
-module.exports = add
 ```
+
+
+```javascript
+// ./main2.js
+import sub from './sub.mjs'
+
+console.log('sub(7, 3) // => %O', sub(7, 3))
+```
+
+
+# built-in objects
+
+
+*wes* has *built-in objects* that *WSH (JScript)* doesn't have.
 
 
 ## *console*
 
 
-*wes* In `WScript.Echo` and `WScript.StdErr.WriteLine` instead of the *console* use the.
+*wes* uses *console* instead of `WScript.Echo` or `WScript.StdErr.WriteLine` .
 
 
 Print characters to the command line in `console.log` . It also supports formatted strings. Prints a formatted string using the formatting operator `%` .
@@ -295,7 +332,7 @@ files.forEach(file => console.log(file.Name))
 ```
 
 
-*GetObject* `WScript.GetObject` as an alternative to `WScript.GetObject` .
+*GetObject* acts as an alternative to `WScript.GetObject` .
 
 
 ```javascript
@@ -546,3 +583,71 @@ const { join, workingDirectory } = require('pathname')
 const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
+
+
+## `@wachaon/edge`
+
+
+*Internet Explorer* will be fully supported as of June 15, 2022. As a result, it becomes impossible to operate the application with `require('InternetExplorer.Application')` .
+
+
+An alternative would be to operate *Microsoft Edge based on Chromium* via a *web driver* , but `@wachaon/edge` simplifies *Edge* 's autopilot.
+
+
+### install
+
+
+First, install the module.
+
+
+```shell
+wes install @wachaon/edge --unsafe --bare
+```
+
+
+Then download the *web driver* .
+
+
+```shell
+wes edge
+```
+
+
+Unzip the downloaded *zip* and move *msedgedriver.exe* to the current directory.
+
+
+### usage
+
+
+It will be easy to use.
+
+
+```javascript
+const edge = require('./index')
+
+edge((window, navi, res) => {
+    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
+    window.navigate('http://www.google.com')
+    res.exports = []
+
+    navi.on(/./, (url) => {
+        console.log('URL: %O', url)
+        res.exports.push(url)
+    })
+})
+```
+
+
+This script outputs the visited *URL* to the command prompt in sequence.
+
+
+`@wachaon/edge` registers an event for the *URL* and adds data to `res.exports` . The *URL* registered can be either `String` `RegExp` , and flexible settings can be made.
+
+
+By making it event-driven, it is possible to easily switch to manual operation by not setting the *URL* for processes that are difficult to handle with autopilot.
+
+
+If you want to stop the script, `navi.emit('terminate', res)` or manually terminate *Edge* .
+
+
+The termination process outputs `res.exports` as a *.json* file as the default value. If you want to set the end processing, `edge(callback, terminate)` of `terminate` Sets.

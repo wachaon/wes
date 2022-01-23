@@ -1,25 +1,25 @@
 # *WES*
 
 
-*wes* *Windows Script Host* पर *ECMAScript* निष्पादित करने के लिए एक ढांचा है
+*wes* कमांड लाइन *Windows Script Host* पर *ECMAScript* निष्पादित करने के लिए एक ढांचा है।
 
 
-*README* का मूल पाठ [*japanese*](/README.md) । जापानी के अलावा, यह एक मशीनी अनुवादित वाक्य है।  
+*README* का मूल पाठ [*japanese*](/README.md) है। जापानी के अलावा, यह एक मशीनी अनुवादित वाक्य है।  
 कृपया निम्नलिखित में से अन्य भाषाओं में वाक्यों का चयन करें।
 
 
-+  [*簡体字*](README.zh-CN.md) <!-- 中国語 (簡体字) -->
-+  [*繁体字*](README.zh-TW.md) <!-- 中国語 (繁体字) -->
-+  [*English*](README.en.md) <!-- 英語 -->
-+  [*हिन्दी*](README.hi.md) <!-- ヒンディー語 -->
-+  [*Español*](README.es.md) <!-- スペイン語 -->
-+  [*عربى*](README.ar.md) <!-- アラビア語 -->
-+  [*বাংলা*](README.bn.md) <!-- ベンガル語 -->
-+  [*Português*](README.pt.md) <!-- ポルトガル語 -->
-+  [*русский язык*](README.ru.md) <!-- ロシア語 -->
-+  [*Deutsch*](README.de.md) <!-- ドイツ語 -->
-+  [*français*](README.fr.md) <!-- フランス語 -->
-+  [*italiano*](README.it.md) <!-- イタリア語 -->
++  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
++  [*繁体字*](/docs/README.zh-TW.md) <!-- 中国語 (繁体字) -->
++  [*English*](/docs/README.en.md) <!-- 英語 -->
++  [*हिन्दी*](/docs/README.hi.md) <!-- ヒンディー語 -->
++  [*Español*](/docs/README.es.md) <!-- スペイン語 -->
++  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
++  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
++  [*Português*](/docs/README.pt.md) <!-- ポルトガル語 -->
++  [*русский язык*](/docs/README.ru.md) <!-- ロシア語 -->
++  [*Deutsch*](/docs/README.de.md) <!-- ドイツ語 -->
++  [*français*](/docs/README.fr.md) <!-- フランス語 -->
++  [*italiano*](/docs/README.it.md) <!-- イタリア語 -->
 
 
 
@@ -36,15 +36,15 @@
 # ज्ञात समस्याएँ जिन्हें हम हल नहीं कर सकते
 
 
--   `WScript.Quit` प्रोग्राम को बाधित नहीं कर सकता और त्रुटि कोड नहीं लौटाता
+-   `WScript.Quit` प्रोग्राम को बाधित नहीं कर सकता है और एक त्रुटि कोड नहीं लौटाता है
 -   एसिंक्रोनस प्रोसेसिंग जैसे `setTimeout` और `Promise` संभव नहीं है
--   `WScript.CreateObject` के दूसरे तर्क के *event prefix* का उपयोग नहीं किया जा सकता है।
+-   `WScript.CreateObject` का दूसरा तर्क *event prefix* का उपयोग नहीं किया जा सकता
 
 
 # इंस्टॉल
 
 
-*wes* जरूरत है *wes.js* केवल फाइल। डाउनलोड करने के लिए, कमांड प्रॉम्प्ट प्रारंभ करें और निम्न आदेश दर्ज करें।
+*wes* की जरूरत है *wes.js* केवल फ़ाइल। डाउनलोड करने के लिए, कमांड प्रॉम्प्ट प्रारंभ करें और निम्न आदेश दर्ज करें।
 
 
 ```shell
@@ -53,7 +53,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 
 
 *wes* कार्यान्वयन के रूप में निष्पादन के समय *WScript.Shell* की `SendKeys` का उपयोग करें। *wes.js* निर्देशिका का पथ जहां *wes.js* सहेजा गया है, में *ascii* अलावा अन्य वर्ण हैं, तो `SendKeys` कुंजी को सही ढंग से भेजने में सक्षम नहीं होगा और स्क्रिप्ट निष्पादित करने में सक्षम नहीं होगी।  
-कृपया केवल *ascii* *wes.js* को बचाने के लिए पथ को कॉन्फ़िगर करें।
+कृपया केवल *ascii* *wes.js* का गंतव्य सहेजें पथ कॉन्फ़िगर करें।
 
 
 ## प्रयोग
@@ -99,19 +99,40 @@ wes
 `--safe` `--usual` `--unsafe` `--dangerous` `--debug` का क्रियान्वयन अधूरा है, लेकिन नामित तर्क सुरक्षित हैं।
 
 
-# अंतर्निर्मित वस्तुएं
+# मॉड्यूल प्रणाली
 
 
-*wes* में *built-in objects* जो *WSH (JScript)* में नहीं हैं।
+*wes* *commonjs module* सिस्टम का समर्थन करता है जो सामान्य `require()` और *es module* सिस्टम का उपयोग करते हैं जो `import` उपयोग करते `import` । ( *dynamic import* समर्थित नहीं है क्योंकि यह अतुल्यकालिक प्रसंस्करण है)
 
 
-## *require*
+## *commonjs module*
 
 
-*require* साथ मॉड्यूल आयात करें। *wes* स्वचालित रूप से मॉड्यूल फ़ाइल के एन्कोडिंग का अनुमान लगाता है, लेकिन यदि आप सही अनुमान नहीं लगाते हैं, तो आप दूसरे तर्क के साथ एन्कोडिंग निर्दिष्ट कर सकते हैं।
+`module.exports` को असाइन `module.exports` और `require()` साथ कॉल करके मॉड्यूल `module.exports` । सुविधा के लिए, यह *node_modules* निर्देशिका का भी समर्थन करता है।
 
 
-इसके अलावा, `require('WScript.Shell')` की *require* क्योंकि *OLE* भी *require* आयात संभव है।
+*wes* `require()` स्वचालित रूप से मॉड्यूल फ़ाइल के एन्कोडिंग का अनुमान लगाता है, लेकिन अगर यह सही ढंग से अनुमान नहीं लगाता है, तो आप दूसरे तर्क के साथ एन्कोडिंग निर्दिष्ट कर सकते हैं।
+
+
+```javascript
+// ./add.js
+function add (a, b) {
+    return a + b
+}
+
+module.exports = add
+```
+
+
+```javascript
+// ./main.js
+const add = require('./add')
+
+console.log('add(7, 3) // => %O', add(7, 3))
+```
+
+
+तुम भी करने के लिए आयात कर सकते हैं *OLE* तरह `require('WScript.Shell')` के साथ *require* ।
 
 
 ```javascript
@@ -126,25 +147,41 @@ WShell.AppActivate(ie.LocationName)
 ```
 
 
-## `module` और `module.exports`
+## *es module*
 
 
-आप एक मॉड्यूल के रूप में यह निर्धारित करना चाहते हैं, यह करने के लिए आवंटित `module.exports` ।
+*Chakra* जो स्क्रिप्ट का निष्पादन इंजन है, सिंटैक्स की व्याख्या करता है जैसे कि `imoprt` , लेकिन इसे निष्पादित नहीं किया जा सकता क्योंकि ऐसा इसलिए है क्योंकि `cscript` रूप में प्रसंस्करण विधि परिभाषित नहीं है। *wes* इन *babel* एनक्लोजिंग। इसे *es module* क्रमिक रूप से *es module* करते समय निष्पादित किया जाता है। नतीजतन, प्रोसेसिंग ओवरहेड और फाइल ब्लोट लागत के रूप में बढ़ रहे हैं।
+
+
+*es module* द्वारा वर्णित *es module* भी `require()` को `require()` परिवर्तित किया जाता है, इसलिए *OLE* को कॉल किया जा सकता है। हालांकि, यह मॉड्यूल फ़ाइल एन्कोडिंग विनिर्देश का समर्थन नहीं करता है। सभी स्वचालित अनुमान लगाकर पढ़े जाते हैं।
 
 
 ```javascript
-function add (a, b) {
-    return a + b
+// ./sub.mjs
+export default function sub (a, b) {
+    return a - b
 }
-
-module.exports = add
 ```
+
+
+```javascript
+// ./main2.js
+import sub from './sub.mjs'
+
+console.log('sub(7, 3) // => %O', sub(7, 3))
+```
+
+
+# अंतर्निर्मित वस्तुएं
+
+
+*wes* में *built-in objects* जो *WSH (JScript)* में नहीं हैं।
 
 
 ## *console*
 
 
-*wes* में `WScript.Echo` और `WScript.StdErr.WriteLine` बजाय *console* का उपयोग करें।
+`WScript.Echo` या `WScript.StdErr.WriteLine` के बजाय *wes* *console* का उपयोग करता है।
 
 
 `console.log` में कमांड लाइन में अक्षर प्रिंट करें। यह स्वरूपित तारों का भी समर्थन करता है। फ़ॉर्मेटिंग ऑपरेटर `%` का उपयोग करके एक स्वरूपित स्ट्रिंग को प्रिंट करता है।
@@ -185,7 +222,7 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 # अंतर्निहित मॉड्यूल
 
 
-*wes* में बुनियादी प्रसंस्करण को सरल और मानकीकृत करने के लिए *built-in modules* ।
+*wes* में बुनियादी प्रसंस्करण को सरल और मानकीकृत करने के लिए *built-in modules* हैं।
 
 
 ## *ansi*
@@ -214,7 +251,7 @@ console.log(orange + 'Hello World')
 ## *argv*
 
 
-कमांड लाइन तर्क प्राप्त करता है। `cscript.exe` कमांड-लाइन तर्क `/` नामित तर्कों की घोषणा करता है, लेकिन *wes* इन `-` और `--` नामित तर्कों की घोषणा करता है।
+कमांड लाइन तर्क प्राप्त करता है। `cscript.exe` में कमांड लाइन तर्क `/` के साथ नामित तर्कों की घोषणा करते हैं `--` जबकि *wes* नामित तर्कों को `-` और - के साथ घोषित करते हैं।
 
 
 *argv.unnamed* और *argv.named* से एक के लिए कमांड लाइन तर्क के मान प्रकार डाली *String* *Number* *Boolean* ।
@@ -402,7 +439,7 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 # मॉड्यूल बंडल और स्थापित करें
 
 
-*install* , आप के लिए मॉड्यूल स्थापित कर सकते हैं *wes* पर प्रकाशित *github* । मॉड्यूल को प्रकाशित करने के लिए आपको एक *github repository* आवश्यकता होगी। साथ ही, रिपॉजिटरी का नाम और स्थानीय निर्देशिका का नाम समान होना चाहिए।
+*install* के साथ, आप *github* पर प्रकाशित *wes* के लिए मॉड्यूल स्थापित कर सकते हैं। मॉड्यूल को प्रकाशित करने के लिए आपको एक *github repository* की आवश्यकता होगी। साथ ही, रिपॉजिटरी का नाम और स्थानीय निर्देशिका का नाम समान होना चाहिए।
 
 
 ## *bundle*
@@ -451,7 +488,7 @@ wes install @wachaon/fmt
 | `--global` | `-g`          | मॉड्यूल को उस फ़ोल्डर में स्थापित करें जहां *wes.js* है |
 
 
-`--bare` विकल्प `author@repository` से `repository` में `require` तर्क को छोड़ सकता `repository` । `--global` विकल्प संस्थापित मॉड्यूल को सभी स्क्रिप्ट के लिए उपलब्ध कराता है। उपरोक्त विकल्पों को उसी समय निर्दिष्ट किया जाना चाहिए जब *wes* सुरक्षा विकल्प `--unsafe` or `--dangerous` ।
+`--bare` विकल्प `author@repository` से `repository` में `require` तर्क को छोड़ सकता है। `--global` विकल्प संस्थापित मॉड्यूल को सभी स्क्रिप्ट के लिए उपलब्ध कराता है। उपरोक्त विकल्पों को उसी समय निर्दिष्ट किया जाना चाहिए जैसे कि *wes* सुरक्षा विकल्प `--unsafe` or `--dangerous` ।
 
 
 ```shell
@@ -462,7 +499,7 @@ wes install @wachaon/fmt --bare --unsafe
 # निजी भंडार का मॉड्यूल स्थापित करें
 
 
-*install* न केवल सार्वजनिक रिपॉजिटरी में *github* पर मॉड्यूल में *install* जा सकता है, बल्कि निजी रिपॉजिटरी में भी *install* जा सकता है।
+*install* न केवल *github* पर सार्वजनिक रिपॉजिटरी में मॉड्यूल में *install* जा सकता है, बल्कि निजी रिपॉजिटरी में भी *install* जा सकता है।
 
 
 *install* , `author@repository` साथ मॉड्यूल निर्दिष्ट करें। कार्यान्वयन निम्नलिखित डाउनलोड करता है।
@@ -493,7 +530,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* बंडल *prettier* और स्क्रिप्ट को प्रारूपित करता है। साथ ही, यदि *@wachaon/fmt* स्थापित है और एक `SyntaxError` त्रुटि होती है, तो त्रुटि स्थान का संकेत दिया जा सकता है।
+*@wachaon/fmt* बंडल *prettier* और स्क्रिप्ट को प्रारूपित करता है। साथ ही, यदि *@wachaon/fmt* स्थापित होने पर `SyntaxError` त्रुटि होती है, तो आप त्रुटि स्थान का संकेत दे सकते हैं।
 
 
 ### इंस्टॉल
@@ -507,7 +544,7 @@ wes install @wachaon/fmt
 ### प्रयोग
 
 
-यदि कार्यशील निर्देशिका में *.prettierrc* (JSON प्रारूप) है, तो यह सेटिंग में दिखाई देगा। *fmt* उपयोग *CLI* (कमांड लाइन इंटरफेस) और *fmt* में *module* दोनों के साथ किया जा सकता है।
+यदि कार्यशील निर्देशिका में *.prettierrc* (JSON प्रारूप) है, तो यह सेटिंग में दिखाई देगा। इसका उपयोग *CLI* (कमांड लाइन इंटरफेस) और *fmt* में *module* दोनों के साथ किया जा सकता है।
 
 
 *CLI* रूप में उपयोग करें
@@ -546,3 +583,71 @@ const { join, workingDirectory } = require('pathname')
 const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
+
+
+## `@wachaon/edge`
+
+
+*Internet Explorer* 15 जून, 2022 तक समर्थन के लिए उपलब्ध होगा। परिणामस्वरूप, `require('InternetExplorer.Application')` साथ एप्लिकेशन को संचालित करना असंभव हो जाता है।
+
+
+एक विकल्प यह होगा कि *web driver* के माध्यम से *Microsoft Edge based on Chromium* को संचालित किया जाए, लेकिन `@wachaon/edge` *Edge* के ऑटोपायलट को सरल बनाता है।
+
+
+### इंस्टॉल
+
+
+सबसे पहले, मॉड्यूल स्थापित करें।
+
+
+```shell
+wes install @wachaon/edge --unsafe --bare
+```
+
+
+फिर *web driver* डाउनलोड करें।
+
+
+```shell
+wes edge
+```
+
+
+डाउनलोड की गई *zip* अनज़िप करें और *msedgedriver.exe* को वर्तमान निर्देशिका में ले जाएँ।
+
+
+### प्रयोग
+
+
+इसका उपयोग करना आसान होगा।
+
+
+```javascript
+const edge = require('./index')
+
+edge((window, navi, res) => {
+    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
+    window.navigate('http://www.google.com')
+    res.exports = []
+
+    navi.on(/./, (url) => {
+        console.log('URL: %O', url)
+        res.exports.push(url)
+    })
+})
+```
+
+
+यह स्क्रिप्ट क्रम में देखे गए *URL* को कमांड प्रॉम्प्ट पर आउटपुट करती है।
+
+
+`@wachaon/edge` *URL* लिए एक ईवेंट पंजीकृत करता है और डेटा को `res.exports` जोड़ता है। पंजीकृत *URL* वाला *URL* या तो `String` `RegExp` हो सकता है, और लचीली सेटिंग्स की जा सकती हैं।
+
+
+इसे ईवेंट-चालित बनाकर, ऑटोपायलट के साथ संभालना मुश्किल प्रक्रियाओं के लिए *URL* सेट न करके आसानी से मैन्युअल संचालन पर स्विच करना संभव है।
+
+
+यदि आप स्क्रिप्ट को रोकना चाहते हैं, तो `navi.emit('terminate', res)` या *Edge* मैन्युअल रूप से समाप्त करें।
+
+
+समाप्ति प्रक्रिया `res.exports` को *.json* फ़ाइल के रूप में डिफ़ॉल्ट मान के रूप में आउटपुट `res.exports` । यदि आप एंड प्रोसेसिंग सेट करना चाहते हैं `edge(callback, terminate)` `terminate` सेट्स का `edge(callback, terminate)` ।

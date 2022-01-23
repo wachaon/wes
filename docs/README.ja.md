@@ -1,6 +1,6 @@
 # *WES*
 
-*wes* は *Windows Script Host* で *ECMAScript* を実行するフレームワークです
+*wes* はコマンドラインの *Windows Script Host* で *ECMAScript* を実行するフレームワークです。
 
 *README* の原文は [*japanese*](/README.md) になります。日本語以外は機械翻訳の文章になります。  
 他言語の文章は下記から選択してください。
@@ -51,7 +51,7 @@ wes index
 wes
 ```
 
-空白行を２つ入力するまでスクリプトの入力を受け付けます。*README.md* でのサンプルスクリプトの
+空行を２つ入力するまでスクリプトの入力を受け付けます。*README.md* でのサンプルスクリプトの
 実行も *REPL* で確認出来ます。
 
 ## command-line named arguments
@@ -474,3 +474,53 @@ const { join, workingDirectory } = require('pathname')
 const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
+
+## `@wachaon/edge`
+
+*Internet Explorer* が2022年6月15日を以てサポートを完了します。それに伴い `require('InternetExplorer.Application')` でのアプリケーションの操作も不可能になります。
+
+代替案として、*Microsoft Edge based on Chromium* を *web driver* 経由で操作することになりますが、`@wachaon/edge` は *Edge* の自動操縦を簡素化します。
+
+### install
+
+まずはモジュールをインストールします。
+
+```shell
+wes install @wachaon/edge --unsafe --bare
+```
+次に *web driver* をダウンロードします。
+
+```shell
+wes edge
+```
+ダウンロードした *zip* を解凍して、*msedgedriver.exe* をカレントディレクトリに移動させます。
+
+### usage
+
+簡単な使い方になります。
+
+```javascript
+const edge = require('./index')
+
+edge((window, navi, res) => {
+    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
+    window.navigate('http://www.google.com')
+    res.exports = []
+
+    navi.on(/./, (url) => {
+        console.log('URL: %O', url)
+        res.exports.push(url)
+    })
+})
+```
+このスクリプトは訪問した *URL* を順次コマンドプロンプトに出力します。
+
+`@wachaon/edge` は *URL* に対してイベントを登録して `res.exports` にデータを追加していきます。
+登録する *URL* は `String` `RegExp` どちらでも可能で、柔軟な設定ができます。
+
+イベントドリブンにすることで、自動操縦では対応が困難な処理などはあえて *URL* を設定しないことで、容易に手動操作への切り替えが可能です。
+
+スクリプトを停止させたい場合は、`navi.emit('terminate', res)` を実行するか、*Edge* を手動で終了させます。
+
+終了処理は既定値として `res.exports` を *.json* ファイルとして出力します。
+終了処理を設定したい場合は、`edge(callback, terminate)` の `terminate` を設定します。

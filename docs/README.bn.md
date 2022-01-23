@@ -1,25 +1,25 @@
 # *WES*
 
 
-*wes* হল *Windows Script Host* *wes* *ECMAScript* কার্যকর করার জন্য একটি কাঠামো
+*wes* কমান্ড লাইনে *ECMAScript* চালানোর জন্য একটি কাঠামো *Windows Script Host* ।
 
 
 *README* এর মূল পাঠ্য [*japanese*](/README.md) । জাপানি ব্যতীত, এটি একটি মেশিন-অনুবাদিত বাক্য।  
 অনুগ্রহ করে নিম্নলিখিত থেকে অন্যান্য ভাষার বাক্য নির্বাচন করুন।
 
 
-+  [*簡体字*](README.zh-CN.md) <!-- 中国語 (簡体字) -->
-+  [*繁体字*](README.zh-TW.md) <!-- 中国語 (繁体字) -->
-+  [*English*](README.en.md) <!-- 英語 -->
-+  [*हिन्दी*](README.hi.md) <!-- ヒンディー語 -->
-+  [*Español*](README.es.md) <!-- スペイン語 -->
-+  [*عربى*](README.ar.md) <!-- アラビア語 -->
-+  [*বাংলা*](README.bn.md) <!-- ベンガル語 -->
-+  [*Português*](README.pt.md) <!-- ポルトガル語 -->
-+  [*русский язык*](README.ru.md) <!-- ロシア語 -->
-+  [*Deutsch*](README.de.md) <!-- ドイツ語 -->
-+  [*français*](README.fr.md) <!-- フランス語 -->
-+  [*italiano*](README.it.md) <!-- イタリア語 -->
++  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
++  [*繁体字*](/docs/README.zh-TW.md) <!-- 中国語 (繁体字) -->
++  [*English*](/docs/README.en.md) <!-- 英語 -->
++  [*हिन्दी*](/docs/README.hi.md) <!-- ヒンディー語 -->
++  [*Español*](/docs/README.es.md) <!-- スペイン語 -->
++  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
++  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
++  [*Português*](/docs/README.pt.md) <!-- ポルトガル語 -->
++  [*русский язык*](/docs/README.ru.md) <!-- ロシア語 -->
++  [*Deutsch*](/docs/README.de.md) <!-- ドイツ語 -->
++  [*français*](/docs/README.fr.md) <!-- フランス語 -->
++  [*italiano*](/docs/README.it.md) <!-- イタリア語 -->
 
 
 
@@ -38,7 +38,7 @@
 
 -   `WScript.Quit` প্রোগ্রামটিকে বাধা দিতে পারে না এবং একটি ত্রুটি কোড ফেরত দেয় না
 -   `setTimeout` এবং `Promise` মতো অ্যাসিঙ্ক্রোনাস প্রক্রিয়াকরণ সম্ভব নয়
--   `WScript.CreateObject` এর দ্বিতীয় আর্গুমেন্টের *event prefix* ব্যবহার করা যাবে না।
+-   `WScript.CreateObject` এর দ্বিতীয় আর্গুমেন্ট *event prefix* ব্যবহার করা যাবে না
 
 
 # ইনস্টল করুন
@@ -53,7 +53,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 
 
 *wes* বাস্তবায়নের সময় *WScript.Shell* এর `SendKeys` ব্যবহার করে। *wes.js* ডিরেক্টরির পাথ যেখানে *wes.js* সংরক্ষিত হয় সেখানে *ascii* ছাড়া অন্য অক্ষর থাকে, তাহলে `SendKeys` সঠিকভাবে কী পাঠাতে পারবে না এবং স্ক্রিপ্টটি কার্যকর করা যাবে না।  
-*wes.js* শুধুমাত্র *ascii* সংরক্ষণ করতে পাথ কনফিগার করুন।
+গন্তব্য পথ সংরক্ষণ দয়া করে কনফিগার করুন *wes.js* শুধুমাত্র *ascii* ।
 
 
 ## ব্যবহার
@@ -99,19 +99,40 @@ wes
 বাস্তবায়ন `--safe` `--usual` `--unsafe` `--dangerous` `--debug` অসম্পূর্ণ, কিন্তু নামে আর্গুমেন্ট সংরক্ষিত।
 
 
-# অন্তর্নির্মিত বস্তু
+# মডিউল সিস্টেম
 
 
-*wes* এর *built-in objects* যা *WSH (JScript)* নেই।
+*wes* সাধারণ `require()` এবং *es module* সিস্টেম ব্যবহার করে এমন *commonjs module* সিস্টেম সমর্থন করে যা `import` ব্যবহার করে। ( *dynamic import* সমর্থিত নয় কারণ এটি অ্যাসিঙ্ক্রোনাস প্রক্রিয়াকরণ)
 
 
-## *require*
+## *commonjs module*
 
 
-*require* সহ মডিউল আমদানি করুন। *wes* স্বয়ংক্রিয়ভাবে মডিউল ফাইলের এনকোডিং অনুমান করে, কিন্তু আপনি যদি সঠিকভাবে অনুমান না করেন, তাহলে আপনি দ্বিতীয় আর্গুমেন্টের সাথে এনকোডিং নির্দিষ্ট করতে পারেন।
+`module.exports` বরাদ্দ করে মডিউল পরিচালনা করুন এবং `require()` এর সাথে কল করুন। সুবিধার জন্য, এটি *node_modules* ডিরেক্টরিকেও সমর্থন করে।
 
 
-উপরন্তু, `require('WScript.Shell')` হিসাবে *OLE* এমনকি *require* আমদানি করা সম্ভব।
+*wes* `require()` স্বয়ংক্রিয়ভাবে মডিউল ফাইলের এনকোডিং অনুমান করে, কিন্তু যদি এটি সঠিকভাবে অনুমান না করে, আপনি দ্বিতীয় আর্গুমেন্টের সাথে এনকোডিং নির্দিষ্ট করতে পারেন।
+
+
+```javascript
+// ./add.js
+function add (a, b) {
+    return a + b
+}
+
+module.exports = add
+```
+
+
+```javascript
+// ./main.js
+const add = require('./add')
+
+console.log('add(7, 3) // => %O', add(7, 3))
+```
+
+
+আপনি প্রয়োজনের সাথে *require* মতো `require('WScript.Shell')` *OLE* করতে পারেন।
 
 
 ```javascript
@@ -126,25 +147,41 @@ WShell.AppActivate(ie.LocationName)
 ```
 
 
-## `module` এবং `module.exports`
+## *es module*
 
 
-আপনি যদি এটিকে একটি মডিউল হিসাবে সংজ্ঞায়িত করতে চান তবে এটিকে `module.exports` বরাদ্দ করুন।
+*Chakra* যা স্ক্রিপ্টের এক্সিকিউশন ইঞ্জিন, সিনট্যাক্সকে ব্যাখ্যা করে যেমন `imoprt` , কিন্তু এটি কার্যকর করা যায় না কারণ এটি `cscript` হিসাবে প্রক্রিয়াকরণ পদ্ধতি সংজ্ঞায়িত করা হয়নি। *wes* সালে *babel* পরিক্ষেপ। *es module* ক্রমানুসারে *es module* করার সময় এটি কার্যকর করা হয়। ফলস্বরূপ, প্রক্রিয়াকরণের ওভারহেড এবং ফাইল ব্লোট ব্যয় হিসাবে বাড়ছে।
+
+
+*es module* দ্বারা বর্ণিত মডিউলগুলিকে `require()` তে রূপান্তরিত করা হয়, তাই *OLE* বলা যেতে পারে। যাইহোক, এটি মডিউল ফাইল এনকোডিং স্পেসিফিকেশন সমর্থন করে না। সব স্বয়ংক্রিয় অনুমান দ্বারা পড়া হয়.
 
 
 ```javascript
-function add (a, b) {
-    return a + b
+// ./sub.mjs
+export default function sub (a, b) {
+    return a - b
 }
-
-module.exports = add
 ```
+
+
+```javascript
+// ./main2.js
+import sub from './sub.mjs'
+
+console.log('sub(7, 3) // => %O', sub(7, 3))
+```
+
+
+# অন্তর্নির্মিত বস্তু
+
+
+*wes* এর *built-in objects* যা *WSH (JScript)* নেই।
 
 
 ## *console*
 
 
-*wes* এ `WScript.Echo` এবং `WScript.StdErr.WriteLine` পরিবর্তে *console* ব্যবহার করুন।
+*wes* `WScript.Echo` বা `WScript.StdErr.WriteLine` এর পরিবর্তে *console* ব্যবহার করে।
 
 
 `console.log` এ কমান্ড লাইনে অক্ষর মুদ্রণ করুন। এটি ফরম্যাট করা স্ট্রিংগুলিকেও সমর্থন করে। ফরম্যাটিং অপারেটর `%` ব্যবহার করে একটি ফরম্যাট করা স্ট্রিং প্রিন্ট করে।
@@ -155,7 +192,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
 
-*wes* এ রঙিন একটি স্ট্রিং আউটপুট করার জন্য `WScript.StdOut.WriteLine` পরিবর্তে, `WScript.StdErr.WriteLine` ব্যবহার করুন। `WScript.Echo` এবং `WScript.StdOut.WriteLine` আউটপুট থেকে ব্লক করা হয়েছে, তাই `WScript.StdErr.WriteLine` বা `console.log` ব্যবহার করুন।
+*wes* এর পরিবর্তে `WScript.StdOut.WriteLine` রঙিন একটি স্ট্রিং আউটপুট করার জন্য, `WScript.StdErr.WriteLine` ব্যবহার করুন। `WScript.Echo` এবং `WScript.StdOut.WriteLine` আউটপুট থেকে ব্লক করা হয়েছে, তাই `WScript.StdErr.WriteLine` বা `console.log` ব্যবহার করুন।
 
 
 ## *Buffer*
@@ -185,7 +222,7 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 # অন্তর্নির্মিত মডিউল
 
 
-মৌলিক প্রক্রিয়াকরণকে সরল ও মানসম্মত করার জন্য *wes* এর *built-in modules* ।
+বেসিক প্রসেসিংকে সরল ও প্রমিত করার জন্য *wes* এর *built-in modules* ।
 
 
 ## *ansi*
@@ -274,7 +311,7 @@ console.log(contents)
 ## *chardet*
 
 
-আমি [https://github.com/runk/node-chardet এর](https://github.com/runk/node-chardet) কিছু বৈশিষ্ট্য ব্যবহার করছি।
+আমি <https://github.com/runk/node-chardet> এর কিছু বৈশিষ্ট্য ব্যবহার করছি।
 
 
 আপনি এনকোডিং এর জন্য নির্দিষ্ট অক্ষর বৃদ্ধি করে স্বয়ংক্রিয় অনুমান করার সঠিকতা উন্নত করতে পারেন।
@@ -283,7 +320,7 @@ console.log(contents)
 ## *JScript*
 
 
-আপনাকে স্ক্রিপ্ট ইঞ্জিন পরিবর্তন করেন তাহলে *Chakra* , আপনি ব্যবহার করতে সক্ষম হবেন না *JScript* নির্দিষ্ট *Enumerator* ইত্যাদি অন্তর্নির্মিত মডিউল *JScript* তাদের উপলব্ধ করে তোলে। যাইহোক, *Enumerator* একটি গণনাকারী বস্তুর পরিবর্তে একটি *Array* প্রদান করে।
+আপনি যদি স্ক্রিপ্ট ইঞ্জিনকে *JScript* পরিবর্তন করেন, আপনি *Chakra* নির্দিষ্ট *Enumerator* ইত্যাদি ব্যবহার করতে পারবেন না। অন্তর্নির্মিত মডিউল *JScript* তাদের উপলব্ধ করে তোলে। যাইহোক, *Enumerator* একটি গণনাকারী বস্তুর পরিবর্তে একটি *Array* প্রদান করে।
 
 
 ```javascript
@@ -313,7 +350,7 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ## *VBScript*
 
 
-*VBScript* কিছু বৈশিষ্ট্য প্রদান করে যা *JScript* নেই।
+*VBScript* কিছু বৈশিষ্ট্য প্রদান করে যা *JScript* এর নেই।
 
 
 ```javascript
@@ -445,10 +482,10 @@ wes install @wachaon/fmt
 *install* করার বিকল্প আছে
 
 
-| নাম        | সংক্ষিপ্ত নাম | বর্ণনা                                          |
-| ---------- | ------------- | ----------------------------------------------- |
-| `--bare`   | `-b`          | *@author* ফোল্ডার তৈরি করবেন না                 |
-| `--global` | `-g`          | যে ফোল্ডারে *wes.js* সেখানে মডিউলটি ইনস্টল করুন |
+| নাম        | সংক্ষিপ্ত নাম | বর্ণনা                                              |
+| ---------- | ------------- | --------------------------------------------------- |
+| `--bare`   | `-b`          | *@author* ফোল্ডার তৈরি করবেন না                     |
+| `--global` | `-g`          | যে ফোল্ডারে *wes.js* আছে সেখানে মডিউলটি ইনস্টল করুন |
 
 
 `--bare` বিকল্পটি `author@repository` থেকে `repository` তে `require` আর্গুমেন্ট বাদ দিতে `require` । `--global` বিকল্পটি সমস্ত স্ক্রিপ্টে ইনস্টল করা মডিউলগুলি উপলব্ধ করে। উপরের বিকল্পগুলি অবশ্যই *wes* সুরক্ষা বিকল্পের সাথে একই সময়ে নির্দিষ্ট করা উচিত `--unsafe` বা `--dangerous` ।
@@ -493,7 +530,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* থোকায় থোকায় *prettier* এবং বিন্যাস স্ক্রিপ্ট। এছাড়াও, যদি *@wachaon/fmt* ইনস্টল করা থাকে এবং একটি `SyntaxError` ত্রুটি দেখা দেয়, ত্রুটির অবস্থান নির্দেশ করা যেতে পারে।
+*@wachaon/fmt* থোকায় থোকায় *prettier* এবং বিন্যাস স্ক্রিপ্ট। এছাড়াও, *@wachaon/fmt* ইন্সটল করার সাথে যদি একটি `SyntaxError` ত্রুটি ঘটে, আপনি ত্রুটির অবস্থান নির্দেশ করতে পারেন।
 
 
 ### ইনস্টল
@@ -529,7 +566,7 @@ wes @wachaon/fmt src/sample --write
 | `--write` | `-w`          | ওভাররাইট করার অনুমতি দিন |
 
 
-যদি আপনি একটি নামে যুক্তি উল্লেখ একটি ফরম্যাট স্ক্রিপ্ট ফাইলটি প্রতিস্থাপন `--write` বা `-w` ।
+আপনি `--write` বা `-w` এর একটি নামযুক্ত আর্গুমেন্ট উল্লেখ করলে ফর্ম্যাট করা স্ক্রিপ্ট দিয়ে ফাইলটি ওভাররাইট করুন।
 
 
 ### যখন *module* হিসাবে ব্যবহার করা হয়
@@ -546,3 +583,71 @@ const { join, workingDirectory } = require('pathname')
 const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
+
+
+## `@wachaon/edge`
+
+
+*Internet Explorer* 15 জুন, 2022 থেকে সমর্থনের জন্য উপলব্ধ হবে। ফলস্বরূপ, `require('InternetExplorer.Application')` সহ অ্যাপ্লিকেশনটি পরিচালনা করা অসম্ভব হয়ে পড়ে।
+
+
+একটি বিকল্প হল একটি *web driver* মাধ্যমে *Microsoft Edge based on Chromium* পরিচালনা করা, কিন্তু `@wachaon/edge` *Edge* -এর অটোপাইলটকে সরল করে।
+
+
+### ইনস্টল
+
+
+প্রথমে মডিউলটি ইনস্টল করুন।
+
+
+```shell
+wes install @wachaon/edge --unsafe --bare
+```
+
+
+তারপর *web driver* ডাউনলোড করুন।
+
+
+```shell
+wes edge
+```
+
+
+ডাউনলোড করা আনজিপ *zip* এবং পদক্ষেপ *msedgedriver.exe* বর্তমান ডিরেক্টরির।
+
+
+### ব্যবহার
+
+
+এটি ব্যবহার করা সহজ হবে।
+
+
+```javascript
+const edge = require('./index')
+
+edge((window, navi, res) => {
+    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
+    window.navigate('http://www.google.com')
+    res.exports = []
+
+    navi.on(/./, (url) => {
+        console.log('URL: %O', url)
+        res.exports.push(url)
+    })
+})
+```
+
+
+এই স্ক্রিপ্টটি পরিদর্শন করা *URL* ক্রমানুসারে কমান্ড প্রম্পটে আউটপুট করে।
+
+
+`@wachaon/edge` *URL* জন্য একটি ইভেন্ট নিবন্ধন করে এবং `res.exports` ডেটা যোগ করে। যে *URL* নিবন্ধিত হবে তা হয় `String` `RegExp` হতে পারে এবং নমনীয় সেটিংস তৈরি করা যেতে পারে।
+
+
+এটিকে ইভেন্ট-চালিত করে, অটোপাইলট দিয়ে পরিচালনা করা কঠিন প্রক্রিয়াগুলির জন্য *URL* সেট না করে সহজেই ম্যানুয়াল অপারেশনে স্যুইচ করা সম্ভব।
+
+
+আপনি যদি স্ক্রিপ্ট বন্ধ করতে চান, তাহলে `navi.emit('terminate', res)` অথবা ম্যানুয়ালি *Edge* টার্মিনেট করুন।
+
+
+অবসান প্রক্রিয়া ডিফল্ট মান হিসাবে *.json* ফাইল হিসাবে `res.exports` কে আউটপুট করে। আপনি শেষ প্রক্রিয়াকরণ সেট করতে চান, `edge(callback, terminate)` এর `terminate` সেট.

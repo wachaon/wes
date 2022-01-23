@@ -1,22 +1,22 @@
 # *WES*
 
-*wes* は *Windows Script Host* で *ECMAScript* を実行するフレームワークです
+*wes* はコマンドラインの *Windows Script Host* で *ECMAScript* を実行するフレームワークです。
 
 *README* の原文は [*japanese*](/README.md) になります。日本語以外は機械翻訳の文章になります。  
 他言語の文章は下記から選択してください。
 
-+  [*簡体字*](README.zh-CN.md) <!-- 中国語 (簡体字) -->
-+  [*繁体字*](README.zh-TW.md) <!-- 中国語 (繁体字) -->
-+  [*English*](README.en.md) <!-- 英語 -->
-+  [*हिन्दी*](README.hi.md) <!-- ヒンディー語 -->
-+  [*Español*](README.es.md) <!-- スペイン語 -->
-+  [*عربى*](README.ar.md) <!-- アラビア語 -->
-+  [*বাংলা*](README.bn.md) <!-- ベンガル語 -->
-+  [*Português*](README.pt.md) <!-- ポルトガル語 -->
-+  [*русский язык*](README.ru.md) <!-- ロシア語 -->
-+  [*Deutsch*](README.de.md) <!-- ドイツ語 -->
-+  [*français*](README.fr.md) <!-- フランス語 -->
-+  [*italiano*](README.it.md) <!-- イタリア語 -->
++  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
++  [*繁体字*](/docs/README.zh-TW.md) <!-- 中国語 (繁体字) -->
++  [*English*](/docs/README.en.md) <!-- 英語 -->
++  [*हिन्दी*](/docs/README.hi.md) <!-- ヒンディー語 -->
++  [*Español*](/docs/README.es.md) <!-- スペイン語 -->
++  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
++  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
++  [*Português*](/docs/README.pt.md) <!-- ポルトガル語 -->
++  [*русский язык*](/docs/README.ru.md) <!-- ロシア語 -->
++  [*Deutsch*](/docs/README.de.md) <!-- ドイツ語 -->
++  [*français*](/docs/README.fr.md) <!-- フランス語 -->
++  [*italiano*](/docs/README.it.md) <!-- イタリア語 -->
 
 
 # Features
@@ -63,7 +63,7 @@ wes index
 wes
 ```
 
-空白行を２つ入力するまでスクリプトの入力を受け付けます。*README.md* でのサンプルスクリプトの
+空行を２つ入力するまでスクリプトの入力を受け付けます。*README.md* でのサンプルスクリプトの
 実行も *REPL* で確認出来ます。
 
 ## command-line named arguments
@@ -83,14 +83,34 @@ wes
 
 `--safe` `--usual` `--unsafe` `--dangerous` `--debug` の実装は不完全ですが、名前付き引数は予約されています。
 
-# built-in objects
+# module system
 
-*wes* には *WSH (JScript)* には無い *built-in objects* があります。
+*wes* は一般的な `require()` を使用する *commonjs module* のシステムと `import` を使用する
+*es module* のシステムに対応しています。(*dynamic import* は非同期処理の為、未対応)
 
-## *require*
+## *commonjs module*
 
-*require* でモジュールをインポートします。*wes* ではモジュールファイルのエンコードを自動推測しますが、
+`module.exports` への代入と `require()` での呼び出しでモジュールを管理します。
+利便上 *node_modules* ディレクトリへの対応もしています。
+
+*wes* の `require()` はモジュールファイルのエンコードを自動推測しますが、
 正しく推測しない場合に第二引数でエンコードを指定することも可能です。
+
+```javascript
+// ./add.js
+function add (a, b) {
+    return a + b
+}
+
+module.exports = add
+```
+
+```javascript
+// ./main.js
+const add = require('./add')
+
+console.log('add(7, 3) // => %O', add(7, 3))
+```
 
 また、`require('WScript.Shell')` の様に *OLE* に対しても *require* でインポート可能です。
 
@@ -105,17 +125,32 @@ while (ie.Busy || ie.readystate != 4) {
 WShell.AppActivate(ie.LocationName)
 ```
 
-## `module` and `module.exports`
+## *es module*
 
-モジュールとして定義したい場合は `module.exports` に代入します。
+スクリプトの実行エンジンである *Chakra* は `imoprt` などの構文を解釈しますが `cscript` としての処理方法が定義されていないのか、そのままでは実行はできません。
+*wes* では *babel* を内包。
+*es module* に対して逐次トランスパイルしながら実行しています。そのためコストとして処理のオーバーヘッドとファイルが肥大化しています。
+
+*es module* で記述されているモジュールもトランスパイルで `require()` に変換されるため、*OLE* の呼び出しも可能です。
+しかしながらモジュールファイルのエンコード指定には対応していません。全て自動推測で読み込まれます。
 
 ```javascript
-function add (a, b) {
-    return a + b
+// ./sub.mjs
+export default function sub (a, b) {
+    return a - b
 }
-
-module.exports = add
 ```
+
+```javascript
+// ./main2.js
+import sub from './sub.mjs'
+
+console.log('sub(7, 3) // => %O', sub(7, 3))
+```
+
+# built-in objects
+
+*wes* には *WSH (JScript)* には無い *built-in objects* があります。
 
 ## *console*
 
@@ -451,3 +486,53 @@ const { join, workingDirectory } = require('pathname')
 const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
+
+## `@wachaon/edge`
+
+*Internet Explorer* が2022年6月15日を以てサポートを完了します。それに伴い `require('InternetExplorer.Application')` でのアプリケーションの操作も不可能になります。
+
+代替案として、*Microsoft Edge based on Chromium* を *web driver* 経由で操作することになりますが、`@wachaon/edge` は *Edge* の自動操縦を簡素化します。
+
+### install
+
+まずはモジュールをインストールします。
+
+```shell
+wes install @wachaon/edge --unsafe --bare
+```
+次に *web driver* をダウンロードします。
+
+```shell
+wes edge
+```
+ダウンロードした *zip* を解凍して、*msedgedriver.exe* をカレントディレクトリに移動させます。
+
+### usage
+
+簡単な使い方になります。
+
+```javascript
+const edge = require('./index')
+
+edge((window, navi, res) => {
+    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
+    window.navigate('http://www.google.com')
+    res.exports = []
+
+    navi.on(/./, (url) => {
+        console.log('URL: %O', url)
+        res.exports.push(url)
+    })
+})
+```
+このスクリプトは訪問した *URL* を順次コマンドプロンプトに出力します。
+
+`@wachaon/edge` は *URL* に対してイベントを登録して `res.exports` にデータを追加していきます。
+登録する *URL* は `String` `RegExp` どちらでも可能で、柔軟な設定ができます。
+
+イベントドリブンにすることで、自動操縦では対応が困難な処理などはあえて *URL* を設定しないことで、容易に手動操作への切り替えが可能です。
+
+スクリプトを停止させたい場合は、`navi.emit('terminate', res)` を実行するか、*Edge* を手動で終了させます。
+
+終了処理は既定値として `res.exports` を *.json* ファイルとして出力します。
+終了処理を設定したい場合は、`edge(callback, terminate)` の `terminate` を設定します。
