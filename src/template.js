@@ -691,15 +691,16 @@ try {
         console.log(ansi.color(255, 165, 0) + errorStack.join('\r\n').split('Function code:').join(NONE))
 
         var pathname = req('pathname')
-        var WorkingDirector = pathname.WorkingDirector
+        var resolve = pathname.resolve
+        var WorkingDirectory = pathname.WorkingDirectory
 
         if (error instanceof SyntaxError) {
             var fmt
             try {
-                fmt = require(WorkingDirector, 'fmt')
+                fmt = require(WorkingDirectory, 'fmt')
             } catch (error1) {
                 try {
-                    fmt = require(WorkingDirector, '@wachaon/fmt')
+                    fmt = require(WorkingDirectory, '@wachaon/fmt')
                 } catch (error2) {
                     fmt = null
                 }
@@ -717,7 +718,13 @@ try {
                     source = readTextFileSync(current)
                     console.log('\n%SWhere the error occurred: %S', ansi.yellow, current)
                 }
-                fmt.format(source)
+                try {
+                    fmt.format(source)
+                } catch (e) {
+                    var ansi = req('ansi')
+                    var orange = ansi.color(255, 165, 0)
+                    console.log('%S%S', orange, e)
+                }
             }
         }
     } else WScript.Popup('[error]' + error.message)
