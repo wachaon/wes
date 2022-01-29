@@ -384,12 +384,13 @@ try {
             var pathname = req('pathname')
             var resolve = pathname.resolve
             var filesystem = req('filesystem')
-            var exists = filesystem.exists
+            // var exists = filesystem.exists
+            var existsFileSync = filesystem.existsFileSync
             var readTextFileSync = filesystem.readTextFileSync
             var parse = JSON.parse
 
             var pkg = resolve(dir, 'package.json')
-            if (!exists(pkg)) return undefined
+            if (!existsFileSync(pkg)) return undefined
             var file = readTextFileSync(pkg)
             var json = parse(file)
             return getField(json, field)
@@ -439,7 +440,9 @@ try {
             var dirname = pathname.dirname
             var extname = pathname.extname
             var filesystem = req('filesystem')
-            var exists = filesystem.exists
+            // var exists = filesystem.exists
+            var existsFileSync = filesystem.existsFileSync
+            // var existsdirSync = filesystem.existsdirSync
             var js = '.js'
             var json = '.json'
             var index = 'index.js'
@@ -453,35 +456,35 @@ try {
                 var area = areas.shift()
                 var temp
                 type = getPkgField(dirname(area), 'type') || type
-                if (exists((temp = area))) {
+                if (existsFileSync((temp = area))) {
                     if (extname(temp) === '.mjs') type = 'module'
                     entry = temp
                     break
                 }
-                if (exists((temp = area + js))) {
+                if (existsFileSync((temp = area + js))) {
                     entry = temp
                     break
                 }
-                if (exists((temp = area + json))) {
+                if (existsFileSync((temp = area + json))) {
                     entry = temp
                     type = 'json'
                     break
                 }
-                if (exists((temp = resolve(area, index)))) {
+                if (existsFileSync((temp = resolve(area, index)))) {
                     type = getPkgField(area, 'type') || type
                     entry = temp
                     break
                 }
-                if (exists((temp = resolve(area, indexmjs)))) {
+                if (existsFileSync((temp = resolve(area, indexmjs)))) {
                     type = 'module'
                     entry = temp
                     break
                 }
-                if (exists((temp = resolve(area, indexjson)))) {
+                if (existsFileSync((temp = resolve(area, indexjson)))) {
                     entry = temp
                     break
                 }
-                if (exists((temp = resolve(area, packagejson)))) {
+                if (existsFileSync((temp = resolve(area, packagejson)))) {
                     var main = getPkgField(dirname(temp), 'main')
                     if (main == null) continue
                     areas.unshift(resolve(area, main))
