@@ -12,7 +12,7 @@ try {
     var argv = (function () {
         var module = { exports: {} }
         ;(function () {
-            //main
+            // main
             var Arguments = WScript.Arguments
             var argv = [WScript.FullName, WScript.ScriptFullName]
             var unnamed = []
@@ -79,7 +79,6 @@ try {
 
                 if (short.length) res.unshift('-' + short.join(NONE))
                 if (params.unnamed.length) res.unshift(params.unnamed.join(SPACE))
-                // console.log('-----------\n' + inspect(res))
                 return res.join(SPACE)
             }
 
@@ -384,7 +383,6 @@ try {
             var pathname = req('pathname')
             var resolve = pathname.resolve
             var filesystem = req('filesystem')
-            // var exists = filesystem.exists
             var existsFileSync = filesystem.existsFileSync
             var readTextFileSync = filesystem.readTextFileSync
             var parse = JSON.parse
@@ -440,9 +438,7 @@ try {
             var dirname = pathname.dirname
             var extname = pathname.extname
             var filesystem = req('filesystem')
-            // var exists = filesystem.exists
             var existsFileSync = filesystem.existsFileSync
-            // var existsdirSync = filesystem.existsdirSync
             var js = '.js'
             var json = '.json'
             var index = 'index.js'
