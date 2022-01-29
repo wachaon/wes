@@ -677,6 +677,8 @@ try {
     }
 } catch (error) {
     if (!!console) {
+        var orange = ansi.color(255, 165, 0)
+
         var errorStack = unescape(error.stack.split('$').join('%'))
         errorStack = errorStack.split(/\r?\n/).filter(function (line) {
             return !(
@@ -688,7 +690,7 @@ try {
         })
         var current = wes.filestack.slice(-1)
 
-        console.log(ansi.color(255, 165, 0) + errorStack.join('\r\n').split('Function code:').join(NONE))
+        console.log(orange + errorStack.join('\r\n').split('Function code:').join(NONE))
 
         var pathname = req('pathname')
         var resolve = pathname.resolve
@@ -721,8 +723,6 @@ try {
                 try {
                     fmt.format(source)
                 } catch (e) {
-                    var ansi = req('ansi')
-                    var orange = ansi.color(255, 165, 0)
                     console.log('%S%S', orange, e)
                 }
             }
