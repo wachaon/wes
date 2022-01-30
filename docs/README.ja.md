@@ -10,7 +10,7 @@
 # Features
 
 -   *Windows Script Host* のスクリプトエンジンを *Chakra* に変更し *ECMAScript2015+* を実行します
--   常に 32bit の *cscript.exe* を実行するので、64bit環境での固有の不具合はありません
+-   常に 32bit の *cscript.exe* を実行するので、64bit 環境での固有の不具合はありません
 -   `require` でモジュールをインポートします (*ver 0.9.0* から *es module* に対応しました)
 -   標準出力に色付き文字を出力します
 -   テキストファイルのエンコードを自動で推測し読み込みます
@@ -65,7 +65,7 @@ wes
 | `--usual`          | スクリプトを通常モードで実行します (デフォルト)   |
 | `--unsafe`         | スクリプトを安全ではないモードで実行します        |
 | `--dangerous`      | スクリプトを危険なモードで実行します              |
-| `--debug`          | スクリプトをデバックモードで実行します            |
+| `--debug`          | スクリプトをデバッグモードで実行します            |
 | `--encoding=UTF-8` | 最初に読み込むファイルのエンコードを指定します    |
 | `--engine=Chakra`  | このオプションは *wes* によって自動で付加されます |
 
@@ -82,7 +82,7 @@ wes
 利便上 *node_modules* ディレクトリへの対応もしています。
 
 *wes* の `require()` はモジュールファイルのエンコードを自動推測しますが、
-正しく推測しない場合に第二引数でエンコードを指定することも可能です。
+正しく推測しない場合に第二引数でエンコードを指定も可能です。
 
 ```javascript
 // ./add.js
@@ -115,7 +115,7 @@ WShell.AppActivate(ie.LocationName)
 
 ## *es module*
 
-スクリプトの実行エンジンである *Chakra* は `imoprt` などの構文を解釈しますが `cscript` としての処理方法が定義されていないのか、そのままでは実行はできません。
+スクリプトの実行エンジンである *Chakra* は `imoprt` などの構文を解釈しますが `cscript` としての処理方法が定義されていないのか、そのままでは実行できません。
 *wes* では *babel* を内包。
 *es module* に対して逐次トランスパイルしながら実行しています。そのためコストとして処理のオーバーヘッドとファイルが肥大化しています。
 
@@ -138,7 +138,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 
 # built-in objects
 
-*wes* には *WSH (JScript)* には無い *built-in objects* があります。
+*wes* は *WSH (JScript)* には無い *built-in objects* があります。
 
 ## *console*
 
@@ -152,7 +152,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
 *wes* では色付き文字列を出力する為に `WScript.StdOut.WriteLine` ではなく、`WScript.StdErr.WriteLine` を使用します。
-`WScript.Echo` や `WScript.StdOut.WriteLine` は出力を遮断されているので、`WScript.StdErr.WriteLine` もしくは `console.log` を使用してください。
+`WScript.Echo` や `WScript.StdOut.WriteLine` は出力を遮断されます。`WScript.StdErr.WriteLine` もしくは `console.log` を使用してください。
 
 ## *Buffer*
 
@@ -226,7 +226,9 @@ argv, argv.unnamed, argv.named)
 
 パスの操作をします。
 
-一般的には `/` および `\` から開始されるパスはドライブルートからの相対パスを指しますが、(例えば `/filename` は `C:/filename` と同じパスになる場合があります) `wes` ではセキュリティーの観点から `/` および `\` から開始されるパスはワーキングディレクトリからの相対パスと解釈されます。 
+一般的には `/` および `\` から開始されるパスはドライブルートからの相対パスを指します。
+例えば `/filename` と `C:/filename` が同じパスになる場合があります。
+`wes` ではセキュリティーの観点から `/` および `\` で開始されるパスはワーキングディレクトリからの相対パスと解釈されます。 
 
 ```javascript
 const path = require('pathname')
@@ -252,13 +254,13 @@ console.log(contents)
 
 https://github.com/runk/node-chardet の一部の機能を使用しています。
 
-エンコード固有の文字を増やすことで自動推測の精度を上げれます。
+エンコード固有の文字を増やすことで自動推測の精度を上げられます。
 
 ## *JScript*
 
 スクリプトエンジンを *Chakra* に変更すると、*JScript* 固有の *Enumerator* などが使用できなくなります。
 ビルトインモジュールの *JScript* はそれらを使用可能にします。
-ただし、*Enumerator* は Enumeratorオブジェクトではなく *Array* を返します。
+ただし、*Enumerator* は *Enumerator object* ではなく *Array* を返します。
 
 ```javascript
 const { Enumerator, ActiveXObject } = require('JScript')
@@ -321,7 +323,7 @@ describe( '# calc test', () => {
 
 ## *pipe*
 
-*pipe* はパイプ処理を簡素化します
+*pipe* はパイプ処理を簡素化します。
 
 ```javascript
 const pipe = require('pipe')
@@ -369,7 +371,7 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 
 モジュールをバンドルさせるにはいくつかの条件があります。
 
-1.  一つの *repository* で公開できるモジュールは一種類になります。
+1.  １つの *repository* で公開できるモジュールは一種類になります。
 2.  *github* のリポジトリ名とローカルのワーキングディレクトリ名は同名である必要があります。
 3.  第三者にモジュールを公開する場合にはリポジトリはパブリックである必要があります。
 4.  *wes* はモジュールのパスを動的に解釈します。`if` ステートメントなど特定条件時に `require` で取得したモジュールはバンドルされない可能性があります。
@@ -382,13 +384,13 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 
 ### usage
 
-*install* には `@author/repository` という書式で引数を渡します
+*install* には `@author/repository` という書式で引数を渡します。
 
 ```shell
 wes install @wachaon/fmt
 ```
 
-*install* にはオプションがあります
+*install* にはオプションがあります。
 
 | named      | short named | description                                           |
 | ---------- | ----------- | ------------------------------------------------------|
@@ -442,10 +444,10 @@ wes install @wachaon/fmt
 
 ### usage
 
-ワーキングディレクトリに *.prettierrc* (JSONフォーマット) があれば設定に反映させます。
-*fmt* では *CLI*（コマンドラインインターフェース）と *module* の両方で使用できます。
+ワーキングディレクトリに *.prettierrc* (JSON フォーマット) があれば設定に反映させます。
+*fmt* では *CLI*（コマンドラインインタフェース）と *module* の両方で使用できます。
 
-*CLI* として使用する
+*CLI* として使用する。
 
 ```shell
 wes @wachaon/fmt src/sample --write
@@ -477,9 +479,9 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 ## `@wachaon/edge`
 
-*Internet Explorer* が2022年6月15日を以てサポートを完了します。それに伴い `require('InternetExplorer.Application')` でのアプリケーションの操作も不可能になります。
+*Internet Explorer* が 2022/6/15 を以てサポートを完了します。それに伴い `require('InternetExplorer.Application')` でのアプリケーションの操作も不可能になります。
 
-代替案として、*Microsoft Edge based on Chromium* を *web driver* 経由で操作することになりますが、`@wachaon/edge` は *Edge* の自動操縦を簡素化します。
+代替案として、*Microsoft Edge based on Chromium* を *web driver* 経由で操作することになります。`@wachaon/edge` は *Edge* の自動操縦を簡素化します。
 
 ### install
 
@@ -522,5 +524,5 @@ edge((window, navi, res) => {
 
 スクリプトを停止させたい場合は、`navi.emit('terminate', res)` を実行するか、*Edge* を手動で終了させます。
 
-終了処理は既定値として `res.exports` を *.json* ファイルとして出力します。
+終了処理はデフォルト値として `res.exports` を *.json* ファイルとして出力します。
 終了処理を設定したい場合は、`edge(callback, terminate)` の `terminate` を設定します。
