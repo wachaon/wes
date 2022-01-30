@@ -20,7 +20,12 @@
     "unist-util-visit": "^2.0.3",
     "util": "^0.12.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "textlint": "^12.1.0",
+    "textlint-rule-preset-ja-spacing": "^2.2.0",
+    "textlint-rule-preset-ja-technical-writing": "^7.0.0",
+    "textlint-rule-spellcheck-tech-word": "^5.0.0"
+  },
   "scripts": {
     "test": "wes src/test",
     "build": "wes src/build"
