@@ -26,11 +26,11 @@
 # 特征
 
 
--   将*Windows Script Host*的脚本引擎更改为*Chakra*并运行*ECMAScript2015* *Chakra*
+-   将*Windows Script Host*的脚本引擎更改为*Chakra*并运行*ECMAScript2015* 2015
 -   它始终运行 32 位*cscript.exe* ，因此在 64 位环境中没有固有的错误。
 -   使用`require`导入模块（对应*es module* from *ver 0.9.0* ）
 -   将彩色字符输出到标准输出
--   自动猜测并读取文本文件的编码
+-   自动猜测和读取文本文件的编码
 
 
 # 我们无法解决的已知问题
@@ -52,7 +52,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*wes*在执行时作为`SendKeys`的实现*WScript.Shell*使用。 *wes.js*保存目录的路径中包含*ascii*以外的字符， `SendKeys`将无法正确发送密钥，脚本将无法执行。  
+*WScript.Shell*在运行时使用来自*wes*的`SendKeys`作为实现。如果*wes.js*保存目录的路径中包含*ascii*以外的字符， `SendKeys`将无法正确发送密钥，脚本将无法执行。  
 请仅配置*wes.js*的保存目标路径*ascii* 。
 
 
@@ -67,7 +67,7 @@ wes index
 ```
 
 
-另外， *wes*有一个*REPL*所以如果你只用`wes`启动它，你可以直接进入脚本。
+而且*wes*有一个*REPL* ，所以如果你只用`wes`启动它，你可以直接进入脚本。
 
 
 ```shell
@@ -75,7 +75,7 @@ wes
 ```
 
 
-脚本将被接受，直到您输入两个空白行。 *README.md*还可以使用*REPL*检查*README.md*示例脚本的执行情况。
+脚本将被接受，直到您输入两个空白行。您还可以使用*REPL*检查*README.md*中示例脚本的执行情况。
 
 
 ## 命令行命名参数
@@ -96,22 +96,22 @@ wes
 | `--engine=Chakra`  | 此选项由*wes*自动添加        |
 
 
-`--safe` `--usual` `--unsafe` `--dangerous` `--debug`是不完整的，但命名参数是保留的。
+`--safe` `--usual` `--unsafe` `--dangerous` `--debug`的实现是不完整的，但命名参数是保留的。
 
 
 # 模块系统
 
 
-*wes*支持*commonjs module*使用的一般系统`require()`和*es module*系统，其使用`import` 。 （不支持*dynamic import*因为是异步处理）
+*wes*支持使用通用`require()`的*commonjs module*系统和使用`import`的*es module*系统。 （不支持*dynamic import* ，因为是异步处理）
 
 
 ## *commonjs module*
 
 
-通过分配给`module.exports`并使用`require()`调用来`module.exports`模块。为方便起见，它还支持*node_modules*目录。
+通过分配给`module.exports`并使用`require()`调用来管理模块。为方便起见，它还支持*node_modules*目录。
 
 
-*wes* `require()`自动猜测模块文件的编码，但是如果没有猜测正确，可以用第二个参数指定编码。
+*wes* `require()`会自动猜测模块文件的编码，但如果没有猜测正确，可以用第二个参数指定编码。
 
 
 ```javascript
@@ -132,7 +132,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-您还可以导入到*OLE*像`require('WScript.Shell')`与*require* 。
+您也可以像*require* `require('WScript.Shell')`一样使用 require 导入*OLE* 。
 
 
 ```javascript
@@ -150,10 +150,10 @@ WShell.AppActivate(ie.LocationName)
 ## *es module*
 
 
-脚本的执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。 *wes*在*babel*封闭。它在顺序*es module*到*es module* 。结果，处理开销和文件膨胀作为成本增加。
+脚本的执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。 *babel*包含在*wes*中。它在顺序转译到*es module*时执行。结果，处理开销和文件膨胀作为成本增加。
 
 
-*es module*模块描述的*es module*也被`require()`转换为`require()` ，所以可以调用*OLE* 。但是，它不支持模块文件编码规范。都是通过自动猜测读取的。
+*es module*模块描述的模块也被 transpile 转换为`require()` ，所以可以调用*OLE* 。但是，它不支持模块文件编码规范。都是通过自动猜测读取的。
 
 
 ```javascript
@@ -175,13 +175,13 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 # 内置对象
 
 
-*wes*具有*WSH (JScript)*没有的*built-in objects* 。
+*wes*具有*WSH (JScript)*所没有*built-in objects* 。
 
 
 ## *console*
 
 
-*wes*使用*console*而不是`WScript.Echo`或`WScript.StdErr.WriteLine` 。
+`WScript.Echo`使用*console*而不是*wes*或`WScript.StdErr.WriteLine` 。
 
 
 在`console.log`中将字符打印到命令行。它还支持格式化字符串。使用格式化运算符`%`打印格式化字符串。
@@ -192,7 +192,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
 
-`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`来输出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`被阻止输出，所以使用`WScript.StdErr.WriteLine`或`console.log` 。
+`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`来输出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`被阻止输出。 `WScript.StdErr.WriteLine`或`console.log` 。
 
 
 ## *Buffer*
@@ -211,7 +211,7 @@ console.log(`${content} %O`, buff)
 ## `__dirname`和`__filename`
 
 
-`__filename`包含当前运行的模块文件的路径。 `__dirname` `__filename` `__dirname`的目录。
+`__filename`包含当前运行的模块文件的路径。 `__dirname`包含`__filename`的目录。
 
 
 ```javascript
@@ -228,7 +228,7 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 ## *ansi*
 
 
-`ansi`有一个*ANSI escape code* ，允许您更改标准输出的颜色和效果。颜色和效果可能因使用的控制台应用程序的类型和设置而异。
+`ansi`有一个*ANSI escape code* ，允许您更改标准输出的颜色和效果。颜色和效果可能会因使用的控制台应用程序的类型和设置而异。
 
 
 ```javascript
@@ -238,7 +238,7 @@ console.log(brightRed + 'Error: ' + yellow + message)
 ```
 
 
-您还可以使用`ansi.color()`和`ansi.bgColor()`创建自己的颜色。所述参数使用*RGB*如`255, 165, 0`或*color code*如`'#FFA500'` 。它不支持诸如`orange` *color name* 。
+您还可以使用`ansi.color()`和`ansi.bgColor()`创建自己的颜色。该参数使用*RGB* `255, 165, 0`例如 255、165、0 或*color code* ，例如`'#FFA500'` 。它不支持诸如`orange`之类的*color name* 。
 
 
 ```javascript
@@ -251,10 +251,10 @@ console.log(orange + 'Hello World')
 ## *argv*
 
 
-获取命令行参数。 `cscript.exe`的命令行参数`/`声明了一个名为论据，但*wes*在`-`和`--`在声明命名参数。
+获取命令行参数。 `cscript.exe`中的命令行参数用`/` *wes*命名参数`--`而我们用`-`和 - 声明命名参数。
 
 
-*argv.unnamed*和*argv.named*将命令行参数的值类型转换为*String* *Number* *Boolean* 。
+*argv.unnamed*和*argv.named*将命令行参数的值类型转换为*String* *Number* *Boolean*之一。
 
 
 与*REPL*一起输入命令行参数。
@@ -283,7 +283,7 @@ argv, argv.unnamed, argv.named)
 操作路径。
 
 
-通常，以`/`和`\`开头的路径是指从驱动器根目录开始的相对路径（例如， `/filename`可以是与`C:/filename`相同的路径），但为了安全起见， `wes` `/`和以`\`开头的路径被解释为相对于工作目录。
+以`/`和`\`开头的路径通常是指相对于驱动器根目录的路径。例如， `/filename`和`C:/filename`可能在同一路径上。出于安全原因， `wes`将以`/`和`\`开头的路径解释为相对于工作目录。
 
 
 ```javascript
@@ -311,7 +311,7 @@ console.log(contents)
 ## *chardet*
 
 
-我正在使用[https://github.com/runk/node-chardet 的](https://github.com/runk/node-chardet)一些功能。
+我正在使用<https://github.com/runk/node-chardet>的一些功能。
 
 
 您可以通过增加特定于编码的字符来提高自动猜测的准确性。
@@ -320,7 +320,7 @@ console.log(contents)
 ## *JScript*
 
 
-如果您将脚本引擎更改为*Chakra* ，您将无法使用*JScript* specific *Enumerator*等。内置模块*JScript*使它们可用。但是， *Enumerator*返回一个*Array*而不是 Enumerator 对象。
+如果您将脚本引擎更改为*Chakra* ，您将无法使用*JScript*特定的*Enumerator*等。内置模块*JScript*使它们可用。但是， *Enumerator*返回一个*Array*而不是*Enumerator object* 。
 
 
 ```javascript
@@ -332,7 +332,7 @@ files.forEach(file => console.log(file.Name))
 ```
 
 
-*GetObject* `WScript.GetObject`的替代品。
+*GetObject*充当`WScript.GetObject`的替代品。
 
 
 ```javascript
@@ -363,7 +363,7 @@ console.log(TypeName(FSO))
 ## *httprequest*
 
 
-*httprequest*就像它的名字一样*http request*会发出一个。
+*httprequest* *http request* 。
 
 
 ```javascript
@@ -397,7 +397,7 @@ describe( '# calc test', () => {
 ## *pipe*
 
 
-*pipe*简化管道加工
+*pipe*简化了管道处理。
 
 
 ```javascript
@@ -439,13 +439,13 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 # 模块捆绑和安装
 
 
-*install* ，您可以安装该模块*wes*上发布*github* 。您将需要一个*github repository*来发布该模块。此外，存储库名称和本地目录名称必须相同。
+使用*install* ，您可以安装发布在*github*上的*wes*模块。您将需要一个*github repository*来发布该模块。此外，存储库名称和本地目录名称必须相同。
 
 
 ## *bundle*
 
 
-将模块发布到*github* ， *bundle*捆绑所需的模块并将其更改为可以由*install*模块导入的格式。
+将模块发布到*github*时， *bundle*会捆绑所需的模块并将其更改为可以由*install*模块导入的格式。
 
 
 出于安全考虑， *wes*不会以可以直接执行的格式导入模块，因此使用*bundle*模块创建一个*.json*文件。
@@ -454,12 +454,12 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 捆绑模块有一些条件。
 
 
-1.  一个*repository*只能发布一种类型的模块。
+1.  一个*repository*中只能发布一种类型的模块。
 2.  *github*上的仓库名和本地工作目录名必须一致。
 3.  如果要将模块发布给第三方，则存储库必须是公共的。
 4.  *wes*动态解释模块路径。在`if`语句等特定条件下`require`获取的模块可能不会被捆绑。
 5.  *.json*文件将在您的工作目录中创建，名称为*directory_name.json* 。如果文件被重命名或文件被移动，则无法安装。
-6.  `node_modules/directory_name` ，捆绑失败，因为它引用了`directory_name.json` 。
+6.  `node_modules/directory_name`时，捆绑失败，因为它引用了`directory_name.json` 。
 
 
 ## *install*
@@ -471,7 +471,7 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 ### 用法
 
 
-以`@author/repository`的格式传递参数进行*install*
+以`@author/repository`格式传递参数以进行*install* 。
 
 
 ```shell
@@ -479,7 +479,7 @@ wes install @wachaon/fmt
 ```
 
 
-*install*有选项
+*install*有选项。
 
 
 | 命名为        | 简称   | 描述                   |
@@ -488,7 +488,7 @@ wes install @wachaon/fmt
 | `--global` | `-g` | 在*wes.js*所在的文件夹中安装模块 |
 
 
-`--bare`选项可以省略从`author@repository`到`repository`的`require`参数。 `--global`选项使已安装的模块可用于所有脚本。上述选项必须作为同时指定*wes*安全选项`--unsafe`或`--dangerous` 。
+`--bare`选项可以省略从`author@repository`到`repository`的`require`参数。 `--global`选项使已安装的模块可用于所有脚本。上述选项必须与*wes*安全选项`--unsafe`或`--dangerous` 。
 
 
 ```shell
@@ -502,7 +502,7 @@ wes install @wachaon/fmt --bare --unsafe
 *install*不仅可以安装在*github*上公共存储库的模块中，还可以安装在私有存储库中。
 
 
-*install* ，使用`author@repository`指定模块。实现下载以下内容。
+在*install*中，使用`author@repository`指定模块。实现下载以下内容。
 
 
 ```javascript
@@ -530,7 +530,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt*捆绑*prettier*并格式化脚本。此外，如果在安装*@wachaon/fmt*时出现`SyntaxError`错误，您可以指出错误位置。
+*@wachaon/fmt*捆绑*prettier*并格式化脚本。此外，如果安装了`SyntaxError` *@wachaon/fmt*并出现语法错误，则可以指示错误位置。
 
 
 ### 安装
@@ -544,10 +544,10 @@ wes install @wachaon/fmt
 ### 用法
 
 
-如果工作目录中有*.prettierrc* （JSON 格式），会反映在设置中。 *fmt*可以与*CLI* （命令行界面）和*fmt* *module*一起使用。
+如果工作目录中有*.prettierrc* （JSON 格式），会反映在设置中。它可以与*CLI* （命令行界面）和*fmt*中的*module*一起使用。
 
 
-用作*CLI*
+用作*CLI* 。
 
 
 ```shell
@@ -566,7 +566,7 @@ wes @wachaon/fmt src/sample --write
 | `--write` | `-w` | 允许覆盖 |
 
 
-如果指定`--write`或`-w`的命名参数，则使用格式化脚本覆盖文件。
+如果指定`--write`或`-w`的命名参数，则使用格式化的脚本覆盖文件。
 
 
 ### 用作*module*时
@@ -588,10 +588,10 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ## `@wachaon/edge`
 
 
-*Internet Explorer*将于 2022 年 6 月 15 日提供支持。结果，无法使用`require('InternetExplorer.Application')`操作应用程序。
+*Internet Explorer*将于 2022/6/15 完成支持。结果，无法使用`require('InternetExplorer.Application')`操作应用程序。
 
 
-另一种方法是通过*web driver* *Microsoft Edge based on Chromium*操作*Microsoft Edge based on Chromium* ，但`@wachaon/edge`简化了*Edge*的自动驾驶仪。
+另一种方法是通过*web driver*运行*Microsoft Edge based on Chromium* 。 `@wachaon/edge`简化了*Edge*自动驾驶仪。
 
 
 ### 安装
@@ -641,13 +641,13 @@ edge((window, navi, res) => {
 此脚本按顺序将访问的*URL*输出到命令提示符。
 
 
-`@wachaon/edge`为*URL*注册一个事件并将数据添加到`res.exports` 。 *URL*注册的*URL*可以是`String` `RegExp` ，可以进行灵活的设置。
+`@wachaon/edge`为*URL*注册一个事件并将数据添加到`res.exports` 。要注册的*URL*可以是`String` `RegExp` ，可以进行灵活的设置。
 
 
 通过使其成为事件驱动，可以通过不为自动驾驶难以处理的流程设置*URL*来轻松切换到手动操作。
 
 
-如果要停止脚本，请`navi.emit('terminate', res)`或手动终止*Edge* 。
+如果要停止脚本，请运行`navi.emit('terminate', res)`或手动终止*Edge* 。
 
 
-终止过程输出`res.exports`作为*.json*文件作为默认值。如果要设置结束处理， `edge(callback, terminate)`的`terminate` Sets。
+终止进程将`res.exports`输出为*.json*文件作为默认值。如果要设置终止过程，设置`edge(callback, terminate)` `terminate`

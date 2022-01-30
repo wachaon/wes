@@ -1,7 +1,7 @@
 # *WES*
 
 
-*wes* es un marco para ejecutar *ECMAScript* en la línea de comandos de *Windows Script Host* .
+*wes* es un marco para ejecutar *ECMAScript* en una línea de comandos de *Windows Script Host* .
 
 
 El texto original del *README* es [*japanese*](/README.md) . Aparte del japonés, es una oración traducida automáticamente.  
@@ -26,8 +26,8 @@ Seleccione oraciones en otros idiomas de las siguientes.
 # Características
 
 
--   Cambie el motor de *Windows Script Host* de *Windows Script Host* de *Windows Script Host* a *Chakra* y ejecute *ECMAScript2015* *Chakra*
--   Siempre ejecuta *cscript.exe* 32 bits, por lo que no hay errores inherentes en el entorno de 64 bits.
+-   Cambie el motor de secuencias de comandos de *Windows Script Host* a *Chakra* y ejecute *ECMAScript2015* 2015
+-   Siempre ejecuta *cscript.exe* de 32 bits, por lo que no hay errores inherentes en el entorno de 64 bits.
 -   Importe el módulo con `require` (correspondiente al *es module* de la *ver 0.9.0* )
 -   Emite caracteres de colores a la salida estándar
 -   Adivina y lee automáticamente la codificación del archivo de texto
@@ -38,13 +38,13 @@ Seleccione oraciones en otros idiomas de las siguientes.
 
 -   `WScript.Quit` no puede interrumpir el programa y no devuelve un código de error
 -   No es posible el procesamiento asíncrono como `setTimeout` y `Promise`
--   No se puede usar el segundo *event prefix* de *event prefix* argumento de `WScript.CreateObject`
+-   No se puede usar el segundo *event prefix* de argumento de `WScript.CreateObject`
 
 
 # Instalar en pc
 
 
-*wes* necesita es el único archivo *wes.js* Para descargar, inicie un símbolo del sistema e ingrese el siguiente comando.
+Wes solo necesita el *wes* *wes.js* Para descargar, inicie un símbolo del sistema e ingrese el siguiente comando.
 
 
 ```shell
@@ -52,7 +52,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*wes* en el momento de la ejecución como la aplicación *WScript.Shell* de uso de `SendKeys` . *wes.js* la ruta del directorio donde se guarda *wes.js* contiene caracteres que no sean *ascii* , `SendKeys` no podrá enviar la clave correctamente y el script no podrá ejecutarse.  
+*WScript.Shell* usa `SendKeys` de *wes* en tiempo de ejecución como implementación. Si la ruta del directorio donde se guarda *wes.js* contiene caracteres que no sean *ascii* , `SendKeys` no podrá enviar la clave correctamente y el script no podrá ejecutarse.  
 Configure la ruta de destino para guardar de *wes.js* solo *ascii* .
 
 
@@ -67,7 +67,7 @@ wes index
 ```
 
 
-Además, *wes* tiene un *REPL* por lo que si lo inicia solo con `wes` , puede ingresar el script directamente.
+Además, *wes* tiene un *REPL* , por lo que si lo inicia solo con `wes` , puede ingresar el script directamente.
 
 
 ```shell
@@ -75,7 +75,7 @@ wes
 ```
 
 
-Se aceptarán guiones hasta que ingrese dos líneas en blanco. *README.md* puede verificar la ejecución del script de muestra en *README.md* con *REPL* .
+Se aceptarán guiones hasta que ingrese dos líneas en blanco. También puede verificar la ejecución del script de muestra en *README.md* con *REPL* .
 
 
 ## argumentos con nombre en la línea de comandos
@@ -86,7 +86,7 @@ Las opciones de inicio para *wes* son las siguientes.
 
 | nombrada           | descripción                                             |
 | ------------------ | ------------------------------------------------------- |
-| `--monotone`       | Eliminar el *ANSI escape code*                          |
+| `--monotone`       | Eliminar *ANSI escape code*                             |
 | `--safe`           | Ejecute el script en modo seguro                        |
 | `--usual`          | Ejecute el script en modo normal (predeterminado)       |
 | `--unsafe`         | Ejecute el script en modo no seguro                     |
@@ -102,13 +102,13 @@ La implementación de `--safe` `--usual` `--unsafe` `--dangerous` `--debug` est�
 # sistema de módulos
 
 
-*wes* compatible *commonjs module* sistemas de *commonjs module* que usan el `require()` general `require()` y los sistemas de *es module* que usan `import` . ( *dynamic import* no es compatible porque es un procesamiento asíncrono)
+*wes* es compatible con los sistemas *commonjs module* que usan el `require()` y los sistemas de *es module* que usan `import` . ( *dynamic import* no es compatible porque es un procesamiento asíncrono)
 
 
 ## *commonjs module*
 
 
-`module.exports` módulos asignándolos a `module.exports` y llamando con `require()` . Para mayor comodidad, también es compatible con el directorio *node_modules* .
+Administre módulos asignándolos a `module.exports` y llamando con `require()` . Para mayor comodidad, también es compatible con el directorio *node_modules* .
 
 
 *wes* `require()` adivina automáticamente la codificación del archivo del módulo, pero si no adivina correctamente, puede especificar la codificación con el segundo argumento.
@@ -132,7 +132,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-También puede importar a *OLE* como `require('WScript.Shell')` con *require* .
+También puede importar a *OLE* como *require* `require('WScript.Shell')` con require.
 
 
 ```javascript
@@ -150,10 +150,10 @@ WShell.AppActivate(ie.LocationName)
 ## *es module*
 
 
-*Chakra* , que es el motor de ejecución del script, interpreta la sintaxis como `imoprt` , pero no se puede ejecutar tal cual porque el método de procesamiento como `cscript` no está definido. *babel* está incluida en *wes* . Se ejecuta mientras se transpila secuencialmente al *es module* . Como resultado, la sobrecarga de procesamiento y la sobrecarga de archivos aumentan como un costo.
+*Chakra* , que es el motor de ejecución del script, interpreta la sintaxis como `imoprt` , pero no se puede ejecutar tal cual porque el método de procesamiento como `cscript` no está definido. *babel* está incluida en *wes* . Se ejecuta mientras se transpila secuencialmente al *es module* . Como resultado, la sobrecarga de procesamiento y la sobrecarga de archivos aumentan como costo.
 
 
-Los módulos descritos por el *es module* es también se `require()` convertidos a `require()` , por lo que se puede llamar a *OLE* . Sin embargo, no es compatible con la especificación de codificación de archivos del módulo. Todos se leen por adivinación automática.
+Los módulos descritos por el *es module* es también se transpilan convertidos a `require()` , por lo que se puede llamar a *OLE* . Sin embargo, no es compatible con la especificación de codificación de archivos del módulo. Todos se leen por adivinación automática.
 
 
 ```javascript
@@ -181,7 +181,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 
-*wes* usa la *console* lugar de `WScript.Echo` o `WScript.StdErr.WriteLine` .
+`WScript.Echo` usa *console* en lugar de *wes* o `WScript.StdErr.WriteLine` .
 
 
 Imprime caracteres en la línea de comando en `console.log` . También admite cadenas formateadas. Imprime una cadena formateada usando el operador de formato `%` .
@@ -192,7 +192,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
 
-*wes* para generar una cadena coloreada en `WScript.StdOut.WriteLine` en `WScript.StdOut.WriteLine` lugar, use `WScript.StdErr.WriteLine` . `WScript.Echo` y `WScript.StdOut.WriteLine` están bloqueados desde la salida, así que el uso `WScript.StdErr.WriteLine` o `console.log` .
+`WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` para generar cadenas de colores. `WScript.Echo` y `WScript.StdOut.WriteLine` están bloqueados para la salida. `WScript.StdErr.WriteLine` o `console.log` .
 
 
 ## *Buffer*
@@ -211,7 +211,7 @@ console.log(`${content} %O`, buff)
 ## `__dirname` y `__filename`
 
 
-`__filename` contiene la ruta del archivo del módulo que se está ejecutando actualmente. `__dirname` `__filename` el directorio de `__filename` .
+`__filename` contiene la ruta del archivo del módulo que se está ejecutando actualmente. `__dirname` contiene el directorio de `__filename` .
 
 
 ```javascript
@@ -219,7 +219,7 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 ```
 
 
-# módulos integrados
+# módulos incorporados
 
 
 *wes* tiene *built-in modules* para simplificar y estandarizar el procesamiento básico.
@@ -251,10 +251,10 @@ console.log(orange + 'Hello World')
 ## *argv*
 
 
-Obtiene el argumento de la línea de comando. Los argumentos de la línea de comandos de `cscript.exe` de `/` declaran argumentos con nombre en pero, *wes* in `-` y `--` declaran los argumentos con nombre en.
+Obtiene el argumento de la línea de comandos. Los argumentos de la línea de comandos en `cscript.exe` declaran argumentos con nombre con `/` `--` mientras que *wes* declara argumentos con nombre con `-` y -.
 
 
-*argv.unnamed* y *argv.named* el tipo de valor del argumento de la línea de comando en uno de los *Boolean* *Number* *String* .
+*argv.unnamed* y *argv.named* el tipo de valor del argumento de la línea de comando en uno de los *Boolean* de *Number* de *String* .
 
 
 Introduzca los argumentos de la línea de comandos junto con *REPL* .
@@ -283,7 +283,7 @@ argv, argv.unnamed, argv.named)
 Operar el camino.
 
 
-Generalmente, las rutas que comienzan con `/` y `\` refieren a rutas relativas desde la raíz de la unidad (por ejemplo, `/filename` puede ser la misma ruta que `C:/filename` ), pero por seguridad en `wes` `/` y las rutas que comienzan con `\` se interpretan como relativas a el directorio de trabajo.
+Las rutas que comienzan con `/` y `\` generalmente se refieren a rutas relativas a la raíz de la unidad. Por ejemplo, `/filename` y `C:/filename` pueden estar en la misma ruta. Por razones de seguridad, `wes` interpreta las rutas que comienzan con `/` y `\` como relativas al directorio de trabajo.
 
 
 ```javascript
@@ -320,7 +320,7 @@ Puede mejorar la precisión de las adivinanzas automáticas aumentando los carac
 ## *JScript*
 
 
-Si cambia el motor de secuencias de comandos a *Chakra* , no podrá usar el *Enumerator* específico de *JScript* , etc. El módulo integrado *JScript* los pone a disposición. Sin embargo, *Enumerator* devuelve un *Array* en lugar de un objeto Enumerator.
+Si cambia el motor de secuencias de comandos a *Chakra* , no podrá usar el *Enumerator* específico de *JScript* , etc. El módulo integrado *JScript* los pone a disposición. Sin embargo, *Enumerator* devuelve un *Array* en lugar de un *Enumerator object* .
 
 
 ```javascript
@@ -332,7 +332,7 @@ files.forEach(file => console.log(file.Name))
 ```
 
 
-*GetObject* `WScript.GetObject` como una alternativa a `WScript.GetObject` .
+*GetObject* actúa como una alternativa a `WScript.GetObject` .
 
 
 ```javascript
@@ -363,7 +363,7 @@ console.log(TypeName(FSO))
 ## *httprequest*
 
 
-*httprequest* es como su nombre *http request* emitirá a.
+La solicitud *httprequest* *http request* como sugiere su nombre.
 
 
 ```javascript
@@ -397,7 +397,7 @@ describe( '# calc test', () => {
 ## *pipe*
 
 
-*pipe* simplifica el procesamiento de tuberías
+*pipe* simplifica el procesamiento de tuberías.
 
 
 ```javascript
@@ -439,13 +439,13 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 # Paquete de módulos e instalación
 
 
-*install* , puede instalar el módulo para *wes* publicado en *github* . Necesitará un *github repository* para publicar el módulo. Además, el nombre del repositorio y el nombre del directorio local deben ser iguales.
+Con *install* , puede instalar el módulo para *wes* publicado en *github* . Necesitará un *github repository* para publicar el módulo. Además, el nombre del repositorio y el nombre del directorio local deben ser iguales.
 
 
 ## *bundle*
 
 
-*github* publicar un módulo en *github* , *bundle* agrupa el módulo requerido y lo cambia a un formato que puede ser importado por el módulo de *install* .
+Al publicar un módulo en *github* , *bundle* agrupa el módulo requerido y lo cambia a un formato que puede ser importado por el módulo de *install* .
 
 
 Por razones de seguridad, *wes* no importa módulos en un formato que se pueda ejecutar directamente, así que cree un archivo *.json* con el módulo de *bundle* .
@@ -454,11 +454,11 @@ Por razones de seguridad, *wes* no importa módulos en un formato que se pueda e
 Hay algunas condiciones para agrupar módulos.
 
 
-1.  *repository* se puede publicar un tipo de módulo en un *repository* .
+1.  Solo se puede publicar un tipo de módulo en un *repository* .
 2.  El nombre del repositorio en *github* y el nombre del directorio de trabajo local deben ser iguales.
 3.  El repositorio debe ser público si desea publicar el módulo para un tercero.
 4.  *wes* interpreta dinámicamente la ruta del módulo. Los módulos adquiridos por `require` bajo condiciones específicas, como declaraciones `if` , no se pueden agrupar.
-5.  *.json* archivo será creado en el directorio de trabajo con el nombre *directory_name.json* . No se puede instalar si se cambia el nombre del archivo o se mueve el archivo.
+5.  *.json* se creará en su *directory_name.json* de trabajo con el nombre nombre_directorio.json. No se puede instalar si se cambia el nombre del archivo o se mueve el archivo.
 6.  `node_modules/directory_name` , el paquete falla porque hace referencia a `directory_name.json` .
 
 
@@ -471,7 +471,7 @@ Se usa para instalar el archivo de módulo para *wes* publicado en *github* .
 ### uso
 
 
-Pase argumentos para *install* en el formato `@author/repository`
+Pase argumentos para *install* en el formato `@author/repository` .
 
 
 ```shell
@@ -479,7 +479,7 @@ wes install @wachaon/fmt
 ```
 
 
-*install* tiene opciones
+*install* tiene opciones.
 
 
 | nombrada   | nombre corto | descripción                                                 |
@@ -488,7 +488,7 @@ wes install @wachaon/fmt
 | `--global` | `-g`         | Instale el módulo en la carpeta donde se encuentra *wes.js* |
 
 
-`--bare` opción `--bare` puede omitir el argumento `require` de `author@repository` a `repository` . `--global` opción `--global` hace que los módulos instalados estén disponibles para todos los scripts. Las opciones anteriores deben especificarse al mismo tiempo que la opción de seguridad *wes* `--unsafe` o `--dangerous` .
+`--bare` puede omitir el argumento `require` de `author@repository` a `repository` . `--global` hace que los módulos instalados estén disponibles para todos los scripts. Las opciones anteriores deben especificarse al mismo tiempo que la opción de seguridad *wes* `--unsafe` o `--dangerous` .
 
 
 ```shell
@@ -502,7 +502,7 @@ wes install @wachaon/fmt --bare --unsafe
 *install* se puede instalar no solo en módulos en repositorios públicos en *github* , sino también en repositorios privados.
 
 
-*install* , especifique el módulo con `author@repository` . La implementación descarga lo siguiente.
+En la *install* , especifique el módulo con `author@repository` . La implementación descarga lo siguiente.
 
 
 ```javascript
@@ -510,7 +510,7 @@ wes install @wachaon/fmt --bare --unsafe
 ```
 
 
-Cuando se accede a *raw* del depósito privado con un navegador, el *token* se mostrará, por lo que copiar el *token* y lo utilizan.
+Cuando acceda *raw* al repositorio privado con un navegador, se mostrará el *token* , así que copie el *token* y utilícelo.
 
 
 También puede instalar un módulo en un repositorio privado ejecutándolo en la línea de comandos durante la vigencia del *token* .
@@ -530,7 +530,7 @@ Aquí hay algunos módulos externos.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* *prettier* y formatea el script. Además, si ocurre un error de `SyntaxError` con *@wachaon/fmt* instalado, puede indicar la ubicación del error.
+*@wachaon/fmt* *prettier* y formatea el script. Además, si @ `SyntaxError` *@wachaon/fmt* está instalado y se produce un error de sintaxis, se puede indicar la ubicación del error.
 
 
 ### Instalar en pc
@@ -544,10 +544,10 @@ wes install @wachaon/fmt
 ### uso
 
 
-Si hay *.prettierrc* (formato JSON) en el directorio de trabajo, se reflejará en la configuración. *fmt* puede usar tanto con *CLI* (interfaz de línea de comandos) como con el *module* en *fmt* .
+Si hay *.prettierrc* (formato JSON) en el directorio de trabajo, se reflejará en la configuración. Se puede usar tanto con *CLI* (interfaz de línea de comandos) como con el *module* en *fmt* .
 
 
-Usar como *CLI*
+Utilizado como *CLI* .
 
 
 ```shell
@@ -588,10 +588,10 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ## `@wachaon/edge`
 
 
-*Internet Explorer* estará disponible para soporte a partir del 15 de junio de 2022. Como resultado, se vuelve imposible operar la aplicación con `require('InternetExplorer.Application')` .
+*Internet Explorer* completará el soporte el 15/6/2022. Como resultado, se vuelve imposible operar la aplicación con `require('InternetExplorer.Application')` .
 
 
-Una alternativa sería operar *Microsoft Edge based on Chromium* través de un *web driver* , pero `@wachaon/edge` simplifica el piloto automático de *Edge* .
+Una alternativa sería operar *Microsoft Edge based on Chromium* través del *web driver* . `@wachaon/edge` simplifica el piloto automático de *Edge* .
 
 
 ### Instalar en pc
@@ -641,13 +641,13 @@ edge((window, navi, res) => {
 Este script envía las *URL* visitadas al símbolo del sistema en secuencia.
 
 
-`@wachaon/edge` registra un evento para la *URL* y agrega datos a `res.exports` . La *URL* registrará puede ser `String` `RegExp` y se pueden realizar configuraciones flexibles.
+`@wachaon/edge` registra un evento para la *URL* y agrega datos a `res.exports` . La *URL* que se registrará puede ser `String` `RegExp` y se pueden realizar configuraciones flexibles.
 
 
-Al hacerlo controlado por eventos, es posible cambiar fácilmente a la operación manual al no establecer la *URL* para los procesos que son difíciles de manejar con el piloto automático.
+Al hacerlo controlado por eventos, es posible cambiar fácilmente a la operación manual al no configurar la *URL* para procesos que son difíciles de manejar con el piloto automático.
 
 
-Si desea detener la secuencia de comandos, `navi.emit('terminate', res)` o finalice manualmente *Edge* .
+Si desea detener la secuencia de comandos, ejecute `navi.emit('terminate', res)` o finalice manualmente *Edge* .
 
 
-El proceso de finalización genera `res.exports` como un archivo *.json* como valor predeterminado. Si desea configurar el procesamiento final, `edge(callback, terminate)` de conjuntos de `terminate` .
+El proceso de finalización genera `res.exports` como un archivo *.json* como valor predeterminado. Si desea establecer el proceso de terminación, establezca la `terminate` de `edge(callback, terminate)` .

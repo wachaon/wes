@@ -26,7 +26,7 @@
 # 特徵
 
 
--   將*Windows Script Host*的腳本引擎更改為*Chakra*並運行*ECMAScript2015* *Chakra*
+-   將*Windows Script Host*的腳本引擎更改為*Chakra*並運行*ECMAScript2015* 2015
 -   它始終運行 32 位*cscript.exe* ，因此在 64 位環境中沒有固有的錯誤。
 -   使用`require`導入模塊（對應*es module* from *ver 0.9.0* ）
 -   將彩色字符輸出到標準輸出
@@ -44,7 +44,7 @@
 # 安裝
 
 
-*wes*需要的是*wes.js*唯一的文件。要下載，請啟動命令提示符並輸入以下命令。
+*wes.js* *wes* 。要下載，請啟動命令提示符並輸入以下命令。
 
 
 ```shell
@@ -52,7 +52,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*wes*在執行時作為`SendKeys`的實現*WScript.Shell*使用。 *wes.js*保存目錄的路徑中包含*ascii*以外的字符， `SendKeys`將無法正確發送密鑰，腳本將無法執行。  
+*WScript.Shell*在運行時使用來自*wes*的`SendKeys`作為實現。如果*wes.js*保存目錄的路徑中包含*ascii*以外的字符， `SendKeys`將無法正確發送密鑰，腳本將無法執行。  
 請僅配置*wes.js*的保存目標路徑*ascii* 。
 
 
@@ -75,7 +75,7 @@ wes
 ```
 
 
-腳本將被接受，直到您輸入兩個空白行。 *README.md*還可以使用*REPL*檢查*README.md*示例腳本的執行情況。
+腳本將被接受，直到您輸入兩個空白行。您還可以使用*REPL*檢查*README.md*中示例腳本的執行情況。
 
 
 ## 命令行命名參數
@@ -96,13 +96,13 @@ wes
 | `--engine=Chakra`  | 此選項由*wes*自動添加        |
 
 
-`--safe` `--usual` `--unsafe` `--dangerous` `--debug`是不完整的，但命名參數是保留的。
+`--safe` `--usual` `--unsafe` `--dangerous` `--debug`的實現是不完整的，但命名參數是保留的。
 
 
 # 模塊系統
 
 
-*wes*支持*commonjs module*使用的一般系統`require()`和*es module*系統，其使用`import` 。 （不支持*dynamic import*因為是異步處理）
+*wes*支持使用通用`require()`的*commonjs module*系統和使用`import`的*es module*系統。 （不支持*dynamic import* ，因為是異步處理）
 
 
 ## *commonjs module*
@@ -111,7 +111,7 @@ wes
 通過分配給`module.exports`並使用`require()`調用來管理模塊。為方便起見，它還支持*node_modules*目錄。
 
 
-*wes* `require()`自動猜測模塊文件的編碼，但是如果沒有猜測正確，可以用第二個參數指定編碼。
+*wes* `require()`會自動猜測模塊文件的編碼，但是如果沒有猜測正確，可以用第二個參數指定編碼。
 
 
 ```javascript
@@ -150,10 +150,10 @@ WShell.AppActivate(ie.LocationName)
 ## *es module*
 
 
-腳本的執行引擎*Chakra*解釋了諸如`imoprt`之類的語法，但由於未定義`cscript`的處理方法，因此無法按原樣執行。 *wes*在*babel*封閉。它在順序*es module*到*es module* 。結果，處理開銷和文件膨脹作為成本增加。
+腳本的執行引擎*Chakra*解釋了諸如`imoprt`之類的語法，但由於未定義`cscript`的處理方法，因此無法按原樣執行。 *babel*包含在*wes*中。它在順序轉譯到*es module*時執行。結果，處理開銷和文件膨脹作為成本增加。
 
 
-*es module*模塊描述的*es module*也被`require()`轉換為`require()` ，所以可以調用*OLE* 。但是，它不支持模塊文件編碼規範。都是通過自動猜測讀取的。
+*es module*模塊描述的模塊也被 transpile 轉換為`require()` ，所以可以調用*OLE* 。但是，它不支持模塊文件編碼規範。都是通過自動猜測讀取的。
 
 
 ```javascript
@@ -175,13 +175,13 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 # 內置對象
 
 
-*wes*具有*WSH (JScript)*沒有的*built-in objects* 。
+*wes*具有*WSH (JScript)*所沒有*built-in objects* 。
 
 
 ## *console*
 
 
-*wes*使用*console*而不是`WScript.Echo`或`WScript.StdErr.WriteLine` 。
+`WScript.Echo`使用*console*而不是*wes*或`WScript.StdErr.WriteLine` 。
 
 
 在`console.log`中將字符打印到命令行。它還支持格式化字符串。使用格式化運算符`%`打印格式化字符串。
@@ -192,7 +192,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
 
-*wes*為了輸出一個在`WScript.StdOut.WriteLine`著色的字符串， `WScript.StdErr.WriteLine`使用。 `WScript.Echo`和`WScript.StdOut.WriteLine`被阻止輸出，所以使用`WScript.StdErr.WriteLine`或`console.log` 。
+`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`來輸出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`被阻止輸出。 `WScript.StdErr.WriteLine`或`console.log` 。
 
 
 ## *Buffer*
@@ -211,7 +211,7 @@ console.log(`${content} %O`, buff)
 ## `__dirname`和`__filename`
 
 
-`__filename`包含當前運行的模塊文件的路徑。 `__dirname` `__filename` `__dirname`的目錄。
+`__filename`包含當前運行的模塊文件的路徑。 `__dirname`包含`__filename`的目錄。
 
 
 ```javascript
@@ -238,7 +238,7 @@ console.log(brightRed + 'Error: ' + yellow + message)
 ```
 
 
-您還可以使用`ansi.color()`和`ansi.bgColor()`創建自己的顏色。所述參數使用*RGB*如`255, 165, 0`或*color code*如`'#FFA500'`它不支持諸如`orange` *color name* 。
+您還可以使用`ansi.color()`和`ansi.bgColor()`創建自己的顏色。該參數使用*RGB* `255, 165, 0`例如 255、165、0 或*color code* ，例如`'#FFA500'` 。它不支持諸如`orange`之類的*color name* 。
 
 
 ```javascript
@@ -254,7 +254,7 @@ console.log(orange + 'Hello World')
 獲取命令行參數。 `cscript.exe`中的命令行參數用`/` *wes*命名參數`--`而我們用`-`和 - 聲明命名參數。
 
 
-*argv.unnamed*和*argv.named*將命令行參數的值類型轉換為*String* *Number* *Boolean* 。
+*argv.unnamed*和*argv.named*將命令行參數的值類型轉換為*String* *Number* *Boolean*之一。
 
 
 與*REPL*一起輸入命令行參數。
@@ -265,7 +265,7 @@ wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
 
-在*REPL*運行以下腳本。
+在*REPL*中運行以下腳本。
 
 
 ```javascript
@@ -283,7 +283,7 @@ argv, argv.unnamed, argv.named)
 操作路徑。
 
 
-通常，以`/`和`\`開頭的路徑是指從驅動器根目錄開始的相對路徑（例如， `/filename`可以是與`C:/filename`相同的路徑），但為了安全起見， `wes` `/`和以`\`開頭的路徑被解釋為相對於工作目錄。
+以`/`和`\`開頭的路徑通常是指相對於驅動器根目錄的路徑。例如， `/filename`和`C:/filename`可能在同一路徑上。出於安全原因， `wes`將以`/`和`\`開頭的路徑解釋為相對於工作目錄。
 
 
 ```javascript
@@ -311,7 +311,7 @@ console.log(contents)
 ## *chardet*
 
 
-我正在使用[https://github.com/runk/node-chardet 的](https://github.com/runk/node-chardet)一些功能。
+我正在使用<https://github.com/runk/node-chardet>的一些功能。
 
 
 您可以通過增加特定於編碼的字符來提高自動猜測的準確性。
@@ -320,7 +320,7 @@ console.log(contents)
 ## *JScript*
 
 
-如果您將腳本引擎更改為*Chakra* ，您將無法使用*JScript* specific *Enumerator*等。內置模塊*JScript*使它們可用。但是， *Enumerator*返回一個*Array*而不是 Enumerator 對象。
+如果您將腳本引擎更改為*Chakra* ，您將無法使用*JScript*特定的*Enumerator*等。內置模塊*JScript*使它們可用。但是， *Enumerator*返回一個*Array*而不是*Enumerator object* 。
 
 
 ```javascript
@@ -332,7 +332,7 @@ files.forEach(file => console.log(file.Name))
 ```
 
 
-*GetObject* `WScript.GetObject`的替代品。
+*GetObject*作為`WScript.GetObject`的替代品。
 
 
 ```javascript
@@ -363,7 +363,7 @@ console.log(TypeName(FSO))
 ## *httprequest*
 
 
-*httprequest*就像它的名字一樣*http request*會發出一個。
+*httprequest* *http request* 。
 
 
 ```javascript
@@ -397,7 +397,7 @@ describe( '# calc test', () => {
 ## *pipe*
 
 
-*pipe*簡化管道加工
+*pipe*簡化了管道處理。
 
 
 ```javascript
@@ -439,13 +439,13 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 # 模塊捆綁和安裝
 
 
-*install* ，您可以安裝該模塊*wes*上發布*github* 。您將需要一個*github repository*來發布該模塊。此外，存儲庫名稱和本地目錄名稱必須相同。
+使用*install* ，您可以安裝發佈在*github*上的*wes*模塊。您將需要一個*github repository*來發布該模塊。此外，存儲庫名稱和本地目錄名稱必須相同。
 
 
 ## *bundle*
 
 
-將模塊發佈到*github* ， *bundle*捆綁所需的模塊並將其更改為可以由*install*模塊導入的格式。
+將模塊發佈到*github*時， *bundle*會捆綁所需的模塊並將其更改為可以由*install*模塊導入的格式。
 
 
 出於安全考慮， *wes*不會以可以直接執行的格式導入模塊，因此使用*bundle*模塊創建一個*.json*文件。
@@ -454,24 +454,24 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 捆綁模塊有一些條件。
 
 
-1.  一個*repository*只能發布一種類型的模塊。
+1.  一個*repository*中只能發布一種類型的模塊。
 2.  *github*上的倉庫名和本地工作目錄名必須一致。
 3.  如果要將模塊發布給第三方，則存儲庫必須是公共的。
 4.  *wes*動態解釋模塊路徑。在`if`語句等特定條件下`require`獲取的模塊可能不會被捆綁。
 5.  *.json*文件將在您的工作目錄中創建，名稱為*directory_name.json* 。如果文件被重命名或文件被移動，則無法安裝。
-6.  `node_modules/directory_name` ，捆綁失敗，因為它引用了`directory_name.json` 。
+6.  `node_modules/directory_name`時，捆綁失敗，因為它引用了`directory_name.json` 。
 
 
 ## *install*
 
 
-用於安裝*github*發布的*wes*的模塊文件。
+用於安裝*github*上發布的*wes*的模塊文件。
 
 
 ### 用法
 
 
-以`@author/repository`的格式傳遞參數進行*install*
+以`@author/repository`格式傳遞參數以進行*install* 。
 
 
 ```shell
@@ -479,7 +479,7 @@ wes install @wachaon/fmt
 ```
 
 
-*install*有選項
+*install*有選項。
 
 
 | 命名為        | 簡稱   | 描述                   |
@@ -488,7 +488,7 @@ wes install @wachaon/fmt
 | `--global` | `-g` | 在*wes.js*所在的文件夾中安裝模塊 |
 
 
-`--bare`選項可以省略從`author@repository`到`repository`的`require`參數。 `--global`選項使已安裝的模塊可用於所有腳本。上述選項必須作為同時指定*wes*安全選項`--unsafe`或`--dangerous` 。
+`--bare`選項可以省略從`author@repository`到`repository`的`require`參數。 `--global`選項使已安裝的模塊可用於所有腳本。上述選項必須與*wes*安全選項`--unsafe`或`--dangerous` 。
 
 
 ```shell
@@ -502,7 +502,7 @@ wes install @wachaon/fmt --bare --unsafe
 *install*不僅可以安裝在*github*上公共存儲庫的模塊中，還可以安裝在私有存儲庫中。
 
 
-*install* ，使用`author@repository`指定模塊。實現下載以下內容。
+在*install*中，使用`author@repository`指定模塊。實現下載以下內容。
 
 
 ```javascript
@@ -513,7 +513,7 @@ wes install @wachaon/fmt --bare --unsafe
 當您使用瀏覽器訪問私有倉庫的*raw*時，將顯示*token* ，因此請複制*token*並使用它。
 
 
-您還可以通過在*token*的*token*內在命令行上運行模塊來將模塊安裝到私有存儲庫*token* 。
+您還可以通過在*token*的生命週期內在命令行上運行模塊來將模塊安裝到私有存儲庫中。
 
 
 ```shell
@@ -530,7 +530,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt*捆綁*prettier*並格式化腳本。此外，如果在安裝*@wachaon/fmt*時出現`SyntaxError`錯誤，您可以指出錯誤位置。
+*@wachaon/fmt*捆綁*prettier*並格式化腳本。此外，如果安裝了`SyntaxError` *@wachaon/fmt*並出現語法錯誤，則可以指示錯誤位置。
 
 
 ### 安裝
@@ -544,10 +544,10 @@ wes install @wachaon/fmt
 ### 用法
 
 
-如果工作目錄中有*.prettierrc* （JSON 格式），會反映在設置中。 *fmt*可以與*CLI* （命令行界面）和*fmt* *module*一起使用。
+如果工作目錄中有*.prettierrc* （JSON 格式），會反映在設置中。它可以與*CLI* （命令行界面）和*fmt*中的*module*一起使用。
 
 
-用作*CLI*
+用作*CLI* 。
 
 
 ```shell
@@ -566,10 +566,10 @@ wes @wachaon/fmt src/sample --write
 | `--write` | `-w` | 允許覆蓋 |
 
 
-如果指定`--write`或`-w`的命名參數，則使用格式化的腳本覆蓋文件。
+如果指定`--write`或`-w`的命名參數，則使用格式化腳本覆蓋文件。
 
 
-### 用作*module*
+### 用作*module*時
 
 
 ### `option`
@@ -588,10 +588,10 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ## `@wachaon/edge`
 
 
-*Internet Explorer*將於 2022 年 6 月 15 日提供支持。結果，無法使用`require('InternetExplorer.Application')`操作應用程序。
+*Internet Explorer*將於 2022/6/15 完成支持。結果，無法使用`require('InternetExplorer.Application')`操作應用程序。
 
 
-另一種方法是通過*web driver* *Microsoft Edge based on Chromium*操作*Microsoft Edge based on Chromium* ，但`@wachaon/edge`簡化了*Edge*的自動駕駛儀。
+另一種方法是通過*web driver*運行*Microsoft Edge based on Chromium* 。 `@wachaon/edge`簡化了*Edge*自動駕駛儀。
 
 
 ### 安裝
@@ -641,13 +641,13 @@ edge((window, navi, res) => {
 此腳本按順序將訪問的*URL*輸出到命令提示符。
 
 
-`@wachaon/edge`為*URL*註冊一個事件並將數據添加到`res.exports` 。 *URL*註冊的*URL*可以是`String` `RegExp` ，可以進行靈活的設置。
+`@wachaon/edge`為*URL*註冊一個事件並將數據添加到`res.exports` 。要註冊的*URL*可以是`String` `RegExp` ，可以進行靈活的設置。
 
 
 通過使其成為事件驅動，可以通過不為自動駕駛難以處理的流程設置*URL*來輕鬆切換到手動操作。
 
 
-如果要停止腳本，請`navi.emit('terminate', res)`或手動終止*Edge* 。
+如果要停止腳本，請運行`navi.emit('terminate', res)`或手動終止*Edge* 。
 
 
-終止過程輸出`res.exports`作為*.json*文件作為默認值。如果要設置結束處理， `edge(callback, terminate)`的`terminate` Sets。
+終止進程將`res.exports`輸出為*.json*文件作為默認值。如果要設置終止過程，設置`edge(callback, terminate)` `terminate`

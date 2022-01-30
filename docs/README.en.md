@@ -1,7 +1,7 @@
 # *WES*
 
 
-*wes* is a framework for executing *ECMAScript* on the command line *Windows Script Host* .
+*wes* is a framework for executing *ECMAScript* on a command line *Windows Script Host* .
 
 
 The original text of the *README* is [*japanese*](/README.md) . Other than Japanese, it is a machine-translated sentence.  
@@ -44,7 +44,7 @@ Please select sentences in other languages ​​from the following.
 # Install
 
 
-*wes* need is *wes.js* only file. To download, start a command prompt and enter the following command.
+*wes.js* *wes* . To download, start a command prompt and enter the following command.
 
 
 ```shell
@@ -52,7 +52,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*wes* at the time of execution as the implementation *WScript.Shell* of `SendKeys` use. *wes.js* the path of the directory where *wes.js* is saved contains characters other than *ascii* , `SendKeys` will not be able to send the key correctly and the script will not be able to be executed.  
+*WScript.Shell* uses `SendKeys` from *wes* at runtime as an implementation. If the path of the directory where *wes.js* is saved contains characters other than *ascii* , `SendKeys` will not be able to send the key correctly and the script will not be able to be executed.  
 Please configure the save destination path of *wes.js* only *ascii* .
 
 
@@ -67,7 +67,7 @@ wes index
 ```
 
 
-Also, *wes* has a *REPL* so if you start it only with `wes` , you can enter the script directly.
+Also, *wes* has a *REPL* , so if you start it only with `wes` , you can enter the script directly.
 
 
 ```shell
@@ -75,7 +75,7 @@ wes
 ```
 
 
-Scripts will be accepted until you enter two blank lines. *README.md* can also check the execution of the sample script in *README.md* with *REPL* .
+Scripts will be accepted until you enter two blank lines. You can also check the execution of the sample script in *README.md* with *REPL* .
 
 
 ## command-line named arguments
@@ -108,7 +108,7 @@ The implementation of `--safe` `--usual` `--unsafe` `--dangerous` `--debug` is i
 ## *commonjs module*
 
 
-`module.exports` modules by assigning to `module.exports` and calling with `require()` . For convenience, it also supports the *node_modules* directory.
+Manage modules by assigning to `module.exports` and calling with `require()` . For convenience, it also supports the *node_modules* directory.
 
 
 *wes* `require()` automatically guesses the encoding of the module file, but if it doesn't guess correctly, you can specify the encoding with the second argument.
@@ -132,7 +132,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-You can also import to *OLE* like `require('WScript.Shell')` with *require* .
+You can also import to *OLE* like *require* `require('WScript.Shell')` with require.
 
 
 ```javascript
@@ -150,10 +150,10 @@ WShell.AppActivate(ie.LocationName)
 ## *es module*
 
 
-*Chakra* which is the execution engine of the script, interprets the syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. *wes* In *babel* enclosing. It is executed while sequentially *es module* to the *es module* . As a result, the processing overhead and file bloat are increasing as a cost.
+*Chakra* , which is the execution engine of the script, interprets the syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. *babel* is included in *wes* . It is executed while sequentially transpiling to the *es module* . As a result, the processing overhead and file bloat are increasing as a cost.
 
 
-Modules described by *es module* are also `require()` converted to `require()` , so *OLE* can be called. However, it does not support the module file encoding specification. All are read by automatic guessing.
+Modules described by *es module* are also transpile converted to `require()` , so *OLE* can be called. However, it does not support the module file encoding specification. All are read by automatic guessing.
 
 
 ```javascript
@@ -175,13 +175,13 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 # built-in objects
 
 
-*wes* has *built-in objects* that *WSH (JScript)* doesn't have.
+*wes* has *built-in objects* that *WSH (JScript)* does not have.
 
 
 ## *console*
 
 
-*wes* uses *console* instead of `WScript.Echo` or `WScript.StdErr.WriteLine` .
+`WScript.Echo` uses *console* instead of *wes* or `WScript.StdErr.WriteLine` .
 
 
 Print characters to the command line in `console.log` . It also supports formatted strings. Prints a formatted string using the formatting operator `%` .
@@ -192,7 +192,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
 
-*wes* in order to output a string colored in `WScript.StdOut.WriteLine` instead, `WScript.StdErr.WriteLine` use. `WScript.Echo` and `WScript.StdOut.WriteLine` are blocked from output, so use `WScript.StdErr.WriteLine` or `console.log` .
+`WScript.StdOut.WriteLine` *wes* of `WScript.StdErr.WriteLine` to output colored strings. `WScript.Echo` and `WScript.StdOut.WriteLine` are blocked from output. `WScript.StdErr.WriteLine` or `console.log` .
 
 
 ## *Buffer*
@@ -211,7 +211,7 @@ console.log(`${content} %O`, buff)
 ## `__dirname` and `__filename`
 
 
-`__filename` contains the path of the currently running module file. `__dirname` `__filename` the directory of `__filename` .
+`__filename` contains the path of the currently running module file. `__dirname` contains the directory of `__filename` .
 
 
 ```javascript
@@ -251,7 +251,7 @@ console.log(orange + 'Hello World')
 ## *argv*
 
 
-Gets the command line argument. `cscript.exe` command-line arguments of `/` declares named arguments in but, *wes* in `-` and `--` declare the named arguments in.
+Gets the command line argument. The command line arguments in `cscript.exe` declare named arguments with `/` `--` while *wes* declare named arguments with `-` and-.
 
 
 *argv.unnamed* and *argv.named* cast the value type of the command line argument to one of the *String* *Number* *Boolean* .
@@ -283,7 +283,7 @@ argv, argv.unnamed, argv.named)
 Operate the path.
 
 
-Generally, paths starting with `/` and `\` refer to relative paths from the drive root (for example, `/filename` can be the same path as `C:/filename` ), but for security in `wes` `/` and Paths starting with `\` are interpreted as relative to the working directory.
+Paths starting with `/` and `\` generally refer to paths relative to the drive root. For example, `/filename` and `C:/filename` may be on the same path. For security reasons, `wes` interprets paths starting with `/` and `\` as relative to the working directory.
 
 
 ```javascript
@@ -320,7 +320,7 @@ You can improve the accuracy of automatic guessing by increasing the characters 
 ## *JScript*
 
 
-If you change the script engine to *Chakra* , you will not be able to use *JScript* specific *Enumerator* etc. The built-in module *JScript* makes them available. However, *Enumerator* returns an *Array* instead of an Enumerator object.
+If you change the script engine to *Chakra* , you will not be able to use *JScript* -specific *Enumerator* etc. The built-in module *JScript* makes them available. However, *Enumerator* returns an *Array* instead of an *Enumerator object* .
 
 
 ```javascript
@@ -363,7 +363,7 @@ console.log(TypeName(FSO))
 ## *httprequest*
 
 
-*httprequest* is as its name *http request* will issue a.
+*httprequest* *http request* as its name suggests.
 
 
 ```javascript
@@ -397,7 +397,7 @@ describe( '# calc test', () => {
 ## *pipe*
 
 
-*pipe* simplifies pipe processing
+*pipe* simplifies pipe processing.
 
 
 ```javascript
@@ -439,13 +439,13 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 # Module bundle and install
 
 
-*install* , you can install the module for *wes* published on *github* . You will need a *github repository* to publish the module. Also, the repository name and the local directory name must be the same.
+With *install* , you can install the module for *wes* published on *github* . You will need a *github repository* to publish the module. Also, the repository name and the local directory name must be the same.
 
 
 ## *bundle*
 
 
-*github* publishing a module to *github* , *bundle* bundles the required module and changes it to a format that can be imported by the *install* module.
+When publishing a module to *github* , *bundle* bundles the required module and changes it to a format that can be imported by the *install* module.
 
 
 For safety reasons, *wes* does not import modules in a format that can be executed directly, so create a *.json* file with the *bundle* module.
@@ -454,7 +454,7 @@ For safety reasons, *wes* does not import modules in a format that can be execut
 There are some conditions for bundling modules.
 
 
-1.  *repository* one type of module can be published in one *repository* .
+1.  Only one type of module can be published in one *repository* .
 2.  The repository name on *github* and the local working directory name must be the same.
 3.  The repository must be public if you want to publish the module to a third party.
 4.  *wes* dynamically interprets the module path. Modules acquired by `require` under specific conditions such as `if` statements may not be bundled.
@@ -471,7 +471,7 @@ Used to install the module file for *wes* published on *github* .
 ### usage
 
 
-Pass arguments to *install* in the format `@author/repository`
+Pass arguments to *install* in the format `@author/repository` .
 
 
 ```shell
@@ -479,7 +479,7 @@ wes install @wachaon/fmt
 ```
 
 
-*install* has options
+*install* has options.
 
 
 | named      | short named | description                                        |
@@ -502,7 +502,7 @@ wes install @wachaon/fmt --bare --unsafe
 *install* can be installed not only in modules in public repositories on *github* , but also in private repositories.
 
 
-*install* , specify the module with `author@repository` . The implementation downloads the following.
+In *install* , specify the module with `author@repository` . The implementation downloads the following.
 
 
 ```javascript
@@ -513,7 +513,7 @@ wes install @wachaon/fmt --bare --unsafe
 When you access *raw* of the private repository with a browser, the *token* will be displayed, so copy the *token* and use it.
 
 
-You can also install a module in a private repository by running it on the command line within the *token* 's *token* .
+You can also install a module in a private repository by running it on the command line within the *token* 's lifetime.
 
 
 ```shell
@@ -530,7 +530,7 @@ Here are some external modules.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* bundles *prettier* and formats the script. Also, if *@wachaon/fmt* is installed and a `SyntaxError` Error occurs, the error location can be indicated.
+*@wachaon/fmt* bundles *prettier* and formats the script. Also, if @ `SyntaxError` *@wachaon/fmt* is installed and a Syntax Error occurs, the error location can be indicated.
 
 
 ### install
@@ -544,10 +544,10 @@ wes install @wachaon/fmt
 ### usage
 
 
-If there is *.prettierrc* (JSON format) in the working directory, it will be reflected in the setting. *fmt* can be used with both *CLI* (command line interface) and *module* in *fmt* .
+If there is *.prettierrc* (JSON format) in the working directory, it will be reflected in the setting. It can be used with both *CLI* (command line interface) and *module* in *fmt* .
 
 
-Use as *CLI*
+Used as *CLI* .
 
 
 ```shell
@@ -588,10 +588,10 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ## `@wachaon/edge`
 
 
-*Internet Explorer* will be fully supported as of June 15, 2022. As a result, it becomes impossible to operate the application with `require('InternetExplorer.Application')` .
+*Internet Explorer* will complete support with 2022/6/15. As a result, it becomes impossible to operate the application with `require('InternetExplorer.Application')` .
 
 
-An alternative would be to operate *Microsoft Edge based on Chromium* via a *web driver* , but `@wachaon/edge` simplifies *Edge* 's autopilot.
+An alternative would be to operate *Microsoft Edge based on Chromium* via the *web driver* . `@wachaon/edge` simplifies *Edge* autopilot.
 
 
 ### install
@@ -641,13 +641,13 @@ edge((window, navi, res) => {
 This script outputs the visited *URL* to the command prompt in sequence.
 
 
-`@wachaon/edge` registers an event for the *URL* and adds data to `res.exports` . The *URL* registered can be either `String` `RegExp` , and flexible settings can be made.
+`@wachaon/edge` registers an event for the *URL* and adds data to `res.exports` . The *URL* to be registered can be either `String` `RegExp` , and flexible settings can be made.
 
 
 By making it event-driven, it is possible to easily switch to manual operation by not setting the *URL* for processes that are difficult to handle with autopilot.
 
 
-If you want to stop the script, `navi.emit('terminate', res)` or manually terminate *Edge* .
+If you want to stop the script, run `navi.emit('terminate', res)` or manually terminate *Edge* .
 
 
-The termination process outputs `res.exports` as a *.json* file as the default value. If you want to set the end processing, `edge(callback, terminate)` of `terminate` Sets.
+The termination process outputs `res.exports` as a *.json* file as the default value. If you want to set the termination process, set `terminate` of `edge(callback, terminate)` .
