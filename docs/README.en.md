@@ -1,7 +1,7 @@
 # *WES*
 
 
-*wes* is a framework for executing *ECMAScript* on a command line *Windows Script Host* .
+*wes* is a framework for executing *ECMAScript* on *WSH (Windows Script Host)* for consoles.
 
 
 The original text of the *README* is [*japanese*](/README.md) . Other than Japanese, it is a machine-translated sentence.  
@@ -26,14 +26,15 @@ Please select sentences in other languages ​​from the following.
 # Features
 
 
--   Change the script engine of *Windows Script Host* to *Chakra* and run *ECMAScript2015* 2015
--   It always runs 32bit *cscript.exe* , so there are no inherent bugs in 64bit environment.
--   Import the module with `require` (corresponding to *es module* from *ver 0.9.0* )
--   Outputs colored characters to standard output
--   Automatically guess and read the encoding of the text file
+-   You can change the script engine to *Chakra* and write it in the *ECMAScript2015* specification.
+-   It always runs 32bit *cscript.exe* , so there are no inherent problems in 64bit environment.
+-   With a modular system, you can develop more efficiently than traditional *WSH*
+-   The built-in module supports basic processing such as file input / output and output of colored characters to the console.
+-   You don't have to worry about encoding because you can have the file read automatically guess the encoding.
+-   We also package modules to support external publishing and retrieval.
 
 
-# Known issues wes can't solve
+# Known issues *wes* cannot solve
 
 
 -   `WScript.Quit` can't interrupt the program and doesn't return an error code
@@ -41,10 +42,10 @@ Please select sentences in other languages ​​from the following.
 -   The second argument *event prefix* of `WScript.CreateObject` cannot be used
 
 
-# Install
+# install
 
 
-*wes.js* *wes* . To download, start a command prompt and enter the following command.
+*wes.js* *wes* . To download, copy *wes.js* from [*@wachaon/wes*](https://github.com/wachaon/wes) or run the following command in the console.
 
 
 ```shell
@@ -56,10 +57,10 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 Please configure the save destination path of *wes.js* only *ascii* .
 
 
-## Usage
+# How to use
 
 
-On the command line, specify the file that will be the starting point of the program after `wes` . The script extension *.js* can be omitted.
+In the console, specify the file that will be the starting point of the program after `wes` . The script extension *.js* can be omitted.
 
 
 ```shell
@@ -78,7 +79,7 @@ wes
 Scripts will be accepted until you enter two blank lines. You can also check the execution of the sample script in *README.md* with *REPL* .
 
 
-## command-line named arguments
+## Console options
 
 
 The startup options for *wes* are as follows.
@@ -99,10 +100,10 @@ The startup options for *wes* are as follows.
 The implementation of `--safe` `--usual` `--unsafe` `--dangerous` `--debug` is incomplete, but named arguments are reserved.
 
 
-# module system
+# Modular system
 
 
-*wes* supports *commonjs module* systems that use the general `require()` and *es module* systems that use `import` . ( *dynamic import* is not supported because it is asynchronous processing)
+*wes* supports *commonjs module* systems that use the general `require()` and *es module* systems that use `import` . ( *dynamic import* is asynchronous processing, so it is not supported)
 
 
 ## *commonjs module*
@@ -150,10 +151,13 @@ WShell.AppActivate(ie.LocationName)
 ## *es module*
 
 
-*Chakra* , which is the execution engine of the script, interprets the syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. *babel* is included in *wes* . It is executed while sequentially transpiling to the *es module* . As a result, the processing overhead and file bloat are increasing as a cost.
+*Chakra* , which is the execution engine of the script, interprets the syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. In *wes* , by adding *babel* to the built-in module, we are executing it while sequentially transpiling to the *es module* . As a result, the processing overhead and the *wes.js* file are bloated as a cost.
 
 
-Modules described by *es module* are also transpile converted to `require()` , so *OLE* can be called. However, it does not support the module file encoding specification. All are read by automatic guessing.
+Modules described by *es module* are also transpiled to `require()` , so *OLE* can be called. However, it does not support the module file encoding specification. All are read by automatic guessing.
+
+
+To load it as an *es module* , set the extension to `.mjs` or the `"type"` field of `package.json` to `"module"` .
 
 
 ```javascript
@@ -172,7 +176,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ```
 
 
-# built-in objects
+# Built-in object
 
 
 *wes* has *built-in objects* that *WSH (JScript)* does not have.
@@ -184,7 +188,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 `WScript.Echo` uses *console* instead of *wes* or `WScript.StdErr.WriteLine` .
 
 
-Print characters to the command line in `console.log` . It also supports formatted strings. Prints a formatted string using the formatting operator `%` .
+Print characters to the console in `console.log` . It also supports formatted strings. Prints a formatted string using the formatting operator `%` .
 
 
 ```javascript
@@ -219,7 +223,7 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 ```
 
 
-# built-in modules
+# Built-in module
 
 
 *wes* has *built-in modules* to simplify and standardize basic processing.
@@ -228,7 +232,7 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 ## *ansi*
 
 
-`ansi` has an *ANSI escape code* that allows you to change the color and effect of standard output. Colors and effects may vary depending on the type and settings of the console application used.
+`ansi` is an *ANSI escape code* that allows you to change the color and effect of standard output. Colors and effects may vary depending on the type and settings of the console application used.
 
 
 ```javascript
@@ -251,13 +255,13 @@ console.log(orange + 'Hello World')
 ## *argv*
 
 
-Gets the command line argument. The command line arguments in `cscript.exe` declare named arguments with `/` `--` while *wes* declare named arguments with `-` and-.
+Gets the console argument. The console argument of `cscript.exe` declares a named argument with `/` `--` while *wes* declares a named argument with `-` and-.
 
 
-*argv.unnamed* and *argv.named* cast the value type of the command line argument to one of the *String* *Number* *Boolean* .
+*argv.unnamed* and *argv.named* cast the value type of the console argument to one of the *String* *Number* *Boolean* .
 
 
-Enter the command line arguments along with the *REPL* .
+Enter the console arguments along with the *REPL* .
 
 
 ```shell
@@ -363,7 +367,7 @@ console.log(TypeName(FSO))
 ## *httprequest*
 
 
-*httprequest* *http request* as its name suggests.
+*httprequest* issues an *http request* .
 
 
 ```javascript
@@ -436,27 +440,68 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 ```
 
 
-# Module bundle and install
+## *zip*
 
 
-With *install* , you can install the module for *wes* published on *github* . You will need a *github repository* to publish the module. Also, the repository name and the local directory name must be the same.
+Compress files and folders and decompress compressed files. It calls *PowerShell* internally and processes it.
+
+
+```javascript
+const {zip, unzip} = require('zip')
+
+console.log(zip('docs\\*', 'dox.zip'))
+console.log(unzip('dox.zip'))
+```
+
+
+Wildcards `*` can be written in the `path` of `zip(path, destinationPath)` .
+
+
+It can be used with both *CLI* (console interface) and *module* .
+
+
+```shell
+wes zip docs\* dox.zip
+wes zip -p dox.zip
+```
+
+
+If `path` has extension `.zip` , `unzip()` is processed and there is no description of extension `.zip` . Or even if there is a `.zip` extension, if there is a description of a wildcard `*` , `zip()` will be processed.
+
+
+| unnamed | description                    |
+| ------- | ------------------------------ |
+| `1`     | `path` Folder or file to enter |
+| `2`     | folder file to output `dest`   |
+
+
+| named    | short named | description                    |
+| -------- | ----------- | ------------------------------ |
+| `--path` | `-p`        | `path` Folder or file to enter |
+| `--dest` | `-d`        | folder file to output `dest`   |
+
+
+# Module bundling and installation
+
+
+In *wes* , a bundle of several modules is called a *package* . You can install the *package* for *wes* published on *github* . You will need a *github repository* to publish the *package* . Also, the repository name and the local directory name must be the same.
 
 
 ## *bundle*
 
 
-When publishing a module to *github* , *bundle* bundles the required module and changes it to a format that can be imported by the *install* module.
+When publishing a *package* on *github* , *bundle* bundles the required modules and changes them to a format that can be imported by installation.
 
 
-For safety reasons, *wes* does not import modules in a format that can be executed directly, so create a *.json* file with the *bundle* module.
+For security reasons, *bundle* creates a *.json* file because *wes* doesn't allow us to import *package* in a format that can be executed directly.
 
 
-There are some conditions for bundling modules.
+There are some conditions for packaging.
 
 
 1.  Only one type of module can be published in one *repository* .
 2.  The repository name on *github* and the local working directory name must be the same.
-3.  The repository must be public if you want to publish the module to a third party.
+3.  The status of the repository must be *public* when publishing the package.
 4.  *wes* dynamically interprets the module path. Modules acquired by `require` under specific conditions such as `if` statements may not be bundled.
 5.  *.json* file will be created in your working directory with the name *directory_name.json* . It cannot be installed if the file is renamed or the file is moved.
 6.  `node_modules/directory_name` , the bundle fails because it refers to `directory_name.json` .
@@ -465,10 +510,10 @@ There are some conditions for bundling modules.
 ## *install*
 
 
-Used to install the module file for *wes* published on *github* .
+Used to install the *package* for *wes* published on *github* .
 
 
-### usage
+### How to use
 
 
 Pass arguments to *install* in the format `@author/repository` .
@@ -496,7 +541,7 @@ wes install @wachaon/fmt --bare --unsafe
 ```
 
 
-# Install the module of private repository
+# Installing packages in private repositories
 
 
 *install* can be installed not only in modules in public repositories on *github* , but also in private repositories.
@@ -510,10 +555,10 @@ In *install* , specify the module with `author@repository` . The implementation 
 ```
 
 
-When you access *raw* of the private repository with a browser, the *token* will be displayed, so copy the *token* and use it.
+When you access the *raw* of the private repository with a browser, the *token* will be displayed, so copy the *token* and use it.
 
 
-You can also install a module in a private repository by running it on the command line within the *token* 's lifetime.
+You can also install a module in a private repository by running it in the console within the *token* 's lifetime.
 
 
 ```shell
@@ -521,7 +566,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
 
-# External module
+# Package introduction
 
 
 Here are some external modules.
@@ -544,7 +589,7 @@ wes install @wachaon/fmt
 ### usage
 
 
-If there is *.prettierrc* (JSON format) in the working directory, it will be reflected in the setting. It can be used with both *CLI* (command line interface) and *module* in *fmt* .
+If there is *.prettierrc* (JSON format) in the working directory, it will be reflected in the setting. *fmt* can be used with both *CLI* (console interface) and *module* .
 
 
 Used as *CLI* .
@@ -613,7 +658,7 @@ wes edge
 ```
 
 
-Unzip the downloaded *zip* and move *msedgedriver.exe* to the current directory.
+Unzip the downloaded *zip* and move *msedgedriver.exe* to your working directory.
 
 
 ### usage
@@ -638,7 +683,7 @@ edge((window, navi, res) => {
 ```
 
 
-This script outputs the visited *URL* to the command prompt in sequence.
+This script will sequentially output the visited *URL* to the console.
 
 
 `@wachaon/edge` registers an event for the *URL* and adds data to `res.exports` . The *URL* to be registered can be either `String` `RegExp` , and flexible settings can be made.

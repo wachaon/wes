@@ -1,7 +1,7 @@
 # *WES*
 
 
-*wes*是一个在命令行*Windows Script Host*上执行*ECMAScript*的框架。
+*wes*是一个用于在控制台的*WSH (Windows Script Host)*上执行*ECMAScript*的框架。
 
 
 *README*文件的原文是[*japanese*](/README.md) 。除了日语，它是机器翻译的句子。  
@@ -26,14 +26,15 @@
 # 特征
 
 
--   将*Windows Script Host*的脚本引擎更改为*Chakra*并运行*ECMAScript2015* 2015
--   它始终运行 32 位*cscript.exe* ，因此在 64 位环境中没有固有的错误。
--   使用`require`导入模块（对应*es module* from *ver 0.9.0* ）
--   将彩色字符输出到标准输出
--   自动猜测和读取文本文件的编码
+-   您可以将脚本引擎更改为*Chakra* ，并将其写入*ECMAScript2015*规范。
+-   它始终运行 32 位*cscript.exe* ，因此在 64 位环境下不存在固有问题。
+-   使用模块化系统，您可以比传统*WSH*更高效地开发
+-   内置模块支持文件输入/输出、彩色字符输出到控制台等基本处理。
+-   您不必担心编码，因为您可以让文件读取自动猜测编码。
+-   我们还打包模块以支持外部发布和检索。
 
 
-# 我们无法解决的已知问题
+# 我们*wes*已知问题
 
 
 -   `WScript.Quit`不能中断程序并且不返回错误代码
@@ -44,7 +45,7 @@
 # 安装
 
 
-*wes.js* *wes* 。要下载，请启动命令提示符并输入以下命令。
+*wes.js* *wes* 。要下载，请从[*@wachaon/wes*](https://github.com/wachaon/wes) wes 复制*wes.js*或在控制台中运行以下命令。
 
 
 ```shell
@@ -56,10 +57,10 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 请仅配置*wes.js*的保存目标路径*ascii* 。
 
 
-## 用法
+# 如何使用
 
 
-在命令行中，指定`wes`之后将作为程序起点的文件。脚本扩展名*.js*可以省略。
+在控制台中，指定`wes`之后将作为程序起点的文件。脚本扩展名*.js*可以省略。
 
 
 ```shell
@@ -78,7 +79,7 @@ wes
 脚本将被接受，直到您输入两个空白行。您还可以使用*REPL*检查*README.md*中示例脚本的执行情况。
 
 
-## 命令行命名参数
+## 控制台选项
 
 
 *wes*的启动选项如下。
@@ -99,10 +100,10 @@ wes
 `--safe` `--usual` `--unsafe` `--dangerous` `--debug`的实现是不完整的，但命名参数是保留的。
 
 
-# 模块系统
+# 模块化系统
 
 
-*wes*支持使用通用`require()`的*commonjs module*系统和使用`import`的*es module*系统。 （不支持*dynamic import* ，因为是异步处理）
+*wes*支持使用通用`require()`的*commonjs module*系统和使用`import`的*es module*系统。 （ *dynamic import*为异步处理，不支持）
 
 
 ## *commonjs module*
@@ -111,7 +112,7 @@ wes
 通过分配给`module.exports`并使用`require()`调用来管理模块。为方便起见，它还支持*node_modules*目录。
 
 
-*wes* `require()`会自动猜测模块文件的编码，但如果没有猜测正确，可以用第二个参数指定编码。
+*wes* `require()`会自动猜测模块文件的编码，但是如果没有猜测正确，可以用第二个参数指定编码。
 
 
 ```javascript
@@ -150,10 +151,13 @@ WShell.AppActivate(ie.LocationName)
 ## *es module*
 
 
-脚本的执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。 *babel*包含在*wes*中。它在顺序转译到*es module*时执行。结果，处理开销和文件膨胀作为成本增加。
+脚本的执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过将*babel*添加到内置模块中，我们在执行它的同时按顺序转译到*es module* 。结果，处理开销和*wes.js*文件作为成本而膨胀。
 
 
-*es module*模块描述的模块也被 transpile 转换为`require()` ，所以可以调用*OLE* 。但是，它不支持模块文件编码规范。都是通过自动猜测读取的。
+*es module*模块描述的模块也被转译为`require()` ，因此可以调用*OLE* 。但是，它不支持模块文件编码规范。都是通过自动猜测读取的。
+
+
+要将其作为*es module*加载，请将扩展名设置为`.mjs`或将`package.json`的`"type"`字段设置为`"module"` 。
 
 
 ```javascript
@@ -184,7 +188,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 `WScript.Echo`使用*console*而不是*wes*或`WScript.StdErr.WriteLine` 。
 
 
-在`console.log`中将字符打印到命令行。它还支持格式化字符串。使用格式化运算符`%`打印格式化字符串。
+在`console.log`中将字符打印到控制台。它还支持格式化字符串。使用格式化运算符`%`打印格式化字符串。
 
 
 ```javascript
@@ -228,7 +232,7 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 ## *ansi*
 
 
-`ansi`有一个*ANSI escape code* ，允许您更改标准输出的颜色和效果。颜色和效果可能会因使用的控制台应用程序的类型和设置而异。
+`ansi`是一个*ANSI escape code* ，允许您更改标准输出的颜色和效果。颜色和效果可能会因使用的控制台应用程序的类型和设置而异。
 
 
 ```javascript
@@ -251,13 +255,13 @@ console.log(orange + 'Hello World')
 ## *argv*
 
 
-获取命令行参数。 `cscript.exe`中的命令行参数用`/` *wes*命名参数`--`而我们用`-`和 - 声明命名参数。
+获取控制台参数。 `cscript.exe`的控制台参数使用`/`声明命名参数`--`而*wes*使用`-`和 - 声明命名参数。
 
 
-*argv.unnamed*和*argv.named*将命令行参数的值类型转换为*String* *Number* *Boolean*之一。
+*argv.unnamed*和*argv.named*将控制台参数的值类型转换为*String* *Number* *Boolean*之一。
 
 
-与*REPL*一起输入命令行参数。
+输入控制台参数和*REPL* 。
 
 
 ```shell
@@ -332,7 +336,7 @@ files.forEach(file => console.log(file.Name))
 ```
 
 
-*GetObject*充当`WScript.GetObject`的替代品。
+*GetObject*作为`WScript.GetObject`的替代品。
 
 
 ```javascript
@@ -363,7 +367,7 @@ console.log(TypeName(FSO))
 ## *httprequest*
 
 
-*httprequest* *http request* 。
+*httprequest*发出一个*http request* 。
 
 
 ```javascript
@@ -436,27 +440,68 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 ```
 
 
+## *zip*
+
+
+压缩文件和文件夹并解压缩压缩文件。它在内部调用*PowerShell*并对其进行处理。
+
+
+```javascript
+const {zip, unzip} = require('zip')
+
+console.log(zip('docs\\*', 'dox.zip'))
+console.log(unzip('dox.zip'))
+```
+
+
+通配符`*`可以写在`zip(path, destinationPath)` `path`路径中。
+
+
+它可以与*CLI* （控制台界面）和*module*一起使用。
+
+
+```shell
+wes zip docs\* dox.zip
+wes zip -p dox.zip
+```
+
+
+如果`path`有扩展名`.zip` ，则处理`unzip()`并且没有扩展名`.zip`的描述。或者即使有`.zip`扩展名，如果有通配符`*`的描述，也会处理`zip()` 。
+
+
+| 未命名 | 描述               |
+| --- | ---------------- |
+| `1` | `path`要输入的文件夹或文件 |
+| `2` | 文件夹文件输出`dest`    |
+
+
+| 命名为      | 简称   | 描述               |
+| -------- | ---- | ---------------- |
+| `--path` | `-p` | `path`要输入的文件夹或文件 |
+| `--dest` | `-d` | 文件夹文件输出`dest`    |
+
+
 # 模块捆绑和安装
 
 
-使用*install* ，您可以安装发布在*github*上的*wes*模块。您将需要一个*github repository*来发布该模块。此外，存储库名称和本地目录名称必须相同。
+在*wes*中，由几个模块组成的捆绑包称为*package* 。您可以安装在*github*上发布的*wes* *package* 。您将需要一个*github repository*来发布*package* 。此外，存储库名称和本地目录名称必须相同。
 
 
 ## *bundle*
 
 
-将模块发布到*github*时， *bundle*会捆绑所需的模块并将其更改为可以由*install*模块导入的格式。
+在*github*上发布*package*时， *bundle*会捆绑所需的模块并将它们更改为可以通过安装导入的格式。
 
 
-出于安全考虑， *wes*不会以可以直接执行的格式导入模块，因此使用*bundle*模块创建一个*.json*文件。
+出于安全原因， *bundle*会创建一个*wes*文件*.json*因为我们不允许我们以可以直接执行的格式导入*package* 。
 
 
-捆绑模块有一些条件。
+包装有一些条件。
 
 
 1.  一个*repository*中只能发布一种类型的模块。
 2.  *github*上的仓库名和本地工作目录名必须一致。
-3.  如果要将模块发布给第三方，则存储库必须是公共的。
+3.  发布包时，存储库的状态必须是*public*的。
 4.  *wes*动态解释模块路径。在`if`语句等特定条件下`require`获取的模块可能不会被捆绑。
 5.  *.json*文件将在您的工作目录中创建，名称为*directory_name.json* 。如果文件被重命名或文件被移动，则无法安装。
 6.  `node_modules/directory_name`时，捆绑失败，因为它引用了`directory_name.json` 。
@@ -465,10 +510,10 @@ console.log('isBoolean(false) // => %O', isBoolean(false))
 ## *install*
 
 
-用于安装*github*上发布的*wes*的模块文件。
+用于安装*github*上发布的*wes* *package* 。
 
 
-### 用法
+### 如何使用
 
 
 以`@author/repository`格式传递参数以进行*install* 。
@@ -496,7 +541,7 @@ wes install @wachaon/fmt --bare --unsafe
 ```
 
 
-# 安装私有仓库模块
+# 在私有存储库中安装包
 
 
 *install*不仅可以安装在*github*上公共存储库的模块中，还可以安装在私有存储库中。
@@ -510,10 +555,10 @@ wes install @wachaon/fmt --bare --unsafe
 ```
 
 
-当您使用浏览器访问私有仓库的*raw*时，将显示*token* ，因此请复制*token*并使用它。
+当您使用浏览器访问私有存储库的*raw*文件时，将显示*token* ，因此请复制*token*并使用它。
 
 
-您还可以通过在*token*的生命周期内在命令行上运行模块来将模块安装到私有存储库中。
+您还可以通过在*token*的生命周期内在控制台中运行模块来将模块安装到私有存储库中。
 
 
 ```shell
@@ -521,7 +566,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
 
-# 外部模块
+# 包装介绍
 
 
 这是一些外部模块。
@@ -544,7 +589,7 @@ wes install @wachaon/fmt
 ### 用法
 
 
-如果工作目录中有*.prettierrc* （JSON 格式），会反映在设置中。它可以与*CLI* （命令行界面）和*fmt*中的*module*一起使用。
+如果工作目录中有*.prettierrc* （JSON 格式），会反映在设置中。 *fmt*可以与*CLI* （控制台界面）和*module*一起使用。
 
 
 用作*CLI* 。
@@ -566,7 +611,7 @@ wes @wachaon/fmt src/sample --write
 | `--write` | `-w` | 允许覆盖 |
 
 
-如果指定`--write`或`-w`的命名参数，则使用格式化的脚本覆盖文件。
+如果指定`--write`或`-w`的命名参数，则使用格式化脚本覆盖文件。
 
 
 ### 用作*module*时
@@ -613,7 +658,7 @@ wes edge
 ```
 
 
-解压下载的*zip*并将*msedgedriver.exe*移动到当前目录。
+解压缩下载的*zip*并将*msedgedriver.exe*移动到您的工作目录。
 
 
 ### 用法
@@ -638,7 +683,7 @@ edge((window, navi, res) => {
 ```
 
 
-此脚本按顺序将访问的*URL*输出到命令提示符。
+此脚本将按顺序将访问的*URL*输出到控制台。
 
 
 `@wachaon/edge`为*URL*注册一个事件并将数据添加到`res.exports` 。要注册的*URL*可以是`String` `RegExp` ，可以进行灵活的设置。
