@@ -30,7 +30,8 @@ describe('#test Enumerator', () => {
             'REPL.js',
             'text.js',
             'typecheck.js',
-            'VBScript.js'
+            'VBScript.js',
+            'zip.js'
         ]
         assert(JSON.stringify(files) === JSON.stringify(list))
     })
