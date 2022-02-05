@@ -357,6 +357,16 @@ console.log('isNumber(43.5) // => %O', isNumber(43.5))
 console.log('isBoolean(false) // => %O', isBoolean(false))
 ```
 
+## *zip*
+
+ファイルやフォルダの圧縮と圧縮ファイルの解凍をします。
+内部で *PowerShell* 呼び出して処理をしています。
+
+```javascript
+const {zip, unzip} = require('zip')
+
+
+
 # Module bundle and install
 
 *install* では *github* で公開されている *wes* 用のモジュールをインストール出来ます。
