@@ -249,13 +249,14 @@ try {
     var console = (function () {
         var module = { exports: {} }
         ;(function () {
-            var NONE = NONE
-            var SPACE = SPACE
+            var NONE = ''
+            var SPACE = ' '
             var rSPECIFIER = /(%[sdfoj])/i
             var rSEQ = /\u001B\[[\d;]+m/g
             var clear = '\u001B[0m'
             var brightRed = '\u001B[91m'
             var reverse = '\u001B[7m'
+            var EIL = '\u001B[0K'
 
             function format(arg) {
                 var args = Array.prototype.slice.call(arg)
@@ -288,7 +289,7 @@ try {
                 var message = format(arguments)
                 var monotoneMessage = removeColor(message)
                 if (argv.has('monotone')) WScript.StdOut.WriteLine(monotoneMessage)
-                else WScript.StdErr.WriteLine(message + clear)
+                else WScript.StdErr.WriteLine(EIL + message + clear)
                 return monotoneMessage
             }
 
@@ -306,7 +307,7 @@ try {
                 var message = format(arguments)
                 var monotoneMessage = removeColor(message)
                 if (argv.has('monotone')) WScript.StdOut.WriteLine('DEBUG: ' + monotoneMessage)
-                else WScript.StdErr.WriteLine(brightRed + reverse + 'DEBUG:' + clear + message + clear)
+                else WScript.StdErr.WriteLine(EIL + brightRed + reverse + 'DEBUG:' + clear + message + clear)
                 return monotoneMessage
             }
 
