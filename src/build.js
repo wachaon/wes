@@ -37,16 +37,41 @@ const log = require('log')
 let template = fs.readTextFileSync('src/template.js')
 let sep = rCRLF.test(template) ? CRLF : LF
 let line = template.split(sep)
-const match = /^\s+var Modules = \{\}$/
+
+const rModule = /^\s+var Modules = \{\}$/
+
+const Console = fs.readTextFileSync('lib/console.js')
+const rConsole = '    var console = function () {}'
+
+const Ansi = fs.readTextFileSync('lib/ansi.js')
+const rAnsi = '    var ansi = function () {}'
+
+const Argv = fs.readTextFileSync('lib/argv.js')
+const rArgv = '    var argv = function () {}'
 
 let res = format(
     line
         .map((value) => {
-            if (!match.test(value)) {
-                return value
-            } else {
-                return 'var Modules = ' + graph.trim()
-            }
+            if (rModule.test(value)) return 'var Modules = ' + graph.trim()
+            else if (rConsole === value)
+                return (
+                    'var console = (function () {\n    var module = { exports: {} };\n        (function () {' +
+                    Console +
+                    '        })()\n    return module.exports\n})()'
+                )
+            else if (rAnsi === value)
+                return (
+                    'var ansi = (function () {\n    var module = { exports: {} };\n        (function () {' +
+                    Ansi +
+                    '        })()\n    return module.exports\n})()'
+                )
+            else if (rArgv === value)
+                return (
+                    'var argv = (function () {\n    var module = { exports: {} };\n        (function () {' +
+                    Argv +
+                    '        })()\n    return module.exports\n})()'
+                )
+            else return value
         })
         .join(sep)
 )
