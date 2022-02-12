@@ -511,9 +511,9 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 ## `@wachaon/edge`
 
-*Internet Explorer* が 2022/6/15 を以てサポートを完了します。それに伴い `require('InternetExplorer.Application')` でのアプリケーションの操作も不可能になります。
+*Internet Explorer* が 2022/6/15 を以てサポートを完了します。それに伴い `require('InternetExplorer.Application')` でのアプリケーションの操作も不可能になると予想されます。
 
-代替案として、*Microsoft Edge based on Chromium* を *web driver* 経由で操作することになります。`@wachaon/edge` は *Edge* の自動操縦を簡素化します。
+代替案は、*Microsoft Edge based on Chromium* を *web driver* 経由で操作することになります。`@wachaon/edge` は *Edge* の自動操縦を簡素化します。
 
 ### インストール
 
