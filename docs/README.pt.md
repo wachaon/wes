@@ -1,7 +1,7 @@
 # *WES*
 
 
-*wes* é uma estrutura para executar *ECMAScript* em *WSH (Windows Script Host)* para consoles.
+*wes* é uma estrutura de console que executa *ECMAScript* em *WSH (Windows Script Host)* .
 
 
 O texto original do *README* é [*japanese*](/README.md) . Além do japonês, é uma frase traduzida por máquina.  
@@ -29,7 +29,7 @@ Por favor, selecione frases em outros idiomas a partir do seguinte.
 -   Você pode alterar o mecanismo de script para *Chakra* e escrevê-lo na especificação *ECMAScript2015* .
 -   Ele sempre executa *cscript.exe* de 32 bits, portanto, não apresenta problemas inerentes ao ambiente de 64 bits.
 -   Com um sistema modular, você pode desenvolver com mais eficiência do que o *WSH* tradicional
--   O módulo embutido suporta processamento básico, como entrada/saída de arquivo e saída de caracteres coloridos para o console.
+-   O módulo integrado suporta processamento básico, como entrada/saída de arquivo e saída de caracteres coloridos para o console.
 -   Você não precisa se preocupar com a codificação porque pode fazer com que o arquivo lido automaticamente adivinhe a codificação.
 -   Também empacotamos módulos para suportar publicação e recuperação externa.
 
@@ -39,7 +39,7 @@ Por favor, selecione frases em outros idiomas a partir do seguinte.
 
 -   `WScript.Quit` não pode interromper o programa e não retorna um código de erro
 -   Processamento assíncrono como `setTimeout` e `Promise` não é possível
--   O segundo *event prefix* de argumento de `WScript.CreateObject` não pode ser usado
+-   Você não pode usar o *event prefix* como o segundo argumento de `WScript.CreateObject`
 
 
 # instalar
@@ -68,7 +68,7 @@ wes index
 ```
 
 
-Além disso, *wes* tem um *REPL* , portanto, se você iniciar apenas com `wes` , poderá inserir o script diretamente.
+Além disso, *wes* possui um *REPL* , portanto, se você iniciar apenas com `wes` , poderá inserir o script diretamente.
 
 
 ```shell
@@ -76,7 +76,7 @@ wes
 ```
 
 
-Os scripts serão aceitos até que você insira duas linhas em branco. Você também pode verificar a execução do script de amostra em *README.md* com *REPL* .
+O *REPL* aceita entrada de script até que você insira duas linhas em branco. Você também pode verificar a execução do script de amostra em *README.md* com *REPL* .
 
 
 ## Opções do console
@@ -103,7 +103,7 @@ A implementação de `--safe` `--usual` `--unsafe` `--dangerous` `--debug` está
 # Sistema modular
 
 
-*wes* suporta sistemas *commonjs module* que usam os sistemas de módulo geral `require()` e *es module* que usam `import` . ( *dynamic import* é um processamento assíncrono, portanto, não é compatível)
+*wes* suporta dois sistemas de módulos, um sistema *commonjs module* que usa o general `require()` e um *es module* que usa `import` . ( *dynamic import* é um processamento assíncrono, portanto, não é compatível)
 
 
 ## *commonjs module*
@@ -151,10 +151,10 @@ WShell.AppActivate(ie.LocationName)
 ## *es module*
 
 
-*Chakra* , que é o mecanismo de execução do script, interpreta a sintaxe como `imoprt` , mas não pode ser executado como está porque o método de processamento como `cscript` não está definido. Em *wes* , adicionando *babel* ao módulo embutido, estamos executando-o enquanto transpilamos sequencialmente para o *es module* . Como resultado, a sobrecarga de processamento e o arquivo *wes.js* são inchados como um custo.
+*Chakra* , que é o mecanismo de execução do script, interpreta a sintaxe como `imoprt` , mas não pode ser executado como está porque o método de processamento como `cscript` não está definido. Em *wes* , ao adicionar *babel* ao módulo embutido, ele é executado enquanto transpila sequencialmente para o *es module* . Como resultado, a sobrecarga de processamento e o arquivo *wes.js* são inchados como um custo.
 
 
-Os módulos descritos pelo *es module* também são transcompilados para `require()` , então *OLE* pode ser chamado. No entanto, ele não suporta a especificação de codificação de arquivo do módulo. Todos são lidos por adivinhação automática.
+Módulos descritos pelo *es module* também são convertidos em transpile para `require()` , então *OLE* pode ser chamado. No entanto, ele não suporta a especificação de codificação de arquivo do módulo. Todos são lidos por adivinhação automática.
 
 
 Para carregá-lo como um *es module* , defina a extensão para `.mjs` ou o campo `"type"` de `package.json` para `"module"` .
@@ -169,7 +169,7 @@ export default function sub (a, b) {
 
 
 ```javascript
-// ./main2.js
+./main2.js\
 import sub from './sub.mjs'
 
 console.log('sub(7, 3) // => %O', sub(7, 3))
@@ -457,7 +457,7 @@ console.log(unzip('dox.zip'))
 Curingas `*` podem ser escritos no `path` do `zip(path, destinationPath)` .
 
 
-Ele pode ser usado com *CLI* (interface de console) e *module* .
+Pode ser usado com *CLI* (interface de console) e *module* .
 
 
 ```shell
@@ -484,33 +484,33 @@ Se o `path` tiver extensão `.zip` , `unzip()` é processado e não há descriç
 # Agrupamento e instalação de módulos
 
 
-Em *wes* , um pacote de vários módulos é chamado de *package* . Você pode instalar o *package* para *wes* publicado no *github* . Você precisará de um *github repository* para publicar o *package* . Além disso, o nome do repositório e o nome do diretório local devem ser iguais.
+Em *wes* , um pacote de vários módulos é chamado de pacote. Você pode instalar o pacote para *wes* publicado no *github* . Você precisará de um *github repository* para publicar o pacote. Além disso, o nome do repositório e o nome do diretório local devem ser iguais.
 
 
 ## *bundle*
 
 
-Ao publicar um *package* no *github* , o *bundle* agrupa os módulos necessários e os altera para um formato que pode ser importado pela instalação.
+Ao publicar o pacote no *github* , o *bundle* agrupa os módulos necessários e altera o formato para que possa ser importado por instalação.
 
 
-Por motivos de segurança, o *bundle* cria um arquivo *.json* porque *wes* não nos permite importar *package* em um formato que possa ser executado diretamente.
+Por motivos de segurança, o *bundle* cria um arquivo *.json* porque *wes* não permite que você importe pacotes em um formato que possa ser executado diretamente.
 
 
 Existem algumas condições para a embalagem.
 
 
-1.  Apenas um tipo de módulo pode ser publicado em um *repository* .
-2.  O nome do repositório no *github* e o nome do diretório de trabalho local devem ser os mesmos.
-3.  O status do repositório deve ser *public* ao publicar o pacote.
-4.  *wes* interpreta dinamicamente o caminho do módulo. Módulos adquiridos por `require` sob condições específicas, como `if` as instruções não podem ser agrupadas.
-5.  *.json* será criado em seu diretório de trabalho com o nome *directory_name.json* . Ele não pode ser instalado se o arquivo for renomeado ou o arquivo for movido.
+1.  Apenas um módulo pode ser publicado em um *repository* .
+2.  Certifique-se de que o nome do repositório no *github* e o nome do diretório de trabalho local sejam os mesmos.
+3.  Se você quiser publicar o pacote, torne o repositório *public* .
+4.  Declare a aquisição do módulo no escopo de nível superior.
+5.  O arquivo *.json* do pacote é criado em seu diretório de trabalho com o nome *directory_name.json* . Ele não pode ser instalado se o arquivo for renomeado ou o arquivo for movido.
 6.  `node_modules/directory_name` , o pacote falha porque se refere a `directory_name.json` .
 
 
 ## *install*
 
 
-Usado para instalar o *package* para *wes* publicado no *github* .
+Usado para instalar o pacote para *wes* publicado no *github* .
 
 
 ### Como usar
@@ -544,10 +544,10 @@ wes install @wachaon/fmt --bare --unsafe
 # Instalando pacotes em repositórios privados
 
 
-*install* pode ser instalado não apenas em módulos em repositórios públicos no *github* , mas também em repositórios privados.
+*install* pode instalar não apenas módulos em repositórios públicos no *github* , mas também repositórios privados.
 
 
-Em *install* , especifique o módulo com `author@repository` . A implementação baixa o seguinte.
+Na *install* , especifique o módulo com *@author/repository* . A implementação tentará baixar o seguinte URL.
 
 
 ```javascript
@@ -575,7 +575,7 @@ Aqui estão alguns módulos externos.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* empacota *prettier* e formata o script. Além disso, se @ `SyntaxError` *@wachaon/fmt* estiver instalado e ocorrer um erro de sintaxe, o local do erro poderá ser indicado.
+*@wachaon/fmt* empacota *prettier* e formata o script. Além disso, se ocorrer um *Syntax Error* com *@wachaon/fmt* instalado, você pode indicar o local do erro.
 
 
 ### instalar
@@ -586,13 +586,13 @@ wes install @wachaon/fmt
 ```
 
 
-### uso
+### Como usar
 
 
 Se houver *.prettierrc* (formato JSON) no diretório de trabalho, ele será refletido na configuração. *fmt* pode ser usado com *CLI* (interface de console) e *module* .
 
 
-Usado como *CLI* .
+#### Usado como *CLI* .
 
 
 ```shell
@@ -614,10 +614,7 @@ wes @wachaon/fmt src/sample --write
 Substitua o arquivo por um script formatado se você especificar um argumento nomeado de `--write` ou `-w` .
 
 
-### Quando usado como *module*
-
-
-### `option`
+#### Use como um módulo
 
 
 ```javascript
@@ -654,14 +651,14 @@ Em seguida, baixe o *web driver* .
 
 
 ```shell
-wes edge
+wes edge --download
 ```
 
 
-Descompacte o *zip* baixado e mova *msedgedriver.exe* para seu diretório de trabalho.
+Verifique a versão instalada do *Edge* e baixe o *web driver* correspondente.
 
 
-### uso
+### Como usar
 
 
 Será fácil de usar.
@@ -672,13 +669,14 @@ const edge = require('./index')
 
 edge((window, navi, res) => {
     window.rect({x: 1 ,y: 1, width: 1200, height: 500})
-    window.navigate('http://www.google.com')
     res.exports = []
 
-    navi.on(/./, (url) => {
+    navi.on(/https?:\/\/.+/, (url) => {
         console.log('URL: %O', url)
         res.exports.push(url)
     })
+
+    window.navigate('https://www.google.com')
 })
 ```
 
@@ -689,7 +687,7 @@ Esse script exibirá sequencialmente os *URL* visitados no console.
 `@wachaon/edge` registra um evento para a *URL* e adiciona dados a `res.exports` . A *URL* a ser registrada pode ser `String` `RegExp` e configurações flexíveis podem ser feitas.
 
 
-Ao torná-lo orientado a eventos, é possível alternar facilmente para a operação manual, não configurando a *URL* para processos difíceis de lidar com o piloto automático.
+Ao torná-lo orientado a eventos, é possível alternar facilmente para operação manual, não configurando um evento para processamento difícil de lidar com o piloto automático.
 
 
 Se você quiser parar o script, execute `navi.emit('terminate', res)` ou encerre manualmente o *Edge* .

@@ -1,7 +1,7 @@
 # *WES*
 
 
-*wes*是一個用於在控制台的*WSH (Windows Script Host)*上執行*ECMAScript*的框架。
+*wes*是一個在*WSH (Windows Script Host)*上運行*ECMAScript*的控制台框架。
 
 
 *README*文件的原文是[*japanese*](/README.md) 。除了日語，它是機器翻譯的句子。  
@@ -39,7 +39,7 @@
 
 -   `WScript.Quit`不能中斷程序並且不返回錯誤代碼
 -   無法進行`setTimeout`和`Promise`等異步處理
--   不能使用`WScript.CreateObject`的第二個參數*event prefix*
+-   您不能將*event prefix*用作`WScript.CreateObject`的第二個參數
 
 
 # 安裝
@@ -76,7 +76,7 @@ wes
 ```
 
 
-腳本將被接受，直到您輸入兩個空行。您還可以使用*REPL*檢查*README.md*中示例腳本的執行情況。
+*REPL*接受腳本輸入，直到您輸入兩個空行。您還可以使用*REPL*檢查*README.md*中示例腳本的執行情況。
 
 
 ## 控制台選項
@@ -103,7 +103,7 @@ wes
 # 模塊化系統
 
 
-*wes*支持使用通用`require()`的*commonjs module*系統和使用`import`的*es module*系統。 （ *dynamic import*為異步處理，不支持）
+*wes*支持兩個模塊系統，一個使用通用`require()`的*commonjs module*系統和一個使用`import`的*es module* 。 （ *dynamic import*為異步處理，不支持）
 
 
 ## *commonjs module*
@@ -151,10 +151,10 @@ WShell.AppActivate(ie.LocationName)
 ## *es module*
 
 
-腳本的執行引擎*Chakra*解釋了諸如`imoprt`之類的語法，但由於未定義`cscript`的處理方法，因此無法按原樣執行。在*wes*中，通過將*babel*添加到內置模塊中，我們在執行它的同時按順序轉譯到*es module* 。結果，處理開銷和*wes.js*文件作為成本而膨脹。
+腳本的執行引擎*Chakra*解釋了諸如`imoprt`之類的語法，但由於未定義`cscript`的處理方法，因此無法按原樣執行。在*wes*中，通過將*babel*添加到內置模塊中，它在執行的同時順序轉譯到*es module* 。結果，處理開銷和*wes.js*文件作為成本而膨脹。
 
 
-*es module*模塊描述的模塊也被轉譯為`require()` ，因此可以調用*OLE* 。但是，它不支持模塊文件編碼規範。都是通過自動猜測讀取的。
+*es module*模塊描述的模塊也被 transpile 轉換為`require()` ，所以可以調用*OLE* 。但是，它不支持模塊文件編碼規範。都是通過自動猜測讀取的。
 
 
 要將其作為*es module*加載，請將擴展名設置為`.mjs`或將`package.json`的`"type"`字段設置為`"module"` 。
@@ -169,7 +169,7 @@ export default function sub (a, b) {
 
 
 ```javascript
-// ./main2.js
+./main2.js\
 import sub from './sub.mjs'
 
 console.log('sub(7, 3) // => %O', sub(7, 3))
@@ -336,7 +336,7 @@ files.forEach(file => console.log(file.Name))
 ```
 
 
-*GetObject*作為`WScript.GetObject`的替代品。
+*GetObject*充當`WScript.GetObject`的替代品。
 
 
 ```javascript
@@ -484,33 +484,33 @@ wes zip -p dox.zip
 # 模塊捆綁和安裝
 
 
-在*wes*中，由幾個模塊組成的捆綁包稱為*package* 。您可以安裝在*github*上發布的*wes* *package* 。您將需要一個*github repository*來發布*package* 。此外，存儲庫名稱和本地目錄名稱必須相同。
+在*wes*中，幾個模塊的捆綁稱為一個包。您可以安裝在*github*上發布的*wes*軟件包。您將需要一個*github repository*來發布包。此外，存儲庫名稱和本地目錄名稱必須相同。
 
 
 ## *bundle*
 
 
-在*github*上發布*package*時， *bundle*會捆綁所需的模塊並將它們更改為可以通過安裝導入的格式。
+將包發佈到*github*時， *bundle*會捆綁所需的模塊並更改格式，以便可以通過安裝導入。
 
 
-出於安全原因， *bundle*會創建一個*.json*文件，因為*wes*不允許我們以可以直接執行的格式導入*package* 。
+出於安全原因， *bundle*會創建一個*.json*文件，因為*wes*不允許您以可以直接執行的格式導入包。
 
 
 包裝有一些條件。
 
 
-1.  一個*repository*中只能發布一種類型的模塊。
-2.  *github*上的倉庫名和本地工作目錄名必須一致。
-3.  發布包時，存儲庫的狀態必須是*public*的。
-4.  *wes*動態解釋模塊路徑。在`if`語句等特定條件下`require`獲取的模塊可能不會被捆綁。
-5.  *.json*文件將在您的工作目錄中創建，名稱為*directory_name.json* 。如果文件被重命名或文件被移動，則無法安裝。
+1.  一個*repository*中只能發布一個模塊。
+2.  確保*github*上的倉庫名稱和​​本地工作目錄名稱相同。
+3.  如果要發布包，請將存儲庫設為*public* 。
+4.  在頂級範圍內聲明模塊獲取。
+5.  包*.json*文件在您的工作目錄中創建，名稱為*directory_name.json* 。如果文件被重命名或文件被移動，則無法安裝。
 6.  `node_modules/directory_name`時，捆綁失敗，因為它引用了`directory_name.json` 。
 
 
 ## *install*
 
 
-用於安裝*github*上發布的*wes* *package* 。
+用於安裝*github*上發布的*wes*包。
 
 
 ### 如何使用
@@ -544,10 +544,10 @@ wes install @wachaon/fmt --bare --unsafe
 # 在私有存儲庫中安裝包
 
 
-*install*不僅可以安裝在*github*上公共存儲庫的模塊中，還可以安裝在私有存儲庫中。
+*install*不僅可以在*github*上的公共存儲庫中安裝模塊，還可以在私有存儲庫中安裝模塊。
 
 
-在*install*中，使用`author@repository`指定模塊。實現下載以下內容。
+在*install*中，使用*@author/repository*指定模塊。該實現將嘗試下載以下 url。
 
 
 ```javascript
@@ -555,7 +555,7 @@ wes install @wachaon/fmt --bare --unsafe
 ```
 
 
-當您使用瀏覽器訪問私有存儲庫的*raw*文件時，將顯示*token* ，因此請複制*token*並使用它。
+當您使用瀏覽器訪問私有存儲庫的*raw*文件時，將顯示*token* ，因此復制*token*並使用它。
 
 
 您還可以通過在*token*的生命週期內在控制台中運行模塊來將模塊安裝到私有存儲庫中。
@@ -575,7 +575,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt*捆綁*prettier*並格式化腳本。此外，如果安裝了`SyntaxError` *@wachaon/fmt*並出現語法錯誤，則可以指示錯誤位置。
+*@wachaon/fmt*捆綁*prettier*並格式化腳本。此外，如果在安裝*@wachaon/fmt*時出現*Syntax Error* ，您可以指出錯誤位置。
 
 
 ### 安裝
@@ -586,13 +586,13 @@ wes install @wachaon/fmt
 ```
 
 
-### 用法
+### 如何使用
 
 
 如果工作目錄中有*.prettierrc* （JSON 格式），會反映在設置中。 *fmt*可以與*CLI* （控制台界面）和*module*一起使用。
 
 
-用作*CLI* 。
+#### 用作*CLI* 。
 
 
 ```shell
@@ -614,10 +614,7 @@ wes @wachaon/fmt src/sample --write
 如果指定`--write`或`-w`的命名參數，則使用格式化腳本覆蓋文件。
 
 
-### 用作*module*時
-
-
-### `option`
+#### 作為模塊使用
 
 
 ```javascript
@@ -654,14 +651,14 @@ wes install @wachaon/edge --unsafe --bare
 
 
 ```shell
-wes edge
+wes edge --download
 ```
 
 
-解壓縮下載的*zip*並將*msedgedriver.exe*移動到您的工作目錄。
+檢查安裝的*Edge*版本並下載相應的*web driver* 。
 
 
-### 用法
+### 如何使用
 
 
 這將很容易使用。
@@ -672,13 +669,14 @@ const edge = require('./index')
 
 edge((window, navi, res) => {
     window.rect({x: 1 ,y: 1, width: 1200, height: 500})
-    window.navigate('http://www.google.com')
     res.exports = []
 
-    navi.on(/./, (url) => {
+    navi.on(/https?:\/\/.+/, (url) => {
         console.log('URL: %O', url)
         res.exports.push(url)
     })
+
+    window.navigate('https://www.google.com')
 })
 ```
 
@@ -689,7 +687,7 @@ edge((window, navi, res) => {
 `@wachaon/edge`為*URL*註冊一個事件並將數據添加到`res.exports` 。要註冊的*URL*可以是`String` `RegExp` ，可以進行靈活的設置。
 
 
-通過使其成為事件驅動，可以通過不為自動駕駛難以處理的流程設置*URL*來輕鬆切換到手動操作。
+通過使其成為事件驅動，可以通過不設置自動駕駛難以處理的事件來輕鬆切換到手動操作。
 
 
 如果要停止腳本，請運行`navi.emit('terminate', res)`或手動終止*Edge* 。

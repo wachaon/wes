@@ -1,7 +1,7 @@
 # *WES*
 
 
-*wes* is a framework for executing *ECMAScript* on *WSH (Windows Script Host)* for consoles.
+*wes* is a console framework that runs *ECMAScript* on *WSH (Windows Script Host)* .
 
 
 The original text of the *README* is [*japanese*](/README.md) . Other than Japanese, it is a machine-translated sentence.  
@@ -27,7 +27,7 @@ Please select sentences in other languages ​​from the following.
 
 
 -   You can change the script engine to *Chakra* and write it in the *ECMAScript2015* specification.
--   It always runs 32bit *cscript.exe* , so there are no inherent problems in 64bit environment.
+-   It always runs 32bit *cscript.exe* , so it doesn't have any inherent problems in 64bit environment.
 -   With a modular system, you can develop more efficiently than traditional *WSH*
 -   The built-in module supports basic processing such as file input / output and output of colored characters to the console.
 -   You don't have to worry about encoding because you can have the file read automatically guess the encoding.
@@ -39,7 +39,7 @@ Please select sentences in other languages ​​from the following.
 
 -   `WScript.Quit` can't interrupt the program and doesn't return an error code
 -   Asynchronous processing such as `setTimeout` and `Promise` is not possible
--   The second argument *event prefix* of `WScript.CreateObject` cannot be used
+-   You cannot use the *event prefix* as the second argument of `WScript.CreateObject`
 
 
 # install
@@ -76,7 +76,7 @@ wes
 ```
 
 
-Scripts will be accepted until you enter two blank lines. You can also check the execution of the sample script in *README.md* with *REPL* .
+The *REPL* accepts script input until you enter two blank lines. You can also check the execution of the sample script in *README.md* with *REPL* .
 
 
 ## Console options
@@ -103,7 +103,7 @@ The implementation of `--safe` `--usual` `--unsafe` `--dangerous` `--debug` is i
 # Modular system
 
 
-*wes* supports *commonjs module* systems that use the general `require()` and *es module* systems that use `import` . ( *dynamic import* is asynchronous processing, so it is not supported)
+*wes* supports two module systems, a *commonjs module* system that uses the general `require()` and an *es module* that uses `import` . ( *dynamic import* is asynchronous processing, so it is not supported)
 
 
 ## *commonjs module*
@@ -133,7 +133,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-You can also import to *OLE* like *require* `require('WScript.Shell')` with require.
+You can also import to *OLE* with *require* `require('WScript.Shell')` like require ('WScript.Shell').
 
 
 ```javascript
@@ -151,10 +151,10 @@ WShell.AppActivate(ie.LocationName)
 ## *es module*
 
 
-*Chakra* , which is the execution engine of the script, interprets the syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. In *wes* , by adding *babel* to the built-in module, we are executing it while sequentially transpiling to the *es module* . As a result, the processing overhead and the *wes.js* file are bloated as a cost.
+*Chakra* , which is the execution engine of the script, interprets the syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. In *wes* , by adding *babel* to the built-in module, it is executed while sequentially transpiling to the *es module* . As a result, the processing overhead and the *wes.js* file are bloated as a cost.
 
 
-Modules described by *es module* are also transpiled to `require()` , so *OLE* can be called. However, it does not support the module file encoding specification. All are read by automatic guessing.
+Modules described by *es module* are also transpile converted to `require()` , so *OLE* can be called. However, it does not support the module file encoding specification. All are read by automatic guessing.
 
 
 To load it as an *es module* , set the extension to `.mjs` or the `"type"` field of `package.json` to `"module"` .
@@ -169,7 +169,7 @@ export default function sub (a, b) {
 
 
 ```javascript
-// ./main2.js
+./main2.js\
 import sub from './sub.mjs'
 
 console.log('sub(7, 3) // => %O', sub(7, 3))
@@ -484,33 +484,33 @@ If `path` has extension `.zip` , `unzip()` is processed and there is no descript
 # Module bundling and installation
 
 
-In *wes* , a bundle of several modules is called a *package* . You can install the *package* for *wes* published on *github* . You will need a *github repository* to publish the *package* . Also, the repository name and the local directory name must be the same.
+In *wes* , a bundle of several modules is called a package. You can install the package for *wes* published on *github* . You will need a *github repository* to publish the package. Also, the repository name and the local directory name must be the same.
 
 
 ## *bundle*
 
 
-When publishing a *package* on *github* , *bundle* bundles the required modules and changes them to a format that can be imported by installation.
+When publishing the package to *github* , *bundle* bundles the required modules and changes the format so that it can be imported by installation.
 
 
-For security reasons, *bundle* creates a *.json* file because *wes* doesn't allow us to import *package* in a format that can be executed directly.
+For security reasons, *bundle* creates a *.json* file because *wes* doesn't allow you to import packages in a format that can be executed directly.
 
 
 There are some conditions for packaging.
 
 
-1.  Only one type of module can be published in one *repository* .
-2.  The repository name on *github* and the local working directory name must be the same.
-3.  The status of the repository must be *public* when publishing the package.
-4.  *wes* dynamically interprets the module path. Modules acquired by `require` under specific conditions such as `if` statements may not be bundled.
-5.  *.json* file will be created in your working directory with the name *directory_name.json* . It cannot be installed if the file is renamed or the file is moved.
+1.  Only one module can be published in one *repository* .
+2.  Make sure that the repository name on *github* and the local working directory name are the same.
+3.  If you want to publish the package, make the repository *public* .
+4.  Declare module acquisition in top-level scope.
+5.  The package *.json* file is created in your working directory with the name *directory_name.json* . It cannot be installed if the file is renamed or the file is moved.
 6.  `node_modules/directory_name` , the bundle fails because it refers to `directory_name.json` .
 
 
 ## *install*
 
 
-Used to install the *package* for *wes* published on *github* .
+Used to install the package for *wes* published on *github* .
 
 
 ### How to use
@@ -544,10 +544,10 @@ wes install @wachaon/fmt --bare --unsafe
 # Installing packages in private repositories
 
 
-*install* can be installed not only in modules in public repositories on *github* , but also in private repositories.
+*install* can install not only modules in public repositories on *github* , but also private repositories.
 
 
-In *install* , specify the module with `author@repository` . The implementation downloads the following.
+In *install* , specify the module with *@author/repository* . The implementation will try to download the following url.
 
 
 ```javascript
@@ -555,7 +555,7 @@ In *install* , specify the module with `author@repository` . The implementation 
 ```
 
 
-When you access the *raw* of the private repository with a browser, the *token* will be displayed, so copy the *token* and use it.
+When you access *raw* of the private repository with a browser, the *token* will be displayed, so copy the *token* and use it.
 
 
 You can also install a module in a private repository by running it in the console within the *token* 's lifetime.
@@ -575,7 +575,7 @@ Here are some external modules.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* bundles *prettier* and formats the script. Also, if @ `SyntaxError` *@wachaon/fmt* is installed and a Syntax Error occurs, the error location can be indicated.
+*@wachaon/fmt* bundles *prettier* and formats the script. Also, if a *Syntax Error* occurs with *@wachaon/fmt* installed, you can indicate the error location.
 
 
 ### install
@@ -586,13 +586,13 @@ wes install @wachaon/fmt
 ```
 
 
-### usage
+### How to use
 
 
 If there is *.prettierrc* (JSON format) in the working directory, it will be reflected in the setting. *fmt* can be used with both *CLI* (console interface) and *module* .
 
 
-Used as *CLI* .
+#### Used as *CLI* .
 
 
 ```shell
@@ -614,10 +614,7 @@ wes @wachaon/fmt src/sample --write
 Overwrite the file with a formatted script if you specify a named argument of `--write` or `-w` .
 
 
-### When used as *module*
-
-
-### `option`
+#### Use as a module
 
 
 ```javascript
@@ -654,14 +651,14 @@ Then download the *web driver* .
 
 
 ```shell
-wes edge
+wes edge --download
 ```
 
 
-Unzip the downloaded *zip* and move *msedgedriver.exe* to your working directory.
+Check the installed version of *Edge* and download the corresponding *web driver* .
 
 
-### usage
+### How to use
 
 
 It will be easy to use.
@@ -672,13 +669,14 @@ const edge = require('./index')
 
 edge((window, navi, res) => {
     window.rect({x: 1 ,y: 1, width: 1200, height: 500})
-    window.navigate('http://www.google.com')
     res.exports = []
 
-    navi.on(/./, (url) => {
+    navi.on(/https?:\/\/.+/, (url) => {
         console.log('URL: %O', url)
         res.exports.push(url)
     })
+
+    window.navigate('https://www.google.com')
 })
 ```
 
@@ -689,7 +687,7 @@ This script will sequentially output the visited *URL* to the console.
 `@wachaon/edge` registers an event for the *URL* and adds data to `res.exports` . The *URL* to be registered can be either `String` `RegExp` , and flexible settings can be made.
 
 
-By making it event-driven, it is possible to easily switch to manual operation by not setting the *URL* for processes that are difficult to handle with autopilot.
+By making it event-driven, it is possible to easily switch to manual operation by not setting an event for processing that is difficult to handle with autopilot.
 
 
 If you want to stop the script, run `navi.emit('terminate', res)` or manually terminate *Edge* .

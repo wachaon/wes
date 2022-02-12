@@ -1,10 +1,10 @@
 # *WES*
 
 
-*wes*是一个用于在控制台的*WSH (Windows Script Host)*上执行*ECMAScript*的框架。
+*wes*是一个在*WSH (Windows Script Host)*上运行*ECMAScript*的控制台框架。
 
 
-*README*文件的原文是[*japanese*](/README.md) 。除了日语，它是机器翻译的句子。  
+*README*的原文是[*japanese*](/README.md) 。除了日语，它是机器翻译的句子。  
 请从以下选择其他语言的句子。
 
 
@@ -27,7 +27,7 @@
 
 
 -   您可以将脚本引擎更改为*Chakra* ，并将其写入*ECMAScript2015*规范。
--   它始终运行 32 位*cscript.exe* ，因此在 64 位环境下不存在固有问题。
+-   它始终运行 32 位*cscript.exe* ，因此在 64 位环境中没有任何固有问题。
 -   使用模块化系统，您可以比传统*WSH*更高效地开发
 -   内置模块支持文件输入/输出、彩色字符输出到控制台等基本处理。
 -   您不必担心编码，因为您可以让文件读取自动猜测编码。
@@ -39,7 +39,7 @@
 
 -   `WScript.Quit`不能中断程序并且不返回错误代码
 -   无法进行`setTimeout`和`Promise`等异步处理
--   不能使用`WScript.CreateObject`的第二个参数*event prefix*
+-   您不能将*event prefix*用作`WScript.CreateObject`的第二个参数
 
 
 # 安装
@@ -76,7 +76,7 @@ wes
 ```
 
 
-脚本将被接受，直到您输入两个空白行。您还可以使用*REPL*检查*README.md*中示例脚本的执行情况。
+*REPL*接受脚本输入，直到您输入两个空行。您还可以使用*REPL*检查*README.md*中示例脚本的执行情况。
 
 
 ## 控制台选项
@@ -103,7 +103,7 @@ wes
 # 模块化系统
 
 
-*wes*支持使用通用`require()`的*commonjs module*系统和使用`import`的*es module*系统。 （ *dynamic import*为异步处理，不支持）
+*wes*支持两个模块系统，一个使用通用`require()`的*commonjs module*系统和一个使用`import`的*es module* 。 （ *dynamic import*为异步处理，不支持）
 
 
 ## *commonjs module*
@@ -151,10 +151,10 @@ WShell.AppActivate(ie.LocationName)
 ## *es module*
 
 
-脚本的执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过将*babel*添加到内置模块中，我们在执行它的同时按顺序转译到*es module* 。结果，处理开销和*wes.js*文件作为成本而膨胀。
+脚本的执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过将*babel*添加到内置模块中，在执行的同时顺序转译到*es module* 。结果，处理开销和*wes.js*文件作为成本而膨胀。
 
 
-*es module*模块描述的模块也被转译为`require()` ，因此可以调用*OLE* 。但是，它不支持模块文件编码规范。都是通过自动猜测读取的。
+*es module*模块描述的模块也被 transpile 转换为`require()` ，所以可以调用*OLE* 。但是，它不支持模块文件编码规范。都是通过自动猜测读取的。
 
 
 要将其作为*es module*加载，请将扩展名设置为`.mjs`或将`package.json`的`"type"`字段设置为`"module"` 。
@@ -169,7 +169,7 @@ export default function sub (a, b) {
 
 
 ```javascript
-// ./main2.js
+./main2.js\
 import sub from './sub.mjs'
 
 console.log('sub(7, 3) // => %O', sub(7, 3))
@@ -336,7 +336,7 @@ files.forEach(file => console.log(file.Name))
 ```
 
 
-*GetObject*作为`WScript.GetObject`的替代品。
+*GetObject*充当`WScript.GetObject`的替代品。
 
 
 ```javascript
@@ -484,33 +484,33 @@ wes zip -p dox.zip
 # 模块捆绑和安装
 
 
-在*wes*中，由几个模块组成的捆绑包称为*package* 。您可以安装在*github*上发布的*wes* *package* 。您将需要一个*github repository*来发布*package* 。此外，存储库名称和本地目录名称必须相同。
+在*wes*中，几个模块的捆绑称为一个包。您可以安装在*github*上发布的*wes*软件包。您将需要一个*github repository*来发布包。此外，存储库名称和本地目录名称必须相同。
 
 
 ## *bundle*
 
 
-在*github*上发布*package*时， *bundle*会捆绑所需的模块并将它们更改为可以通过安装导入的格式。
+将包发布到*github*时， *bundle*会捆绑所需的模块并更改格式，以便可以通过安装导入。
 
 
-出于安全原因， *bundle*会创建一个*wes*文件*.json*因为我们不允许我们以可以直接执行的格式导入*package* 。
+出于安全原因， *bundle*会创建一个*.json*文件，因为*wes*不允许您以可以直接执行的格式导入包。
 
 
 包装有一些条件。
 
 
-1.  一个*repository*中只能发布一种类型的模块。
-2.  *github*上的仓库名和本地工作目录名必须一致。
-3.  发布包时，存储库的状态必须是*public*的。
-4.  *wes*动态解释模块路径。在`if`语句等特定条件下`require`获取的模块可能不会被捆绑。
-5.  *.json*文件将在您的工作目录中创建，名称为*directory_name.json* 。如果文件被重命名或文件被移动，则无法安装。
+1.  一个*repository*中只能发布一个模块。
+2.  确保*github*上的仓库名称和本地工作目录名称相同。
+3.  如果要发布包，请将存储库设为*public* 。
+4.  在顶层范围内声明模块获取。
+5.  包*.json*文件在您的工作目录中创建，名称为*directory_name.json* 。如果文件被重命名或文件被移动，则无法安装。
 6.  `node_modules/directory_name`时，捆绑失败，因为它引用了`directory_name.json` 。
 
 
 ## *install*
 
 
-用于安装*github*上发布的*wes* *package* 。
+用于安装*github*上发布的*wes*包。
 
 
 ### 如何使用
@@ -544,10 +544,10 @@ wes install @wachaon/fmt --bare --unsafe
 # 在私有存储库中安装包
 
 
-*install*不仅可以安装在*github*上公共存储库的模块中，还可以安装在私有存储库中。
+*install*不仅可以在*github*上的公共存储库中安装模块，还可以在私有存储库中安装模块。
 
 
-在*install*中，使用`author@repository`指定模块。实现下载以下内容。
+在*install*中，使用*@author/repository*指定模块。该实现将尝试下载以下 url。
 
 
 ```javascript
@@ -575,7 +575,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt*捆绑*prettier*并格式化脚本。此外，如果安装了`SyntaxError` *@wachaon/fmt*并出现语法错误，则可以指示错误位置。
+*@wachaon/fmt*捆绑*prettier*并格式化脚本。此外，如果在安装*@wachaon/fmt*时出现*Syntax Error* ，您可以指出错误位置。
 
 
 ### 安装
@@ -586,13 +586,13 @@ wes install @wachaon/fmt
 ```
 
 
-### 用法
+### 如何使用
 
 
 如果工作目录中有*.prettierrc* （JSON 格式），会反映在设置中。 *fmt*可以与*CLI* （控制台界面）和*module*一起使用。
 
 
-用作*CLI* 。
+#### 用作*CLI* 。
 
 
 ```shell
@@ -614,10 +614,7 @@ wes @wachaon/fmt src/sample --write
 如果指定`--write`或`-w`的命名参数，则使用格式化脚本覆盖文件。
 
 
-### 用作*module*时
-
-
-### `option`
+#### 作为模块使用
 
 
 ```javascript
@@ -654,14 +651,14 @@ wes install @wachaon/edge --unsafe --bare
 
 
 ```shell
-wes edge
+wes edge --download
 ```
 
 
-解压缩下载的*zip*并将*msedgedriver.exe*移动到您的工作目录。
+检查安装的*Edge*版本并下载相应的*web driver* 。
 
 
-### 用法
+### 如何使用
 
 
 这将很容易使用。
@@ -672,13 +669,14 @@ const edge = require('./index')
 
 edge((window, navi, res) => {
     window.rect({x: 1 ,y: 1, width: 1200, height: 500})
-    window.navigate('http://www.google.com')
     res.exports = []
 
-    navi.on(/./, (url) => {
+    navi.on(/https?:\/\/.+/, (url) => {
         console.log('URL: %O', url)
         res.exports.push(url)
     })
+
+    window.navigate('https://www.google.com')
 })
 ```
 
@@ -689,7 +687,7 @@ edge((window, navi, res) => {
 `@wachaon/edge`为*URL*注册一个事件并将数据添加到`res.exports` 。要注册的*URL*可以是`String` `RegExp` ，可以进行灵活的设置。
 
 
-通过使其成为事件驱动，可以通过不为自动驾驶难以处理的流程设置*URL*来轻松切换到手动操作。
+通过使其成为事件驱动，可以通过不设置自动驾驶难以处理的处理事件来轻松切换到手动操作。
 
 
 如果要停止脚本，请运行`navi.emit('terminate', res)`或手动终止*Edge* 。

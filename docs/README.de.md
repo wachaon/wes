@@ -1,7 +1,7 @@
 # *WES*
 
 
-*wes* ist ein Framework zum Ausführen von *ECMAScript* auf *WSH (Windows Script Host)* für Konsolen.
+*wes* ist ein Konsolen-Framework, das *ECMAScript* auf *WSH (Windows Script Host)* .
 
 
 Der Originaltext der *README* ist [*japanese*](/README.md) . Anders als Japanisch ist es ein maschinell übersetzter Satz.  
@@ -27,7 +27,7 @@ Bitte wählen Sie aus den folgenden Sätzen in anderen Sprachen aus.
 
 
 -   Sie können die Skript-Engine in *Chakra* ändern und in die *ECMAScript2015* -Spezifikation schreiben.
--   Es wird immer 32-Bit *cscript.exe* , sodass in einer 64-Bit-Umgebung keine Probleme auftreten.
+-   Es wird immer 32-Bit *cscript.exe* , sodass in einer 64-Bit-Umgebung keine inhärenten Probleme auftreten.
 -   Mit einem modularen System können Sie effizienter entwickeln als mit herkömmlichem *WSH*
 -   Das eingebaute Modul unterstützt die grundlegende Verarbeitung wie Dateieingabe / -ausgabe und Ausgabe von farbigen Zeichen an die Konsole.
 -   Sie müssen sich keine Gedanken über die Kodierung machen, da Sie die Datei automatisch lesen lassen können, um die Kodierung zu erraten.
@@ -39,7 +39,7 @@ Bitte wählen Sie aus den folgenden Sätzen in anderen Sprachen aus.
 
 -   `WScript.Quit` kann das Programm nicht unterbrechen und gibt keinen Fehlercode zurück
 -   Eine asynchrone Verarbeitung wie `setTimeout` und `Promise` ist nicht möglich
--   Das zweite *event prefix* von `WScript.CreateObject` kann nicht verwendet werden
+-   Sie können das *event prefix* nicht als zweites Argument von `WScript.CreateObject`
 
 
 # Installieren
@@ -53,7 +53,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* verwendet `SendKeys` aus *wes* zur Laufzeit als Implementierung. Wenn der Pfad des Verzeichnisses, in dem *wes.js* gespeichert ist, andere Zeichen als `SendKeys` *ascii* Schlüssel nicht korrekt senden und das Skript kann nicht ausgeführt werden.  
+*WScript.Shell* verwendet `SendKeys` von *wes* zur Laufzeit als Implementierung. Wenn der Pfad des Verzeichnisses, in dem *wes.js* gespeichert ist, andere Zeichen als `SendKeys` *ascii* Schlüssel nicht korrekt senden und das Skript kann nicht ausgeführt werden.  
 Bitte konfigurieren Sie den Speicherzielpfad von *wes.js* nur *ascii* .
 
 
@@ -76,7 +76,7 @@ wes
 ```
 
 
-Skripte werden akzeptiert, bis Sie zwei Leerzeilen eingeben. Sie können die Ausführung des Beispielskripts in *README.md* mit *REPL* überprüfen.
+Die *REPL* akzeptiert Skripteingaben, bis Sie zwei Leerzeilen eingeben. Sie können die Ausführung des Beispielskripts in *README.md* mit *REPL* überprüfen.
 
 
 ## Konsolenoptionen
@@ -103,7 +103,7 @@ Die Implementierung von `--safe` `--usual` `--unsafe` `--dangerous` `--debug` is
 # Modulares System
 
 
-*wes* unterstützt *commonjs module* , die das allgemeine `require()` verwenden, und *es module* , die `import` verwenden. ( *dynamic import* ist eine asynchrone Verarbeitung und wird daher nicht unterstützt.)
+*wes* unterstützt zwei Modulsysteme, ein *commonjs module* , das das allgemeine `require()` verwendet, und ein *es module* , das `import` verwendet. ( *dynamic import* ist eine asynchrone Verarbeitung und wird daher nicht unterstützt.)
 
 
 ## *commonjs module*
@@ -133,7 +133,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-Sie können auch wie *require* `require('WScript.Shell')` mit require in *OLE* importieren.
+Sie können auch mit *require* `require('WScript.Shell')` wie require ('WScript.Shell') in *OLE* importieren.
 
 
 ```javascript
@@ -151,13 +151,13 @@ WShell.AppActivate(ie.LocationName)
 ## *es module*
 
 
-*Chakra* , die Ausführungsmaschine des Skripts, interpretiert die Syntax wie `imoprt` , kann jedoch nicht unverändert ausgeführt werden, da die Verarbeitungsmethode als `cscript` nicht definiert ist. In *wes* führen wir durch Hinzufügen von *babel* zum eingebauten Modul es aus, während wir sequentiell in das *es module* transpilieren. Infolgedessen werden der Verarbeitungsaufwand und die Datei *wes.js* als Kosten aufgebläht.
+*Chakra* , die Ausführungsmaschine des Skripts, interpretiert die Syntax wie `imoprt` , kann jedoch nicht unverändert ausgeführt werden, da die Verarbeitungsmethode als `cscript` nicht definiert ist. In *wes* wird es durch Hinzufügen von *babel* zum eingebauten Modul ausgeführt, während es sequentiell in das *es module* transpiliert wird. Infolgedessen werden der Verarbeitungsaufwand und die Datei *wes.js* als Kosten aufgebläht.
 
 
-Module, die von *es module* beschrieben werden, werden auch in `require()` transpiliert, sodass *OLE* aufgerufen werden kann. Es unterstützt jedoch nicht die Moduldatei-Codierungsspezifikation. Alle werden durch automatisches Raten gelesen.
+Module, die von *es module* beschrieben werden, werden ebenfalls in `require()` transpiliert, sodass *OLE* aufgerufen werden kann. Es unterstützt jedoch nicht die Moduldatei-Codierungsspezifikation. Alle werden durch automatisches Raten gelesen.
 
 
-Um es als *es module* zu laden, setzen Sie die Erweiterung auf `.mjs` oder das Feld `"type"` von `package.json` auf `"module"` .
+Um es als *es module* zu laden, setzen Sie die Erweiterung auf `.mjs` oder das `"type"` -Feld von `package.json` auf `"module"` .
 
 
 ```javascript
@@ -169,7 +169,7 @@ export default function sub (a, b) {
 
 
 ```javascript
-// ./main2.js
+./main2.js\
 import sub from './sub.mjs'
 
 console.log('sub(7, 3) // => %O', sub(7, 3))
@@ -484,33 +484,33 @@ Wenn der `path` die Erweiterung `.zip` hat, wird `unzip()` verarbeitet und es gi
 # Modulbündelung und Installation
 
 
-Ein Bündel aus mehreren Modulen wird in *wes* als *package* bezeichnet. Sie können das auf *github* veröffentlichte *package* für *wes* installieren. Sie benötigen ein *github repository* , um das *package* zu veröffentlichen. Außerdem müssen der Name des Repositorys und der Name des lokalen Verzeichnisses identisch sein.
+In *wes* wird ein Bündel aus mehreren Modulen als Paket bezeichnet. Sie können das auf *github* veröffentlichte Paket für *wes* installieren. Sie benötigen ein *github repository* , um das Paket zu veröffentlichen. Außerdem müssen der Repository-Name und der Name des lokalen Verzeichnisses identisch sein.
 
 
 ## *bundle*
 
 
-Beim Veröffentlichen eines *package* auf *github* bündelt *bundle* die erforderlichen Module und ändert sie in ein Format, das durch die Installation importiert werden kann.
+Beim Veröffentlichen des Pakets auf *github* bündelt *bundle* die erforderlichen Module und ändert das Format, sodass es durch die Installation importiert werden kann.
 
 
-*bundle* erstellt aus Sicherheitsgründen eine *.json* -Datei, da *wes* uns nicht erlaubt, *package* in einem Format zu importieren, das direkt ausgeführt werden kann.
+Aus Sicherheitsgründen erstellt *bundle* eine *.json* -Datei, da *wes* Ihnen nicht erlaubt, Pakete in einem Format zu importieren, das direkt ausgeführt werden kann.
 
 
 Es gibt einige Bedingungen für die Verpackung.
 
 
-1.  In einem *repository* kann nur ein Modultyp veröffentlicht werden.
-2.  Der Repository-Name auf *github* und der Name des lokalen Arbeitsverzeichnisses müssen identisch sein.
-3.  Der Status des Repositorys muss *public* sein, wenn das Paket veröffentlicht wird.
-4.  *wes* interpretiert den Modulpfad dynamisch. Module, die von erworben werden, `require` bestimmte Bedingungen, z. B. `if` Anweisungen nicht gebündelt werden dürfen.
-5.  *.json* -Datei wird in Ihrem Arbeitsverzeichnis mit dem Namen *directory_name.json* erstellt. Es kann nicht installiert werden, wenn die Datei umbenannt oder die Datei verschoben wird.
+1.  In einem *repository* kann nur ein Modul veröffentlicht werden.
+2.  Stellen Sie sicher, dass der Repository-Name auf *github* und der Name des lokalen Arbeitsverzeichnisses identisch sind.
+3.  Wenn Sie das Paket veröffentlichen möchten, machen Sie das Repository *public* .
+4.  Deklarieren Sie den Modulerwerb im Bereich der obersten Ebene.
+5.  Die Paket- *.json* -Datei wird in Ihrem Arbeitsverzeichnis mit dem Namen *directory_name.json* erstellt. Es kann nicht installiert werden, wenn die Datei umbenannt oder die Datei verschoben wird.
 6.  `node_modules/directory_name` schlägt das Bundle fehl, da es auf `directory_name.json` verweist.
 
 
 ## *install*
 
 
-Wird verwendet, um das auf *github* veröffentlichte *package* für *wes* zu installieren.
+Wird verwendet, um das auf *github* veröffentlichte Paket für *wes* zu installieren.
 
 
 ### Wie benutzt man
@@ -544,10 +544,10 @@ wes install @wachaon/fmt --bare --unsafe
 # Installieren von Paketen in privaten Repositories
 
 
-*install* kann nicht nur in Modulen in öffentlichen Repositories auf *github* werden, sondern auch in privaten Repositories.
+*install* kann nicht nur Module in öffentlichen Repositories auf *github* , sondern auch private Repositories.
 
 
-Geben Sie bei der *install* das Modul mit `author@repository` an. Die Implementierung lädt Folgendes herunter.
+Geben Sie bei der *install* das Modul mit *@author/repository* an . Die Implementierung versucht, die folgende URL herunterzuladen.
 
 
 ```javascript
@@ -555,7 +555,7 @@ Geben Sie bei der *install* das Modul mit `author@repository` an. Die Implementi
 ```
 
 
-Wenn Sie mit einem Browser auf das *raw* des privaten Repositorys zugreifen, wird das *token* angezeigt, also kopieren Sie das *token* und verwenden Sie es.
+Wenn Sie mit einem Browser auf *raw* des privaten Repositorys zugreifen, wird das *token* angezeigt, also kopieren Sie das *token* und verwenden Sie es.
 
 
 Sie können ein Modul auch in einem privaten Repository installieren, indem Sie es innerhalb der Lebensdauer des *token* in der Konsole ausführen.
@@ -575,7 +575,7 @@ Hier sind einige externe Module.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* bündelt *prettier* und formatiert das Skript. Auch wenn @ `SyntaxError` *@wachaon/fmt* installiert ist und ein Syntaxfehler auftritt, kann die Fehlerstelle angezeigt werden.
+*@wachaon/fmt* bündelt *prettier* und formatiert das Skript. Auch wenn ein *Syntax Error* auftritt, wenn *@wachaon/fmt* installiert ist, können Sie die Fehlerstelle angeben.
 
 
 ### Installieren
@@ -586,13 +586,13 @@ wes install @wachaon/fmt
 ```
 
 
-### Verwendung
+### Wie benutzt man
 
 
 Wenn im Arbeitsverzeichnis *.prettierrc* (JSON-Format) vorhanden ist, wird dies in der Einstellung widergespiegelt. *fmt* kann sowohl mit *CLI* (Konsolenschnittstelle) als auch mit *module* verwendet werden.
 
 
-Wird als *CLI* verwendet.
+#### Wird als *CLI* verwendet.
 
 
 ```shell
@@ -614,10 +614,7 @@ wes @wachaon/fmt src/sample --write
 Überschreiben Sie die Datei mit einem formatierten Skript, wenn Sie ein benanntes Argument von `--write` oder `-w` angeben.
 
 
-### Bei Verwendung als *module*
-
-
-### `option`
+#### Als Modul verwenden
 
 
 ```javascript
@@ -654,14 +651,14 @@ Laden Sie dann den *web driver* herunter.
 
 
 ```shell
-wes edge
+wes edge --download
 ```
 
 
-Entpacken Sie die heruntergeladene *zip* -Datei und verschieben *msedgedriver.exe* in Ihr Arbeitsverzeichnis.
+Überprüfen Sie die installierte Version von *Edge* und laden Sie den entsprechenden *web driver* herunter.
 
 
-### Verwendung
+### Wie benutzt man
 
 
 Es wird einfach zu bedienen sein.
@@ -672,13 +669,14 @@ const edge = require('./index')
 
 edge((window, navi, res) => {
     window.rect({x: 1 ,y: 1, width: 1200, height: 500})
-    window.navigate('http://www.google.com')
     res.exports = []
 
-    navi.on(/./, (url) => {
+    navi.on(/https?:\/\/.+/, (url) => {
         console.log('URL: %O', url)
         res.exports.push(url)
     })
+
+    window.navigate('https://www.google.com')
 })
 ```
 
@@ -689,7 +687,7 @@ Dieses Skript gibt die besuchten *URL* nacheinander an die Konsole aus.
 `@wachaon/edge` registriert ein Ereignis für die *URL* und fügt `res.exports` Daten hinzu. Die zu registrierende *URL* kann entweder `String` `RegExp` sein, und es können flexible Einstellungen vorgenommen werden.
 
 
-Durch die ereignisgesteuerte Gestaltung ist es möglich, einfach auf manuellen Betrieb umzuschalten, indem die *URL* für Prozesse, die mit Autopilot schwierig zu handhaben sind, nicht gesetzt wird.
+Indem es ereignisgesteuert gemacht wird, ist es möglich, einfach in den manuellen Betrieb zu wechseln, indem ein Ereignis nicht für die Verarbeitung festgelegt wird, das mit dem Autopiloten schwierig zu handhaben ist.
 
 
 Wenn Sie das Skript stoppen möchten, führen `navi.emit('terminate', res)` oder beenden Sie *Edge* manuell.

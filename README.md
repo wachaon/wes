@@ -1,6 +1,6 @@
 # *WES*
 
-*wes* はコンソール用の *WSH (Windows Script Host)* で *ECMAScript* を実行するフレームワークです。
+*wes* は *WSH (Windows Script Host)* で *ECMAScript* を実行する、コンソール用のフレームワークです。
 
 *README* の原文は [*japanese*](/README.md) になります。日本語以外は機械翻訳の文章になります。  
 他言語の文章は下記から選択してください。
@@ -31,8 +31,8 @@
 # *wes* が解決できない既知の問題
 
 -  `WScript.Quit` はプログラムを中断出来ず、エラーコードも返しません
--  `setTimeout` や `Promise` など非同期処理は出来ません
--  `WScript.CreateObject` の第二引数の *event prefix* の使用は出来ません
+-  `setTimeout` や `Promise` など非同期処理はできません
+-  `WScript.CreateObject` の第二引数の *event prefix* の使用はできません
 
 # インストール
 
@@ -64,8 +64,8 @@ wes index
 wes
 ```
 
-空行を２つ入力するまでスクリプトの入力を受け付けます。*README.md* でのサンプルスクリプトの
-実行も *REPL* で確認出来ます。
+ *REPL* は空行を２つ入力するまでスクリプトの入力を受け付けます。*README.md* でのサンプルスクリプトの
+実行も *REPL* で確認できます。
 
 ## コンソールオプション
 
@@ -87,7 +87,7 @@ wes
 # モジュールシステム
 
 *wes* は一般的な `require()` を使用する *commonjs module* のシステムと `import` を使用する
-*es module* のシステムに対応しています。(*dynamic import* は非同期処理の為、対応していません)
+*es module* の２つのモジュールシステムに対応しています。(*dynamic import* は非同期処理の為、対応していません)
 
 ## *commonjs module*
 
@@ -144,7 +144,7 @@ export default function sub (a, b) {
 ```
 
 ```javascript
-// ./main2.js
+./main2.js\
 import sub from './sub.mjs'
 
 console.log('sub(7, 3) // => %O', sub(7, 3))
@@ -404,29 +404,29 @@ wes zip -p dox.zip
 
 # モジュールのバンドル（パッケージ化）とインストール
 
-*wes* ではいくつかのモジュールをバンドルしたものを *package* といいます。
-*github* で公開されている *wes* 用の *package* をインストールできます。
-*package* を公開する為には *github repository* が必要になります。
+*wes* ではいくつかのモジュールをバンドルしたものをパッケージといいます。
+*github* で公開されている *wes* 用のパッケージをインストールできます。
+パッケージを公開する為には *github repository* が必要になります。
 またリポジトリ名とローカルのディレクトリ名は同名にする必要があります。
 
 ## *bundle*
 
- *github* に *package* を公開するにあたり、*bundle* は必要なモジュールをバンドルし、インストールで取り込める形式に変更します。
+ *github* にパッケージを公開するにあたり、*bundle* は必要なモジュールをバンドルし、インストールで取り込める形式に変更します。
 
-安全性を考え、*wes* では直接実行できる形式の *package* を取り込みをさせないため、*bundle* では *.json* ファイルを作成します。
+安全性を考え、*wes* では直接実行できる形式のパッケージを取り込みをさせないため、*bundle* では *.json* ファイルを作成します。
 
 パッケージ化をさせるにはいくつかの条件があります。
 
-1.  １つの *repository* で公開できるモジュールは一種類になります。
-2.  *github* のリポジトリ名とローカルのワーキングディレクトリ名は同名である必要があります。
-3.  パッケージを公開する場合にはリポジトリのステータスは *public* である必要があります。
-4.  *wes* はモジュールのパスを動的に解釈します。`if` ステートメントなど特定条件時に `require` で取得したモジュールはバンドルされない可能性があります。
-5.  *.json* ファイルはワーキングディレクトリに *directory_name.json* という名前で作成されます。ファイル名の変更やファイルを移動するとインストールできません。
+1.  １つの *repository* で公開できるモジュールは１つになります。
+2.  *github* のリポジトリ名とローカルのワーキングディレクトリ名は同名にしてください。
+3.  パッケージを公開する場合はリポジトリを *public* にしてください。
+4.  モジュールの取得はトップレベルのスコープで宣言してください。
+5.  パッケージの *.json* ファイルはワーキングディレクトリに *directory_name.json* という名前で作成されます。ファイル名の変更やファイルを移動するとインストールできません。
 6.  `node_modules/directory_name` をバンドルする場合 `directory_name.json` を参照するのでバンドルが失敗します。
 
 ## *install*
 
-*github* に公開されている *wes* 用の *package* をインストールするのに使用します。
+*github* に公開されている *wes* 用のパッケージをインストールするのに使用します。
 
 ### 使い方
 
@@ -454,10 +454,10 @@ wes install @wachaon/fmt --bare --unsafe
 
 # プライベートリポジトリにあるパッケージのインストール
 
-*install* は *github* のパブリックリポジトリのモジュールだけでなく、プライベートリポジトリでもインストール可能です。
+*install* は *github* のパブリックリポジトリのモジュールだけでなく、プライベートリポジトリもインストールできます。
 
-*install* では `author@repository` でモジュールを指定します。
-実装では下記をダウンロードしています。
+*install* では *@author/repository* でモジュールを指定します。
+実装では下記 url のダウンロードを試みます。
 
 ```javascript
 `https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
@@ -479,21 +479,21 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ## *@wachaon/fmt*
 
 *@wachaon/fmt* は *prettier* をバンドルしたもので、スクリプトのフォーマットをします。
-また、*@wachaon/fmt* がインストールされている状態で `SyntaxError` が発生した場合に
+また、*@wachaon/fmt* がインストールされている状態で *Syntax Error* が発生した場合に
 そのエラー箇所を提示できます。
 
-### install
+### インストール
 
 ```shell
 wes install @wachaon/fmt
 ```
 
-### usage
+### 使い方
 
 ワーキングディレクトリに *.prettierrc* (JSON フォーマット) があれば設定に反映させます。
 *fmt* は *CLI*（コンソールインタフェース）と *module* の両方で使用できます。
 
-*CLI* として使用する。
+#### *CLI* として使用する。
 
 ```shell
 wes @wachaon/fmt src/sample --write
@@ -510,9 +510,7 @@ wes @wachaon/fmt src/sample --write
 
  `--write` もしくは `-w` の名前付き引数の指定があればフォーマットしたスクリプトでファイルを上書きします。
 
-### When used as *module*
-
-### `option`
+#### モジュールとして使用する
 
 ```javascript
 const fmt = require('@wachaon/fmt')
@@ -529,7 +527,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 代替案として、*Microsoft Edge based on Chromium* を *web driver* 経由で操作することになります。`@wachaon/edge` は *Edge* の自動操縦を簡素化します。
 
-### install
+### インストール
 
 まずはモジュールをインストールします。
 
@@ -539,11 +537,12 @@ wes install @wachaon/edge --unsafe --bare
 次に *web driver* をダウンロードします。
 
 ```shell
-wes edge
+wes edge --download
 ```
-ダウンロードした *zip* を解凍して、*msedgedriver.exe* をワーキングディレクトリに移動させます。
 
-### usage
+インストールされている *Edge* のバージョンを確認して対応した *web driver* をダウンロードします。
+
+### 使い方
 
 簡単な使い方になります。
 
@@ -552,13 +551,14 @@ const edge = require('./index')
 
 edge((window, navi, res) => {
     window.rect({x: 1 ,y: 1, width: 1200, height: 500})
-    window.navigate('http://www.google.com')
     res.exports = []
 
-    navi.on(/./, (url) => {
+    navi.on(/https?:\/\/.+/, (url) => {
         console.log('URL: %O', url)
         res.exports.push(url)
     })
+
+    window.navigate('https://www.google.com')
 })
 ```
 このスクリプトは訪問した *URL* を順次コンソールに出力します。
@@ -566,7 +566,7 @@ edge((window, navi, res) => {
 `@wachaon/edge` は *URL* に対してイベントを登録して `res.exports` にデータを追加していきます。
 登録する *URL* は `String` `RegExp` どちらでも可能で、柔軟な設定ができます。
 
-イベントドリブンにすることで、自動操縦では対応が困難な処理などはあえて *URL* を設定しないことで、容易に手動操作への切り替えが可能です。
+イベントドリブンにすることで、自動操縦では対応が困難な処理などはあえてイベントを設定しないことで、容易に手動操作への切り替えが可能です。
 
 スクリプトを停止させたい場合は、`navi.emit('terminate', res)` を実行するか、*Edge* を手動で終了させます。
 
