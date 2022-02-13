@@ -197,9 +197,9 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 使用するコンソールアプリケーションの種類や設定によって色や効果などは異なる場合があります。
 
 ```javascript
-const { brightRed, yellow } = require('ansi')
+const { redBright, yellow } = require('ansi')
 const message = 'File does not exist'
-console.log(brightRed + 'Error: ' + yellow + message)
+console.log(redBright + 'Error: ' + yellow + message)
 ```
 
 また、`ansi.color()` や `ansi.bgColor()` で独自の色の作成ができます。

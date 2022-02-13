@@ -1,6 +1,6 @@
 const { Enumerator } = require('/lib/JScript')
 const fs = require('/lib/filesystem')
-const { brightGreen, brightRed } = require('ansi')
+const { greenBright, redBright } = require('ansi')
 
 const FSO = require('Scripting.FileSystemObject')
 let files = new Enumerator(FSO.GetFolder(`./test`).Files).map((v) => v.path)
@@ -17,7 +17,7 @@ files.forEach((v) => {
 let complete = succeed / total === 1
 
 console.log(
-    `\n${complete ? brightGreen : brightRed}tests: ${total} ${complete ? 'complete' : 'fail:' + (total - succeed)}`
+    `\n${complete ? greenBright : redBright}tests: ${total} ${complete ? 'complete' : 'fail:' + (total - succeed)}`
 )
 
 module.exports = complete

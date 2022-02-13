@@ -236,9 +236,9 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 
 
 ```javascript
-const { brightRed, yellow } = require('ansi')
+const { redBright, yellow } = require('ansi')
 const message = 'File does not exist'
-console.log(brightRed + 'Error: ' + yellow + message)
+console.log(redBright + 'Error: ' + yellow + message)
 ```
 
 

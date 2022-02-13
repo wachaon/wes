@@ -1,11 +1,11 @@
 const { readdirsSync, readFileSync, writeFileSync } = require('filesystem')
 const { resolve } = require('pathname')
 const { format } = require('fmt')
-const { brightBlue } = require('ansi')
+const { blueBright } = require('ansi')
 
 const UTF8 = 'UTF-8N'
 
-console.log('%SStart formatting', brightBlue)
+console.log('%SStart formatting', blueBright)
 function formatter(dir) {
     readdirsSync(resolve(process.cwd(), dir), UTF8)
         .filter((spec) => spec.type === 'file' && spec.path.endsWith('.js'))

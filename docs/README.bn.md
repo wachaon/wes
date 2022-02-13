@@ -236,9 +236,9 @@ ansi হল একটি `ansi` *ANSI escape code* যা আপনাকে স
 
 
 ```javascript
-const { brightRed, yellow } = require('ansi')
+const { redBright, yellow } = require('ansi')
 const message = 'File does not exist'
-console.log(brightRed + 'Error: ' + yellow + message)
+console.log(redBright + 'Error: ' + yellow + message)
 ```
 
 
