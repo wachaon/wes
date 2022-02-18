@@ -22,6 +22,7 @@ describe('#test Enumerator', () => {
             'httprequest.js',
             'inspect.js',
             'install.js',
+            'isCLI.js',
             'JScript.js',
             'log.js',
             'minitest.js',
