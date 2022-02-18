@@ -4,7 +4,7 @@
 *wes*是一个在*WSH (Windows Script Host)*上运行*ECMAScript*的控制台框架。
 
 
-*README*的原文是[*japanese*](/README.md) 。除了日语，它是机器翻译的句子。  
+*README*文件的原文是[*japanese*](/README.md) 。除了日语，它是机器翻译的句子。  
 请从以下选择其他语言的句子。
 
 
@@ -26,8 +26,8 @@
 # 特征
 
 
--   您可以将脚本引擎更改为*Chakra* ，并将其写入*ECMAScript2015*规范。
--   它始终运行 32 位*cscript.exe* ，因此在 64 位环境中没有任何固有问题。
+-   您可以将脚本引擎更改为*Chakra* ，并将其写入*ECMAScript2015*规范中
+-   它始终运行 32 位*cscript.exe* ，因此在 64 位环境下不存在固有问题。
 -   使用模块化系统，您可以比传统*WSH*更高效地开发
 -   内置模块支持文件输入/输出、彩色字符输出到控制台等基本处理。
 -   您不必担心编码，因为您可以让文件读取自动猜测编码。
@@ -53,14 +53,14 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell*在运行时使用来自*wes*的`SendKeys`作为实现。如果*wes.js*保存目录的路径中包含*ascii*以外的字符， `SendKeys`将无法正确发送密钥，脚本将无法执行。  
+*WScript.Shell*在运行时使用*wes*中的`SendKeys`作为实现。如果*wes.js*保存目录的路径中包含*ascii*以外的字符， `SendKeys`将无法正确发送密钥，脚本将无法执行。  
 请仅配置*wes.js*的保存目标路径*ascii* 。
 
 
 # 如何使用
 
 
-在控制台中，指定`wes`之后将作为程序起点的文件。脚本扩展名*.js*可以省略。
+在控制台中输入从`wes`关键字指定将成为程序起点的文件的命令。脚本扩展名*.js*可以省略。
 
 
 ```shell
@@ -79,7 +79,7 @@ wes
 *REPL*接受脚本输入，直到您输入两个空行。您还可以使用*REPL*检查*README.md*中示例脚本的执行情况。
 
 
-## 控制台选项
+## 命令行选项
 
 
 *wes*的启动选项如下。
@@ -112,7 +112,7 @@ wes
 通过分配给`module.exports`并使用`require()`调用来管理模块。为方便起见，它还支持*node_modules*目录。
 
 
-*wes* `require()`会自动猜测模块文件的编码，但是如果没有猜测正确，可以用第二个参数指定编码。
+*wes* `require()`会自动猜测模块文件的编码，但如果没有猜测正确，可以用第二个参数指定编码。
 
 
 ```javascript
@@ -133,18 +133,14 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-您也可以像*require* `require('WScript.Shell')`一样使用 require 导入*OLE* 。
+您也可以像*require* `require('WScript.Shell')`一样使用 require 导入*ActiveX* 。
 
 
 ```javascript
-const WShell = require('WScript.Shell')
-const ie = require('InternetExplorer.Application')
-ie.Visible = true
-ie.Navigate('https://google.com/')
-while (ie.Busy || ie.readystate != 4) {
-    WScript.Sleep( 100 )
-}
-WShell.AppActivate(ie.LocationName)
+const Shell = require('Shell.Application')
+Shell.MinimizeAll()
+WScript.Sleep(2000)
+Shell.UndoMinimizeAll()
 ```
 
 
@@ -154,7 +150,7 @@ WShell.AppActivate(ie.LocationName)
 脚本的执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过将*babel*添加到内置模块中，在执行的同时顺序转译到*es module* 。结果，处理开销和*wes.js*文件作为成本而膨胀。
 
 
-*es module*模块描述的模块也被 transpile 转换为`require()` ，所以可以调用*OLE* 。但是，它不支持模块文件编码规范。都是通过自动猜测读取的。
+*es module*模块描述的模块也被 transpile 转换为`require()` ，所以可以调用*ActiveX* 。但是，它不支持模块文件编码规范。都是通过自动猜测读取的。
 
 
 要将其作为*es module*加载，请将扩展名设置为`.mjs`或将`package.json`的`"type"`字段设置为`"module"` 。
@@ -185,7 +181,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 
-`WScript.Echo`使用*console*而不是*wes*或`WScript.StdErr.WriteLine` 。
+*wes*使用*console*而不是`WScript.Echo`或`WScript.StdErr.WriteLine` 。
 
 
 在`console.log`中将字符打印到控制台。它还支持格式化字符串。使用格式化运算符`%`打印格式化字符串。
@@ -255,13 +251,13 @@ console.log(orange + 'Hello World')
 ## *argv*
 
 
-获取控制台参数。 `cscript.exe`的控制台参数使用`/`声明命名参数`--`而*wes*使用`-`和 - 声明命名参数。
+获取命令行参数。 `cscript.exe`中的命令行参数用`/` *wes*命名参数`--`而我们用`-`和 - 声明命名参数。
 
 
-*argv.unnamed*和*argv.named*将控制台参数的值类型转换为*String* *Number* *Boolean*之一。
+*argv.unnamed*和*argv.named*将命令行参数的值类型转换为*String* *Number* *Boolean*之一。
 
 
-输入控制台参数和*REPL* 。
+与*REPL*一起输入命令行参数。
 
 
 ```shell
@@ -336,7 +332,7 @@ files.forEach(file => console.log(file.Name))
 ```
 
 
-*GetObject*充当`WScript.GetObject`的替代品。
+*GetObject*作为`WScript.GetObject`的替代品。
 
 
 ```javascript
@@ -457,7 +453,7 @@ console.log(unzip('dox.zip'))
 通配符`*`可以写在`zip(path, destinationPath)` `path`路径中。
 
 
-它可以与*CLI* （控制台界面）和*module*一起使用。
+它可以与*CLI (Command Line Interface)*和*module*一起使用。
 
 
 ```shell
@@ -484,7 +480,7 @@ wes zip -p dox.zip
 # 模块捆绑和安装
 
 
-在*wes*中，几个模块的捆绑称为一个包。您可以安装在*github*上发布的*wes*软件包。您将需要一个*github repository*来发布包。此外，存储库名称和本地目录名称必须相同。
+在*wes*中，多个模块的捆绑包称为包。您可以安装在*github*上发布的*wes*软件包。您将需要一个*github repository*来发布包。此外，存储库名称和本地目录名称必须相同。
 
 
 ## *bundle*
@@ -502,7 +498,7 @@ wes zip -p dox.zip
 1.  一个*repository*中只能发布一个模块。
 2.  确保*github*上的仓库名称和本地工作目录名称相同。
 3.  如果要发布包，请将存储库设为*public* 。
-4.  在顶层范围内声明模块获取。
+4.  在顶级范围内声明模块获取。
 5.  包*.json*文件在您的工作目录中创建，名称为*directory_name.json* 。如果文件被重命名或文件被移动，则无法安装。
 6.  `node_modules/directory_name`时，捆绑失败，因为它引用了`directory_name.json` 。
 
@@ -555,7 +551,7 @@ wes install @wachaon/fmt --bare --unsafe
 ```
 
 
-当您使用浏览器访问私有存储库的*raw*文件时，将显示*token* ，因此请复制*token*并使用它。
+当您使用浏览器访问私有仓库的*raw*时，将显示*token* ，因此请复制*token*并使用它。
 
 
 您还可以通过在*token*的生命周期内在控制台中运行模块来将模块安装到私有存储库中。
@@ -589,7 +585,7 @@ wes install @wachaon/fmt
 ### 如何使用
 
 
-如果工作目录中有*.prettierrc* （JSON 格式），会反映在设置中。 *fmt*可以与*CLI* （控制台界面）和*module*一起使用。
+如果工作目录中有*.prettierrc* （JSON 格式），会反映在设置中。 *fmt*可以与*CLI*和*module*一起使用。
 
 
 #### 用作*CLI* 。
@@ -611,7 +607,7 @@ wes @wachaon/fmt src/sample --write
 | `--write` | `-w` | 允许覆盖 |
 
 
-如果指定`--write`或`-w`的命名参数，则使用格式化脚本覆盖文件。
+如果指定`--write`或`-w`的命名参数，则使用格式化的脚本覆盖文件。
 
 
 #### 作为模块使用
@@ -630,7 +626,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ## `@wachaon/edge`
 
 
-*Internet Explorer*将于 2022/6/15 完成支持。结果，无法使用`require('InternetExplorer.Application')`操作应用程序。
+*Internet Explorer*将于 2022/6/15 完成支持。因此，预计将无法使用`require('InternetExplorer.Application')`操作应用程序。
 
 
 另一种方法是通过*web driver*运行*Microsoft Edge based on Chromium* 。 `@wachaon/edge`简化了*Edge*自动驾驶仪。

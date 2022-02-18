@@ -23,18 +23,18 @@
 
 
 
-# سمات
+# خاصية
 
 
--   يمكنك تغيير محرك البرنامج النصي إلى *Chakra* وكتابته في مواصفات *ECMAScript2015* .
--   يتم تشغيله دائمًا *cscript.exe* 32 بت ، لذلك ليس لديه أي مشاكل متأصلة في بيئة 64 بت.
+-   يمكنك تغيير محرك البرنامج النصي إلى *Chakra* وكتابته في مواصفات *ECMAScript2015*
+-   يتم تشغيله دائمًا *cscript.exe* 32 بت ، لذلك لا توجد مشاكل متأصلة في بيئة 64 بت.
 -   باستخدام نظام معياري ، يمكنك التطوير بشكل أكثر كفاءة من *WSH* التقليدي
 -   تدعم الوحدة المدمجة المعالجة الأساسية مثل إدخال / إخراج الملف وإخراج الأحرف الملونة إلى وحدة التحكم.
 -   لا داعي للقلق بشأن الترميز لأنه يمكنك جعل الملف يقرأ تلقائيًا تخمين الترميز.
 -   نقوم أيضًا بحزم الوحدات النمطية لدعم النشر الخارجي والاسترجاع.
 
 
-# المشكلات *wes* لا يمكن حلها
+# لا يمكن حل المشكلات *wes*
 
 
 -   لا يمكن لـ `WScript.Quit` مقاطعة البرنامج ولا يعرض رمز خطأ
@@ -42,7 +42,7 @@
 -   لا يمكنك استخدام *event prefix* كوسيطة ثانية لـ `WScript.CreateObject`
 
 
-# تثبيت
+# ثبيت
 
 
 يحتاج Wes فقط إلى *wes* *wes.js* للتنزيل ، انسخ *wes.js* من [*@wachaon/wes*](https://github.com/wachaon/wes) أو قم بتشغيل الأمر التالي في وحدة التحكم.
@@ -53,14 +53,14 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-يستخدم *WScript.Shell* `SendKeys` من *wes* في وقت التشغيل كتطبيق. إذا كان مسار الدليل الذي تم حفظ *wes.js* فيه يحتوي على أحرف غير *ascii* ، فلن تتمكن `SendKeys` من إرسال المفتاح بشكل صحيح ولن يتم تنفيذ البرنامج النصي.  
+يستخدم *WScript.Shell* `SendKeys` في *wes* في وقت التشغيل كتطبيق. إذا كان مسار الدليل الذي تم حفظ *wes.js* فيه يحتوي على أحرف غير *ascii* ، فلن تتمكن `SendKeys` من إرسال المفتاح بشكل صحيح ولن يتم تنفيذ البرنامج النصي.  
 يرجى تكوين مسار وجهة الحفظ لـ *wes.js* فقط *ascii* .
 
 
 # كيف تستعمل
 
 
-في وحدة التحكم ، حدد الملف الذي سيكون نقطة انطلاق البرنامج بعد `wes` . يمكن حذف ملحق البرنامج النصي *.js* .
+أدخل الأمر الذي يحدد الملف الذي سيكون نقطة انطلاق البرنامج من الكلمة الأساسية `wes` في وحدة التحكم. يمكن حذف ملحق البرنامج النصي *.js* .
 
 
 ```shell
@@ -79,7 +79,7 @@ wes
 يقبل *REPL* إدخال البرنامج النصي حتى تقوم بإدخال سطرين فارغين. يمكنك أيضًا التحقق من تنفيذ نموذج البرنامج النصي في *README.md* باستخدام *REPL* .
 
 
-## خيارات وحدة التحكم
+## خيارات سطر الأوامر
 
 
 خيارات بدء التشغيل الخاصة بـ *wes* هي كما يلي.
@@ -133,18 +133,14 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-يمكنك أيضًا الاستيراد إلى *OLE* مثل *require* `require('WScript.Shell')` باستخدام.
+يمكنك أيضًا الاستيراد إلى *ActiveX* مثل *require* `require('WScript.Shell')` باستخدام.
 
 
 ```javascript
-const WShell = require('WScript.Shell')
-const ie = require('InternetExplorer.Application')
-ie.Visible = true
-ie.Navigate('https://google.com/')
-while (ie.Busy || ie.readystate != 4) {
-    WScript.Sleep( 100 )
-}
-WShell.AppActivate(ie.LocationName)
+const Shell = require('Shell.Application')
+Shell.MinimizeAll()
+WScript.Sleep(2000)
+Shell.UndoMinimizeAll()
 ```
 
 
@@ -154,7 +150,7 @@ WShell.AppActivate(ie.LocationName)
 تفسر *Chakra* ، وهي محرك تنفيذ البرنامج النصي ، بناء الجملة مثل `imoprt` ، ولكن لا يمكن تنفيذها كما هي لأن طريقة المعالجة مثل `cscript` غير محددة. في *wes* ، من خلال إضافة *babel* إلى الوحدة المدمجة ، يتم تنفيذه أثناء التحويل التسلسلي إلى *es module* . نتيجة لذلك ، يتم تضخيم تكاليف المعالجة وملف *wes.js* كتكلفة.
 
 
-الوحدات الموصوفة بواسطة *es module* يتم تحويلها أيضًا إلى transpile `require()` ، لذلك يمكن استدعاء *OLE* . ومع ذلك ، فإنه لا يدعم مواصفات ترميز ملف الوحدة النمطية. تتم قراءتها جميعًا عن طريق التخمين التلقائي.
+الوحدات الموصوفة بواسطة *es module* يتم تحويلها أيضًا إلى transpile `require()` ، لذلك يمكن استدعاء *ActiveX* . ومع ذلك ، فإنه لا يدعم مواصفات ترميز ملف الوحدة النمطية. تتم قراءتها جميعًا عن طريق التخمين التلقائي.
 
 
 لتحميلها كوحدة *es module* ، اضبط الامتداد على `.mjs` أو حقل `"type"` من `package.json` على `"module"` .
@@ -185,7 +181,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 
-يستخدم `WScript.Echo` *console* بدلاً من *wes* أو `WScript.StdErr.WriteLine` .
+يستخدم *wes* *console* بدلاً من `WScript.Echo` أو `WScript.StdErr.WriteLine` .
 
 
 طباعة الأحرف إلى وحدة التحكم في `console.log` . كما يدعم السلاسل المنسقة. يطبع سلسلة منسقة باستخدام عامل التنسيق `%` .
@@ -255,13 +251,13 @@ console.log(orange + 'Hello World')
 ## *argv*
 
 
-يحصل على وسيطة وحدة التحكم. تعلن وسيطة وحدة التحكم لـ `cscript.exe` عن وسيطة مسماة مع `/` `--` بينما يعلن *wes* عن وسيطة مسماة بـ `-` و-.
+يحصل على وسيطة سطر الأوامر. تعلن وسيطات سطر الأوامر في `cscript.exe` عن الوسائط المسماة مع `/` `--` بينما يعلن *wes* عن الوسائط المسماة بـ `-` و-.
 
 
-*argv.unnamed* و *argv.named* يلقي نوع قيمة وسيطة وحدة التحكم إلى أحد قيمة *String* *Number* *Boolean* .
+*argv.unnamed* و *argv.named* يلقي نوع قيمة وسيطة سطر الأوامر إلى أحد قيم *String* *Number* *Boolean* .
 
 
-أدخل وسيطات وحدة التحكم مع *REPL* .
+أدخل وسيطات سطر الأوامر مع *REPL* .
 
 
 ```shell
@@ -457,7 +453,7 @@ console.log(unzip('dox.zip'))
 يمكن كتابة أحرف البدل `*` في `path` `zip(path, destinationPath)` .
 
 
-يمكن استخدامه مع كل من *CLI* (واجهة وحدة التحكم) *module* .
+يمكن استخدامه مع كل من *CLI (Command Line Interface)* *module* .
 
 
 ```shell
@@ -555,7 +551,7 @@ wes install @wachaon/fmt --bare --unsafe
 ```
 
 
-عند الوصول إلى النسخة *raw* من المستودع الخاص باستخدام متصفح ، سيتم عرض *token* ، لذا انسخ *token* .
+عندما تصل إلى *raw* من المستودع الخاص باستخدام متصفح ، سيتم عرض *token* ، لذا انسخ *token* .
 
 
 يمكنك أيضًا تثبيت وحدة نمطية في مستودع خاص عن طريق تشغيلها في وحدة التحكم خلال عمر *token* .
@@ -578,7 +574,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 حزم *@wachaon/fmt* *prettier* وتنسيق البرنامج النصي. أيضًا ، في حالة حدوث *Syntax Error* مع تثبيت *@wachaon/fmt* ، يمكنك الإشارة إلى موقع الخطأ.
 
 
-### تثبيت
+### ثبيت
 
 
 ```shell
@@ -589,7 +585,7 @@ wes install @wachaon/fmt
 ### كيف تستعمل
 
 
-إذا كان هناك تنسيق *.prettierrc* (تنسيق JSON) في دليل العمل ، فسوف ينعكس في الإعداد. يمكن استخدام *fmt* مع كل من *CLI* (واجهة وحدة التحكم) *module* .
+إذا كان هناك تنسيق *.prettierrc* (تنسيق JSON) في دليل العمل ، فسوف ينعكس في الإعداد. يمكن استخدام *fmt* مع كل من *CLI* *module* .
 
 
 #### تستخدم *CLI* .
@@ -630,13 +626,13 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ## `@wachaon/edge`
 
 
-سوف يكمل *Internet Explorer* الدعم مع 2022/6/15. نتيجة لذلك ، يصبح من المستحيل تشغيل التطبيق باستخدام `require('InternetExplorer.Application')` .
+سوف يكمل *Internet Explorer* الدعم مع 2022/6/15. نتيجة لذلك ، من المتوقع أنه لن يكون من الممكن تشغيل التطبيق باستخدام `require('InternetExplorer.Application')` .
 
 
 سيكون البديل هو تشغيل *Microsoft Edge based on Chromium* عبر *web driver* . `@wachaon/edge` يبسط الطيار الآلي *Edge* .
 
 
-### تثبيت
+### ثبيت
 
 
 أولاً ، قم بتثبيت الوحدة.

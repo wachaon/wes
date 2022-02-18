@@ -23,11 +23,11 @@ Si prega di selezionare frasi in altre lingue dalle seguenti.
 
 
 
-# Caratteristiche
+# caratteristica
 
 
--   Puoi cambiare il motore di script in *Chakra* e scriverlo nella specifica *ECMAScript2015* .
--   Funziona sempre a 32 bit *cscript.exe* , quindi non ha problemi intrinseci nell'ambiente a 64 bit.
+-   Puoi cambiare il motore di script in *Chakra* e scriverlo nella specifica *ECMAScript2015*
+-   Funziona sempre a 32 bit *cscript.exe* , quindi non ci sono problemi intrinseci nell'ambiente a 64 bit.
 -   Con un sistema modulare, puoi sviluppare in modo più efficiente rispetto al tradizionale *WSH*
 -   Il modulo integrato supporta l'elaborazione di base come l'input/output di file e l'output di caratteri colorati sulla console.
 -   Non devi preoccuparti della codifica perché puoi leggere il file indovinare automaticamente la codifica.
@@ -45,7 +45,7 @@ Si prega di selezionare frasi in altre lingue dalle seguenti.
 # installare
 
 
-Wes ha solo bisogno del *wes* *wes.js* Per scaricare, copia *wes.js* da [*@wachaon/wes*](https://github.com/wachaon/wes) o esegui il comando seguente nella console.
+Wes ha bisogno solo del *wes* *wes.js* Per scaricare, copia *wes.js* da [*@wachaon/wes*](https://github.com/wachaon/wes) o esegui il comando seguente nella console.
 
 
 ```shell
@@ -53,14 +53,14 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* utilizza `SendKeys` da *wes* in fase di esecuzione come implementazione. Se il percorso della directory in cui è salvato *wes.js* contiene caratteri diversi da *ascii* , `SendKeys` non sarà in grado di inviare la chiave correttamente e lo script non potrà essere eseguito.  
+*WScript.Shell* utilizza `SendKeys` in *wes* in fase di esecuzione come implementazione. Se il percorso della directory in cui è salvato *wes.js* contiene caratteri diversi da *ascii* , `SendKeys` non sarà in grado di inviare la chiave correttamente e lo script non potrà essere eseguito.  
 Si prega di configurare il percorso di destinazione di salvataggio di *wes.js* only *ascii* .
 
 
 # Come usare
 
 
-Nella console, specifica il file che sarà il punto di partenza del programma dopo `wes` . L'estensione dello script *.js* può essere omessa.
+Immettere il comando che specifica il file che sarà il punto di partenza del programma dalla parola chiave `wes` nella console. L'estensione dello script *.js* può essere omessa.
 
 
 ```shell
@@ -79,7 +79,7 @@ wes
 Il *REPL* accetta l'input dello script finché non si immettono due righe vuote. Puoi anche controllare l'esecuzione dello script di esempio in *README.md* con *REPL* .
 
 
-## Opzioni della console
+## Opzioni della riga di comando
 
 
 Le opzioni di avvio per *wes* sono le seguenti.
@@ -133,18 +133,14 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-Puoi anche importare in *OLE* con *require* `require('WScript.Shell')` come require ("WScript.Shell").
+Puoi anche importare in *ActiveX* con *require* `require('WScript.Shell')` .
 
 
 ```javascript
-const WShell = require('WScript.Shell')
-const ie = require('InternetExplorer.Application')
-ie.Visible = true
-ie.Navigate('https://google.com/')
-while (ie.Busy || ie.readystate != 4) {
-    WScript.Sleep( 100 )
-}
-WShell.AppActivate(ie.LocationName)
+const Shell = require('Shell.Application')
+Shell.MinimizeAll()
+WScript.Sleep(2000)
+Shell.UndoMinimizeAll()
 ```
 
 
@@ -154,7 +150,7 @@ WShell.AppActivate(ie.LocationName)
 *Chakra* , che è il motore di esecuzione dello script, interpreta la sintassi come `imoprt` , ma non può essere eseguito così com'è perché il metodo di elaborazione come `cscript` non è definito. In *wes* , aggiungendo *babel* al modulo integrato, viene eseguito durante la traspilazione sequenziale al *es module* . Di conseguenza, il sovraccarico di elaborazione e il file *wes.js* sono gonfiati come costo.
 
 
-I moduli descritti da *es module* vengono anche convertiti in transpile in `require()` , quindi è possibile chiamare *OLE* . Tuttavia, non supporta la specifica di codifica del file del modulo. Tutti vengono letti per indovinare automaticamente.
+I moduli descritti da *es module* vengono anche convertiti in `require()` tramite transpile, quindi sono possibili anche chiamate *ActiveX* . Tuttavia, non supporta la specifica di codifica del file del modulo. Tutti vengono letti per indovinare automaticamente.
 
 
 Per caricarlo come *es module* , imposta l'estensione su `.mjs` o il campo `"type"` di `package.json` su `"module"` .
@@ -185,7 +181,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 
-`WScript.Echo` usa la *console* invece di *wes* o `WScript.StdErr.WriteLine` .
+*wes* usa la *console* invece di `WScript.Echo` o `WScript.StdErr.WriteLine` .
 
 
 Stampa i caratteri sulla console in `console.log` . Supporta anche le stringhe formattate. Stampa una stringa formattata utilizzando l'operatore di formattazione `%` .
@@ -255,13 +251,13 @@ console.log(orange + 'Hello World')
 ## *argv*
 
 
-Ottiene l'argomento della console. L'argomento della console di `cscript.exe` dichiara un argomento denominato con `/` `--` mentre *wes* dichiara un argomento denominato con `-` .
+Ottiene l'argomento della riga di comando. Gli argomenti della riga di comando in `cscript.exe` dichiarano argomenti denominati con `/` `--` mentre *wes* dichiarano argomenti denominati con `-` .
 
 
-*argv.unnamed* e *argv.named* il cast del tipo di valore dell'argomento della console su uno degli *String* *Number* *Boolean* .
+*argv.unnamed* e *argv.named* il cast del tipo di valore dell'argomento della riga di comando su uno degli *String* *Number* *Boolean* .
 
 
-Immettere gli argomenti della console insieme a *REPL* .
+Immettere gli argomenti della riga di comando insieme a *REPL* .
 
 
 ```shell
@@ -457,7 +453,7 @@ console.log(unzip('dox.zip'))
 I caratteri jolly `*` possono essere scritti nel `path` di `zip(path, destinationPath)` .
 
 
-Può essere utilizzato sia con *CLI* (interfaccia console) che con il *module* .
+Può essere utilizzato sia con *CLI (Command Line Interface)* che con il *module* .
 
 
 ```shell
@@ -589,7 +585,7 @@ wes install @wachaon/fmt
 ### Come usare
 
 
-Se è presente *.prettierrc* (formato JSON) nella directory di lavoro, si rifletterà nell'impostazione. *fmt* può essere utilizzato sia con *CLI* (interfaccia console) che con il *module* .
+Se è presente *.prettierrc* (formato JSON) nella directory di lavoro, si rifletterà nell'impostazione. *fmt* può essere utilizzato sia con *CLI* che con il *module* .
 
 
 #### Usato come *CLI* .
@@ -630,7 +626,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ## `@wachaon/edge`
 
 
-*Internet Explorer* completerà il supporto con il 2022/6/15. Di conseguenza, diventa impossibile utilizzare l'applicazione con `require('InternetExplorer.Application')` .
+*Internet Explorer* completerà il supporto con il 2022/6/15. Di conseguenza, si prevede che non sarà possibile utilizzare l'applicazione con `require('InternetExplorer.Application')` .
 
 
 Un'alternativa sarebbe utilizzare *Microsoft Edge based on Chromium* tramite il *web driver* . `@wachaon/edge` semplifica il pilota automatico di *Edge* .

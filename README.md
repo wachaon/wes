@@ -50,7 +50,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 
 # 使い方
 
-コンソールにて `wes` に続けてプログラムの起点となるファイルを指定します。
+コンソールに `wes` のキーワードからプログラムの起点となるファイルを指定したコマンドを入力します。
 スクリプトの拡張子 *.js* は省略できます。
 
 ```shell
@@ -67,7 +67,7 @@ wes
  *REPL* は空行を２つ入力するまでスクリプトの入力を受け付けます。*README.md* でのサンプルスクリプトの
 実行も *REPL* で確認できます。
 
-## コンソールオプション
+## コマンドラインオプション
 
 *wes* の起動オプションは下記になります。
 
@@ -113,17 +113,13 @@ const add = require('./add')
 console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
-また、`require('WScript.Shell')` の様に *OLE* に対しても *require* でインポート可能です。
+また、`require('WScript.Shell')` の様に *ActiveX* に対しても *require* でインポート可能です。
 
 ```javascript
-const WShell = require('WScript.Shell')
-const ie = require('InternetExplorer.Application')
-ie.Visible = true
-ie.Navigate('https://google.com/')
-while (ie.Busy || ie.readystate != 4) {
-    WScript.Sleep( 100 )
-}
-WShell.AppActivate(ie.LocationName)
+const Shell = require('Shell.Application')
+Shell.MinimizeAll()
+WScript.Sleep(2000)
+Shell.UndoMinimizeAll()
 ```
 
 ## *es module*
@@ -131,7 +127,7 @@ WShell.AppActivate(ie.LocationName)
 スクリプトの実行エンジンである *Chakra* は `imoprt` などの構文を解釈しますが `cscript` としての処理方法が定義されていないのか、そのままでは実行できません。
 *wes* では *babel* をビルトインモジュールに加えることで、*es module* に対しても逐次トランスパイルしながら実行しています。そのためコストとして処理のオーバーヘッドと *wes.js* ファイルが肥大化しています。
 
-*es module* で記述されているモジュールもトランスパイルで `require()` に変換されるため、*OLE* の呼び出しも可能です。
+*es module* で記述されているモジュールもトランスパイルで `require()` に変換されるため、*ActiveX* の呼び出しも可能です。
 しかしながらモジュールファイルのエンコード指定には対応していません。全て自動推測で読み込まれます。
 
 *es module* として読み込ませるには拡張子を `.mjs` にするか `package.json` の `"type"` フィールドを `"module"` にしてください。
@@ -214,13 +210,13 @@ console.log(orange + 'Hello World')
 
 ## *argv*
 
-コンソール引数のを取得します。
-`cscript.exe` のコンソール引数は `/` で名前付き引数を宣言しますが、*wes* では `-` および `--` で
+コマンドライン引数のを取得します。
+`cscript.exe` のコマンドライン引数は `/` で名前付き引数を宣言しますが、*wes* では `-` および `--` で
 名前付き引数を宣言します。
 
-*argv.unnamed* および *argv.named* はコンソール引数の値の型を *String* *Number* *Boolean* の何れかにキャストします。
+*argv.unnamed* および *argv.named* はコマンドライン引数の値の型を *String* *Number* *Boolean* の何れかにキャストします。
 
-*REPL* と一緒にコンソール引数を入力します。
+*REPL* と一緒にコマンドライン引数を入力します。
 
 ```shell
 wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
@@ -384,7 +380,7 @@ console.log(unzip('dox.zip'))
 
 `zip(path, destinationPath)` の `path` にはワイルドカード `*` が記述できます。
 
-*CLI*（コンソールインタフェース）と *module* の両方で使用できます。
+*CLI (Command Line Interface)* と *module* の両方で使用できます。
 
 ```shell
 wes zip docs\* dox.zip
@@ -491,7 +487,7 @@ wes install @wachaon/fmt
 ### 使い方
 
 ワーキングディレクトリに *.prettierrc* (JSON フォーマット) があれば設定に反映させます。
-*fmt* は *CLI*（コンソールインタフェース）と *module* の両方で使用できます。
+*fmt* は *CLI* と *module* の両方で使用できます。
 
 #### *CLI* として使用する。
 
@@ -523,9 +519,9 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 ## `@wachaon/edge`
 
-*Internet Explorer* が 2022/6/15 を以てサポートを完了します。それに伴い `require('InternetExplorer.Application')` でのアプリケーションの操作も不可能になります。
+*Internet Explorer* が 2022/6/15 を以てサポートを完了します。それに伴い `require('InternetExplorer.Application')` でのアプリケーションの操作も不可能になると予想されます。
 
-代替案として、*Microsoft Edge based on Chromium* を *web driver* 経由で操作することになります。`@wachaon/edge` は *Edge* の自動操縦を簡素化します。
+代替案は、*Microsoft Edge based on Chromium* を *web driver* 経由で操作することになります。`@wachaon/edge` は *Edge* の自動操縦を簡素化します。
 
 ### インストール
 

@@ -23,11 +23,11 @@ Seleccione oraciones en otros idiomas de las siguientes.
 
 
 
-# Características
+# rasgo
 
 
--   Puede cambiar el motor de secuencias de comandos a *Chakra* y escribirlo en la especificación *ECMAScript2015* .
--   Siempre ejecuta *cscript.exe* de 32 bits, por lo que no tiene ningún problema inherente en un entorno de 64 bits.
+-   Puede cambiar el motor de script a *Chakra* y escribirlo en la especificación *ECMAScript2015*
+-   Siempre ejecuta *cscript.exe* de 32 bits, por lo que no hay problemas inherentes en un entorno de 64 bits.
 -   Con un sistema modular, puede desarrollar de manera más eficiente que el *WSH* tradicional
 -   El módulo incorporado admite el procesamiento básico, como la entrada/salida de archivos y la salida de caracteres de colores a la consola.
 -   No tiene que preocuparse por la codificación porque puede hacer que la lectura del archivo adivine automáticamente la codificación.
@@ -53,14 +53,14 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* usa `SendKeys` de *wes* en tiempo de ejecución como implementación. Si la ruta del directorio donde se guarda *wes.js* contiene caracteres que no sean *ascii* , `SendKeys` no podrá enviar la clave correctamente y el script no podrá ejecutarse.  
+*WScript.Shell* usa `SendKeys` en *wes* en tiempo de ejecución como implementación. Si la ruta del directorio donde se guarda *wes.js* contiene caracteres que no sean *ascii* , `SendKeys` no podrá enviar la clave correctamente y el script no podrá ejecutarse.  
 Configure la ruta de destino para guardar de *wes.js* solo *ascii* .
 
 
 # Cómo utilizar
 
 
-En la consola, especifique el archivo que será el punto de partida del programa después de `wes` . La extensión de secuencia de comandos *.js* se puede omitir.
+Ingrese el comando que especifica el archivo que será el punto de partida del programa desde la palabra clave `wes` en la consola. La extensión de secuencia de comandos *.js* se puede omitir.
 
 
 ```shell
@@ -79,13 +79,13 @@ wes
 El *REPL* acepta entrada de script hasta que ingrese dos líneas en blanco. También puede verificar la ejecución del script de muestra en *README.md* con *REPL* .
 
 
-## Opciones de consola
+## Opciones de la línea de comandos
 
 
 Las opciones de inicio para *wes* son las siguientes.
 
 
-| nombrada           | descripción                                             |
+| llamado            | descripción                                             |
 | ------------------ | ------------------------------------------------------- |
 | `--monotone`       | Eliminar *ANSI escape code*                             |
 | `--safe`           | Ejecute el script en modo seguro                        |
@@ -103,7 +103,7 @@ La implementación de `--safe` `--usual` `--unsafe` `--dangerous` `--debug` est�
 # Sistema modular
 
 
-*wes* admite dos sistemas de módulos, un sistema *commonjs module* que utiliza el `require()` y un *es module* que utiliza `import` . ( *dynamic import* es un procesamiento asincrónico, por lo que no se admite)
+*wes* admite dos sistemas de módulos, un sistema *commonjs module* que usa el `require()` y un *es module* que usa `import` . ( *dynamic import* es un procesamiento asincrónico, por lo que no se admite)
 
 
 ## *commonjs module*
@@ -112,7 +112,7 @@ La implementación de `--safe` `--usual` `--unsafe` `--dangerous` `--debug` est�
 Administre módulos asignándolos a `module.exports` y llamando con `require()` . Para mayor comodidad, también es compatible con el directorio *node_modules* .
 
 
-*wes* `require()` adivina automáticamente la codificación del archivo del módulo, pero si no adivina correctamente, puede especificar la codificación con el segundo argumento.
+*wes* `require()` adivina automáticamente la codificación del archivo del módulo, pero si no lo hace correctamente, puede especificar la codificación con el segundo argumento.
 
 
 ```javascript
@@ -133,18 +133,14 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-También puede importar a *OLE* como *require* `require('WScript.Shell')` con require.
+También puede importar a *ActiveX* como *require* `require('WScript.Shell')` con require.
 
 
 ```javascript
-const WShell = require('WScript.Shell')
-const ie = require('InternetExplorer.Application')
-ie.Visible = true
-ie.Navigate('https://google.com/')
-while (ie.Busy || ie.readystate != 4) {
-    WScript.Sleep( 100 )
-}
-WShell.AppActivate(ie.LocationName)
+const Shell = require('Shell.Application')
+Shell.MinimizeAll()
+WScript.Sleep(2000)
+Shell.UndoMinimizeAll()
 ```
 
 
@@ -154,7 +150,7 @@ WShell.AppActivate(ie.LocationName)
 *Chakra* , que es el motor de ejecución del script, interpreta la sintaxis como `imoprt` , pero no se puede ejecutar tal cual porque el método de procesamiento como `cscript` no está definido. En *wes* , al agregar *babel* al módulo incorporado, se ejecuta mientras se transpila secuencialmente al *es module* . Como resultado, la sobrecarga de procesamiento y el archivo *wes.js* se inflan como un costo.
 
 
-Los módulos descritos por el *es module* es también se transpilan convertidos para `require()` , por lo que se puede llamar a *OLE* . Sin embargo, no es compatible con la especificación de codificación de archivos del módulo. Todos se leen por adivinación automática.
+Los módulos descritos por el *es module* es también se transpilan convertidos a `require()` , por lo que se puede llamar a *ActiveX* . Sin embargo, no es compatible con la especificación de codificación de archivos del módulo. Todos se leen por adivinación automática.
 
 
 Para cargarlo como un *es module* , establezca la extensión en `.mjs` o el campo `"type"` de `package.json` en `"module"` .
@@ -185,7 +181,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 
-`WScript.Echo` usa *console* en lugar de *wes* o `WScript.StdErr.WriteLine` .
+*wes* usa *console* en lugar de `WScript.Echo` o `WScript.StdErr.WriteLine` .
 
 
 Imprime caracteres en la consola en `console.log` . También admite cadenas formateadas. Imprime una cadena formateada usando el operador de formato `%` .
@@ -255,13 +251,13 @@ console.log(orange + 'Hello World')
 ## *argv*
 
 
-Obtiene el argumento de la consola. El argumento de la consola de `cscript.exe` declara un argumento con nombre con `/` `--` mientras que *wes* declara un argumento con nombre con `-` y -.
+Obtiene el argumento de la línea de comandos. Los argumentos de la línea de comandos en `cscript.exe` declaran argumentos con nombre con `/` `--` mientras que *wes* declara argumentos con nombre con `-` y -.
 
 
-*argv.unnamed* y *argv.named* el tipo de valor del argumento de la consola en uno de los *Boolean* de *Number* de *String* .
+*argv.unnamed* y *argv.named* el tipo de valor del argumento de la línea de comando en uno de los *Boolean* de *Number* de *String* .
 
 
-Ingrese los argumentos de la consola junto con *REPL* .
+Introduzca los argumentos de la línea de comandos junto con *REPL* .
 
 
 ```shell
@@ -457,7 +453,7 @@ console.log(unzip('dox.zip'))
 Los comodines `*` se pueden escribir en la `path` del `zip(path, destinationPath)` .
 
 
-Se puede usar tanto con *CLI* (interfaz de consola) como con el *module* .
+Se puede utilizar tanto con *CLI (Command Line Interface)* como con el *module* .
 
 
 ```shell
@@ -475,7 +471,7 @@ Si `path` tiene la extensión `.zip` , se procesa `unzip()` y no hay una descrip
 | `2`        | archivo de carpeta a `dest` de salida |
 
 
-| nombrada | nombre corto | descripción                           |
+| llamado  | nombre corto | descripción                           |
 | -------- | ------------ | ------------------------------------- |
 | `--path` | `-p`         | `path` Carpeta o archivo a ingresar   |
 | `--dest` | `-d`         | archivo de carpeta a `dest` de salida |
@@ -527,7 +523,7 @@ wes install @wachaon/fmt
 *install* tiene opciones.
 
 
-| nombrada   | nombre corto | descripción                                                 |
+| llamado    | nombre corto | descripción                                                 |
 | ---------- | ------------ | ----------------------------------------------------------- |
 | `--bare`   | `-b`         | No cree la carpeta *@author*                                |
 | `--global` | `-g`         | Instale el módulo en la carpeta donde se encuentra *wes.js* |
@@ -555,7 +551,7 @@ En la *install* , especifique el módulo con *@author/repository* . La implement
 ```
 
 
-Cuando acceda al *raw* del repositorio privado con un navegador, se mostrará el *token* , así que copie el *token* y utilícelo.
+Cuando acceda *raw* al repositorio privado con un navegador, se mostrará el *token* , así que copie el *token* y utilícelo.
 
 
 También puede instalar un módulo en un repositorio privado ejecutándolo en la consola durante la vigencia del *token* .
@@ -589,7 +585,7 @@ wes install @wachaon/fmt
 ### Cómo utilizar
 
 
-Si hay *.prettierrc* (formato JSON) en el directorio de trabajo, se reflejará en la configuración. *fmt* se puede usar tanto con *CLI* (interfaz de consola) como con el *module* .
+Si hay *.prettierrc* (formato JSON) en el directorio de trabajo, se reflejará en la configuración. *fmt* se puede usar tanto con *CLI* como con *module* .
 
 
 #### Utilizado como *CLI* .
@@ -606,7 +602,7 @@ wes @wachaon/fmt src/sample --write
 | 1                 | Requerido. La ruta del archivo que desea formatear |
 
 
-| nombrada  | nombre corto | descripción           |
+| llamado   | nombre corto | descripción           |
 | --------- | ------------ | --------------------- |
 | `--write` | `-w`         | Permitir sobrescribir |
 
@@ -630,7 +626,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ## `@wachaon/edge`
 
 
-*Internet Explorer* completará el soporte el 15/6/2022. Como resultado, se vuelve imposible operar la aplicación con `require('InternetExplorer.Application')` .
+*Internet Explorer* completará el soporte el 15/6/2022. Como resultado, se espera que no sea posible operar la aplicación con `require('InternetExplorer.Application')` .
 
 
 Una alternativa sería operar *Microsoft Edge based on Chromium* través del *web driver* . `@wachaon/edge` simplifica el piloto automático de *Edge* .
@@ -693,4 +689,4 @@ Al hacerlo controlado por eventos, es posible cambiar fácilmente a la operació
 Si desea detener la secuencia de comandos, ejecute `navi.emit('terminate', res)` o finalice manualmente *Edge* .
 
 
-El proceso de finalización genera `res.exports` como un archivo *.json* como valor predeterminado. Si desea establecer el proceso de terminación, establezca la `terminate` de `edge(callback, terminate)` .
+El proceso de finalización genera `res.exports` como un archivo *.json* como valor predeterminado. Si desea configurar el proceso de terminación, configure la `terminate` de `edge(callback, terminate)` .

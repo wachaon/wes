@@ -23,11 +23,11 @@ Please select sentences in other languages ​​from the following.
 
 
 
-# Features
+# feature
 
 
--   You can change the script engine to *Chakra* and write it in the *ECMAScript2015* specification.
--   It always runs 32bit *cscript.exe* , so it doesn't have any inherent problems in 64bit environment.
+-   You can change the script engine to *Chakra* and write it in the *ECMAScript2015* specification
+-   It always runs 32bit *cscript.exe* , so there are no inherent problems in 64bit environment.
 -   With a modular system, you can develop more efficiently than traditional *WSH*
 -   The built-in module supports basic processing such as file input / output and output of colored characters to the console.
 -   You don't have to worry about encoding because you can have the file read automatically guess the encoding.
@@ -53,14 +53,14 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* uses `SendKeys` from *wes* at runtime as an implementation. If the path of the directory where *wes.js* is saved contains characters other than *ascii* , `SendKeys` will not be able to send the key correctly and the script will not be able to be executed.  
+*WScript.Shell* uses `SendKeys` in *wes* at runtime as an implementation. If the path of the directory where *wes.js* is saved contains characters other than *ascii* , `SendKeys` will not be able to send the key correctly and the script will not be able to be executed.  
 Please configure the save destination path of *wes.js* only *ascii* .
 
 
 # How to use
 
 
-In the console, specify the file that will be the starting point of the program after `wes` . The script extension *.js* can be omitted.
+Enter the command that specifies the file that will be the starting point of the program from the `wes` keyword in the console. The script extension *.js* can be omitted.
 
 
 ```shell
@@ -79,7 +79,7 @@ wes
 The *REPL* accepts script input until you enter two blank lines. You can also check the execution of the sample script in *README.md* with *REPL* .
 
 
-## Console options
+## Command line options
 
 
 The startup options for *wes* are as follows.
@@ -133,18 +133,14 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-You can also import to *OLE* with *require* `require('WScript.Shell')` like require ('WScript.Shell').
+You can also import to *ActiveX* with *require* `require('WScript.Shell')` like require ('WScript.Shell').
 
 
 ```javascript
-const WShell = require('WScript.Shell')
-const ie = require('InternetExplorer.Application')
-ie.Visible = true
-ie.Navigate('https://google.com/')
-while (ie.Busy || ie.readystate != 4) {
-    WScript.Sleep( 100 )
-}
-WShell.AppActivate(ie.LocationName)
+const Shell = require('Shell.Application')
+Shell.MinimizeAll()
+WScript.Sleep(2000)
+Shell.UndoMinimizeAll()
 ```
 
 
@@ -154,7 +150,7 @@ WShell.AppActivate(ie.LocationName)
 *Chakra* , which is the execution engine of the script, interprets the syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. In *wes* , by adding *babel* to the built-in module, it is executed while sequentially transpiling to the *es module* . As a result, the processing overhead and the *wes.js* file are bloated as a cost.
 
 
-Modules described by *es module* are also transpile converted to `require()` , so *OLE* can be called. However, it does not support the module file encoding specification. All are read by automatic guessing.
+Modules described by *es module* are also transpile converted to `require()` , so *ActiveX* can be called. However, it does not support the module file encoding specification. All are read by automatic guessing.
 
 
 To load it as an *es module* , set the extension to `.mjs` or the `"type"` field of `package.json` to `"module"` .
@@ -179,13 +175,13 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 # Built-in object
 
 
-*wes* has *built-in objects* that *WSH (JScript)* does not have.
+*wes* has *built-in objects* that *WSH (JScript)* doesn't have.
 
 
 ## *console*
 
 
-`WScript.Echo` uses *console* instead of *wes* or `WScript.StdErr.WriteLine` .
+*wes* uses *console* instead of `WScript.Echo` or `WScript.StdErr.WriteLine` .
 
 
 Print characters to the console in `console.log` . It also supports formatted strings. Prints a formatted string using the formatting operator `%` .
@@ -255,13 +251,13 @@ console.log(orange + 'Hello World')
 ## *argv*
 
 
-Gets the console argument. The console argument of `cscript.exe` declares a named argument with `/` `--` while *wes* declares a named argument with `-` and-.
+Gets the command line argument. The command line arguments in `cscript.exe` declare named arguments with `/` `--` while *wes* declare named arguments with `-` and-.
 
 
-*argv.unnamed* and *argv.named* cast the value type of the console argument to one of the *String* *Number* *Boolean* .
+*argv.unnamed* and *argv.named* cast the value type of the command line argument to one of the *String* *Number* *Boolean* .
 
 
-Enter the console arguments along with the *REPL* .
+Enter the command line arguments along with the *REPL* .
 
 
 ```shell
@@ -457,7 +453,7 @@ console.log(unzip('dox.zip'))
 Wildcards `*` can be written in the `path` of `zip(path, destinationPath)` .
 
 
-It can be used with both *CLI* (console interface) and *module* .
+It can be used with both *CLI (Command Line Interface)* and *module* .
 
 
 ```shell
@@ -555,7 +551,7 @@ In *install* , specify the module with *@author/repository* . The implementation
 ```
 
 
-When you access *raw* of the private repository with a browser, the *token* will be displayed, so copy the *token* and use it.
+When you access the *raw* of the private repository with a browser, the *token* will be displayed, so copy the *token* and use it.
 
 
 You can also install a module in a private repository by running it in the console within the *token* 's lifetime.
@@ -589,7 +585,7 @@ wes install @wachaon/fmt
 ### How to use
 
 
-If there is *.prettierrc* (JSON format) in the working directory, it will be reflected in the setting. *fmt* can be used with both *CLI* (console interface) and *module* .
+If there is *.prettierrc* (JSON format) in the working directory, it will be reflected in the setting. *fmt* can be used with both *CLI* and *module* .
 
 
 #### Used as *CLI* .
@@ -630,7 +626,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ## `@wachaon/edge`
 
 
-*Internet Explorer* will complete support with 2022/6/15. As a result, it becomes impossible to operate the application with `require('InternetExplorer.Application')` .
+*Internet Explorer* will complete support with 2022/6/15. As a result, it is expected that it will not be possible to operate the application with `require('InternetExplorer.Application')` .
 
 
 An alternative would be to operate *Microsoft Edge based on Chromium* via the *web driver* . `@wachaon/edge` simplifies *Edge* autopilot.

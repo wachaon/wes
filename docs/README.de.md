@@ -23,11 +23,11 @@ Bitte wählen Sie aus den folgenden Sätzen in anderen Sprachen aus.
 
 
 
-# Merkmale
+# Merkmal
 
 
--   Sie können die Skript-Engine in *Chakra* ändern und in die *ECMAScript2015* -Spezifikation schreiben.
--   Es wird immer 32-Bit *cscript.exe* , sodass in einer 64-Bit-Umgebung keine inhärenten Probleme auftreten.
+-   Sie können die Skript-Engine in *Chakra* ändern und in die *ECMAScript2015* -Spezifikation schreiben
+-   Es wird immer 32-Bit *cscript.exe* , sodass in einer 64-Bit-Umgebung keine Probleme auftreten.
 -   Mit einem modularen System können Sie effizienter entwickeln als mit herkömmlichem *WSH*
 -   Das eingebaute Modul unterstützt die grundlegende Verarbeitung wie Dateieingabe / -ausgabe und Ausgabe von farbigen Zeichen an die Konsole.
 -   Sie müssen sich keine Gedanken über die Kodierung machen, da Sie die Datei automatisch lesen lassen können, um die Kodierung zu erraten.
@@ -53,14 +53,14 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* verwendet `SendKeys` von *wes* zur Laufzeit als Implementierung. Wenn der Pfad des Verzeichnisses, in dem *wes.js* gespeichert ist, andere Zeichen als `SendKeys` *ascii* Schlüssel nicht korrekt senden und das Skript kann nicht ausgeführt werden.  
+*WScript.Shell* verwendet `SendKeys` in *wes* zur Laufzeit als Implementierung. Wenn der Pfad des Verzeichnisses, in dem *wes.js* gespeichert ist, andere Zeichen als *ascii* enthält, kann `SendKeys` den Schlüssel nicht korrekt senden und das Skript kann nicht ausgeführt werden.  
 Bitte konfigurieren Sie den Speicherzielpfad von *wes.js* nur *ascii* .
 
 
 # Wie benutzt man
 
 
-Geben Sie in der Konsole die Datei an, die der Startpunkt des Programms nach `wes` sein soll. Die *.js* kann weggelassen werden.
+Geben Sie den Befehl, der die Datei angibt, die der Startpunkt des Programms sein soll, über das Schlüsselwort `wes` in der Konsole ein. Die *.js* kann weggelassen werden.
 
 
 ```shell
@@ -79,7 +79,7 @@ wes
 Die *REPL* akzeptiert Skripteingaben, bis Sie zwei Leerzeilen eingeben. Sie können die Ausführung des Beispielskripts in *README.md* mit *REPL* überprüfen.
 
 
-## Konsolenoptionen
+## Befehlszeilenoptionen
 
 
 Die Startoptionen für *wes* sind wie folgt.
@@ -133,18 +133,14 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-Sie können auch mit *require* `require('WScript.Shell')` wie require ('WScript.Shell') in *OLE* importieren.
+Sie können auch wie *require* `require('WScript.Shell')` mit require in*ActiveX* importieren.
 
 
 ```javascript
-const WShell = require('WScript.Shell')
-const ie = require('InternetExplorer.Application')
-ie.Visible = true
-ie.Navigate('https://google.com/')
-while (ie.Busy || ie.readystate != 4) {
-    WScript.Sleep( 100 )
-}
-WShell.AppActivate(ie.LocationName)
+const Shell = require('Shell.Application')
+Shell.MinimizeAll()
+WScript.Sleep(2000)
+Shell.UndoMinimizeAll()
 ```
 
 
@@ -154,7 +150,7 @@ WShell.AppActivate(ie.LocationName)
 *Chakra* , die Ausführungsmaschine des Skripts, interpretiert die Syntax wie `imoprt` , kann jedoch nicht unverändert ausgeführt werden, da die Verarbeitungsmethode als `cscript` nicht definiert ist. In *wes* wird es durch Hinzufügen von *babel* zum eingebauten Modul ausgeführt, während es sequentiell in das *es module* transpiliert wird. Infolgedessen werden der Verarbeitungsaufwand und die Datei *wes.js* als Kosten aufgebläht.
 
 
-Module, die von *es module* beschrieben werden, werden ebenfalls in `require()` transpiliert, sodass *OLE* aufgerufen werden kann. Es unterstützt jedoch nicht die Moduldatei-Codierungsspezifikation. Alle werden durch automatisches Raten gelesen.
+Module, die von *es module* beschrieben werden, werden ebenfalls in `require()` transpiliert, sodass*ActiveX* aufgerufen werden kann. Es unterstützt jedoch nicht die Moduldatei-Codierungsspezifikation. Alle werden durch automatisches Raten gelesen.
 
 
 Um es als *es module* zu laden, setzen Sie die Erweiterung auf `.mjs` oder das `"type"` -Feld von `package.json` auf `"module"` .
@@ -185,7 +181,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 
-`WScript.Echo` verwendet die *console* anstelle von *wes* oder `WScript.StdErr.WriteLine` .
+*wes* verwendet die *console* anstelle von `WScript.Echo` oder `WScript.StdErr.WriteLine` .
 
 
 Gibt Zeichen an die Konsole in `console.log` . Es unterstützt auch formatierte Zeichenfolgen. Druckt eine formatierte Zeichenfolge mit dem Formatierungsoperator `%` .
@@ -255,13 +251,13 @@ console.log(orange + 'Hello World')
 ## *argv*
 
 
-Ruft das Konsolenargument ab. Das Konsolenargument von `cscript.exe` deklariert ein benanntes Argument mit `/` `--` während *wes* ein benanntes Argument mit `-` und - deklariert.
+Ruft das Befehlszeilenargument ab. Die Befehlszeilenargumente in `cscript.exe` deklarieren benannte Argumente mit `/` `--` während *wes* benannte Argumente mit `-` und - deklarieren.
 
 
-*argv.unnamed* und *argv.named* wandeln den Werttyp des Konsolenarguments in einen der *String* *Number* *Boolean* .
+*argv.unnamed* und *argv.named* wandeln den Werttyp des Befehlszeilenarguments in einen der *String* *Number* *Boolean* .
 
 
-Geben Sie die Konsolenargumente zusammen mit *REPL* .
+Geben Sie die Befehlszeilenargumente zusammen mit *REPL* ein.
 
 
 ```shell
@@ -457,7 +453,7 @@ console.log(unzip('dox.zip'))
 Wildcards `*` können in den `path` von `zip(path, destinationPath)` .
 
 
-Es kann sowohl mit *CLI* (Konsolenschnittstelle) als auch mit *module* verwendet werden.
+Es kann sowohl mit *CLI (Command Line Interface)* als auch mit *module* verwendet werden.
 
 
 ```shell
@@ -484,7 +480,7 @@ Wenn der `path` die Erweiterung `.zip` hat, wird `unzip()` verarbeitet und es gi
 # Modulbündelung und Installation
 
 
-In *wes* wird ein Bündel aus mehreren Modulen als Paket bezeichnet. Sie können das auf *github* veröffentlichte Paket für *wes* installieren. Sie benötigen ein *github repository* , um das Paket zu veröffentlichen. Außerdem müssen der Repository-Name und der Name des lokalen Verzeichnisses identisch sein.
+In *wes* wird ein Bündel aus mehreren Modulen als Paket bezeichnet. Sie können das auf *github* veröffentlichte Paket für *wes* installieren. Sie benötigen ein *github repository* , um das Paket zu veröffentlichen. Außerdem müssen der Name des Repositorys und der Name des lokalen Verzeichnisses identisch sein.
 
 
 ## *bundle*
@@ -589,7 +585,7 @@ wes install @wachaon/fmt
 ### Wie benutzt man
 
 
-Wenn im Arbeitsverzeichnis *.prettierrc* (JSON-Format) vorhanden ist, wird dies in der Einstellung widergespiegelt. *fmt* kann sowohl mit *CLI* (Konsolenschnittstelle) als auch mit *module* verwendet werden.
+Wenn im Arbeitsverzeichnis *.prettierrc* (JSON-Format) vorhanden ist, wird dies in der Einstellung widergespiegelt. *fmt* kann sowohl mit *CLI* als auch mit *module* verwendet werden.
 
 
 #### Wird als *CLI* verwendet.
@@ -630,7 +626,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ## `@wachaon/edge`
 
 
-*Internet Explorer* wird die Unterstützung mit dem 15.06.2022 abschließen. Dadurch wird es unmöglich, die Anwendung mit `require('InternetExplorer.Application')` zu betreiben.
+*Internet Explorer* wird die Unterstützung mit dem 15.06.2022 abschließen. Daher ist zu erwarten, dass die Anwendung mit `require('InternetExplorer.Application')` nicht betrieben werden kann.
 
 
 Eine Alternative wäre, *Microsoft Edge based on Chromium* über den *web driver* zu betreiben. `@wachaon/edge` vereinfacht den *Edge* -Autopiloten.
