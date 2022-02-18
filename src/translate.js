@@ -1,15 +1,19 @@
-const charset = `簡体	zh-CN
-繁体	zh-TW
-英語	en
-ヒンディー語	hi
-スペイン語	es
+const charset = `
 アラビア語	ar
 ベンガル語	bn
+ドイツ語	de
+英語	en
+フランス語	fr
+ヒンディー語	hi
+マレー語	ms
+オランダ語	nl
 ポルトガル語	pt
 ロシア語	ru
-ドイツ語	de
-フランス語	fr
-イタリア語	it`
+簡体	zh-CN
+繁体	zh-TW
+スペイン語	es
+`
+    .trim()
     .split(/\r?\n/)
     .map((str) => str.split('\t'))
 const api = require('/account').google_apps_script.translate
