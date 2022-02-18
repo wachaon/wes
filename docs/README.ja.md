@@ -38,7 +38,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 
 # 使い方
 
-コンソールに `wes` のキーワードからプログラムの起点となるファイルを指定したコマンドを入力します。
+`wes` のキーワードに続きプログラムの起点となるファイルを指定したコマンドをコンソールへ入力します。
 スクリプトの拡張子 *.js* は省略できます。
 
 ```shell
