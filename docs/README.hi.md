@@ -62,7 +62,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 # कैसे इस्तेमाल करे
 
 
-उस कमांड को दर्ज करें जो उस फ़ाइल को निर्दिष्ट करता है जो कंसोल में `wes` कीवर्ड से प्रोग्राम का शुरुआती बिंदु होगा। स्क्रिप्ट एक्सटेंशन *.js* को छोड़ा जा सकता है।
+कंसोल में कमांड दर्ज करें जो उस फ़ाइल को निर्दिष्ट करता है जो `wes` कीवर्ड के बाद प्रोग्राम का शुरुआती बिंदु होगा। स्क्रिप्ट एक्सटेंशन *.js* को छोड़ा जा सकता है।
 
 
 ```shell
@@ -105,7 +105,7 @@ wes
 # वैकल्पिक प्रणाली
 
 
-*wes* दो मॉड्यूल सिस्टम का समर्थन करता है, एक *commonjs module* सिस्टम जो सामान्य `require()` का उपयोग करता है और एक *es module* जो `import` का उपयोग करता है। ( *dynamic import* अतुल्यकालिक प्रसंस्करण है, इसलिए यह समर्थित नहीं है)
+*wes* दो मॉड्यूल सिस्टम का समर्थन करता है, एक *commonjs module* सिस्टम जो `require()` का उपयोग करता है और एक *es module* जो `import` का उपयोग करता है। ( *dynamic import* अतुल्यकालिक प्रसंस्करण है, इसलिए यह समर्थित नहीं है)
 
 
 ## *commonjs module*
@@ -135,7 +135,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-आप आवश्यकता के साथ *require* `require('WScript.Shell')` जैसे *ActiveX* में भी आयात कर सकते हैं।
+आप *require* `require('WScript.Shell')` साथ *ActiveX* में भी आयात कर सकते हैं।
 
 
 ```javascript
@@ -152,7 +152,7 @@ Shell.UndoMinimizeAll()
 *Chakra* , जो स्क्रिप्ट का निष्पादन इंजन है, सिंटैक्स की व्याख्या करता है जैसे कि `imoprt` , लेकिन इसे निष्पादित नहीं किया जा सकता क्योंकि ऐसा इसलिए है क्योंकि `cscript` के रूप में प्रसंस्करण विधि परिभाषित नहीं है। *wes* में, बिल्ट-इन मॉड्यूल में बेबेल जोड़कर, इसे *es module* में क्रमिक रूप से *babel* करते समय निष्पादित किया जाता है। परिणामस्वरूप, प्रोसेसिंग ओवरहेड और *wes.js* फ़ाइल लागत के रूप में फूली हुई हैं।
 
 
-*es module* द्वारा वर्णित मॉड्यूल भी ट्रांसपाइल को `require()` में परिवर्तित किया जाता है, इसलिए *ActiveX* को कॉल किया जा सकता है। हालांकि, यह मॉड्यूल फ़ाइल एन्कोडिंग विनिर्देश का समर्थन नहीं करता है। सभी स्वचालित अनुमान लगाकर पढ़े जाते हैं।
+*es module* द्वारा वर्णित मॉड्यूल को ट्रांसपाइल द्वारा `require()` में भी परिवर्तित किया जाता है, इसलिए *ActiveX* कॉल भी संभव हैं। हालांकि, यह *es module* में मॉड्यूल फ़ाइल एन्कोडिंग विनिर्देश का समर्थन नहीं करता है। सभी स्वचालित अनुमान लगाकर पढ़े जाते हैं।
 
 
 इसे *es module* के रूप में लोड करने के लिए, एक्सटेंशन को `.mjs` या `package.json` के `"type"` फ़ील्ड को `"module"` पर सेट करें।
@@ -167,7 +167,7 @@ export default function sub (a, b) {
 
 
 ```javascript
-./main2.js\
+// ./main2.js
 import sub from './sub.mjs'
 
 console.log('sub(7, 3) // => %O', sub(7, 3))
@@ -192,6 +192,9 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
+
+
+\|
 
 
 `WScript.StdOut.WriteLine` के *wes* `WScript.StdErr.WriteLine` का उपयोग करता है। `WScript.Echo` और `WScript.StdOut.WriteLine` को आउटपुट से ब्लॉक कर दिया गया है। `WScript.StdErr.WriteLine` या `console.log` का उपयोग करें।
@@ -285,7 +288,7 @@ argv, argv.unnamed, argv.named)
 पथ का संचालन करें।
 
 
-`/` और `\` से शुरू होने वाले पथ आमतौर पर ड्राइव रूट के सापेक्ष पथ को संदर्भित करते हैं। उदाहरण के लिए, `/filename` और `C:/filename` एक ही पथ पर हो सकते हैं। सुरक्षा कारणों से, `wes` कार्यशील निर्देशिका के सापेक्ष `/` और `\` से शुरू होने वाले पथों की व्याख्या करता है।
+`/` और `\` से शुरू होने वाले पथ आमतौर पर ड्राइव रूट के सापेक्ष पथ को संदर्भित करते हैं। उदाहरण के लिए, `/filename` और `C:/filename` का पथ समान हो सकता है। सुरक्षा कारणों से, `wes` कार्यशील निर्देशिका के सापेक्ष `/` और `\` से शुरू होने वाले पथों की व्याख्या करता है।
 
 
 ```javascript
@@ -430,11 +433,13 @@ pipe()
 
 
 ```javascript
-const { isString, isNumber, isBoolean } = require('typecheck')
+const { isString, isNumber, isBoolean, isObject } = require('typecheck')
+const log = require('log')
 
-console.log('isString("ECMAScript") // => %O', isString("ECMAScript"))
-console.log('isNumber(43.5) // => %O', isNumber(43.5))
-console.log('isBoolean(false) // => %O', isBoolean(false))
+log(() => isString("ECMAScript"))
+log(() => isNumber(43.5))
+log(() => isBoolean(false))
+log(() => isObject(function(){}))
 ```
 
 
@@ -497,12 +502,29 @@ wes zip -p dox.zip
 पैकेजिंग के लिए कुछ शर्तें हैं।
 
 
-1.  एक *repository* में केवल एक मॉड्यूल प्रकाशित किया जा सकता है।
+1.  एक *repository* में केवल एक मॉड्यूल प्रकाशित किया जा सकता है
+
 2.  सुनिश्चित करें कि *github* पर रिपॉजिटरी का नाम और स्थानीय कार्यशील निर्देशिका का नाम समान है।
-3.  यदि आप पैकेज प्रकाशित करना चाहते हैं, तो रिपॉजिटरी को *public* करें।
-4.  शीर्ष-स्तरीय दायरे में मॉड्यूल अधिग्रहण की घोषणा करें।
-5.  पैकेज *.json* फ़ाइल आपकी कार्यशील निर्देशिका में *directory_name.json* .json नाम से बनाई गई है। यदि फ़ाइल का नाम बदल दिया गया है या फ़ाइल को स्थानांतरित कर दिया गया है तो इसे स्थापित नहीं किया जा सकता है।
-6.  `node_modules/directory_name` को बंडल करते समय, बंडल विफल हो जाता है क्योंकि यह `directory_name.json` को संदर्भित करता है।
+
+3.  यदि आप पैकेज प्रकाशित करते हैं, तो कृपया रिपॉजिटरी को *public* करें
+
+4.  शीर्ष-स्तरीय दायरे में मॉड्यूल अधिग्रहण की घोषणा करें
+
+5.  पैकेज *.json* फ़ाइल आपकी कार्यशील निर्देशिका में *directory_name.json* .json नाम से बनाई गई है। यदि आप फ़ाइल का नाम बदलते हैं या फ़ाइल को स्थानांतरित करते हैं, तो आप इसे इंस्टॉल करते समय संदर्भित नहीं कर सकते।
+
+6.  `node_modules/directory_name` बंडल का प्रारंभिक बिंदु है
+
+    ```shell
+        wes bundle directory_name
+    ```
+
+    के साथ बंडल किए बिना
+
+    ```shell
+        wes bundle node_modules/directory_name
+    ```
+
+    कृपया साथ बंडल करें
 
 
 ## *install*
@@ -573,7 +595,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* बंडल *prettier* और स्क्रिप्ट को प्रारूपित करता है। साथ ही, अगर *@wachaon/fmt* स्थापित होने पर *Syntax Error* होती है, तो आप त्रुटि स्थान का संकेत दे सकते हैं।
+*@wachaon/fmt* *wes* के लिए एक *prettier* पैक है और स्क्रिप्ट को प्रारूपित करता है। साथ ही, यदि *@wachaon/fmt* स्थापित होने पर *Syntax Error* होती है, तो आप त्रुटि स्थान का संकेत दे सकते हैं।
 
 
 ### इंस्टॉल
@@ -625,7 +647,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
 
-## `@wachaon/edge`
+## *@wachaon/edge*
 
 
 *Internet Explorer* 2022/6/15 के साथ समर्थन पूरा करेगा। नतीजतन, यह उम्मीद की जाती है कि `require('InternetExplorer.Application')` साथ एप्लिकेशन को संचालित करना संभव नहीं होगा।
@@ -663,7 +685,7 @@ wes edge --download
 
 
 ```javascript
-const edge = require('./index')
+const edge = require('edge')
 
 edge((window, navi, res) => {
     window.rect({x: 1 ,y: 1, width: 1200, height: 500})
@@ -692,3 +714,28 @@ edge((window, navi, res) => {
 
 
 समाप्ति प्रक्रिया `res.exports` को *.json* फ़ाइल के रूप में डिफ़ॉल्ट मान के रूप में आउटपुट करती है। यदि आप टर्मिनेशन प्रोसेस सेट करना चाहते हैं, तो `terminate` ऑफ `edge(callback, terminate)` सेट करें।
+
+
+`window` ब्राउज़र में `window` नहीं है, बल्कि *@wachaon/webdriver* के *Window* वर्ग का एक उदाहरण है।
+
+
+## *@wachaon/webdriver*
+
+
+यह एक मॉड्यूल है जो ब्राउज़र को संचालित करने वाले *web driver* को एक अनुरोध भेजता है। *@wachaon/edge* में निर्मित। *@wachaon/edge* की तरह, ब्राउज़र संचालन के लिए एक *web driver* की आवश्यकता होती है।
+
+
+### इंस्टॉल
+
+
+```shell
+wes install @wachaon/webdriver --unsafe --bare
+```
+
+
+यदि आपके पास *web driver* नहीं है, तो इसे डाउनलोड करें।
+
+
+```shell
+wes webdriver --download
+```

@@ -29,7 +29,7 @@
 
 
 -   您可以將腳本引擎更改為*Chakra* ，並將其寫入*ECMAScript2015*規範中
--   它始終運行 32 位*cscript.exe* ，因此在 64 位環境下不存在固有問題。
+-   它始終運行 32 位*cscript.exe* ，因此在 64 位環境中不存在固有問題。
 -   使用模塊化系統，您可以比傳統*WSH*更高效地開發
 -   內置模塊支持文件輸入/輸出、彩色字符輸出到控制台等基本處理。
 -   您不必擔心編碼，因為您可以讓文件讀取自動猜測編碼。
@@ -62,7 +62,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 # 如何使用
 
 
-在控制台中輸入從`wes`關鍵字指定將成為程序起點的文件的命令。腳本擴展名*.js*可以省略。
+向控制台輸入命令，該命令在`wes`關鍵字之後指定將成為程序起點的文件。腳本擴展名*.js*可以省略。
 
 
 ```shell
@@ -105,7 +105,7 @@ wes
 # 模塊化系統
 
 
-*wes*支持兩個模塊系統，一個使用通用`require()`的*commonjs module*系統和一個使用`import`的*es module* 。 （ *dynamic import*為異步處理，不支持）
+*wes*支持兩個模塊系統，一個使用`require()`的*commonjs module*系統和一個使用`import`的*es module* 。 （ *dynamic import*為異步處理，不支持）
 
 
 ## *commonjs module*
@@ -114,7 +114,7 @@ wes
 通過分配給`module.exports`並使用`require()`調用來管理模塊。為方便起見，它還支持*node_modules*目錄。
 
 
-*wes* `require()`會自動猜測模塊文件的編碼，但是如果沒有猜測正確，可以用第二個參數指定編碼。
+*wes* `require()`會自動猜測模塊文件的編碼，但如果沒有猜測正確，可以用第二個參數指定編碼。
 
 
 ```javascript
@@ -135,7 +135,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-您也可以像*require* `require('WScript.Shell')`一樣使用 require 導入*ActiveX* 。
+您也可以使用*require* `require('WScript.Shell')`導入*ActiveX* 。
 
 
 ```javascript
@@ -149,10 +149,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-腳本的執行引擎*Chakra*解釋了諸如`imoprt`之類的語法，但由於未定義`cscript`的處理方法，因此無法按原樣執行。在*wes*中，通過將*babel*添加到內置模塊中，在執行的同時順序轉譯到*es module* 。結果，處理開銷和*wes.js*文件作為成本而膨脹。
+腳本的執行引擎*Chakra*解釋了諸如`imoprt`之類的語法，但由於未定義`cscript`的處理方法，因此無法按原樣執行。在*wes*中，通過將*babel*添加到內置模塊中，它在執行的同時順序轉譯到*es module* 。結果，處理開銷和*wes.js*文件作為成本而膨脹。
 
 
-*es module*模塊描述的模塊也被 transpile 轉換為`require()` ，所以可以調用*ActiveX* 。但是，它不支持模塊文件編碼規範。都是通過自動猜測讀取的。
+*es module*模塊描述的模塊也通過transpile轉換為`require()` ，所以*ActiveX*調用也是可以的。但是，它不支持*es module*中的模塊文件編碼規範。都是通過自動猜測讀取的。
 
 
 要將其作為*es module*加載，請將擴展名設置為`.mjs`或將`package.json`的`"type"`字段設置為`"module"` 。
@@ -167,7 +167,7 @@ export default function sub (a, b) {
 
 
 ```javascript
-./main2.js\
+// ./main2.js
 import sub from './sub.mjs'
 
 console.log('sub(7, 3) // => %O', sub(7, 3))
@@ -192,6 +192,9 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
+
+
+\|
 
 
 `WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`來輸出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`被阻止輸出。 `WScript.StdErr.WriteLine`或`console.log` 。
@@ -285,7 +288,7 @@ argv, argv.unnamed, argv.named)
 操作路徑。
 
 
-以`/`和`\`開頭的路徑通常是指相對於驅動器根目錄的路徑。例如， `/filename`和`C:/filename`可能在同一路徑上。出於安全原因， `wes`將以`/`和`\`開頭的路徑解釋為相對於工作目錄。
+以`/`和`\`開頭的路徑通常是指相對於驅動器根目錄的路徑。例如， `/filename`和`C:/filename`可能具有相同的路徑。出於安全原因， `wes`將以`/`和`\`開頭的路徑解釋為相對於工作目錄。
 
 
 ```javascript
@@ -334,7 +337,7 @@ files.forEach(file => console.log(file.Name))
 ```
 
 
-*GetObject*充當`WScript.GetObject`的替代品。
+*GetObject*作為`WScript.GetObject`的替代品。
 
 
 ```javascript
@@ -430,11 +433,13 @@ pipe()
 
 
 ```javascript
-const { isString, isNumber, isBoolean } = require('typecheck')
+const { isString, isNumber, isBoolean, isObject } = require('typecheck')
+const log = require('log')
 
-console.log('isString("ECMAScript") // => %O', isString("ECMAScript"))
-console.log('isNumber(43.5) // => %O', isNumber(43.5))
-console.log('isBoolean(false) // => %O', isBoolean(false))
+log(() => isString("ECMAScript"))
+log(() => isNumber(43.5))
+log(() => isBoolean(false))
+log(() => isObject(function(){}))
 ```
 
 
@@ -497,12 +502,29 @@ wes zip -p dox.zip
 包裝有一些條件。
 
 
-1.  一個*repository*中只能發布一個模塊。
+1.  一個*repository*只能發布一個模塊
+
 2.  確保*github*上的倉庫名稱和​​本地工作目錄名稱相同。
-3.  如果要發布包，請將存儲庫設為*public* 。
-4.  在頂層範圍內聲明模塊獲取。
-5.  包*.json*文件在您的工作目錄中創建，名稱為*directory_name.json* 。如果文件被重命名或文件被移動，則無法安裝。
-6.  `node_modules/directory_name`時，捆綁失敗，因為它引用了`directory_name.json` 。
+
+3.  如果您發布包，請將存儲庫*public*
+
+4.  在頂層範圍內聲明模塊獲取
+
+5.  包*.json*文件在您的工作目錄中創建，名稱為*directory_name.json* 。如果重命名文件或移動文件，安裝時無法引用。
+
+6.  `node_modules/directory_name`是 bundle 的起點
+
+    ```shell
+        wes bundle directory_name
+    ```
+
+    不捆綁
+
+    ```shell
+        wes bundle node_modules/directory_name
+    ```
+
+    請捆綁
 
 
 ## *install*
@@ -573,7 +595,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt*捆綁*prettier*並格式化腳本。此外，如果在安裝*@wachaon/fmt*時出現*Syntax Error* ，您可以指出錯誤位置。
+@ *wes* *@wachaon/fmt*是為*prettier*打包並格式化腳本的一個更漂亮的工具。此外，如果在安裝*@wachaon/fmt*時出現*Syntax Error* ，您可以指出錯誤位置。
 
 
 ### 安裝
@@ -625,7 +647,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
 
-## `@wachaon/edge`
+## *@wachaon/edge*
 
 
 *Internet Explorer*將於 2022/6/15 完成支持。因此，預計將無法使用`require('InternetExplorer.Application')`操作應用程序。
@@ -653,7 +675,7 @@ wes edge --download
 ```
 
 
-檢查安裝的*Edge*版本並下載相應的*web driver* 。
+安裝*Edge*以檢查要下載的相應*web driver*的版本。
 
 
 ### 如何使用
@@ -663,7 +685,7 @@ wes edge --download
 
 
 ```javascript
-const edge = require('./index')
+const edge = require('edge')
 
 edge((window, navi, res) => {
     window.rect({x: 1 ,y: 1, width: 1200, height: 500})
@@ -692,3 +714,28 @@ edge((window, navi, res) => {
 
 
 終止進程將`res.exports`輸出為*.json*文件作為默認值。如果要設置終止過程，設置`edge(callback, terminate)` `terminate`
+
+
+`window`不是瀏覽器中的`window` ，而是*@wachaon/webdriver*的*Window*類的一個實例。
+
+
+## *@wachaon/webdriver*
+
+
+它是一個向操作瀏覽器的*web driver*發送請求的模塊。內置在*@wachaon/edge*中。與*@wachaon/edge*一樣，瀏覽器操作需要*web driver* 。
+
+
+### 安裝
+
+
+```shell
+wes install @wachaon/webdriver --unsafe --bare
+```
+
+
+如果您沒有*web driver* ，請下載它。
+
+
+```shell
+wes webdriver --download
+```

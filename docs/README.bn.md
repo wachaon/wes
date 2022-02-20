@@ -62,7 +62,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 # কিভাবে ব্যবহার করে
 
 
-কমান্ডটি লিখুন যা ফাইলটি নির্দিষ্ট করে যা কনসোলের `wes` কীওয়ার্ড থেকে প্রোগ্রামের সূচনা পয়েন্ট হবে। স্ক্রিপ্ট এক্সটেনশন *.js* বাদ দেওয়া যেতে পারে.
+কনসোলে কমান্ডটি লিখুন যা ফাইলটি নির্দিষ্ট করে যা `wes` কীওয়ার্ড অনুসরণ করে প্রোগ্রামের সূচনা বিন্দু হবে। স্ক্রিপ্ট এক্সটেনশন *.js* বাদ দেওয়া যেতে পারে.
 
 
 ```shell
@@ -105,7 +105,7 @@ wes
 # মডুলার সিস্টেম
 
 
-*wes* দুটি মডিউল সিস্টেম সমর্থন করে, একটি *commonjs module* সিস্টেম যা সাধারণ `require()` ব্যবহার করে এবং একটি *es module* যা `import` ব্যবহার করে। ( *dynamic import* অ্যাসিঙ্ক্রোনাস প্রসেসিং, তাই এটি সমর্থিত নয়)
+*wes* দুটি মডিউল সিস্টেম সমর্থন করে, একটি *commonjs module* সিস্টেম যা `require()` ব্যবহার করে এবং একটি *es module* যা `import` ব্যবহার করে। ( *dynamic import* অ্যাসিঙ্ক্রোনাস প্রসেসিং, তাই এটি সমর্থিত নয়)
 
 
 ## *commonjs module*
@@ -135,7 +135,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-আপনি প্রয়োজনের সাথে *require* মতো `require('WScript.Shell')` *ActiveX* করতে পারেন।
+আপনি *require* `require('WScript.Shell')` সহ *ActiveX* এ আমদানি করতে পারেন।
 
 
 ```javascript
@@ -152,7 +152,7 @@ Shell.UndoMinimizeAll()
 *Chakra* , যা স্ক্রিপ্টের এক্সিকিউশন ইঞ্জিন, সিনট্যাক্সকে ব্যাখ্যা করে যেমন `imoprt` , কিন্তু এটি কার্যকর করা যায় না কারণ এটি `cscript` হিসাবে প্রক্রিয়াকরণ পদ্ধতি সংজ্ঞায়িত করা হয়নি। *wes* এ, অন্তর্নির্মিত মডিউলে *babel* যোগ করার মাধ্যমে, এটি *es module* ক্রমানুসারে স্থানান্তর করার সময় কার্যকর করা হয়। ফলস্বরূপ, প্রসেসিং ওভারহেড এবং *wes.js* ফাইল একটি খরচ হিসাবে ফুলে গেছে।
 
 
-*es module* দ্বারা বর্ণিত মডিউলগুলিকে `require()` তে রূপান্তরিত করা হয়, তাই *ActiveX* বলা যেতে পারে। যাইহোক, এটি মডিউল ফাইল এনকোডিং স্পেসিফিকেশন সমর্থন করে না। সব স্বয়ংক্রিয় অনুমান দ্বারা পড়া হয়.
+*es module* দ্বারা বর্ণিত মডিউলগুলিও ট্রান্সপিল দ্বারা `require()` তে রূপান্তরিত হয়, তাই *ActiveX* কলগুলিও সম্ভব। যাইহোক, এটি *es module* মডিউল ফাইল এনকোডিং স্পেসিফিকেশন সমর্থন করে না। সব স্বয়ংক্রিয় অনুমান দ্বারা পড়া হয়.
 
 
 এটিকে একটি *es module* হিসাবে লোড করতে, `package.json` এ এক্সটেনশন সেট করুন বা `.mjs` এর `"type"` ক্ষেত্রটিকে `"module"` এ সেট করুন।
@@ -167,7 +167,7 @@ export default function sub (a, b) {
 
 
 ```javascript
-./main2.js\
+// ./main2.js
 import sub from './sub.mjs'
 
 console.log('sub(7, 3) // => %O', sub(7, 3))
@@ -192,6 +192,9 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
+
+
+\|
 
 
 `WScript.StdOut.WriteLine` রঙিন স্ট্রিং আউটপুট করতে WScript.StdOut.WriteLine এর *wes* `WScript.StdErr.WriteLine` ব্যবহার করে। `WScript.Echo` এবং `WScript.StdOut.WriteLine` আউটপুট থেকে ব্লক করা হয়েছে। `WScript.StdErr.WriteLine` বা `console.log` ব্যবহার করুন।
@@ -224,7 +227,7 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 # অন্তর্নির্মিত মডিউল
 
 
-বেসিক প্রসেসিংকে সরল ও প্রমিত করার জন্য *wes* এর *built-in modules* রয়েছে।
+মৌলিক প্রক্রিয়াকরণকে সরল ও মানসম্মত করার জন্য *wes* এর *built-in modules* রয়েছে।
 
 
 ## *ansi*
@@ -285,7 +288,7 @@ argv, argv.unnamed, argv.named)
 পথ পরিচালনা করুন।
 
 
-`/` এবং `\` দিয়ে শুরু হওয়া পাথগুলি সাধারণত ড্রাইভ রুটের সাথে সম্পর্কিত পাথগুলিকে বোঝায়। উদাহরণস্বরূপ, `/filename` এবং `C:/filename` একই পথে থাকতে পারে। নিরাপত্তার কারণে, `wes` `/` এবং `\` দিয়ে শুরু হওয়া পাথগুলিকে কার্যকারী ডিরেক্টরির সাথে সম্পর্কিত হিসাবে ব্যাখ্যা করে।
+`/` এবং `\` দিয়ে শুরু হওয়া পাথগুলি সাধারণত ড্রাইভ রুটের সাথে সম্পর্কিত পাথগুলিকে বোঝায়। উদাহরণস্বরূপ, `/filename` এবং `C:/filename` একই পথ থাকতে পারে। নিরাপত্তার কারণে, `wes` `/` এবং `\` দিয়ে শুরু হওয়া পাথগুলিকে কার্যকারী ডিরেক্টরির সাথে সম্পর্কিত হিসাবে ব্যাখ্যা করে।
 
 
 ```javascript
@@ -430,11 +433,13 @@ pipe()
 
 
 ```javascript
-const { isString, isNumber, isBoolean } = require('typecheck')
+const { isString, isNumber, isBoolean, isObject } = require('typecheck')
+const log = require('log')
 
-console.log('isString("ECMAScript") // => %O', isString("ECMAScript"))
-console.log('isNumber(43.5) // => %O', isNumber(43.5))
-console.log('isBoolean(false) // => %O', isBoolean(false))
+log(() => isString("ECMAScript"))
+log(() => isNumber(43.5))
+log(() => isBoolean(false))
+log(() => isObject(function(){}))
 ```
 
 
@@ -497,12 +502,29 @@ wes zip -p dox.zip
 প্যাকেজিংয়ের জন্য কিছু শর্ত রয়েছে।
 
 
-1.  একটি *repository* শুধুমাত্র একটি মডিউল প্রকাশ করা যেতে পারে।
+1.  একটি *repository* শুধুমাত্র একটি মডিউল প্রকাশ করা যেতে পারে
+
 2.  নিশ্চিত করুন যে *github* সংগ্রহস্থলের নাম এবং স্থানীয় কাজের ডিরেক্টরির নাম একই।
-3.  আপনি যদি প্যাকেজটি প্রকাশ করতে চান, সংগ্রহস্থলটি *public* করুন।
-4.  শীর্ষ-স্তরের সুযোগে মডিউল অধিগ্রহণ ঘোষণা করুন।
-5.  প্যাকেজ *.json* ফাইলটি ডিরেক্টরি\_name.json নামের সাথে আপনার কাজের *directory_name.json* তৈরি করা হয়েছে। ফাইলটির নাম পরিবর্তন করা হলে বা ফাইলটি সরানো হলে এটি ইনস্টল করা যাবে না।
-6.  `node_modules/directory_name` বান্ডিল করার সময়, বান্ডিল ব্যর্থ হয় কারণ এটি `directory_name.json` name.json-কে নির্দেশ করে।
+
+3.  আপনি যদি প্যাকেজটি প্রকাশ করেন, অনুগ্রহ করে ভান্ডারটি *public* করুন৷
+
+4.  শীর্ষ-স্তরের সুযোগে মডিউল অধিগ্রহণ ঘোষণা করুন
+
+5.  প্যাকেজ *.json* ফাইলটি ডিরেক্টরি\_name.json নামের সাথে আপনার কাজের *directory_name.json* তৈরি করা হয়েছে। আপনি যদি ফাইলের নাম পরিবর্তন করেন বা ফাইলটি সরান, আপনি ইনস্টল করার সময় এটি উল্লেখ করতে পারবেন না।
+
+6.  `node_modules/directory_name` হয় বান্ডেলের শুরুর বিন্দু
+
+    ```shell
+        wes bundle directory_name
+    ```
+
+    সঙ্গে bundling ছাড়া
+
+    ```shell
+        wes bundle node_modules/directory_name
+    ```
+
+    সঙ্গে বান্ডিল করুন
 
 
 ## *install*
@@ -531,7 +553,7 @@ wes install @wachaon/fmt
 | `--global` | `-g`          | যে ফোল্ডারে *wes.js* আছে সেখানে মডিউলটি ইনস্টল করুন |
 
 
-`--bare` বিকল্পটি `author@repository` থেকে `repository` তে `require` আর্গুমেন্ট বাদ দিতে পারে। `--global` বিকল্পটি সমস্ত স্ক্রিপ্টের জন্য ইনস্টল করা মডিউলগুলি উপলব্ধ করে। উপরের বিকল্পগুলি অবশ্যই *wes* নিরাপত্তা বিকল্পের সাথে একই সময়ে নির্দিষ্ট করা উচিত `--unsafe` বা `--dangerous` ।
+`--bare` বিকল্পটি `author@repository` থেকে `repository` তে `require` আর্গুমেন্ট বাদ দিতে পারে। `--global` বিকল্পটি সমস্ত স্ক্রিপ্টে ইনস্টল করা মডিউলগুলি উপলব্ধ করে। উপরের বিকল্পগুলি অবশ্যই *wes* সুরক্ষা বিকল্পের সাথে একই সময়ে নির্দিষ্ট করা উচিত `--unsafe` বা `--dangerous` ।
 
 
 ```shell
@@ -542,7 +564,7 @@ wes install @wachaon/fmt --bare --unsafe
 # ব্যক্তিগত সংগ্রহস্থলে প্যাকেজ ইনস্টল করা হচ্ছে
 
 
-*install* শুধুমাত্র গিথুবে পাবলিক রিপোজিটরিতে *github* ইন্সটল করতে পারে না, ব্যক্তিগত রিপোজিটরিতেও ইনস্টল করতে পারে।
+*install* শুধুমাত্র github-এ পাবলিক রিপোজিটরিতে *github* ইন্সটল করতে পারে না, ব্যক্তিগত রিপোজিটরিতেও।
 
 
 *install* , *@author/repository* সহ মডিউলটি উল্লেখ করুন। বাস্তবায়ন নিম্নলিখিত url ডাউনলোড করার চেষ্টা করবে.
@@ -564,7 +586,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
 
-# প্যাকেজ পরিচিতি
+# প্যাকেজ ভূমিকা
 
 
 এখানে কিছু বাহ্যিক মডিউল আছে।
@@ -573,7 +595,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* *prettier* এবং স্ক্রিপ্টটিকে ফর্ম্যাট করে৷ এছাড়াও, *@wachaon/fmt* ইন্সটল করার সাথে যদি একটি *Syntax Error* ঘটে, আপনি ত্রুটির অবস্থান নির্দেশ করতে পারেন।
+*@wachaon/fmt* *prettier* একটি *wes* প্যাকেজ এবং স্ক্রিপ্ট ফরম্যাট করার জন্য। এছাড়াও, *@wachaon/fmt* ইন্সটল করার সাথে যদি একটি *Syntax Error* ঘটে, আপনি ত্রুটির অবস্থান নির্দেশ করতে পারেন।
 
 
 ### ইনস্টল
@@ -609,7 +631,7 @@ wes @wachaon/fmt src/sample --write
 | `--write` | `-w`          | ওভাররাইট করার অনুমতি দিন |
 
 
-যদি আপনি `--write` বা `-w` এর একটি নামযুক্ত আর্গুমেন্ট উল্লেখ করেন তাহলে ফর্ম্যাট করা স্ক্রিপ্ট দিয়ে ফাইলটি ওভাররাইট করুন।
+আপনি `--write` বা `-w` এর একটি নামযুক্ত আর্গুমেন্ট উল্লেখ করলে ফর্ম্যাট করা স্ক্রিপ্ট দিয়ে ফাইলটি ওভাররাইট করুন।
 
 
 #### একটি মডিউল হিসাবে ব্যবহার করুন
@@ -625,7 +647,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
 
-## `@wachaon/edge`
+## *@wachaon/edge*
 
 
 *Internet Explorer* 2022/6/15 এর সাথে সমর্থন সম্পূর্ণ করবে। ফলস্বরূপ, এটি প্রত্যাশিত যে `require('InternetExplorer.Application')` সহ অ্যাপ্লিকেশনটি পরিচালনা করা সম্ভব হবে না।
@@ -663,7 +685,7 @@ wes edge --download
 
 
 ```javascript
-const edge = require('./index')
+const edge = require('edge')
 
 edge((window, navi, res) => {
     window.rect({x: 1 ,y: 1, width: 1200, height: 500})
@@ -692,3 +714,28 @@ edge((window, navi, res) => {
 
 
 অবসান প্রক্রিয়া ডিফল্ট মান হিসাবে *.json* ফাইল হিসাবে `res.exports` কে আউটপুট করে। আপনি যদি সমাপ্তি প্রক্রিয়া সেট করতে চান তবে `edge(callback, terminate)` `terminate` সেট করুন (কলব্যাক, টার্মিনেট)।
+
+
+`window` ব্রাউজারে একটি `window` নয়, তবে *@wachaon/webdriver* *Window* ক্লাসের একটি উদাহরণ।
+
+
+## *@wachaon/webdriver*
+
+
+এটি একটি মডিউল যা ব্রাউজার পরিচালনাকারী *web driver* কাছে একটি অনুরোধ পাঠায়। *@wachaon/edge* বিল্ট। *@wachaon/edge* মত, ব্রাউজার অপারেশনের জন্য একজন *web driver* প্রয়োজন।
+
+
+### ইনস্টল
+
+
+```shell
+wes install @wachaon/webdriver --unsafe --bare
+```
+
+
+আপনার যদি *web driver* না থাকে তবে এটি ডাউনলোড করুন।
+
+
+```shell
+wes webdriver --download
+```

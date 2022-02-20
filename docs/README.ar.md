@@ -36,7 +36,7 @@
 -   نقوم أيضًا بحزم الوحدات النمطية لدعم النشر الخارجي والاسترجاع.
 
 
-# لا يمكن حل المشكلات *wes*
+# المشكلات *wes* لا يمكن حلها
 
 
 -   لا يمكن لـ `WScript.Quit` مقاطعة البرنامج ولا يعرض رمز خطأ
@@ -62,7 +62,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 # كيف تستعمل
 
 
-أدخل الأمر الذي يحدد الملف الذي سيكون نقطة انطلاق البرنامج من الكلمة الأساسية `wes` في وحدة التحكم. يمكن حذف ملحق البرنامج النصي *.js* .
+أدخل الأمر إلى وحدة التحكم التي تحدد الملف الذي سيكون نقطة انطلاق البرنامج بعد الكلمة الأساسية `wes` . يمكن حذف ملحق البرنامج النصي *.js* .
 
 
 ```shell
@@ -105,7 +105,7 @@ wes
 # نظام الوحدات
 
 
-يدعم برنامج *wes* نظامين للوحدات النمطية ، وهما نظام *commonjs module* الذي يستخدم المتطلبات العامة `require()` والوحدة *es module* التي تستخدم `import` . ( *dynamic import* هو معالجة غير متزامنة ، لذلك فهو غير مدعوم)
+يدعم *wes* نظامين للوحدات النمطية ، وهما نظام *commonjs module* الذي يستخدم `require()` والوحدة *es module* التي تستخدم `import` . ( *dynamic import* هو معالجة غير متزامنة ، لذلك فهو غير مدعوم)
 
 
 ## *commonjs module*
@@ -135,7 +135,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-يمكنك أيضًا الاستيراد إلى *ActiveX* مثل *require* `require('WScript.Shell')` باستخدام.
+يمكنك أيضًا الاستيراد *require* *ActiveX* باستخدام `require('WScript.Shell')` .
 
 
 ```javascript
@@ -152,7 +152,7 @@ Shell.UndoMinimizeAll()
 تفسر *Chakra* ، وهي محرك تنفيذ البرنامج النصي ، بناء الجملة مثل `imoprt` ، ولكن لا يمكن تنفيذها كما هي لأن طريقة المعالجة مثل `cscript` غير محددة. في *wes* ، من خلال إضافة *babel* إلى الوحدة المدمجة ، يتم تنفيذه أثناء التحويل التسلسلي إلى *es module* . نتيجة لذلك ، يتم تضخيم تكاليف المعالجة وملف *wes.js* كتكلفة.
 
 
-الوحدات الموصوفة بواسطة *es module* يتم تحويلها أيضًا إلى transpile `require()` ، لذلك يمكن استدعاء *ActiveX* . ومع ذلك ، فإنه لا يدعم مواصفات ترميز ملف الوحدة النمطية. تتم قراءتها جميعًا عن طريق التخمين التلقائي.
+يتم أيضًا تحويل الوحدات النمطية الموصوفة بواسطة *es module* إلى `require()` بواسطة transpile ، لذلك من الممكن أيضًا إجراء مكالمات *ActiveX* . ومع ذلك ، فإنه لا يدعم مواصفات ترميز ملف الوحدة النمطية في *es module* . تتم قراءتها جميعًا عن طريق التخمين التلقائي.
 
 
 لتحميلها كوحدة *es module* ، اضبط الامتداد على `.mjs` أو حقل `"type"` من `package.json` على `"module"` .
@@ -167,7 +167,7 @@ export default function sub (a, b) {
 
 
 ```javascript
-./main2.js\
+// ./main2.js
 import sub from './sub.mjs'
 
 console.log('sub(7, 3) // => %O', sub(7, 3))
@@ -192,6 +192,9 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
+
+
+\|
 
 
 `WScript.StdOut.WriteLine` *wes* من `WScript.StdErr.WriteLine` لإخراج السلاسل الملونة. يتم حظر `WScript.Echo` و `WScript.StdOut.WriteLine` من الإخراج. `WScript.StdErr.WriteLine` أو `console.log` .
@@ -285,7 +288,7 @@ argv, argv.unnamed, argv.named)
 تشغيل المسار.
 
 
-المسارات التي تبدأ بـ `/` و `\` تشير بشكل عام إلى المسارات المتعلقة بجذر محرك الأقراص. على سبيل المثال ، قد يكون `/filename` و `C:/filename` على نفس المسار. لأسباب أمنية ، يفسر `wes` المسارات التي تبدأ بـ `/` و `\` بالنسبة إلى دليل العمل.
+المسارات التي تبدأ بـ `/` و `\` تشير بشكل عام إلى المسارات المتعلقة بجذر محرك الأقراص. على سبيل المثال ، قد يكون `/filename` و `C:/filename` لهما نفس المسار. لأسباب أمنية ، يفسر `wes` المسارات التي تبدأ بـ `/` و `\` بالنسبة إلى دليل العمل.
 
 
 ```javascript
@@ -430,11 +433,13 @@ pipe()
 
 
 ```javascript
-const { isString, isNumber, isBoolean } = require('typecheck')
+const { isString, isNumber, isBoolean, isObject } = require('typecheck')
+const log = require('log')
 
-console.log('isString("ECMAScript") // => %O', isString("ECMAScript"))
-console.log('isNumber(43.5) // => %O', isNumber(43.5))
-console.log('isBoolean(false) // => %O', isBoolean(false))
+log(() => isString("ECMAScript"))
+log(() => isNumber(43.5))
+log(() => isBoolean(false))
+log(() => isObject(function(){}))
 ```
 
 
@@ -491,18 +496,35 @@ wes zip -p dox.zip
 عند نشر *bundle* على *github* ، قم بتجميع الوحدات النمطية المطلوبة في حزم وتغيير التنسيق بحيث يمكن استيرادها عن طريق التثبيت.
 
 
-لأسباب أمنية ، تنشئ *bundle* ملف *.json* لأن *wes* لا يسمح لك باستيراد الحزم بتنسيق يمكن تنفيذه مباشرة.
+لأسباب تتعلق بالأمان ، تقوم *bundle* بإنشاء ملف *.json* لأن *wes* لا يسمح لك باستيراد الحزم بتنسيق يمكن تنفيذه مباشرة.
 
 
 هناك بعض الشروط للتغليف.
 
 
-1.  يمكن نشر وحدة واحدة فقط في *repository* واحد.
+1.  يمكن نشر وحدة واحدة فقط في *repository* واحد
+
 2.  تأكد من تطابق اسم المستودع على *github* مع اسم دليل العمل المحلي.
-3.  إذا كنت تريد نشر الحزمة ، اجعل المستودع *public* .
-4.  أعلن عن اكتساب الوحدة في نطاق المستوى الأعلى.
-5.  يتم إنشاء ملف الحزمة *.json* في دليل العمل الخاص بك بالاسم *directory_name.json* . لا يمكن تثبيته في حالة إعادة تسمية الملف أو نقل الملف.
-6.  `node_modules/directory_name` ، تفشل الحزمة لأنها تشير إلى `directory_name.json` .
+
+3.  إذا قمت بنشر الحزمة ، فيرجى جعل المستودع *public*
+
+4.  أعلن عن اكتساب الوحدة في نطاق المستوى الأعلى
+
+5.  يتم إنشاء ملف الحزمة *.json* في دليل العمل الخاص بك بالاسم *directory_name.json* . إذا قمت بإعادة تسمية الملف أو نقل الملف ، فلا يمكنك الرجوع إليه عند التثبيت.
+
+6.  `node_modules/directory_name` هي نقطة البداية للحزمة
+
+    ```shell
+        wes bundle directory_name
+    ```
+
+    بدون تجميع مع
+
+    ```shell
+        wes bundle node_modules/directory_name
+    ```
+
+    يرجى الحزمة مع
 
 
 ## *install*
@@ -573,7 +595,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ## *@wachaon/fmt*
 
 
-حزم *@wachaon/fmt* *prettier* وتنسيق البرنامج النصي. أيضًا ، في حالة حدوث *Syntax Error* مع تثبيت *@wachaon/fmt* ، يمكنك الإشارة إلى موقع الخطأ.
+*@wachaon/fmt* هي حزمة *prettier* لـ *wes* وتنسيق البرنامج النصي. أيضًا ، في حالة حدوث *Syntax Error* مع تثبيت *@wachaon/fmt* ، يمكنك الإشارة إلى موقع الخطأ.
 
 
 ### ثبيت
@@ -625,7 +647,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
 
-## `@wachaon/edge`
+## *@wachaon/edge*
 
 
 سوف يكمل *Internet Explorer* الدعم مع 2022/6/15. نتيجة لذلك ، من المتوقع أنه لن يكون من الممكن تشغيل التطبيق باستخدام `require('InternetExplorer.Application')` .
@@ -663,7 +685,7 @@ wes edge --download
 
 
 ```javascript
-const edge = require('./index')
+const edge = require('edge')
 
 edge((window, navi, res) => {
     window.rect({x: 1 ,y: 1, width: 1200, height: 500})
@@ -692,3 +714,28 @@ edge((window, navi, res) => {
 
 
 تنتج عملية الإنهاء `res.exports` كملف *.json* كقيمة افتراضية. إذا كنت ترغب في ضبط عملية الإنهاء ، فقم بتعيين `terminate` `edge(callback, terminate)` .
+
+
+`window` ليست `window` في المتصفح ، ولكنها مثيل لفئة *Window* من *@wachaon/webdriver* .
+
+
+## *@wachaon/webdriver*
+
+
+إنها وحدة نمطية ترسل طلبًا إلى *web driver* الذي يقوم بتشغيل المتصفح. مدمج في *@wachaon/edge* . مثل *@wachaon/edge* ، يلزم وجود *web driver* لتشغيل المتصفح.
+
+
+### ثبيت
+
+
+```shell
+wes install @wachaon/webdriver --unsafe --bare
+```
+
+
+إذا لم يكن لديك *web driver* ، فقم بتنزيله.
+
+
+```shell
+wes webdriver --download
+```

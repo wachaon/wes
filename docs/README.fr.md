@@ -4,7 +4,7 @@
 *wes* est un framework de console qui exécute *ECMAScript* sur *WSH (Windows Script Host)* .
 
 
-Le texte original du *README* est en [*japanese*](/README.md) . Autre que le japonais, c'est une phrase traduite automatiquement.  
+Le texte original du *README* est en [*japanese*](/README.md) . Autre que le japonais, c'est une phrase traduite par machine.  
 Veuillez sélectionner des phrases dans d'autres langues parmi les suivantes.
 
 
@@ -62,7 +62,7 @@ Veuillez configurer le chemin de destination de sauvegarde de *wes.js* uniquemen
 # Comment utiliser
 
 
-Entrez la commande qui spécifie le fichier qui sera le point de départ du programme à partir du mot-clé `wes` dans la console. L'extension de script *.js* peut être omise.
+Entrez la commande de la console qui spécifie le fichier qui sera le point de départ du programme après le mot-clé `wes` . L'extension de script *.js* peut être omise.
 
 
 ```shell
@@ -105,7 +105,7 @@ L'implémentation de `--safe` `--usual` `--unsafe` `--dangerous` `--debug` est i
 # Système modulaire
 
 
-*wes* prend en charge deux systèmes de modules, un système *commonjs module* qui utilise le general `require()` et un *es module* qui utilise `import` . ( *dynamic import* est un traitement asynchrone, elle n'est donc pas prise en charge)
+*wes* prend en charge deux systèmes de modules, un système *commonjs module* qui utilise `require()` et un *es module* qui utilise `import` . ( *dynamic import* est un traitement asynchrone, elle n'est donc pas prise en charge)
 
 
 ## *commonjs module*
@@ -135,7 +135,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-Vous pouvez également importer vers*ActiveX* comme *require* `require('WScript.Shell')` avec require.
+Vous pouvez également importer vers *ActiveX* avec *require* `require('WScript.Shell')` .
 
 
 ```javascript
@@ -152,7 +152,7 @@ Shell.UndoMinimizeAll()
 *Chakra* , qui est le moteur d'exécution du script, interprète la syntaxe telle que `imoprt` , mais il ne peut pas être exécuté tel quel car la méthode de traitement en tant que `cscript` n'est pas définie. Dans *wes* , en ajoutant *babel* au module intégré, il est exécuté tout en transpilant séquentiellement vers le *es module* . Par conséquent, la surcharge de traitement et le fichier *wes.js* sont gonflés en tant que coût.
 
 
-Les modules décrits par le *es module* sont également convertis par transpilation en `require()` , ainsi*ActiveX* peut être appelé. Cependant, il ne prend pas en charge la spécification d'encodage de fichier de module. Tous sont lus par devinette automatique.
+Les modules décrits par le *es module* sont également convertis en `require()` par transpile, de sorte que les appels *ActiveX* sont également possibles. Cependant, il ne prend pas en charge la spécification d'encodage de fichier de module dans *es module* . Tous sont lus par devinette automatique.
 
 
 Pour le charger en tant que *es module* , définissez l'extension sur `.mjs` ou le champ `"type"` de `package.json` sur `"module"` .
@@ -167,7 +167,7 @@ export default function sub (a, b) {
 
 
 ```javascript
-./main2.js\
+// ./main2.js
 import sub from './sub.mjs'
 
 console.log('sub(7, 3) // => %O', sub(7, 3))
@@ -192,6 +192,9 @@ Affiche les caractères sur la console dans `console.log` . Il prend également 
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
+
+
+\|
 
 
 `WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` pour générer des chaînes colorées. `WScript.Echo` et `WScript.StdOut.WriteLine` sont bloqués en sortie. `WScript.StdErr.WriteLine` ou `console.log` .
@@ -259,7 +262,7 @@ Obtient l'argument de ligne de commande. Les arguments de ligne de commande dans
 *argv.unnamed* et *argv.named* le type de valeur de l'argument de ligne de commande en l'un des *String* *Number* *Boolean* .
 
 
-Entrez les arguments de la ligne de commande avec le *REPL* .
+Entrez les arguments de ligne de commande avec le *REPL* .
 
 
 ```shell
@@ -285,7 +288,7 @@ argv, argv.unnamed, argv.named)
 Exploitez le chemin.
 
 
-Les chemins commençant par `/` et `\` font généralement référence à des chemins relatifs à la racine du lecteur. Par exemple, `/filename` et `C:/filename` peuvent se trouver sur le même chemin. Pour des raisons de sécurité, `wes` interprète les chemins commençant par `/` et `\` comme relatifs au répertoire de travail.
+Les chemins commençant par `/` et `\` font généralement référence à des chemins relatifs à la racine du lecteur. Par exemple, `/filename` et `C:/filename` peuvent avoir le même chemin. Pour des raisons de sécurité, `wes` interprète les chemins commençant par `/` et `\` comme relatifs au répertoire de travail.
 
 
 ```javascript
@@ -430,11 +433,13 @@ Déterminez le type de script.
 
 
 ```javascript
-const { isString, isNumber, isBoolean } = require('typecheck')
+const { isString, isNumber, isBoolean, isObject } = require('typecheck')
+const log = require('log')
 
-console.log('isString("ECMAScript") // => %O', isString("ECMAScript"))
-console.log('isNumber(43.5) // => %O', isNumber(43.5))
-console.log('isBoolean(false) // => %O', isBoolean(false))
+log(() => isString("ECMAScript"))
+log(() => isNumber(43.5))
+log(() => isBoolean(false))
+log(() => isObject(function(){}))
 ```
 
 
@@ -497,12 +502,29 @@ Pour des raisons de sécurité, *bundle* crée un fichier *.json* car *wes* ne v
 Il y a certaines conditions pour l'emballage.
 
 
-1.  Un seul module peut être publié dans un *repository* .
+1.  Un seul module peut être publié dans un *repository*
+
 2.  Assurez-vous que le nom du référentiel sur *github* et le nom du répertoire de travail local sont identiques.
-3.  Si vous souhaitez publier le package, rendez le référentiel *public* .
-4.  Déclarez l'acquisition du module dans la portée de niveau supérieur.
-5.  Le fichier de package *.json* est créé dans votre répertoire de travail avec le nom *directory_name.json* . Il ne peut pas être installé si le fichier est renommé ou si le fichier est déplacé.
-6.  `node_modules/directory_name` , le bundle échoue car il fait référence à `directory_name.json` .
+
+3.  Si vous publiez le package, veuillez rendre le référentiel *public*
+
+4.  Déclarer l'acquisition du module dans la portée de niveau supérieur
+
+5.  Le fichier de package *.json* est créé dans votre répertoire de travail avec le nom *directory_name.json* . Si vous renommez le fichier ou déplacez le fichier, vous ne pouvez pas vous y référer lors de l'installation.
+
+6.  `node_modules/directory_name` est le point de départ du bundle
+
+    ```shell
+        wes bundle directory_name
+    ```
+
+    Sans grouper avec
+
+    ```shell
+        wes bundle node_modules/directory_name
+    ```
+
+    Veuillez regrouper avec
 
 
 ## *install*
@@ -573,7 +595,7 @@ Voici quelques modules externes.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* regroupe *prettier* joliment et formate le script. De plus, si une *Syntax Error* se produit avec *@wachaon/fmt* installé, vous pouvez indiquer l'emplacement de l'erreur.
+*@wachaon/fmt* est un *prettier* packagé pour *wes* et formate le script. De plus, si une *Syntax Error* se produit avec *@wachaon/fmt* installé, vous pouvez indiquer l'emplacement de l'erreur.
 
 
 ### installer
@@ -625,7 +647,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
 
-## `@wachaon/edge`
+## *@wachaon/edge*
 
 
 *Internet Explorer* terminera la prise en charge avec le 15/06/2022. Par conséquent, il est prévu qu'il ne sera pas possible d'utiliser l'application avec `require('InternetExplorer.Application')` .
@@ -663,7 +685,7 @@ Il sera facile à utiliser.
 
 
 ```javascript
-const edge = require('./index')
+const edge = require('edge')
 
 edge((window, navi, res) => {
     window.rect({x: 1 ,y: 1, width: 1200, height: 500})
@@ -692,3 +714,28 @@ Si vous souhaitez arrêter le script, exécutez `navi.emit('terminate', res)` ou
 
 
 Le processus de terminaison `res.exports` sous la forme d'un fichier *.json* comme valeur par défaut. Si vous souhaitez définir le processus de terminaison, définissez `terminate` of `edge(callback, terminate)` .
+
+
+`window` n'est pas une `window` dans le navigateur, mais une instance de la classe *Window* de *@wachaon/webdriver* .
+
+
+## *@wachaon/webdriver*
+
+
+Il s'agit d'un module qui envoie une requête au *web driver* qui exploite le navigateur. Intégré à *@wachaon/edge* . Comme *@wachaon/edge* , un *web driver* est requis pour le fonctionnement du navigateur.
+
+
+### installer
+
+
+```shell
+wes install @wachaon/webdriver --unsafe --bare
+```
+
+
+Si vous n'avez pas *web driver* , téléchargez-le.
+
+
+```shell
+wes webdriver --download
+```

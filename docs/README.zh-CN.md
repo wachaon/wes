@@ -62,7 +62,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 # 如何使用
 
 
-在控制台中输入从`wes`关键字指定将成为程序起点的文件的命令。脚本扩展名*.js*可以省略。
+向控制台输入命令，该命令在`wes`关键字之后指定将成为程序起点的文件。脚本扩展名*.js*可以省略。
 
 
 ```shell
@@ -105,7 +105,7 @@ wes
 # 模块化系统
 
 
-*wes*支持两个模块系统，一个使用通用`require()`的*commonjs module*系统和一个使用`import`的*es module* 。 （ *dynamic import*为异步处理，不支持）
+*wes*支持两个模块系统，一个使用`require()`的*commonjs module*系统和一个使用`import`的*es module* 。 （ *dynamic import*为异步处理，不支持）
 
 
 ## *commonjs module*
@@ -114,7 +114,7 @@ wes
 通过分配给`module.exports`并使用`require()`调用来管理模块。为方便起见，它还支持*node_modules*目录。
 
 
-*wes* `require()`会自动猜测模块文件的编码，但如果没有猜测正确，可以用第二个参数指定编码。
+*wes* `require()`会自动猜测模块文件的编码，但是如果没有猜测正确，可以用第二个参数指定编码。
 
 
 ```javascript
@@ -135,7 +135,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-您也可以像*require* `require('WScript.Shell')`一样使用 require 导入*ActiveX* 。
+您还可以使用*require* `require('WScript.Shell')`导入*ActiveX* 。
 
 
 ```javascript
@@ -149,10 +149,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-脚本的执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过将*babel*添加到内置模块中，在执行的同时顺序转译到*es module* 。结果，处理开销和*wes.js*文件作为成本而膨胀。
+脚本的执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过将*babel*添加到内置模块中，它在执行的同时顺序转译到*es module* 。结果，处理开销和*wes.js*文件作为成本而膨胀。
 
 
-*es module*模块描述的模块也被 transpile 转换为`require()` ，所以可以调用*ActiveX* 。但是，它不支持模块文件编码规范。都是通过自动猜测读取的。
+*es module*模块描述的模块也通过transpile转换为`require()` ，所以*ActiveX*调用也是可以的。但是，它不支持*es module*中的模块文件编码规范。都是通过自动猜测读取的。
 
 
 要将其作为*es module*加载，请将扩展名设置为`.mjs`或将`package.json`的`"type"`字段设置为`"module"` 。
@@ -167,7 +167,7 @@ export default function sub (a, b) {
 
 
 ```javascript
-./main2.js\
+// ./main2.js
 import sub from './sub.mjs'
 
 console.log('sub(7, 3) // => %O', sub(7, 3))
@@ -192,6 +192,9 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
+
+
+\|
 
 
 `WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`来输出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`被阻止输出。 `WScript.StdErr.WriteLine`或`console.log` 。
@@ -285,7 +288,7 @@ argv, argv.unnamed, argv.named)
 操作路径。
 
 
-以`/`和`\`开头的路径通常是指相对于驱动器根目录的路径。例如， `/filename`和`C:/filename`可能在同一路径上。出于安全原因， `wes`将以`/`和`\`开头的路径解释为相对于工作目录。
+以`/`和`\`开头的路径通常是指相对于驱动器根目录的路径。例如， `/filename`和`C:/filename`可能具有相同的路径。出于安全原因， `wes`将以`/`和`\`开头的路径解释为相对于工作目录。
 
 
 ```javascript
@@ -430,11 +433,13 @@ pipe()
 
 
 ```javascript
-const { isString, isNumber, isBoolean } = require('typecheck')
+const { isString, isNumber, isBoolean, isObject } = require('typecheck')
+const log = require('log')
 
-console.log('isString("ECMAScript") // => %O', isString("ECMAScript"))
-console.log('isNumber(43.5) // => %O', isNumber(43.5))
-console.log('isBoolean(false) // => %O', isBoolean(false))
+log(() => isString("ECMAScript"))
+log(() => isNumber(43.5))
+log(() => isBoolean(false))
+log(() => isObject(function(){}))
 ```
 
 
@@ -497,12 +502,29 @@ wes zip -p dox.zip
 包装有一些条件。
 
 
-1.  一个*repository*中只能发布一个模块。
+1.  一个*repository*只能发布一个模块
+
 2.  确保*github*上的仓库名称和本地工作目录名称相同。
-3.  如果要发布包，请将存储库设为*public* 。
-4.  在顶级范围内声明模块获取。
-5.  包*.json*文件在您的工作目录中创建，名称为*directory_name.json* 。如果文件被重命名或文件被移动，则无法安装。
-6.  `node_modules/directory_name`时，捆绑失败，因为它引用了`directory_name.json` 。
+
+3.  如果您发布包，请*public*存储库
+
+4.  在顶层范围内声明模块获取
+
+5.  包*.json*文件在您的工作目录中创建，名称为*directory_name.json* 。如果重命名文件或移动文件，安装时无法引用。
+
+6.  `node_modules/directory_name`是 bundle 的起点
+
+    ```shell
+        wes bundle directory_name
+    ```
+
+    不捆绑
+
+    ```shell
+        wes bundle node_modules/directory_name
+    ```
+
+    请捆绑
 
 
 ## *install*
@@ -573,7 +595,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt*捆绑*prettier*并格式化脚本。此外，如果在安装*@wachaon/fmt*时出现*Syntax Error* ，您可以指出错误位置。
+@ *wes* *@wachaon/fmt*是为*prettier*打包并格式化脚本的一个更漂亮的工具。此外，如果在安装*@wachaon/fmt*时出现*Syntax Error* ，您可以指出错误位置。
 
 
 ### 安装
@@ -625,7 +647,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
 
-## `@wachaon/edge`
+## *@wachaon/edge*
 
 
 *Internet Explorer*将于 2022/6/15 完成支持。因此，预计将无法使用`require('InternetExplorer.Application')`操作应用程序。
@@ -663,7 +685,7 @@ wes edge --download
 
 
 ```javascript
-const edge = require('./index')
+const edge = require('edge')
 
 edge((window, navi, res) => {
     window.rect({x: 1 ,y: 1, width: 1200, height: 500})
@@ -692,3 +714,28 @@ edge((window, navi, res) => {
 
 
 终止进程将`res.exports`输出为*.json*文件作为默认值。如果要设置终止过程，设置`edge(callback, terminate)` `terminate`
+
+
+`window`不是浏览器中的`window` ，而是*@wachaon/webdriver*的*Window*类的一个实例。
+
+
+## *@wachaon/webdriver*
+
+
+它是一个向操作浏览器的*web driver*发送请求的模块。内置在*@wachaon/edge*中。与*@wachaon/edge*一样，浏览器操作需要*web driver* 。
+
+
+### 安装
+
+
+```shell
+wes install @wachaon/webdriver --unsafe --bare
+```
+
+
+如果您没有*web driver* ，请下载它。
+
+
+```shell
+wes webdriver --download
+```
