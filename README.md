@@ -59,15 +59,15 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 wes index
 ```
 
-また、*wes* には *REPL* が備わっているので、`wes` のみで起動させると、
+また、*wes* には *REP* が備わっているので、`wes` のみで起動させると、
 スクリプトを直接入力できます。
 
 ```bat
 wes
 ```
 
- *REPL* は空行を２つ入力するまでスクリプトの入力を受け付けます。*README.md* でのサンプルスクリプトの
-実行も *REPL* で確認できます。
+ *REP* は空行を２つ入力するまでスクリプトの入力を受け付けます。*README.md* でのサンプルスクリプトの
+実行も *REP* で確認できます。
 
 ## コマンドラインオプション
 
@@ -219,13 +219,13 @@ console.log(orange + 'Hello World')
 
 *argv.unnamed* および *argv.named* はコマンドライン引数の値の型を *String* *Number* *Boolean* の何れかにキャストします。
 
-*REPL* と一緒にコマンドライン引数を入力します。
+*REP* と一緒にコマンドライン引数を入力します。
 
 ```bat
-wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
+wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
-*REPL* で次のスクリプトを実行します。
+*REP* で次のスクリプトを実行します。
 
 ```javascript
 const argv = require('argv')

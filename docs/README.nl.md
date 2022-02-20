@@ -70,7 +70,7 @@ wes index
 ```
 
 
-Wes heeft ook een *REPL* , dus als je het alleen met *wes* `wes` , kun je het script direct invoeren.
+Wes heeft ook een *REP* , dus als je het alleen met *wes* `wes` , kun je het script direct invoeren.
 
 
 ```bat
@@ -78,7 +78,7 @@ wes
 ```
 
 
-De *REPL* accepteert scriptinvoer totdat u twee lege regels invoert. U kunt de uitvoering van het voorbeeldscript ook controleren in *README.md* met *REPL* .
+De *REP* accepteert scriptinvoer totdat u twee lege regels invoert. U kunt de uitvoering van het voorbeeldscript ook controleren in *README.md* met *REP* .
 
 
 ## Opdrachtregelopties
@@ -262,15 +262,15 @@ Haalt het opdrachtregelargument op. De opdrachtregelargumenten in `cscript.exe` 
 *argv.unnamed* en *argv.named* casten het waardetype van het opdrachtregelargument naar een van de *String* *Number* *Boolean* .
 
 
-Voer de opdrachtregelargumenten in samen met de *REPL* .
+Voer de opdrachtregelargumenten in samen met de *REP* .
 
 
 ```bat
-wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
+wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
 
-Voer het volgende script uit in het *REPL* .
+Voer het volgende script uit in het *REP* .
 
 
 ```javascript

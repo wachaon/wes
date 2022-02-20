@@ -70,7 +70,7 @@ wes index
 ```
 
 
-Selain itu, *wes* mempunyai *REPL* , jadi jika anda memulakannya hanya dengan `wes` , anda boleh memasukkan skrip terus.
+Selain itu, *wes* mempunyai *REP* , jadi jika anda memulakannya hanya dengan `wes` , anda boleh memasukkan skrip terus.
 
 
 ```bat
@@ -78,7 +78,7 @@ wes
 ```
 
 
-*REPL* menerima input skrip sehingga anda memasukkan dua baris kosong. Anda juga boleh menyemak pelaksanaan skrip sampel dalam *README.md* dengan *REPL* .
+*REP* menerima input skrip sehingga anda memasukkan dua baris kosong. Anda juga boleh menyemak pelaksanaan skrip sampel dalam *README.md* dengan *REP* .
 
 
 ## Pilihan baris arahan
@@ -262,15 +262,15 @@ Mendapat hujah baris arahan. Argumen baris arahan dalam `cscript.exe` mengisytih
 *argv.unnamed* dan *argv.named* menghantar jenis nilai argumen baris arahan ke salah satu *String* *Number* *Boolean* .
 
 
-Masukkan argumen baris arahan bersama *REPL* .
+Masukkan argumen baris arahan bersama *REP* .
 
 
 ```bat
-wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
+wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
 
-Jalankan skrip berikut dalam *REPL* .
+Jalankan skrip berikut dalam *REP* .
 
 
 ```javascript

@@ -70,7 +70,7 @@ wes index
 ```
 
 
-Inoltre, *wes* ha un *REPL* , quindi se lo avvii solo con `wes` , puoi inserire direttamente lo script.
+Inoltre, *wes* ha un *REP* , quindi se lo avvii solo con `wes` , puoi inserire direttamente lo script.
 
 
 ```bat
@@ -78,7 +78,7 @@ wes
 ```
 
 
-Il *REPL* accetta l'input dello script finché non si immettono due righe vuote. Puoi anche controllare l'esecuzione dello script di esempio in *README.md* con *REPL* .
+Il *REP* accetta l'input dello script finché non si immettono due righe vuote. Puoi anche controllare l'esecuzione dello script di esempio in *README.md* con *REP* .
 
 
 ## Opzioni della riga di comando
@@ -262,15 +262,15 @@ Ottiene l'argomento della riga di comando. Gli argomenti della riga di comando i
 *argv.unnamed* e *argv.named* il cast del tipo di valore dell'argomento della riga di comando su uno degli *String* *Number* *Boolean* .
 
 
-Immettere gli argomenti della riga di comando insieme a *REPL* .
+Immettere gli argomenti della riga di comando insieme a *REP* .
 
 
 ```bat
-wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
+wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
 
-Eseguire lo script seguente in *REPL* .
+Eseguire lo script seguente in *REP* .
 
 
 ```javascript

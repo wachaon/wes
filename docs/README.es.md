@@ -70,7 +70,7 @@ wes index
 ```
 
 
-Además, *wes* tiene un *REPL* , por lo que si lo inicia solo con `wes` , puede ingresar el script directamente.
+Además, *wes* tiene un *REP* , por lo que si lo inicia solo con `wes` , puede ingresar el script directamente.
 
 
 ```bat
@@ -78,7 +78,7 @@ wes
 ```
 
 
-El *REPL* acepta entrada de script hasta que ingrese dos líneas en blanco. También puede verificar la ejecución del script de muestra en *README.md* con *REPL* .
+El *REP* acepta entrada de script hasta que ingrese dos líneas en blanco. También puede verificar la ejecución del script de muestra en *README.md* con *REP* .
 
 
 ## Opciones de la línea de comandos
@@ -262,15 +262,15 @@ Obtiene el argumento de la línea de comando. Los argumentos de la línea de com
 *argv.unnamed* y *argv.named* el tipo de valor del argumento de la línea de comando en uno de los *Boolean* de *Number* de *String* .
 
 
-Introduzca los argumentos de la línea de comandos junto con *REPL* .
+Introduzca los argumentos de la línea de comandos junto con *REP* .
 
 
 ```bat
-wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
+wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
 
-Ejecute el siguiente script en *REPL* .
+Ejecute el siguiente script en *REP* .
 
 
 ```javascript

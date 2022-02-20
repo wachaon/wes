@@ -362,7 +362,7 @@ try {
         var resolve = pathname.resolve
         var CurrentDirectory = pathname.CurrentDirectory
 
-        var main = argv.unnamed[0] != null ? argv.unnamed[0] : 'REPL'
+        var main = argv.unnamed[0] != null ? argv.unnamed[0] : 'REP'
         if (main in wes.Modules) wes.main = main
         require(resolve(CurrentDirectory, '_'), main, argv.get('encoding'))
     }
@@ -400,7 +400,7 @@ try {
             }
             if (fmt != null) {
                 var source
-                if (wes.main === 'REPL') {
+                if (wes.main === 'REP') {
                     var file = Object.keys(wes.Modules).filter(function (key) {
                         return key.startsWith('{')
                     })[0]

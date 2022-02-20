@@ -70,7 +70,7 @@ wes index
 ```
 
 
-Also, *wes* has a *REPL* , so if you start it only with `wes` , you can enter the script directly.
+Also, *wes* has a *REP* , so if you start it only with `wes` , you can enter the script directly.
 
 
 ```bat
@@ -78,7 +78,7 @@ wes
 ```
 
 
-The *REPL* accepts script input until you enter two blank lines. You can also check the execution of the sample script in *README.md* with *REPL* .
+The *REP* accepts script input until you enter two blank lines. You can also check the execution of the sample script in *README.md* with *REP* .
 
 
 ## Command line options
@@ -262,15 +262,15 @@ Gets the command line argument. The command line arguments in `cscript.exe` decl
 *argv.unnamed* and *argv.named* cast the value type of the command line argument to one of the *String* *Number* *Boolean* .
 
 
-Enter the command line arguments along with the *REPL* .
+Enter the command line arguments along with the *REP* .
 
 
 ```bat
-wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
+wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
 
-Run the following script in the *REPL* .
+Run the following script in the *REP* .
 
 
 ```javascript

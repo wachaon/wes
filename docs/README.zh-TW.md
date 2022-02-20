@@ -70,7 +70,7 @@ wes index
 ```
 
 
-而且*wes*有一個*REPL* ，所以如果你只用`wes`啟動它，你可以直接進入腳本。
+而且*wes*有一個*REP* ，所以如果你只用`wes`啟動它，你可以直接進入腳本。
 
 
 ```bat
@@ -78,7 +78,7 @@ wes
 ```
 
 
-*REPL*接受腳本輸入，直到您輸入兩個空行。您還可以使用*REPL*檢查*README.md*中示例腳本的執行情況。
+*REP*接受腳本輸入，直到您輸入兩個空行。您還可以使用*REP*檢查*README.md*中示例腳本的執行情況。
 
 
 ## 命令行選項
@@ -262,15 +262,15 @@ console.log(orange + 'Hello World')
 *argv.unnamed*和*argv.named*將命令行參數的值類型轉換為*String* *Number* *Boolean*之一。
 
 
-與*REPL*一起輸入命令行參數。
+與*REP*一起輸入命令行參數。
 
 
 ```bat
-wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
+wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
 
-在*REPL*中運行以下腳本。
+在*REP*中運行以下腳本。
 
 
 ```javascript

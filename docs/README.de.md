@@ -70,7 +70,7 @@ wes index
 ```
 
 
-Außerdem hat *wes* eine *REPL* , wenn Sie es also nur mit `wes` starten, können Sie das Skript direkt eingeben.
+Außerdem hat *wes* eine *REP* , wenn Sie es also nur mit `wes` starten, können Sie das Skript direkt eingeben.
 
 
 ```bat
@@ -78,7 +78,7 @@ wes
 ```
 
 
-Die *REPL* akzeptiert Skripteingaben, bis Sie zwei Leerzeilen eingeben. Sie können die Ausführung des Beispielskripts in *README.md* mit *REPL* überprüfen.
+Die *REP* akzeptiert Skripteingaben, bis Sie zwei Leerzeilen eingeben. Sie können die Ausführung des Beispielskripts in *README.md* mit *REP* überprüfen.
 
 
 ## Befehlszeilenoptionen
@@ -262,15 +262,15 @@ Ruft das Befehlszeilenargument ab. Die Befehlszeilenargumente in `cscript.exe` d
 *argv.unnamed* und *argv.named* wandeln den Werttyp des Befehlszeilenarguments in einen der *String* *Number* *Boolean* .
 
 
-Geben Sie die Befehlszeilenargumente zusammen mit *REPL* ein.
+Geben Sie die Befehlszeilenargumente zusammen mit *REP* ein.
 
 
 ```bat
-wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
+wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
 
-Führen Sie das folgende Skript in der *REPL* aus.
+Führen Sie das folgende Skript in der *REP* aus.
 
 
 ```javascript
