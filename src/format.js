@@ -1,7 +1,7 @@
-const { readdirsSync, readFileSync, writeFileSync } = require('filesystem')
-const { resolve } = require('pathname')
-const { format } = require('fmt')
 const { blueBright } = require('ansi')
+const { readdirsSync, readFileSync, writeFileSync } = require('filesystem')
+const { format } = require('fmt')
+const { resolve } = require('pathname')
 
 const UTF8 = 'UTF-8N'
 

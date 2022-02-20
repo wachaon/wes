@@ -1,9 +1,9 @@
 const FSO = require('Scripting.FileSystemObject')
+const { format } = require('fmt')
+const { Enumerator } = require('JScript')
+const { rLINE_SEP, rCRLF, rCR, CRLF, SPACE, NONE, LF } = require('text')
 const fs = require('filesystem')
 const path = require('pathname')
-const { rLINE_SEP, rCRLF, rCR, CRLF, SPACE, NONE, LF } = require('text')
-const { Enumerator } = require('JScript')
-const { format } = require('fmt')
 
 require('./format')
 const test = require('./test')
