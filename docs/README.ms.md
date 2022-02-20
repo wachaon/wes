@@ -62,7 +62,7 @@ Sila konfigurasikan laluan simpan destinasi untuk *wes.js* sahaja *ascii* .
 # Bagaimana nak guna
 
 
-Masukkan arahan yang menentukan fail yang akan menjadi titik permulaan program daripada kata kunci `wes` dalam konsol. Sambungan skrip *.js* boleh diabaikan.
+Masukkan arahan ke konsol yang menentukan fail yang akan menjadi titik permulaan program berikutan kata kunci `wes` . Sambungan skrip *.js* boleh diabaikan.
 
 
 ```shell
@@ -105,7 +105,7 @@ Pelaksanaan `--safe` `--usual` `--unsafe` `--dangerous` `--debug` tidak lengkap,
 # Sistem modular
 
 
-*wes* menyokong dua sistem modul, sistem *commonjs module* yang menggunakan keperluan umum `require()` dan *es module* yang menggunakan `import` . ( *dynamic import* ialah pemprosesan tak segerak, jadi ia tidak disokong)
+*wes* menyokong dua sistem modul, sistem *commonjs module* yang menggunakan `require()` dan *es module* yang menggunakan `import` . ( *dynamic import* ialah pemprosesan tak segerak, jadi ia tidak disokong)
 
 
 ## *commonjs module*
@@ -152,7 +152,7 @@ Shell.UndoMinimizeAll()
 *Chakra* , yang merupakan enjin pelaksanaan skrip, mentafsir sintaks seperti `imoprt` , tetapi ia tidak boleh dilaksanakan kerana kaedah pemprosesan sebagai `cscript` tidak ditakrifkan. Di *wes* , dengan menambahkan *babel* pada modul terbina dalam, ia dilaksanakan sambil memindahkan secara berurutan ke *es module* . Akibatnya, overhed pemprosesan dan fail *wes.js* sebagai kos.
 
 
-Modul yang diterangkan oleh *es module* juga ditukar kepada `require()` melalui transpile, jadi panggilan *ActiveX* juga boleh dilakukan. Walau bagaimanapun, ia tidak menyokong spesifikasi pengekodan fail modul. Semuanya dibaca dengan meneka secara automatik.
+Modul yang diterangkan oleh *es module* juga ditukar kepada `require()` melalui transpile, jadi panggilan *ActiveX* juga boleh dilakukan. Walau bagaimanapun, ia tidak menyokong spesifikasi pengekodan fail modul dalam *es module* . Semuanya dibaca dengan meneka secara automatik.
 
 
 Untuk memuatkannya sebagai *es module* , tetapkan sambungan kepada `.mjs` atau medan `"type"` `package.json` kepada `"module"` .
@@ -167,7 +167,7 @@ export default function sub (a, b) {
 
 
 ```javascript
-./main2.js\
+// ./main2.js
 import sub from './sub.mjs'
 
 console.log('sub(7, 3) // => %O', sub(7, 3))
@@ -192,6 +192,9 @@ Cetak aksara ke konsol dalam `console.log` . Ia juga menyokong rentetan yang dif
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
+
+
+\|
 
 
 `WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine` untuk mengeluarkan rentetan berwarna. `WScript.Echo` dan `WScript.StdOut.WriteLine` disekat daripada output. `WScript.StdErr.WriteLine` atau `console.log` .
@@ -285,7 +288,7 @@ argv, argv.unnamed, argv.named)
 Mengendalikan laluan.
 
 
-Laluan yang bermula dengan `/` dan `\` biasanya merujuk kepada laluan yang berkaitan dengan akar pemacu. Contohnya, `/filename` dan `C:/filename` mungkin berada pada laluan yang sama. Atas sebab keselamatan, `wes` mentafsir laluan bermula dengan `/` dan `\` sebagai relatif kepada direktori kerja.
+Laluan yang bermula dengan `/` dan `\` biasanya merujuk kepada laluan yang berkaitan dengan akar pemacu. Contohnya, `/filename` dan `C:/filename` mungkin mempunyai laluan yang sama. Atas sebab keselamatan, `wes` mentafsir laluan bermula dengan `/` dan `\` sebagai relatif kepada direktori kerja.
 
 
 ```javascript
@@ -430,11 +433,13 @@ Tentukan jenis skrip.
 
 
 ```javascript
-const { isString, isNumber, isBoolean } = require('typecheck')
+const { isString, isNumber, isBoolean, isObject } = require('typecheck')
+const log = require('log')
 
-console.log('isString("ECMAScript") // => %O', isString("ECMAScript"))
-console.log('isNumber(43.5) // => %O', isNumber(43.5))
-console.log('isBoolean(false) // => %O', isBoolean(false))
+log(() => isString("ECMAScript"))
+log(() => isNumber(43.5))
+log(() => isBoolean(false))
+log(() => isObject(function(){}))
 ```
 
 
@@ -482,7 +487,7 @@ Jika `path` mempunyai sambungan `.zip` , `unzip()` diproses dan tiada perihalan 
 # Penggabungan dan pemasangan modul
 
 
-Dalam *wes* , himpunan beberapa modul dipanggil pakej. Anda boleh memasang pakej untuk *wes* diterbitkan di *github* . Anda memerlukan *github repository* untuk menerbitkan pakej tersebut. Juga, nama repositori dan nama direktori tempatan mestilah sama.
+Dalam *wes* , himpunan beberapa modul dipanggil pakej. Anda boleh memasang pakej untuk *wes* diterbitkan di *github* . Anda memerlukan *github repository* untuk menerbitkan pakej. Selain itu, nama repositori dan nama direktori tempatan mestilah sama.
 
 
 ## *bundle*
@@ -497,12 +502,29 @@ Atas sebab keselamatan, *bundle* mencipta fail *.json* kerana *wes* tidak memben
 Terdapat beberapa syarat untuk pembungkusan.
 
 
-1.  Hanya satu modul boleh diterbitkan dalam satu *repository* .
+1.  Hanya satu modul boleh diterbitkan dalam satu *repository*
+
 2.  Pastikan nama repositori pada *github* dan nama direktori kerja tempatan adalah sama.
-3.  Jika anda ingin menerbitkan pakej, jadikan repositori *public* .
-4.  Isytiharkan pemerolehan modul dalam skop peringkat atasan.
-5.  Fail pakej *.json* dicipta dalam direktori kerja anda dengan nama *directory_name.json* . Ia tidak boleh dipasang jika fail itu dinamakan semula atau fail itu dialihkan.
-6.  `node_modules/directory_name` , berkas tersebut gagal kerana ia merujuk kepada `directory_name.json` .
+
+3.  Jika anda menerbitkan pakej tersebut, sila jadikan repositori *public*
+
+4.  Isytiharkan pemerolehan modul dalam skop peringkat atasan
+
+5.  Fail pakej *.json* dicipta dalam direktori kerja anda dengan nama *directory_name.json* . Jika anda menamakan semula fail atau memindahkan fail, anda tidak boleh merujuknya semasa memasang.
+
+6.  `node_modules/directory_name` ialah titik permulaan berkas
+
+    ```shell
+        wes bundle directory_name
+    ```
+
+    Tanpa digabungkan dengan
+
+    ```shell
+        wes bundle node_modules/directory_name
+    ```
+
+    Sila ikat dengan
 
 
 ## *install*
@@ -573,7 +595,7 @@ Berikut adalah beberapa modul luaran.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* *prettier* dan memformatkan skrip. Selain itu, jika *Syntax Error* berlaku dengan *@wachaon/fmt* dipasang, anda boleh menunjukkan lokasi ralat.
+*@wachaon/fmt* adalah pakej yang *prettier* untuk *wes* dan memformat skrip. Selain itu, jika *Syntax Error* berlaku dengan *@wachaon/fmt* dipasang, anda boleh menunjukkan lokasi ralat.
 
 
 ### pasang
@@ -625,7 +647,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
 
-## `@wachaon/edge`
+## *@wachaon/edge*
 
 
 *Internet Explorer* akan melengkapkan sokongan dengan 2022/6/15. Akibatnya, ia dijangka tidak akan dapat mengendalikan aplikasi dengan `require('InternetExplorer.Application')` .
@@ -663,7 +685,7 @@ Ia akan menjadi mudah untuk digunakan.
 
 
 ```javascript
-const edge = require('./index')
+const edge = require('edge')
 
 edge((window, navi, res) => {
     window.rect({x: 1 ,y: 1, width: 1200, height: 500})
@@ -692,3 +714,28 @@ Jika anda ingin menghentikan skrip, jalankan `navi.emit('terminate', res)` atau 
 
 
 Proses penamatan mengeluarkan `res.exports` sebagai fail *.json* sebagai nilai lalai. Jika anda ingin menetapkan proses penamatan, tetapkan `terminate` `edge(callback, terminate)` .
+
+
+`window` bukan `window` dalam penyemak imbas, tetapi contoh kelas *Window* *@wachaon/webdriver* .
+
+
+## *@wachaon/webdriver*
+
+
+Ia adalah modul yang menghantar permintaan kepada *web driver* yang mengendalikan penyemak imbas. Dibina ke dalam *@wachaon/edge* . Seperti *@wachaon/edge* , *web driver* diperlukan untuk operasi penyemak imbas.
+
+
+### pasang
+
+
+```shell
+wes install @wachaon/webdriver --unsafe --bare
+```
+
+
+Jika anda tidak mempunyai *web driver* , muat turunnya.
+
+
+```shell
+wes webdriver --download
+```

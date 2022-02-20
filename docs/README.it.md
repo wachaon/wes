@@ -62,7 +62,7 @@ Si prega di configurare il percorso di destinazione di salvataggio di *wes.js* o
 # Come usare
 
 
-Immettere il comando che specifica il file che sarà il punto di partenza del programma dalla parola chiave `wes` nella console. L'estensione dello script *.js* può essere omessa.
+Immettere il comando nella console che specifica il file che sarà il punto di partenza del programma seguendo la parola chiave `wes` . L'estensione dello script *.js* può essere omessa.
 
 
 ```shell
@@ -105,7 +105,7 @@ L'implementazione di `--safe` `--usual` `--unsafe` `--dangerous` `--debug` è in
 # Sistema modulare
 
 
-*wes* supporta due sistemi di moduli, un sistema di *commonjs module* che usa il general `require()` e un *es module* che usa `import` . ( *dynamic import* è un'elaborazione asincrona, quindi non è supportata)
+*wes* supporta due sistemi di moduli, un sistema di *commonjs module* che utilizza `require()` e un *es module* che utilizza `import` . ( *dynamic import* è un'elaborazione asincrona, quindi non è supportata)
 
 
 ## *commonjs module*
@@ -152,7 +152,7 @@ Shell.UndoMinimizeAll()
 *Chakra* , che è il motore di esecuzione dello script, interpreta la sintassi come `imoprt` , ma non può essere eseguito così com'è perché il metodo di elaborazione come `cscript` non è definito. In *wes* , aggiungendo *babel* al modulo integrato, viene eseguito durante la traspilazione sequenziale al *es module* . Di conseguenza, il sovraccarico di elaborazione e il file *wes.js* sono gonfiati come costo.
 
 
-I moduli descritti da *es module* vengono anche convertiti in `require()` tramite transpile, quindi sono possibili anche chiamate *ActiveX* . Tuttavia, non supporta la specifica di codifica del file del modulo. Tutti vengono letti per indovinare automaticamente.
+I moduli descritti da *es module* vengono anche convertiti in `require()` tramite transpile, quindi sono possibili anche chiamate *ActiveX* . Tuttavia, non supporta la specifica di codifica del file del modulo in *es module* . Tutti vengono letti per indovinare automaticamente.
 
 
 Per caricarlo come *es module* , imposta l'estensione su `.mjs` o il campo `"type"` di `package.json` su `"module"` .
@@ -167,7 +167,7 @@ export default function sub (a, b) {
 
 
 ```javascript
-./main2.js\
+// ./main2.js
 import sub from './sub.mjs'
 
 console.log('sub(7, 3) // => %O', sub(7, 3))
@@ -192,6 +192,9 @@ Stampa i caratteri sulla console in `console.log` . Supporta anche le stringhe f
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
+
+
+\|
 
 
 `WScript.StdOut.WriteLine` *wes* di `WScript.StdErr.WriteLine` per generare stringhe colorate. L'output di `WScript.Echo` e `WScript.StdOut.WriteLine` è bloccato. `WScript.StdErr.WriteLine` o `console.log` .
@@ -285,7 +288,7 @@ argv, argv.unnamed, argv.named)
 Gestisci il percorso.
 
 
-I percorsi che iniziano con `/` e `\` generalmente si riferiscono a percorsi relativi alla radice dell'unità. Ad esempio, `/filename` e `C:/filename` potrebbero trovarsi sullo stesso percorso. Per motivi di sicurezza, `wes` interpreta i percorsi che iniziano con `/` e `\` come relativi alla directory di lavoro.
+I percorsi che iniziano con `/` e `\` generalmente si riferiscono a percorsi relativi alla radice dell'unità. Ad esempio, `/filename` e `C:/filename` possono avere lo stesso percorso. Per motivi di sicurezza, `wes` interpreta i percorsi che iniziano con `/` e `\` come relativi alla directory di lavoro.
 
 
 ```javascript
@@ -430,11 +433,13 @@ Determina il tipo di sceneggiatura.
 
 
 ```javascript
-const { isString, isNumber, isBoolean } = require('typecheck')
+const { isString, isNumber, isBoolean, isObject } = require('typecheck')
+const log = require('log')
 
-console.log('isString("ECMAScript") // => %O', isString("ECMAScript"))
-console.log('isNumber(43.5) // => %O', isNumber(43.5))
-console.log('isBoolean(false) // => %O', isBoolean(false))
+log(() => isString("ECMAScript"))
+log(() => isNumber(43.5))
+log(() => isBoolean(false))
+log(() => isObject(function(){}))
 ```
 
 
@@ -497,12 +502,29 @@ Per motivi di sicurezza, *bundle* crea un file *.json* perché *wes* non consent
 Ci sono alcune condizioni per l'imballaggio.
 
 
-1.  È possibile pubblicare un solo modulo in un *repository* .
+1.  È possibile pubblicare un solo modulo in un *repository*
+
 2.  Assicurati che il nome del repository su *github* e il nome della directory di lavoro locale siano gli stessi.
-3.  Se vuoi pubblicare il pacchetto, rendi *public* il repository.
-4.  Dichiarare l'acquisizione del modulo nell'ambito di primo livello.
-5.  Il file del pacchetto *.json* viene creato nella directory di lavoro con il nome *directory_name.json* . Non può essere installato se il file viene rinominato o il file viene spostato.
-6.  `node_modules/directory_name` , il bundle non riesce perché fa riferimento a `directory_name.json` .
+
+3.  Se pubblichi il pacchetto, rendi *public* il repository
+
+4.  Dichiarare l'acquisizione del modulo nell'ambito di primo livello
+
+5.  Il file del pacchetto *.json* viene creato nella directory di lavoro con il nome *directory_name.json* . Se si rinomina il file o si sposta il file, non è possibile fare riferimento ad esso durante l'installazione.
+
+6.  `node_modules/directory_name` è il punto di partenza del bundle
+
+    ```shell
+        wes bundle directory_name
+    ```
+
+    Senza impacchettare
+
+    ```shell
+        wes bundle node_modules/directory_name
+    ```
+
+    Si prega di raggruppare con
 
 
 ## *install*
@@ -573,7 +595,7 @@ Ecco alcuni moduli esterni.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* raggruppa *prettier* graziosi e formatta lo script. Inoltre, se si verifica un *Syntax Error* con *@wachaon/fmt* installato, è possibile indicare la posizione dell'errore.
+*@wachaon/fmt* è un pacchetto *prettier* carino per *wes* e formatta lo script. Inoltre, se si verifica un *Syntax Error* con *@wachaon/fmt* installato, è possibile indicare la posizione dell'errore.
 
 
 ### installare
@@ -625,7 +647,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
 
-## `@wachaon/edge`
+## *@wachaon/edge*
 
 
 *Internet Explorer* completerà il supporto con il 2022/6/15. Di conseguenza, si prevede che non sarà possibile utilizzare l'applicazione con `require('InternetExplorer.Application')` .
@@ -663,7 +685,7 @@ Sarà facile da usare.
 
 
 ```javascript
-const edge = require('./index')
+const edge = require('edge')
 
 edge((window, navi, res) => {
     window.rect({x: 1 ,y: 1, width: 1200, height: 500})
@@ -692,3 +714,28 @@ Se vuoi interrompere lo script, esegui `navi.emit('terminate', res)` o termina m
 
 
 Il processo di terminazione restituisce `res.exports` come file *.json* come valore predefinito. Se si desidera impostare il processo di terminazione, impostare `terminate` of `edge(callback, terminate)` .
+
+
+`window` non è una `window` nel browser, ma un'istanza della classe *Window* di *@wachaon/webdriver* .
+
+
+## *@wachaon/webdriver*
+
+
+È un modulo che invia una richiesta al *web driver* che gestisce il browser. Integrato in *@wachaon/edge* . Come *@wachaon/edge* , per il funzionamento del browser è richiesto un *web driver* .
+
+
+### installare
+
+
+```shell
+wes install @wachaon/webdriver --unsafe --bare
+```
+
+
+Se non hai un *web driver* , scaricalo.
+
+
+```shell
+wes webdriver --download
+```

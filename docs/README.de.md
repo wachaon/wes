@@ -55,14 +55,14 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* verwendet `SendKeys` in *wes* zur Laufzeit als Implementierung. Wenn der Pfad des Verzeichnisses, in dem *wes.js* gespeichert ist, andere Zeichen als *ascii* enthält, kann `SendKeys` den Schlüssel nicht korrekt senden und das Skript kann nicht ausgeführt werden.  
+*WScript.Shell* verwendet `SendKeys` in *wes* zur Laufzeit als Implementierung. Wenn der Pfad des Verzeichnisses, in dem *wes.js* gespeichert ist, andere Zeichen als `SendKeys` *ascii* Schlüssel nicht korrekt senden und das Skript kann nicht ausgeführt werden.  
 Bitte konfigurieren Sie den Speicherzielpfad von *wes.js* nur *ascii* .
 
 
 # Wie benutzt man
 
 
-Geben Sie den Befehl, der die Datei angibt, die der Startpunkt des Programms sein soll, über das Schlüsselwort `wes` in der Konsole ein. Die *.js* kann weggelassen werden.
+Geben Sie nach dem Schlüsselwort `wes` den Befehl in die Konsole ein, der die Datei angibt, die der Startpunkt des Programms sein soll. Die *.js* kann weggelassen werden.
 
 
 ```shell
@@ -105,7 +105,7 @@ Die Implementierung von `--safe` `--usual` `--unsafe` `--dangerous` `--debug` is
 # Modulares System
 
 
-*wes* unterstützt zwei Modulsysteme, ein *commonjs module* , das das allgemeine `require()` verwendet, und ein *es module* , das `import` verwendet. ( *dynamic import* ist eine asynchrone Verarbeitung und wird daher nicht unterstützt.)
+*wes* unterstützt zwei Modulsysteme, ein *commonjs module* , das `require()` verwendet, und ein *es module* , das `import` verwendet. ( *dynamic import* ist eine asynchrone Verarbeitung und wird daher nicht unterstützt.)
 
 
 ## *commonjs module*
@@ -135,7 +135,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-Sie können auch wie *require* `require('WScript.Shell')` mit require in*ActiveX* importieren.
+Sie können auch mit *require* `require('WScript.Shell')` in *ActiveX* importieren.
 
 
 ```javascript
@@ -152,7 +152,7 @@ Shell.UndoMinimizeAll()
 *Chakra* , die Ausführungsmaschine des Skripts, interpretiert die Syntax wie `imoprt` , kann jedoch nicht unverändert ausgeführt werden, da die Verarbeitungsmethode als `cscript` nicht definiert ist. In *wes* wird es durch Hinzufügen von *babel* zum eingebauten Modul ausgeführt, während es sequentiell in das *es module* transpiliert wird. Infolgedessen werden der Verarbeitungsaufwand und die Datei *wes.js* als Kosten aufgebläht.
 
 
-Module, die von *es module* beschrieben werden, werden ebenfalls in `require()` transpiliert, sodass*ActiveX* aufgerufen werden kann. Es unterstützt jedoch nicht die Moduldatei-Codierungsspezifikation. Alle werden durch automatisches Raten gelesen.
+Module, die von *es module* beschrieben werden, werden ebenfalls von transpile in `require()` konvertiert, sodass auch *ActiveX* -Aufrufe möglich sind. Es unterstützt jedoch nicht die Moduldateicodierungsspezifikation in *es module* . Alle werden durch automatisches Raten gelesen.
 
 
 Um es als *es module* zu laden, setzen Sie die Erweiterung auf `.mjs` oder das `"type"` -Feld von `package.json` auf `"module"` .
@@ -167,7 +167,7 @@ export default function sub (a, b) {
 
 
 ```javascript
-./main2.js\
+// ./main2.js
 import sub from './sub.mjs'
 
 console.log('sub(7, 3) // => %O', sub(7, 3))
@@ -192,6 +192,9 @@ Gibt Zeichen an die Konsole in `console.log` . Es unterstützt auch formatierte 
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
+
+
+\|
 
 
 `WScript.StdOut.WriteLine` *wes* von `WScript.StdErr.WriteLine` , um farbige Zeichenfolgen auszugeben. `WScript.Echo` und `WScript.StdOut.WriteLine` werden für die Ausgabe blockiert. `WScript.StdErr.WriteLine` oder `console.log` .
@@ -285,7 +288,7 @@ argv, argv.unnamed, argv.named)
 Betreiben Sie den Pfad.
 
 
-Pfade, die mit `/` und `\` beginnen, beziehen sich im Allgemeinen auf Pfade relativ zum Laufwerkstammverzeichnis. Beispielsweise können sich `/filename` und `C:/filename` im selben Pfad befinden. Aus Sicherheitsgründen interpretiert `wes` Pfade beginnend mit `/` und `\` als relativ zum Arbeitsverzeichnis.
+Pfade, die mit `/` und `\` beginnen, beziehen sich im Allgemeinen auf Pfade relativ zum Laufwerkstammverzeichnis. Beispielsweise können `/filename` und `C:/filename` denselben Pfad haben. Aus Sicherheitsgründen interpretiert `wes` Pfade beginnend mit `/` und `\` als relativ zum Arbeitsverzeichnis.
 
 
 ```javascript
@@ -430,11 +433,13 @@ Bestimmen Sie den Typ des Skripts.
 
 
 ```javascript
-const { isString, isNumber, isBoolean } = require('typecheck')
+const { isString, isNumber, isBoolean, isObject } = require('typecheck')
+const log = require('log')
 
-console.log('isString("ECMAScript") // => %O', isString("ECMAScript"))
-console.log('isNumber(43.5) // => %O', isNumber(43.5))
-console.log('isBoolean(false) // => %O', isBoolean(false))
+log(() => isString("ECMAScript"))
+log(() => isNumber(43.5))
+log(() => isBoolean(false))
+log(() => isObject(function(){}))
 ```
 
 
@@ -497,12 +502,29 @@ Aus Sicherheitsgründen erstellt *bundle* eine *.json* -Datei, da *wes* Ihnen ni
 Es gibt einige Bedingungen für die Verpackung.
 
 
-1.  In einem *repository* kann nur ein Modul veröffentlicht werden.
+1.  In einem *repository* kann nur ein Modul veröffentlicht werden
+
 2.  Stellen Sie sicher, dass der Repository-Name auf *github* und der Name des lokalen Arbeitsverzeichnisses identisch sind.
-3.  Wenn Sie das Paket veröffentlichen möchten, machen Sie das Repository *public* .
-4.  Deklarieren Sie den Modulerwerb im Bereich der obersten Ebene.
-5.  Die Paket- *.json* -Datei wird in Ihrem Arbeitsverzeichnis mit dem Namen *directory_name.json* erstellt. Es kann nicht installiert werden, wenn die Datei umbenannt oder die Datei verschoben wird.
-6.  `node_modules/directory_name` schlägt das Bundle fehl, da es auf `directory_name.json` verweist.
+
+3.  Wenn Sie das Paket veröffentlichen, machen Sie bitte das Repository *public*
+
+4.  Deklarieren Sie den Modulerwerb im Bereich der obersten Ebene
+
+5.  Die Paket- *.json* -Datei wird in Ihrem Arbeitsverzeichnis mit dem Namen *directory_name.json* erstellt. Wenn Sie die Datei umbenennen oder verschieben, können Sie bei der Installation nicht darauf verweisen.
+
+6.  `node_modules/directory_name` der Ausgangspunkt des Bundles ist
+
+    ```shell
+        wes bundle directory_name
+    ```
+
+    Ohne Bündelung mit
+
+    ```shell
+        wes bundle node_modules/directory_name
+    ```
+
+    Bitte bündeln Sie mit
 
 
 ## *install*
@@ -573,7 +595,7 @@ Hier sind einige externe Module.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* bündelt *prettier* und formatiert das Skript. Auch wenn ein *Syntax Error* auftritt, wenn *@wachaon/fmt* installiert ist, können Sie die Fehlerstelle angeben.
+*@wachaon/fmt* ist ein *prettier* Paket für *wes* und formatiert das Skript. Auch wenn ein *Syntax Error* auftritt, wenn *@wachaon/fmt* installiert ist, können Sie die Fehlerstelle angeben.
 
 
 ### Installieren
@@ -625,7 +647,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
 
-## `@wachaon/edge`
+## *@wachaon/edge*
 
 
 *Internet Explorer* wird die Unterstützung mit dem 15.06.2022 abschließen. Daher ist zu erwarten, dass die Anwendung mit `require('InternetExplorer.Application')` nicht betrieben werden kann.
@@ -663,7 +685,7 @@ Es wird einfach zu bedienen sein.
 
 
 ```javascript
-const edge = require('./index')
+const edge = require('edge')
 
 edge((window, navi, res) => {
     window.rect({x: 1 ,y: 1, width: 1200, height: 500})
@@ -692,3 +714,28 @@ Wenn Sie das Skript stoppen möchten, führen `navi.emit('terminate', res)` oder
 
 
 Der Beendigungsprozess gibt `res.exports` als *.json* -Datei als Standardwert aus. Wenn Sie den Beendigungsprozess festlegen möchten, setzen Sie den Befehl „ `terminate` of `edge(callback, terminate)` .
+
+
+`window` ist kein `window` im Browser, sondern eine Instanz der *Window* -Klasse von *@wachaon/webdriver* .
+
+
+## *@wachaon/webdriver*
+
+
+Es ist ein Modul, das eine Anfrage an den *web driver* sendet, der den Browser betreibt. Eingebaut in *@wachaon/edge* . Wie *@wachaon/edge* wird für den Browserbetrieb ein *web driver* benötigt.
+
+
+### Installieren
+
+
+```shell
+wes install @wachaon/webdriver --unsafe --bare
+```
+
+
+Wenn Sie keinen *web driver* haben, laden Sie ihn herunter.
+
+
+```shell
+wes webdriver --download
+```

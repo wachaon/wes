@@ -62,7 +62,7 @@ Please configure the save destination path of *wes.js* only *ascii* .
 # How to use
 
 
-Enter the command that specifies the file that will be the starting point of the program from the `wes` keyword in the console. The script extension *.js* can be omitted.
+Enter the command to the console that specifies the file that will be the starting point of the program following the `wes` keyword. The script extension *.js* can be omitted.
 
 
 ```shell
@@ -105,7 +105,7 @@ The implementation of `--safe` `--usual` `--unsafe` `--dangerous` `--debug` is i
 # Modular system
 
 
-*wes* supports two module systems, a *commonjs module* system that uses the general `require()` and an *es module* that uses `import` . ( *dynamic import* is asynchronous processing, so it is not supported)
+*wes* supports two module systems, a *commonjs module* system that uses `require()` and an *es module* that uses `import` . ( *dynamic import* is asynchronous processing, so it is not supported)
 
 
 ## *commonjs module*
@@ -135,7 +135,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-You can also import to *ActiveX* with *require* `require('WScript.Shell')` like require ('WScript.Shell').
+You can also import to *ActiveX* with *require* `require('WScript.Shell')` .
 
 
 ```javascript
@@ -152,7 +152,7 @@ Shell.UndoMinimizeAll()
 *Chakra* , which is the execution engine of the script, interprets the syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. In *wes* , by adding *babel* to the built-in module, it is executed while sequentially transpiling to the *es module* . As a result, the processing overhead and the *wes.js* file are bloated as a cost.
 
 
-Modules described by *es module* are also transpile converted to `require()` , so *ActiveX* can be called. However, it does not support the module file encoding specification. All are read by automatic guessing.
+Modules described by *es module* are also converted to `require()` by transpile, so *ActiveX* calls are also possible. However, it does not support the module file encoding specification in *es module* . All are read by automatic guessing.
 
 
 To load it as an *es module* , set the extension to `.mjs` or the `"type"` field of `package.json` to `"module"` .
@@ -167,7 +167,7 @@ export default function sub (a, b) {
 
 
 ```javascript
-./main2.js\
+// ./main2.js
 import sub from './sub.mjs'
 
 console.log('sub(7, 3) // => %O', sub(7, 3))
@@ -192,6 +192,9 @@ Print characters to the console in `console.log` . It also supports formatted st
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
+
+
+\|
 
 
 `WScript.StdOut.WriteLine` *wes* of `WScript.StdErr.WriteLine` to output colored strings. `WScript.Echo` and `WScript.StdOut.WriteLine` are blocked from output. `WScript.StdErr.WriteLine` or `console.log` .
@@ -285,7 +288,7 @@ argv, argv.unnamed, argv.named)
 Operate the path.
 
 
-Paths starting with `/` and `\` generally refer to paths relative to the drive root. For example, `/filename` and `C:/filename` may be on the same path. For security reasons, `wes` interprets paths starting with `/` and `\` as relative to the working directory.
+Paths starting with `/` and `\` generally refer to paths relative to the drive root. For example, `/filename` and `C:/filename` may have the same path. For security reasons, `wes` interprets paths starting with `/` and `\` as relative to the working directory.
 
 
 ```javascript
@@ -430,11 +433,13 @@ Determine the type of the script.
 
 
 ```javascript
-const { isString, isNumber, isBoolean } = require('typecheck')
+const { isString, isNumber, isBoolean, isObject } = require('typecheck')
+const log = require('log')
 
-console.log('isString("ECMAScript") // => %O', isString("ECMAScript"))
-console.log('isNumber(43.5) // => %O', isNumber(43.5))
-console.log('isBoolean(false) // => %O', isBoolean(false))
+log(() => isString("ECMAScript"))
+log(() => isNumber(43.5))
+log(() => isBoolean(false))
+log(() => isObject(function(){}))
 ```
 
 
@@ -497,12 +502,29 @@ For security reasons, *bundle* creates a *.json* file because *wes* doesn't allo
 There are some conditions for packaging.
 
 
-1.  Only one module can be published in one *repository* .
+1.  Only one module can be published in one *repository*
+
 2.  Make sure that the repository name on *github* and the local working directory name are the same.
-3.  If you want to publish the package, make the repository *public* .
-4.  Declare module acquisition in top-level scope.
-5.  The package *.json* file is created in your working directory with the name *directory_name.json* . It cannot be installed if the file is renamed or the file is moved.
-6.  `node_modules/directory_name` , the bundle fails because it refers to `directory_name.json` .
+
+3.  If you publish the package, please make the repository *public*
+
+4.  Declare module acquisition in top-level scope
+
+5.  The package *.json* file is created in your working directory with the name *directory_name.json* . If you rename the file or move the file, you cannot refer to it when installing.
+
+6.  `node_modules/directory_name` is the starting point of the bundle
+
+    ```shell
+        wes bundle directory_name
+    ```
+
+    Without bundling with
+
+    ```shell
+        wes bundle node_modules/directory_name
+    ```
+
+    Please bundle with
 
 
 ## *install*
@@ -553,7 +575,7 @@ In *install* , specify the module with *@author/repository* . The implementation
 ```
 
 
-When you access the *raw* of the private repository with a browser, the *token* will be displayed, so copy the *token* and use it.
+When you access *raw* of the private repository with a browser, the *token* will be displayed, so copy the *token* and use it.
 
 
 You can also install a module in a private repository by running it in the console within the *token* 's lifetime.
@@ -573,7 +595,7 @@ Here are some external modules.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* bundles *prettier* and formats the script. Also, if a *Syntax Error* occurs with *@wachaon/fmt* installed, you can indicate the error location.
+*@wachaon/fmt* is a *prettier* packaged for *wes* and formats the script. Also, if a *Syntax Error* occurs with *@wachaon/fmt* installed, you can indicate the error location.
 
 
 ### install
@@ -625,7 +647,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
 
-## `@wachaon/edge`
+## *@wachaon/edge*
 
 
 *Internet Explorer* will complete support with 2022/6/15. As a result, it is expected that it will not be possible to operate the application with `require('InternetExplorer.Application')` .
@@ -663,7 +685,7 @@ It will be easy to use.
 
 
 ```javascript
-const edge = require('./index')
+const edge = require('edge')
 
 edge((window, navi, res) => {
     window.rect({x: 1 ,y: 1, width: 1200, height: 500})
@@ -692,3 +714,28 @@ If you want to stop the script, run `navi.emit('terminate', res)` or manually te
 
 
 The termination process outputs `res.exports` as a *.json* file as the default value. If you want to set the termination process, set `terminate` of `edge(callback, terminate)` .
+
+
+`window` is not a `window` in the browser, but an instance of the *Window* class of *@wachaon/webdriver* .
+
+
+## *@wachaon/webdriver*
+
+
+It is a module that sends a request to the *web driver* that operates the browser. Built into *@wachaon/edge* . Like *@wachaon/edge* , a *web driver* is required for browser operation.
+
+
+### install
+
+
+```shell
+wes install @wachaon/webdriver --unsafe --bare
+```
+
+
+If you don't have a *web driver* , download it.
+
+
+```shell
+wes webdriver --download
+```

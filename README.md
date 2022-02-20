@@ -52,7 +52,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 
 # 使い方
 
-コンソールに `wes` のキーワードからプログラムの起点となるファイルを指定したコマンドを入力します。
+`wes` のキーワードに続きプログラムの起点となるファイルを指定したコマンドをコンソールへ入力します。
 スクリプトの拡張子 *.js* は省略できます。
 
 ```shell
@@ -88,8 +88,7 @@ wes
 
 # モジュールシステム
 
-*wes* は一般的な `require()` を使用する *commonjs module* のシステムと `import` を使用する
-*es module* の２つのモジュールシステムに対応しています。(*dynamic import* は非同期処理の為、対応していません)
+*wes* は `require()` を使用する *commonjs module* のシステムと `import` を使用する *es module* の２つのモジュールシステムに対応しています。(*dynamic import* は非同期処理の為、対応していません)
 
 ## *commonjs module*
 
@@ -130,7 +129,7 @@ Shell.UndoMinimizeAll()
 *wes* では *babel* をビルトインモジュールに加えることで、*es module* に対しても逐次トランスパイルしながら実行しています。そのためコストとして処理のオーバーヘッドと *wes.js* ファイルが肥大化しています。
 
 *es module* で記述されているモジュールもトランスパイルで `require()` に変換されるため、*ActiveX* の呼び出しも可能です。
-しかしながらモジュールファイルのエンコード指定には対応していません。全て自動推測で読み込まれます。
+しかしながら *es module* でのモジュールファイルのエンコード指定には対応していません。全て自動推測で読み込まれます。
 
 *es module* として読み込ませるには拡張子を `.mjs` にするか `package.json` の `"type"` フィールドを `"module"` にしてください。
 
@@ -142,7 +141,7 @@ export default function sub (a, b) {
 ```
 
 ```javascript
-./main2.js\
+// ./main2.js
 import sub from './sub.mjs'
 
 console.log('sub(7, 3) // => %O', sub(7, 3))
@@ -162,6 +161,8 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
+
+| 
 
 *wes* では色付き文字列を出力する為に `WScript.StdOut.WriteLine` ではなく、`WScript.StdErr.WriteLine` を使用します。
 `WScript.Echo` や `WScript.StdOut.WriteLine` は出力を遮断されています。`WScript.StdErr.WriteLine` もしくは `console.log` を使用してください。
@@ -239,7 +240,7 @@ argv, argv.unnamed, argv.named)
 パスの操作をします。
 
 一般的には `/` および `\` から開始されるパスはドライブルートからの相対パスを指します。
-例えば `/filename` と `C:/filename` が同じパスになる場合があります。
+例えば `/filename` と `C:/filename` は同じパスになる場合があります。
 `wes` ではセキュリティーの観点から `/` および `\` で開始されるパスはワーキングディレクトリからの相対パスと解釈されます。 
 
 ```javascript
@@ -361,11 +362,13 @@ pipe()
 スクリプトの型の判定をします。
 
 ```javascript
-const { isString, isNumber, isBoolean } = require('typecheck')
+const { isString, isNumber, isBoolean, isObject } = require('typecheck')
+const log = require('log')
 
-console.log('isString("ECMAScript") // => %O', isString("ECMAScript"))
-console.log('isNumber(43.5) // => %O', isNumber(43.5))
-console.log('isBoolean(false) // => %O', isBoolean(false))
+log(() => isString("ECMAScript"))
+log(() => isNumber(43.5))
+log(() => isBoolean(false))
+log(() => isObject(function(){}))
 ```
 
 ## *zip*
@@ -415,13 +418,20 @@ wes zip -p dox.zip
 
 パッケージ化をさせるにはいくつかの条件があります。
 
-1.  １つの *repository* で公開できるモジュールは１つになります。
-2.  *github* のリポジトリ名とローカルのワーキングディレクトリ名は同名にしてください。
-3.  パッケージを公開する場合はリポジトリを *public* にしてください。
-4.  モジュールの取得はトップレベルのスコープで宣言してください。
-5.  パッケージの *.json* ファイルはワーキングディレクトリに *directory_name.json* という名前で作成されます。ファイル名の変更やファイルを移動するとインストールできません。
-6.  `node_modules/directory_name` をバンドルする場合 `directory_name.json` を参照するのでバンドルが失敗します。
-
+1.  １つの *repository* で公開できるモジュールは１つになります
+2.  *github* のリポジトリ名とローカルのワーキングディレクトリ名は同名にしてください
+3.  パッケージを公開する場合はリポジトリを *public* にしてください
+4.  モジュールの取得はトップレベルのスコープで宣言してください
+5.  パッケージの *.json* ファイルはワーキングディレクトリに *directory_name.json* という名前で作成されます。ファイル名の変更やファイルを移動するとインストールする際に参照できません
+6.  `node_modules/directory_name` をバンドルの起点にする場合は
+    ```shell
+        wes bundle directory_name
+    ```
+    でバンドルせずに
+    ```shell
+        wes bundle node_modules/directory_name
+    ```
+    でバンドルしてください
 ## *install*
 
 *github* に公開されている *wes* 用のパッケージをインストールするのに使用します。
@@ -476,7 +486,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* は *prettier* をバンドルしたもので、スクリプトのフォーマットをします。
+*@wachaon/fmt* は *prettier* を *wes* 用にパッケージ化したもので、スクリプトのフォーマットをします。
 また、*@wachaon/fmt* がインストールされている状態で *Syntax Error* が発生した場合に
 そのエラー箇所を提示できます。
 
@@ -519,7 +529,7 @@ const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
-## `@wachaon/edge`
+## *@wachaon/edge*
 
 *Internet Explorer* が 2022/6/15 を以てサポートを完了します。それに伴い `require('InternetExplorer.Application')` でのアプリケーションの操作も不可能になると予想されます。
 
@@ -545,7 +555,7 @@ wes edge --download
 簡単な使い方になります。
 
 ```javascript
-const edge = require('./index')
+const edge = require('edge')
 
 edge((window, navi, res) => {
     window.rect({x: 1 ,y: 1, width: 1200, height: 500})
@@ -570,3 +580,23 @@ edge((window, navi, res) => {
 
 終了処理はデフォルト値として `res.exports` を *.json* ファイルとして出力します。
 終了処理を設定したい場合は、`edge(callback, terminate)` の `terminate` を設定します。
+
+`window` はブラウザでの `window` ではなく、*@wachaon/webdriver* の *Window* クラスのインスタンスになります。
+
+## *@wachaon/webdriver*
+
+ブラウザを操作する *web driver* に対してリクエストを送るモジュールになります。
+*@wachaon/edge* に組み込まれています。
+*@wachaon/edge* と同様ブラウザ操作には *web driver* が別途必要になります。
+
+### インストール
+
+```shell
+wes install @wachaon/webdriver --unsafe --bare
+```
+
+*web driver* がなければダウンロードします。
+
+```shell
+wes webdriver --download
+```

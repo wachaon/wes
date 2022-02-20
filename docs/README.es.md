@@ -62,7 +62,7 @@ Configure la ruta de destino para guardar de *wes.js* solo *ascii* .
 # Cómo utilizar
 
 
-Ingrese el comando que especifica el archivo que será el punto de partida del programa desde la palabra clave `wes` en la consola. La extensión de secuencia de comandos *.js* se puede omitir.
+Ingrese el comando a la consola que especifica el archivo que será el punto de partida del programa siguiendo la palabra clave `wes` . La extensión de secuencia de comandos *.js* se puede omitir.
 
 
 ```shell
@@ -105,7 +105,7 @@ La implementación de `--safe` `--usual` `--unsafe` `--dangerous` `--debug` est�
 # Sistema modular
 
 
-*wes* admite dos sistemas de módulos, un sistema *commonjs module* que usa el `require()` y un *es module* que usa `import` . ( *dynamic import* es un procesamiento asincrónico, por lo que no se admite)
+*wes* admite dos sistemas de módulos, un sistema *commonjs module* que usa `require()` y un *es module* que usa `import` . ( *dynamic import* es un procesamiento asincrónico, por lo que no se admite)
 
 
 ## *commonjs module*
@@ -114,7 +114,7 @@ La implementación de `--safe` `--usual` `--unsafe` `--dangerous` `--debug` est�
 Administre módulos asignándolos a `module.exports` y llamando con `require()` . Para mayor comodidad, también es compatible con el directorio *node_modules* .
 
 
-*wes* `require()` adivina automáticamente la codificación del archivo del módulo, pero si no lo hace correctamente, puede especificar la codificación con el segundo argumento.
+*wes* `require()` adivina automáticamente la codificación del archivo del módulo, pero si no adivina correctamente, puede especificar la codificación con el segundo argumento.
 
 
 ```javascript
@@ -135,7 +135,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-También puede importar a *ActiveX* como *require* `require('WScript.Shell')` con require.
+También puede importar a *ActiveX* con *require* `require('WScript.Shell')` .
 
 
 ```javascript
@@ -152,7 +152,7 @@ Shell.UndoMinimizeAll()
 *Chakra* , que es el motor de ejecución del script, interpreta la sintaxis como `imoprt` , pero no se puede ejecutar tal cual porque el método de procesamiento como `cscript` no está definido. En *wes* , al agregar *babel* al módulo incorporado, se ejecuta mientras se transpila secuencialmente al *es module* . Como resultado, la sobrecarga de procesamiento y el archivo *wes.js* se inflan como un costo.
 
 
-Los módulos descritos por el *es module* es también se transpilan convertidos a `require()` , por lo que se puede llamar a *ActiveX* . Sin embargo, no es compatible con la especificación de codificación de archivos del módulo. Todos se leen por adivinación automática.
+Los módulos descritos por el *es module* es también se convierten en `require()` mediante transpile, por lo que también son posibles las llamadas *ActiveX* . Sin embargo, no es compatible con la especificación de codificación de archivos del módulo en el *es module* . Todos se leen por adivinación automática.
 
 
 Para cargarlo como un *es module* , establezca la extensión en `.mjs` o el campo `"type"` de `package.json` en `"module"` .
@@ -167,7 +167,7 @@ export default function sub (a, b) {
 
 
 ```javascript
-./main2.js\
+// ./main2.js
 import sub from './sub.mjs'
 
 console.log('sub(7, 3) // => %O', sub(7, 3))
@@ -192,6 +192,9 @@ Imprime caracteres en la consola en `console.log` . También admite cadenas form
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
+
+
+\|
 
 
 `WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` para generar cadenas de colores. `WScript.Echo` y `WScript.StdOut.WriteLine` están bloqueados para la salida. `WScript.StdErr.WriteLine` o `console.log` .
@@ -253,7 +256,7 @@ console.log(orange + 'Hello World')
 ## *argv*
 
 
-Obtiene el argumento de la línea de comandos. Los argumentos de la línea de comandos en `cscript.exe` declaran argumentos con nombre con `/` `--` mientras que *wes* declara argumentos con nombre con `-` y -.
+Obtiene el argumento de la línea de comando. Los argumentos de la línea de comandos en `cscript.exe` declaran argumentos con nombre con `/` `--` mientras que *wes* declara argumentos con nombre con `-` y -.
 
 
 *argv.unnamed* y *argv.named* el tipo de valor del argumento de la línea de comando en uno de los *Boolean* de *Number* de *String* .
@@ -285,7 +288,7 @@ argv, argv.unnamed, argv.named)
 Operar el camino.
 
 
-Las rutas que comienzan con `/` y `\` generalmente se refieren a rutas relativas a la raíz de la unidad. Por ejemplo, `/filename` y `C:/filename` pueden estar en la misma ruta. Por razones de seguridad, `wes` interpreta las rutas que comienzan con `/` y `\` como relativas al directorio de trabajo.
+Las rutas que comienzan con `/` y `\` generalmente se refieren a rutas relativas a la raíz de la unidad. Por ejemplo, `/filename` y `C:/filename` pueden tener la misma ruta. Por razones de seguridad, `wes` interpreta las rutas que comienzan con `/` y `\` como relativas al directorio de trabajo.
 
 
 ```javascript
@@ -430,11 +433,13 @@ Determinar el tipo de guión.
 
 
 ```javascript
-const { isString, isNumber, isBoolean } = require('typecheck')
+const { isString, isNumber, isBoolean, isObject } = require('typecheck')
+const log = require('log')
 
-console.log('isString("ECMAScript") // => %O', isString("ECMAScript"))
-console.log('isNumber(43.5) // => %O', isNumber(43.5))
-console.log('isBoolean(false) // => %O', isBoolean(false))
+log(() => isString("ECMAScript"))
+log(() => isNumber(43.5))
+log(() => isBoolean(false))
+log(() => isObject(function(){}))
 ```
 
 
@@ -497,12 +502,29 @@ Por razones de seguridad, *bundle* crea un archivo *.json* porque *wes* no le pe
 Hay algunas condiciones para el embalaje.
 
 
-1.  Solo se puede publicar un módulo en un *repository* .
+1.  Solo se puede publicar un módulo en un *repository*
+
 2.  Asegúrese de que el nombre del repositorio en *github* y el nombre del directorio de trabajo local sean iguales.
-3.  Si desea publicar el paquete, haga *public* el repositorio.
-4.  Declarar la adquisición del módulo en el ámbito de nivel superior.
-5.  El archivo *.json* del paquete se crea en su *directory_name.json* de trabajo con el nombre nombre_directorio.json. No se puede instalar si se cambia el nombre del archivo o se mueve el archivo.
-6.  `node_modules/directory_name` , el paquete falla porque hace referencia a `directory_name.json` .
+
+3.  Si publica el paquete, haga *public* el repositorio
+
+4.  Declarar la adquisición del módulo en el ámbito de nivel superior
+
+5.  El archivo *.json* del paquete se crea en su *directory_name.json* de trabajo con el nombre nombre_directorio.json. Si cambia el nombre del archivo o lo mueve, no podrá consultarlo durante la instalación.
+
+6.  `node_modules/directory_name` es el punto de partida del paquete
+
+    ```shell
+        wes bundle directory_name
+    ```
+
+    sin liarse con
+
+    ```shell
+        wes bundle node_modules/directory_name
+    ```
+
+    Paquete con
 
 
 ## *install*
@@ -553,7 +575,7 @@ En la *install* , especifique el módulo con *@author/repository* . La implement
 ```
 
 
-Cuando acceda *raw* al repositorio privado con un navegador, se mostrará el *token* , así que copie el *token* y utilícelo.
+Cuando acceda al *raw* del repositorio privado con un navegador, se mostrará el *token* , así que copie el *token* y utilícelo.
 
 
 También puede instalar un módulo en un repositorio privado ejecutándolo en la consola durante la vigencia del *token* .
@@ -573,7 +595,7 @@ Aquí hay algunos módulos externos.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* *prettier* y formatea el script. Además, si ocurre un *Syntax Error* con *@wachaon/fmt* instalado, puede indicar la ubicación del error.
+*@wachaon/fmt* es un paquete *prettier* para *wes* y formatea el script. Además, si ocurre un *Syntax Error* con *@wachaon/fmt* instalado, puede indicar la ubicación del error.
 
 
 ### Instalar en pc
@@ -625,7 +647,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
 
-## `@wachaon/edge`
+## *@wachaon/edge*
 
 
 *Internet Explorer* completará el soporte el 15/6/2022. Como resultado, se espera que no sea posible operar la aplicación con `require('InternetExplorer.Application')` .
@@ -663,7 +685,7 @@ Será fácil de usar.
 
 
 ```javascript
-const edge = require('./index')
+const edge = require('edge')
 
 edge((window, navi, res) => {
     window.rect({x: 1 ,y: 1, width: 1200, height: 500})
@@ -691,4 +713,29 @@ Al hacerlo controlado por eventos, es posible cambiar fácilmente a la operació
 Si desea detener la secuencia de comandos, ejecute `navi.emit('terminate', res)` o finalice manualmente *Edge* .
 
 
-El proceso de finalización genera `res.exports` como un archivo *.json* como valor predeterminado. Si desea configurar el proceso de terminación, configure la `terminate` de `edge(callback, terminate)` .
+El proceso de finalización genera `res.exports` como un archivo *.json* como valor predeterminado. Si desea establecer el proceso de terminación, establezca la `terminate` de `edge(callback, terminate)` .
+
+
+`window` no es una `window` en el navegador, sino una instancia de la clase *Window* de *@wachaon/webdriver* .
+
+
+## *@wachaon/webdriver*
+
+
+Es un módulo que envía una solicitud al *web driver* que opera el navegador. Integrado en *@wachaon/edge* . Al igual que *@wachaon/edge* , se requiere un *web driver* para el funcionamiento del navegador.
+
+
+### Instalar en pc
+
+
+```shell
+wes install @wachaon/webdriver --unsafe --bare
+```
+
+
+Si no tiene un *web driver* , descárguelo.
+
+
+```shell
+wes webdriver --download
+```

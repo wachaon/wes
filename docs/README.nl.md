@@ -62,7 +62,7 @@ Configureer het opslagbestemmingspad van *wes.js* alleen *ascii* .
 # Hoe te gebruiken
 
 
-Voer de opdracht in die het bestand specificeert dat het startpunt van het programma zal zijn vanaf het `wes` -sleutelwoord in de console. De *.js* kan worden weggelaten.
+Voer de opdracht in op de console die het bestand specificeert dat het startpunt zal zijn van het programma dat het `wes` -sleutelwoord volgt. De *.js* kan worden weggelaten.
 
 
 ```shell
@@ -105,7 +105,7 @@ De implementatie van `--safe` `--usual` `--unsafe` `--dangerous` `--debug` is on
 # Modulesysteem
 
 
-*wes* ondersteunt twee modulesystemen, een *commonjs module* dat gebruikmaakt van de algemene required `require()` en een *es module* die `import` gebruikt. ( *dynamic import* is asynchrone verwerking, dus het wordt niet ondersteund)
+*wes* ondersteunt twee modulesystemen, een *commonjs module* dat gebruikmaakt `require()` en een *es module* die `import` gebruikt. ( *dynamic import* is asynchrone verwerking, dus het wordt niet ondersteund)
 
 
 ## *commonjs module*
@@ -152,7 +152,7 @@ Shell.UndoMinimizeAll()
 *Chakra* , de uitvoeringsengine van het script, interpreteert de syntaxis zoals `imoprt` , maar het kan niet worden uitgevoerd zoals het is omdat de verwerkingsmethode als `cscript` niet is gedefinieerd. In *wes* , door *babel* toe te voegen aan de ingebouwde module, wordt het uitgevoerd terwijl het sequentieel wordt getranspileerd naar de *es module* . Als gevolg hiervan worden de verwerkingsoverhead en het *wes.js* -bestand als kosten opgeblazen.
 
 
-Modules beschreven door *es module* worden ook geconverteerd naar `require()` door transpile, dus *ActiveX* -aanroepen zijn ook mogelijk. Het ondersteunt echter niet de coderingsspecificatie van het modulebestand. Ze worden allemaal gelezen door automatisch te raden.
+Modules beschreven door *es module* worden ook geconverteerd naar `require()` door transpile, dus *ActiveX* -aanroepen zijn ook mogelijk. Het ondersteunt echter niet de coderingsspecificatie van het modulebestand in *es module* . Ze worden allemaal gelezen door automatisch te raden.
 
 
 Om het als een *es module* te laden, stelt u de extensie in op `.mjs` of het veld `"type"` van `package.json` op `"module"` .
@@ -167,7 +167,7 @@ export default function sub (a, b) {
 
 
 ```javascript
-./main2.js\
+// ./main2.js
 import sub from './sub.mjs'
 
 console.log('sub(7, 3) // => %O', sub(7, 3))
@@ -192,6 +192,9 @@ Druk tekens af naar de console in `console.log` . Het ondersteunt ook geformatte
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
+
+
+\|
 
 
 `WScript.StdOut.WriteLine` *wes* van `WScript.StdErr.WriteLine` om gekleurde tekenreeksen uit te voeren. `WScript.Echo` en `WScript.StdOut.WriteLine` zijn geblokkeerd voor uitvoer. `WScript.StdErr.WriteLine` of `console.log` .
@@ -285,7 +288,7 @@ argv, argv.unnamed, argv.named)
 Bedien het pad.
 
 
-Paden die beginnen met `/` en `\` verwijzen over het algemeen naar paden die relatief zijn ten opzichte van de stationsroot. Bijvoorbeeld, `/filename` en `C:/filename` kunnen zich op hetzelfde pad bevinden. Om veiligheidsredenen interpreteert `wes` paden die beginnen met `/` en `\` als relatief ten opzichte van de werkdirectory.
+Paden die beginnen met `/` en `\` verwijzen over het algemeen naar paden die relatief zijn ten opzichte van de stationsroot. Bijvoorbeeld, `/filename` en `C:/filename` kunnen hetzelfde pad hebben. Om veiligheidsredenen interpreteert `wes` paden die beginnen met `/` en `\` als relatief ten opzichte van de werkdirectory.
 
 
 ```javascript
@@ -430,11 +433,13 @@ Bepaal het type script.
 
 
 ```javascript
-const { isString, isNumber, isBoolean } = require('typecheck')
+const { isString, isNumber, isBoolean, isObject } = require('typecheck')
+const log = require('log')
 
-console.log('isString("ECMAScript") // => %O', isString("ECMAScript"))
-console.log('isNumber(43.5) // => %O', isNumber(43.5))
-console.log('isBoolean(false) // => %O', isBoolean(false))
+log(() => isString("ECMAScript"))
+log(() => isNumber(43.5))
+log(() => isBoolean(false))
+log(() => isObject(function(){}))
 ```
 
 
@@ -473,10 +478,7 @@ Als `path` de extensie `.zip` heeft, wordt `unzip()` verwerkt en is er geen besc
 | `2`      | mapbestand naar `dest`                |
 
 
-| genaamd  | korte naam | Beschrijving                          |
-| -------- | ---------- | ------------------------------------- |
-| `--path` | `-p`       | `path` Map of bestand om in te voeren |
-| `--dest` | `-d`       | mapbestand naar `dest`                |
+undefined
 
 
 # Module bundelen en installeren
@@ -497,12 +499,29 @@ Om veiligheidsredenen maakt *bundle* een *.json* -bestand omdat *wes* u niet toe
 Er zijn enkele voorwaarden voor het verpakken.
 
 
-1.  Er kan slechts één module in één *repository* worden gepubliceerd.
+1.  Er kan slechts één module in één *repository* worden gepubliceerd
+
 2.  Zorg ervoor dat de naam van de repository op *github* en de naam van de lokale werkmap hetzelfde zijn.
-3.  Als u het pakket wilt publiceren, maakt u de repository *public* .
-4.  Declareer module-acquisitie in het toepassingsgebied van het hoogste niveau.
-5.  Het pakket *.json* -bestand wordt in uw werkdirectory gemaakt met de naam *directory_name.json* . Het kan niet worden geïnstalleerd als het bestand is hernoemd of als het bestand is verplaatst.
-6.  `node_modules/directory_name` , mislukt de bundel omdat deze verwijst naar `directory_name.json` .
+
+3.  Als je het pakket publiceert, maak dan de repository *public*
+
+4.  Verkrijg module-acquisitie op het hoogste niveau
+
+5.  Het pakket *.json* -bestand wordt in uw werkdirectory gemaakt met de naam *directory_name.json* . Als u de naam van het bestand wijzigt of het bestand verplaatst, kunt u er tijdens de installatie niet naar verwijzen.
+
+6.  `node_modules/directory_name` het startpunt van de bundel is
+
+    ```shell
+        wes bundle directory_name
+    ```
+
+    Zonder bundelen met
+
+    ```shell
+        wes bundle node_modules/directory_name
+    ```
+
+    Bundel a.u.b. met
 
 
 ## *install*
@@ -573,7 +592,7 @@ Hier zijn enkele externe modules.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* bundelt *prettier* en formatteert het script. Als er een *Syntax Error* optreedt met *@wachaon/fmt* geïnstalleerd, kunt u ook de locatie van de fout aangeven.
+*@wachaon/fmt* is een *prettier* verpakking voor *wes* en formatteert het script. Als er een *Syntax Error* optreedt met *@wachaon/fmt* geïnstalleerd, kunt u ook de locatie van de fout aangeven.
 
 
 ### installeren
@@ -625,7 +644,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
 
-## `@wachaon/edge`
+## *@wachaon/edge*
 
 
 *Internet Explorer* wordt vanaf 2022/6/15 volledig ondersteund. Als gevolg hiervan wordt verwacht dat het niet mogelijk zal zijn om de applicatie te gebruiken met `require('InternetExplorer.Application')` .
@@ -663,7 +682,7 @@ Het zal gemakkelijk te gebruiken zijn.
 
 
 ```javascript
-const edge = require('./index')
+const edge = require('edge')
 
 edge((window, navi, res) => {
     window.rect({x: 1 ,y: 1, width: 1200, height: 500})
@@ -692,3 +711,28 @@ Als u het script wilt stoppen, voert u `navi.emit('terminate', res)` of beëindi
 
 
 Het beëindigingsproces voert `res.exports` als een *.json* bestand als de standaardwaarde. Als u het beëindigingsproces wilt instellen, stelt u het `terminate` van de `edge(callback, terminate)` .
+
+
+`window` is geen `window` in de browser, maar een instantie van de klasse *Window* van *@wachaon/webdriver* .
+
+
+## *@wachaon/webdriver*
+
+
+Het is een module die een verzoek stuurt naar de *web driver* die de browser bedient. Ingebouwd in *@wachaon/edge* . Net als *@wachaon/edge* , is een *web driver* vereist voor de browserwerking.
+
+
+### installeren
+
+
+```shell
+wes install @wachaon/webdriver --unsafe --bare
+```
+
+
+Als u geen *web driver* heeft, download het dan.
+
+
+```shell
+wes webdriver --download
+```
