@@ -50,7 +50,7 @@
 يحتاج Wes فقط إلى *wes* *wes.js* للتنزيل ، انسخ *wes.js* من [*@wachaon/wes*](https://github.com/wachaon/wes) أو قم بتشغيل الأمر التالي في وحدة التحكم.
 
 
-```shell
+```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
@@ -65,7 +65,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 أدخل الأمر إلى وحدة التحكم التي تحدد الملف الذي سيكون نقطة انطلاق البرنامج بعد الكلمة الأساسية `wes` . يمكن حذف ملحق البرنامج النصي *.js* .
 
 
-```shell
+```bat
 wes index
 ```
 
@@ -73,7 +73,7 @@ wes index
 أيضًا ، يحتوي *wes* على *REPL* ، لذلك إذا بدأت باستخدام `wes` فقط ، يمكنك إدخال البرنامج النصي مباشرة.
 
 
-```shell
+```bat
 wes
 ```
 
@@ -265,7 +265,7 @@ console.log(orange + 'Hello World')
 أدخل وسيطات سطر الأوامر مع *REPL* .
 
 
-```shell
+```bat
 wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
@@ -463,7 +463,7 @@ console.log(unzip('dox.zip'))
 يمكن استخدامه مع كل من *CLI (Command Line Interface)* *module* .
 
 
-```shell
+```bat
 wes zip docs\* dox.zip
 wes zip -p dox.zip
 ```
@@ -514,13 +514,13 @@ wes zip -p dox.zip
 
 6.  `node_modules/directory_name` هي نقطة البداية للحزمة
 
-    ```shell
+    ```bat
         wes bundle directory_name
     ```
 
     بدون تجميع مع
 
-    ```shell
+    ```bat
         wes bundle node_modules/directory_name
     ```
 
@@ -539,7 +539,7 @@ wes zip -p dox.zip
 قم بتمرير الوسائط *install* بالتنسيق `@author/repository` .
 
 
-```shell
+```bat
 wes install @wachaon/fmt
 ```
 
@@ -556,7 +556,7 @@ wes install @wachaon/fmt
 يمكن أن يحذف الخيار `--bare` الوسيطة `require` من `author@repository` إلى `repository` . `--global` الوحدات النمطية المثبتة لجميع البرامج النصية. يجب تحديد الخيارات المذكورة أعلاه في نفس الوقت الذي يتم فيه تحديد خيار أمان *wes* `--unsafe` أو `--dangerous` .
 
 
-```shell
+```bat
 wes install @wachaon/fmt --bare --unsafe
 ```
 
@@ -581,7 +581,7 @@ wes install @wachaon/fmt --bare --unsafe
 يمكنك أيضًا تثبيت وحدة نمطية في مستودع خاص عن طريق تشغيلها في وحدة التحكم خلال عمر *token* .
 
 
-```shell
+```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
@@ -601,7 +601,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ### ثبيت
 
 
-```shell
+```bat
 wes install @wachaon/fmt
 ```
 
@@ -615,7 +615,7 @@ wes install @wachaon/fmt
 #### تستخدم *CLI* .
 
 
-```shell
+```bat
 wes @wachaon/fmt src/sample --write
 ```
 
@@ -662,7 +662,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 أولاً ، قم بتثبيت الوحدة.
 
 
-```shell
+```bat
 wes install @wachaon/edge --unsafe --bare
 ```
 
@@ -670,7 +670,7 @@ wes install @wachaon/edge --unsafe --bare
 ثم قم بتنزيل *web driver* .
 
 
-```shell
+```bat
 wes edge --download
 ```
 
@@ -728,7 +728,7 @@ edge((window, navi, res) => {
 ### ثبيت
 
 
-```shell
+```bat
 wes install @wachaon/webdriver --unsafe --bare
 ```
 
@@ -736,6 +736,6 @@ wes install @wachaon/webdriver --unsafe --bare
 إذا لم يكن لديك *web driver* ، فقم بتنزيله.
 
 
-```shell
+```bat
 wes webdriver --download
 ```

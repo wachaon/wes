@@ -50,7 +50,7 @@ Sila pilih ayat dalam bahasa lain daripada yang berikut.
 Wes hanya memerlukan *wes* *wes.js* . Untuk memuat turun, salin *wes.js* daripada [*@wachaon/wes*](https://github.com/wachaon/wes) atau jalankan arahan berikut dalam konsol.
 
 
-```shell
+```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
@@ -65,7 +65,7 @@ Sila konfigurasikan laluan simpan destinasi untuk *wes.js* sahaja *ascii* .
 Masukkan arahan ke konsol yang menentukan fail yang akan menjadi titik permulaan program berikutan kata kunci `wes` . Sambungan skrip *.js* boleh diabaikan.
 
 
-```shell
+```bat
 wes index
 ```
 
@@ -73,7 +73,7 @@ wes index
 Selain itu, *wes* mempunyai *REPL* , jadi jika anda memulakannya hanya dengan `wes` , anda boleh memasukkan skrip terus.
 
 
-```shell
+```bat
 wes
 ```
 
@@ -265,7 +265,7 @@ Mendapat hujah baris arahan. Argumen baris arahan dalam `cscript.exe` mengisytih
 Masukkan argumen baris arahan bersama *REPL* .
 
 
-```shell
+```bat
 wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
@@ -463,7 +463,7 @@ Kad bebas `*` boleh ditulis dalam `path` `zip(path, destinationPath)` .
 Ia boleh digunakan dengan kedua-dua *CLI (Command Line Interface)* dan *module* .
 
 
-```shell
+```bat
 wes zip docs\* dox.zip
 wes zip -p dox.zip
 ```
@@ -514,13 +514,13 @@ Terdapat beberapa syarat untuk pembungkusan.
 
 6.  `node_modules/directory_name` ialah titik permulaan berkas
 
-    ```shell
+    ```bat
         wes bundle directory_name
     ```
 
     Tanpa digabungkan dengan
 
-    ```shell
+    ```bat
         wes bundle node_modules/directory_name
     ```
 
@@ -539,7 +539,7 @@ Digunakan untuk memasang pakej untuk *wes* diterbitkan di *github* .
 Lulus hujah untuk *install* dalam format `@author/repository` .
 
 
-```shell
+```bat
 wes install @wachaon/fmt
 ```
 
@@ -556,7 +556,7 @@ wes install @wachaon/fmt
 `--bare` boleh menghilangkan hujah `require` daripada `author@repository` ke `repository` . `--global` menjadikan modul yang dipasang tersedia untuk semua skrip. Pilihan di atas mesti dinyatakan pada masa yang sama dengan pilihan keselamatan *wes* `--unsafe` atau `--dangerous` .
 
 
-```shell
+```bat
 wes install @wachaon/fmt --bare --unsafe
 ```
 
@@ -581,7 +581,7 @@ Apabila anda mengakses *raw* repositori peribadi dengan penyemak imbas, *token* 
 Anda juga boleh memasang modul dalam repositori peribadi dengan menjalankannya dalam konsol dalam tempoh hayat *token* .
 
 
-```shell
+```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
@@ -601,7 +601,7 @@ Berikut adalah beberapa modul luaran.
 ### pasang
 
 
-```shell
+```bat
 wes install @wachaon/fmt
 ```
 
@@ -615,7 +615,7 @@ Jika terdapat *.prettierrc* (format JSON) dalam direktori kerja, ia akan ditunju
 #### Digunakan sebagai *CLI* .
 
 
-```shell
+```bat
 wes @wachaon/fmt src/sample --write
 ```
 
@@ -662,7 +662,7 @@ Alternatifnya ialah dengan mengendalikan *Microsoft Edge based on Chromium* mela
 Pertama, pasang modul.
 
 
-```shell
+```bat
 wes install @wachaon/edge --unsafe --bare
 ```
 
@@ -670,7 +670,7 @@ wes install @wachaon/edge --unsafe --bare
 Kemudian muat turun *web driver* .
 
 
-```shell
+```bat
 wes edge --download
 ```
 
@@ -728,7 +728,7 @@ Ia adalah modul yang menghantar permintaan kepada *web driver* yang mengendalika
 ### pasang
 
 
-```shell
+```bat
 wes install @wachaon/webdriver --unsafe --bare
 ```
 
@@ -736,6 +736,6 @@ wes install @wachaon/webdriver --unsafe --bare
 Jika anda tidak mempunyai *web driver* , muat turunnya.
 
 
-```shell
+```bat
 wes webdriver --download
 ```

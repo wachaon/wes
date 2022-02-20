@@ -50,7 +50,7 @@ Seleccione oraciones en otros idiomas de las siguientes.
 Wes solo necesita el *wes* *wes.js* Para descargar, copie *wes.js* desde [*@wachaon/wes*](https://github.com/wachaon/wes) o ejecute el siguiente comando en la consola.
 
 
-```shell
+```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
@@ -65,7 +65,7 @@ Configure la ruta de destino para guardar de *wes.js* solo *ascii* .
 Ingrese el comando a la consola que especifica el archivo que será el punto de partida del programa siguiendo la palabra clave `wes` . La extensión de secuencia de comandos *.js* se puede omitir.
 
 
-```shell
+```bat
 wes index
 ```
 
@@ -73,7 +73,7 @@ wes index
 Además, *wes* tiene un *REPL* , por lo que si lo inicia solo con `wes` , puede ingresar el script directamente.
 
 
-```shell
+```bat
 wes
 ```
 
@@ -265,7 +265,7 @@ Obtiene el argumento de la línea de comando. Los argumentos de la línea de com
 Introduzca los argumentos de la línea de comandos junto con *REPL* .
 
 
-```shell
+```bat
 wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
@@ -463,7 +463,7 @@ Los comodines `*` se pueden escribir en la `path` del `zip(path, destinationPath
 Se puede utilizar tanto con *CLI (Command Line Interface)* como con el *module* .
 
 
-```shell
+```bat
 wes zip docs\* dox.zip
 wes zip -p dox.zip
 ```
@@ -514,13 +514,13 @@ Hay algunas condiciones para el embalaje.
 
 6.  `node_modules/directory_name` es el punto de partida del paquete
 
-    ```shell
+    ```bat
         wes bundle directory_name
     ```
 
     sin liarse con
 
-    ```shell
+    ```bat
         wes bundle node_modules/directory_name
     ```
 
@@ -539,7 +539,7 @@ Se usa para instalar el paquete para *wes* publicado en *github* .
 Pase argumentos para *install* en el formato `@author/repository` .
 
 
-```shell
+```bat
 wes install @wachaon/fmt
 ```
 
@@ -556,7 +556,7 @@ wes install @wachaon/fmt
 `--bare` puede omitir el argumento `require` de `author@repository` a `repository` . `--global` hace que los módulos instalados estén disponibles para todos los scripts. Las opciones anteriores deben especificarse al mismo tiempo que la opción de seguridad *wes* `--unsafe` o `--dangerous` .
 
 
-```shell
+```bat
 wes install @wachaon/fmt --bare --unsafe
 ```
 
@@ -581,7 +581,7 @@ Cuando acceda al *raw* del repositorio privado con un navegador, se mostrará el
 También puede instalar un módulo en un repositorio privado ejecutándolo en la consola durante la vigencia del *token* .
 
 
-```shell
+```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
@@ -601,7 +601,7 @@ Aquí hay algunos módulos externos.
 ### Instalar en pc
 
 
-```shell
+```bat
 wes install @wachaon/fmt
 ```
 
@@ -615,7 +615,7 @@ Si hay *.prettierrc* (formato JSON) en el directorio de trabajo, se reflejará e
 #### Utilizado como *CLI* .
 
 
-```shell
+```bat
 wes @wachaon/fmt src/sample --write
 ```
 
@@ -662,7 +662,7 @@ Una alternativa sería operar *Microsoft Edge based on Chromium* través del *we
 Primero, instale el módulo.
 
 
-```shell
+```bat
 wes install @wachaon/edge --unsafe --bare
 ```
 
@@ -670,7 +670,7 @@ wes install @wachaon/edge --unsafe --bare
 Luego descargue el *web driver* .
 
 
-```shell
+```bat
 wes edge --download
 ```
 
@@ -728,7 +728,7 @@ Es un módulo que envía una solicitud al *web driver* que opera el navegador. I
 ### Instalar en pc
 
 
-```shell
+```bat
 wes install @wachaon/webdriver --unsafe --bare
 ```
 
@@ -736,6 +736,6 @@ wes install @wachaon/webdriver --unsafe --bare
 Si no tiene un *web driver* , descárguelo.
 
 
-```shell
+```bat
 wes webdriver --download
 ```

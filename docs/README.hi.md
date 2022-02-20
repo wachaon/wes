@@ -50,7 +50,7 @@
 *wes.js* *wes* की आवश्यकता है। डाउनलोड करने के लिए, *wes.js* को [*@wachaon/wes*](https://github.com/wachaon/wes) से कॉपी करें या कंसोल में निम्न कमांड चलाएँ।
 
 
-```shell
+```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
@@ -65,7 +65,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 कंसोल में कमांड दर्ज करें जो उस फ़ाइल को निर्दिष्ट करता है जो `wes` कीवर्ड के बाद प्रोग्राम का शुरुआती बिंदु होगा। स्क्रिप्ट एक्सटेंशन *.js* को छोड़ा जा सकता है।
 
 
-```shell
+```bat
 wes index
 ```
 
@@ -73,7 +73,7 @@ wes index
 साथ ही, *wes* का *REPL* है, इसलिए यदि आप इसे केवल `wes` से प्रारंभ करते हैं, तो आप सीधे स्क्रिप्ट दर्ज कर सकते हैं।
 
 
-```shell
+```bat
 wes
 ```
 
@@ -265,7 +265,7 @@ console.log(orange + 'Hello World')
 *REPL* के साथ कमांड लाइन तर्क दर्ज करें।
 
 
-```shell
+```bat
 wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
@@ -463,7 +463,7 @@ console.log(unzip('dox.zip'))
 इसका उपयोग *CLI (Command Line Interface)* और *module* दोनों के साथ किया जा सकता है।
 
 
-```shell
+```bat
 wes zip docs\* dox.zip
 wes zip -p dox.zip
 ```
@@ -514,13 +514,13 @@ wes zip -p dox.zip
 
 6.  `node_modules/directory_name` बंडल का प्रारंभिक बिंदु है
 
-    ```shell
+    ```bat
         wes bundle directory_name
     ```
 
     के साथ बंडल किए बिना
 
-    ```shell
+    ```bat
         wes bundle node_modules/directory_name
     ```
 
@@ -539,7 +539,7 @@ wes zip -p dox.zip
 `@author/repository` प्रारूप में *install* के लिए तर्क पास करें।
 
 
-```shell
+```bat
 wes install @wachaon/fmt
 ```
 
@@ -556,7 +556,7 @@ wes install @wachaon/fmt
 `--bare` विकल्प `author@repository` से `repository` में `require` तर्क को छोड़ सकता है। `--global` विकल्प संस्थापित मॉड्यूल को सभी स्क्रिप्ट के लिए उपलब्ध कराता है। उपरोक्त विकल्पों को उसी समय निर्दिष्ट किया जाना चाहिए जैसे कि *wes* सुरक्षा विकल्प `--unsafe` or `--dangerous` ।
 
 
-```shell
+```bat
 wes install @wachaon/fmt --bare --unsafe
 ```
 
@@ -581,7 +581,7 @@ wes install @wachaon/fmt --bare --unsafe
 आप एक निजी रिपॉजिटरी में एक मॉड्यूल को *token* के जीवनकाल में कंसोल में चलाकर भी स्थापित कर सकते हैं।
 
 
-```shell
+```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
@@ -601,7 +601,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ### इंस्टॉल
 
 
-```shell
+```bat
 wes install @wachaon/fmt
 ```
 
@@ -615,7 +615,7 @@ wes install @wachaon/fmt
 #### *CLI* के रूप में उपयोग किया जाता है।
 
 
-```shell
+```bat
 wes @wachaon/fmt src/sample --write
 ```
 
@@ -662,7 +662,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 सबसे पहले, मॉड्यूल स्थापित करें।
 
 
-```shell
+```bat
 wes install @wachaon/edge --unsafe --bare
 ```
 
@@ -670,7 +670,7 @@ wes install @wachaon/edge --unsafe --bare
 फिर *web driver* डाउनलोड करें।
 
 
-```shell
+```bat
 wes edge --download
 ```
 
@@ -728,7 +728,7 @@ edge((window, navi, res) => {
 ### इंस्टॉल
 
 
-```shell
+```bat
 wes install @wachaon/webdriver --unsafe --bare
 ```
 
@@ -736,6 +736,6 @@ wes install @wachaon/webdriver --unsafe --bare
 यदि आपके पास *web driver* नहीं है, तो इसे डाउनलोड करें।
 
 
-```shell
+```bat
 wes webdriver --download
 ```

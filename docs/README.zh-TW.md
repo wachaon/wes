@@ -50,7 +50,7 @@
 *wes.js* *wes* 。要下載，請從[*@wachaon/wes*](https://github.com/wachaon/wes) wes 複製*wes.js*或在控制台中運行以下命令。
 
 
-```shell
+```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
@@ -65,7 +65,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 向控制台輸入命令，該命令在`wes`關鍵字之後指定將成為程序起點的文件。腳本擴展名*.js*可以省略。
 
 
-```shell
+```bat
 wes index
 ```
 
@@ -73,7 +73,7 @@ wes index
 而且*wes*有一個*REPL* ，所以如果你只用`wes`啟動它，你可以直接進入腳本。
 
 
-```shell
+```bat
 wes
 ```
 
@@ -265,7 +265,7 @@ console.log(orange + 'Hello World')
 與*REPL*一起輸入命令行參數。
 
 
-```shell
+```bat
 wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
@@ -463,7 +463,7 @@ console.log(unzip('dox.zip'))
 它可以與*CLI (Command Line Interface)*和*module*一起使用。
 
 
-```shell
+```bat
 wes zip docs\* dox.zip
 wes zip -p dox.zip
 ```
@@ -514,13 +514,13 @@ wes zip -p dox.zip
 
 6.  `node_modules/directory_name`是 bundle 的起點
 
-    ```shell
+    ```bat
         wes bundle directory_name
     ```
 
     不捆綁
 
-    ```shell
+    ```bat
         wes bundle node_modules/directory_name
     ```
 
@@ -539,7 +539,7 @@ wes zip -p dox.zip
 以`@author/repository`格式傳遞參數以進行*install* 。
 
 
-```shell
+```bat
 wes install @wachaon/fmt
 ```
 
@@ -556,7 +556,7 @@ wes install @wachaon/fmt
 `--bare`選項可以省略從`author@repository`到`repository`的`require`參數。 `--global`選項使已安裝的模塊可用於所有腳本。上述選項必須與*wes*安全選項`--unsafe`或`--dangerous` 。
 
 
-```shell
+```bat
 wes install @wachaon/fmt --bare --unsafe
 ```
 
@@ -581,7 +581,7 @@ wes install @wachaon/fmt --bare --unsafe
 您還可以通過在*token*的生命週期內在控制台中運行模塊來將模塊安裝到私有存儲庫中。
 
 
-```shell
+```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
@@ -601,7 +601,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ### 安裝
 
 
-```shell
+```bat
 wes install @wachaon/fmt
 ```
 
@@ -615,7 +615,7 @@ wes install @wachaon/fmt
 #### 用作*CLI* 。
 
 
-```shell
+```bat
 wes @wachaon/fmt src/sample --write
 ```
 
@@ -662,7 +662,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 首先，安裝模塊。
 
 
-```shell
+```bat
 wes install @wachaon/edge --unsafe --bare
 ```
 
@@ -670,7 +670,7 @@ wes install @wachaon/edge --unsafe --bare
 然後下載*web driver* 。
 
 
-```shell
+```bat
 wes edge --download
 ```
 
@@ -728,7 +728,7 @@ edge((window, navi, res) => {
 ### 安裝
 
 
-```shell
+```bat
 wes install @wachaon/webdriver --unsafe --bare
 ```
 
@@ -736,6 +736,6 @@ wes install @wachaon/webdriver --unsafe --bare
 如果您沒有*web driver* ，請下載它。
 
 
-```shell
+```bat
 wes webdriver --download
 ```

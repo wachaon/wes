@@ -50,7 +50,7 @@
 Уэсу нужен только *wes* *wes.js* Для загрузки скопируйте *wes.js* из [*@wachaon/wes*](https://github.com/wachaon/wes) или выполните следующую команду в консоли.
 
 
-```shell
+```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
@@ -65,7 +65,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 Введите в консоль команду, указывающую файл, который будет отправной точкой программы после ключевого слова `wes` . Расширение скрипта *.js* можно не указывать.
 
 
-```shell
+```bat
 wes index
 ```
 
@@ -73,7 +73,7 @@ wes index
 Кроме того, у *wes* есть *REPL* , поэтому, если вы запустите его только с помощью `wes` , вы сможете войти в скрипт напрямую.
 
 
-```shell
+```bat
 wes
 ```
 
@@ -265,7 +265,7 @@ console.log(orange + 'Hello World')
 Введите аргументы командной строки вместе с *REPL* .
 
 
-```shell
+```bat
 wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
@@ -463,7 +463,7 @@ console.log(unzip('dox.zip'))
 Его можно использовать как с *CLI (Command Line Interface)* , так и с *module* .
 
 
-```shell
+```bat
 wes zip docs\* dox.zip
 wes zip -p dox.zip
 ```
@@ -514,13 +514,13 @@ wes zip -p dox.zip
 
 6.  `node_modules/directory_name` является отправной точкой бандла
 
-    ```shell
+    ```bat
         wes bundle directory_name
     ```
 
     Без комплектации с
 
-    ```shell
+    ```bat
         wes bundle node_modules/directory_name
     ```
 
@@ -539,7 +539,7 @@ wes zip -p dox.zip
 Передайте аргументы для *install* в формате `@author/repository` .
 
 
-```shell
+```bat
 wes install @wachaon/fmt
 ```
 
@@ -556,7 +556,7 @@ wes install @wachaon/fmt
 `--bare` может опустить аргумент `require` из `author@repository` в `repository` . `--global` делает установленные модули доступными для всех скриптов. Вышеупомянутые параметры должны быть указаны одновременно с параметром безопасности *wes* `--unsafe` или `--dangerous` .
 
 
-```shell
+```bat
 wes install @wachaon/fmt --bare --unsafe
 ```
 
@@ -581,7 +581,7 @@ wes install @wachaon/fmt --bare --unsafe
 Вы также можете установить модуль в приватный репозиторий, запустив его в консоли в течение времени жизни *token* .
 
 
-```shell
+```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
@@ -601,7 +601,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ### установить
 
 
-```shell
+```bat
 wes install @wachaon/fmt
 ```
 
@@ -615,7 +615,7 @@ wes install @wachaon/fmt
 #### Используется как *CLI* .
 
 
-```shell
+```bat
 wes @wachaon/fmt src/sample --write
 ```
 
@@ -662,7 +662,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 Сначала установите модуль.
 
 
-```shell
+```bat
 wes install @wachaon/edge --unsafe --bare
 ```
 
@@ -670,7 +670,7 @@ wes install @wachaon/edge --unsafe --bare
 Затем загрузите *web driver* .
 
 
-```shell
+```bat
 wes edge --download
 ```
 
@@ -728,7 +728,7 @@ edge((window, navi, res) => {
 ### установить
 
 
-```shell
+```bat
 wes install @wachaon/webdriver --unsafe --bare
 ```
 
@@ -736,6 +736,6 @@ wes install @wachaon/webdriver --unsafe --bare
 Если у вас нет *web driver* , загрузите его.
 
 
-```shell
+```bat
 wes webdriver --download
 ```

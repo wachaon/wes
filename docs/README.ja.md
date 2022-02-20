@@ -27,7 +27,7 @@
 *wes* に必要なのは *wes.js* ファイルのみです。
 ダウンロードするには [*@wachaon/wes*](https://github.com/wachaon/wes) から *wes.js* をコピーするかコンソールで次のコマンドを実行してください。
 
-```shell
+```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
@@ -41,14 +41,14 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 `wes` のキーワードに続きプログラムの起点となるファイルを指定したコマンドをコンソールへ入力します。
 スクリプトの拡張子 *.js* は省略できます。
 
-```shell
+```bat
 wes index
 ```
 
 また、*wes* には *REPL* が備わっているので、`wes` のみで起動させると、
 スクリプトを直接入力できます。
 
-```shell
+```bat
 wes
 ```
 
@@ -207,7 +207,7 @@ console.log(orange + 'Hello World')
 
 *REPL* と一緒にコマンドライン引数を入力します。
 
-```shell
+```bat
 wes REPL aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
@@ -373,7 +373,7 @@ console.log(unzip('dox.zip'))
 
 *CLI (Command Line Interface)* と *module* の両方で使用できます。
 
-```shell
+```bat
 wes zip docs\* dox.zip
 wes zip -p dox.zip
 ```
@@ -410,11 +410,11 @@ wes zip -p dox.zip
 4.  モジュールの取得はトップレベルのスコープで宣言してください
 5.  パッケージの *.json* ファイルはワーキングディレクトリに *directory_name.json* という名前で作成されます。ファイル名の変更やファイルを移動するとインストールする際に参照できません
 6.  `node_modules/directory_name` をバンドルの起点にする場合は
-    ```shell
+    ```bat
         wes bundle directory_name
     ```
     でバンドルせずに
-    ```shell
+    ```bat
         wes bundle node_modules/directory_name
     ```
     でバンドルしてください
@@ -426,7 +426,7 @@ wes zip -p dox.zip
 
 *install* には `@author/repository` という書式で引数を渡します。
 
-```shell
+```bat
 wes install @wachaon/fmt
 ```
 
@@ -442,7 +442,7 @@ wes install @wachaon/fmt
 上記のオプションは *wes* のセキュリティーオプション `--unsafe` もしくは `--dangerous` と
 同時に指定する必要があります。
 
-```shell
+```bat
 wes install @wachaon/fmt --bare --unsafe
 ```
 
@@ -462,7 +462,7 @@ wes install @wachaon/fmt --bare --unsafe
 
 *token* の有効時間内にコンソールで実行すれば、プライベートリポジトリのモジュールもインストールできます。
 
-```shell
+```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
@@ -478,7 +478,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
 ### インストール
 
-```shell
+```bat
 wes install @wachaon/fmt
 ```
 
@@ -489,7 +489,7 @@ wes install @wachaon/fmt
 
 #### *CLI* として使用する。
 
-```shell
+```bat
 wes @wachaon/fmt src/sample --write
 ```
 
@@ -525,12 +525,12 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 まずはモジュールをインストールします。
 
-```shell
+```bat
 wes install @wachaon/edge --unsafe --bare
 ```
 次に *web driver* をダウンロードします。
 
-```shell
+```bat
 wes edge --download
 ```
 
@@ -577,12 +577,12 @@ edge((window, navi, res) => {
 
 ### インストール
 
-```shell
+```bat
 wes install @wachaon/webdriver --unsafe --bare
 ```
 
 *web driver* がなければダウンロードします。
 
-```shell
+```bat
 wes webdriver --download
 ```
