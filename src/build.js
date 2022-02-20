@@ -5,8 +5,8 @@ const { rLINE_SEP, rCRLF, rCR, CRLF, SPACE, NONE, LF } = require('text')
 const { Enumerator } = require('JScript')
 const { format } = require('fmt')
 
-require('/src/format')
-const test = require('/src/test')
+require('src/format')
+const test = require('src/test')
 if (!test) throw new Error('Must pass all tests')
 
 let files = new Enumerator(FSO.GetFolder('lib').Files)
@@ -22,7 +22,7 @@ files.forEach((file) => {
 })
 
 result['version'] = {
-    source: `module.exports = console.log('${require('/package').version}')`,
+    source: `module.exports = console.log('${require('package').version}')`,
     mapping: {},
     path: `{wes}/version`
 }
@@ -53,7 +53,7 @@ let res = format(
     line
         .map((value) => {
             if (rModule.test(value)) return 'var Modules = ' + graph.trim()
-            else if (rConsole === value)
+            if (rConsole === value)
                 return (
                     'var console = (function () {\n    var module = { exports: {} };\n        (function () {' +
                     Console +
