@@ -4,7 +4,7 @@
 *wes* est un framework de console qui exécute *ECMAScript* sur *WSH (Windows Script Host)* .
 
 
-Le texte original du *README* est en [*japanese*](/README.md) . Autre que le japonais, c'est une phrase traduite par machine.  
+Le texte original du *README* est en [*japanese*](/README.md) . Autre que le japonais, c'est une phrase traduite automatiquement.  
 Veuillez sélectionner des phrases dans d'autres langues parmi les suivantes.
 
 
@@ -55,7 +55,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* utilise `SendKeys` dans *wes* lors de l'exécution en tant qu'implémentation. Si le chemin du répertoire où *wes.js* est enregistré contient des caractères autres que *ascii* , `SendKeys` ne pourra pas envoyer la clé correctement et le script ne pourra pas être exécuté.  
+*WScript.Shell* utilise `SendKeys` de *wes* lors de l'exécution en tant qu'implémentation. Si le chemin du répertoire où *wes.js* est enregistré contient des caractères autres que *ascii* , `SendKeys` ne pourra pas envoyer la clé correctement et le script ne pourra pas être exécuté.  
 Veuillez configurer le chemin de destination de sauvegarde de *wes.js* uniquement *ascii* .
 
 
@@ -70,7 +70,7 @@ wes index
 ```
 
 
-De plus, *wes* a un *REP* , donc si vous le démarrez uniquement avec `wes` , vous pouvez entrer le script directement.
+De plus, *wes* a *REP* , donc si vous le démarrez uniquement avec `wes` , vous pouvez entrer le script directement.
 
 
 ```bat
@@ -78,7 +78,7 @@ wes
 ```
 
 
-Le *REP* accepte les entrées de script jusqu'à ce que vous saisissiez deux lignes vides. Vous pouvez également vérifier l'exécution de l'exemple de script dans *README.md* avec *REP* .
+*REP* accepte l'entrée de script jusqu'à ce que vous saisissiez deux lignes vides. Vous pouvez également vérifier l'exécution de l'exemple de script dans *README.md* avec *REP* .
 
 
 ## Options de ligne de commande
@@ -149,10 +149,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-*Chakra* , qui est le moteur d'exécution du script, interprète la syntaxe telle que `imoprt` , mais il ne peut pas être exécuté tel quel car la méthode de traitement en tant que `cscript` n'est pas définie. Dans *wes* , en ajoutant *babel* au module intégré, il est exécuté tout en transpilant séquentiellement vers le *es module* . Par conséquent, la surcharge de traitement et le fichier *wes.js* sont gonflés en tant que coût.
+*Chakra* , qui est le moteur d'exécution du script, interprète la syntaxe telle que `imoprt` , mais il ne peut pas être exécuté tel quel car la méthode de traitement en tant que `cscript` n'est pas définie. Dans *wes* , en ajoutant *babel* au module intégré, nous l'exécutons tout en transpilant séquentiellement vers le *es module* . Par conséquent, la surcharge de traitement et le fichier *wes.js* sont gonflés en tant que coût.
 
 
-Les modules décrits par le *es module* sont également convertis en `require()` par transpile, de sorte que les appels *ActiveX* sont également possibles. Cependant, il ne prend pas en charge la spécification d'encodage de fichier de module dans *es module* . Tous sont lus par devinette automatique.
+Les modules décrits par le *es module* sont également transpilés en `require()` , de sorte que les appels *ActiveX* sont possibles. Cependant, il ne prend pas en charge la spécification d'encodage de fichier de module dans *es module* . Tous sont lus par devinette automatique.
 
 
 Pour le charger en tant que *es module* , définissez l'extension sur `.mjs` ou le champ `"type"` de `package.json` sur `"module"` .
@@ -183,7 +183,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 
-*wes* utilise *console* au lieu de `WScript.Echo` ou `WScript.StdErr.WriteLine` .
+`WScript.Echo` utilise *console* au lieu de *wes* ou `WScript.StdErr.WriteLine` .
 
 
 Affiche les caractères sur la console dans `console.log` . Il prend également en charge les chaînes formatées. Imprime une chaîne formatée à l'aide de l'opérateur de formatage `%` .
@@ -262,7 +262,7 @@ Obtient l'argument de ligne de commande. Les arguments de ligne de commande dans
 *argv.unnamed* et *argv.named* le type de valeur de l'argument de ligne de commande en l'un des *String* *Number* *Boolean* .
 
 
-Entrez les arguments de ligne de commande avec le *REP* .
+Entrez les arguments de la ligne de commande avec *REP* .
 
 
 ```bat
@@ -270,7 +270,7 @@ wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
 
-Exécutez le script suivant dans le *REP* .
+Exécutez le script suivant dans *REP* .
 
 
 ```javascript
@@ -457,7 +457,7 @@ console.log(unzip('dox.zip'))
 ```
 
 
-Des caractères génériques `*` peuvent être écrits dans le `path` du `zip(path, destinationPath)` .
+Le caractère générique `*` peut être décrit dans le `path` du `zip(path, destinationPath)` .
 
 
 Il peut être utilisé avec *CLI (Command Line Interface)* et le *module* .
@@ -474,7 +474,7 @@ Si le `path` a l'extension `.zip` , `unzip()` est traité et il n'y a pas de des
 
 | anonyme | la description                              |
 | ------- | ------------------------------------------- |
-| `1`     | `path` Dossier ou fichier à saisir          |
+| `1`     | `path` Dossier ou fichier à entrer          |
 | `2`     | fichier de dossier vers la `dest` de sortie |
 
 
@@ -502,7 +502,7 @@ Pour des raisons de sécurité, *bundle* crée un fichier *.json* car *wes* ne v
 Il y a certaines conditions pour l'emballage.
 
 
-1.  Un seul module peut être publié dans un *repository*
+1.  Un seul package peut être publié dans un *repository*
 
 2.  Assurez-vous que le nom du référentiel sur *github* et le nom du répertoire de travail local sont identiques.
 
@@ -547,13 +547,15 @@ wes install @wachaon/fmt
 *install* a des options.
 
 
-| nommé      | nommé court | la description                                            |
-| ---------- | ----------- | --------------------------------------------------------- |
-| `--bare`   | `-b`        | Ne pas créer de dossier *@author*                         |
-| `--global` | `-g`        | Installez le module dans le dossier où se trouve *wes.js* |
+| nommé         | nommé court | la description                                                                         |
+| ------------- | ----------- | -------------------------------------------------------------------------------------- |
+| `--bare`      | `-b`        | Ne pas créer de dossier *@author*                                                      |
+| `--global`    | `-g`        | Installez le package dans le dossier où se trouve *wes.js*                             |
+| `--save`      | `-S`        | Ajoutez le nom et la version du package au champ *dependencies* de *package.json*      |
+| `--save--dev` | `-D`        | Ajoutez le nom et la version du package au champ *devDependencies* dans *package.json* |
 
 
-`--bare` peut omettre l'argument `require` de `author@repository` à `repository` . `--global` rend les modules installés disponibles pour tous les scripts. Les options ci-dessus doivent être spécifiées en même temps que l'option de sécurité *wes* `--unsafe` ou `--dangerous` .
+`--bare` peut omettre l'argument `require` de `author@repository` à `repository` . `--global` rend le package installé disponible pour tous les scripts. Les options ci-dessus doivent être spécifiées en même temps que l'option de sécurité *wes* `--unsafe` ou `--dangerous` .
 
 
 ```bat
@@ -564,10 +566,10 @@ wes install @wachaon/fmt --bare --unsafe
 # Installation de packages dans des dépôts privés
 
 
-*install* peut installer non seulement des modules dans des référentiels publics sur *github* , mais également des référentiels privés.
+*install* peut installer des packages dans des référentiels privés ainsi que des packages dans des référentiels publics sur *github* .
 
 
-Dans *install* , spécifiez le module avec *@author/repository* . L'implémentation essaiera de télécharger l'URL suivante.
+Dans *install* , spécifiez le package avec *@author/repository* . L'implémentation essaiera de télécharger l'URL suivante.
 
 
 ```javascript
@@ -575,10 +577,10 @@ Dans *install* , spécifiez le module avec *@author/repository* . L'implémentat
 ```
 
 
-Lorsque vous accédez à *raw* du référentiel privé avec un navigateur, le *token* s'affiche, alors copiez le *token* et utilisez-le.
+Lorsque vous accédez au *raw* du référentiel privé avec un navigateur, le *token* s'affiche, alors copiez le *token* et utilisez-le.
 
 
-Vous pouvez également installer un module dans un référentiel privé en l'exécutant dans la console pendant la durée de vie du *token* .
+Vous pouvez également installer des packages dans des référentiels privés en les exécutant dans la console pendant la durée de vie du *token* .
 
 
 ```bat
@@ -589,7 +591,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 # Présentation du paquet
 
 
-Voici quelques modules externes.
+Voici quelques packages externes.
 
 
 ## *@wachaon/fmt*
@@ -659,7 +661,7 @@ Une alternative serait de faire fonctionner *Microsoft Edge based on Chromium* v
 ### installer
 
 
-Tout d'abord, installez le module.
+Tout d'abord, installez le package.
 
 
 ```bat
@@ -722,7 +724,7 @@ Le processus de terminaison `res.exports` sous la forme d'un fichier *.json* com
 ## *@wachaon/webdriver*
 
 
-Il s'agit d'un module qui envoie une requête au *web driver* qui exploite le navigateur. Intégré à *@wachaon/edge* . Comme *@wachaon/edge* , un *web driver* est requis pour le fonctionnement du navigateur.
+Il s'agit d'un package qui envoie une requête au *web driver* qui exploite le navigateur. Intégré à *@wachaon/edge* . Comme *@wachaon/edge* , un *web driver* est requis pour le fonctionnement du navigateur.
 
 
 ### installer

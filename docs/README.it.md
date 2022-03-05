@@ -55,7 +55,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* utilizza `SendKeys` in *wes* in fase di esecuzione come implementazione. Se il percorso della directory in cui è salvato *wes.js* contiene caratteri diversi da *ascii* , `SendKeys` non sarà in grado di inviare la chiave correttamente e lo script non potrà essere eseguito.  
+*WScript.Shell* utilizza `SendKeys` da *wes* in fase di esecuzione come implementazione. Se il percorso della directory in cui è salvato *wes.js* contiene caratteri diversi da *ascii* , `SendKeys` non sarà in grado di inviare la chiave correttamente e lo script non potrà essere eseguito.  
 Si prega di configurare il percorso di destinazione di salvataggio di *wes.js* only *ascii* .
 
 
@@ -70,7 +70,7 @@ wes index
 ```
 
 
-Inoltre, *wes* ha un *REP* , quindi se lo avvii solo con `wes` , puoi inserire direttamente lo script.
+Inoltre, *wes* ha *REP* , quindi se lo avvii solo con `wes` , puoi inserire direttamente lo script.
 
 
 ```bat
@@ -78,7 +78,7 @@ wes
 ```
 
 
-Il *REP* accetta l'input dello script finché non si immettono due righe vuote. Puoi anche controllare l'esecuzione dello script di esempio in *README.md* con *REP* .
+*REP* accetta l'input dello script finché non inserisci due righe vuote. Puoi anche controllare l'esecuzione dello script di esempio in *README.md* con *REP* .
 
 
 ## Opzioni della riga di comando
@@ -149,10 +149,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-*Chakra* , che è il motore di esecuzione dello script, interpreta la sintassi come `imoprt` , ma non può essere eseguito così com'è perché il metodo di elaborazione come `cscript` non è definito. In *wes* , aggiungendo *babel* al modulo integrato, viene eseguito durante la traspilazione sequenziale al *es module* . Di conseguenza, il sovraccarico di elaborazione e il file *wes.js* sono gonfiati come costo.
+*Chakra* , che è il motore di esecuzione dello script, interpreta la sintassi come `imoprt` , ma non può essere eseguito così com'è perché il metodo di elaborazione come `cscript` non è definito. In *wes* , aggiungendo *babel* al modulo integrato, lo stiamo eseguendo durante la transpilazione sequenziale nel *es module* . Di conseguenza, il sovraccarico di elaborazione e il file *wes.js* sono gonfiati come costo.
 
 
-I moduli descritti da *es module* vengono anche convertiti in `require()` tramite transpile, quindi sono possibili anche chiamate *ActiveX* . Tuttavia, non supporta la specifica di codifica del file del modulo in *es module* . Tutti vengono letti per indovinare automaticamente.
+I moduli descritti da *es module* vengono anche trasferiti in `require()` , quindi sono possibili chiamate *ActiveX* . Tuttavia, non supporta la specifica di codifica del file del modulo in *es module* . Tutti vengono letti per indovinare automaticamente.
 
 
 Per caricarlo come *es module* , imposta l'estensione su `.mjs` o il campo `"type"` di `package.json` su `"module"` .
@@ -183,7 +183,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 
-*wes* usa la *console* invece di `WScript.Echo` o `WScript.StdErr.WriteLine` .
+`WScript.Echo` usa la *console* invece di *wes* o `WScript.StdErr.WriteLine` .
 
 
 Stampa i caratteri sulla console in `console.log` . Supporta anche le stringhe formattate. Stampa una stringa formattata utilizzando l'operatore di formattazione `%` .
@@ -457,7 +457,7 @@ console.log(unzip('dox.zip'))
 ```
 
 
-I caratteri jolly `*` possono essere scritti nel `path` di `zip(path, destinationPath)` .
+Il carattere jolly `*` può essere descritto nel `path` di `zip(path, destinationPath)` .
 
 
 Può essere utilizzato sia con *CLI (Command Line Interface)* che con il *module* .
@@ -502,7 +502,7 @@ Per motivi di sicurezza, *bundle* crea un file *.json* perché *wes* non consent
 Ci sono alcune condizioni per l'imballaggio.
 
 
-1.  È possibile pubblicare un solo modulo in un *repository*
+1.  È possibile pubblicare un solo pacchetto in un *repository*
 
 2.  Assicurati che il nome del repository su *github* e il nome della directory di lavoro locale siano gli stessi.
 
@@ -547,13 +547,15 @@ wes install @wachaon/fmt
 *install* ha opzioni.
 
 
-| di nome    | nome breve | descrizione                                                |
-| ---------- | ---------- | ---------------------------------------------------------- |
-| `--bare`   | `-b`       | Non creare la cartella *@author*                           |
-| `--global` | `-g`       | Installa il modulo nella cartella in cui si trova *wes.js* |
+| di nome       | nome breve | descrizione                                                                                  |
+| ------------- | ---------- | -------------------------------------------------------------------------------------------- |
+| `--bare`      | `-b`       | Non creare la cartella *@author*                                                             |
+| `--global`    | `-g`       | Installa il pacchetto nella cartella in cui si trova *wes.js*                                |
+| `--save`      | `-S`       | Aggiungi il nome e la versione del pacchetto al campo delle *dependencies* di *package.json* |
+| `--save--dev` | `-D`       | Aggiungi il nome e la versione del pacchetto al campo *devDependencies* in *package.json*    |
 
 
-`--bare` può omettere l'argomento `require` da `author@repository` a `repository` . `--global` rende i moduli installati disponibili a tutti gli script. Le opzioni di cui sopra devono essere specificate contemporaneamente all'opzione *wes* security `--unsafe` o `--dangerous` .
+`--bare` può omettere l'argomento `require` da `author@repository` a `repository` . `--global` rende il pacchetto installato disponibile per tutti gli script. Le opzioni di cui sopra devono essere specificate contemporaneamente all'opzione *wes* security `--unsafe` o `--dangerous` .
 
 
 ```bat
@@ -564,10 +566,10 @@ wes install @wachaon/fmt --bare --unsafe
 # Installazione di pacchetti in repository privati
 
 
-*install* può installare non solo i moduli nei repository pubblici su *github* , ma anche i repository privati.
+*install* può installare pacchetti in repository privati ​​e pacchetti in repository pubblici su *github* .
 
 
-In *install* , specificare il modulo con *@author/repository* . L'implementazione proverà a scaricare il seguente URL.
+In *install* , specificare il pacchetto con *@author/repository* . L'implementazione proverà a scaricare il seguente URL.
 
 
 ```javascript
@@ -578,7 +580,7 @@ In *install* , specificare il modulo con *@author/repository* . L'implementazion
 Quando accedi al *raw* del repository privato con un browser, il *token* verrà visualizzato, quindi copia il *token* e usalo.
 
 
-Puoi anche installare un modulo in un repository privato eseguendolo nella console entro la vita del *token* .
+Puoi anche installare i pacchetti in repository privati ​​eseguendoli nella console entro la vita del *token* .
 
 
 ```bat
@@ -589,7 +591,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 # Presentazione del pacchetto
 
 
-Ecco alcuni moduli esterni.
+Ecco alcuni pacchetti esterni.
 
 
 ## *@wachaon/fmt*
@@ -659,7 +661,7 @@ Un'alternativa sarebbe utilizzare *Microsoft Edge based on Chromium* tramite il 
 ### installare
 
 
-Innanzitutto, installa il modulo.
+Innanzitutto, installa il pacchetto.
 
 
 ```bat
@@ -722,7 +724,7 @@ Il processo di terminazione restituisce `res.exports` come file *.json* come val
 ## *@wachaon/webdriver*
 
 
-È un modulo che invia una richiesta al *web driver* che gestisce il browser. Integrato in *@wachaon/edge* . Come *@wachaon/edge* , per il funzionamento del browser è richiesto un *web driver* .
+È un pacchetto che invia una richiesta al *web driver* che gestisce il browser. Integrato in *@wachaon/edge* . Come *@wachaon/edge* , per il funzionamento del browser è richiesto un *web driver* .
 
 
 ### installare

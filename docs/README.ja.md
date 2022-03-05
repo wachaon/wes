@@ -404,7 +404,7 @@ wes zip -p dox.zip
 
 パッケージ化をさせるにはいくつかの条件があります。
 
-1.  １つの *repository* で公開できるモジュールは１つになります
+1.  １つの *repository* で公開できるパッケージは１つになります
 2.  *github* のリポジトリ名とローカルのワーキングディレクトリ名は同名にしてください
 3.  パッケージを公開する場合はリポジトリを *public* にしてください
 4.  モジュールの取得はトップレベルのスコープで宣言してください
@@ -432,13 +432,17 @@ wes install @wachaon/fmt
 
 *install* にはオプションがあります。
 
-| named      | short named | description                                           |
-| ---------- | ----------- | ------------------------------------------------------|
-| `--bare`   | `-b`        | *@author* フォルダを作成しない                        |
-| `--global` | `-g`        | *wes.js* があるフォルダにモジュールをインストールする |
+| named         | short named | description                                                                        |
+| ------------- | ----------- | ---------------------------------------------------------------------------------- |
+| `--bare`      | `-b`        | *@author* フォルダを作成しない                                                     |
+| `--global`    | `-g`        | *wes.js* があるフォルダにパッケージをインストールする                              |
+| `--save`      | `-S`        | *package.json* の *dependencies* フィールドにパッケージ名とバージョンを追加する    |
+| `--save--dev` | `-D`        | *package.json* の *devDependencies* フィールドにパッケージ名とバージョンを追加する |
+
+
 
 `--bare` オプションは `require` の引数を `author@repository` から `repository` に省略できます。
-`--global` オプションはインストールしたモジュールを全てのスクリプトから利用できます。
+`--global` オプションはインストールしたパッケージを全てのスクリプトから利用できます。
 上記のオプションは *wes* のセキュリティーオプション `--unsafe` もしくは `--dangerous` と
 同時に指定する必要があります。
 
@@ -448,9 +452,9 @@ wes install @wachaon/fmt --bare --unsafe
 
 # プライベートリポジトリにあるパッケージのインストール
 
-*install* は *github* のパブリックリポジトリのモジュールだけでなく、プライベートリポジトリもインストールできます。
+*install* は *github* のパブリックリポジトリのパッケージだけでなく、プライベートリポジトリのパッケージもインストールできます。
 
-*install* では *@author/repository* でモジュールを指定します。
+*install* では *@author/repository* でパッケージを指定します。
 実装では下記 url のダウンロードを試みます。
 
 ```javascript
@@ -460,7 +464,7 @@ wes install @wachaon/fmt --bare --unsafe
 ブラウザでプライベートリポジトリの *raw* にアクセスすると *token* が表示されますので、
 その *token* をコピーして使用します。
 
-*token* の有効時間内にコンソールで実行すれば、プライベートリポジトリのモジュールもインストールできます。
+*token* の有効時間内にコンソールで実行すれば、プライベートリポジトリのパッケージもインストールできます。
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
@@ -468,7 +472,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
 # パッケージの紹介
 
-ここではいくつかの外部モジュールを紹介します。
+ここではいくつかの外部パッケージを紹介します。
 
 ## *@wachaon/fmt*
 
@@ -523,7 +527,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 ### インストール
 
-まずはモジュールをインストールします。
+まずはパッケージをインストールします。
 
 ```bat
 wes install @wachaon/edge --unsafe --bare
@@ -571,7 +575,7 @@ edge((window, navi, res) => {
 
 ## *@wachaon/webdriver*
 
-ブラウザを操作する *web driver* に対してリクエストを送るモジュールになります。
+ブラウザを操作する *web driver* に対してリクエストを送るパッケージになります。
 *@wachaon/edge* に組み込まれています。
 *@wachaon/edge* と同様ブラウザ操作には *web driver* が別途必要になります。
 

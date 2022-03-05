@@ -29,7 +29,7 @@
 
 
 -   您可以將腳本引擎更改為*Chakra* ，並將其寫入*ECMAScript2015*規範中
--   它始終運行 32 位*cscript.exe* ，因此在 64 位環境中不存在固有問題。
+-   它始終運行 32 位*cscript.exe* ，因此在 64 位環境下不存在固有問題。
 -   使用模塊化系統，您可以比傳統*WSH*更高效地開發
 -   內置模塊支持文件輸入/輸出、彩色字符輸出到控制台等基本處理。
 -   您不必擔心編碼，因為您可以讓文件讀取自動猜測編碼。
@@ -55,7 +55,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell*在運行時使用*wes*中的`SendKeys`作為實現。如果*wes.js*保存目錄的路徑中包含*ascii*以外的字符， `SendKeys`將無法正確發送密鑰，腳本將無法執行。  
+*WScript.Shell*在運行時使用來自*wes*的`SendKeys`作為實現。如果*wes.js*保存目錄的路徑中包含*ascii*以外的字符， `SendKeys`將無法正確發送密鑰，腳本將無法執行。  
 請僅配置*wes.js*的保存目標路徑*ascii* 。
 
 
@@ -70,7 +70,7 @@ wes index
 ```
 
 
-而且*wes*有一個*REP* ，所以如果你只用`wes`啟動它，你可以直接進入腳本。
+而且*wes*有*REP* ，所以如果你只用`wes`啟動它，你可以直接進入腳本。
 
 
 ```bat
@@ -149,10 +149,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-腳本的執行引擎*Chakra*解釋了諸如`imoprt`之類的語法，但由於未定義`cscript`的處理方法，因此無法按原樣執行。在*wes*中，通過將*babel*添加到內置模塊中，它在執行的同時順序轉譯到*es module* 。結果，處理開銷和*wes.js*文件作為成本而膨脹。
+腳本的執行引擎*Chakra*解釋了諸如`imoprt`之類的語法，但由於未定義`cscript`的處理方法，因此無法按原樣執行。在*wes*中，通過將*babel*添加到內置模塊中，我們在執行它的同時按順序轉譯到*es module* 。結果，處理開銷和*wes.js*文件作為成本而膨脹。
 
 
-*es module*模塊描述的模塊也通過transpile轉換為`require()` ，所以*ActiveX*調用也是可以的。但是，它不支持*es module*中的模塊文件編碼規範。都是通過自動猜測讀取的。
+*es module*模塊描述的模塊也被轉譯為`require()` ，因此*ActiveX*調用是可能的。但是，它不支持*es module*中的模塊文件編碼規範。都是通過自動猜測讀取的。
 
 
 要將其作為*es module*加載，請將擴展名設置為`.mjs`或將`package.json`的`"type"`字段設置為`"module"` 。
@@ -183,7 +183,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 
-*wes*使用*console*而不是`WScript.Echo`或`WScript.StdErr.WriteLine` 。
+`WScript.Echo`使用*console*而不是*wes*或`WScript.StdErr.WriteLine` 。
 
 
 在`console.log`中將字符打印到控制台。它還支持格式化字符串。使用格式化運算符`%`打印格式化字符串。
@@ -457,7 +457,7 @@ console.log(unzip('dox.zip'))
 ```
 
 
-通配符`*`可以寫在`zip(path, destinationPath)` `path`路徑中。
+通配符`*`可以在`zip(path, destinationPath)`的`path`中描述。
 
 
 它可以與*CLI (Command Line Interface)*和*module*一起使用。
@@ -487,7 +487,7 @@ wes zip -p dox.zip
 # 模塊捆綁和安裝
 
 
-在*wes*中，多個模塊的捆綁包稱為包。您可以安裝在*github*上發布的*wes*軟件包。您將需要一個*github repository*來發布包。此外，存儲庫名稱和本地目錄名稱必須相同。
+在*wes*中，幾個模塊的捆綁稱為一個包。您可以安裝在*github*上發布的*wes*軟件包。您將需要一個*github repository*來發布包。此外，存儲庫名稱和本地目錄名稱必須相同。
 
 
 ## *bundle*
@@ -502,11 +502,11 @@ wes zip -p dox.zip
 包裝有一些條件。
 
 
-1.  一個*repository*只能發布一個模塊
+1.  一個*repository*只能發布一個包
 
 2.  確保*github*上的倉庫名稱和​​本地工作目錄名稱相同。
 
-3.  如果您發布包，請將存儲庫*public*
+3.  如果您發布包，請*public*存儲庫
 
 4.  在頂層範圍內聲明模塊獲取
 
@@ -547,13 +547,15 @@ wes install @wachaon/fmt
 *install*有選項。
 
 
-| 命名為        | 簡稱   | 描述                   |
-| ---------- | ---- | -------------------- |
-| `--bare`   | `-b` | 不要創建*@author*文件夾     |
-| `--global` | `-g` | 在*wes.js*所在的文件夾中安裝模塊 |
+| 命名為           | 簡稱   | 描述                                            |
+| ------------- | ---- | --------------------------------------------- |
+| `--bare`      | `-b` | 不要創建*@author*文件夾                              |
+| `--global`    | `-g` | 將包安裝到*wes.js*所在的文件夾中                          |
+| `--save`      | `-S` | 在*package.json*的*dependencies*字段中添加包名和版本      |
+| `--save--dev` | `-D` | 將包名稱和版本添加到*package.json*中的*devDependencies*字段 |
 
 
-`--bare`選項可以省略從`author@repository`到`repository`的`require`參數。 `--global`選項使已安裝的模塊可用於所有腳本。上述選項必須與*wes*安全選項`--unsafe`或`--dangerous` 。
+`--bare`選項可以省略從`author@repository`到`repository`的`require`參數。 `--global`選項使已安裝的軟件包可用於所有腳本。上述選項必須與*wes*安全選項`--unsafe`或`--dangerous` 。
 
 
 ```bat
@@ -564,10 +566,10 @@ wes install @wachaon/fmt --bare --unsafe
 # 在私有存儲庫中安裝包
 
 
-*install*不僅可以在*github*上的公共存儲庫中安裝模塊，還可以在私有存儲庫中安裝模塊。
+*install*可以將包安裝在私有存儲庫中，也可以將包安裝在*github*上的公共存儲庫中。
 
 
-在*install*中，使用*@author/repository*指定模塊。該實現將嘗試下載以下 url。
+在*install*中，使用*@author/repository*指定包。該實現將嘗試下載以下 url。
 
 
 ```javascript
@@ -578,7 +580,7 @@ wes install @wachaon/fmt --bare --unsafe
 當您使用瀏覽器訪問私有倉庫的*raw*時，將顯示*token* ，因此請複制*token*並使用它。
 
 
-您還可以通過在*token*的生命週期內在控制台中運行模塊來將模塊安裝到私有存儲庫中。
+您還可以通過在*token*的生命週期內在控制台中運行它們來將包安裝到私有存儲庫中。
 
 
 ```bat
@@ -589,7 +591,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 # 包裝介紹
 
 
-這是一些外部模塊。
+這是一些外部軟件包。
 
 
 ## *@wachaon/fmt*
@@ -631,7 +633,7 @@ wes @wachaon/fmt src/sample --write
 | `--write` | `-w` | 允許覆蓋 |
 
 
-如果指定`--write`或`-w`的命名參數，則使用格式化腳本覆蓋文件。
+如果指定`--write`或`-w`的命名參數，則使用格式化的腳本覆蓋文件。
 
 
 #### 作為模塊使用
@@ -659,7 +661,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ### 安裝
 
 
-首先，安裝模塊。
+首先，安裝軟件包。
 
 
 ```bat
@@ -675,7 +677,7 @@ wes edge --download
 ```
 
 
-安裝*Edge*以檢查要下載的相應*web driver*的版本。
+檢查安裝的*Edge*版本並下載相應的*web driver* 。
 
 
 ### 如何使用
@@ -722,7 +724,7 @@ edge((window, navi, res) => {
 ## *@wachaon/webdriver*
 
 
-它是一個向操作瀏覽器的*web driver*發送請求的模塊。內置在*@wachaon/edge*中。與*@wachaon/edge*一樣，瀏覽器操作需要*web driver* 。
+它是一個向操作瀏覽器的*web driver*發送請求的包。內置在*@wachaon/edge*中。與*@wachaon/edge*一樣，瀏覽器操作需要*web driver* 。
 
 
 ### 安裝

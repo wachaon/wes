@@ -55,7 +55,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* menggunakan `SendKeys` dalam *wes* pada masa jalan sebagai pelaksanaan. Jika laluan direktori tempat *wes.js* disimpan mengandungi aksara selain *ascii* , `SendKeys` tidak akan dapat menghantar kunci dengan betul dan skrip tidak akan dapat dilaksanakan.  
+*WScript.Shell* menggunakan `SendKeys` daripada *wes* pada masa jalan sebagai pelaksanaan. Jika laluan direktori tempat *wes.js* disimpan mengandungi aksara selain *ascii* , `SendKeys` tidak akan dapat menghantar kunci dengan betul dan skrip tidak akan dapat dilaksanakan.  
 Sila konfigurasikan laluan simpan destinasi untuk *wes.js* sahaja *ascii* .
 
 
@@ -149,10 +149,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-*Chakra* , yang merupakan enjin pelaksanaan skrip, mentafsir sintaks seperti `imoprt` , tetapi ia tidak boleh dilaksanakan kerana kaedah pemprosesan sebagai `cscript` tidak ditakrifkan. Di *wes* , dengan menambahkan *babel* pada modul terbina dalam, ia dilaksanakan sambil memindahkan secara berurutan ke *es module* . Akibatnya, overhed pemprosesan dan fail *wes.js* sebagai kos.
+*Chakra* , yang merupakan enjin pelaksanaan skrip, mentafsir sintaks seperti `imoprt` , tetapi ia tidak boleh dilaksanakan kerana kaedah pemprosesan sebagai `cscript` tidak ditakrifkan. Di *wes* , dengan menambahkan *babel* pada modul terbina dalam, kami melaksanakannya sambil memindahkan secara berurutan ke *es module* . Akibatnya, overhed pemprosesan dan fail *wes.js* sebagai kos.
 
 
-Modul yang diterangkan oleh *es module* juga ditukar kepada `require()` melalui transpile, jadi panggilan *ActiveX* juga boleh dilakukan. Walau bagaimanapun, ia tidak menyokong spesifikasi pengekodan fail modul dalam *es module* . Semuanya dibaca dengan meneka secara automatik.
+Modul yang diterangkan oleh *es module* juga ditranspilkan untuk `require()` , jadi panggilan *ActiveX* boleh dilakukan. Walau bagaimanapun, ia tidak menyokong spesifikasi pengekodan fail modul dalam *es module* . Semuanya dibaca dengan meneka secara automatik.
 
 
 Untuk memuatkannya sebagai *es module* , tetapkan sambungan kepada `.mjs` atau medan `"type"` `package.json` kepada `"module"` .
@@ -183,7 +183,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 
-*wes* menggunakan *console* dan bukannya `WScript.Echo` atau `WScript.StdErr.WriteLine` .
+`WScript.Echo` menggunakan *console* dan bukannya *wes* atau `WScript.StdErr.WriteLine` .
 
 
 Cetak aksara ke konsol dalam `console.log` . Ia juga menyokong rentetan yang diformatkan. Mencetak rentetan terformat menggunakan operator pemformatan `%` .
@@ -457,7 +457,7 @@ console.log(unzip('dox.zip'))
 ```
 
 
-Kad bebas `*` boleh ditulis dalam `path` `zip(path, destinationPath)` .
+Wildcard `*` boleh diterangkan dalam `path` `zip(path, destinationPath)` .
 
 
 Ia boleh digunakan dengan kedua-dua *CLI (Command Line Interface)* dan *module* .
@@ -487,7 +487,7 @@ Jika `path` mempunyai sambungan `.zip` , `unzip()` diproses dan tiada perihalan 
 # Penggabungan dan pemasangan modul
 
 
-Dalam *wes* , himpunan beberapa modul dipanggil pakej. Anda boleh memasang pakej untuk *wes* diterbitkan di *github* . Anda memerlukan *github repository* untuk menerbitkan pakej. Selain itu, nama repositori dan nama direktori tempatan mestilah sama.
+Dalam *wes* , himpunan beberapa modul dipanggil pakej. Anda boleh memasang pakej untuk *wes* diterbitkan di *github* . Anda memerlukan *github repository* untuk menerbitkan pakej tersebut. Juga, nama repositori dan nama direktori tempatan mestilah sama.
 
 
 ## *bundle*
@@ -502,7 +502,7 @@ Atas sebab keselamatan, *bundle* mencipta fail *.json* kerana *wes* tidak memben
 Terdapat beberapa syarat untuk pembungkusan.
 
 
-1.  Hanya satu modul boleh diterbitkan dalam satu *repository*
+1.  Hanya satu pakej boleh diterbitkan dalam satu *repository*
 
 2.  Pastikan nama repositori pada *github* dan nama direktori kerja tempatan adalah sama.
 
@@ -547,13 +547,15 @@ wes install @wachaon/fmt
 *install* mempunyai pilihan.
 
 
-| bernama    | pendek bernama | penerangan                                       |
-| ---------- | -------------- | ------------------------------------------------ |
-| `--bare`   | `-b`           | Jangan buat folder *@author*                     |
-| `--global` | `-g`           | Pasang modul dalam folder tempat *wes.js* berada |
+| bernama       | pendek bernama | penerangan                                                                       |
+| ------------- | -------------- | -------------------------------------------------------------------------------- |
+| `--bare`      | `-b`           | Jangan buat folder *@author*                                                     |
+| `--global`    | `-g`           | Pasang pakej dalam folder di mana *wes.js* berada                                |
+| `--save`      | `-S`           | Tambahkan nama pakej dan versi pada medan *dependencies* *package.json*          |
+| `--save--dev` | `-D`           | Tambahkan nama pakej dan versi pada medan *devDependencies* dalam *package.json* |
 
 
-`--bare` boleh menghilangkan hujah `require` daripada `author@repository` ke `repository` . `--global` menjadikan modul yang dipasang tersedia untuk semua skrip. Pilihan di atas mesti dinyatakan pada masa yang sama dengan pilihan keselamatan *wes* `--unsafe` atau `--dangerous` .
+`--bare` boleh menghilangkan hujah `require` daripada `author@repository` ke `repository` . `--global` menjadikan pakej yang dipasang tersedia untuk semua skrip. Pilihan di atas mesti dinyatakan pada masa yang sama dengan pilihan keselamatan *wes* `--unsafe` atau `--dangerous` .
 
 
 ```bat
@@ -564,10 +566,10 @@ wes install @wachaon/fmt --bare --unsafe
 # Memasang pakej dalam repositori peribadi
 
 
-*install* boleh memasang bukan sahaja modul dalam repositori awam pada *github* , tetapi juga repositori peribadi.
+*install* boleh memasang pakej dalam repositori peribadi serta pakej dalam repositori awam di *github* .
 
 
-Dalam *install* , nyatakan modul dengan *@author/repository* . Pelaksanaan akan cuba memuat turun url berikut.
+Dalam *install* , nyatakan pakej dengan *@author/repository* . Pelaksanaan akan cuba memuat turun url berikut.
 
 
 ```javascript
@@ -578,7 +580,7 @@ Dalam *install* , nyatakan modul dengan *@author/repository* . Pelaksanaan akan 
 Apabila anda mengakses *raw* repositori peribadi dengan penyemak imbas, *token* akan dipaparkan, jadi salin *token* dan gunakannya.
 
 
-Anda juga boleh memasang modul dalam repositori peribadi dengan menjalankannya dalam konsol dalam tempoh hayat *token* .
+Anda juga boleh memasang pakej dalam repositori peribadi dengan menjalankannya dalam konsol dalam tempoh hayat *token* .
 
 
 ```bat
@@ -589,7 +591,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 # Pengenalan pakej
 
 
-Berikut adalah beberapa modul luaran.
+Berikut adalah beberapa pakej luaran.
 
 
 ## *@wachaon/fmt*
@@ -659,7 +661,7 @@ Alternatifnya ialah dengan mengendalikan *Microsoft Edge based on Chromium* mela
 ### pasang
 
 
-Pertama, pasang modul.
+Pertama, pasang pakej.
 
 
 ```bat
@@ -722,7 +724,7 @@ Proses penamatan mengeluarkan `res.exports` sebagai fail *.json* sebagai nilai l
 ## *@wachaon/webdriver*
 
 
-Ia adalah modul yang menghantar permintaan kepada *web driver* yang mengendalikan penyemak imbas. Dibina ke dalam *@wachaon/edge* . Seperti *@wachaon/edge* , *web driver* diperlukan untuk operasi penyemak imbas.
+Ia adalah pakej yang menghantar permintaan kepada *web driver* yang mengendalikan penyemak imbas. Dibina ke dalam *@wachaon/edge* . Seperti *@wachaon/edge* , *web driver* diperlukan untuk operasi penyemak imbas.
 
 
 ### pasang

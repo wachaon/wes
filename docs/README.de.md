@@ -55,7 +55,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* verwendet `SendKeys` in *wes* zur Laufzeit als Implementierung. Wenn der Pfad des Verzeichnisses, in dem *wes.js* gespeichert ist, andere Zeichen als `SendKeys` *ascii* Schlüssel nicht korrekt senden und das Skript kann nicht ausgeführt werden.  
+*WScript.Shell* verwendet `SendKeys` von *wes* zur Laufzeit als Implementierung. Wenn der Pfad des Verzeichnisses, in dem *wes.js* gespeichert ist, andere Zeichen als `SendKeys` *ascii* Schlüssel nicht korrekt senden und das Skript kann nicht ausgeführt werden.  
 Bitte konfigurieren Sie den Speicherzielpfad von *wes.js* nur *ascii* .
 
 
@@ -70,7 +70,7 @@ wes index
 ```
 
 
-Außerdem hat *wes* eine *REP* , wenn Sie es also nur mit `wes` starten, können Sie das Skript direkt eingeben.
+Außerdem hat *wes* *REP* , wenn Sie es also nur mit `wes` starten, können Sie das Skript direkt eingeben.
 
 
 ```bat
@@ -78,7 +78,7 @@ wes
 ```
 
 
-Die *REP* akzeptiert Skripteingaben, bis Sie zwei Leerzeilen eingeben. Sie können die Ausführung des Beispielskripts in *README.md* mit *REP* überprüfen.
+*REP* akzeptiert Skripteingaben, bis Sie zwei Leerzeilen eingeben. Sie können die Ausführung des Beispielskripts in *README.md* mit *REP* überprüfen.
 
 
 ## Befehlszeilenoptionen
@@ -149,10 +149,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-*Chakra* , die Ausführungsmaschine des Skripts, interpretiert die Syntax wie `imoprt` , kann jedoch nicht unverändert ausgeführt werden, da die Verarbeitungsmethode als `cscript` nicht definiert ist. In *wes* wird es durch Hinzufügen von *babel* zum eingebauten Modul ausgeführt, während es sequentiell in das *es module* transpiliert wird. Infolgedessen werden der Verarbeitungsaufwand und die Datei *wes.js* als Kosten aufgebläht.
+*Chakra* , die Ausführungsmaschine des Skripts, interpretiert die Syntax wie `imoprt` , kann jedoch nicht unverändert ausgeführt werden, da die Verarbeitungsmethode als `cscript` nicht definiert ist. In *wes* führen wir durch Hinzufügen von *babel* zum eingebauten Modul es aus, während wir sequentiell in das *es module* transpilieren. Infolgedessen werden der Verarbeitungsaufwand und die Datei *wes.js* als Kosten aufgebläht.
 
 
-Module, die von *es module* beschrieben werden, werden ebenfalls von transpile in `require()` konvertiert, sodass auch *ActiveX* -Aufrufe möglich sind. Es unterstützt jedoch nicht die Moduldateicodierungsspezifikation in *es module* . Alle werden durch automatisches Raten gelesen.
+Module, die von *es module* beschrieben werden, werden auch in `require()` transpiliert, sodass *ActiveX* -Aufrufe möglich sind. Es unterstützt jedoch nicht die Moduldateicodierungsspezifikation in *es module* . Alle werden durch automatisches Raten gelesen.
 
 
 Um es als *es module* zu laden, setzen Sie die Erweiterung auf `.mjs` oder das `"type"` -Feld von `package.json` auf `"module"` .
@@ -183,7 +183,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 
-*wes* verwendet die *console* anstelle von `WScript.Echo` oder `WScript.StdErr.WriteLine` .
+`WScript.Echo` verwendet die *console* anstelle von *wes* oder `WScript.StdErr.WriteLine` .
 
 
 Gibt Zeichen an die Konsole in `console.log` . Es unterstützt auch formatierte Zeichenfolgen. Druckt eine formatierte Zeichenfolge mit dem Formatierungsoperator `%` .
@@ -270,7 +270,7 @@ wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
 
-Führen Sie das folgende Skript in der *REP* aus.
+Führen Sie das folgende Skript in *REP* aus.
 
 
 ```javascript
@@ -457,7 +457,7 @@ console.log(unzip('dox.zip'))
 ```
 
 
-Wildcards `*` können in den `path` von `zip(path, destinationPath)` .
+Wildcard `*` kann im `path` von `zip(path, destinationPath)` beschrieben werden.
 
 
 Es kann sowohl mit *CLI (Command Line Interface)* als auch mit *module* verwendet werden.
@@ -487,7 +487,7 @@ Wenn der `path` die Erweiterung `.zip` hat, wird `unzip()` verarbeitet und es gi
 # Modulbündelung und Installation
 
 
-In *wes* wird ein Bündel aus mehreren Modulen als Paket bezeichnet. Sie können das auf *github* veröffentlichte Paket für *wes* installieren. Sie benötigen ein *github repository* , um das Paket zu veröffentlichen. Außerdem müssen der Name des Repositorys und der Name des lokalen Verzeichnisses identisch sein.
+In *wes* wird ein Bündel aus mehreren Modulen als Paket bezeichnet. Sie können das auf *github* veröffentlichte Paket für *wes* installieren. Sie benötigen ein *github repository* , um das Paket zu veröffentlichen. Außerdem müssen der Repository-Name und der Name des lokalen Verzeichnisses identisch sein.
 
 
 ## *bundle*
@@ -502,7 +502,7 @@ Aus Sicherheitsgründen erstellt *bundle* eine *.json* -Datei, da *wes* Ihnen ni
 Es gibt einige Bedingungen für die Verpackung.
 
 
-1.  In einem *repository* kann nur ein Modul veröffentlicht werden
+1.  In einem *repository* kann nur ein Paket veröffentlicht werden
 
 2.  Stellen Sie sicher, dass der Repository-Name auf *github* und der Name des lokalen Arbeitsverzeichnisses identisch sind.
 
@@ -547,13 +547,15 @@ wes install @wachaon/fmt
 *install* hat Optionen.
 
 
-| genannt    | kurz benannt | Bezeichnung                                                             |
-| ---------- | ------------ | ----------------------------------------------------------------------- |
-| `--bare`   | `-b`         | Erstellen Sie keinen *@author* Ordner                                   |
-| `--global` | `-g`         | Installieren Sie das Modul in dem Ordner, in dem sich *wes.js* befindet |
+| genannt       | kurz benannt | Bezeichnung                                                                             |
+| ------------- | ------------ | --------------------------------------------------------------------------------------- |
+| `--bare`      | `-b`         | Erstellen Sie keinen *@author* Ordner                                                   |
+| `--global`    | `-g`         | Installieren Sie das Paket in dem Ordner, in dem sich *wes.js* befindet                 |
+| `--save`      | `-S`         | Fügen Sie den Paketnamen und die Version zum Feld „ *dependencies* “ von *package.json* |
+| `--save--dev` | `-D`         | Fügen Sie den Paketnamen und die Version zum Feld *devDependencies* in *package.json*   |
 
 
-`--bare` kann das `require` -Argument von `author@repository` an `repository` weglassen. `--global` macht die installierten Module für alle Skripte verfügbar. Die obigen Optionen müssen gleichzeitig mit der *wes* -Sicherheitsoption `--unsafe` oder `--dangerous` .
+`--bare` kann das `require` -Argument von `author@repository` an `repository` weglassen. `--global` macht das installierte Paket für alle Skripte verfügbar. Die obigen Optionen müssen gleichzeitig mit der *wes* -Sicherheitsoption `--unsafe` oder `--dangerous` .
 
 
 ```bat
@@ -564,10 +566,10 @@ wes install @wachaon/fmt --bare --unsafe
 # Installieren von Paketen in privaten Repositories
 
 
-*install* kann nicht nur Module in öffentlichen Repositories auf *github* , sondern auch private Repositories.
+*install* kann Pakete in privaten Repositories sowie Pakete in öffentlichen Repositories auf *github* .
 
 
-Geben Sie bei der *install* das Modul mit *@author/repository* an . Die Implementierung versucht, die folgende URL herunterzuladen.
+Geben Sie bei der *install* das Paket mit *@author/repository* an . Die Implementierung versucht, die folgende URL herunterzuladen.
 
 
 ```javascript
@@ -578,7 +580,7 @@ Geben Sie bei der *install* das Modul mit *@author/repository* an . Die Implemen
 Wenn Sie mit einem Browser auf *raw* des privaten Repositorys zugreifen, wird das *token* angezeigt, also kopieren Sie das *token* und verwenden Sie es.
 
 
-Sie können ein Modul auch in einem privaten Repository installieren, indem Sie es innerhalb der Lebensdauer des *token* in der Konsole ausführen.
+Sie können Pakete auch in privaten Repositorys installieren, indem Sie sie innerhalb der Lebensdauer des *token* in der Konsole ausführen.
 
 
 ```bat
@@ -589,7 +591,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 # Paket Einführung
 
 
-Hier sind einige externe Module.
+Hier sind einige externe Pakete.
 
 
 ## *@wachaon/fmt*
@@ -659,7 +661,7 @@ Eine Alternative wäre, *Microsoft Edge based on Chromium* über den *web driver
 ### Installieren
 
 
-Installieren Sie zuerst das Modul.
+Installieren Sie zuerst das Paket.
 
 
 ```bat
@@ -722,7 +724,7 @@ Der Beendigungsprozess gibt `res.exports` als *.json* -Datei als Standardwert au
 ## *@wachaon/webdriver*
 
 
-Es ist ein Modul, das eine Anfrage an den *web driver* sendet, der den Browser betreibt. Eingebaut in *@wachaon/edge* . Wie *@wachaon/edge* wird für den Browserbetrieb ein *web driver* benötigt.
+Es ist ein Paket, das eine Anfrage an den *web driver* sendet, der den Browser betreibt. Eingebaut in *@wachaon/edge* . Wie *@wachaon/edge* wird für den Browserbetrieb ein *web driver* benötigt.
 
 
 ### Installieren

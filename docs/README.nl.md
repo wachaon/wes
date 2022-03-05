@@ -55,7 +55,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* gebruikt `SendKeys` in *wes* tijdens runtime als implementatie. Als het pad van de map waarin *wes.js* is opgeslagen andere tekens dan *ascii* bevat, kan `SendKeys` de sleutel niet correct verzenden en kan het script niet worden uitgevoerd.  
+*WScript.Shell* gebruikt `SendKeys` van *wes* tijdens runtime als implementatie. Als het pad van de map waarin *wes.js* is opgeslagen andere tekens dan *ascii* bevat, kan `SendKeys` de sleutel niet correct verzenden en kan het script niet worden uitgevoerd.  
 Configureer het opslagbestemmingspad van *wes.js* alleen *ascii* .
 
 
@@ -70,7 +70,7 @@ wes index
 ```
 
 
-Wes heeft ook een *REP* , dus als je het alleen met *wes* `wes` , kun je het script direct invoeren.
+Wes heeft ook *REP* , dus als je het alleen met *wes* `wes` , kun je het script direct invoeren.
 
 
 ```bat
@@ -78,7 +78,7 @@ wes
 ```
 
 
-De *REP* accepteert scriptinvoer totdat u twee lege regels invoert. U kunt de uitvoering van het voorbeeldscript ook controleren in *README.md* met *REP* .
+*REP* accepteert scriptinvoer totdat u twee lege regels invoert. U kunt de uitvoering van het voorbeeldscript ook controleren in *README.md* met *REP* .
 
 
 ## Opdrachtregelopties
@@ -149,10 +149,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-*Chakra* , de uitvoeringsengine van het script, interpreteert de syntaxis zoals `imoprt` , maar het kan niet worden uitgevoerd zoals het is omdat de verwerkingsmethode als `cscript` niet is gedefinieerd. In *wes* , door *babel* toe te voegen aan de ingebouwde module, wordt het uitgevoerd terwijl het sequentieel wordt getranspileerd naar de *es module* . Als gevolg hiervan worden de verwerkingsoverhead en het *wes.js* -bestand als kosten opgeblazen.
+*Chakra* , de uitvoeringsengine van het script, interpreteert de syntaxis zoals `imoprt` , maar het kan niet worden uitgevoerd zoals het is omdat de verwerkingsmethode als `cscript` niet is gedefinieerd. In *wes* , door *babel* toe te voegen aan de ingebouwde module, voeren we het uit terwijl we sequentieel naar de *es module* transpileren. Als gevolg hiervan worden de verwerkingsoverhead en het *wes.js* -bestand als kosten opgeblazen.
 
 
-Modules beschreven door *es module* worden ook geconverteerd naar `require()` door transpile, dus *ActiveX* -aanroepen zijn ook mogelijk. Het ondersteunt echter niet de coderingsspecificatie van het modulebestand in *es module* . Ze worden allemaal gelezen door automatisch te raden.
+Modules beschreven door *es module* zijn ook getranspileerd om `require()` , dus *ActiveX* -aanroepen zijn mogelijk. Het ondersteunt echter niet de coderingsspecificatie van het modulebestand in *es module* . Ze worden allemaal gelezen door automatisch te raden.
 
 
 Om het als een *es module* te laden, stelt u de extensie in op `.mjs` of het veld `"type"` van `package.json` op `"module"` .
@@ -183,7 +183,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 
-*wes* gebruikt *console* in plaats van `WScript.Echo` of `WScript.StdErr.WriteLine` .
+`WScript.Echo` gebruikt *console* in plaats van *wes* of `WScript.StdErr.WriteLine` .
 
 
 Druk tekens af naar de console in `console.log` . Het ondersteunt ook geformatteerde tekenreeksen. Drukt een opgemaakte tekenreeks af met de opmaakoperator `%` .
@@ -262,7 +262,7 @@ Haalt het opdrachtregelargument op. De opdrachtregelargumenten in `cscript.exe` 
 *argv.unnamed* en *argv.named* casten het waardetype van het opdrachtregelargument naar een van de *String* *Number* *Boolean* .
 
 
-Voer de opdrachtregelargumenten in samen met de *REP* .
+Voer de opdrachtregelargumenten in samen met *REP* .
 
 
 ```bat
@@ -270,7 +270,7 @@ wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
 
-Voer het volgende script uit in het *REP* .
+Voer het volgende script uit in *REP* .
 
 
 ```javascript
@@ -457,7 +457,7 @@ console.log(unzip('dox.zip'))
 ```
 
 
-Jokertekens `*` kunnen worden geschreven in het `path` van `zip(path, destinationPath)` .
+Wildcard `*` kan worden beschreven in het `path` van `zip(path, destinationPath)` .
 
 
 Het kan worden gebruikt met zowel *CLI (Command Line Interface)* als *module* .
@@ -478,7 +478,10 @@ Als `path` de extensie `.zip` heeft, wordt `unzip()` verwerkt en is er geen besc
 | `2`      | mapbestand naar `dest`                |
 
 
-undefined
+| genaamd  | korte naam | Beschrijving                          |
+| -------- | ---------- | ------------------------------------- |
+| `--path` | `-p`       | `path` Map of bestand om in te voeren |
+| `--dest` | `-d`       | mapbestand naar `dest`                |
 
 
 # Module bundelen en installeren
@@ -499,7 +502,7 @@ Om veiligheidsredenen maakt *bundle* een *.json* -bestand omdat *wes* u niet toe
 Er zijn enkele voorwaarden voor het verpakken.
 
 
-1.  Er kan slechts één module in één *repository* worden gepubliceerd
+1.  Er kan slechts één pakket in één *repository* worden gepubliceerd
 
 2.  Zorg ervoor dat de naam van de repository op *github* en de naam van de lokale werkmap hetzelfde zijn.
 
@@ -544,13 +547,15 @@ wes install @wachaon/fmt
 *install* heeft opties.
 
 
-| genaamd    | korte naam | Beschrijving                                    |
-| ---------- | ---------- | ----------------------------------------------- |
-| `--bare`   | `-b`       | Maak geen *@author* map aan                     |
-| `--global` | `-g`       | Installeer de module in de map waar *wes.js* is |
+| genaamd       | korte naam | Beschrijving                                                                       |
+| ------------- | ---------- | ---------------------------------------------------------------------------------- |
+| `--bare`      | `-b`       | Maak geen *@author* map aan                                                        |
+| `--global`    | `-g`       | Installeer het pakket in de map waar *wes.js* is                                   |
+| `--save`      | `-S`       | Voeg de pakketnaam en -versie toe aan het *dependencies* van *package.json*        |
+| `--save--dev` | `-D`       | Voeg de pakketnaam en -versie toe aan het veld *devDependencies* in *package.json* |
 
 
-`--bare` optie kan het argument ' `require` ' van `author@repository` naar `repository` weglaten. `--global` optie maakt de geïnstalleerde modules beschikbaar voor alle scripts. De bovenstaande opties moeten tegelijk met de *wes* security optie `--unsafe` of `--dangerous` worden opgegeven.
+`--bare` optie kan het argument ' `require` ' van `author@repository` naar `repository` weglaten. `--global` optie maakt het geïnstalleerde pakket beschikbaar voor alle scripts. De bovenstaande opties moeten tegelijk met de *wes* security optie `--unsafe` of `--dangerous` worden opgegeven.
 
 
 ```bat
@@ -561,10 +566,10 @@ wes install @wachaon/fmt --bare --unsafe
 # Pakketten installeren in privérepository's
 
 
-*install* kan niet alleen modules in openbare repositories op *github* , maar ook private repositories.
+*install* kan zowel pakketten in privé-repositories als pakketten in openbare repositories op *github* .
 
 
-Geef in de *install* de module op met *@author/repository* . De implementatie zal proberen de volgende url te downloaden.
+Geef tijdens de *install* het pakket op met *@author/repository* . De implementatie zal proberen de volgende url te downloaden.
 
 
 ```javascript
@@ -575,7 +580,7 @@ Geef in de *install* de module op met *@author/repository* . De implementatie za
 Wanneer u met een browser *raw* van de privérepository opent, wordt het *token* weergegeven, dus kopieer het *token* en gebruik het.
 
 
-U kunt een module ook in een privérepository installeren door deze binnen de levensduur van het *token* in de console uit te voeren.
+U kunt pakketten ook in privérepository's installeren door ze binnen de levensduur van het *token* in de console uit te voeren.
 
 
 ```bat
@@ -586,7 +591,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 # Pakket introductie:
 
 
-Hier zijn enkele externe modules.
+Hier zijn enkele externe pakketten.
 
 
 ## *@wachaon/fmt*
@@ -656,7 +661,7 @@ Een alternatief zou zijn om *Microsoft Edge based on Chromium* via de *web drive
 ### installeren
 
 
-Installeer eerst de module.
+Installeer eerst het pakket.
 
 
 ```bat
@@ -719,7 +724,7 @@ Het beëindigingsproces voert `res.exports` als een *.json* bestand als de stand
 ## *@wachaon/webdriver*
 
 
-Het is een module die een verzoek stuurt naar de *web driver* die de browser bedient. Ingebouwd in *@wachaon/edge* . Net als *@wachaon/edge* , is een *web driver* vereist voor de browserwerking.
+Het is een pakket dat een verzoek stuurt naar het *web driver* dat de browser bestuurt. Ingebouwd in *@wachaon/edge* . Net als *@wachaon/edge* , is een *web driver* vereist voor de browserwerking.
 
 
 ### installeren

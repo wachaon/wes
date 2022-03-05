@@ -55,7 +55,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* uses `SendKeys` in *wes* at runtime as an implementation. If the path of the directory where *wes.js* is saved contains characters other than *ascii* , `SendKeys` will not be able to send the key correctly and the script will not be able to be executed.  
+*WScript.Shell* uses `SendKeys` from *wes* at runtime as an implementation. If the path of the directory where *wes.js* is saved contains characters other than *ascii* , `SendKeys` will not be able to send the key correctly and the script will not be able to be executed.  
 Please configure the save destination path of *wes.js* only *ascii* .
 
 
@@ -70,7 +70,7 @@ wes index
 ```
 
 
-Also, *wes* has a *REP* , so if you start it only with `wes` , you can enter the script directly.
+Also, *wes* has *REP* , so if you start it only with `wes` , you can enter the script directly.
 
 
 ```bat
@@ -78,7 +78,7 @@ wes
 ```
 
 
-The *REP* accepts script input until you enter two blank lines. You can also check the execution of the sample script in *README.md* with *REP* .
+*REP* accepts script input until you enter two blank lines. You can also check the execution of the sample script in *README.md* with *REP* .
 
 
 ## Command line options
@@ -149,10 +149,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-*Chakra* , which is the execution engine of the script, interprets the syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. In *wes* , by adding *babel* to the built-in module, it is executed while sequentially transpiling to the *es module* . As a result, the processing overhead and the *wes.js* file are bloated as a cost.
+*Chakra* , which is the execution engine of the script, interprets the syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. In *wes* , by adding *babel* to the built-in module, we are executing it while sequentially transpiling to the *es module* . As a result, the processing overhead and the *wes.js* file are bloated as a cost.
 
 
-Modules described by *es module* are also converted to `require()` by transpile, so *ActiveX* calls are also possible. However, it does not support the module file encoding specification in *es module* . All are read by automatic guessing.
+Modules described by *es module* are also transpiled to `require()` , so *ActiveX* calls are possible. However, it does not support the module file encoding specification in *es module* . All are read by automatic guessing.
 
 
 To load it as an *es module* , set the extension to `.mjs` or the `"type"` field of `package.json` to `"module"` .
@@ -177,13 +177,13 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 # Built-in object
 
 
-*wes* has *built-in objects* that *WSH (JScript)* doesn't have.
+*wes* has *built-in objects* that *WSH (JScript)* does not have.
 
 
 ## *console*
 
 
-*wes* uses *console* instead of `WScript.Echo` or `WScript.StdErr.WriteLine` .
+`WScript.Echo` uses *console* instead of *wes* or `WScript.StdErr.WriteLine` .
 
 
 Print characters to the console in `console.log` . It also supports formatted strings. Prints a formatted string using the formatting operator `%` .
@@ -262,7 +262,7 @@ Gets the command line argument. The command line arguments in `cscript.exe` decl
 *argv.unnamed* and *argv.named* cast the value type of the command line argument to one of the *String* *Number* *Boolean* .
 
 
-Enter the command line arguments along with the *REP* .
+Enter the command line arguments along with *REP* .
 
 
 ```bat
@@ -270,7 +270,7 @@ wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
 
-Run the following script in the *REP* .
+Run the following script in *REP* .
 
 
 ```javascript
@@ -457,7 +457,7 @@ console.log(unzip('dox.zip'))
 ```
 
 
-Wildcards `*` can be written in the `path` of `zip(path, destinationPath)` .
+Wildcard `*` can be described in the `path` of `zip(path, destinationPath)` .
 
 
 It can be used with both *CLI (Command Line Interface)* and *module* .
@@ -502,7 +502,7 @@ For security reasons, *bundle* creates a *.json* file because *wes* doesn't allo
 There are some conditions for packaging.
 
 
-1.  Only one module can be published in one *repository*
+1.  Only one package can be published in one *repository*
 
 2.  Make sure that the repository name on *github* and the local working directory name are the same.
 
@@ -547,13 +547,15 @@ wes install @wachaon/fmt
 *install* has options.
 
 
-| named      | short named | description                                        |
-| ---------- | ----------- | -------------------------------------------------- |
-| `--bare`   | `-b`        | Do not create *@author* folder                     |
-| `--global` | `-g`        | Install the module in the folder where *wes.js* is |
+| named         | short named | description                                                                       |
+| ------------- | ----------- | --------------------------------------------------------------------------------- |
+| `--bare`      | `-b`        | Do not create *@author* folder                                                    |
+| `--global`    | `-g`        | Install the package in the folder where *wes.js* is                               |
+| `--save`      | `-S`        | Add the package name and version to the *dependencies* field of *package.json*    |
+| `--save--dev` | `-D`        | Add the package name and version to the *devDependencies* field in *package.json* |
 
 
-`--bare` option can omit the `require` argument from `author@repository` to `repository` . `--global` option makes the installed modules available to all scripts. The above options must be specified at the same time as the *wes* security option `--unsafe` or `--dangerous` .
+`--bare` option can omit the `require` argument from `author@repository` to `repository` . `--global` option makes the installed package available to all scripts. The above options must be specified at the same time as the *wes* security option `--unsafe` or `--dangerous` .
 
 
 ```bat
@@ -564,10 +566,10 @@ wes install @wachaon/fmt --bare --unsafe
 # Installing packages in private repositories
 
 
-*install* can install not only modules in public repositories on *github* , but also private repositories.
+*install* can install packages in private repositories as well as packages in public repositories on *github* .
 
 
-In *install* , specify the module with *@author/repository* . The implementation will try to download the following url.
+In *install* , specify the package with *@author/repository* . The implementation will try to download the following url.
 
 
 ```javascript
@@ -575,10 +577,10 @@ In *install* , specify the module with *@author/repository* . The implementation
 ```
 
 
-When you access *raw* of the private repository with a browser, the *token* will be displayed, so copy the *token* and use it.
+When you access the *raw* of the private repository with a browser, the *token* will be displayed, so copy the *token* and use it.
 
 
-You can also install a module in a private repository by running it in the console within the *token* 's lifetime.
+You can also install packages in private repositories by running them in the console within the *token* 's lifetime.
 
 
 ```bat
@@ -589,7 +591,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 # Package introduction
 
 
-Here are some external modules.
+Here are some external packages.
 
 
 ## *@wachaon/fmt*
@@ -659,7 +661,7 @@ An alternative would be to operate *Microsoft Edge based on Chromium* via the *w
 ### install
 
 
-First, install the module.
+First, install the package.
 
 
 ```bat
@@ -722,7 +724,7 @@ The termination process outputs `res.exports` as a *.json* file as the default v
 ## *@wachaon/webdriver*
 
 
-It is a module that sends a request to the *web driver* that operates the browser. Built into *@wachaon/edge* . Like *@wachaon/edge* , a *web driver* is required for browser operation.
+It is a package that sends a request to the *web driver* that operates the browser. Built into *@wachaon/edge* . Like *@wachaon/edge* , a *web driver* is required for browser operation.
 
 
 ### install

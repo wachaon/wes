@@ -55,7 +55,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* usa `SendKeys` em *wes* em tempo de execução como uma implementação. Se o caminho do diretório onde *wes.js* está salvo contiver caracteres diferentes de *ascii* , `SendKeys` não poderá enviar a chave corretamente e o script não poderá ser executado.  
+*WScript.Shell* usa `SendKeys` de *wes* em tempo de execução como uma implementação. Se o caminho do diretório onde *wes.js* está salvo contiver caracteres diferentes de *ascii* , `SendKeys` não poderá enviar a chave corretamente e o script não poderá ser executado.  
 Configure o caminho de destino de salvamento de *wes.js* somente *ascii* .
 
 
@@ -70,7 +70,7 @@ wes index
 ```
 
 
-Além disso, *wes* tem um *REP* , portanto, se você iniciar apenas com `wes` , poderá inserir o script diretamente.
+Além disso, *wes* tem *REP* , portanto, se você iniciar apenas com `wes` , poderá inserir o script diretamente.
 
 
 ```bat
@@ -78,7 +78,7 @@ wes
 ```
 
 
-O *REP* aceita entrada de script até que você insira duas linhas em branco. Você também pode verificar a execução do script de amostra em *README.md* com *REP* .
+*REP* aceita entrada de script até que você insira duas linhas em branco. Você também pode verificar a execução do script de amostra em *README.md* com *REP* .
 
 
 ## Opções de linha de comando
@@ -149,10 +149,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-*Chakra* , que é o mecanismo de execução do script, interpreta a sintaxe como `imoprt` , mas não pode ser executado como está porque o método de processamento como `cscript` não está definido. Em *wes* , ao adicionar *babel* ao módulo embutido, ele é executado enquanto transpila sequencialmente para o *es module* . Como resultado, a sobrecarga de processamento e o arquivo *wes.js* são inchados como um custo.
+*Chakra* , que é o mecanismo de execução do script, interpreta a sintaxe como `imoprt` , mas não pode ser executado como está porque o método de processamento como `cscript` não está definido. Em *wes* , adicionando *babel* ao módulo embutido, estamos executando-o enquanto transpilamos sequencialmente para o *es module* . Como resultado, a sobrecarga de processamento e o arquivo *wes.js* são inchados como um custo.
 
 
-Módulos escritos no *es module* também são convertidos em transpile para `require()` , então chamadas *ActiveX* são possíveis. No entanto, ele não suporta a especificação de codificação de arquivo do módulo em *es module* . Todos são lidos por adivinhação automática.
+Os módulos descritos pelo *es module* também são transpilados para `require()` , portanto, chamadas *ActiveX* são possíveis. No entanto, ele não suporta a especificação de codificação de arquivo do módulo em *es module* . Todos são lidos por adivinhação automática.
 
 
 Para carregá-lo como um *es module* , defina a extensão para `.mjs` ou o campo `"type"` de `package.json` para `"module"` .
@@ -183,7 +183,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 
-*wes* usa *console* em vez de `WScript.Echo` ou `WScript.StdErr.WriteLine` .
+`WScript.Echo` usa *console* em vez de *wes* ou `WScript.StdErr.WriteLine` .
 
 
 Imprima caracteres no console em `console.log` . Ele também suporta strings formatadas. Imprime uma string formatada usando o operador de formatação `%` .
@@ -262,7 +262,7 @@ Obtém o argumento da linha de comando. Os argumentos de linha de comando em `cs
 *argv.unnamed* e *argv.named* convertem o tipo de valor do argumento de linha de comando para um dos *String* *Number* *Boolean* .
 
 
-Insira os argumentos da linha de comando junto com o *REP* .
+Insira os argumentos da linha de comando junto com *REP* .
 
 
 ```bat
@@ -270,7 +270,7 @@ wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
 
-Execute o script a seguir no *REP* .
+Execute o script a seguir em *REP* .
 
 
 ```javascript
@@ -457,7 +457,7 @@ console.log(unzip('dox.zip'))
 ```
 
 
-Curingas `*` podem ser escritos no `path` do `zip(path, destinationPath)` .
+O curinga `*` pode ser descrito no `path` do `zip(path, destinationPath)` .
 
 
 Pode ser usado com *CLI (Command Line Interface)* e *module* .
@@ -502,7 +502,7 @@ Por motivos de segurança, o *bundle* cria um arquivo *.json* porque *wes* não 
 Existem algumas condições para a embalagem.
 
 
-1.  Apenas um módulo pode ser publicado em um *repository*
+1.  Apenas um pacote pode ser publicado em um *repository*
 
 2.  Certifique-se de que o nome do repositório no *github* e o nome do diretório de trabalho local sejam os mesmos.
 
@@ -547,13 +547,15 @@ wes install @wachaon/fmt
 *install* tem opções.
 
 
-| nomeado    | nome curto | Descrição                                      |
-| ---------- | ---------- | ---------------------------------------------- |
-| `--bare`   | `-b`       | Não crie a pasta *@author*                     |
-| `--global` | `-g`       | Instale o módulo na pasta onde o *wes.js* está |
+| nomeado       | nome curto | Descrição                                                                         |
+| ------------- | ---------- | --------------------------------------------------------------------------------- |
+| `--bare`      | `-b`       | Não crie a pasta *@author*                                                        |
+| `--global`    | `-g`       | Instale o pacote na pasta onde *wes.js* está                                      |
+| `--save`      | `-S`       | Adicione o nome e a versão do pacote ao campo de *dependencies* do *package.json* |
+| `--save--dev` | `-D`       | Adicione o nome e a versão do pacote ao campo *devDependencies* em *package.json* |
 
 
-`--bare` pode omitir o argumento `require` de `author@repository` para `repository` . `--global` disponibiliza os módulos instalados para todos os scripts. As opções acima devem ser especificadas ao mesmo tempo que a opção *wes* security `--unsafe` ou `--dangerous` .
+`--bare` pode omitir o argumento `require` de `author@repository` para `repository` . `--global` disponibiliza o pacote instalado para todos os scripts. As opções acima devem ser especificadas ao mesmo tempo que a opção *wes* security `--unsafe` ou `--dangerous` .
 
 
 ```bat
@@ -564,10 +566,10 @@ wes install @wachaon/fmt --bare --unsafe
 # Instalando pacotes em repositórios privados
 
 
-*install* pode instalar não apenas módulos em repositórios públicos no *github* , mas também repositórios privados.
+*install* pode instalar pacotes em repositórios privados, bem como pacotes em repositórios públicos no *github* .
 
 
-Na *install* , especifique o módulo com *@author/repository* . A implementação tentará baixar o seguinte URL.
+Na *install* , especifique o pacote com *@author/repository* . A implementação tentará baixar o seguinte URL.
 
 
 ```javascript
@@ -578,7 +580,7 @@ Na *install* , especifique o módulo com *@author/repository* . A implementaçã
 Quando você acessar o *raw* do repositório privado com um navegador, o *token* será exibido, então copie o *token* e use-o.
 
 
-Você também pode instalar um módulo em um repositório privado executando-o no console durante a vida útil do *token* .
+Você também pode instalar pacotes em repositórios privados executando-os no console durante a vida útil do *token* .
 
 
 ```bat
@@ -589,7 +591,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 # Introdução do pacote
 
 
-Aqui estão alguns módulos externos.
+Aqui estão alguns pacotes externos.
 
 
 ## *@wachaon/fmt*
@@ -659,7 +661,7 @@ Uma alternativa seria operar *Microsoft Edge based on Chromium* através do *web
 ### instalar
 
 
-Primeiro, instale o módulo.
+Primeiro, instale o pacote.
 
 
 ```bat
@@ -722,7 +724,7 @@ O processo de encerramento gera `res.exports` como um arquivo *.json* como o val
 ## *@wachaon/webdriver*
 
 
-É um módulo que envia uma solicitação ao *web driver* que opera o navegador. Construído em *@wachaon/edge* . Assim como *@wachaon/edge* , é necessário um *web driver* para a operação do navegador.
+É um pacote que envia uma solicitação ao *web driver* que opera o navegador. Construído em *@wachaon/edge* . Assim como *@wachaon/edge* , é necessário um *web driver* para a operação do navegador.
 
 
 ### instalar

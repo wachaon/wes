@@ -4,7 +4,7 @@
 *wes*是一个在*WSH (Windows Script Host)*上运行*ECMAScript*的控制台框架。
 
 
-*README*文件的原文是[*japanese*](/README.md) 。除了日语，它是机器翻译的句子。  
+*README*的原文是[*japanese*](/README.md) 。除了日语，它是机器翻译的句子。  
 请从以下选择其他语言的句子。
 
 
@@ -29,7 +29,7 @@
 
 
 -   您可以将脚本引擎更改为*Chakra* ，并将其写入*ECMAScript2015*规范中
--   它始终运行 32 位*cscript.exe* ，因此在 64 位环境下不存在固有问题。
+-   它始终运行 32 位*cscript.exe* ，因此在 64 位环境中不存在固有问题。
 -   使用模块化系统，您可以比传统*WSH*更高效地开发
 -   内置模块支持文件输入/输出、彩色字符输出到控制台等基本处理。
 -   您不必担心编码，因为您可以让文件读取自动猜测编码。
@@ -55,7 +55,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell*在运行时使用*wes*中的`SendKeys`作为实现。如果*wes.js*保存目录的路径中包含*ascii*以外的字符， `SendKeys`将无法正确发送密钥，脚本将无法执行。  
+*WScript.Shell*在运行时使用来自*wes*的`SendKeys`作为实现。如果*wes.js*保存目录的路径中包含*ascii*以外的字符， `SendKeys`将无法正确发送密钥，脚本将无法执行。  
 请仅配置*wes.js*的保存目标路径*ascii* 。
 
 
@@ -70,7 +70,7 @@ wes index
 ```
 
 
-而且*wes*有一个*REP* ，所以如果你只用`wes`启动它，你可以直接进入脚本。
+而且*wes*有*REP* ，所以如果你只用`wes`启动它，你可以直接进入脚本。
 
 
 ```bat
@@ -114,7 +114,7 @@ wes
 通过分配给`module.exports`并使用`require()`调用来管理模块。为方便起见，它还支持*node_modules*目录。
 
 
-*wes* `require()`会自动猜测模块文件的编码，但是如果没有猜测正确，可以用第二个参数指定编码。
+*wes* `require()`会自动猜测模块文件的编码，但如果没有猜测正确，可以用第二个参数指定编码。
 
 
 ```javascript
@@ -135,7 +135,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-您还可以使用*require* `require('WScript.Shell')`导入*ActiveX* 。
+您也可以使用*require* `require('WScript.Shell')`导入*ActiveX* 。
 
 
 ```javascript
@@ -149,10 +149,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-脚本的执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过将*babel*添加到内置模块中，它在执行的同时顺序转译到*es module* 。结果，处理开销和*wes.js*文件作为成本而膨胀。
+脚本的执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过将*babel*添加到内置模块中，我们在执行它的同时按顺序转译到*es module* 。结果，处理开销和*wes.js*文件作为成本而膨胀。
 
 
-*es module*模块描述的模块也通过transpile转换为`require()` ，所以*ActiveX*调用也是可以的。但是，它不支持*es module*中的模块文件编码规范。都是通过自动猜测读取的。
+*es module*模块描述的模块也被转译为`require()` ，因此*ActiveX*调用是可能的。但是，它不支持*es module*中的模块文件编码规范。都是通过自动猜测读取的。
 
 
 要将其作为*es module*加载，请将扩展名设置为`.mjs`或将`package.json`的`"type"`字段设置为`"module"` 。
@@ -183,7 +183,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 
-*wes*使用*console*而不是`WScript.Echo`或`WScript.StdErr.WriteLine` 。
+`WScript.Echo`使用*console*而不是*wes*或`WScript.StdErr.WriteLine` 。
 
 
 在`console.log`中将字符打印到控制台。它还支持格式化字符串。使用格式化运算符`%`打印格式化字符串。
@@ -337,7 +337,7 @@ files.forEach(file => console.log(file.Name))
 ```
 
 
-*GetObject*作为`WScript.GetObject`的替代品。
+*GetObject*充当`WScript.GetObject`的替代品。
 
 
 ```javascript
@@ -457,7 +457,7 @@ console.log(unzip('dox.zip'))
 ```
 
 
-通配符`*`可以写在`zip(path, destinationPath)` `path`路径中。
+通配符`*`可以在`zip(path, destinationPath)`的`path`中描述。
 
 
 它可以与*CLI (Command Line Interface)*和*module*一起使用。
@@ -502,11 +502,11 @@ wes zip -p dox.zip
 包装有一些条件。
 
 
-1.  一个*repository*只能发布一个模块
+1.  一个*repository*只能发布一个包
 
 2.  确保*github*上的仓库名称和本地工作目录名称相同。
 
-3.  如果您发布包，请*public*存储库
+3.  如果您发布包，请将存储库*public*
 
 4.  在顶层范围内声明模块获取
 
@@ -547,13 +547,15 @@ wes install @wachaon/fmt
 *install*有选项。
 
 
-| 命名为        | 简称   | 描述                   |
-| ---------- | ---- | -------------------- |
-| `--bare`   | `-b` | 不要创建*@author*文件夹     |
-| `--global` | `-g` | 在*wes.js*所在的文件夹中安装模块 |
+| 命名为           | 简称   | 描述                                            |
+| ------------- | ---- | --------------------------------------------- |
+| `--bare`      | `-b` | 不要创建*@author*文件夹                              |
+| `--global`    | `-g` | 将包安装到*wes.js*所在的文件夹中                          |
+| `--save`      | `-S` | 将包名称和版本添加到*package.json*的*dependencies*项字段中   |
+| `--save--dev` | `-D` | 将包名称和版本添加到*package.json*中的*devDependencies*字段 |
 
 
-`--bare`选项可以省略从`author@repository`到`repository`的`require`参数。 `--global`选项使已安装的模块可用于所有脚本。上述选项必须与*wes*安全选项`--unsafe`或`--dangerous` 。
+`--bare`选项可以省略从`author@repository`到`repository`的`require`参数。 `--global`选项使已安装的软件包可用于所有脚本。上述选项必须与*wes*安全选项`--unsafe`或`--dangerous` 。
 
 
 ```bat
@@ -564,10 +566,10 @@ wes install @wachaon/fmt --bare --unsafe
 # 在私有存储库中安装包
 
 
-*install*不仅可以在*github*上的公共存储库中安装模块，还可以在私有存储库中安装模块。
+*install*可以将包安装在私有存储库中，也可以将包安装在*github*上的公共存储库中。
 
 
-在*install*中，使用*@author/repository*指定模块。该实现将尝试下载以下 url。
+在*install*中，使用*@author/repository*指定包。该实现将尝试下载以下 url。
 
 
 ```javascript
@@ -578,7 +580,7 @@ wes install @wachaon/fmt --bare --unsafe
 当您使用浏览器访问私有仓库的*raw*时，将显示*token* ，因此请复制*token*并使用它。
 
 
-您还可以通过在*token*的生命周期内在控制台中运行模块来将模块安装到私有存储库中。
+您还可以通过在*token*的生命周期内在控制台中运行它们来将包安装到私有存储库中。
 
 
 ```bat
@@ -589,7 +591,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 # 包装介绍
 
 
-这是一些外部模块。
+这是一些外部软件包。
 
 
 ## *@wachaon/fmt*
@@ -631,7 +633,7 @@ wes @wachaon/fmt src/sample --write
 | `--write` | `-w` | 允许覆盖 |
 
 
-如果指定`--write`或`-w`的命名参数，则使用格式化的脚本覆盖文件。
+如果指定`--write`或`-w`的命名参数，则使用格式化脚本覆盖文件。
 
 
 #### 作为模块使用
@@ -659,7 +661,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ### 安装
 
 
-首先，安装模块。
+首先，安装软件包。
 
 
 ```bat
@@ -722,7 +724,7 @@ edge((window, navi, res) => {
 ## *@wachaon/webdriver*
 
 
-它是一个向操作浏览器的*web driver*发送请求的模块。内置在*@wachaon/edge*中。与*@wachaon/edge*一样，浏览器操作需要*web driver* 。
+它是一个向操作浏览器的*web driver*发送请求的包。内置在*@wachaon/edge*中。与*@wachaon/edge*一样，浏览器操作需要*web driver* 。
 
 
 ### 安装
