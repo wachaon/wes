@@ -282,6 +282,7 @@ try {
                     }
                     var dirname = entry.split(POSIXSEP).slice(0, -1).join(POSIXSEP)
                     mod.mapping = mod.mapping || {}
+                    var buf = entry === 'buffer' ? null : req('buffer')
                     new Function(
                         'require',
                         'module',
@@ -303,8 +304,8 @@ try {
                         entry,
                         wes,
                         process,
-                        entry === 'buffer' ? null : req('buffer'),
-                        {}
+                        buf,
+                        { process: process, Buffer: buf, console: console }
                     )
                 }
                 mod.exports = mod.module.exports
