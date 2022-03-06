@@ -227,6 +227,7 @@ try {
                         mod.source = '(function ' + name + '() { ' + '"use strict";' + mod.source + '} )()'
                     mod.type = 'transpiled'
 
+                    var buf = entry === 'buffer' ? null : req('buffer')
                     var code = new Function(
                         'require',
                         'module',
@@ -247,8 +248,8 @@ try {
                         dirname(entry),
                         entry,
                         wes,
-                        entry === 'buffer' ? null : req('buffer'),
-                        {}
+                        buf,
+                        { process: process, Buffer: buf, console: console }
                     )
                     wes.filestack.pop()
                     break
