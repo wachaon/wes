@@ -220,9 +220,11 @@ try {
 
                     if (mod.type === 'module') {
                         var Babel = req('babel-standalone')
-                        mod.source = Babel.transform(mod.source, {
+                        var babel_option = {
                             presets: ['env']
-                        }).code
+                        }
+                        if (argv.get('comment') === false) babel_option.comments = false
+                        mod.source = Babel.transform(mod.source, babel_option).code
                     } else if (mod.type === 'commonjs')
                         mod.source = '(function ' + name + '() { ' + '"use strict";' + mod.source + '} )()'
                     mod.type = 'transpiled'
