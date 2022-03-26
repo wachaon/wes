@@ -225,7 +225,6 @@ try {
                         var babel_option = {
                             presets: ['env']
                         }
-                        if (argv.get('comment') === false) babel_option.comments = false
                         mod.source = Babel.transform(mod.source, babel_option).code
                     } else if (mod.type === 'commonjs')
                         mod.source = '(function ' + name + '() { ' + '"use strict";' + mod.source + '} )()'
