@@ -10,11 +10,11 @@ try {
         filestack: [WScript.ScriptFullName.split(WIN32SEP).join(POSIXSEP)]
     }
 
-    var argv = function () { }
+    var argv = function () {}
 
-    var ansi = function () { }
+    var ansi = function () {}
 
-    var console = function () { }
+    var console = function () {}
 
     if (!argv.has('engine', 'Chakra')) {
         var cpu =
@@ -110,15 +110,18 @@ try {
                 // Otherwise, combine node_module while going back directory
                 var hierarchy = dirname(caller)
                 var node_modules = 'node_modules'
+                var wes_modules = 'wes_modules'
 
                 while (hierarchy !== NONE) {
                     areas.push(resolve(hierarchy, node_modules, query))
+                    areas.push(resolve(hierarchy, wes_modules, query))
                     var _hierarchy = dirname(hierarchy)
                     if (hierarchy === _hierarchy) break
                     hierarchy = _hierarchy
                 }
                 var ScriptFullName = WScript.ScriptFullName
                 areas.push(resolve(dirname(ScriptFullName), node_modules, query))
+                areas.push(resolve(dirname(ScriptFullName), wes_modules, query))
             }
             return areas
         }
@@ -327,7 +330,7 @@ try {
             // execute OLE, if it is OLE
             try {
                 return WScript.CreateObject(query)
-            } catch (e) { }
+            } catch (e) {}
 
             // execute req function, if it is a mapping[ query ]
             var parentModule = getPathToModule(caller)
