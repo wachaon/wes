@@ -55,7 +55,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* utilizza `SendKeys` da *wes* in fase di esecuzione come implementazione. Se il percorso della directory in cui è salvato *wes.js* contiene caratteri diversi da *ascii* , `SendKeys` non sarà in grado di inviare la chiave correttamente e lo script non potrà essere eseguito.  
+*WScript.Shell* utilizza `SendKeys` in *wes* in fase di esecuzione come implementazione. Se il percorso della directory in cui è salvato *wes.js* contiene caratteri diversi da *ascii* , `SendKeys` non sarà in grado di inviare la chiave correttamente e lo script non potrà essere eseguito.  
 Si prega di configurare il percorso di destinazione di salvataggio di *wes.js* only *ascii* .
 
 
@@ -70,7 +70,7 @@ wes index
 ```
 
 
-Inoltre, *wes* ha *REP* , quindi se lo avvii solo con `wes` , puoi inserire direttamente lo script.
+Inoltre, *wes* ha un *REP* , quindi se lo avvii solo con `wes` , puoi inserire direttamente lo script.
 
 
 ```bat
@@ -149,10 +149,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-*Chakra* , che è il motore di esecuzione dello script, interpreta la sintassi come `imoprt` , ma non può essere eseguito così com'è perché il metodo di elaborazione come `cscript` non è definito. In *wes* , aggiungendo *babel* al modulo integrato, lo stiamo eseguendo durante la transpilazione sequenziale nel *es module* . Di conseguenza, il sovraccarico di elaborazione e il file *wes.js* sono gonfiati come costo.
+*Chakra* , che è il motore di esecuzione dello script, interpreta la sintassi come `imoprt` , ma non può essere eseguito così com'è perché il metodo di elaborazione come `cscript` non è definito. In *wes* , aggiungendo *babel* al modulo integrato, viene eseguito durante la traspilazione sequenziale al *es module* . Di conseguenza, il sovraccarico di elaborazione e il file *wes.js* sono gonfiati come costo.
 
 
-I moduli descritti da *es module* vengono anche trasferiti in `require()` , quindi sono possibili chiamate *ActiveX* . Tuttavia, non supporta la specifica di codifica del file del modulo in *es module* . Tutti vengono letti per indovinare automaticamente.
+I moduli descritti da *es module* vengono anche convertiti in `require()` tramite transpile, quindi sono possibili anche chiamate *ActiveX* . Tuttavia, non supporta la specifica di codifica del file del modulo in *es module* . Tutti vengono letti per indovinare automaticamente.
 
 
 Per caricarlo come *es module* , imposta l'estensione su `.mjs` o il campo `"type"` di `package.json` su `"module"` .
@@ -183,7 +183,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 
-`WScript.Echo` usa la *console* invece di *wes* o `WScript.StdErr.WriteLine` .
+*wes* usa la *console* invece di `WScript.Echo` o `WScript.StdErr.WriteLine` .
 
 
 Stampa i caratteri sulla console in `console.log` . Supporta anche le stringhe formattate. Stampa una stringa formattata utilizzando l'operatore di formattazione `%` .
@@ -457,7 +457,7 @@ console.log(unzip('dox.zip'))
 ```
 
 
-Il carattere jolly `*` può essere descritto nel `path` di `zip(path, destinationPath)` .
+I caratteri jolly `*` possono essere scritti nel `path` di `zip(path, destinationPath)` .
 
 
 Può essere utilizzato sia con *CLI (Command Line Interface)* che con il *module* .
@@ -530,7 +530,7 @@ Ci sono alcune condizioni per l'imballaggio.
 ## *install*
 
 
-Utilizzato per installare il pacchetto per *wes* pubblicato su *github* .
+Utilizzato per installare il pacchetto per *wes* pubblicato su *github* . Dalla `version 0.10.28` la cartella di installazione verrà modificata da `node_modules` a `wes_modules` . Se stai installando su `node_modules` , aggiungi l'opzione `--node` .
 
 
 ### Come usare
@@ -553,6 +553,7 @@ wes install @wachaon/fmt
 | `--global`    | `-g`       | Installa il pacchetto nella cartella in cui si trova *wes.js*                                |
 | `--save`      | `-S`       | Aggiungi il nome e la versione del pacchetto al campo delle *dependencies* di *package.json* |
 | `--save--dev` | `-D`       | Aggiungi il nome e la versione del pacchetto al campo *devDependencies* in *package.json*    |
+| `--node`      | `-n`       | Installa nella cartella *node_module*                                                        |
 
 
 `--bare` può omettere l'argomento `require` da `author@repository` a `repository` . `--global` rende il pacchetto installato disponibile per tutti gli script. Le opzioni di cui sopra devono essere specificate contemporaneamente all'opzione *wes* security `--unsafe` o `--dangerous` .
@@ -597,7 +598,7 @@ Ecco alcuni pacchetti esterni.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* è un pacchetto *prettier* carino per *wes* e formatta lo script. Inoltre, se si verifica un *Syntax Error* con *@wachaon/fmt* installato, è possibile indicare la posizione dell'errore.
+*@wachaon/fmt* è un pacchetto *prettier* carino per *wes* e formatta lo script. Inoltre, se *@wachaon/fmt* è installato e si verifica un *Syntax Error* , è possibile indicare la posizione dell'errore.
 
 
 ### installare

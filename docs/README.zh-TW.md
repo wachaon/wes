@@ -29,7 +29,7 @@
 
 
 -   您可以將腳本引擎更改為*Chakra* ，並將其寫入*ECMAScript2015*規範中
--   它始終運行 32 位*cscript.exe* ，因此在 64 位環境下不存在固有問題。
+-   它始終運行 32 位*cscript.exe* ，因此在 64 位環境中不存在固有問題。
 -   使用模塊化系統，您可以比傳統*WSH*更高效地開發
 -   內置模塊支持文件輸入/輸出、彩色字符輸出到控制台等基本處理。
 -   您不必擔心編碼，因為您可以讓文件讀取自動猜測編碼。
@@ -55,7 +55,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell*在運行時使用來自*wes*的`SendKeys`作為實現。如果*wes.js*保存目錄的路徑中包含*ascii*以外的字符， `SendKeys`將無法正確發送密鑰，腳本將無法執行。  
+*WScript.Shell*在運行時使用*wes*中的`SendKeys`作為實現。如果*wes.js*保存目錄的路徑中包含*ascii*以外的字符， `SendKeys`將無法正確發送密鑰，腳本將無法執行。  
 請僅配置*wes.js*的保存目標路徑*ascii* 。
 
 
@@ -70,7 +70,7 @@ wes index
 ```
 
 
-而且*wes*有*REP* ，所以如果你只用`wes`啟動它，你可以直接進入腳本。
+而且*wes*有一個*REP* ，所以如果你只用`wes`啟動它，你可以直接進入腳本。
 
 
 ```bat
@@ -114,7 +114,7 @@ wes
 通過分配給`module.exports`並使用`require()`調用來管理模塊。為方便起見，它還支持*node_modules*目錄。
 
 
-*wes* `require()`會自動猜測模塊文件的編碼，但如果沒有猜測正確，可以用第二個參數指定編碼。
+*wes* `require()`會自動猜測模塊文件的編碼，但是如果沒有猜測正確，可以用第二個參數指定編碼。
 
 
 ```javascript
@@ -135,7 +135,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-您也可以使用*require* `require('WScript.Shell')`導入*ActiveX* 。
+您還可以使用*require* `require('WScript.Shell')`導入*ActiveX* 。
 
 
 ```javascript
@@ -149,10 +149,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-腳本的執行引擎*Chakra*解釋了諸如`imoprt`之類的語法，但由於未定義`cscript`的處理方法，因此無法按原樣執行。在*wes*中，通過將*babel*添加到內置模塊中，我們在執行它的同時按順序轉譯到*es module* 。結果，處理開銷和*wes.js*文件作為成本而膨脹。
+腳本的執行引擎*Chakra*解釋了諸如`imoprt`之類的語法，但由於未定義`cscript`的處理方法，因此無法按原樣執行。在*wes*中，通過將*babel*添加到內置模塊中，它在執行的同時順序轉譯到*es module* 。結果，處理開銷和*wes.js*文件作為成本而膨脹。
 
 
-*es module*模塊描述的模塊也被轉譯為`require()` ，因此*ActiveX*調用是可能的。但是，它不支持*es module*中的模塊文件編碼規範。都是通過自動猜測讀取的。
+用*es module*模塊編寫的模塊也被 transpile 轉換為`require()` ，因此*ActiveX*調用是可能的。但是，它不支持*es module*中的模塊文件編碼規範。都是通過自動猜測讀取的。
 
 
 要將其作為*es module*加載，請將擴展名設置為`.mjs`或將`package.json`的`"type"`字段設置為`"module"` 。
@@ -183,7 +183,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 
-`WScript.Echo`使用*console*而不是*wes*或`WScript.StdErr.WriteLine` 。
+*wes*使用*console*而不是`WScript.Echo`或`WScript.StdErr.WriteLine` 。
 
 
 在`console.log`中將字符打印到控制台。它還支持格式化字符串。使用格式化運算符`%`打印格式化字符串。
@@ -337,7 +337,7 @@ files.forEach(file => console.log(file.Name))
 ```
 
 
-*GetObject*作為`WScript.GetObject`的替代品。
+*GetObject*充當`WScript.GetObject`的替代品。
 
 
 ```javascript
@@ -457,7 +457,7 @@ console.log(unzip('dox.zip'))
 ```
 
 
-通配符`*`可以在`zip(path, destinationPath)`的`path`中描述。
+通配符`*`可以寫在`zip(path, destinationPath)` `path`路徑中。
 
 
 它可以與*CLI (Command Line Interface)*和*module*一起使用。
@@ -530,7 +530,7 @@ wes zip -p dox.zip
 ## *install*
 
 
-用於安裝*github*上發布的*wes*包。
+用於安裝*github*上發布的*wes*包。從`version 0.10.28` ，安裝文件夾將從`node_modules`更改為`wes_modules` 。如果要安裝到`node_modules` ，請添加`--node`選項。
 
 
 ### 如何使用
@@ -551,8 +551,9 @@ wes install @wachaon/fmt
 | ------------- | ---- | --------------------------------------------- |
 | `--bare`      | `-b` | 不要創建*@author*文件夾                              |
 | `--global`    | `-g` | 將包安裝到*wes.js*所在的文件夾中                          |
-| `--save`      | `-S` | 在*package.json*的*dependencies*字段中添加包名和版本      |
+| `--save`      | `-S` | 將包名稱和版本添加到*package.json*的*dependencies*項字段中   |
 | `--save--dev` | `-D` | 將包名稱和版本添加到*package.json*中的*devDependencies*字段 |
+| `--node`      | `-n` | 安裝在*node_module*文件夾中                          |
 
 
 `--bare`選項可以省略從`author@repository`到`repository`的`require`參數。 `--global`選項使已安裝的軟件包可用於所有腳本。上述選項必須與*wes*安全選項`--unsafe`或`--dangerous` 。
@@ -597,7 +598,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ## *@wachaon/fmt*
 
 
-@ *wes* *@wachaon/fmt*是為*prettier*打包並格式化腳本的一個更漂亮的工具。此外，如果在安裝*@wachaon/fmt*時出現*Syntax Error* ，您可以指出錯誤位置。
+@ *wes* *@wachaon/fmt*是為*prettier*打包並格式化腳本的一個更漂亮的工具。另外，如果安裝了*@wachaon/fmt* ，出現了*Syntax Error* ，可以指出錯誤的位置。
 
 
 ### 安裝
@@ -633,7 +634,7 @@ wes @wachaon/fmt src/sample --write
 | `--write` | `-w` | 允許覆蓋 |
 
 
-如果指定`--write`或`-w`的命名參數，則使用格式化的腳本覆蓋文件。
+如果指定`--write`或`-w`的命名參數，則使用格式化腳本覆蓋文件。
 
 
 #### 作為模塊使用

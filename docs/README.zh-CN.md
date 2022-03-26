@@ -55,7 +55,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell*在运行时使用来自*wes*的`SendKeys`作为实现。如果*wes.js*保存目录的路径中包含*ascii*以外的字符， `SendKeys`将无法正确发送密钥，脚本将无法执行。  
+*WScript.Shell*在运行时使用*wes*中的`SendKeys`作为实现。如果*wes.js*保存目录的路径中包含*ascii*以外的字符， `SendKeys`将无法正确发送密钥，脚本将无法执行。  
 请仅配置*wes.js*的保存目标路径*ascii* 。
 
 
@@ -70,7 +70,7 @@ wes index
 ```
 
 
-而且*wes*有*REP* ，所以如果你只用`wes`启动它，你可以直接进入脚本。
+而且*wes*有一个*REP* ，所以如果你只用`wes`启动它，你可以直接进入脚本。
 
 
 ```bat
@@ -114,7 +114,7 @@ wes
 通过分配给`module.exports`并使用`require()`调用来管理模块。为方便起见，它还支持*node_modules*目录。
 
 
-*wes* `require()`会自动猜测模块文件的编码，但如果没有猜测正确，可以用第二个参数指定编码。
+*wes* `require()`会自动猜测模块文件的编码，但是如果没有猜测正确，可以用第二个参数指定编码。
 
 
 ```javascript
@@ -149,10 +149,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-脚本的执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过将*babel*添加到内置模块中，我们在执行它的同时按顺序转译到*es module* 。结果，处理开销和*wes.js*文件作为成本而膨胀。
+脚本的执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过将*babel*添加到内置模块中，它在执行的同时顺序转译到*es module* 。结果，处理开销和*wes.js*文件作为成本而膨胀。
 
 
-*es module*模块描述的模块也被转译为`require()` ，因此*ActiveX*调用是可能的。但是，它不支持*es module*中的模块文件编码规范。都是通过自动猜测读取的。
+用*es module*模块编写的模块也被 transpile 转换为`require()` ，因此*ActiveX*调用是可能的。但是，它不支持*es module*中的模块文件编码规范。都是通过自动猜测读取的。
 
 
 要将其作为*es module*加载，请将扩展名设置为`.mjs`或将`package.json`的`"type"`字段设置为`"module"` 。
@@ -183,7 +183,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 
-`WScript.Echo`使用*console*而不是*wes*或`WScript.StdErr.WriteLine` 。
+*wes*使用*console*而不是`WScript.Echo`或`WScript.StdErr.WriteLine` 。
 
 
 在`console.log`中将字符打印到控制台。它还支持格式化字符串。使用格式化运算符`%`打印格式化字符串。
@@ -337,7 +337,7 @@ files.forEach(file => console.log(file.Name))
 ```
 
 
-*GetObject*充当`WScript.GetObject`的替代品。
+*GetObject*作为`WScript.GetObject`的替代品。
 
 
 ```javascript
@@ -457,7 +457,7 @@ console.log(unzip('dox.zip'))
 ```
 
 
-通配符`*`可以在`zip(path, destinationPath)`的`path`中描述。
+通配符`*`可以写在`zip(path, destinationPath)` `path`路径中。
 
 
 它可以与*CLI (Command Line Interface)*和*module*一起使用。
@@ -487,7 +487,7 @@ wes zip -p dox.zip
 # 模块捆绑和安装
 
 
-在*wes*中，多个模块的捆绑包称为包。您可以安装在*github*上发布的*wes*软件包。您将需要一个*github repository*来发布包。此外，存储库名称和本地目录名称必须相同。
+在*wes*中，几个模块的捆绑称为一个包。您可以安装在*github*上发布的*wes*软件包。您将需要一个*github repository*来发布包。此外，存储库名称和本地目录名称必须相同。
 
 
 ## *bundle*
@@ -506,7 +506,7 @@ wes zip -p dox.zip
 
 2.  确保*github*上的仓库名称和本地工作目录名称相同。
 
-3.  如果您发布包，请将存储库*public*
+3.  如果您发布包，请*public*存储库
 
 4.  在顶层范围内声明模块获取
 
@@ -530,7 +530,7 @@ wes zip -p dox.zip
 ## *install*
 
 
-用于安装*github*上发布的*wes*包。
+用于安装*github*上发布的*wes*包。从`version 0.10.28` ，安装文件夹将从`node_modules`更改为`wes_modules` 。如果要安装到`node_modules` ，请添加`--node`选项。
 
 
 ### 如何使用
@@ -551,8 +551,9 @@ wes install @wachaon/fmt
 | ------------- | ---- | --------------------------------------------- |
 | `--bare`      | `-b` | 不要创建*@author*文件夹                              |
 | `--global`    | `-g` | 将包安装到*wes.js*所在的文件夹中                          |
-| `--save`      | `-S` | 将包名称和版本添加到*package.json*的*dependencies*项字段中   |
+| `--save`      | `-S` | 在*package.json*的*dependencies*字段中添加包名和版本      |
 | `--save--dev` | `-D` | 将包名称和版本添加到*package.json*中的*devDependencies*字段 |
+| `--node`      | `-n` | 安装在*node_module*文件夹中                          |
 
 
 `--bare`选项可以省略从`author@repository`到`repository`的`require`参数。 `--global`选项使已安装的软件包可用于所有脚本。上述选项必须与*wes*安全选项`--unsafe`或`--dangerous` 。
@@ -577,7 +578,7 @@ wes install @wachaon/fmt --bare --unsafe
 ```
 
 
-当您使用浏览器访问私有仓库的*raw*时，将显示*token* ，因此请复制*token*并使用它。
+当你用浏览器访问私有仓库的*raw*时，会显示*token* ，所以复制*token*并使用它。
 
 
 您还可以通过在*token*的生命周期内在控制台中运行它们来将包安装到私有存储库中。
@@ -597,7 +598,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ## *@wachaon/fmt*
 
 
-@ *wes* *@wachaon/fmt*是为*prettier*打包并格式化脚本的一个更漂亮的工具。此外，如果在安装*@wachaon/fmt*时出现*Syntax Error* ，您可以指出错误位置。
+@ *wes* *@wachaon/fmt*是为*prettier*打包并格式化脚本的一个更漂亮的工具。另外，如果安装了*@wachaon/fmt* ，出现*Syntax Error* ，可以指出错误位置。
 
 
 ### 安装

@@ -55,7 +55,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* verwendet `SendKeys` von *wes* zur Laufzeit als Implementierung. Wenn der Pfad des Verzeichnisses, in dem *wes.js* gespeichert ist, andere Zeichen als `SendKeys` *ascii* Schlüssel nicht korrekt senden und das Skript kann nicht ausgeführt werden.  
+*WScript.Shell* verwendet `SendKeys` in *wes* zur Laufzeit als Implementierung. Wenn der Pfad des Verzeichnisses, in dem *wes.js* gespeichert ist, andere Zeichen als `SendKeys` *ascii* Schlüssel nicht korrekt senden und das Skript kann nicht ausgeführt werden.  
 Bitte konfigurieren Sie den Speicherzielpfad von *wes.js* nur *ascii* .
 
 
@@ -70,7 +70,7 @@ wes index
 ```
 
 
-Außerdem hat *wes* *REP* , wenn Sie es also nur mit `wes` starten, können Sie das Skript direkt eingeben.
+Außerdem hat *wes* einen *REP* , wenn Sie es also nur mit `wes` starten, können Sie das Skript direkt eingeben.
 
 
 ```bat
@@ -149,13 +149,13 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-*Chakra* , die Ausführungsmaschine des Skripts, interpretiert die Syntax wie `imoprt` , kann jedoch nicht unverändert ausgeführt werden, da die Verarbeitungsmethode als `cscript` nicht definiert ist. In *wes* führen wir durch Hinzufügen von *babel* zum eingebauten Modul es aus, während wir sequentiell in das *es module* transpilieren. Infolgedessen werden der Verarbeitungsaufwand und die Datei *wes.js* als Kosten aufgebläht.
+*Chakra* , die Ausführungsmaschine des Skripts, interpretiert Syntax wie `imoprt` , kann jedoch nicht unverändert ausgeführt werden, da die Verarbeitungsmethode als `cscript` nicht definiert ist. In *wes* wird es durch Hinzufügen von *babel* zum eingebauten Modul ausgeführt, während es sequentiell in das *es module* transpiliert wird. Infolgedessen werden der Verarbeitungsaufwand und die Datei *wes.js* als Kosten aufgebläht.
 
 
-Module, die von *es module* beschrieben werden, werden auch in `require()` transpiliert, sodass *ActiveX* -Aufrufe möglich sind. Es unterstützt jedoch nicht die Moduldateicodierungsspezifikation in *es module* . Alle werden durch automatisches Raten gelesen.
+Module, die in *es module* geschrieben sind, werden auch in `require()` transpiliert, sodass *ActiveX* -Aufrufe möglich sind. Es unterstützt jedoch nicht die Moduldateicodierungsspezifikation in *es module* . Alle werden durch automatisches Raten gelesen.
 
 
-Um es als *es module* zu laden, setzen Sie die Erweiterung auf `.mjs` oder das `"type"` -Feld von `package.json` auf `"module"` .
+Um es als *es module* zu laden, setzen Sie die Erweiterung auf `.mjs` oder das Feld `"type"` von `package.json` auf `"module"` .
 
 
 ```javascript
@@ -183,7 +183,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 
-`WScript.Echo` verwendet die *console* anstelle von *wes* oder `WScript.StdErr.WriteLine` .
+*wes* verwendet die *console* anstelle von `WScript.Echo` oder `WScript.StdErr.WriteLine` .
 
 
 Gibt Zeichen an die Konsole in `console.log` . Es unterstützt auch formatierte Zeichenfolgen. Druckt eine formatierte Zeichenfolge mit dem Formatierungsoperator `%` .
@@ -457,7 +457,7 @@ console.log(unzip('dox.zip'))
 ```
 
 
-Wildcard `*` kann im `path` von `zip(path, destinationPath)` beschrieben werden.
+Wildcards `*` können in den `path` von `zip(path, destinationPath)` .
 
 
 Es kann sowohl mit *CLI (Command Line Interface)* als auch mit *module* verwendet werden.
@@ -487,7 +487,7 @@ Wenn der `path` die Erweiterung `.zip` hat, wird `unzip()` verarbeitet und es gi
 # Modulbündelung und Installation
 
 
-In *wes* wird ein Bündel aus mehreren Modulen als Paket bezeichnet. Sie können das auf *github* veröffentlichte Paket für *wes* installieren. Sie benötigen ein *github repository* , um das Paket zu veröffentlichen. Außerdem müssen der Repository-Name und der Name des lokalen Verzeichnisses identisch sein.
+In *wes* wird ein Bündel aus mehreren Modulen als Paket bezeichnet. Sie können das auf *github* veröffentlichte Paket für *wes* installieren. Sie benötigen ein *github repository* , um das Paket zu veröffentlichen. Außerdem müssen der Name des Repositorys und der Name des lokalen Verzeichnisses identisch sein.
 
 
 ## *bundle*
@@ -530,7 +530,7 @@ Es gibt einige Bedingungen für die Verpackung.
 ## *install*
 
 
-Wird verwendet, um das auf *github* veröffentlichte Paket für *wes* zu installieren.
+Wird verwendet, um das auf *github* veröffentlichte Paket für *wes* zu installieren. Ab `version 0.10.28` wird der Installationsordner von `node_modules` auf `wes_modules` . Wenn Sie in `node_modules` installieren, fügen Sie die Option `--node` hinzu.
 
 
 ### Wie benutzt man
@@ -553,6 +553,7 @@ wes install @wachaon/fmt
 | `--global`    | `-g`         | Installieren Sie das Paket in dem Ordner, in dem sich *wes.js* befindet                 |
 | `--save`      | `-S`         | Fügen Sie den Paketnamen und die Version zum Feld „ *dependencies* “ von *package.json* |
 | `--save--dev` | `-D`         | Fügen Sie den Paketnamen und die Version zum Feld *devDependencies* in *package.json*   |
+| `--node`      | `-n`         | Installieren Sie im Ordner *node_module*                                                |
 
 
 `--bare` kann das `require` -Argument von `author@repository` an `repository` weglassen. `--global` macht das installierte Paket für alle Skripte verfügbar. Die obigen Optionen müssen gleichzeitig mit der *wes* -Sicherheitsoption `--unsafe` oder `--dangerous` .
@@ -597,7 +598,7 @@ Hier sind einige externe Pakete.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* ist ein *prettier* Paket für *wes* und formatiert das Skript. Auch wenn ein *Syntax Error* auftritt, wenn *@wachaon/fmt* installiert ist, können Sie die Fehlerstelle angeben.
+*@wachaon/fmt* ist ein *prettier* Paket für *wes* und formatiert das Skript. Auch wenn *@wachaon/fmt* installiert ist und ein *Syntax Error* auftritt, können Sie die Fehlerstelle angeben.
 
 
 ### Installieren

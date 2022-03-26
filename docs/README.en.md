@@ -70,7 +70,7 @@ wes index
 ```
 
 
-Also, *wes* has *REP* , so if you start it only with `wes` , you can enter the script directly.
+Also, *wes* has a *REP* , so if you start it only with `wes` , you can enter the script directly.
 
 
 ```bat
@@ -149,10 +149,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-*Chakra* , which is the execution engine of the script, interprets the syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. In *wes* , by adding *babel* to the built-in module, we are executing it while sequentially transpiling to the *es module* . As a result, the processing overhead and the *wes.js* file are bloated as a cost.
+*Chakra* , which is the execution engine of the script, interprets syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. In *wes* , by adding *babel* to the built-in module, it is executed while sequentially transpiling to the *es module* . As a result, the processing overhead and the *wes.js* file are bloated as a cost.
 
 
-Modules described by *es module* are also transpiled to `require()` , so *ActiveX* calls are possible. However, it does not support the module file encoding specification in *es module* . All are read by automatic guessing.
+Modules written in *es module* are also transpile converted to `require()` , so *ActiveX* calls are possible. However, it does not support the module file encoding specification in *es module* . All are read by automatic guessing.
 
 
 To load it as an *es module* , set the extension to `.mjs` or the `"type"` field of `package.json` to `"module"` .
@@ -177,13 +177,13 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 # Built-in object
 
 
-*wes* has *built-in objects* that *WSH (JScript)* does not have.
+*wes* has *built-in objects* that *WSH (JScript)* doesn't have.
 
 
 ## *console*
 
 
-`WScript.Echo` uses *console* instead of *wes* or `WScript.StdErr.WriteLine` .
+*wes* uses *console* instead of `WScript.Echo` or `WScript.StdErr.WriteLine` .
 
 
 Print characters to the console in `console.log` . It also supports formatted strings. Prints a formatted string using the formatting operator `%` .
@@ -457,7 +457,7 @@ console.log(unzip('dox.zip'))
 ```
 
 
-Wildcard `*` can be described in the `path` of `zip(path, destinationPath)` .
+Wildcards `*` can be written in the `path` of `zip(path, destinationPath)` .
 
 
 It can be used with both *CLI (Command Line Interface)* and *module* .
@@ -530,7 +530,7 @@ There are some conditions for packaging.
 ## *install*
 
 
-Used to install the package for *wes* published on *github* .
+Used to install the package for *wes* published on *github* . From `version 0.10.28` the installation folder will be changed from `node_modules` to `wes_modules` . If you are installing to `node_modules` , add the `--node` option.
 
 
 ### How to use
@@ -553,6 +553,7 @@ wes install @wachaon/fmt
 | `--global`    | `-g`        | Install the package in the folder where *wes.js* is                               |
 | `--save`      | `-S`        | Add the package name and version to the *dependencies* field of *package.json*    |
 | `--save--dev` | `-D`        | Add the package name and version to the *devDependencies* field in *package.json* |
+| `--node`      | `-n`        | Install in *node_module* folder                                                   |
 
 
 `--bare` option can omit the `require` argument from `author@repository` to `repository` . `--global` option makes the installed package available to all scripts. The above options must be specified at the same time as the *wes* security option `--unsafe` or `--dangerous` .
@@ -577,7 +578,7 @@ In *install* , specify the package with *@author/repository* . The implementatio
 ```
 
 
-When you access the *raw* of the private repository with a browser, the *token* will be displayed, so copy the *token* and use it.
+When you access *raw* of the private repository with a browser, the *token* will be displayed, so copy the *token* and use it.
 
 
 You can also install packages in private repositories by running them in the console within the *token* 's lifetime.
@@ -597,7 +598,7 @@ Here are some external packages.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* is a *prettier* packaged for *wes* and formats the script. Also, if a *Syntax Error* occurs with *@wachaon/fmt* installed, you can indicate the error location.
+*@wachaon/fmt* is a *prettier* packaged for *wes* and formats the script. Also, if *@wachaon/fmt* is installed and a *Syntax Error* occurs, you can indicate the error location.
 
 
 ### install

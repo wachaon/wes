@@ -55,7 +55,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* menggunakan `SendKeys` daripada *wes* pada masa jalan sebagai pelaksanaan. Jika laluan direktori tempat *wes.js* disimpan mengandungi aksara selain *ascii* , `SendKeys` tidak akan dapat menghantar kunci dengan betul dan skrip tidak akan dapat dilaksanakan.  
+*WScript.Shell* menggunakan `SendKeys` dalam *wes* pada masa jalan sebagai pelaksanaan. Jika laluan direktori tempat *wes.js* disimpan mengandungi aksara selain *ascii* , `SendKeys` tidak akan dapat menghantar kunci dengan betul dan skrip tidak akan dapat dilaksanakan.  
 Sila konfigurasikan laluan simpan destinasi untuk *wes.js* sahaja *ascii* .
 
 
@@ -149,10 +149,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-*Chakra* , yang merupakan enjin pelaksanaan skrip, mentafsir sintaks seperti `imoprt` , tetapi ia tidak boleh dilaksanakan kerana kaedah pemprosesan sebagai `cscript` tidak ditakrifkan. Di *wes* , dengan menambahkan *babel* pada modul terbina dalam, kami melaksanakannya sambil memindahkan secara berurutan ke *es module* . Akibatnya, overhed pemprosesan dan fail *wes.js* sebagai kos.
+*Chakra* , yang merupakan enjin pelaksanaan skrip, mentafsir sintaks seperti `imoprt` , tetapi ia tidak boleh dilaksanakan kerana kaedah pemprosesan sebagai `cscript` tidak ditakrifkan. Di *wes* , dengan menambahkan *babel* pada modul terbina dalam, ia dilaksanakan sambil memindahkan secara berurutan ke *es module* . Akibatnya, overhed pemprosesan dan fail *wes.js* sebagai kos.
 
 
-Modul yang diterangkan oleh *es module* juga ditranspilkan untuk `require()` , jadi panggilan *ActiveX* boleh dilakukan. Walau bagaimanapun, ia tidak menyokong spesifikasi pengekodan fail modul dalam *es module* . Semuanya dibaca dengan meneka secara automatik.
+Modul yang ditulis dalam *es module* juga ditukarkan kepada `require()` , jadi panggilan *ActiveX* boleh dilakukan. Walau bagaimanapun, ia tidak menyokong spesifikasi pengekodan fail modul dalam *es module* . Semuanya dibaca dengan meneka secara automatik.
 
 
 Untuk memuatkannya sebagai *es module* , tetapkan sambungan kepada `.mjs` atau medan `"type"` `package.json` kepada `"module"` .
@@ -183,7 +183,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 
-`WScript.Echo` menggunakan *console* dan bukannya *wes* atau `WScript.StdErr.WriteLine` .
+*wes* menggunakan *console* dan bukannya `WScript.Echo` atau `WScript.StdErr.WriteLine` .
 
 
 Cetak aksara ke konsol dalam `console.log` . Ia juga menyokong rentetan yang diformatkan. Mencetak rentetan terformat menggunakan operator pemformatan `%` .
@@ -457,7 +457,7 @@ console.log(unzip('dox.zip'))
 ```
 
 
-Wildcard `*` boleh diterangkan dalam `path` `zip(path, destinationPath)` .
+Kad bebas `*` boleh ditulis dalam `path` `zip(path, destinationPath)` .
 
 
 Ia boleh digunakan dengan kedua-dua *CLI (Command Line Interface)* dan *module* .
@@ -530,7 +530,7 @@ Terdapat beberapa syarat untuk pembungkusan.
 ## *install*
 
 
-Digunakan untuk memasang pakej untuk *wes* diterbitkan di *github* .
+Digunakan untuk memasang pakej untuk *wes* diterbitkan di *github* . Dari `version 0.10.28` folder pemasangan akan ditukar daripada `node_modules` kepada `wes_modules` . Jika anda memasang ke `node_modules` , tambahkan pilihan `--node` .
 
 
 ### Bagaimana nak guna
@@ -553,6 +553,7 @@ wes install @wachaon/fmt
 | `--global`    | `-g`           | Pasang pakej dalam folder di mana *wes.js* berada                                |
 | `--save`      | `-S`           | Tambahkan nama pakej dan versi pada medan *dependencies* *package.json*          |
 | `--save--dev` | `-D`           | Tambahkan nama pakej dan versi pada medan *devDependencies* dalam *package.json* |
+| `--node`      | `-n`           | Pasang dalam folder *node_module*                                                |
 
 
 `--bare` boleh menghilangkan hujah `require` daripada `author@repository` ke `repository` . `--global` menjadikan pakej yang dipasang tersedia untuk semua skrip. Pilihan di atas mesti dinyatakan pada masa yang sama dengan pilihan keselamatan *wes* `--unsafe` atau `--dangerous` .
@@ -597,7 +598,7 @@ Berikut adalah beberapa pakej luaran.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* adalah pakej yang *prettier* untuk *wes* dan memformat skrip. Selain itu, jika *Syntax Error* berlaku dengan *@wachaon/fmt* dipasang, anda boleh menunjukkan lokasi ralat.
+*@wachaon/fmt* adalah pakej yang *prettier* untuk *wes* dan memformat skrip. Selain itu, jika *@wachaon/fmt* dipasang dan *Syntax Error* berlaku, anda boleh menunjukkan lokasi ralat.
 
 
 ### pasang

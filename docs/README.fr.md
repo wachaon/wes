@@ -4,7 +4,7 @@
 *wes* est un framework de console qui exécute *ECMAScript* sur *WSH (Windows Script Host)* .
 
 
-Le texte original du *README* est en [*japanese*](/README.md) . Autre que le japonais, c'est une phrase traduite automatiquement.  
+Le texte original du *README* est en [*japanese*](/README.md) . Autre que le japonais, c'est une phrase traduite par machine.  
 Veuillez sélectionner des phrases dans d'autres langues parmi les suivantes.
 
 
@@ -55,7 +55,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* utilise `SendKeys` de *wes* lors de l'exécution en tant qu'implémentation. Si le chemin du répertoire où *wes.js* est enregistré contient des caractères autres que *ascii* , `SendKeys` ne pourra pas envoyer la clé correctement et le script ne pourra pas être exécuté.  
+*WScript.Shell* utilise `SendKeys` dans *wes* lors de l'exécution en tant qu'implémentation. Si le chemin du répertoire où *wes.js* est enregistré contient des caractères autres que *ascii* , `SendKeys` ne pourra pas envoyer la clé correctement et le script ne pourra pas être exécuté.  
 Veuillez configurer le chemin de destination de sauvegarde de *wes.js* uniquement *ascii* .
 
 
@@ -70,7 +70,7 @@ wes index
 ```
 
 
-De plus, *wes* a *REP* , donc si vous le démarrez uniquement avec `wes` , vous pouvez entrer le script directement.
+De plus, *wes* a un *REP* , donc si vous ne le démarrez qu'avec `wes` , vous pouvez entrer directement le script.
 
 
 ```bat
@@ -149,10 +149,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-*Chakra* , qui est le moteur d'exécution du script, interprète la syntaxe telle que `imoprt` , mais il ne peut pas être exécuté tel quel car la méthode de traitement en tant que `cscript` n'est pas définie. Dans *wes* , en ajoutant *babel* au module intégré, nous l'exécutons tout en transpilant séquentiellement vers le *es module* . Par conséquent, la surcharge de traitement et le fichier *wes.js* sont gonflés en tant que coût.
+*Chakra* , qui est le moteur d'exécution du script, interprète une syntaxe telle que `imoprt` , mais il ne peut pas être exécuté tel quel car la méthode de traitement en tant que `cscript` n'est pas définie. Dans *wes* , en ajoutant *babel* au module intégré, il est exécuté tout en transpilant séquentiellement vers le *es module* . Par conséquent, la surcharge de traitement et le fichier *wes.js* sont gonflés en tant que coût.
 
 
-Les modules décrits par le *es module* sont également transpilés en `require()` , de sorte que les appels *ActiveX* sont possibles. Cependant, il ne prend pas en charge la spécification d'encodage de fichier de module dans *es module* . Tous sont lus par devinette automatique.
+Les modules décrits par le *es module* sont également convertis en `require()` par transpile, de sorte que les appels *ActiveX* sont également possibles. Cependant, il ne prend pas en charge la spécification d'encodage de fichier de module dans *es module* . Tous sont lus par devinette automatique.
 
 
 Pour le charger en tant que *es module* , définissez l'extension sur `.mjs` ou le champ `"type"` de `package.json` sur `"module"` .
@@ -183,7 +183,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 
-`WScript.Echo` utilise *console* au lieu de *wes* ou `WScript.StdErr.WriteLine` .
+*wes* utilise *console* au lieu de `WScript.Echo` ou `WScript.StdErr.WriteLine` .
 
 
 Affiche les caractères sur la console dans `console.log` . Il prend également en charge les chaînes formatées. Imprime une chaîne formatée à l'aide de l'opérateur de formatage `%` .
@@ -457,7 +457,7 @@ console.log(unzip('dox.zip'))
 ```
 
 
-Le caractère générique `*` peut être décrit dans le `path` du `zip(path, destinationPath)` .
+Des caractères génériques `*` peuvent être écrits dans le `path` du `zip(path, destinationPath)` .
 
 
 Il peut être utilisé avec *CLI (Command Line Interface)* et le *module* .
@@ -480,7 +480,7 @@ Si le `path` a l'extension `.zip` , `unzip()` est traité et il n'y a pas de des
 
 | nommé    | nommé court | la description                              |
 | -------- | ----------- | ------------------------------------------- |
-| `--path` | `-p`        | `path` Dossier ou fichier à entrer          |
+| `--path` | `-p`        | `path` Dossier ou fichier à saisir          |
 | `--dest` | `-d`        | fichier de dossier vers la `dest` de sortie |
 
 
@@ -530,7 +530,7 @@ Il y a certaines conditions pour l'emballage.
 ## *install*
 
 
-Utilisé pour installer le package pour *wes* publié sur *github* .
+Utilisé pour installer le package pour *wes* publié sur *github* . À partir de la `version 0.10.28` , le dossier d'installation passera de `node_modules` à `wes_modules` . Si vous installez sur `node_modules` , ajoutez l'option `--node` .
 
 
 ### Comment utiliser
@@ -553,6 +553,7 @@ wes install @wachaon/fmt
 | `--global`    | `-g`        | Installez le package dans le dossier où se trouve *wes.js*                             |
 | `--save`      | `-S`        | Ajoutez le nom et la version du package au champ *dependencies* de *package.json*      |
 | `--save--dev` | `-D`        | Ajoutez le nom et la version du package au champ *devDependencies* dans *package.json* |
+| `--node`      | `-n`        | Installer dans le dossier *node_module*                                                |
 
 
 `--bare` peut omettre l'argument `require` de `author@repository` à `repository` . `--global` rend le package installé disponible pour tous les scripts. Les options ci-dessus doivent être spécifiées en même temps que l'option de sécurité *wes* `--unsafe` ou `--dangerous` .
@@ -577,7 +578,7 @@ Dans *install* , spécifiez le package avec *@author/repository* . L'implémenta
 ```
 
 
-Lorsque vous accédez au *raw* du référentiel privé avec un navigateur, le *token* s'affiche, alors copiez le *token* et utilisez-le.
+Lorsque vous accédez à *raw* du référentiel privé avec un navigateur, le *token* s'affiche, alors copiez le *token* et utilisez-le.
 
 
 Vous pouvez également installer des packages dans des référentiels privés en les exécutant dans la console pendant la durée de vie du *token* .
@@ -597,7 +598,7 @@ Voici quelques packages externes.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* est un *prettier* packagé pour *wes* et formate le script. De plus, si une *Syntax Error* se produit avec *@wachaon/fmt* installé, vous pouvez indiquer l'emplacement de l'erreur.
+*@wachaon/fmt* est un *prettier* packagé pour *wes* et formate le script. De plus, si *@wachaon/fmt* est installé et qu'une *Syntax Error* se produit, vous pouvez indiquer l'emplacement de l'erreur.
 
 
 ### installer
@@ -709,7 +710,7 @@ Ce script affichera séquentiellement les *URL* visitées sur la console.
 `@wachaon/edge` enregistre un événement pour l' *URL* et ajoute des données à `res.exports` . L' *URL* à enregistrer peut être soit `String` `RegExp` , et des paramètres flexibles peuvent être définis.
 
 
-En le rendant événementiel, il est possible de basculer facilement en fonctionnement manuel en ne définissant pas d'événement à traiter difficilement gérable avec le pilote automatique.
+En le rendant piloté par les événements, il est possible de passer facilement en fonctionnement manuel en ne définissant pas un événement à traiter difficile à gérer avec le pilote automatique.
 
 
 Si vous souhaitez arrêter le script, exécutez `navi.emit('terminate', res)` ou terminez manuellement *Edge* .
