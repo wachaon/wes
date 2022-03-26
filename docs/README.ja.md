@@ -418,9 +418,12 @@ wes zip -p dox.zip
         wes bundle node_modules/directory_name
     ```
     でバンドルしてください
+
 ## *install*
 
 *github* に公開されている *wes* 用のパッケージをインストールするのに使用します。
+`version 0.10.28` からインストールフォルダが `node_modules` から `wes_modules` に変更になります。
+`node_modules` にインストールする場合は、`--node` オプションを追加してください。
 
 ### 使い方
 
@@ -438,8 +441,7 @@ wes install @wachaon/fmt
 | `--global`    | `-g`        | *wes.js* があるフォルダにパッケージをインストールする                              |
 | `--save`      | `-S`        | *package.json* の *dependencies* フィールドにパッケージ名とバージョンを追加する    |
 | `--save--dev` | `-D`        | *package.json* の *devDependencies* フィールドにパッケージ名とバージョンを追加する |
-
-
+| `--node`      | `-n`        | *node_module* フォルダにインストールする                                           |
 
 `--bare` オプションは `require` の引数を `author@repository` から `repository` に省略できます。
 `--global` オプションはインストールしたパッケージを全てのスクリプトから利用できます。
