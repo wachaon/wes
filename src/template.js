@@ -10,11 +10,11 @@ try {
         filestack: [WScript.ScriptFullName.split(WIN32SEP).join(POSIXSEP)]
     }
 
-    var argv = function () {}
+    var argv = function () { }
 
-    var ansi = function () {}
+    var ansi = function () { }
 
-    var console = function () {}
+    var console = function () { }
 
     if (!argv.has('engine', 'Chakra')) {
         var cpu =
@@ -184,7 +184,6 @@ try {
             var pathname = req('pathname')
             var dirname = pathname.dirname
             var extname = pathname.extname
-            var WorkingDirectory = pathname.WorkingDirectory
             var parse = JSON.parse
             var filesystem = req('filesystem')
             var readTextFileSync = filesystem.readTextFileSync
@@ -328,7 +327,7 @@ try {
             // execute OLE, if it is OLE
             try {
                 return WScript.CreateObject(query)
-            } catch (e) {}
+            } catch (e) { }
 
             // execute req function, if it is a mapping[ query ]
             var parentModule = getPathToModule(caller)
