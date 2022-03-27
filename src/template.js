@@ -113,8 +113,8 @@ try {
                 var wes_modules = 'wes_modules'
 
                 while (hierarchy !== NONE) {
-                    areas.push(resolve(hierarchy, node_modules, query))
                     areas.push(resolve(hierarchy, wes_modules, query))
+                    areas.push(resolve(hierarchy, node_modules, query))
                     var _hierarchy = dirname(hierarchy)
                     if (hierarchy === _hierarchy) break
                     hierarchy = _hierarchy
