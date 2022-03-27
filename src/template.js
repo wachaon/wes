@@ -226,7 +226,7 @@ try {
                     }
                     if (argv.get('comments') === false) babel_option.comments = false
 
-                    let result_code = '"use strict";' + mod.source
+                    var result_code = '"use strict";' + mod.source
 
                     if (mod.type === 'module') {
                         mod.source = Babel.transform(result_code, babel_option).code
