@@ -220,14 +220,22 @@ try {
                         .join(NONE)
                     wes.filestack.push(entry)
 
+                    var Babel = req('babel-standalone')
+                    var babel_option = {
+                        presets: ['env']
+                    }
+                    if (argv.get('comments') === false) babel_option.comments = false
+
+                    let result_code = '"use strict";' + mod.source
+
                     if (mod.type === 'module') {
-                        var Babel = req('babel-standalone')
-                        var babel_option = {
-                            presets: ['env']
-                        }
-                        mod.source = Babel.transform(mod.source, babel_option).code
-                    } else if (mod.type === 'commonjs')
-                        mod.source = '(function ' + name + '() { ' + '"use strict";' + mod.source + '} )()'
+                        mod.source = Babel.transform(result_code, babel_option).code
+                    } else if (argv.get('comments') === false) {
+                        mod.source =
+                            '(function ' + name + '() { ' + Babel.transform(result_code, babel_option).code + '} )()'
+                    } else {
+                        mod.source = '(function ' + name + '() { ' + result_code + '} )()'
+                    }
                     mod.type = 'transpiled'
 
                     var buf = entry === 'buffer' ? null : req('buffer')
