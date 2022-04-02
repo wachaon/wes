@@ -201,7 +201,7 @@ try {
                 path: entry,
                 mapping: {}
             }
-            if (mod.source.startsWith('#!')) mod.source.split(LF).slice(1).join(LF)
+            if (mod.source.startsWith('#!')) mod.source = mod.source.split(LF).slice(1).join(LF)
 
             Modules[GUID] = mod
             mod.type = type
