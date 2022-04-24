@@ -373,11 +373,11 @@ try {
         wes.Modules = Modules
         var pathname = req('pathname')
         var resolve = pathname.resolve
-        var CurrentDirectory = pathname.CurrentDirectory
+        var WorkingDirectory = pathname.WorkingDirectory
 
         var main = argv.unnamed[0] != null ? argv.unnamed[0] : 'REP'
         if (main in wes.Modules) wes.main = main
-        require(resolve(CurrentDirectory, '_'), main, argv.get('encoding'))
+        require(resolve(WorkingDirectory, '_'), main, argv.get('encoding'))
     }
 } catch (error) {
     if (!!console) {
