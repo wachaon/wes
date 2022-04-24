@@ -10,11 +10,11 @@ try {
         filestack: [WScript.ScriptFullName.split(WIN32SEP).join(POSIXSEP)]
     }
 
-    var argv = function () {}
+    var argv = function () { }
 
-    var ansi = function () {}
+    var ansi = function () { }
 
-    var console = function () {}
+    var console = function () { }
 
     if (!argv.has('engine', 'Chakra')) {
         var cpu =
@@ -41,14 +41,6 @@ try {
         var Modules = {}
 
         // util
-        function has(cls, prop) {
-            if (cls == null) throw new Error(prop + ' is null')
-            return cls.hasOwnProperty(prop)
-        }
-
-        function starts(str, word) {
-            return str.startsWith(word)
-        }
 
         function getPathToModule(filespec) {
             var mod = Object.keys(Modules).find(function (key) {
@@ -87,7 +79,7 @@ try {
 
         function getAreas(caller, _query) {
             var pathname = req('pathname')
-            var CurrentDirectory = pathname.CurrentDirectory
+            var WorkingDirectory = pathname.WorkingDirectory
             var resolve = pathname.resolve
             var dirname = pathname.dirname
             var rd = '/' // root directory
@@ -99,7 +91,7 @@ try {
 
             // Replace '/' with Current Directory if query starts with '/'
             if (starts(query, rd)) {
-                areas.push(resolve(CurrentDirectory, query.replace(rd, NONE)))
+                areas.push(resolve(WorkingDirectory, query.replace(rd, NONE)))
 
                 // combine the caller's path and the query, if relative path
             } else if (starts(query, cd) || starts(query, pd)) {
@@ -277,7 +269,7 @@ try {
         var process = {
             env: { NODE_ENV: NONE },
             cwd: function () {
-                return req('pathname').CurrentDirectory
+                return req('pathname').WorkingDirectory
             },
             platform: 'win32'
         }
@@ -337,7 +329,7 @@ try {
             // execute OLE, if it is OLE
             try {
                 return WScript.CreateObject(query)
-            } catch (e) {}
+            } catch (e) { }
 
             // execute req function, if it is a mapping[ query ]
             var parentModule = getPathToModule(caller)
@@ -436,7 +428,16 @@ function retry() {
         try {
             res = action(args.shift())
             break
-        } catch (error) {}
+        } catch (error) { }
     }
     return res
+}
+
+function has(cls, prop) {
+    if (cls == null) throw new Error(prop + ' is null')
+    return cls.hasOwnProperty(prop)
+}
+
+function starts(str, word) {
+    return str.startsWith(word)
 }
