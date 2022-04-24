@@ -10,11 +10,11 @@ try {
         filestack: [WScript.ScriptFullName.split(WIN32SEP).join(POSIXSEP)]
     }
 
-    var argv = function () { }
+    var argv = function () {}
 
-    var ansi = function () { }
+    var ansi = function () {}
 
-    var console = function () { }
+    var console = function () {}
 
     if (!argv.has('engine', 'Chakra')) {
         var cpu =
@@ -319,7 +319,7 @@ try {
             // execute OLE, if it is OLE
             try {
                 return WScript.CreateObject(query)
-            } catch (e) { }
+            } catch (e) {}
 
             // execute req function, if it is a mapping[ query ]
             var parentModule = getPathToModule(caller)
@@ -407,7 +407,7 @@ function retry() {
         try {
             res = action(args.shift())
             break
-        } catch (error) { }
+        } catch (error) {}
     }
     return res
 }
