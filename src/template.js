@@ -40,12 +40,22 @@ try {
     } else {
         var Modules = {}
 
-        // util
+        var pathname = req('pathname')
+        var resolve = pathname.resolve
+        var dirname = pathname.dirname
+        var extname = pathname.extname
+        var isAbsolute = pathname.isAbsolute
+        var WorkingDirectory = pathname.WorkingDirectory
 
+        var filesystem = req('filesystem')
+        var existsFileSync = filesystem.existsFileSync
+        var readTextFileSync = filesystem.readTextFileSync
+
+        // util
         function getPathToModule(filespec) {
             var mod = Object.keys(Modules).find(function (key) {
-                if (!!Modules[key].path) return Modules[key].path === filespec
-                return false
+                if (!has(Modules[key], 'path')) return false
+                return Modules[key].path === filespec
             })
             return Modules[mod]
         }
@@ -63,11 +73,6 @@ try {
         }
 
         function getPkgField(dir, field) {
-            var pathname = req('pathname')
-            var resolve = pathname.resolve
-            var filesystem = req('filesystem')
-            var existsFileSync = filesystem.existsFileSync
-            var readTextFileSync = filesystem.readTextFileSync
             var parse = JSON.parse
 
             var pkg = resolve(dir, 'package.json')
@@ -78,10 +83,6 @@ try {
         }
 
         function getAreas(caller, _query) {
-            var pathname = req('pathname')
-            var WorkingDirectory = pathname.WorkingDirectory
-            var resolve = pathname.resolve
-            var dirname = pathname.dirname
             var rd = '/' // root directory
             var cd = './' // current directory
             var pd = '../' // parent directory
@@ -119,12 +120,6 @@ try {
         }
 
         function getEntry(areas) {
-            var pathname = req('pathname')
-            var resolve = pathname.resolve
-            var dirname = pathname.dirname
-            var extname = pathname.extname
-            var filesystem = req('filesystem')
-            var existsFileSync = filesystem.existsFileSync
             var js = '.js'
             var json = '.json'
             var index = 'index.js'
@@ -176,12 +171,7 @@ try {
         }
 
         function createModule(GUID, entry, query, parentModule, encode, type) {
-            var pathname = req('pathname')
-            var dirname = pathname.dirname
-            var extname = pathname.extname
             var parse = JSON.parse
-            var filesystem = req('filesystem')
-            var readTextFileSync = filesystem.readTextFileSync
 
             if (parentModule) parentModule.mapping[query] = GUID
 
@@ -269,7 +259,7 @@ try {
         var process = {
             env: { NODE_ENV: NONE },
             cwd: function () {
-                return req('pathname').WorkingDirectory
+                return WorkingDirectory
             },
             platform: 'win32'
         }
@@ -340,8 +330,6 @@ try {
                 }
             }
 
-            var isAbsolute = req('pathname').isAbsolute
-            var resolve = req('pathname').resolve
             var areas = []
             if (isAbsolute(query)) areas = [resolve(query)]
             else areas = getAreas(caller, query)
@@ -363,9 +351,6 @@ try {
         }
 
         wes.Modules = Modules
-        var pathname = req('pathname')
-        var resolve = pathname.resolve
-        var WorkingDirectory = pathname.WorkingDirectory
 
         var main = argv.unnamed[0] != null ? argv.unnamed[0] : 'REP'
         if (main in wes.Modules) wes.main = main
@@ -388,10 +373,6 @@ try {
 
         console.log(orange + errorStack.join('\r\n').split('Function code:').join(NONE))
 
-        var pathname = req('pathname')
-        var resolve = pathname.resolve
-        var WorkingDirectory = pathname.WorkingDirectory
-
         if (error instanceof SyntaxError) {
             var fmt = retry(require.bind(null, resolve(WorkingDirectory, '*')), 'fmt', '@wachaon/fmt')
             if (fmt != null) {
@@ -402,8 +383,6 @@ try {
                     })[0]
                     source = wes.Modules[file].source
                 } else {
-                    var filesystem = req('filesystem')
-                    var readTextFileSync = filesystem.readTextFileSync
                     source = readTextFileSync(current)
                     console.log('\n%SWhere the error occurred: %S', ansi.yellow, current)
                 }
