@@ -401,16 +401,7 @@ try {
         var WorkingDirectory = pathname.WorkingDirectory
 
         if (error instanceof SyntaxError) {
-            var fmt
-            try {
-                fmt = require(WorkingDirectory, 'fmt')
-            } catch (error1) {
-                try {
-                    fmt = require(WorkingDirectory, '@wachaon/fmt')
-                } catch (error2) {
-                    fmt = null
-                }
-            }
+            var fmt = retry(require.bind(null, resolve(WorkingDirectory, '*')), 'fmt', '@wachaon/fmt')
             if (fmt != null) {
                 var source
                 if (wes.main === 'REP') {
@@ -432,4 +423,20 @@ try {
             }
         }
     } else WScript.Popup('[error]' + error.message)
+}
+
+// util
+
+function retry() {
+    var args = Array.from(arguments)
+    if (args.length < 2) return null
+    var action = args.shift()
+    var res = null
+    while (args.length) {
+        try {
+            res = action(args.shift())
+            break
+        } catch (error) {}
+    }
+    return res
 }
