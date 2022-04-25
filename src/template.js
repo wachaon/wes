@@ -183,7 +183,7 @@ try {
                 path: entry,
                 mapping: {}
             }
-            if (mod.source.startsWith('#!')) mod.source = mod.source.split(LF).slice(1).join(LF)
+            if (starts(mod.source, '#!')) mod.source = mod.source.split(LF).slice(1).join(LF)
 
             Modules[GUID] = mod
             mod.type = type
@@ -269,7 +269,7 @@ try {
             if (!has(mod, 'exports')) {
                 if (!has(mod, 'module')) {
                     mod.module = { exports: {} }
-                    if (mod.path.endsWith('.json')) {
+                    if (ends(mod.path, '.json')) {
                         mod.module.exports = JSON.parse(mod.source)
                         mod.exports = mod.module.exports
                         return mod.exports
@@ -363,10 +363,10 @@ try {
         var errorStack = unescape(error.stack.split('$').join('%'))
         errorStack = errorStack.split(/\r?\n/).filter(function (line) {
             return !(
-                line.startsWith('   at Function code (Function code:') ||
-                line.startsWith('   at createModule (') ||
-                line.startsWith('   at require (') ||
-                line.startsWith('   at req (')
+                starts(line, '   at Function code (Function code:') ||
+                starts(line, '   at createModule (') ||
+                starts(line, '   at require (') ||
+                starts(line, '   at req (')
             )
         })
         var current = wes.filestack.slice(-1)
@@ -379,7 +379,7 @@ try {
                 var source
                 if (wes.main === 'REP') {
                     var file = Object.keys(wes.Modules).filter(function (key) {
-                        return key.startsWith('{')
+                        return starts(key, '{')
                     })[0]
                     source = wes.Modules[file].source
                 } else {
@@ -419,4 +419,8 @@ function has(cls, prop) {
 
 function starts(str, word) {
     return str.startsWith(word)
+}
+
+function ends(str, word) {
+    return str.endsWith(word)
 }
