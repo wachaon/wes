@@ -77,5 +77,3 @@ describe('# test pathname', () => {
         })
     })
 })
-
-return pass

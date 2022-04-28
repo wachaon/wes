@@ -47,10 +47,10 @@ describe('# test typecheck', () => {
     describe('## isFunction', () => {
         const { isFunction } = typecheck
         it('function(){}', () => {
-            assert(isFunction(function() {}))
+            assert(isFunction(function () { }))
         })
         it('() => {}', () => {
-            assert(isFunction(() => {}))
+            assert(isFunction(() => { }))
         })
         it('String', () => {
             assert(isFunction(String))
@@ -62,7 +62,7 @@ describe('# test typecheck', () => {
             assert(
                 isFunction(
                     class {
-                        constructor() {}
+                        constructor() { }
                     }
                 )
             )
@@ -135,7 +135,7 @@ describe('# test typecheck', () => {
         })
         it('( function( a ) { return isArray( arguments ) === false } )( 2 )', () => {
             assert(
-                (function(a) {
+                (function (a) {
                     return isArray(arguments) === false
                 })(2)
             )
@@ -160,7 +160,7 @@ describe('# test typecheck', () => {
             assert(isObject(new Date()) === false)
         })
         it('isObject( function(){} ) === false', () => {
-            assert(isObject(function() {}) === false)
+            assert(isObject(function () { }) === false)
         })
     })
 
@@ -173,11 +173,9 @@ describe('# test typecheck', () => {
             assert(isClass(new Function('return 5'), Function))
         })
         it('class One', () => {
-            class One {}
+            class One { }
             const one = new One()
             assert(isClass(one, One))
         })
     })
 })
-
-return pass

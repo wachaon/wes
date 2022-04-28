@@ -39,5 +39,3 @@ describe('#test Enumerator', () => {
         assert(JSON.stringify(files) === JSON.stringify(list))
     })
 })
-
-return pass

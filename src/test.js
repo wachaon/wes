@@ -9,7 +9,7 @@ let total = 0
 let succeed = 0
 
 files.forEach((v) => {
-    let [_total, _succeed] = eval(`( () => { ${fs.readTextFileSync(v)} } )()`)
+    let [_total, _succeed] = eval(`( () => { ${fs.readTextFileSync(v)}\nreturn pass } )()`)
     total = _total
     succeed = _succeed
 })

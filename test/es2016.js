@@ -39,5 +39,3 @@ describe('# ECMA2016', () => {
         })
     })
 })
-
-return pass

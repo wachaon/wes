@@ -12,7 +12,7 @@ describe('# ECMA2017', () => {
         it('Object.entries', () => {
             assert(
                 JSON.stringify(Object.entries(obj)) ===
-                    '[["name","simba"],["type","cat"]]'
+                '[["name","simba"],["type","cat"]]'
             )
         })
     })
@@ -40,7 +40,7 @@ describe('# ECMA2017', () => {
         it('{ name: "simba", type: "cat", }', () => {
             assert(
                 JSON.stringify({ name: 'simba', type: 'cat' }) ===
-                    '{"name":"simba","type":"cat"}'
+                '{"name":"simba","type":"cat"}'
             )
         })
         it('function add ( a, b, ) { return a + b }', () => {
@@ -56,7 +56,7 @@ describe('# ECMA2017', () => {
             const obj = { name: 'simba', type: 'cat' }
             assert(
                 JSON.stringify(Object.getOwnPropertyDescriptors(obj)) ===
-                    '{"name":{"value":"simba","writable":true,"enumerable":true,"configurable":true},"type":{"value":"cat","writable":true,"enumerable":true,"configurable":true}}'
+                '{"name":{"value":"simba","writable":true,"enumerable":true,"configurable":true},"type":{"value":"cat","writable":true,"enumerable":true,"configurable":true}}'
             )
         })
     })
@@ -68,5 +68,3 @@ describe('# ECMA2017', () => {
     } )
     */
 })
-
-return pass

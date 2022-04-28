@@ -23,12 +23,10 @@ describe('# test chardet', () => {
             const b = detect.toLowerCase().replace(rDASHg, NONE)
             assert(
                 names[i] === a ||
-                    names[i] === b ||
-                    names[i].startsWith(b) ||
-                    (names[i].startsWith('lang') && detect === 'UTF-8')
+                names[i] === b ||
+                names[i].startsWith(b) ||
+                (names[i].startsWith('lang') && detect === 'UTF-8')
             )
         })
     })
 })
-
-return pass
