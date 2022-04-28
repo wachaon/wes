@@ -32,6 +32,7 @@ describe('#test Enumerator', () => {
             'REP.js',
             'text.js',
             'typecheck.js',
+            'update.js',
             'VBScript.js',
             'zip.js'
         ]
