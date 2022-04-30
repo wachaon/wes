@@ -29,7 +29,7 @@ Sila pilih ayat dalam bahasa lain daripada yang berikut.
 
 
 -   Anda boleh menukar enjin skrip kepada *Chakra* dan menulisnya dalam spesifikasi *ECMAScript2015*
--   Ia sentiasa menjalankan 32bit *cscript.exe* , jadi tiada masalah yang wujud dalam persekitaran 64bit.
+-   Ia sentiasa menjalankan 32bit *cscript.exe* , jadi ia tidak mempunyai sebarang masalah yang wujud dalam persekitaran 64bit.
 -   Dengan sistem modular, anda boleh membangun dengan lebih cekap daripada *WSH* tradisional
 -   Modul terbina dalam menyokong pemprosesan asas seperti input / output fail dan output aksara berwarna ke konsol.
 -   Anda tidak perlu risau tentang pengekodan kerana anda boleh meminta fail dibaca secara automatik meneka pengekodan.
@@ -44,7 +44,7 @@ Sila pilih ayat dalam bahasa lain daripada yang berikut.
 -   Anda tidak boleh menggunakan *event prefix* sebagai hujah kedua `WScript.CreateObject`
 
 
-# pasang
+# muat turun
 
 
 Wes hanya memerlukan *wes* *wes.js* . Untuk memuat turun, salin *wes.js* daripada [*@wachaon/wes*](https://github.com/wachaon/wes) atau jalankan arahan berikut dalam konsol.
@@ -55,8 +55,16 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* menggunakan `SendKeys` dalam *wes* pada masa jalan sebagai pelaksanaan. Jika laluan direktori tempat *wes.js* disimpan mengandungi aksara selain *ascii* , `SendKeys` tidak akan dapat menghantar kunci dengan betul dan skrip tidak akan dapat dilaksanakan.  
+*WScript.Shell* menggunakan `SendKeys` daripada *wes* pada masa jalan sebagai pelaksanaan. Jika laluan direktori tempat *wes.js* disimpan mengandungi aksara selain *ascii* , `SendKeys` tidak akan dapat menghantar kunci dengan betul dan skrip tidak akan dapat dilaksanakan.  
 Sila konfigurasikan laluan simpan destinasi untuk *wes.js* sahaja *ascii* .
+
+
+Jika anda telah memuat turun *wes* , anda boleh mengemas kininya dengan arahan berikut.
+
+
+```bat
+wes update
+```
 
 
 # Bagaimana nak guna
@@ -111,7 +119,7 @@ Pelaksanaan `--safe` `--usual` `--unsafe` `--dangerous` `--debug` tidak lengkap,
 ## *commonjs module*
 
 
-Urus modul dengan memberikan kepada `module.exports` dan memanggil dengan `require()` . Untuk kemudahan, ia juga menyokong direktori *node_modules* .
+Urus modul dengan memberikan kepada `module.exports` dan memanggil dengan `require()` . Untuk laluan selain daripada laluan mutlak dan laluan relatif bermula dengan `./` dan `../` , cari modul dalam direktori *wes_modules* dan, untuk kemudahan, direktori *node_modules* .
 
 
 *wes* `require()` secara automatik meneka pengekodan fail modul, tetapi jika ia tidak meneka dengan betul, anda boleh menentukan pengekodan dengan hujah kedua.
@@ -152,7 +160,7 @@ Shell.UndoMinimizeAll()
 *Chakra* , yang merupakan enjin pelaksanaan skrip, mentafsir sintaks seperti `imoprt` , tetapi ia tidak boleh dilaksanakan kerana kaedah pemprosesan sebagai `cscript` tidak ditakrifkan. Di *wes* , dengan menambahkan *babel* pada modul terbina dalam, ia dilaksanakan sambil memindahkan secara berurutan ke *es module* . Akibatnya, overhed pemprosesan dan fail *wes.js* sebagai kos.
 
 
-Modul yang ditulis dalam *es module* juga ditukarkan kepada `require()` , jadi panggilan *ActiveX* boleh dilakukan. Walau bagaimanapun, ia tidak menyokong spesifikasi pengekodan fail modul dalam *es module* . Semuanya dibaca dengan meneka secara automatik.
+Modul yang diterangkan oleh *es module* juga ditukar kepada `require()` melalui transpile, jadi panggilan *ActiveX* juga boleh dilakukan. Walau bagaimanapun, ia tidak menyokong spesifikasi pengekodan fail modul dalam *es module* . Semuanya dibaca dengan meneka secara automatik.
 
 
 Untuk memuatkannya sebagai *es module* , tetapkan sambungan kepada `.mjs` atau medan `"type"` `package.json` kepada `"module"` .
@@ -493,7 +501,7 @@ Dalam *wes* , himpunan beberapa modul dipanggil pakej. Anda boleh memasang pakej
 ## *bundle*
 
 
-Apabila menerbitkan pakej ke *github* , *bundle* modul yang diperlukan dan menukar format supaya ia boleh diimport melalui pemasangan.
+Apabila menerbitkan pakej ke *github* , *bundle* modul yang diperlukan dan menukarnya kepada format yang boleh diimport melalui pemasangan.
 
 
 Atas sebab keselamatan, *bundle* mencipta fail *.json* kerana *wes* tidak membenarkan anda mengimport pakej dalam format yang boleh dilaksanakan secara langsung.
@@ -556,7 +564,7 @@ wes install @wachaon/fmt
 | `--node`      | `-n`           | Pasang dalam folder *node_module*                                                |
 
 
-`--bare` boleh menghilangkan hujah `require` daripada `author@repository` ke `repository` . `--global` menjadikan pakej yang dipasang tersedia untuk semua skrip. Pilihan di atas mesti dinyatakan pada masa yang sama dengan pilihan keselamatan *wes* `--unsafe` atau `--dangerous` .
+`--bare` boleh menghilangkan hujah `require` daripada `author@repository` ke `repository` . `--global` menjadikan pakej yang dipasang tersedia untuk semua skrip. `--node` atau `-n` mesti dinyatakan pada masa yang sama dengan pilihan keselamatan *wes* `--unsafe` atau `--dangerous` .
 
 
 ```bat
@@ -598,7 +606,7 @@ Berikut adalah beberapa pakej luaran.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* adalah pakej yang *prettier* untuk *wes* dan memformat skrip. Selain itu, jika *@wachaon/fmt* dipasang dan *Syntax Error* berlaku, anda boleh menunjukkan lokasi ralat.
+*@wachaon/fmt* adalah pakej yang *prettier* untuk *wes* dan memformat skrip. Selain itu, jika *Syntax Error* berlaku dengan *@wachaon/fmt* dipasang, anda boleh menunjukkan lokasi ralat.
 
 
 ### pasang

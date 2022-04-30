@@ -4,7 +4,7 @@
 *wes*是一個在*WSH (Windows Script Host)*上運行*ECMAScript*的控制台框架。
 
 
-*README*的原文是[*japanese*](/README.md) 。除了日語，它是機器翻譯的句子。  
+*README*文件的原文是[*japanese*](/README.md) 。除了日語，它是機器翻譯的句子。  
 請從以下選擇其他語言的句子。
 
 
@@ -29,7 +29,7 @@
 
 
 -   您可以將腳本引擎更改為*Chakra* ，並將其寫入*ECMAScript2015*規範中
--   它始終運行 32 位*cscript.exe* ，因此在 64 位環境中不存在固有問題。
+-   它始終運行 32 位*cscript.exe* ，因此在 64 位環境下不存在固有問題。
 -   使用模塊化系統，您可以比傳統*WSH*更高效地開發
 -   內置模塊支持文件輸入/輸出、彩色字符輸出到控制台等基本處理。
 -   您不必擔心編碼，因為您可以讓文件讀取自動猜測編碼。
@@ -44,7 +44,7 @@
 -   您不能將*event prefix*用作`WScript.CreateObject`的第二個參數
 
 
-# 安裝
+# 下載
 
 
 *wes.js* *wes* 。要下載，請從[*@wachaon/wes*](https://github.com/wachaon/wes) wes 複製*wes.js*或在控制台中運行以下命令。
@@ -55,8 +55,16 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell*在運行時使用*wes*中的`SendKeys`作為實現。如果*wes.js*保存目錄的路徑中包含*ascii*以外的字符， `SendKeys`將無法正確發送密鑰，腳本將無法執行。  
+*WScript.Shell*在運行時使用來自*wes*的`SendKeys`作為實現。如果*wes.js*保存目錄的路徑中包含*ascii*以外的字符， `SendKeys`將無法正確發送密鑰，腳本將無法執行。  
 請僅配置*wes.js*的保存目標路徑*ascii* 。
+
+
+如果您已經下載了*wes* ，您可以使用以下命令對其進行更新。
+
+
+```bat
+wes update
+```
 
 
 # 如何使用
@@ -111,7 +119,7 @@ wes
 ## *commonjs module*
 
 
-通過分配給`module.exports`並使用`require()`調用來管理模塊。為方便起見，它還支持*node_modules*目錄。
+通過分配給`module.exports`並使用`require()`調用來管理模塊。對於以`./`和`../`開頭的絕對路徑和相對路徑以外的路徑，請在*wes_modules*目錄中查找模塊，為方便起見，請在*node_modules*目錄中查找。
 
 
 *wes* `require()`會自動猜測模塊文件的編碼，但是如果沒有猜測正確，可以用第二個參數指定編碼。
@@ -135,7 +143,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-您還可以使用*require* `require('WScript.Shell')`導入*ActiveX* 。
+您也可以使用*require* `require('WScript.Shell')`導入*ActiveX* 。
 
 
 ```javascript
@@ -152,7 +160,7 @@ Shell.UndoMinimizeAll()
 腳本的執行引擎*Chakra*解釋了諸如`imoprt`之類的語法，但由於未定義`cscript`的處理方法，因此無法按原樣執行。在*wes*中，通過將*babel*添加到內置模塊中，它在執行的同時順序轉譯到*es module* 。結果，處理開銷和*wes.js*文件作為成本而膨脹。
 
 
-用*es module*模塊編寫的模塊也被 transpile 轉換為`require()` ，因此*ActiveX*調用是可能的。但是，它不支持*es module*中的模塊文件編碼規範。都是通過自動猜測讀取的。
+*es module*模塊描述的模塊也通過transpile轉換為`require()` ，所以*ActiveX*調用也是可以的。但是，它不支持*es module*中的模塊文件編碼規範。都是通過自動猜測讀取的。
 
 
 要將其作為*es module*加載，請將擴展名設置為`.mjs`或將`package.json`的`"type"`字段設置為`"module"` 。
@@ -337,7 +345,7 @@ files.forEach(file => console.log(file.Name))
 ```
 
 
-*GetObject*充當`WScript.GetObject`的替代品。
+*GetObject*作為`WScript.GetObject`的替代品。
 
 
 ```javascript
@@ -506,7 +514,7 @@ wes zip -p dox.zip
 
 2.  確保*github*上的倉庫名稱和​​本地工作目錄名稱相同。
 
-3.  如果您發布包，請*public*存儲庫
+3.  如果您發布包，請將存儲庫*public*
 
 4.  在頂層範圍內聲明模塊獲取
 
@@ -551,12 +559,12 @@ wes install @wachaon/fmt
 | ------------- | ---- | --------------------------------------------- |
 | `--bare`      | `-b` | 不要創建*@author*文件夾                              |
 | `--global`    | `-g` | 將包安裝到*wes.js*所在的文件夾中                          |
-| `--save`      | `-S` | 將包名稱和版本添加到*package.json*的*dependencies*項字段中   |
+| `--save`      | `-S` | 在*package.json*的*dependencies*字段中添加包名和版本      |
 | `--save--dev` | `-D` | 將包名稱和版本添加到*package.json*中的*devDependencies*字段 |
 | `--node`      | `-n` | 安裝在*node_module*文件夾中                          |
 
 
-`--bare`選項可以省略從`author@repository`到`repository`的`require`參數。 `--global`選項使已安裝的軟件包可用於所有腳本。上述選項必須與*wes*安全選項`--unsafe`或`--dangerous` 。
+`--bare`選項可以省略從`author@repository`到`repository`的`require`參數。 `--global`選項使已安裝的軟件包可用於所有腳本。 `--node`或`-n`選項必須與*wes*安全選項`--unsafe`或`--dangerous` 。
 
 
 ```bat
@@ -578,7 +586,7 @@ wes install @wachaon/fmt --bare --unsafe
 ```
 
 
-當您使用瀏覽器訪問私有倉庫的*raw*時，將顯示*token* ，因此請複制*token*並使用它。
+當您使用瀏覽器訪問私有存儲庫的*raw*文件時，將顯示*token* ，因此請複制*token*並使用它。
 
 
 您還可以通過在*token*的生命週期內在控制台中運行它們來將包安裝到私有存儲庫中。
@@ -598,7 +606,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ## *@wachaon/fmt*
 
 
-@ *wes* *@wachaon/fmt*是為*prettier*打包並格式化腳本的一個更漂亮的工具。另外，如果安裝了*@wachaon/fmt* ，出現了*Syntax Error* ，可以指出錯誤的位置。
+@ *wes* *@wachaon/fmt*是為*prettier*打包並格式化腳本的一個更漂亮的工具。此外，如果在安裝*@wachaon/fmt*時出現*Syntax Error* ，您可以指出錯誤位置。
 
 
 ### 安裝

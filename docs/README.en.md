@@ -44,7 +44,7 @@ Please select sentences in other languages ​​from the following.
 -   You cannot use the *event prefix* as the second argument of `WScript.CreateObject`
 
 
-# install
+# download
 
 
 *wes.js* *wes* . To download, copy *wes.js* from [*@wachaon/wes*](https://github.com/wachaon/wes) or run the following command in the console.
@@ -57,6 +57,14 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 
 *WScript.Shell* uses `SendKeys` from *wes* at runtime as an implementation. If the path of the directory where *wes.js* is saved contains characters other than *ascii* , `SendKeys` will not be able to send the key correctly and the script will not be able to be executed.  
 Please configure the save destination path of *wes.js* only *ascii* .
+
+
+If you have already downloaded *wes* , you can update it with the following command.
+
+
+```bat
+wes update
+```
 
 
 # How to use
@@ -111,7 +119,7 @@ The implementation of `--safe` `--usual` `--unsafe` `--dangerous` `--debug` is i
 ## *commonjs module*
 
 
-Manage modules by assigning to `module.exports` and calling with `require()` . For convenience, it also supports the *node_modules* directory.
+Manage modules by assigning to `module.exports` and calling with `require()` . For paths other than absolute paths and relative paths starting with `./` and `../` , look for modules in the *wes_modules* directory and, for convenience, the *node_modules* directory.
 
 
 *wes* `require()` automatically guesses the encoding of the module file, but if it doesn't guess correctly, you can specify the encoding with the second argument.
@@ -152,7 +160,7 @@ Shell.UndoMinimizeAll()
 *Chakra* , which is the execution engine of the script, interprets syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. In *wes* , by adding *babel* to the built-in module, it is executed while sequentially transpiling to the *es module* . As a result, the processing overhead and the *wes.js* file are bloated as a cost.
 
 
-Modules written in *es module* are also transpile converted to `require()` , so *ActiveX* calls are possible. However, it does not support the module file encoding specification in *es module* . All are read by automatic guessing.
+Modules described by *es module* are also converted to `require()` by transpile, so *ActiveX* calls are also possible. However, it does not support the module file encoding specification in *es module* . All are read by automatic guessing.
 
 
 To load it as an *es module* , set the extension to `.mjs` or the `"type"` field of `package.json` to `"module"` .
@@ -556,7 +564,7 @@ wes install @wachaon/fmt
 | `--node`      | `-n`        | Install in *node_module* folder                                                   |
 
 
-`--bare` option can omit the `require` argument from `author@repository` to `repository` . `--global` option makes the installed package available to all scripts. The above options must be specified at the same time as the *wes* security option `--unsafe` or `--dangerous` .
+`--bare` option can omit the `require` argument from `author@repository` to `repository` . `--global` option makes the installed package available to all scripts. `--node` or `-n` option must be specified at the same time as the *wes* security option `--unsafe` or `--dangerous` .
 
 
 ```bat
@@ -578,7 +586,7 @@ In *install* , specify the package with *@author/repository* . The implementatio
 ```
 
 
-When you access *raw* of the private repository with a browser, the *token* will be displayed, so copy the *token* and use it.
+When you access the *raw* of the private repository with a browser, the *token* will be displayed, so copy the *token* and use it.
 
 
 You can also install packages in private repositories by running them in the console within the *token* 's lifetime.
@@ -598,7 +606,7 @@ Here are some external packages.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* is a *prettier* packaged for *wes* and formats the script. Also, if *@wachaon/fmt* is installed and a *Syntax Error* occurs, you can indicate the error location.
+*@wachaon/fmt* is a *prettier* packaged for *wes* and formats the script. Also, if a *Syntax Error* occurs with *@wachaon/fmt* installed, you can indicate the error location.
 
 
 ### install

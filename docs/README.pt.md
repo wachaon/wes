@@ -25,7 +25,7 @@ Por favor, selecione frases em outros idiomas a partir do seguinte.
 
 
 
-# funcionalidade
+# característica
 
 
 -   Você pode alterar o mecanismo de script para *Chakra* e escrevê-lo na especificação *ECMAScript2015*
@@ -44,7 +44,7 @@ Por favor, selecione frases em outros idiomas a partir do seguinte.
 -   Você não pode usar o *event prefix* como o segundo argumento de `WScript.CreateObject`
 
 
-# instalar
+# download
 
 
 Wes só precisa do *wes* *wes.js* Para baixar, copie *wes.js* de [*@wachaon/wes*](https://github.com/wachaon/wes) ou execute o seguinte comando no console.
@@ -55,8 +55,16 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* usa `SendKeys` em *wes* em tempo de execução como uma implementação. Se o caminho do diretório onde *wes.js* está salvo contiver caracteres diferentes de *ascii* , `SendKeys` não poderá enviar a chave corretamente e o script não poderá ser executado.  
+*WScript.Shell* usa `SendKeys` de *wes* em tempo de execução como uma implementação. Se o caminho do diretório onde *wes.js* está salvo contiver caracteres diferentes de *ascii* , `SendKeys` não poderá enviar a chave corretamente e o script não poderá ser executado.  
 Configure o caminho de destino de salvamento de *wes.js* somente *ascii* .
+
+
+Se você já baixou *wes* , pode atualizá-lo com o seguinte comando.
+
+
+```bat
+wes update
+```
 
 
 # Como usar
@@ -111,7 +119,7 @@ A implementação de `--safe` `--usual` `--unsafe` `--dangerous` `--debug` está
 ## *commonjs module*
 
 
-Gerencie módulos atribuindo a `module.exports` e chamando com `require()` . Por conveniência, ele também suporta o diretório *node_modules* .
+Gerencie módulos atribuindo a `module.exports` e chamando com `require()` . Para caminhos diferentes de caminhos absolutos e caminhos relativos começando com `./` e `../` , procure por módulos no diretório *wes_modules* e, por conveniência, no diretório *node_modules* .
 
 
 *wes* `require()` adivinha automaticamente a codificação do arquivo do módulo, mas se não adivinhar corretamente, você pode especificar a codificação com o segundo argumento.
@@ -152,7 +160,7 @@ Shell.UndoMinimizeAll()
 *Chakra* , que é o mecanismo de execução do script, interpreta sintaxe como `imoprt` , mas não pode ser executado como está porque o método de processamento como `cscript` não está definido. Em *wes* , ao adicionar *babel* ao módulo embutido, ele é executado enquanto transpila sequencialmente para o *es module* . Como resultado, a sobrecarga de processamento e o arquivo *wes.js* são inchados como um custo.
 
 
-Módulos escritos no *es module* também são convertidos em transpile para `require()` , então chamadas *ActiveX* são possíveis. No entanto, ele não suporta a especificação de codificação de arquivo do módulo em *es module* . Todos são lidos por adivinhação automática.
+Módulos descritos pelo *es module* também são convertidos para `require()` por transpile, então chamadas *ActiveX* também são possíveis. No entanto, ele não suporta a especificação de codificação de arquivo do módulo em *es module* . Todos são lidos por adivinhação automática.
 
 
 Para carregá-lo como um *es module* , defina a extensão para `.mjs` ou o campo `"type"` de `package.json` para `"module"` .
@@ -556,7 +564,7 @@ wes install @wachaon/fmt
 | `--node`      | `-n`       | Instale na pasta *node_module*                                                    |
 
 
-`--bare` pode omitir o argumento `require` de `author@repository` para `repository` . `--global` disponibiliza o pacote instalado para todos os scripts. As opções acima devem ser especificadas ao mesmo tempo que a opção *wes* security `--unsafe` ou `--dangerous` .
+`--bare` pode omitir o argumento `require` de `author@repository` para `repository` . `--global` disponibiliza o pacote instalado para todos os scripts. `--node` ou `-n` deve ser especificada ao mesmo tempo que a opção *wes* security `--unsafe` ou `--dangerous` .
 
 
 ```bat
@@ -598,7 +606,7 @@ Aqui estão alguns pacotes externos.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* é um pacote *prettier* para *wes* e formata o script. Além disso, se *@wachaon/fmt* estiver instalado e ocorrer um *Syntax Error* , você poderá indicar o local do erro.
+*@wachaon/fmt* é um pacote *prettier* para *wes* e formata o script. Além disso, se ocorrer um *Syntax Error* com *@wachaon/fmt* instalado, você pode indicar o local do erro.
 
 
 ### instalar
@@ -623,10 +631,10 @@ wes @wachaon/fmt src/sample --write
 ```
 
 
-| número sem nome | Descrição                                                 |
-| --------------- | --------------------------------------------------------- |
-| 0               | ――――                                                      |
-| 1               | Requeridos. O caminho do arquivo que você deseja formatar |
+| número sem nome | Descrição                                                |
+| --------------- | -------------------------------------------------------- |
+| 0               | ――――                                                     |
+| 1               | Requerido. O caminho do arquivo que você deseja formatar |
 
 
 | nomeado   | nome curto | Descrição             |

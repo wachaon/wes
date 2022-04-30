@@ -22,7 +22,7 @@
 -  `setTimeout` や `Promise` など非同期処理はできません
 -  `WScript.CreateObject` の第二引数の *event prefix* の使用はできません
 
-# インストール
+# ダウンロード
 
 *wes* に必要なのは *wes.js* ファイルのみです。
 ダウンロードするには [*@wachaon/wes*](https://github.com/wachaon/wes) から *wes.js* をコピーするかコンソールで次のコマンドを実行してください。
@@ -35,6 +35,12 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 *wes.js* を保存するディレクトリのパスに *ascii* 以外文字が含まれていると `SendKeys` で正しくキーが送れず、
 スクリプトが実行できません。  
 *wes.js* の保存先のパスは *ascii* のみで構成してください。
+
+既に *wes* をダウンロード済みの場合は次のコマンドでアップデートできます。
+
+```bat
+wes update
+```
 
 # 使い方
 
@@ -446,7 +452,7 @@ wes install @wachaon/fmt
 
 `--bare` オプションは `require` の引数を `author@repository` から `repository` に省略できます。
 `--global` オプションはインストールしたパッケージを全てのスクリプトから利用できます。
-上記のオプションは *wes* のセキュリティーオプション `--unsafe` もしくは `--dangerous` と
+`--node` もしくは `-n` オプションは *wes* のセキュリティーオプション `--unsafe` もしくは `--dangerous` と
 同時に指定する必要があります。
 
 ```bat

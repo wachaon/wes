@@ -25,11 +25,11 @@ Veuillez sélectionner des phrases dans d'autres langues parmi les suivantes.
 
 
 
-# caractéristique
+# fonctionnalité
 
 
 -   Vous pouvez changer le moteur de script en *Chakra* et l'écrire dans la spécification *ECMAScript2015*
--   Il exécute toujours *cscript.exe* 32 bits, il n'y a donc pas de problèmes inhérents à l'environnement 64 bits.
+-   Il exécute toujours 32 bits *cscript.exe* , il n'a donc aucun problème inhérent à l'environnement 64 bits.
 -   Avec un système modulaire, vous pouvez développer plus efficacement que le *WSH* traditionnel
 -   Le module intégré prend en charge le traitement de base tel que l'entrée/sortie de fichier et la sortie de caractères colorés vers la console.
 -   Vous n'avez pas à vous soucier de l'encodage car vous pouvez faire en sorte que le fichier lu devine automatiquement l'encodage.
@@ -44,7 +44,7 @@ Veuillez sélectionner des phrases dans d'autres langues parmi les suivantes.
 -   Vous ne pouvez pas utiliser le *event prefix* comme deuxième argument de `WScript.CreateObject`
 
 
-# installer
+# Télécharger
 
 
 Wes n'a besoin que du *wes* *wes.js* . Pour télécharger, copiez *wes.js* depuis [*@wachaon/wes*](https://github.com/wachaon/wes) ou exécutez la commande suivante dans la console.
@@ -55,8 +55,16 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* utilise `SendKeys` dans *wes* lors de l'exécution en tant qu'implémentation. Si le chemin du répertoire où *wes.js* est enregistré contient des caractères autres que *ascii* , `SendKeys` ne pourra pas envoyer la clé correctement et le script ne pourra pas être exécuté.  
+*WScript.Shell* utilise `SendKeys` de *wes* lors de l'exécution en tant qu'implémentation. Si le chemin du répertoire où *wes.js* est enregistré contient des caractères autres que *ascii* , `SendKeys` ne pourra pas envoyer la clé correctement et le script ne pourra pas être exécuté.  
 Veuillez configurer le chemin de destination de sauvegarde de *wes.js* uniquement *ascii* .
+
+
+Si vous avez déjà téléchargé *wes* , vous pouvez le mettre à jour avec la commande suivante.
+
+
+```bat
+wes update
+```
 
 
 # Comment utiliser
@@ -111,7 +119,7 @@ L'implémentation de `--safe` `--usual` `--unsafe` `--dangerous` `--debug` est i
 ## *commonjs module*
 
 
-Gérez les modules en attribuant à `module.exports` et en appelant avec `require()` . Pour plus de commodité, il prend également en charge le répertoire *node_modules* .
+Gérez les modules en attribuant à `module.exports` et en appelant avec `require()` . Pour les chemins autres que les chemins absolus et les chemins relatifs commençant par `./` ​​et `../` , recherchez les modules dans le répertoire *wes_modules* et, pour plus de commodité, le répertoire *node_modules* .
 
 
 *wes* `require()` devine automatiquement l'encodage du fichier de module, mais s'il ne devine pas correctement, vous pouvez spécifier l'encodage avec le deuxième argument.
@@ -556,7 +564,7 @@ wes install @wachaon/fmt
 | `--node`      | `-n`        | Installer dans le dossier *node_module*                                                |
 
 
-`--bare` peut omettre l'argument `require` de `author@repository` à `repository` . `--global` rend le package installé disponible pour tous les scripts. Les options ci-dessus doivent être spécifiées en même temps que l'option de sécurité *wes* `--unsafe` ou `--dangerous` .
+`--bare` peut omettre l'argument `require` de `author@repository` à `repository` . `--global` rend le package installé disponible pour tous les scripts. `--node` ou `-n` doit être spécifiée en même temps que l'option de sécurité *wes* `--unsafe` ou `--dangerous` .
 
 
 ```bat
@@ -598,7 +606,7 @@ Voici quelques packages externes.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* est un *prettier* packagé pour *wes* et formate le script. De plus, si *@wachaon/fmt* est installé et qu'une *Syntax Error* se produit, vous pouvez indiquer l'emplacement de l'erreur.
+*@wachaon/fmt* est un *prettier* packagé pour *wes* et formate le script. De plus, si une *Syntax Error* se produit avec *@wachaon/fmt* installé, vous pouvez indiquer l'emplacement de l'erreur.
 
 
 ### installer
@@ -710,7 +718,7 @@ Ce script affichera séquentiellement les *URL* visitées sur la console.
 `@wachaon/edge` enregistre un événement pour l' *URL* et ajoute des données à `res.exports` . L' *URL* à enregistrer peut être soit `String` `RegExp` , et des paramètres flexibles peuvent être définis.
 
 
-En le rendant piloté par les événements, il est possible de passer facilement en fonctionnement manuel en ne définissant pas un événement à traiter difficile à gérer avec le pilote automatique.
+En le rendant événementiel, il est possible de basculer facilement en fonctionnement manuel en ne définissant pas d'événement à traiter difficilement gérable avec le pilote automatique.
 
 
 Si vous souhaitez arrêter le script, exécutez `navi.emit('terminate', res)` ou terminez manuellement *Edge* .

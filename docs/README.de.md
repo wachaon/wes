@@ -44,7 +44,7 @@ Bitte wählen Sie aus den folgenden Sätzen in anderen Sprachen aus.
 -   Sie können das *event prefix* nicht als zweites Argument von `WScript.CreateObject`
 
 
-# Installieren
+# Download
 
 
 Wes benötigt nur die *wes* *wes.js* . Kopieren Sie zum Herunterladen *wes.js* von [*@wachaon/wes*](https://github.com/wachaon/wes) oder führen Sie den folgenden Befehl in der Konsole aus.
@@ -55,8 +55,16 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* verwendet `SendKeys` in *wes* zur Laufzeit als Implementierung. Wenn der Pfad des Verzeichnisses, in dem *wes.js* gespeichert ist, andere Zeichen als `SendKeys` *ascii* Schlüssel nicht korrekt senden und das Skript kann nicht ausgeführt werden.  
+*WScript.Shell* verwendet `SendKeys` von *wes* zur Laufzeit als Implementierung. Wenn der Pfad des Verzeichnisses, in dem *wes.js* gespeichert ist, andere Zeichen als `SendKeys` *ascii* Schlüssel nicht korrekt senden und das Skript kann nicht ausgeführt werden.  
 Bitte konfigurieren Sie den Speicherzielpfad von *wes.js* nur *ascii* .
+
+
+Wenn Sie *wes* bereits heruntergeladen haben, können Sie es mit dem folgenden Befehl aktualisieren.
+
+
+```bat
+wes update
+```
 
 
 # Wie benutzt man
@@ -111,7 +119,7 @@ Die Implementierung von `--safe` `--usual` `--unsafe` `--dangerous` `--debug` is
 ## *commonjs module*
 
 
-Verwalten Sie Module, indem `module.exports` und mit `require()` aufrufen. Der Einfachheit halber unterstützt es auch das Verzeichnis *node_modules* .
+Verwalten Sie Module, indem `module.exports` und mit `require()` aufrufen. Suchen Sie für andere Pfade als absolute Pfade und relative Pfade, die mit `./` und `../` beginnen, nach Modulen im Verzeichnis *wes_modules* und der Einfachheit halber im Verzeichnis *node_modules* .
 
 
 *wes* `require()` errät automatisch die Codierung der Moduldatei, aber wenn es nicht richtig rät, können Sie die Codierung mit dem zweiten Argument angeben.
@@ -152,7 +160,7 @@ Shell.UndoMinimizeAll()
 *Chakra* , die Ausführungsmaschine des Skripts, interpretiert Syntax wie `imoprt` , kann jedoch nicht unverändert ausgeführt werden, da die Verarbeitungsmethode als `cscript` nicht definiert ist. In *wes* wird es durch Hinzufügen von *babel* zum eingebauten Modul ausgeführt, während es sequentiell in das *es module* transpiliert wird. Infolgedessen werden der Verarbeitungsaufwand und die Datei *wes.js* als Kosten aufgebläht.
 
 
-Module, die in *es module* geschrieben sind, werden auch in `require()` transpiliert, sodass *ActiveX* -Aufrufe möglich sind. Es unterstützt jedoch nicht die Moduldateicodierungsspezifikation in *es module* . Alle werden durch automatisches Raten gelesen.
+Module, die von *es module* beschrieben werden, werden ebenfalls von transpile in `require()` konvertiert, sodass auch *ActiveX* -Aufrufe möglich sind. Es unterstützt jedoch nicht die Moduldateicodierungsspezifikation in *es module* . Alle werden durch automatisches Raten gelesen.
 
 
 Um es als *es module* zu laden, setzen Sie die Erweiterung auf `.mjs` oder das Feld `"type"` von `package.json` auf `"module"` .
@@ -487,7 +495,7 @@ Wenn der `path` die Erweiterung `.zip` hat, wird `unzip()` verarbeitet und es gi
 # Modulbündelung und Installation
 
 
-In *wes* wird ein Bündel aus mehreren Modulen als Paket bezeichnet. Sie können das auf *github* veröffentlichte Paket für *wes* installieren. Sie benötigen ein *github repository* , um das Paket zu veröffentlichen. Außerdem müssen der Name des Repositorys und der Name des lokalen Verzeichnisses identisch sein.
+In *wes* wird ein Bündel aus mehreren Modulen als Paket bezeichnet. Sie können das auf *github* veröffentlichte Paket für *wes* installieren. Sie benötigen ein *github repository* , um das Paket zu veröffentlichen. Außerdem müssen der Repository-Name und der Name des lokalen Verzeichnisses identisch sein.
 
 
 ## *bundle*
@@ -556,7 +564,7 @@ wes install @wachaon/fmt
 | `--node`      | `-n`         | Installieren Sie im Ordner *node_module*                                                |
 
 
-`--bare` kann das `require` -Argument von `author@repository` an `repository` weglassen. `--global` macht das installierte Paket für alle Skripte verfügbar. Die obigen Optionen müssen gleichzeitig mit der *wes* -Sicherheitsoption `--unsafe` oder `--dangerous` .
+`--bare` kann das `require` -Argument von `author@repository` an `repository` weglassen. `--global` macht das installierte Paket für alle Skripte verfügbar. `--node` oder `-n` muss gleichzeitig mit der *wes* -Sicherheitsoption `--unsafe` oder `--dangerous` .
 
 
 ```bat
@@ -598,7 +606,7 @@ Hier sind einige externe Pakete.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* ist ein *prettier* Paket für *wes* und formatiert das Skript. Auch wenn *@wachaon/fmt* installiert ist und ein *Syntax Error* auftritt, können Sie die Fehlerstelle angeben.
+*@wachaon/fmt* ist ein *prettier* Paket für *wes* und formatiert das Skript. Auch wenn ein *Syntax Error* auftritt, wenn *@wachaon/fmt* installiert ist, können Sie die Fehlerstelle angeben.
 
 
 ### Installieren

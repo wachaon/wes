@@ -29,7 +29,7 @@ Si prega di selezionare frasi in altre lingue dalle seguenti.
 
 
 -   Puoi cambiare il motore di script in *Chakra* e scriverlo nella specifica *ECMAScript2015*
--   Funziona sempre a 32 bit *cscript.exe* , quindi non ci sono problemi intrinseci nell'ambiente a 64 bit.
+-   Funziona sempre a 32 bit *cscript.exe* , quindi non ha problemi intrinseci nell'ambiente a 64 bit.
 -   Con un sistema modulare, puoi sviluppare in modo più efficiente rispetto al tradizionale *WSH*
 -   Il modulo integrato supporta l'elaborazione di base come l'input/output di file e l'output di caratteri colorati sulla console.
 -   Non devi preoccuparti della codifica perché puoi leggere il file indovinare automaticamente la codifica.
@@ -44,7 +44,7 @@ Si prega di selezionare frasi in altre lingue dalle seguenti.
 -   Non è possibile utilizzare il *event prefix* come secondo argomento di `WScript.CreateObject`
 
 
-# installare
+# Scarica
 
 
 Wes ha bisogno solo del *wes* *wes.js* Per scaricare, copia *wes.js* da [*@wachaon/wes*](https://github.com/wachaon/wes) o esegui il comando seguente nella console.
@@ -55,8 +55,16 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* utilizza `SendKeys` in *wes* in fase di esecuzione come implementazione. Se il percorso della directory in cui è salvato *wes.js* contiene caratteri diversi da *ascii* , `SendKeys` non sarà in grado di inviare la chiave correttamente e lo script non potrà essere eseguito.  
+*WScript.Shell* utilizza `SendKeys` da *wes* in fase di esecuzione come implementazione. Se il percorso della directory in cui è salvato *wes.js* contiene caratteri diversi da *ascii* , `SendKeys` non sarà in grado di inviare la chiave correttamente e lo script non potrà essere eseguito.  
 Si prega di configurare il percorso di destinazione di salvataggio di *wes.js* only *ascii* .
+
+
+Se hai già scaricato *wes* , puoi aggiornarlo con il seguente comando.
+
+
+```bat
+wes update
+```
 
 
 # Come usare
@@ -111,7 +119,7 @@ L'implementazione di `--safe` `--usual` `--unsafe` `--dangerous` `--debug` è in
 ## *commonjs module*
 
 
-Gestisci i moduli assegnando a `module.exports` e chiamando con `require()` . Per comodità, supporta anche la directory *node_modules* .
+Gestisci i moduli assegnando a `module.exports` e chiamando con `require()` . Per i percorsi diversi dai percorsi assoluti e dai percorsi relativi che iniziano con `./` e `../` , cerca i moduli nella directory *wes_modules* e, per comodità, nella directory *node_modules* .
 
 
 *wes* `require()` indovina automaticamente la codifica del file del modulo, ma se non indovina correttamente, puoi specificare la codifica con il secondo argomento.
@@ -493,7 +501,7 @@ In *wes* , un pacchetto di più moduli è chiamato pacchetto. Puoi installare il
 ## *bundle*
 
 
-Quando si pubblica il pacchetto su *github* , *bundle* raggruppa i moduli richiesti e cambia il formato in modo che possa essere importato tramite l'installazione.
+Quando si pubblica il pacchetto su *github* , *bundle* raggruppa i moduli richiesti e lo cambia in un formato che può essere importato dall'installazione.
 
 
 Per motivi di sicurezza, *bundle* crea un file *.json* perché *wes* non consente di importare pacchetti in un formato che può essere eseguito direttamente.
@@ -547,16 +555,16 @@ wes install @wachaon/fmt
 *install* ha opzioni.
 
 
-| di nome       | nome breve | descrizione                                                                                  |
-| ------------- | ---------- | -------------------------------------------------------------------------------------------- |
-| `--bare`      | `-b`       | Non creare la cartella *@author*                                                             |
-| `--global`    | `-g`       | Installa il pacchetto nella cartella in cui si trova *wes.js*                                |
-| `--save`      | `-S`       | Aggiungi il nome e la versione del pacchetto al campo delle *dependencies* di *package.json* |
-| `--save--dev` | `-D`       | Aggiungi il nome e la versione del pacchetto al campo *devDependencies* in *package.json*    |
-| `--node`      | `-n`       | Installa nella cartella *node_module*                                                        |
+| di nome       | di nome breve | descrizione                                                                                  |
+| ------------- | ------------- | -------------------------------------------------------------------------------------------- |
+| `--bare`      | `-b`          | Non creare la cartella *@author*                                                             |
+| `--global`    | `-g`          | Installa il pacchetto nella cartella in cui si trova *wes.js*                                |
+| `--save`      | `-S`          | Aggiungi il nome e la versione del pacchetto al campo delle *dependencies* di *package.json* |
+| `--save--dev` | `-D`          | Aggiungi il nome e la versione del pacchetto al campo *devDependencies* in *package.json*    |
+| `--node`      | `-n`          | Installa nella cartella *node_module*                                                        |
 
 
-`--bare` può omettere l'argomento `require` da `author@repository` a `repository` . `--global` rende il pacchetto installato disponibile per tutti gli script. Le opzioni di cui sopra devono essere specificate contemporaneamente all'opzione *wes* security `--unsafe` o `--dangerous` .
+`--bare` può omettere l'argomento `require` da `author@repository` a `repository` . `--global` rende il pacchetto installato disponibile per tutti gli script. `--node` o `-n` deve essere specificata contemporaneamente all'opzione di sicurezza *wes* `--unsafe` o `--dangerous` .
 
 
 ```bat
@@ -598,7 +606,7 @@ Ecco alcuni pacchetti esterni.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* è un pacchetto *prettier* carino per *wes* e formatta lo script. Inoltre, se *@wachaon/fmt* è installato e si verifica un *Syntax Error* , è possibile indicare la posizione dell'errore.
+*@wachaon/fmt* è un pacchetto *prettier* carino per *wes* e formatta lo script. Inoltre, se si verifica un *Syntax Error* con *@wachaon/fmt* installato, è possibile indicare la posizione dell'errore.
 
 
 ### installare

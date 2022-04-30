@@ -29,7 +29,7 @@ Seleccione oraciones en otros idiomas de las siguientes.
 
 
 -   Puede cambiar el motor de script a *Chakra* y escribirlo en la especificación *ECMAScript2015*
--   Siempre ejecuta *cscript.exe* de 32 bits, por lo que no hay problemas inherentes en un entorno de 64 bits.
+-   Siempre ejecuta *cscript.exe* de 32 bits, por lo que no tiene ningún problema inherente en un entorno de 64 bits.
 -   Con un sistema modular, puede desarrollar de manera más eficiente que el *WSH* tradicional
 -   El módulo incorporado admite el procesamiento básico, como la entrada/salida de archivos y la salida de caracteres de colores a la consola.
 -   No tiene que preocuparse por la codificación porque puede hacer que la lectura del archivo adivine automáticamente la codificación.
@@ -44,7 +44,7 @@ Seleccione oraciones en otros idiomas de las siguientes.
 -   No puede usar el *event prefix* como segundo argumento de `WScript.CreateObject`
 
 
-# Instalar en pc
+# descargar
 
 
 Wes solo necesita el *wes* *wes.js* Para descargar, copie *wes.js* desde [*@wachaon/wes*](https://github.com/wachaon/wes) o ejecute el siguiente comando en la consola.
@@ -55,14 +55,22 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* usa `SendKeys` en *wes* en tiempo de ejecución como implementación. Si la ruta del directorio donde se guarda *wes.js* contiene caracteres que no sean *ascii* , `SendKeys` no podrá enviar la clave correctamente y el script no podrá ejecutarse.  
+*WScript.Shell* usa `SendKeys` de *wes* en tiempo de ejecución como implementación. Si la ruta del directorio donde se guarda *wes.js* contiene caracteres que no sean *ascii* , `SendKeys` no podrá enviar la clave correctamente y el script no podrá ejecutarse.  
 Configure la ruta de destino para guardar de *wes.js* solo *ascii* .
+
+
+Si ya ha descargado *wes* , puede actualizarlo con el siguiente comando.
+
+
+```bat
+wes update
+```
 
 
 # Cómo utilizar
 
 
-Ingrese el comando a la consola que especifica el archivo que será el punto de partida del programa siguiendo la palabra clave `wes` . La extensión de secuencia de comandos *.js* se puede omitir.
+Ingrese el comando a la consola que especifica el archivo que será el punto de inicio del programa siguiendo la palabra clave `wes` . La extensión de secuencia de comandos *.js* se puede omitir.
 
 
 ```bat
@@ -111,7 +119,7 @@ La implementación de `--safe` `--usual` `--unsafe` `--dangerous` `--debug` est�
 ## *commonjs module*
 
 
-Administre módulos asignándolos a `module.exports` y llamando con `require()` . Para mayor comodidad, también es compatible con el directorio *node_modules* .
+Administre módulos asignándolos a `module.exports` y llamando con `require()` . Para rutas que no sean rutas absolutas y rutas relativas que comiencen con `./` y `../` , busque módulos en el directorio *wes_modules* y, para mayor comodidad, en el directorio *node_modules* .
 
 
 *wes* `require()` adivina automáticamente la codificación del archivo del módulo, pero si no lo hace correctamente, puede especificar la codificación con el segundo argumento.
@@ -152,7 +160,7 @@ Shell.UndoMinimizeAll()
 *Chakra* , que es el motor de ejecución del script, interpreta sintaxis como `imoprt` , pero no se puede ejecutar tal cual porque el método de procesamiento como `cscript` no está definido. En *wes* , al agregar *babel* al módulo incorporado, se ejecuta mientras se transpila secuencialmente al *es module* . Como resultado, la sobrecarga de procesamiento y el archivo *wes.js* se inflan como un costo.
 
 
-Los módulos escritos en el *es module* es también se transpilan convertidos para `require()` , por lo que las llamadas *ActiveX* son posibles. Sin embargo, no es compatible con la especificación de codificación de archivos del módulo en el *es module* . Todos se leen por adivinación automática.
+Los módulos descritos por el *es module* es también se convierten en `require()` mediante transpile, por lo que también son posibles las llamadas *ActiveX* . Sin embargo, no es compatible con la especificación de codificación de archivos del módulo en el *es module* . Todos se leen por adivinación automática.
 
 
 Para cargarlo como un *es module* , establezca la extensión en `.mjs` o el campo `"type"` de `package.json` en `"module"` .
@@ -556,7 +564,7 @@ wes install @wachaon/fmt
 | `--node`      | `-n`         | Instalar en la carpeta *node_module*                                                    |
 
 
-`--bare` puede omitir el argumento `require` de `author@repository` a `repository` . `--global` hace que el paquete instalado esté disponible para todos los scripts. Las opciones anteriores deben especificarse al mismo tiempo que la opción de seguridad *wes* `--unsafe` o `--dangerous` .
+`--bare` puede omitir el argumento `require` de `author@repository` a `repository` . `--global` hace que el paquete instalado esté disponible para todos los scripts. `--node` o `-n` debe especificarse al mismo tiempo que la opción de seguridad *wes* `--unsafe` o `--dangerous` .
 
 
 ```bat
@@ -578,7 +586,7 @@ En la *install* , especifique el paquete con *@author/repository* . La implement
 ```
 
 
-Cuando acceda *raw* al repositorio privado con un navegador, se mostrará el *token* , así que copie el *token* y utilícelo.
+Cuando acceda al *raw* del repositorio privado con un navegador, se mostrará el *token* , así que copie el *token* y utilícelo.
 
 
 También puede instalar paquetes en repositorios privados ejecutándolos en la consola durante la vigencia del *token* .
@@ -598,7 +606,7 @@ Aquí hay algunos paquetes externos.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* es un paquete *prettier* para *wes* y formatea el script. Además, si *@wachaon/fmt* está instalado y se produce un *Syntax Error* , puede indicar la ubicación del error.
+*@wachaon/fmt* es un paquete *prettier* para *wes* y formatea el script. Además, si ocurre un *Syntax Error* con *@wachaon/fmt* instalado, puede indicar la ubicación del error.
 
 
 ### Instalar en pc
@@ -716,7 +724,7 @@ Al hacerlo controlado por eventos, es posible cambiar fácilmente a la operació
 Si desea detener la secuencia de comandos, ejecute `navi.emit('terminate', res)` o finalice manualmente *Edge* .
 
 
-El proceso de finalización genera `res.exports` como un archivo *.json* como valor predeterminado. Si desea configurar el proceso de terminación, configure la `terminate` de `edge(callback, terminate)` .
+El proceso de finalización genera `res.exports` como un archivo *.json* como valor predeterminado. Si desea establecer el proceso de terminación, establezca la `terminate` de `edge(callback, terminate)` .
 
 
 `window` no es una `window` en el navegador, sino una instancia de la clase *Window* de *@wachaon/webdriver* .

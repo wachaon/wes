@@ -25,7 +25,7 @@ Selecteer zinnen in andere talen uit het volgende.
 
 
 
-# voorzien zijn van
+# functie
 
 
 -   U kunt de scriptengine wijzigen in *Chakra* en deze in de *ECMAScript2015* -specificatie schrijven
@@ -44,7 +44,7 @@ Selecteer zinnen in andere talen uit het volgende.
 -   U kunt het *event prefix* niet gebruiken als het tweede argument van `WScript.CreateObject`
 
 
-# installeren
+# downloaden
 
 
 Wes heeft alleen het *wes* *wes.js* . Om te downloaden, kopieert u *wes.js* van [*@wachaon/wes*](https://github.com/wachaon/wes) of voert u de volgende opdracht uit in de console.
@@ -55,8 +55,16 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* gebruikt `SendKeys` in *wes* tijdens runtime als implementatie. Als het pad van de map waarin *wes.js* is opgeslagen andere tekens dan *ascii* bevat, kan `SendKeys` de sleutel niet correct verzenden en kan het script niet worden uitgevoerd.  
+*WScript.Shell* gebruikt `SendKeys` van *wes* tijdens runtime als implementatie. Als het pad van de map waarin *wes.js* is opgeslagen andere tekens dan *ascii* bevat, kan `SendKeys` de sleutel niet correct verzenden en kan het script niet worden uitgevoerd.  
 Configureer het opslagbestemmingspad van *wes.js* alleen *ascii* .
+
+
+Als je *wes* al hebt gedownload, kun je het bijwerken met de volgende opdracht.
+
+
+```bat
+wes update
+```
 
 
 # Hoe te gebruiken
@@ -87,7 +95,7 @@ wes
 De opstartopties voor *wes* zijn als volgt.
 
 
-| genaamd            | Beschrijving                                                            |
+| genaamd            | Omschrijving                                                            |
 | ------------------ | ----------------------------------------------------------------------- |
 | `--monotone`       | Elimineer *ANSI escape code*                                            |
 | `--safe`           | Voer het script uit in de veilige modus                                 |
@@ -111,7 +119,7 @@ De implementatie van `--safe` `--usual` `--unsafe` `--dangerous` `--debug` is on
 ## *commonjs module*
 
 
-Beheer modules door toe te wijzen aan `module.exports` en aan te roepen met required `require()` . Voor het gemak ondersteunt het ook de map *node_modules* .
+Beheer modules door toe te wijzen aan `module.exports` en aan te roepen met required `require()` . Voor andere paden dan absolute paden en relatieve paden die beginnen met `./` en `../` , zoek naar modules in de map *wes_modules* en, voor het gemak, de map *node_modules* .
 
 
 *wes* `require()` automatisch de codering van het modulebestand raadt, maar als het niet correct raadt, kunt u de codering specificeren met het tweede argument.
@@ -152,7 +160,7 @@ Shell.UndoMinimizeAll()
 *Chakra* , de uitvoeringsengine van het script, interpreteert syntaxis zoals `imoprt` , maar het kan niet worden uitgevoerd zoals het is omdat de verwerkingsmethode als `cscript` niet is gedefinieerd. In *wes* , door *babel* toe te voegen aan de ingebouwde module, wordt het uitgevoerd terwijl het sequentieel wordt getranspileerd naar de *es module* . Als gevolg hiervan worden de verwerkingsoverhead en het *wes.js* -bestand als kosten opgeblazen.
 
 
-Modules die in de *es module* zijn geschreven, worden ook getranspileerd om `require()` , dus *ActiveX* -aanroepen zijn mogelijk. Het ondersteunt echter niet de coderingsspecificatie van het modulebestand in *es module* . Ze worden allemaal gelezen door automatisch te raden.
+Modules beschreven door *es module* worden ook geconverteerd naar `require()` door transpile, dus *ActiveX* -aanroepen zijn ook mogelijk. Het ondersteunt echter niet de coderingsspecificatie van het modulebestand in *es module* . Ze worden allemaal gelezen door automatisch te raden.
 
 
 Om het als een *es module* te laden, stelt u de extensie in op `.mjs` of het veld `"type"` van `package.json` op `"module"` .
@@ -472,13 +480,13 @@ wes zip -p dox.zip
 Als `path` de extensie `.zip` heeft, wordt `unzip()` verwerkt en is er geen beschrijving van de extensie `.zip` . Of zelfs als er een `.zip` extensie is, als er een beschrijving is van een wildcard `*` , zal `zip()` worden verwerkt.
 
 
-| naamloos | Beschrijving                          |
+| naamloos | Omschrijving                          |
 | -------- | ------------------------------------- |
 | `1`      | `path` Map of bestand om in te voeren |
 | `2`      | mapbestand naar `dest`                |
 
 
-| genaamd  | korte naam | Beschrijving                          |
+| genaamd  | korte naam | Omschrijving                          |
 | -------- | ---------- | ------------------------------------- |
 | `--path` | `-p`       | `path` Map of bestand om in te voeren |
 | `--dest` | `-d`       | mapbestand naar `dest`                |
@@ -547,7 +555,7 @@ wes install @wachaon/fmt
 *install* heeft opties.
 
 
-| genaamd       | korte naam | Beschrijving                                                                       |
+| genaamd       | korte naam | Omschrijving                                                                       |
 | ------------- | ---------- | ---------------------------------------------------------------------------------- |
 | `--bare`      | `-b`       | Maak geen *@author* map aan                                                        |
 | `--global`    | `-g`       | Installeer het pakket in de map waar *wes.js* is                                   |
@@ -556,7 +564,7 @@ wes install @wachaon/fmt
 | `--node`      | `-n`       | Installeer in de map *node_module*                                                 |
 
 
-`--bare` optie kan het argument ' `require` ' van `author@repository` naar `repository` weglaten. `--global` optie maakt het geïnstalleerde pakket beschikbaar voor alle scripts. De bovenstaande opties moeten tegelijk met de *wes* security optie `--unsafe` of `--dangerous` worden opgegeven.
+`--bare` optie kan het argument ' `require` ' van `author@repository` naar `repository` weglaten. `--global` optie maakt het geïnstalleerde pakket beschikbaar voor alle scripts. `--node` of `-n` optie moet tegelijk met de *wes* security optie `--unsafe` of `--dangerous` worden opgegeven.
 
 
 ```bat
@@ -598,7 +606,7 @@ Hier zijn enkele externe pakketten.
 ## *@wachaon/fmt*
 
 
-*@wachaon/fmt* is een *prettier* verpakking voor *wes* en formatteert het script. Ook als *@wachaon/fmt* is geïnstalleerd en er treedt een *Syntax Error* op, kunt u de locatie van de fout aangeven.
+*@wachaon/fmt* is een *prettier* verpakking voor *wes* en formatteert het script. Als er een *Syntax Error* optreedt met *@wachaon/fmt* geïnstalleerd, kunt u ook de locatie van de fout aangeven.
 
 
 ### installeren
@@ -623,13 +631,13 @@ wes @wachaon/fmt src/sample --write
 ```
 
 
-| naamloos nummer | Beschrijving                                            |
+| naamloos nummer | Omschrijving                                            |
 | --------------- | ------------------------------------------------------- |
 | 0               | ik                                                      |
 | 1               | Vereist. Het pad van het bestand dat u wilt formatteren |
 
 
-| genaamd   | korte naam | Beschrijving           |
+| genaamd   | korte naam | Omschrijving           |
 | --------- | ---------- | ---------------------- |
 | `--write` | `-w`       | Overschrijven toestaan |
 
