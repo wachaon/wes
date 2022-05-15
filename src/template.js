@@ -40,21 +40,46 @@ try {
     } else {
         var Modules = {}
 
-        var pathname = req('pathname')
+        var EXT_JS = '.js'
+        var EXT_CJS = '.cjs'
+        var EXT_MJS = '.mjs'
+        var EXT_JSON = '.json'
+        var PACKAGE_JSON = 'package.json'
+        var INDEX = 'index'
+        var INDEX_JS = INDEX + EXT_JS
+        var INDEX_CJS = INDEX + EXT_CJS
+        var INDEX_MJS = INDEX + EXT_MJS
+        var INDEX_JSON = INDEX + EXT_JSON
+        var NODE_MODULES = 'node_modules'
+        var WES_MODULES = 'wes_modules'
+        var COMMONJS = 'commonjs'
+        var MODULE = 'module'
+        var EXPORT = 'export'
+        var EXPORTS = 'exports'
+        var TYPE = 'type'
+        var MAIN = 'main'
+        var PATH = 'path'
+        var PATHNAME = 'pathname'
+        var FILESYSTEM = 'filesystem'
+        var ROOT_DIR = '/'
+        var CURRENT_DIR = './'
+        var PARENT_DIR = '../'
+
+        var pathname = req(PATHNAME)
         var resolve = pathname.resolve
         var dirname = pathname.dirname
         var extname = pathname.extname
         var isAbsolute = pathname.isAbsolute
         var WorkingDirectory = pathname.WorkingDirectory
 
-        var filesystem = req('filesystem')
+        var filesystem = req(FILESYSTEM)
         var existsFileSync = filesystem.existsFileSync
         var readTextFileSync = filesystem.readTextFileSync
 
         // util
         function getPathToModule(filespec) {
             var mod = Object.keys(Modules).find(function (key) {
-                if (!has(Modules[key], 'path')) return false
+                if (!has(Modules[key], PATH)) return false
                 return Modules[key].path === filespec
             })
             return Modules[mod]
@@ -75,7 +100,7 @@ try {
         function getPkgField(dir, field) {
             var parse = JSON.parse
 
-            var pkg = resolve(dir, 'package.json')
+            var pkg = resolve(dir, PACKAGE_JSON)
             if (!existsFileSync(pkg)) return undefined
             var file = readTextFileSync(pkg)
             var json = parse(file)
@@ -83,86 +108,74 @@ try {
         }
 
         function getAreas(caller, _query) {
-            var rd = '/' // root directory
-            var cd = './' // current directory
-            var pd = '../' // parent directory
             var query = _query.replace(/\\/g, POSIXSEP)
 
             var areas = []
 
             // Replace '/' with Current Directory if query starts with '/'
-            if (starts(query, rd)) {
-                areas.push(resolve(WorkingDirectory, query.replace(rd, NONE)))
+            if (starts(query, ROOT_DIR)) {
+                areas.push(resolve(WorkingDirectory, query.replace(ROOT_DIR, NONE)))
 
                 // combine the caller's path and the query, if relative path
-            } else if (starts(query, cd) || starts(query, pd)) {
+            } else if (starts(query, CURRENT_DIR) || starts(query, PARENT_DIR)) {
                 areas.push(resolve(dirname(caller), query))
             } else {
                 areas.push(resolve(dirname(caller), query))
 
                 // Otherwise, combine node_module while going back directory
                 var hierarchy = dirname(caller)
-                var node_modules = 'node_modules'
-                var wes_modules = 'wes_modules'
 
                 while (hierarchy !== NONE) {
-                    areas.push(resolve(hierarchy, wes_modules, query))
-                    areas.push(resolve(hierarchy, node_modules, query))
+                    areas.push(resolve(hierarchy, WES_MODULES, query))
+                    areas.push(resolve(hierarchy, NODE_MODULES, query))
                     var _hierarchy = dirname(hierarchy)
                     if (hierarchy === _hierarchy) break
                     hierarchy = _hierarchy
                 }
                 var ScriptFullName = WScript.ScriptFullName
-                areas.push(resolve(dirname(ScriptFullName), node_modules, query))
-                areas.push(resolve(dirname(ScriptFullName), wes_modules, query))
+                areas.push(resolve(dirname(ScriptFullName), NODE_MODULES, query))
+                areas.push(resolve(dirname(ScriptFullName), WES_MODULES, query))
             }
             return areas
         }
 
         function getEntry(areas) {
-            var js = '.js'
-            var json = '.json'
-            var index = 'index.js'
-            var indexmjs = 'index.mjs'
-            var indexjson = 'index.json'
-            var packagejson = 'package.json'
-
             var entry = null
             while (areas.length) {
-                var type = getPkgField('/', 'type') || 'commonjs'
+                var type = getPkgField(ROOT_DIR, TYPE) || COMMONJS
                 var area = areas.shift()
                 var temp
-                type = getPkgField(dirname(area), 'type') || type
+                type = getPkgField(dirname(area), TYPE) || type
                 if (existsFileSync((temp = area))) {
-                    if (extname(temp) === '.mjs') type = 'module'
+                    if (extname(temp) === EXT_MJS) type = MODULE
                     entry = temp
                     break
                 }
-                if (existsFileSync((temp = area + js))) {
+                if (existsFileSync((temp = area + EXT_JS))) {
                     entry = temp
                     break
                 }
-                if (existsFileSync((temp = area + json))) {
+                if (existsFileSync((temp = area + EXT_JSON))) {
                     entry = temp
                     type = 'json'
                     break
                 }
-                if (existsFileSync((temp = resolve(area, index)))) {
-                    type = getPkgField(area, 'type') || type
+                if (existsFileSync((temp = resolve(area, INDEX_JS)))) {
+                    type = getPkgField(area, TYPE) || type
                     entry = temp
                     break
                 }
-                if (existsFileSync((temp = resolve(area, indexmjs)))) {
-                    type = 'module'
+                if (existsFileSync((temp = resolve(area, INDEX_MJS)))) {
+                    type = MODULE
                     entry = temp
                     break
                 }
-                if (existsFileSync((temp = resolve(area, indexjson)))) {
+                if (existsFileSync((temp = resolve(area, INDEX_JSON)))) {
                     entry = temp
                     break
                 }
-                if (existsFileSync((temp = resolve(area, packagejson)))) {
-                    var main = getPkgField(dirname(temp), 'main')
+                if (existsFileSync((temp = resolve(area, PACKAGE_JSON)))) {
+                    var main = getPkgField(dirname(temp), MAIN)
                     if (main == null) continue
                     areas.unshift(resolve(area, main))
                 }
@@ -187,13 +200,10 @@ try {
 
             Modules[GUID] = mod
             mod.type = type
-            var js = '.js'
-            var mjs = '.mjs'
-            var json = '.json'
 
             switch (extname(entry)) {
-                case mjs:
-                case js:
+                case EXT_MJS:
+                case EXT_JS:
                     var name = entry
                         .split(NONE)
                         .map(function (ch) {
@@ -210,7 +220,7 @@ try {
 
                     var result_code = '"use strict";' + mod.source
 
-                    if (mod.type === 'module') {
+                    if (mod.type === MODULE) {
                         mod.source = Babel.transform(result_code, babel_option).code
                     } else if (argv.get('comments') === false) {
                         mod.source =
@@ -223,8 +233,8 @@ try {
                     var buf = entry === 'buffer' ? null : req('buffer')
                     var code = new Function(
                         'require',
-                        'module',
-                        'exports',
+                        MODULE,
+                        EXPORTS,
                         'console',
                         '__dirname',
                         '__filename',
@@ -246,7 +256,7 @@ try {
                     )
                     wes.filestack.pop()
                     break
-                case json:
+                case EXT_JSON:
                     mod.module.exports = parse(mod.source)
                     break
                 default:
@@ -266,10 +276,10 @@ try {
         function req(moduleID) {
             var mod = Modules[moduleID]
             var entry = mod.path || POSIXSEP
-            if (!has(mod, 'exports')) {
-                if (!has(mod, 'module')) {
+            if (!has(mod, EXPORTS)) {
+                if (!has(mod, MODULE)) {
                     mod.module = { exports: {} }
-                    if (ends(mod.path, '.json')) {
+                    if (ends(mod.path, EXT_JSON)) {
                         mod.module.exports = JSON.parse(mod.source)
                         mod.exports = mod.module.exports
                         return mod.exports
@@ -279,8 +289,8 @@ try {
                     var buf = entry === 'buffer' ? null : req('buffer')
                     new Function(
                         'require',
-                        'module',
-                        'exports',
+                        MODULE,
+                        EXPORTS,
                         'console',
                         '__dirname',
                         '__filename',
