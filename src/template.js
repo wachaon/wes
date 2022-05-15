@@ -10,11 +10,11 @@ try {
         filestack: [WScript.ScriptFullName.split(WIN32SEP).join(POSIXSEP)]
     }
 
-    var argv = function () { }
+    var argv = function () {}
 
-    var ansi = function () { }
+    var ansi = function () {}
 
-    var console = function () { }
+    var console = function () {}
 
     if (!argv.has('engine', 'Chakra')) {
         var cpu =
@@ -57,6 +57,8 @@ try {
         var MODULE = 'module'
         var EXPORT = 'export'
         var EXPORTS = 'exports'
+        var REQUIRE = 'require'
+        var IMPORT = 'import'
         var TYPE = 'type'
         var MAIN = 'main'
         var PATH = 'path'
@@ -149,7 +151,7 @@ try {
             var dir = dirname(mod.path)
             var pkg = nearestPackageJson(dir)
             var type
-            if (type = getField(pkg, TYPE)) return type
+            if ((type = getField(pkg, TYPE))) return type
             return COMMONJS
         }
 
@@ -165,6 +167,44 @@ try {
                 if (existsFileSync((entry = resolve(area, INDEX_MJS)))) return entry
                 if (existsFileSync((entry = resolve(area, INDEX_JSON)))) return entry
                 if (existsFileSync((temp = resolve(area, PACKAGE_JSON)))) {
+                    var dir = dirname(temp)
+                    var pkg = nearestPackageJson(dir)
+                    var exp = getField(pkg, EXPORTS)
+                    if (exp != null) {
+                        if (typeof exp === 'string') areas.push(resolve(dir, exp))
+                        else {
+                            var dot = getField(exp, '.')
+                            if (dot != null) {
+                                var type = getField(pkg, TYPE) || COMMONJS
+                                if (typeof dot === 'string') areas.push(resolve(dir, dot))
+                                else if (Array.isArray(dot)) {
+                                    dot.find(function (val) {
+                                        if (typeof val === 'string') {
+                                            areas.push(resolve(dir, val))
+                                            return true
+                                        }
+                                        if (type === COMMONJS && REQUIRE in val) {
+                                            areas.push(resolve(dir, val[REQUIRE]))
+                                            return true
+                                        }
+                                        if (type === MODULE && IMPORT in val) {
+                                            areas.push(resolve(dir, val[IMPORT]))
+                                            return true
+                                        }
+                                    })
+                                } else {
+                                    if (type === COMMONJS && REQUIRE in dot) {
+                                        areas.push(resolve(dir, dot[REQUIRE]))
+                                        return true
+                                    }
+                                    if (type === MODULE && IMPORT in dot) {
+                                        areas.push(resolve(dir, dot[IMPORT]))
+                                        return true
+                                    }
+                                }
+                            }
+                        }
+                    }
                     var main = getPkgField(dirname(temp), MAIN)
                     if (main == null) continue
                     areas.unshift(resolve(area, main))
@@ -317,7 +357,7 @@ try {
             // execute OLE, if it is OLE
             try {
                 return WScript.CreateObject(query)
-            } catch (e) { }
+            } catch (e) {}
 
             // execute req function, if it is a mapping[ query ]
             var parentModule = getPathToModule(caller)
@@ -403,7 +443,7 @@ function retry() {
         try {
             res = action(args.shift())
             break
-        } catch (error) { }
+        } catch (error) {}
     }
     return res
 }
