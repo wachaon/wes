@@ -70,6 +70,7 @@ try {
         var dirname = pathname.dirname
         var extname = pathname.extname
         var isAbsolute = pathname.isAbsolute
+        var toPosixSep = pathname.toPosixSep
         var WorkingDirectory = pathname.WorkingDirectory
 
         var filesystem = req(FILESYSTEM)
@@ -108,7 +109,7 @@ try {
         }
 
         function getAreas(caller, _query) {
-            var query = _query.replace(/\\/g, POSIXSEP)
+            var query = toPosixSep(_query)
 
             var areas = []
 
