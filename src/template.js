@@ -159,25 +159,18 @@ try {
             while (areas.length) {
                 var area = areas.shift()
                 var temp
-                if (existsFileSync((temp = area))) {
-                    entry = temp
-                } else if (existsFileSync((temp = area + EXT_JS))) {
-                    entry = temp
-                } else if (existsFileSync((temp = area + EXT_JSON))) {
-                    entry = temp
-                } else if (existsFileSync((temp = resolve(area, INDEX_JS)))) {
-                    entry = temp
-                } else if (existsFileSync((temp = resolve(area, INDEX_MJS)))) {
-                    entry = temp
-                } else if (existsFileSync((temp = resolve(area, INDEX_JSON)))) {
-                    entry = temp
-                } else if (existsFileSync((temp = resolve(area, PACKAGE_JSON)))) {
+                if (existsFileSync((entry = area))) return entry
+                if (existsFileSync((entry = area + EXT_JS))) return entry
+                if (existsFileSync((entry = area + EXT_JSON))) return entry
+                if (existsFileSync((entry = resolve(area, INDEX_JS)))) return entry
+                if (existsFileSync((entry = resolve(area, INDEX_MJS)))) return entry
+                if (existsFileSync((entry = resolve(area, INDEX_JSON)))) return entry
+                if (existsFileSync((temp = resolve(area, PACKAGE_JSON)))) {
                     var main = getPkgField(dirname(temp), MAIN)
                     if (main == null) continue
                     areas.unshift(resolve(area, main))
                 }
             }
-            return entry
         }
 
         function createModule(GUID, entry, query, parentModule, encode) {
