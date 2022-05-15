@@ -240,17 +240,16 @@ try {
                         .join(NONE)
                     wes.filestack.push(entry)
 
-                    var Babel = req('babel-standalone')
-                    var babel_option = {
-                        presets: ['env']
-                    }
-                    if (argv.get('comments') === false) babel_option.comments = false
-
                     var result_code = '"use strict";' + mod.source
 
                     if (mod.type === MODULE) {
-                        mod.source = Babel.transform(result_code, babel_option).code
-                    } else if (argv.get('comments') === false) {
+                        var Babel = req('babel-standalone')
+                        var babel_option = {
+                            presets: ['env']
+                        }
+                        if (argv.get('comments') === false) {
+                            babel_option.comments = false
+                        }
                         mod.source =
                             '(function ' + name + '() { ' + Babel.transform(result_code, babel_option).code + '} )()'
                     } else {
