@@ -177,7 +177,7 @@ try {
                     areas.unshift(resolve(area, main))
                 }
             }
-            return { entry: entry }
+            return entry
         }
 
         function createModule(GUID, entry, query, parentModule, encode) {
@@ -340,8 +340,7 @@ try {
             if (isAbsolute(query)) areas = [resolve(query)]
             else areas = getAreas(caller, query)
 
-            var file = getEntry(areas)
-            var entry = file.entry
+            var entry = getEntry(areas)
             if (entry == null)
                 throw new Error(
                     'no module:\n' + 'caller: ' + caller + '\nquery: ' + query + LF + JSON.stringify(areas, null, 2)
