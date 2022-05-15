@@ -258,29 +258,33 @@ try {
                     mod.type = 'transpiled'
 
                     var buf = entry === 'buffer' ? null : req('buffer')
-                    var code = new Function(
-                        'require',
-                        'module',
-                        'exports',
-                        'console',
-                        '__dirname',
-                        '__filename',
-                        'wes',
-                        'Buffer',
-                        'global',
-                        mod.source
-                    )
-                    code(
-                        require.bind(null, entry),
-                        mod.module,
-                        mod.module.exports,
-                        console,
-                        dirname(entry),
-                        entry,
-                        wes,
-                        buf,
-                        { process: process, Buffer: buf, console: console }
-                    )
+
+                    var codeMap = {
+                        require: require.bind(null, entry),
+                        module: mod.module,
+                        exports: mod.module.exports,
+                        console: console,
+                        __dirname: dirname(entry),
+                        __filename: entry,
+                        wes: wes,
+                        Buffer: buf,
+                        global: { process: process, Buffer: buf, console: console }
+                    }
+                    try {
+                        generateCodeAndExecution(codeMap, mod.source)
+                    } catch (er) {
+                        Babel = Babel || req('babel-standalone')
+                        babel_option = babel_option || {
+                            presets: ['env']
+                        }
+                        if (argv.get('comments') === false) {
+                            babel_option.comments = false
+                        }
+                        mod.source =
+                            '(function ' + name + '() { ' + Babel.transform(result_code, babel_option).code + '} )()'
+
+                        generateCodeAndExecution(codeMap, mod.source)
+                    }
                     wes.filestack.pop()
                     break
                 case EXT_JSON:
@@ -477,4 +481,17 @@ function nearestPackageJson(dir) {
             return existsFileSync(spec)
         })
     return pkgSpec ? JSON.parse(readTextFileSync(pkgSpec)) : {}
+}
+
+function generateCodeAndExecution(map, source) {
+    var args = Object.keys(map)
+    var prop = args.map(function (key) {
+        return map[key]
+    })
+    args.unshift(null)
+    args.push(source)
+
+    var code = new (Function.prototype.bind.apply(Function, args))()
+
+    return code.apply(null, prop)
 }
