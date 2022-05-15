@@ -52,6 +52,7 @@ try {
         var INDEX_JSON = INDEX + EXT_JSON
         var NODE_MODULES = 'node_modules'
         var WES_MODULES = 'wes_modules'
+        var JSONTYPE = 'json'
         var COMMONJS = 'commonjs'
         var MODULE = 'module'
         var EXPORT = 'export'
@@ -140,51 +141,46 @@ try {
             return areas
         }
 
+        function getModuleType(mod) {
+            var ext = extname(mod.path)
+            if (ext === EXT_JSON) return JSONTYPE
+            if (ext === EXT_CJS) return COMMONJS
+            if (ext === EXT_MJS) return MODULE
+            var dir = dirname(mod.path)
+            var pkg = nearestPackageJson(dir)
+            if (getField(pkg, EXPORTS)) return MODULE
+            var type
+            if ((type = getField(pkg, TYPE))) return type
+            return COMMONJS
+        }
+
         function getEntry(areas) {
             var entry = null
             while (areas.length) {
-                var type = getPkgField(ROOT_DIR, TYPE) || COMMONJS
                 var area = areas.shift()
                 var temp
-                type = getPkgField(dirname(area), TYPE) || type
                 if (existsFileSync((temp = area))) {
-                    if (extname(temp) === EXT_MJS) type = MODULE
                     entry = temp
-                    break
-                }
-                if (existsFileSync((temp = area + EXT_JS))) {
+                } else if (existsFileSync((temp = area + EXT_JS))) {
                     entry = temp
-                    break
-                }
-                if (existsFileSync((temp = area + EXT_JSON))) {
+                } else if (existsFileSync((temp = area + EXT_JSON))) {
                     entry = temp
-                    type = 'json'
-                    break
-                }
-                if (existsFileSync((temp = resolve(area, INDEX_JS)))) {
-                    type = getPkgField(area, TYPE) || type
+                } else if (existsFileSync((temp = resolve(area, INDEX_JS)))) {
                     entry = temp
-                    break
-                }
-                if (existsFileSync((temp = resolve(area, INDEX_MJS)))) {
-                    type = MODULE
+                } else if (existsFileSync((temp = resolve(area, INDEX_MJS)))) {
                     entry = temp
-                    break
-                }
-                if (existsFileSync((temp = resolve(area, INDEX_JSON)))) {
+                } else if (existsFileSync((temp = resolve(area, INDEX_JSON)))) {
                     entry = temp
-                    break
-                }
-                if (existsFileSync((temp = resolve(area, PACKAGE_JSON)))) {
+                } else if (existsFileSync((temp = resolve(area, PACKAGE_JSON)))) {
                     var main = getPkgField(dirname(temp), MAIN)
                     if (main == null) continue
                     areas.unshift(resolve(area, main))
                 }
             }
-            return { entry: entry, type: type }
+            return { entry: entry }
         }
 
-        function createModule(GUID, entry, query, parentModule, encode, type) {
+        function createModule(GUID, entry, query, parentModule, encode) {
             var parse = JSON.parse
 
             if (parentModule) parentModule.mapping[query] = GUID
@@ -200,8 +196,7 @@ try {
             if (starts(mod.source, '#!')) mod.source = mod.source.split(LF).slice(1).join(LF)
 
             Modules[GUID] = mod
-            mod.type = type
-
+            mod.type = getModuleType(mod)
             switch (extname(entry)) {
                 case EXT_MJS:
                 case EXT_JS:
@@ -234,8 +229,8 @@ try {
                     var buf = entry === 'buffer' ? null : req('buffer')
                     var code = new Function(
                         'require',
-                        MODULE,
-                        EXPORTS,
+                        'module',
+                        'exports',
                         'console',
                         '__dirname',
                         '__filename',
@@ -290,8 +285,8 @@ try {
                     var buf = entry === 'buffer' ? null : req('buffer')
                     new Function(
                         'require',
-                        MODULE,
-                        EXPORTS,
+                        'module',
+                        'exports',
                         'console',
                         '__dirname',
                         '__filename',
@@ -347,7 +342,6 @@ try {
 
             var file = getEntry(areas)
             var entry = file.entry
-            var type = file.type
             if (entry == null)
                 throw new Error(
                     'no module:\n' + 'caller: ' + caller + '\nquery: ' + query + LF + JSON.stringify(areas, null, 2)
@@ -355,7 +349,7 @@ try {
 
             var modId = req('genGUID')()
             if (wes.main == null) wes.main = modId
-            var mod = createModule(modId, entry, query, parentModule, encode, type)
+            var mod = createModule(modId, entry, query, parentModule, encode)
             mod.exports = mod.module.exports
 
             return mod.exports
@@ -434,4 +428,23 @@ function starts(str, word) {
 
 function ends(str, word) {
     return str.endsWith(word)
+}
+
+function bubblingDirectory(dir, query) {
+    var res = []
+    query ? res.push(resolve(dir, query)) : res.push(resolve(dir))
+    while (dir !== dirname(dir)) {
+        dir = dirname(dir)
+        query ? res.push(resolve(dir, query)) : res.push(resolve(dir))
+    }
+    return res.reverse()
+}
+
+function nearestPackageJson(dir) {
+    var pkgSpec = bubblingDirectory(dir, PACKAGE_JSON)
+        .reverse()
+        .find(function (spec) {
+            return existsFileSync(spec)
+        })
+    return pkgSpec ? JSON.parse(readTextFileSync(pkgSpec)) : {}
 }
