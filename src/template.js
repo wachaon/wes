@@ -181,25 +181,17 @@ try {
                                     dot.find(function (val) {
                                         if (typeof val === 'string') {
                                             areas.push(resolve(dir, val))
-                                            return true
-                                        }
-                                        if (type === COMMONJS && REQUIRE in val) {
+                                        } else if (type === COMMONJS && REQUIRE in val) {
                                             areas.push(resolve(dir, val[REQUIRE]))
-                                            return true
-                                        }
-                                        if (type === MODULE && IMPORT in val) {
+                                        } else if (type === MODULE && IMPORT in val) {
                                             areas.push(resolve(dir, val[IMPORT]))
-                                            return true
                                         }
                                     })
                                 } else {
                                     if (type === COMMONJS && REQUIRE in dot) {
                                         areas.push(resolve(dir, dot[REQUIRE]))
-                                        return true
-                                    }
-                                    if (type === MODULE && IMPORT in dot) {
+                                    } else if (type === MODULE && IMPORT in dot) {
                                         areas.push(resolve(dir, dot[IMPORT]))
-                                        return true
                                     }
                                 }
                             }
