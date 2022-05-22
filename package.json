@@ -1,6 +1,6 @@
 {
     "name": "wes",
-    "version": "0.10.55",
+    "version": "0.10.56",
     "description": "Windows Ecma Script host",
     "main": "wes.js",
     "directories": {
@@ -8,7 +8,15 @@
         "src": "src",
         "test": "test"
     },
-    "dependencies": {},
+    "dependencies": {
+        "module": "^1.2.5",
+        "pat": "0.0.1",
+        "process": "^0.11.10",
+        "punycode": "^2.1.1",
+        "query-string": "^7.1.1",
+        "url": "^0.11.0",
+        "util": "^0.12.4"
+    },
     "devDependencies": {},
     "scripts": {
         "test": "wes src/test",
