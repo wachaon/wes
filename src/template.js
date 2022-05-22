@@ -237,10 +237,8 @@ try {
                     if (mod.type === MODULE) {
                         var Babel = req('babel-standalone')
                         var babel_option = {
-                            presets: ['env']
-                        }
-                        if (argv.get('comments') === false) {
-                            babel_option.comments = false
+                            presets: ['env'],
+                            comments: false
                         }
                         mod.source =
                             '(function ' + name + '() { ' + Babel.transform(result_code, babel_option).code + '} )()'
