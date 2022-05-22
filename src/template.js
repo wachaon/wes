@@ -241,9 +241,9 @@ try {
                             comments: false
                         }
                         mod.source =
-                            '(function ' + name + '() { ' + Babel.transform(result_code, babel_option).code + '} )()'
+                            '(function ' + name + '() { ' + Babel.transform(result_code, babel_option).code + '\n} )()'
                     } else {
-                        mod.source = '(function ' + name + '() { ' + result_code + '} )()'
+                        mod.source = '(function ' + name + '() { ' + result_code + '\n} )()'
                     }
                     mod.type = 'transpiled'
 
