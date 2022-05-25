@@ -209,6 +209,8 @@ try {
 
             if (parentModule) parentModule.mapping[query] = GUID
 
+            console.debug('%O require to %O ', parentModule ? parentModule.path : null, entry)
+
             var mod = {
                 source: readTextFileSync(entry, encode != null ? encode : null),
                 module: {
@@ -283,6 +285,9 @@ try {
                 default:
                     mod.module.exports = mod.source
             }
+
+            console.debug('%S%S', '\u001B[1F', ansi.eraseInLine(2))
+
             return mod
         }
 
