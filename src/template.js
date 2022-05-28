@@ -10,11 +10,11 @@ try {
         filestack: [WScript.ScriptFullName.split(WIN32SEP).join(POSIXSEP)]
     }
 
-    var argv = function () { }
+    var argv = function () {}
 
-    var ansi = function () { }
+    var ansi = function () {}
 
-    var console = function () { }
+    var console = function () {}
 
     if (!argv.has('engine', 'Chakra')) {
         var cpu =
@@ -62,6 +62,7 @@ try {
         var TYPE = 'type'
         var MAIN = 'main'
         var PATH = 'path'
+        var string = 'string'
         var PATHNAME = 'pathname'
         var FILESYSTEM = 'filesystem'
         var ROOT_DIR = '/'
@@ -171,15 +172,15 @@ try {
                     var pkg = nearestPackageJson(dir)
                     var exp = getField(pkg, EXPORTS)
                     if (exp != null) {
-                        if (typeof exp === 'string') areas.push(resolve(dir, exp))
+                        if (typeof exp === string) areas.push(resolve(dir, exp))
                         else {
                             var dot = getField(exp, '.')
                             if (dot != null) {
                                 var type = getField(pkg, TYPE) || COMMONJS
-                                if (typeof dot === 'string') areas.push(resolve(dir, dot))
+                                if (typeof dot === string) areas.push(resolve(dir, dot))
                                 else if (Array.isArray(dot)) {
                                     dot.find(function (val) {
-                                        if (typeof val === 'string') {
+                                        if (typeof val === string) {
                                             areas.push(resolve(dir, val))
                                         } else if (type === COMMONJS && REQUIRE in val) {
                                             areas.push(resolve(dir, val[REQUIRE]))
@@ -355,7 +356,7 @@ try {
             // execute OLE, if it is OLE
             try {
                 return WScript.CreateObject(query)
-            } catch (e) { }
+            } catch (e) {}
 
             // execute req function, if it is a mapping[ query ]
             var parentModule = getPathToModule(caller)
@@ -448,7 +449,7 @@ function retry() {
         try {
             res = action(args.shift())
             break
-        } catch (error) { }
+        } catch (error) {}
     }
     return res
 }
