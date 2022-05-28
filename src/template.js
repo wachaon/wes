@@ -431,7 +431,7 @@ try {
                 try {
                     fmt.format(source)
                 } catch (e) {
-                    console.log('%S%S', orange, e)
+                    console.error(e.message)
                 }
             }
         }
