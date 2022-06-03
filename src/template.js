@@ -307,30 +307,19 @@ try {
                     var dirname = entry.split(POSIXSEP).slice(0, -1).join(POSIXSEP)
                     mod.mapping = mod.mapping || {}
                     var buf = entry === 'buffer' ? null : req('buffer')
-                    new Function(
-                        'require',
-                        'module',
-                        'exports',
-                        'console',
-                        '__dirname',
-                        '__filename',
-                        'wes',
-                        'process',
-                        'Buffer',
-                        'global',
-                        '"use strict";' + mod.source
-                    )(
-                        require.bind(null, entry),
-                        mod.module,
-                        mod.module.exports,
-                        console,
-                        dirname,
-                        entry,
-                        wes,
-                        process,
-                        buf,
-                        { process: process, Buffer: buf, console: console }
-                    )
+                    var codeMap = {
+                        require: require.bind(null, entry),
+                        module: mod.module,
+                        exports: mod.module.exports,
+                        console: console,
+                        __dirname: dirname,
+                        __filename: entry,
+                        wes: wes,
+                        process: process,
+                        Buffer: buf,
+                        global: { process: process, Buffer: buf, console: console }
+                    }
+                    generateCodeAndExecution(codeMap, mod.source)
                 }
                 mod.exports = mod.module.exports
             }
