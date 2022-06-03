@@ -103,12 +103,10 @@ try {
         }
 
         function getPkgField(dir, field) {
-            var parse = JSON.parse
-
             var pkg = resolve(dir, PACKAGE_JSON)
             if (!existsFileSync(pkg)) return undefined
             var file = readTextFileSync(pkg)
-            var json = parse(file)
+            var json = JSON.parse(file)
             return getField(json, field)
         }
 
@@ -206,8 +204,6 @@ try {
         }
 
         function createModule(GUID, entry, query, parentModule, encode) {
-            var parse = JSON.parse
-
             if (parentModule) parentModule.mapping[query] = GUID
 
             console.debug('%O require to %O ', parentModule ? parentModule.path : null, entry)
@@ -281,7 +277,7 @@ try {
                     wes.filestack.pop()
                     break
                 case EXT_JSON:
-                    mod.module.exports = parse(mod.source)
+                    mod.module.exports = JSON.parse(mod.source)
                     break
                 default:
                     mod.module.exports = mod.source
