@@ -286,9 +286,6 @@ try {
                 default:
                     mod.module.exports = mod.source
             }
-
-            console.debug('%S%S', '\u001B[1F', ansi.eraseInLine(2))
-
             return mod
         }
 
