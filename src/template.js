@@ -232,9 +232,8 @@ try {
                     wes.filestack.push(entry)
 
                     var result_code = '"use strict";' + mod.source
-
+                    var Babel = req('babel-standalone')
                     if (mod.type === MODULE) {
-                        var Babel = req('babel-standalone')
                         var babel_option = {
                             presets: ['env'],
                             comments: false
@@ -262,17 +261,15 @@ try {
                     try {
                         generateCodeAndExecution(codeMap, mod.source)
                     } catch (er) {
-                        Babel = Babel || req('babel-standalone')
-                        babel_option = babel_option || {
-                            presets: ['env']
+                        if (mod.type !== MODULE) {
+                            mod.source =
+                                '(function ' +
+                                name +
+                                '() { ' +
+                                Babel.transform(result_code, babel_option).code +
+                                '\n} )()'
+                            generateCodeAndExecution(codeMap, mod.source)
                         }
-                        if (argv.get('comments') === false) {
-                            babel_option.comments = false
-                        }
-                        mod.source =
-                            '(function ' + name + '() { ' + Babel.transform(result_code, babel_option).code + '} )()'
-
-                        generateCodeAndExecution(codeMap, mod.source)
                     }
                     wes.filestack.pop()
                     break
