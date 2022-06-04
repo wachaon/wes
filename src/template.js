@@ -83,7 +83,7 @@ try {
 
         // util
         function getPathToModule(filespec) {
-            var mod = Object.keys(Modules).find(function (key) {
+            var mod = Object.keys(Modules).find(function getPathToModule_callback(key) {
                 if (!has(Modules[key], PATH)) return false
                 return Modules[key].path === filespec
             })
@@ -177,7 +177,7 @@ try {
                                 var type = getField(pkg, TYPE) || COMMONJS
                                 if (typeof dot === string) areas.push(resolve(dir, dot))
                                 else if (Array.isArray(dot)) {
-                                    dot.find(function (val) {
+                                    dot.find(function getEntry_find_callback(val) {
                                         if (typeof val === string) {
                                             areas.push(resolve(dir, val))
                                         } else if (type === COMMONJS && REQUIRE in val) {
@@ -225,7 +225,7 @@ try {
                 case EXT_JS:
                     var name = entry
                         .split(NONE)
-                        .map(function (ch) {
+                        .map(function createModule_map_callback(ch) {
                             return '$' + ch.codePointAt().toString(16).toUpperCase()
                         })
                         .join(NONE)
@@ -233,16 +233,12 @@ try {
 
                     var result_code = '"use strict";' + mod.source
                     var Babel = req('babel-standalone')
-                    if (mod.type === MODULE) {
-                        var babel_option = {
-                            presets: ['env'],
-                            comments: false
-                        }
-                        mod.source =
-                            '(function ' + name + '() { ' + Babel.transform(result_code, babel_option).code + '\n} )()'
-                    } else {
-                        mod.source = '(function ' + name + '() { ' + result_code + '\n} )()'
+                    var babel_option = {
+                        presets: ['env'],
+                        comments: false
                     }
+                    if (mod.type === MODULE) mod.source = wrap(name, Babel.transform(result_code, babel_option).code)
+                    else mod.source = wrap(name, result_code)
                     mod.type = 'transpiled'
 
                     var buf = entry === 'buffer' ? null : req('buffer')
@@ -261,13 +257,9 @@ try {
                     try {
                         generateCodeAndExecution(codeMap, mod.source)
                     } catch (er) {
+                        console.debug(er.message)
                         if (mod.type !== MODULE) {
-                            mod.source =
-                                '(function ' +
-                                name +
-                                '() { ' +
-                                Babel.transform(result_code, babel_option).code +
-                                '\n} )()'
+                            mod.source = wrap(name, Babel.transform(result_code, babel_option).code)
                             generateCodeAndExecution(codeMap, mod.source)
                         }
                     }
@@ -285,7 +277,7 @@ try {
         // local require
         var process = {
             env: { NODE_ENV: NONE },
-            cwd: function () {
+            cwd: function process_cwd() {
                 return WorkingDirectory
             },
             platform: 'win32'
@@ -376,12 +368,13 @@ try {
 
         var errorStack = unescape(error.stack.split('$').join('%'))
             .split(/\r?\n/)
-            .filter(function (line) {
+            .filter(function error_stack_callback(line) {
                 return !(
                     starts(line, '   at Function code (Function code:') ||
                     starts(line, '   at createModule (') ||
                     starts(line, '   at require (') ||
-                    starts(line, '   at req (')
+                    starts(line, '   at req (') ||
+                    starts(line, '   at generateCodeAndExecution (')
                 )
             })
             .join('\r\n')
@@ -399,7 +392,7 @@ try {
             if (fmt != null) {
                 var source
                 if (wes.main === 'REP') {
-                    var file = Object.keys(wes.Modules).filter(function (key) {
+                    var file = Object.keys(wes.Modules).filter(function error_filter_callback(key) {
                         return starts(key, '{')
                     })[0]
                     source = wes.Modules[file].source
@@ -409,6 +402,8 @@ try {
                 }
                 try {
                     fmt.format(source)
+                    if (wes.main === 'REP') {
+                    }
                 } catch (e) {
                     console.error(e.message)
                 }
@@ -459,7 +454,7 @@ function bubblingDirectory(dir, query) {
 function nearestPackageJson(dir) {
     var pkgSpec = bubblingDirectory(dir, PACKAGE_JSON)
         .reverse()
-        .find(function (spec) {
+        .find(function nearestPackageJson_find_callback(spec) {
             return existsFileSync(spec)
         })
     return pkgSpec ? JSON.parse(readTextFileSync(pkgSpec)) : {}
@@ -467,7 +462,7 @@ function nearestPackageJson(dir) {
 
 function generateCodeAndExecution(map, source) {
     var args = Object.keys(map)
-    var prop = args.map(function (key) {
+    var prop = args.map(function generateCodeAndExecution_map_callback(key) {
         return map[key]
     })
     args.unshift(null)
@@ -476,4 +471,8 @@ function generateCodeAndExecution(map, source) {
     var code = new (Function.prototype.bind.apply(Function, args))()
 
     return code.apply(null, prop)
+}
+
+function wrap(name, source) {
+    return '(function ' + name + '() { ' + source + '\n} )()'
 }
