@@ -367,29 +367,13 @@ try {
     if (!!console) {
         var orange = ansi.color(255, 165, 0)
 
-        var errorStack = unescape(error.stack.split('$').join('%'))
-            .split(/\r?\n/)
-            .filter(function error_stack_callback(line) {
-                return !(
-                    starts(line, '   at Function code (Function code:') ||
-                    starts(line, '   at createModule (') ||
-                    starts(line, '   at require (') ||
-                    starts(line, '   at req (') ||
-                    starts(line, '   at generateCodeAndExecution (')
-                )
-            })
-            .join('\r\n')
-            .split('Function code:')
-            .join(NONE)
-            .split('Global code (:')
-            .join('Global code (')
-
+        var errorStack = stacktrace(error.stack)
         var current = wes.filestack.slice(-1)
 
-        if (wes.main === 'REP') console.log('%S%S', orange, errorStack)
-        else console.log('%SWhere the error occurred: %S\n%S', orange, current, errorStack)
-        /*
-        if (error instanceof SyntaxError) {
+        if (!(error instanceof SyntaxError)) {
+            if (wes.main === 'REP') console.log('%S%S', orange, errorStack)
+            else console.log('%SWhere the error occurred: %S\n%S%S', ansi.yellow, current, orange, errorStack)
+        } else {
             var fmt = retry(require.bind(null, resolve(WorkingDirectory, '*')), 'fmt', '@wachaon/fmt')
             if (fmt != null) {
                 var source
@@ -400,17 +384,16 @@ try {
                     source = wes.Modules[file].source
                 } else {
                     source = readTextFileSync(current)
-                    console.log('\n%SWhere the error occurred: %S', ansi.yellow, current)
                 }
                 try {
                     fmt.format(source)
                 } catch (e) {
-                    if (wes.main !== 'REP') console.log('\n%SWhere the error occurred: %S', ansi.yellow, current)
-                    console.error(e.message)
+                    var estack = stacktrace(e.stack)
+                    if (wes.main === 'REP') console.log('%S%S', orange, estack)
+                    else console.log('%SWhere the error occurred: %S\n%S%S', ansi.yellow, current, orange, estack)
                 }
             }
         }
-        */
     } else WScript.Popup('[error]' + error.message)
 }
 
@@ -477,4 +460,23 @@ function generateCodeAndExecution(map, source) {
 
 function wrap(name, source) {
     return '(function ' + name + '() { ' + source + '\n} )()'
+}
+
+function stacktrace(stack) {
+    return unescape(stack.split('$').join('%'))
+        .split(/\r?\n/)
+        .filter(function error_stack_callback(line) {
+            return !(
+                starts(line, '   at Function code (Function code:') ||
+                starts(line, '   at createModule (') ||
+                starts(line, '   at require (') ||
+                starts(line, '   at req (') ||
+                starts(line, '   at generateCodeAndExecution (')
+            )
+        })
+        .join('\r\n')
+        .split('Function code:')
+        .join(NONE)
+        .split('Global code (:')
+        .join('Global code (')
 }
