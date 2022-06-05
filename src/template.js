@@ -282,6 +282,7 @@ try {
             },
             platform: 'win32'
         }
+
         function req(moduleID) {
             var mod = Modules[moduleID]
             var entry = mod.path || POSIXSEP
@@ -385,8 +386,9 @@ try {
 
         var current = wes.filestack.slice(-1)
 
-        console.log('%S%S', orange, errorStack)
-
+        if (wes.main === 'REP') console.log('%S%S', orange, errorStack)
+        else console.log('%SWhere the error occurred: %S\n%S', orange, current, errorStack)
+        /*
         if (error instanceof SyntaxError) {
             var fmt = retry(require.bind(null, resolve(WorkingDirectory, '*')), 'fmt', '@wachaon/fmt')
             if (fmt != null) {
@@ -402,13 +404,13 @@ try {
                 }
                 try {
                     fmt.format(source)
-                    if (wes.main === 'REP') {
-                    }
                 } catch (e) {
+                    if (wes.main !== 'REP') console.log('\n%SWhere the error occurred: %S', ansi.yellow, current)
                     console.error(e.message)
                 }
             }
         }
+        */
     } else WScript.Popup('[error]' + error.message)
 }
 
