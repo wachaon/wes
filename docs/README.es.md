@@ -29,7 +29,7 @@ Seleccione oraciones en otros idiomas de las siguientes.
 
 
 -   Puede cambiar el motor de script a *Chakra* y escribirlo en la especificación *ECMAScript2015*
--   Siempre ejecuta *cscript.exe* de 32 bits, por lo que no tiene ningún problema inherente en un entorno de 64 bits.
+-   Siempre ejecuta *cscript.exe* de 32 bits, por lo que no hay problemas inherentes en un entorno de 64 bits.
 -   Con un sistema modular, puede desarrollar de manera más eficiente que el *WSH* tradicional
 -   El módulo incorporado admite el procesamiento básico, como la entrada/salida de archivos y la salida de caracteres de colores a la consola.
 -   No tiene que preocuparse por la codificación porque puede hacer que la lectura del archivo adivine automáticamente la codificación.
@@ -55,8 +55,8 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* usa `SendKeys` de *wes* en tiempo de ejecución como implementación. Si la ruta del directorio donde se guarda *wes.js* contiene caracteres que no sean *ascii* , `SendKeys` no podrá enviar la clave correctamente y el script no podrá ejecutarse.  
-Configure la ruta de destino para guardar de *wes.js* solo *ascii* .
+*WScript.Shell* usa `SendKeys` en *wes* en tiempo de ejecución como implementación. Si la ruta del directorio donde se guarda *wes.js* contiene caracteres que no sean *ascii* , `SendKeys` no podrá enviar la clave correctamente y el script no podrá ejecutarse.  
+Configure la ruta para guardar *wes.js* solo *ascii* .
 
 
 Si ya ha descargado *wes* , puede actualizarlo con el siguiente comando.
@@ -70,7 +70,7 @@ wes update
 # Cómo utilizar
 
 
-Ingrese el comando a la consola que especifica el archivo que será el punto de inicio del programa siguiendo la palabra clave `wes` . La extensión de secuencia de comandos *.js* se puede omitir.
+Ingrese el comando a la consola que especifica el archivo que será el punto de partida del programa siguiendo la palabra clave `wes` . La extensión de secuencia de comandos *.js* se puede omitir.
 
 
 ```bat
@@ -95,7 +95,7 @@ wes
 Las opciones de inicio para *wes* son las siguientes.
 
 
-| llamado            | descripción                                             |
+| nombrada           | Descripción                                             |
 | ------------------ | ------------------------------------------------------- |
 | `--monotone`       | Eliminar *ANSI escape code*                             |
 | `--safe`           | Ejecute el script en modo seguro                        |
@@ -143,7 +143,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-También puede importar a *ActiveX* con *require* `require('WScript.Shell')` .
+También puede importar a *ActiveX* como *require* `require('WScript.Shell')` con require.
 
 
 ```javascript
@@ -157,10 +157,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-*Chakra* , que es el motor de ejecución del script, interpreta sintaxis como `imoprt` , pero no se puede ejecutar tal cual porque el método de procesamiento como `cscript` no está definido. En *wes* , al agregar *babel* al módulo incorporado, se ejecuta mientras se transpila secuencialmente al *es module* . Como resultado, la sobrecarga de procesamiento y el archivo *wes.js* se inflan como un costo.
+*Chakra* , que es el motor de ejecución del script, interpreta la sintaxis como `imoprt` , pero no se puede ejecutar tal cual porque el método de procesamiento como `cscript` no está definido. En *wes* , al agregar *babel* al módulo incorporado, lo estamos ejecutando mientras transpilamos secuencialmente al *es module* . Como resultado, la sobrecarga de procesamiento y el archivo *wes.js* se inflan como un costo.
 
 
-Los módulos descritos por el *es module* es también se convierten en `require()` mediante transpile, por lo que también son posibles las llamadas *ActiveX* . Sin embargo, no es compatible con la especificación de codificación de archivos del módulo en el *es module* . Todos se leen por adivinación automática.
+Los módulos descritos por el *es module* es también se transpilan para `require()` , por lo que las llamadas *ActiveX* son posibles. Sin embargo, no es compatible con la especificación de codificación de archivos del módulo en el *es module* . Todos se leen por adivinación automática.
 
 
 Para cargarlo como un *es module* , establezca la extensión en `.mjs` o el campo `"type"` de `package.json` en `"module"` .
@@ -202,7 +202,20 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
 
-\|
+| Especificador de formato | Descripción                                |
+| ------------------------ | ------------------------------------------ |
+| `%s`                     | `String(value)`                            |
+| `%S`                     | `String(value)`                            |
+| `%c`                     | `String(value)`                            |
+| `%C`                     | `String(value)`                            |
+| `%d`                     | `parseInt(value, 10)`                      |
+| `%D`                     | `parseInt(value, 10)`                      |
+| `%f`                     | `Number(value)`                            |
+| `%F`                     | `Number(value)`                            |
+| `%j`                     | `JSON.stringify(value)`                    |
+| `%J`                     | `JSON.stringify(value, null, 2)`           |
+| `%o`                     | volcado de objetos                         |
+| `%O`                     | Volcado de objetos (coloreado con sangría) |
 
 
 `WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` para generar cadenas de colores. `WScript.Echo` y `WScript.StdOut.WriteLine` están bloqueados para la salida. `WScript.StdErr.WriteLine` o `console.log` .
@@ -264,7 +277,7 @@ console.log(orange + 'Hello World')
 ## *argv*
 
 
-Obtiene el argumento de la línea de comandos. Los argumentos de la línea de comandos en `cscript.exe` declaran argumentos con nombre con `/` `--` mientras que *wes* declara argumentos con nombre con `-` y -.
+Obtiene el argumento de la línea de comando. Los argumentos de la línea de comandos en `cscript.exe` declaran argumentos con nombre con `/` `--` mientras que *wes* declara argumentos con nombre con `-` y -.
 
 
 *argv.unnamed* y *argv.named* el tipo de valor del argumento de la línea de comando en uno de los *Boolean* de *Number* de *String* .
@@ -480,13 +493,13 @@ wes zip -p dox.zip
 Si `path` tiene la extensión `.zip` , se procesa `unzip()` y no hay una descripción de la extensión `.zip` . O incluso si hay una extensión `.zip` , si hay una descripción de un comodín `*` , se procesará `zip()` .
 
 
-| sin nombre | descripción                           |
+| sin nombre | Descripción                           |
 | ---------- | ------------------------------------- |
 | `1`        | `path` Carpeta o archivo a ingresar   |
 | `2`        | archivo de carpeta a `dest` de salida |
 
 
-| llamado  | nombre corto | descripción                           |
+| nombrada | nombre corto | Descripción                           |
 | -------- | ------------ | ------------------------------------- |
 | `--path` | `-p`         | `path` Carpeta o archivo a ingresar   |
 | `--dest` | `-d`         | archivo de carpeta a `dest` de salida |
@@ -555,12 +568,12 @@ wes install @wachaon/fmt
 *install* tiene opciones.
 
 
-| llamado       | nombre corto | descripción                                                                             |
+| nombrada      | nombre corto | Descripción                                                                             |
 | ------------- | ------------ | --------------------------------------------------------------------------------------- |
 | `--bare`      | `-b`         | No cree la carpeta *@author*                                                            |
 | `--global`    | `-g`         | Instale el paquete en la carpeta donde se encuentra *wes.js*                            |
 | `--save`      | `-S`         | Agregue el nombre y la versión del paquete al campo de *dependencies* de *package.json* |
-| `--save--dev` | `-D`         | Agregue el nombre y la versión del paquete al campo *devDependencies* en *package.json* |
+| `--save--dev` | `-D`         | Agregue el nombre y la versión del paquete al campo *devDependencies* de *package.json* |
 | `--node`      | `-n`         | Instalar en la carpeta *node_module*                                                    |
 
 
@@ -586,7 +599,7 @@ En la *install* , especifique el paquete con *@author/repository* . La implement
 ```
 
 
-Cuando acceda al *raw* del repositorio privado con un navegador, se mostrará el *token* , así que copie el *token* y utilícelo.
+Cuando acceda *raw* al repositorio privado con un navegador, se mostrará el *token* , así que copie el *token* y utilícelo.
 
 
 También puede instalar paquetes en repositorios privados ejecutándolos en la consola durante la vigencia del *token* .
@@ -631,13 +644,13 @@ wes @wachaon/fmt src/sample --write
 ```
 
 
-| número sin nombre | descripción                                        |
+| número sin nombre | Descripción                                        |
 | ----------------- | -------------------------------------------------- |
 | 0                 | ――――                                               |
 | 1                 | Requerido. La ruta del archivo que desea formatear |
 
 
-| llamado   | nombre corto | descripción           |
+| nombrada  | nombre corto | Descripción           |
 | --------- | ------------ | --------------------- |
 | `--write` | `-w`         | Permitir sobrescribir |
 
@@ -744,7 +757,7 @@ wes install @wachaon/webdriver --unsafe --bare
 ```
 
 
-Si no tiene un *web driver* , descárguelo.
+Si no tiene un *web driver* de *Microsoft Edge* basado en *Chromium* , descárguelo. Además, si la versión de *edge* y la versión del *web driver* son diferentes, descargue la misma versión del *web driver* .
 
 
 ```bat

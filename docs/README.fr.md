@@ -25,11 +25,11 @@ Veuillez sélectionner des phrases dans d'autres langues parmi les suivantes.
 
 
 
-# fonctionnalité
+# caractéristique
 
 
 -   Vous pouvez changer le moteur de script en *Chakra* et l'écrire dans la spécification *ECMAScript2015*
--   Il exécute toujours 32 bits *cscript.exe* , il n'a donc aucun problème inhérent à l'environnement 64 bits.
+-   Il exécute toujours *cscript.exe* 32 bits, il n'y a donc pas de problèmes inhérents à l'environnement 64 bits.
 -   Avec un système modulaire, vous pouvez développer plus efficacement que le *WSH* traditionnel
 -   Le module intégré prend en charge le traitement de base tel que l'entrée/sortie de fichier et la sortie de caractères colorés vers la console.
 -   Vous n'avez pas à vous soucier de l'encodage car vous pouvez faire en sorte que le fichier lu devine automatiquement l'encodage.
@@ -55,8 +55,8 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* utilise `SendKeys` de *wes* lors de l'exécution en tant qu'implémentation. Si le chemin du répertoire où *wes.js* est enregistré contient des caractères autres que *ascii* , `SendKeys` ne pourra pas envoyer la clé correctement et le script ne pourra pas être exécuté.  
-Veuillez configurer le chemin de destination de sauvegarde de *wes.js* uniquement *ascii* .
+*WScript.Shell* utilise `SendKeys` dans *wes* lors de l'exécution en tant qu'implémentation. Si le chemin du répertoire où *wes.js* est enregistré contient des caractères autres que *ascii* , `SendKeys` ne pourra pas envoyer la clé correctement et le script ne pourra pas être exécuté.  
+Veuillez configurer le chemin pour enregistrer *wes.js* uniquement *ascii* .
 
 
 Si vous avez déjà téléchargé *wes* , vous pouvez le mettre à jour avec la commande suivante.
@@ -95,7 +95,7 @@ wes
 Les options de démarrage de *wes* sont les suivantes.
 
 
-| nommé              | la description                                     |
+| nommé              | La description                                     |
 | ------------------ | -------------------------------------------------- |
 | `--monotone`       | Éliminer *ANSI escape code*                        |
 | `--safe`           | Exécutez le script en mode sans échec              |
@@ -157,10 +157,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-*Chakra* , qui est le moteur d'exécution du script, interprète une syntaxe telle que `imoprt` , mais il ne peut pas être exécuté tel quel car la méthode de traitement en tant que `cscript` n'est pas définie. Dans *wes* , en ajoutant *babel* au module intégré, il est exécuté tout en transpilant séquentiellement vers le *es module* . Par conséquent, la surcharge de traitement et le fichier *wes.js* sont gonflés en tant que coût.
+*Chakra* , qui est le moteur d'exécution du script, interprète la syntaxe telle que `imoprt` , mais il ne peut pas être exécuté tel quel car la méthode de traitement en tant que `cscript` n'est pas définie. Dans *wes* , en ajoutant *babel* au module intégré, nous l'exécutons tout en transpilant séquentiellement vers le *es module* . Par conséquent, la surcharge de traitement et le fichier *wes.js* sont gonflés en tant que coût.
 
 
-Les modules décrits par le *es module* sont également convertis en `require()` par transpile, de sorte que les appels *ActiveX* sont également possibles. Cependant, il ne prend pas en charge la spécification d'encodage de fichier de module dans *es module* . Tous sont lus par devinette automatique.
+Les modules décrits par le *es module* sont également transpilés en `require()` , de sorte que les appels *ActiveX* sont possibles. Cependant, il ne prend pas en charge la spécification d'encodage de fichier de module dans *es module* . Tous sont lus par devinette automatique.
 
 
 Pour le charger en tant que *es module* , définissez l'extension sur `.mjs` ou le champ `"type"` de `package.json` sur `"module"` .
@@ -202,7 +202,20 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
 
-\|
+| Spécificateur de format | La description                   |
+| ----------------------- | -------------------------------- |
+| `%s`                    | `String(value)`                  |
+| `%S`                    | `String(value)`                  |
+| `%c`                    | `String(value)`                  |
+| `%C`                    | `String(value)`                  |
+| `%d`                    | `parseInt(value, 10)`            |
+| `%D`                    | `parseInt(value, 10)`            |
+| `%f`                    | `Number(value)`                  |
+| `%F`                    | `Number(value)`                  |
+| `%j`                    | `JSON.stringify(value)`          |
+| `%J`                    | `JSON.stringify(value, null, 2)` |
+| `%o`                    | Vidage d'objet                   |
+| `%O`                    | Vidage d'objet (indenté coloré)  |
 
 
 `WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` pour générer des chaînes colorées. `WScript.Echo` et `WScript.StdOut.WriteLine` sont bloqués en sortie. `WScript.StdErr.WriteLine` ou `console.log` .
@@ -480,15 +493,15 @@ wes zip -p dox.zip
 Si le `path` a l'extension `.zip` , `unzip()` est traité et il n'y a pas de description de l'extension `.zip` . Ou même s'il y a une extension `.zip` , s'il y a une description d'un joker `*` , `zip()` sera traité.
 
 
-| anonyme | la description                              |
+| anonyme | La description                              |
 | ------- | ------------------------------------------- |
-| `1`     | `path` Dossier ou fichier à entrer          |
+| `1`     | `path` Dossier ou fichier à saisir          |
 | `2`     | fichier de dossier vers la `dest` de sortie |
 
 
-| nommé    | nommé court | la description                              |
+| nommé    | nommé court | La description                              |
 | -------- | ----------- | ------------------------------------------- |
-| `--path` | `-p`        | `path` Dossier ou fichier à saisir          |
+| `--path` | `-p`        | `path` Dossier ou fichier à entrer          |
 | `--dest` | `-d`        | fichier de dossier vers la `dest` de sortie |
 
 
@@ -501,7 +514,7 @@ Dans *wes* , un bundle de plusieurs modules est appelé un package. Vous pouvez 
 ## *bundle*
 
 
-Lors de la publication du package sur *github* , *bundle* regroupe les modules requis et modifie le format afin qu'il puisse être importé lors de l'installation.
+Lors de la publication du package sur *github* , *bundle* regroupe les modules requis et le modifie dans un format pouvant être importé par l'installation.
 
 
 Pour des raisons de sécurité, *bundle* crée un fichier *.json* car *wes* ne vous permet pas d'importer des packages dans un format pouvant être exécuté directement.
@@ -555,13 +568,13 @@ wes install @wachaon/fmt
 *install* a des options.
 
 
-| nommé         | nommé court | la description                                                                         |
-| ------------- | ----------- | -------------------------------------------------------------------------------------- |
-| `--bare`      | `-b`        | Ne pas créer de dossier *@author*                                                      |
-| `--global`    | `-g`        | Installez le package dans le dossier où se trouve *wes.js*                             |
-| `--save`      | `-S`        | Ajoutez le nom et la version du package au champ *dependencies* de *package.json*      |
-| `--save--dev` | `-D`        | Ajoutez le nom et la version du package au champ *devDependencies* dans *package.json* |
-| `--node`      | `-n`        | Installer dans le dossier *node_module*                                                |
+| nommé         | nommé court | La description                                                                       |
+| ------------- | ----------- | ------------------------------------------------------------------------------------ |
+| `--bare`      | `-b`        | Ne pas créer de dossier *@author*                                                    |
+| `--global`    | `-g`        | Installez le package dans le dossier où se trouve *wes.js*                           |
+| `--save`      | `-S`        | Ajoutez le nom et la version du package au champ *dependencies* de *package.json*    |
+| `--save--dev` | `-D`        | Ajoutez le nom et la version du package au champ *devDependencies* de *package.json* |
+| `--node`      | `-n`        | Installer dans le dossier *node_module*                                              |
 
 
 `--bare` peut omettre l'argument `require` de `author@repository` à `repository` . `--global` rend le package installé disponible pour tous les scripts. `--node` ou `-n` doit être spécifiée en même temps que l'option de sécurité *wes* `--unsafe` ou `--dangerous` .
@@ -631,13 +644,13 @@ wes @wachaon/fmt src/sample --write
 ```
 
 
-| numéro anonyme | la description                                                |
+| numéro anonyme | La description                                                |
 | -------------- | ------------------------------------------------------------- |
 | 0              | ――――                                                          |
 | 1              | Obligatoire. Le chemin du fichier que vous souhaitez formater |
 
 
-| nommé     | nommé court | la description         |
+| nommé     | nommé court | La description         |
 | --------- | ----------- | ---------------------- |
 | `--write` | `-w`        | Autoriser l'écrasement |
 
@@ -744,7 +757,7 @@ wes install @wachaon/webdriver --unsafe --bare
 ```
 
 
-Si vous n'avez pas *web driver* , téléchargez-le.
+Si vous ne disposez pas d'un *web driver* *Microsoft Edge* basé sur *Chromium* , téléchargez-le. De même, si la version d' *edge* et la version du *web driver* sont différentes, téléchargez la même version du *web driver* .
 
 
 ```bat

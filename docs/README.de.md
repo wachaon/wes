@@ -25,7 +25,7 @@ Bitte wählen Sie aus den folgenden Sätzen in anderen Sprachen aus.
 
 
 
-# Merkmal
+# Besonderheit
 
 
 -   Sie können die Skript-Engine in *Chakra* ändern und in die *ECMAScript2015* -Spezifikation schreiben
@@ -55,8 +55,8 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* verwendet `SendKeys` von *wes* zur Laufzeit als Implementierung. Wenn der Pfad des Verzeichnisses, in dem *wes.js* gespeichert ist, andere Zeichen als `SendKeys` *ascii* Schlüssel nicht korrekt senden und das Skript kann nicht ausgeführt werden.  
-Bitte konfigurieren Sie den Speicherzielpfad von *wes.js* nur *ascii* .
+*WScript.Shell* verwendet `SendKeys` in *wes* zur Laufzeit als Implementierung. Wenn der Pfad des Verzeichnisses, in dem *wes.js* gespeichert ist, andere Zeichen als `SendKeys` *ascii* Schlüssel nicht korrekt senden und das Skript kann nicht ausgeführt werden.  
+Bitte konfigurieren Sie den Pfad so, *wes.js* nur *ascii* gespeichert wird.
 
 
 Wenn Sie *wes* bereits heruntergeladen haben, können Sie es mit dem folgenden Befehl aktualisieren.
@@ -95,7 +95,7 @@ wes
 Die Startoptionen für *wes* sind wie folgt.
 
 
-| genannt            | Bezeichnung                                            |
+| genannt            | Beschreibung                                           |
 | ------------------ | ------------------------------------------------------ |
 | `--monotone`       | Beseitigen *ANSI escape code*                          |
 | `--safe`           | Führen Sie das Skript im abgesicherten Modus aus       |
@@ -157,13 +157,13 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-*Chakra* , die Ausführungsmaschine des Skripts, interpretiert Syntax wie `imoprt` , kann jedoch nicht unverändert ausgeführt werden, da die Verarbeitungsmethode als `cscript` nicht definiert ist. In *wes* wird es durch Hinzufügen von *babel* zum eingebauten Modul ausgeführt, während es sequentiell in das *es module* transpiliert wird. Infolgedessen werden der Verarbeitungsaufwand und die Datei *wes.js* als Kosten aufgebläht.
+*Chakra* , die Ausführungsmaschine des Skripts, interpretiert die Syntax wie `imoprt` , kann jedoch nicht unverändert ausgeführt werden, da die Verarbeitungsmethode als `cscript` nicht definiert ist. In *wes* führen wir durch Hinzufügen von *babel* zum eingebauten Modul es aus, während wir sequentiell in das *es module* transpilieren. Infolgedessen werden der Verarbeitungsaufwand und die Datei *wes.js* als Kosten aufgebläht.
 
 
-Module, die von *es module* beschrieben werden, werden ebenfalls von transpile in `require()` konvertiert, sodass auch *ActiveX* -Aufrufe möglich sind. Es unterstützt jedoch nicht die Moduldateicodierungsspezifikation in *es module* . Alle werden durch automatisches Raten gelesen.
+Module, die von *es module* beschrieben werden, werden auch in `require()` transpiliert, sodass *ActiveX* -Aufrufe möglich sind. Es unterstützt jedoch nicht die Moduldateicodierungsspezifikation in *es module* . Alle werden durch automatisches Raten gelesen.
 
 
-Um es als *es module* zu laden, setzen Sie die Erweiterung auf `.mjs` oder das Feld `"type"` von `package.json` auf `"module"` .
+Um es als *es module* zu laden, setzen Sie die Erweiterung auf `.mjs` oder das `"type"` -Feld von `package.json` auf `"module"` .
 
 
 ```javascript
@@ -202,7 +202,20 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
 
-\|
+| Formatbezeichner | Beschreibung                     |
+| ---------------- | -------------------------------- |
+| `%s`             | `String(value)`                  |
+| `%S`             | `String(value)`                  |
+| `%c`             | `String(value)`                  |
+| `%C`             | `String(value)`                  |
+| `%d`             | `parseInt(value, 10)`            |
+| `%D`             | `parseInt(value, 10)`            |
+| `%f`             | `Number(value)`                  |
+| `%F`             | `Number(value)`                  |
+| `%j`             | `JSON.stringify(value)`          |
+| `%J`             | `JSON.stringify(value, null, 2)` |
+| `%o`             | Objekt-Dump                      |
+| `%O`             | Objekt Dump (farbig eingerückt)  |
 
 
 `WScript.StdOut.WriteLine` *wes* von `WScript.StdErr.WriteLine` , um farbige Zeichenfolgen auszugeben. `WScript.Echo` und `WScript.StdOut.WriteLine` werden für die Ausgabe blockiert. `WScript.StdErr.WriteLine` oder `console.log` .
@@ -480,13 +493,13 @@ wes zip -p dox.zip
 Wenn der `path` die Erweiterung `.zip` hat, wird `unzip()` verarbeitet und es gibt keine Beschreibung der Erweiterung `.zip` . Oder selbst wenn es eine `.zip` Erweiterung gibt, wenn es eine Beschreibung eines Platzhalters `*` gibt, wird `zip()` verarbeitet.
 
 
-| unbenannt | Bezeichnung                                          |
+| unbenannt | Beschreibung                                         |
 | --------- | ---------------------------------------------------- |
 | `1`       | `path` Ordner oder Datei, die eingegeben werden soll |
 | `2`       | Ordner Datei zum `dest`                              |
 
 
-| genannt  | kurz benannt | Bezeichnung                                          |
+| genannt  | kurz benannt | Beschreibung                                         |
 | -------- | ------------ | ---------------------------------------------------- |
 | `--path` | `-p`         | `path` Ordner oder Datei, die eingegeben werden soll |
 | `--dest` | `-d`         | Ordner Datei zum `dest`                              |
@@ -495,13 +508,13 @@ Wenn der `path` die Erweiterung `.zip` hat, wird `unzip()` verarbeitet und es gi
 # Modulbündelung und Installation
 
 
-In *wes* wird ein Bündel aus mehreren Modulen als Paket bezeichnet. Sie können das auf *github* veröffentlichte Paket für *wes* installieren. Sie benötigen ein *github repository* , um das Paket zu veröffentlichen. Außerdem müssen der Repository-Name und der Name des lokalen Verzeichnisses identisch sein.
+In *wes* wird ein Bündel aus mehreren Modulen als Paket bezeichnet. Sie können das auf *github* veröffentlichte Paket für *wes* installieren. Sie benötigen ein *github repository* , um das Paket zu veröffentlichen. Außerdem müssen der Name des Repositorys und der Name des lokalen Verzeichnisses identisch sein.
 
 
 ## *bundle*
 
 
-Beim Veröffentlichen des Pakets auf *github* bündelt *bundle* die erforderlichen Module und ändert das Format, sodass es durch die Installation importiert werden kann.
+Beim Veröffentlichen des Pakets auf *github* bündelt *bundle* die erforderlichen Module und ändert es in ein Format, das durch die Installation importiert werden kann.
 
 
 Aus Sicherheitsgründen erstellt *bundle* eine *.json* -Datei, da *wes* Ihnen nicht erlaubt, Pakete in einem Format zu importieren, das direkt ausgeführt werden kann.
@@ -555,12 +568,12 @@ wes install @wachaon/fmt
 *install* hat Optionen.
 
 
-| genannt       | kurz benannt | Bezeichnung                                                                             |
+| genannt       | kurz benannt | Beschreibung                                                                            |
 | ------------- | ------------ | --------------------------------------------------------------------------------------- |
 | `--bare`      | `-b`         | Erstellen Sie keinen *@author* Ordner                                                   |
 | `--global`    | `-g`         | Installieren Sie das Paket in dem Ordner, in dem sich *wes.js* befindet                 |
 | `--save`      | `-S`         | Fügen Sie den Paketnamen und die Version zum Feld „ *dependencies* “ von *package.json* |
-| `--save--dev` | `-D`         | Fügen Sie den Paketnamen und die Version zum Feld *devDependencies* in *package.json*   |
+| `--save--dev` | `-D`         | Fügen Sie den Paketnamen und die Version zum Feld *devDependencies* von *package.json*  |
 | `--node`      | `-n`         | Installieren Sie im Ordner *node_module*                                                |
 
 
@@ -586,7 +599,7 @@ Geben Sie bei der *install* das Paket mit *@author/repository* an . Die Implemen
 ```
 
 
-Wenn Sie mit einem Browser auf *raw* des privaten Repositorys zugreifen, wird das *token* angezeigt, also kopieren Sie das *token* und verwenden Sie es.
+Wenn Sie mit einem Browser auf das *raw* des privaten Repositorys zugreifen, wird das *token* angezeigt, also kopieren Sie das *token* und verwenden Sie es.
 
 
 Sie können Pakete auch in privaten Repositorys installieren, indem Sie sie innerhalb der Lebensdauer des *token* in der Konsole ausführen.
@@ -631,13 +644,13 @@ wes @wachaon/fmt src/sample --write
 ```
 
 
-| unbenannte Nummer | Bezeichnung                                                   |
+| unbenannte Nummer | Beschreibung                                                  |
 | ----------------- | ------------------------------------------------------------- |
 | 0                 | ――――                                                          |
 | 1                 | Erforderlich. Der Pfad der Datei, die Sie formatieren möchten |
 
 
-| genannt   | kurz benannt | Bezeichnung            |
+| genannt   | kurz benannt | Beschreibung           |
 | --------- | ------------ | ---------------------- |
 | `--write` | `-w`         | Überschreiben zulassen |
 
@@ -744,7 +757,7 @@ wes install @wachaon/webdriver --unsafe --bare
 ```
 
 
-Wenn Sie keinen *web driver* haben, laden Sie ihn herunter.
+Wenn Sie keinen *Chromium* -basierten *Microsoft Edge* *web driver* haben, laden Sie ihn herunter. Wenn die Version von *edge* und die Version des *web driver* unterschiedlich sind, laden Sie dieselbe Version des *web driver* herunter.
 
 
 ```bat

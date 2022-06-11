@@ -55,8 +55,8 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* usa `SendKeys` de *wes* em tempo de execução como uma implementação. Se o caminho do diretório onde *wes.js* está salvo contiver caracteres diferentes de *ascii* , `SendKeys` não poderá enviar a chave corretamente e o script não poderá ser executado.  
-Configure o caminho de destino de salvamento de *wes.js* somente *ascii* .
+*WScript.Shell* usa `SendKeys` em *wes* em tempo de execução como uma implementação. Se o caminho do diretório onde *wes.js* está salvo contiver caracteres diferentes de *ascii* , `SendKeys` não poderá enviar a chave corretamente e o script não poderá ser executado.  
+Por favor, configure o caminho para salvar *wes.js* somente *ascii* .
 
 
 Se você já baixou *wes* , pode atualizá-lo com o seguinte comando.
@@ -157,10 +157,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-*Chakra* , que é o mecanismo de execução do script, interpreta sintaxe como `imoprt` , mas não pode ser executado como está porque o método de processamento como `cscript` não está definido. Em *wes* , ao adicionar *babel* ao módulo embutido, ele é executado enquanto transpila sequencialmente para o *es module* . Como resultado, a sobrecarga de processamento e o arquivo *wes.js* são inchados como um custo.
+*Chakra* , que é o mecanismo de execução do script, interpreta a sintaxe como `imoprt` , mas não pode ser executado como está porque o método de processamento como `cscript` não está definido. Em *wes* , adicionando *babel* ao módulo embutido, estamos executando-o enquanto transpilamos sequencialmente para o *es module* . Como resultado, a sobrecarga de processamento e o arquivo *wes.js* são inchados como um custo.
 
 
-Módulos descritos pelo *es module* também são convertidos para `require()` por transpile, então chamadas *ActiveX* também são possíveis. No entanto, ele não suporta a especificação de codificação de arquivo do módulo em *es module* . Todos são lidos por adivinhação automática.
+Os módulos descritos pelo *es module* também são transpilados para `require()` , portanto, chamadas *ActiveX* são possíveis. No entanto, ele não suporta a especificação de codificação de arquivo do módulo em *es module* . Todos são lidos por adivinhação automática.
 
 
 Para carregá-lo como um *es module* , defina a extensão para `.mjs` ou o campo `"type"` de `package.json` para `"module"` .
@@ -202,7 +202,20 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
 
-\|
+| Especificador de formato | Descrição                            |
+| ------------------------ | ------------------------------------ |
+| `%s`                     | `String(value)`                      |
+| `%S`                     | `String(value)`                      |
+| `%c`                     | `String(value)`                      |
+| `%C`                     | `String(value)`                      |
+| `%d`                     | `parseInt(value, 10)`                |
+| `%D`                     | `parseInt(value, 10)`                |
+| `%f`                     | `Number(value)`                      |
+| `%F`                     | `Number(value)`                      |
+| `%j`                     | `JSON.stringify(value)`              |
+| `%J`                     | `JSON.stringify(value, null, 2)`     |
+| `%o`                     | Despejo de objeto                    |
+| `%O`                     | Despejo de objeto (colorido recuado) |
 
 
 `WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` para produzir strings coloridas. `WScript.Echo` e `WScript.StdOut.WriteLine` são bloqueados da saída. `WScript.StdErr.WriteLine` ou `console.log` .
@@ -538,7 +551,7 @@ Existem algumas condições para a embalagem.
 ## *install*
 
 
-Usado para instalar o pacote para *wes* publicado no *github* . A partir da `version 0.10.28` a pasta de instalação será alterada de `node_modules` para `wes_modules` . Se você estiver instalando em `node_modules` , adicione a opção `--node` .
+Usado para instalar o pacote para *wes* publicado no *github* . A partir da `version 0.10.28` a pasta de instalação mudará de `node_modules` para `wes_modules` . Se você estiver instalando em `node_modules` , adicione a opção `--node` .
 
 
 ### Como usar
@@ -560,7 +573,7 @@ wes install @wachaon/fmt
 | `--bare`      | `-b`       | Não crie a pasta *@author*                                                        |
 | `--global`    | `-g`       | Instale o pacote na pasta onde *wes.js* está                                      |
 | `--save`      | `-S`       | Adicione o nome e a versão do pacote ao campo de *dependencies* do *package.json* |
-| `--save--dev` | `-D`       | Adicione o nome e a versão do pacote ao campo *devDependencies* em *package.json* |
+| `--save--dev` | `-D`       | Adicione o nome e a versão do pacote ao campo *devDependencies* de *package.json* |
 | `--node`      | `-n`       | Instale na pasta *node_module*                                                    |
 
 
@@ -631,10 +644,10 @@ wes @wachaon/fmt src/sample --write
 ```
 
 
-| número sem nome | Descrição                                                |
-| --------------- | -------------------------------------------------------- |
-| 0               | ――――                                                     |
-| 1               | Requerido. O caminho do arquivo que você deseja formatar |
+| número sem nome | Descrição                                                 |
+| --------------- | --------------------------------------------------------- |
+| 0               | ――――                                                      |
+| 1               | Requeridos. O caminho do arquivo que você deseja formatar |
 
 
 | nomeado   | nome curto | Descrição             |
@@ -744,7 +757,7 @@ wes install @wachaon/webdriver --unsafe --bare
 ```
 
 
-Se você não tiver um *web driver* , faça o download.
+Se você não tiver um *web driver* *Microsoft Edge* baseado no *Chromium* , baixe-o. Além disso, se a versão do *edge* e a versão do *web driver* forem diferentes, baixe a mesma versão do *web driver* .
 
 
 ```bat

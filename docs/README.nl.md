@@ -25,7 +25,7 @@ Selecteer zinnen in andere talen uit het volgende.
 
 
 
-# functie
+# voorzien zijn van
 
 
 -   U kunt de scriptengine wijzigen in *Chakra* en deze in de *ECMAScript2015* -specificatie schrijven
@@ -55,8 +55,8 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* gebruikt `SendKeys` van *wes* tijdens runtime als implementatie. Als het pad van de map waarin *wes.js* is opgeslagen andere tekens dan *ascii* bevat, kan `SendKeys` de sleutel niet correct verzenden en kan het script niet worden uitgevoerd.  
-Configureer het opslagbestemmingspad van *wes.js* alleen *ascii* .
+*WScript.Shell* gebruikt `SendKeys` in *wes* tijdens runtime als implementatie. Als het pad van de map waarin *wes.js* is opgeslagen andere tekens dan *ascii* bevat, kan `SendKeys` de sleutel niet correct verzenden en kan het script niet worden uitgevoerd.  
+Configureer het pad om *wes.js* alleen *ascii* op te slaan.
 
 
 Als je *wes* al hebt gedownload, kun je het bijwerken met de volgende opdracht.
@@ -95,7 +95,7 @@ wes
 De opstartopties voor *wes* zijn als volgt.
 
 
-| genaamd            | Omschrijving                                                            |
+| genaamd            | Beschrijving                                                            |
 | ------------------ | ----------------------------------------------------------------------- |
 | `--monotone`       | Elimineer *ANSI escape code*                                            |
 | `--safe`           | Voer het script uit in de veilige modus                                 |
@@ -143,7 +143,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-U kunt ook importeren naar *ActiveX* met *require* `require('WScript.Shell')` .
+U kunt ook importeren naar *ActiveX* zoals *require* `require('WScript.Shell')` met vereisen.
 
 
 ```javascript
@@ -157,10 +157,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-*Chakra* , de uitvoeringsengine van het script, interpreteert syntaxis zoals `imoprt` , maar het kan niet worden uitgevoerd zoals het is omdat de verwerkingsmethode als `cscript` niet is gedefinieerd. In *wes* , door *babel* toe te voegen aan de ingebouwde module, wordt het uitgevoerd terwijl het sequentieel wordt getranspileerd naar de *es module* . Als gevolg hiervan worden de verwerkingsoverhead en het *wes.js* -bestand als kosten opgeblazen.
+*Chakra* , de uitvoeringsengine van het script, interpreteert de syntaxis zoals `imoprt` , maar het kan niet worden uitgevoerd zoals het is omdat de verwerkingsmethode als `cscript` niet is gedefinieerd. In *wes* , door *babel* toe te voegen aan de ingebouwde module, voeren we het uit terwijl we sequentieel naar de *es module* transpileren. Als gevolg hiervan worden de verwerkingsoverhead en het *wes.js* -bestand als kosten opgeblazen.
 
 
-Modules beschreven door *es module* worden ook geconverteerd naar `require()` door transpile, dus *ActiveX* -aanroepen zijn ook mogelijk. Het ondersteunt echter niet de coderingsspecificatie van het modulebestand in *es module* . Ze worden allemaal gelezen door automatisch te raden.
+Modules beschreven door *es module* zijn ook getranspileerd om `require()` , dus *ActiveX* -aanroepen zijn mogelijk. Het ondersteunt echter niet de coderingsspecificatie van het modulebestand in *es module* . Ze worden allemaal gelezen door automatisch te raden.
 
 
 Om het als een *es module* te laden, stelt u de extensie in op `.mjs` of het veld `"type"` van `package.json` op `"module"` .
@@ -202,7 +202,20 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
 
-\|
+| Formaatspecificatie | Beschrijving                        |
+| ------------------- | ----------------------------------- |
+| `%s`                | `String(value)`                     |
+| `%S`                | `String(value)`                     |
+| `%c`                | `String(value)`                     |
+| `%C`                | `String(value)`                     |
+| `%d`                | `parseInt(value, 10)`               |
+| `%D`                | `parseInt(value, 10)`               |
+| `%f`                | `Number(value)`                     |
+| `%F`                | `Number(value)`                     |
+| `%j`                | `JSON.stringify(value)`             |
+| `%J`                | `JSON.stringify(value, null, 2)`    |
+| `%o`                | Objectdump                          |
+| `%O`                | Objectdump (kleurrijk ingesprongen) |
 
 
 `WScript.StdOut.WriteLine` *wes* van `WScript.StdErr.WriteLine` om gekleurde tekenreeksen uit te voeren. `WScript.Echo` en `WScript.StdOut.WriteLine` zijn geblokkeerd voor uitvoer. `WScript.StdErr.WriteLine` of `console.log` .
@@ -480,13 +493,13 @@ wes zip -p dox.zip
 Als `path` de extensie `.zip` heeft, wordt `unzip()` verwerkt en is er geen beschrijving van de extensie `.zip` . Of zelfs als er een `.zip` extensie is, als er een beschrijving is van een wildcard `*` , zal `zip()` worden verwerkt.
 
 
-| naamloos | Omschrijving                          |
+| naamloos | Beschrijving                          |
 | -------- | ------------------------------------- |
 | `1`      | `path` Map of bestand om in te voeren |
 | `2`      | mapbestand naar `dest`                |
 
 
-| genaamd  | korte naam | Omschrijving                          |
+| genaamd  | korte naam | Beschrijving                          |
 | -------- | ---------- | ------------------------------------- |
 | `--path` | `-p`       | `path` Map of bestand om in te voeren |
 | `--dest` | `-d`       | mapbestand naar `dest`                |
@@ -538,7 +551,7 @@ Er zijn enkele voorwaarden voor het verpakken.
 ## *install*
 
 
-Gebruikt om het pakket voor *wes* te installeren dat op *github* is gepubliceerd. Vanaf `version 0.10.28` de installatiemap gewijzigd van `node_modules` naar `wes_modules` . Als u installeert op `node_modules` , voeg dan de `--node` optie toe.
+Gebruikt om het pakket voor *wes* te installeren dat op *github* is gepubliceerd. Vanaf `version 0.10.28` zal de installatiemap veranderen van `node_modules` naar `wes_modules` . Als u installeert op `node_modules` , voeg dan de `--node` optie toe.
 
 
 ### Hoe te gebruiken
@@ -555,13 +568,13 @@ wes install @wachaon/fmt
 *install* heeft opties.
 
 
-| genaamd       | korte naam | Omschrijving                                                                       |
-| ------------- | ---------- | ---------------------------------------------------------------------------------- |
-| `--bare`      | `-b`       | Maak geen *@author* map aan                                                        |
-| `--global`    | `-g`       | Installeer het pakket in de map waar *wes.js* is                                   |
-| `--save`      | `-S`       | Voeg de pakketnaam en -versie toe aan het *dependencies* van *package.json*        |
-| `--save--dev` | `-D`       | Voeg de pakketnaam en -versie toe aan het veld *devDependencies* in *package.json* |
-| `--node`      | `-n`       | Installeer in de map *node_module*                                                 |
+| genaamd       | korte naam | Beschrijving                                                                         |
+| ------------- | ---------- | ------------------------------------------------------------------------------------ |
+| `--bare`      | `-b`       | Maak geen *@author* map aan                                                          |
+| `--global`    | `-g`       | Installeer het pakket in de map waar *wes.js* is                                     |
+| `--save`      | `-S`       | Voeg de pakketnaam en -versie toe aan het *dependencies* van *package.json*          |
+| `--save--dev` | `-D`       | Voeg de pakketnaam en -versie toe aan het *devDependencies* -veld van *package.json* |
+| `--node`      | `-n`       | Installeer in de map *node_module*                                                   |
 
 
 `--bare` optie kan het argument ' `require` ' van `author@repository` naar `repository` weglaten. `--global` optie maakt het geïnstalleerde pakket beschikbaar voor alle scripts. `--node` of `-n` optie moet tegelijk met de *wes* security optie `--unsafe` of `--dangerous` worden opgegeven.
@@ -586,7 +599,7 @@ Geef tijdens de *install* het pakket op met *@author/repository* . De implementa
 ```
 
 
-Wanneer u met een browser *raw* van de privérepository opent, wordt het *token* weergegeven, dus kopieer het *token* en gebruik het.
+Wanneer u de *raw* versie van de privérepository opent met een browser, wordt het *token* weergegeven, dus kopieer het *token* en gebruik het.
 
 
 U kunt pakketten ook in privérepository's installeren door ze binnen de levensduur van het *token* in de console uit te voeren.
@@ -631,13 +644,13 @@ wes @wachaon/fmt src/sample --write
 ```
 
 
-| naamloos nummer | Omschrijving                                            |
-| --------------- | ------------------------------------------------------- |
-| 0               | ik                                                      |
-| 1               | Vereist. Het pad van het bestand dat u wilt formatteren |
+| naamloos nummer | Beschrijving                                              |
+| --------------- | --------------------------------------------------------- |
+| 0               | ik                                                        |
+| 1               | Verplicht. Het pad van het bestand dat u wilt formatteren |
 
 
-| genaamd   | korte naam | Omschrijving           |
+| genaamd   | korte naam | Beschrijving           |
 | --------- | ---------- | ---------------------- |
 | `--write` | `-w`       | Overschrijven toestaan |
 
@@ -744,7 +757,7 @@ wes install @wachaon/webdriver --unsafe --bare
 ```
 
 
-Als u geen *web driver* heeft, download het dan.
+Als je geen *Chromium* -gebaseerd *Microsoft Edge* *web driver* hebt, download het dan. Als de versie van *edge* en de versie van *web driver* verschillen, download dan dezelfde versie van *web driver* .
 
 
 ```bat

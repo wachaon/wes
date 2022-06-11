@@ -29,7 +29,7 @@ Si prega di selezionare frasi in altre lingue dalle seguenti.
 
 
 -   Puoi cambiare il motore di script in *Chakra* e scriverlo nella specifica *ECMAScript2015*
--   Funziona sempre a 32 bit *cscript.exe* , quindi non ha problemi intrinseci nell'ambiente a 64 bit.
+-   Funziona sempre a 32 bit *cscript.exe* , quindi non ci sono problemi intrinseci nell'ambiente a 64 bit.
 -   Con un sistema modulare, puoi sviluppare in modo più efficiente rispetto al tradizionale *WSH*
 -   Il modulo integrato supporta l'elaborazione di base come l'input/output di file e l'output di caratteri colorati sulla console.
 -   Non devi preoccuparti della codifica perché puoi leggere il file indovinare automaticamente la codifica.
@@ -55,8 +55,8 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* utilizza `SendKeys` da *wes* in fase di esecuzione come implementazione. Se il percorso della directory in cui è salvato *wes.js* contiene caratteri diversi da *ascii* , `SendKeys` non sarà in grado di inviare la chiave correttamente e lo script non potrà essere eseguito.  
-Si prega di configurare il percorso di destinazione di salvataggio di *wes.js* only *ascii* .
+*WScript.Shell* utilizza `SendKeys` in *wes* in fase di esecuzione come implementazione. Se il percorso della directory in cui è salvato *wes.js* contiene caratteri diversi da *ascii* , `SendKeys` non sarà in grado di inviare la chiave correttamente e lo script non potrà essere eseguito.  
+Configura il percorso per salvare solo *wes.js* *ascii* .
 
 
 Se hai già scaricato *wes* , puoi aggiornarlo con il seguente comando.
@@ -95,7 +95,7 @@ wes
 Le opzioni di avvio per *wes* sono le seguenti.
 
 
-| di nome            | descrizione                                                     |
+| di nome            | Descrizione                                                     |
 | ------------------ | --------------------------------------------------------------- |
 | `--monotone`       | Elimina *ANSI escape code*                                      |
 | `--safe`           | Esegui lo script in modalità provvisoria                        |
@@ -157,10 +157,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-*Chakra* , che è il motore di esecuzione dello script, interpreta la sintassi come `imoprt` , ma non può essere eseguito così com'è perché il metodo di elaborazione come `cscript` non è definito. In *wes* , aggiungendo *babel* al modulo integrato, viene eseguito durante la traspilazione sequenziale al *es module* . Di conseguenza, il sovraccarico di elaborazione e il file *wes.js* sono gonfiati come costo.
+*Chakra* , che è il motore di esecuzione dello script, interpreta la sintassi come `imoprt` , ma non può essere eseguito così com'è perché il metodo di elaborazione come `cscript` non è definito. In *wes* , aggiungendo *babel* al modulo integrato, lo stiamo eseguendo durante la transpilazione sequenziale nel *es module* . Di conseguenza, il sovraccarico di elaborazione e il file *wes.js* sono gonfiati come costo.
 
 
-I moduli descritti da *es module* vengono anche convertiti in `require()` tramite transpile, quindi sono possibili anche chiamate *ActiveX* . Tuttavia, non supporta la specifica di codifica del file del modulo in *es module* . Tutti vengono letti per indovinare automaticamente.
+I moduli descritti da *es module* vengono anche trasferiti in `require()` , quindi sono possibili chiamate *ActiveX* . Tuttavia, non supporta la specifica di codifica del file del modulo in *es module* . Tutti vengono letti per indovinare automaticamente.
 
 
 Per caricarlo come *es module* , imposta l'estensione su `.mjs` o il campo `"type"` di `package.json` su `"module"` .
@@ -202,7 +202,20 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
 
-\|
+| Identificatore di formato | Descrizione                       |
+| ------------------------- | --------------------------------- |
+| `%s`                      | `String(value)`                   |
+| `%S`                      | `String(value)`                   |
+| `%c`                      | `String(value)`                   |
+| `%C`                      | `String(value)`                   |
+| `%d`                      | `parseInt(value, 10)`             |
+| `%D`                      | `parseInt(value, 10)`             |
+| `%f`                      | `Number(value)`                   |
+| `%F`                      | `Number(value)`                   |
+| `%j`                      | `JSON.stringify(value)`           |
+| `%J`                      | `JSON.stringify(value, null, 2)`  |
+| `%o`                      | Dump dell'oggetto                 |
+| `%O`                      | Oggetto dump (rientrato colorato) |
 
 
 `WScript.StdOut.WriteLine` *wes* di `WScript.StdErr.WriteLine` per generare stringhe colorate. L'output di `WScript.Echo` e `WScript.StdOut.WriteLine` è bloccato. `WScript.StdErr.WriteLine` o `console.log` .
@@ -480,13 +493,13 @@ wes zip -p dox.zip
 Se il `path` ha l'estensione `.zip` , `unzip()` viene elaborato e non c'è una descrizione dell'estensione `.zip` . O anche se è presente un'estensione `.zip` , se è presente una descrizione di un carattere jolly `*` , verrà elaborato `zip()` .
 
 
-| senza nome | descrizione                            |
+| senza nome | Descrizione                            |
 | ---------- | -------------------------------------- |
 | `1`        | `path` Cartella o file da inserire     |
 | `2`        | cartella di output per l'output `dest` |
 
 
-| di nome  | nome breve | descrizione                            |
+| di nome  | nome breve | Descrizione                            |
 | -------- | ---------- | -------------------------------------- |
 | `--path` | `-p`       | `path` Cartella o file da inserire     |
 | `--dest` | `-d`       | cartella di output per l'output `dest` |
@@ -501,7 +514,7 @@ In *wes* , un pacchetto di più moduli è chiamato pacchetto. Puoi installare il
 ## *bundle*
 
 
-Quando si pubblica il pacchetto su *github* , *bundle* raggruppa i moduli richiesti e lo cambia in un formato che può essere importato dall'installazione.
+Quando si pubblica il pacchetto su *github* , *bundle* raggruppa i moduli richiesti e cambia il formato in modo che possa essere importato tramite l'installazione.
 
 
 Per motivi di sicurezza, *bundle* crea un file *.json* perché *wes* non consente di importare pacchetti in un formato che può essere eseguito direttamente.
@@ -538,7 +551,7 @@ Ci sono alcune condizioni per l'imballaggio.
 ## *install*
 
 
-Utilizzato per installare il pacchetto per *wes* pubblicato su *github* . Dalla `version 0.10.28` la cartella di installazione verrà modificata da `node_modules` a `wes_modules` . Se stai installando su `node_modules` , aggiungi l'opzione `--node` .
+Utilizzato per installare il pacchetto per *wes* pubblicato su *github* . Dalla `version 0.10.28` la cartella di installazione cambierà da `node_modules` a `wes_modules` . Se stai installando su `node_modules` , aggiungi l'opzione `--node` .
 
 
 ### Come usare
@@ -555,13 +568,13 @@ wes install @wachaon/fmt
 *install* ha opzioni.
 
 
-| di nome       | di nome breve | descrizione                                                                                  |
-| ------------- | ------------- | -------------------------------------------------------------------------------------------- |
-| `--bare`      | `-b`          | Non creare la cartella *@author*                                                             |
-| `--global`    | `-g`          | Installa il pacchetto nella cartella in cui si trova *wes.js*                                |
-| `--save`      | `-S`          | Aggiungi il nome e la versione del pacchetto al campo delle *dependencies* di *package.json* |
-| `--save--dev` | `-D`          | Aggiungi il nome e la versione del pacchetto al campo *devDependencies* in *package.json*    |
-| `--node`      | `-n`          | Installa nella cartella *node_module*                                                        |
+| di nome       | nome breve | Descrizione                                                                                  |
+| ------------- | ---------- | -------------------------------------------------------------------------------------------- |
+| `--bare`      | `-b`       | Non creare la cartella *@author*                                                             |
+| `--global`    | `-g`       | Installa il pacchetto nella cartella in cui si trova *wes.js*                                |
+| `--save`      | `-S`       | Aggiungi il nome e la versione del pacchetto al campo delle *dependencies* di *package.json* |
+| `--save--dev` | `-D`       | Aggiungi il nome e la versione del pacchetto al campo *devDependencies* in *package.json*    |
+| `--node`      | `-n`       | Installa nella cartella *node_module*                                                        |
 
 
 `--bare` può omettere l'argomento `require` da `author@repository` a `repository` . `--global` rende il pacchetto installato disponibile per tutti gli script. `--node` o `-n` deve essere specificata contemporaneamente all'opzione di sicurezza *wes* `--unsafe` o `--dangerous` .
@@ -631,13 +644,13 @@ wes @wachaon/fmt src/sample --write
 ```
 
 
-| numero senza nome | descrizione                                              |
+| numero senza nome | Descrizione                                              |
 | ----------------- | -------------------------------------------------------- |
 | 0                 | ――――                                                     |
 | 1                 | Necessario. Il percorso del file che desideri formattare |
 
 
-| di nome   | nome breve | descrizione             |
+| di nome   | nome breve | Descrizione             |
 | --------- | ---------- | ----------------------- |
 | `--write` | `-w`       | Consenti sovrascrittura |
 
@@ -744,7 +757,7 @@ wes install @wachaon/webdriver --unsafe --bare
 ```
 
 
-Se non hai un *web driver* , scaricalo.
+Se non disponi di un *web driver* *Microsoft Edge* basato su *Chromium* , scaricalo. Inoltre, se la versione di *edge* e la versione del *web driver* sono diverse, scaricare la stessa versione del *web driver* .
 
 
 ```bat

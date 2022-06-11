@@ -29,7 +29,7 @@ Sila pilih ayat dalam bahasa lain daripada yang berikut.
 
 
 -   Anda boleh menukar enjin skrip kepada *Chakra* dan menulisnya dalam spesifikasi *ECMAScript2015*
--   Ia sentiasa menjalankan 32bit *cscript.exe* , jadi ia tidak mempunyai sebarang masalah yang wujud dalam persekitaran 64bit.
+-   Ia sentiasa menjalankan 32bit *cscript.exe* , jadi tiada masalah yang wujud dalam persekitaran 64bit.
 -   Dengan sistem modular, anda boleh membangun dengan lebih cekap daripada *WSH* tradisional
 -   Modul terbina dalam menyokong pemprosesan asas seperti input / output fail dan output aksara berwarna ke konsol.
 -   Anda tidak perlu risau tentang pengekodan kerana anda boleh meminta fail dibaca secara automatik meneka pengekodan.
@@ -55,8 +55,8 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* menggunakan `SendKeys` daripada *wes* pada masa jalan sebagai pelaksanaan. Jika laluan direktori tempat *wes.js* disimpan mengandungi aksara selain *ascii* , `SendKeys` tidak akan dapat menghantar kunci dengan betul dan skrip tidak akan dapat dilaksanakan.  
-Sila konfigurasikan laluan simpan destinasi untuk *wes.js* sahaja *ascii* .
+*WScript.Shell* menggunakan `SendKeys` dalam *wes* pada masa jalan sebagai pelaksanaan. Jika laluan direktori tempat *wes.js* disimpan mengandungi aksara selain *ascii* , `SendKeys` tidak akan dapat menghantar kunci dengan betul dan skrip tidak akan dapat dilaksanakan.  
+Sila konfigurasikan laluan untuk menyimpan *wes.js* sahaja *ascii* .
 
 
 Jika anda telah memuat turun *wes* , anda boleh mengemas kininya dengan arahan berikut.
@@ -95,7 +95,7 @@ wes
 Pilihan permulaan untuk *wes* adalah seperti berikut.
 
 
-| bernama            | penerangan                                       |
+| bernama            | Penerangan                                       |
 | ------------------ | ------------------------------------------------ |
 | `--monotone`       | Hapuskan *ANSI escape code*                      |
 | `--safe`           | Jalankan skrip dalam mod selamat                 |
@@ -143,7 +143,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-Anda juga boleh mengimport ke *ActiveX* dengan *require* `require('WScript.Shell')` .
+Anda juga boleh mengimport ke *ActiveX* seperti *require* `require('WScript.Shell')` dengan memerlukan.
 
 
 ```javascript
@@ -157,10 +157,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-*Chakra* , yang merupakan enjin pelaksanaan skrip, mentafsir sintaks seperti `imoprt` , tetapi ia tidak boleh dilaksanakan kerana kaedah pemprosesan sebagai `cscript` tidak ditakrifkan. Di *wes* , dengan menambahkan *babel* pada modul terbina dalam, ia dilaksanakan sambil memindahkan secara berurutan ke *es module* . Akibatnya, overhed pemprosesan dan fail *wes.js* sebagai kos.
+*Chakra* , yang merupakan enjin pelaksanaan skrip, mentafsir sintaks seperti `imoprt` , tetapi ia tidak boleh dilaksanakan kerana kaedah pemprosesan sebagai `cscript` tidak ditakrifkan. Di *wes* , dengan menambahkan *babel* pada modul terbina dalam, kami melaksanakannya sambil memindahkan secara berurutan ke *es module* . Akibatnya, overhed pemprosesan dan fail *wes.js* sebagai kos.
 
 
-Modul yang diterangkan oleh *es module* juga ditukar kepada `require()` melalui transpile, jadi panggilan *ActiveX* juga boleh dilakukan. Walau bagaimanapun, ia tidak menyokong spesifikasi pengekodan fail modul dalam *es module* . Semuanya dibaca dengan meneka secara automatik.
+Modul yang diterangkan oleh *es module* juga ditranspilkan untuk `require()` , jadi panggilan *ActiveX* boleh dilakukan. Walau bagaimanapun, ia tidak menyokong spesifikasi pengekodan fail modul dalam *es module* . Semuanya dibaca dengan meneka secara automatik.
 
 
 Untuk memuatkannya sebagai *es module* , tetapkan sambungan kepada `.mjs` atau medan `"type"` `package.json` kepada `"module"` .
@@ -202,7 +202,20 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
 
-\|
+| Penentu format | Penerangan                                 |
+| -------------- | ------------------------------------------ |
+| `%s`           | `String(value)`                            |
+| `%S`           | `String(value)`                            |
+| `%c`           | `String(value)`                            |
+| `%C`           | `String(value)`                            |
+| `%d`           | `parseInt(value, 10)`                      |
+| `%D`           | `parseInt(value, 10)`                      |
+| `%f`           | `Number(value)`                            |
+| `%F`           | `Number(value)`                            |
+| `%j`           | `JSON.stringify(value)`                    |
+| `%J`           | `JSON.stringify(value, null, 2)`           |
+| `%o`           | Tempat pembuangan objek                    |
+| `%O`           | Pembuangan objek (berinden berwarna-warni) |
 
 
 `WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine` untuk mengeluarkan rentetan berwarna. `WScript.Echo` dan `WScript.StdOut.WriteLine` disekat daripada output. `WScript.StdErr.WriteLine` atau `console.log` .
@@ -480,13 +493,13 @@ wes zip -p dox.zip
 Jika `path` mempunyai sambungan `.zip` , `unzip()` diproses dan tiada perihalan sambungan `.zip` . Atau walaupun terdapat sambungan `.zip` , jika terdapat penerangan kad bebas `*` , `zip()` akan diproses.
 
 
-| tidak dinamakan | penerangan                          |
+| tidak dinamakan | Penerangan                          |
 | --------------- | ----------------------------------- |
 | `1`             | `path` Folder atau fail untuk masuk |
 | `2`             | fail folder ke output `dest`        |
 
 
-| bernama  | pendek bernama | penerangan                          |
+| bernama  | pendek bernama | Penerangan                          |
 | -------- | -------------- | ----------------------------------- |
 | `--path` | `-p`           | `path` Folder atau fail untuk masuk |
 | `--dest` | `-d`           | fail folder ke output `dest`        |
@@ -538,7 +551,7 @@ Terdapat beberapa syarat untuk pembungkusan.
 ## *install*
 
 
-Digunakan untuk memasang pakej untuk *wes* diterbitkan di *github* . Dari `version 0.10.28` folder pemasangan akan ditukar daripada `node_modules` kepada `wes_modules` . Jika anda memasang ke `node_modules` , tambahkan pilihan `--node` .
+Digunakan untuk memasang pakej untuk *wes* diterbitkan di *github* . Dari `version 0.10.28` folder pemasangan akan bertukar daripada `node_modules` kepada `wes_modules` . Jika anda memasang ke `node_modules` , tambahkan pilihan `--node` .
 
 
 ### Bagaimana nak guna
@@ -555,13 +568,13 @@ wes install @wachaon/fmt
 *install* mempunyai pilihan.
 
 
-| bernama       | pendek bernama | penerangan                                                                       |
-| ------------- | -------------- | -------------------------------------------------------------------------------- |
-| `--bare`      | `-b`           | Jangan buat folder *@author*                                                     |
-| `--global`    | `-g`           | Pasang pakej dalam folder di mana *wes.js* berada                                |
-| `--save`      | `-S`           | Tambahkan nama pakej dan versi pada medan *dependencies* *package.json*          |
-| `--save--dev` | `-D`           | Tambahkan nama pakej dan versi pada medan *devDependencies* dalam *package.json* |
-| `--node`      | `-n`           | Pasang dalam folder *node_module*                                                |
+| bernama       | pendek bernama | Penerangan                                                                 |
+| ------------- | -------------- | -------------------------------------------------------------------------- |
+| `--bare`      | `-b`           | Jangan buat folder *@author*                                               |
+| `--global`    | `-g`           | Pasang pakej dalam folder di mana *wes.js* berada                          |
+| `--save`      | `-S`           | Tambahkan nama pakej dan versi pada medan *dependencies* *package.json*    |
+| `--save--dev` | `-D`           | Tambahkan nama pakej dan versi pada medan *devDependencies* *package.json* |
+| `--node`      | `-n`           | Pasang dalam folder *node_module*                                          |
 
 
 `--bare` boleh menghilangkan hujah `require` daripada `author@repository` ke `repository` . `--global` menjadikan pakej yang dipasang tersedia untuk semua skrip. `--node` atau `-n` mesti dinyatakan pada masa yang sama dengan pilihan keselamatan *wes* `--unsafe` atau `--dangerous` .
@@ -631,13 +644,13 @@ wes @wachaon/fmt src/sample --write
 ```
 
 
-| nombor yang tidak dinamakan | penerangan                                        |
+| nombor yang tidak dinamakan | Penerangan                                        |
 | --------------------------- | ------------------------------------------------- |
 | 0                           | ――――                                              |
 | 1                           | Diperlukan. Laluan fail yang ingin anda formatkan |
 
 
-| bernama   | pendek bernama | penerangan             |
+| bernama   | pendek bernama | Penerangan             |
 | --------- | -------------- | ---------------------- |
 | `--write` | `-w`           | Benarkan menulis ganti |
 
@@ -744,7 +757,7 @@ wes install @wachaon/webdriver --unsafe --bare
 ```
 
 
-Jika anda tidak mempunyai *web driver* , muat turunnya.
+Jika anda tidak mempunyai *web driver* *Microsoft Edge* berasaskan *Chromium* , muat turunnya. Selain itu, jika versi *edge* dan versi *web driver* adalah berbeza, muat turun versi *web driver* yang sama .
 
 
 ```bat

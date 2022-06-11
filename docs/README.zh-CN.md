@@ -29,7 +29,7 @@
 
 
 -   您可以将脚本引擎更改为*Chakra* ，并将其写入*ECMAScript2015*规范中
--   它始终运行 32 位*cscript.exe* ，因此在 64 位环境下不存在固有问题。
+-   它始终运行 32 位*cscript.exe* ，因此在 64 位环境中不存在固有问题。
 -   使用模块化系统，您可以比传统*WSH*更高效地开发
 -   内置模块支持文件输入/输出、彩色字符输出到控制台等基本处理。
 -   您不必担心编码，因为您可以让文件读取自动猜测编码。
@@ -55,8 +55,8 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell*在运行时使用来自*wes*的`SendKeys`作为实现。如果*wes.js*保存目录的路径中包含*ascii*以外的字符， `SendKeys`将无法正确发送密钥，脚本将无法执行。  
-请仅配置*wes.js*的保存目标路径*ascii* 。
+*WScript.Shell*在运行时使用*wes*中的`SendKeys`作为实现。如果*wes.js*保存目录的路径中包含*ascii*以外的字符， `SendKeys`将无法正确发送密钥，脚本将无法执行。  
+请配置路径以仅保存*wes.js* *ascii* 。
 
 
 如果您已经下载了*wes* ，您可以使用以下命令对其进行更新。
@@ -143,7 +143,7 @@ console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
 
-您还可以使用*require* `require('WScript.Shell')`导入*ActiveX* 。
+您也可以使用*require* `require('WScript.Shell')`导入*ActiveX* 。
 
 
 ```javascript
@@ -157,10 +157,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-脚本的执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过将*babel*添加到内置模块中，它在执行的同时顺序转译到*es module* 。结果，处理开销和*wes.js*文件作为成本而膨胀。
+脚本的执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过将*babel*添加到内置模块中，我们在执行它的同时按顺序转译到*es module* 。结果，处理开销和*wes.js*文件作为成本而膨胀。
 
 
-*es module*模块描述的模块也通过transpile转换成`require()` ，所以*ActiveX*调用也是可以的。但是，它不支持*es module*中的模块文件编码规范。都是通过自动猜测读取的。
+*es module*模块描述的模块也被转译为`require()` ，因此*ActiveX*调用是可能的。但是，它不支持*es module*中的模块文件编码规范。都是通过自动猜测读取的。
 
 
 要将其作为*es module*加载，请将扩展名设置为`.mjs`或将`package.json`的`"type"`字段设置为`"module"` 。
@@ -202,7 +202,20 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
 
-\|
+| 格式说明符 | 描述                               |
+| ----- | -------------------------------- |
+| `%s`  | `String(value)`                  |
+| `%S`  | `String(value)`                  |
+| `%c`  | `String(value)`                  |
+| `%C`  | `String(value)`                  |
+| `%d`  | `parseInt(value, 10)`            |
+| `%D`  | `parseInt(value, 10)`            |
+| `%f`  | `Number(value)`                  |
+| `%F`  | `Number(value)`                  |
+| `%j`  | `JSON.stringify(value)`          |
+| `%J`  | `JSON.stringify(value, null, 2)` |
+| `%o`  | 对象转储                             |
+| `%O`  | 对象转储（缩进彩色）                       |
 
 
 `WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`来输出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`被阻止输出。 `WScript.StdErr.WriteLine`或`console.log` 。
@@ -345,7 +358,7 @@ files.forEach(file => console.log(file.Name))
 ```
 
 
-*GetObject*作为`WScript.GetObject`的替代品。
+*GetObject*充当`WScript.GetObject`的替代品。
 
 
 ```javascript
@@ -495,13 +508,13 @@ wes zip -p dox.zip
 # 模块捆绑和安装
 
 
-在*wes*中，多个模块的捆绑包称为包。您可以安装在*github*上发布的*wes*软件包。您将需要一个*github repository*来发布包。此外，存储库名称和本地目录名称必须相同。
+在*wes*中，几个模块的捆绑称为一个包。您可以安装在*github*上发布的*wes*软件包。您将需要一个*github repository*来发布包。此外，存储库名称和本地目录名称必须相同。
 
 
 ## *bundle*
 
 
-将包发布到*github*时， *bundle*会捆绑所需的模块并将其更改为可以通过安装导入的格式。
+将包发布到*github*时， *bundle*会捆绑所需的模块并更改格式，以便可以通过安装导入。
 
 
 出于安全原因， *bundle*会创建一个*.json*文件，因为*wes*不允许您以可以直接执行的格式导入包。
@@ -514,7 +527,7 @@ wes zip -p dox.zip
 
 2.  确保*github*上的仓库名称和本地工作目录名称相同。
 
-3.  如果您发布包，请将存储库*public*
+3.  如果您发布包，请*public*存储库
 
 4.  在顶层范围内声明模块获取
 
@@ -560,7 +573,7 @@ wes install @wachaon/fmt
 | `--bare`      | `-b` | 不要创建*@author*文件夹                              |
 | `--global`    | `-g` | 将包安装到*wes.js*所在的文件夹中                          |
 | `--save`      | `-S` | 在*package.json*的*dependencies*字段中添加包名和版本      |
-| `--save--dev` | `-D` | 将包名称和版本添加到*package.json*中的*devDependencies*字段 |
+| `--save--dev` | `-D` | 将包名称和版本添加到*package.json*的*devDependencies*字段中 |
 | `--node`      | `-n` | 安装在*node_module*文件夹中                          |
 
 
@@ -744,7 +757,7 @@ wes install @wachaon/webdriver --unsafe --bare
 ```
 
 
-如果您没有*web driver* ，请下载它。
+如果您没有基于*Chromium*的*Microsoft Edge* *web driver* ，请下载它。另外，如果*edge*版本和*web driver*版本不同，请下载相同版本的*web driver* 。
 
 
 ```bat

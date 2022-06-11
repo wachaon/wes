@@ -29,7 +29,7 @@ Please select sentences in other languages ​​from the following.
 
 
 -   You can change the script engine to *Chakra* and write it in the *ECMAScript2015* specification
--   It always runs 32bit *cscript.exe* , so there are no inherent problems in 64bit environment.
+-   It always runs 32bit *cscript.exe* , so it doesn't have any inherent problems in 64bit environment.
 -   With a modular system, you can develop more efficiently than traditional *WSH*
 -   The built-in module supports basic processing such as file input / output and output of colored characters to the console.
 -   You don't have to worry about encoding because you can have the file read automatically guess the encoding.
@@ -55,8 +55,8 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```
 
 
-*WScript.Shell* uses `SendKeys` from *wes* at runtime as an implementation. If the path of the directory where *wes.js* is saved contains characters other than *ascii* , `SendKeys` will not be able to send the key correctly and the script will not be able to be executed.  
-Please configure the save destination path of *wes.js* only *ascii* .
+*WScript.Shell* uses `SendKeys` in *wes* at runtime as an implementation. If the path of the directory where *wes.js* is saved contains characters other than *ascii* , `SendKeys` will not be able to send the key correctly and the script will not be able to be executed.  
+Please configure the path to save *wes.js* only *ascii* .
 
 
 If you have already downloaded *wes* , you can update it with the following command.
@@ -95,7 +95,7 @@ wes
 The startup options for *wes* are as follows.
 
 
-| named              | description                                      |
+| named              | Description                                      |
 | ------------------ | ------------------------------------------------ |
 | `--monotone`       | Eliminate *ANSI escape code*                     |
 | `--safe`           | Run the script in safe mode                      |
@@ -157,10 +157,10 @@ Shell.UndoMinimizeAll()
 ## *es module*
 
 
-*Chakra* , which is the execution engine of the script, interprets syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. In *wes* , by adding *babel* to the built-in module, it is executed while sequentially transpiling to the *es module* . As a result, the processing overhead and the *wes.js* file are bloated as a cost.
+*Chakra* , which is the execution engine of the script, interprets the syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. In *wes* , by adding *babel* to the built-in module, we are executing it while sequentially transpiling to the *es module* . As a result, the processing overhead and the *wes.js* file are bloated as a cost.
 
 
-Modules described by *es module* are also converted to `require()` by transpile, so *ActiveX* calls are also possible. However, it does not support the module file encoding specification in *es module* . All are read by automatic guessing.
+Modules described by *es module* are also transpiled to `require()` , so *ActiveX* calls are possible. However, it does not support the module file encoding specification in *es module* . All are read by automatic guessing.
 
 
 To load it as an *es module* , set the extension to `.mjs` or the `"type"` field of `package.json` to `"module"` .
@@ -202,7 +202,20 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
 
-\|
+| Format specifier | Description                      |
+| ---------------- | -------------------------------- |
+| `%s`             | `String(value)`                  |
+| `%S`             | `String(value)`                  |
+| `%c`             | `String(value)`                  |
+| `%C`             | `String(value)`                  |
+| `%d`             | `parseInt(value, 10)`            |
+| `%D`             | `parseInt(value, 10)`            |
+| `%f`             | `Number(value)`                  |
+| `%F`             | `Number(value)`                  |
+| `%j`             | `JSON.stringify(value)`          |
+| `%J`             | `JSON.stringify(value, null, 2)` |
+| `%o`             | Object dump                      |
+| `%O`             | Object dump (indented colorful)  |
 
 
 `WScript.StdOut.WriteLine` *wes* of `WScript.StdErr.WriteLine` to output colored strings. `WScript.Echo` and `WScript.StdOut.WriteLine` are blocked from output. `WScript.StdErr.WriteLine` or `console.log` .
@@ -480,13 +493,13 @@ wes zip -p dox.zip
 If `path` has extension `.zip` , `unzip()` is processed and there is no description of extension `.zip` . Or even if there is a `.zip` extension, if there is a description of a wildcard `*` , `zip()` will be processed.
 
 
-| unnamed | description                    |
+| unnamed | Description                    |
 | ------- | ------------------------------ |
 | `1`     | `path` Folder or file to enter |
 | `2`     | folder file to output `dest`   |
 
 
-| named    | short named | description                    |
+| named    | short named | Description                    |
 | -------- | ----------- | ------------------------------ |
 | `--path` | `-p`        | `path` Folder or file to enter |
 | `--dest` | `-d`        | folder file to output `dest`   |
@@ -538,7 +551,7 @@ There are some conditions for packaging.
 ## *install*
 
 
-Used to install the package for *wes* published on *github* . From `version 0.10.28` the installation folder will be changed from `node_modules` to `wes_modules` . If you are installing to `node_modules` , add the `--node` option.
+Used to install the package for *wes* published on *github* . From `version 0.10.28` the installation folder will change from `node_modules` to `wes_modules` . If you are installing to `node_modules` , add the `--node` option.
 
 
 ### How to use
@@ -555,12 +568,12 @@ wes install @wachaon/fmt
 *install* has options.
 
 
-| named         | short named | description                                                                       |
+| named         | short named | Description                                                                       |
 | ------------- | ----------- | --------------------------------------------------------------------------------- |
 | `--bare`      | `-b`        | Do not create *@author* folder                                                    |
 | `--global`    | `-g`        | Install the package in the folder where *wes.js* is                               |
 | `--save`      | `-S`        | Add the package name and version to the *dependencies* field of *package.json*    |
-| `--save--dev` | `-D`        | Add the package name and version to the *devDependencies* field in *package.json* |
+| `--save--dev` | `-D`        | Add the package name and version to the *devDependencies* field of *package.json* |
 | `--node`      | `-n`        | Install in *node_module* folder                                                   |
 
 
@@ -586,7 +599,7 @@ In *install* , specify the package with *@author/repository* . The implementatio
 ```
 
 
-When you access the *raw* of the private repository with a browser, the *token* will be displayed, so copy the *token* and use it.
+When you access *raw* of the private repository with a browser, the *token* will be displayed, so copy the *token* and use it.
 
 
 You can also install packages in private repositories by running them in the console within the *token* 's lifetime.
@@ -631,13 +644,13 @@ wes @wachaon/fmt src/sample --write
 ```
 
 
-| unnamed number | description                                       |
+| unnamed number | Description                                       |
 | -------------- | ------------------------------------------------- |
 | 0              | ――――                                              |
 | 1              | Required. The path of the file you want to format |
 
 
-| named     | short named | description       |
+| named     | short named | Description       |
 | --------- | ----------- | ----------------- |
 | `--write` | `-w`        | Allow overwriting |
 
@@ -744,7 +757,7 @@ wes install @wachaon/webdriver --unsafe --bare
 ```
 
 
-If you don't have a *web driver* , download it.
+If you don't have a *Chromium* -based *Microsoft Edge* *web driver* , download it. Also, if the version of *edge* and the version of *web driver* are different, download the same version of *web driver* .
 
 
 ```bat

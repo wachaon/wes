@@ -65,7 +65,7 @@ wes
 
 *wes* の起動オプションは下記になります。
 
-| named              | description                                       |
+| named              | Description                                       |
 | ------------------ | ------------------------------------------------- |
 | `--monotone`       | *ANSI escape code* を排除します                   |
 | `--safe`           | スクリプトを安全モードで実行します                |
@@ -155,7 +155,20 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
-| 
+| Format specifier | Description                                  |
+| ---------------- | -------------------------------------------- |
+| `%s`             | `String(value)`                              |
+| `%S`             | `String(value)`                              |
+| `%c`             | `String(value)`                              |
+| `%C`             | `String(value)`                              |
+| `%d`             | `parseInt(value, 10)`                        |
+| `%D`             | `parseInt(value, 10)`                        |
+| `%f`             | `Number(value)`                              |
+| `%F`             | `Number(value)`                              |
+| `%j`             | `JSON.stringify(value)`                      |
+| `%J`             | `JSON.stringify(value, null, 2)`             |
+| `%o`             | オブジェクトのダンプ                         |
+| `%O`             | オブジェクトのダンプ（インデント・カラフル） |
 
 *wes* では色付き文字列を出力する為に `WScript.StdOut.WriteLine` ではなく、`WScript.StdErr.WriteLine` を使用します。
 `WScript.Echo` や `WScript.StdOut.WriteLine` は出力を遮断されています。`WScript.StdErr.WriteLine` もしくは `console.log` を使用してください。
@@ -386,12 +399,12 @@ wes zip -p dox.zip
 ```
 `path` に拡張子 `.zip` があれば `unzip()` を処理し、拡張子 `.zip` の記述がない。もしくは拡張子 `.zip` があってもワイルドカード `*` の記述があれば `zip()` の処理を行います。
 
-| unnamed |  description                      |
+| unnamed |  Description                      |
 | ------- | --------------------------------- |
 | `1`     | `path` 入力するフォルダやファイル |
 | `2`     | `dest` 出力するフォルダファイル   |
 
-| named    | short named | description                       |
+| named    | short named | Description                       |
 | -------- | ----------- | --------------------------------- |
 | `--path` | `-p`        | `path` 入力するフォルダやファイル |
 | `--dest` | `-d`        | `dest` 出力するフォルダファイル   |
@@ -442,7 +455,7 @@ wes install @wachaon/fmt
 
 *install* にはオプションがあります。
 
-| named         | short named | description                                                                        |
+| named         | short named | Description                                                                        |
 | ------------- | ----------- | ---------------------------------------------------------------------------------- |
 | `--bare`      | `-b`        | *@author* フォルダを作成しない                                                     |
 | `--global`    | `-g`        | *wes.js* があるフォルダにパッケージをインストールする                              |
@@ -506,12 +519,12 @@ wes install @wachaon/fmt
 wes @wachaon/fmt src/sample --write
 ```
 
-| unnamed number | description                            |
+| unnamed number | Description                            |
 | -------------- | -------------------------------------- |
 | 0              | -                                      |
 | 1              | 必須。フォーマットしたいファイルのパス |
 
-| named     | short named | description      |
+| named     | short named | Description      |
 | --------- | ----------- | ---------------- |
 | `--write` | `-w`        | 上書きを許可する |
 
@@ -594,7 +607,7 @@ edge((window, navi, res) => {
 wes install @wachaon/webdriver --unsafe --bare
 ```
 
-*web driver* がなければダウンロードします。
+*Chromium* ベースの *Microsoft Edge* の *web driver* がなければダウンロードします。また、*edge* のバージョンと *web driver* のバージョンが違う場合は同じバージョンの *web driver* をダウンロードします。
 
 ```bat
 wes webdriver --download
