@@ -6,6 +6,33 @@ describe('# test minitest', () => {
             it('assert.strict(true)', () => {
                 assert.strict(true)
             })
+            it('assert.strict(false) // => throw', () => {
+                assert.throws(() => assert.strict(false))
+            })
+            it('assert.strict(undefined) // => throw', () => {
+                assert.throws(() => assert.strict(undefined))
+            })
+            it('assert.strict(null) // => throw', () => {
+                assert.throws(() => assert.strict(null))
+            })
+            it('assert.strict("") // => throw', () => {
+                assert.throws(() => assert.strict(""))
+            })
+            it('assert.strict(1) // => throw', () => {
+                assert.throws(() => assert.strict(1))
+            })
+            it('assert.strict(0) // => throw', () => {
+                assert.throws(() => assert.strict(0))
+            })
+            it('assert.strict(-1) // => throw', () => {
+                assert.throws(() => assert.strict(-1))
+            })
+            it('assert.strict([]) // => throw', () => {
+                assert.throws(() => assert.strict([]))
+            })
+            it('assert.strict({}) // => throw', () => {
+                assert.throws(() => assert.strict({}))
+            })
         })
         describe('assert.ok', () => {
             it('assert(true)', () => {
@@ -14,10 +41,64 @@ describe('# test minitest', () => {
             it('assert.ok(1)', () => {
                 assert.ok(1)
             })
+            it('assert.ok(false) // => throw', () => {
+                assert.throws(() => assert.ok(false))
+            })
+            it('assert.ok(undefined) // => throw', () => {
+                assert.throws(() => assert.ok(undefined))
+            })
+            it('assert.ok(null) // => throw', () => {
+                assert.throws(() => assert.ok(null))
+            })
+            it('assert.ok("") // => throw', () => {
+                assert.throws(() => assert.ok(""))
+            })
+            it('assert.ok("ok") // => throw', () => {
+                assert.throws(() => assert.ok("ok"))
+            })
+            it('assert.ok(0) // => throw', () => {
+                assert.throws(() => assert.ok(0))
+            })
+            it('assert.ok(-1) // => throw', () => {
+                assert.throws(() => assert.ok(-1))
+            })
+            it('assert.ok([]) // => throw', () => {
+                assert.throws(() => assert.ok([]))
+            })
+            it('assert.ok({}) // => throw', () => {
+                assert.throws(() => assert.ok({}))
+            })
         })
         describe('## assert.strictNG', () => {
             it('assert.strictNG(false)', () => {
                 assert.ng(false)
+            })
+            it('assert.strictNG(true) // => throw', () => {
+                assert.throws(() => assert.strictNG(true))
+            })
+            it('assert.strictNG(undefined) // => throw', () => {
+                assert.throws(() => assert.strictNG(undefined))
+            })
+            it('assert.strictNG(null) // => throw', () => {
+                assert.throws(() => assert.strictNG(null))
+            })
+            it('assert.strictNG("") // => throw', () => {
+                assert.throws(() => assert.strictNG(""))
+            })
+            it('assert.strictNG("strictNG") // => throw', () => {
+                assert.throws(() => assert.strictNG("strictNG"))
+            })
+            it('assert.strictNG(0) // => throw', () => {
+                assert.throws(() => assert.strictNG(0))
+            })
+            it('assert.strictNG(-1) // => throw', () => {
+                assert.throws(() => assert.strictNG(-1))
+            })
+            it('assert.strictNG([]) // => throw', () => {
+                assert.throws(() => assert.strictNG([]))
+            })
+            it('assert.strictNG({}) // => throw', () => {
+                assert.throws(() => assert.strictNG({}))
             })
         })
         describe('## assert.ng', () => {
@@ -32,6 +113,24 @@ describe('# test minitest', () => {
             })
             it('assert.ng([])', () => {
                 assert.ng([])
+            })
+            it('assert.ng(true) // => throw', () => {
+                assert.throws(() => assert.ng(true))
+            })
+            it('assert.ng(undefined) // => throw', () => {
+                assert.throws(() => assert.ng(undefined))
+            })
+            it('assert.ng(null) // => throw', () => {
+                assert.throws(() => assert.ng(null))
+            })
+            it('assert.ng("ng") // => throw', () => {
+                assert.throws(() => assert.ng("ng"))
+            })
+            it('assert.ng(-1) // => throw', () => {
+                assert.throws(() => assert.ng(-1))
+            })
+            it('assert.ng({}) // => throw', () => {
+                assert.throws(() => assert.ng({}))
             })
         })
         describe('## assert.equal', () => {
