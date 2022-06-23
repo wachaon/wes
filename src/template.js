@@ -1,5 +1,6 @@
 try {
     var LF = '\n'
+    var rCR_LF = /\r?\n/
     var NONE = ''
     var SPACE = ' '
     var POSIXSEP = '/'
@@ -10,11 +11,11 @@ try {
         filestack: [WScript.ScriptFullName.split(WIN32SEP).join(POSIXSEP)]
     }
 
-    var argv = function () {}
+    var argv = function () { }
 
-    var ansi = function () {}
+    var ansi = function () { }
 
-    var console = function () {}
+    var console = function () { }
 
     if (!argv.has('engine', 'Chakra')) {
         var cpu =
@@ -237,8 +238,10 @@ try {
                         presets: ['env'],
                         comments: false
                     }
+
                     if (mod.type === MODULE) mod.source = wrap(name, Babel.transform(result_code, babel_option).code)
                     else mod.source = wrap(name, result_code)
+
                     mod.type = 'transpiled'
 
                     var buf = entry === 'buffer' ? null : req('buffer')
@@ -254,15 +257,7 @@ try {
                         Buffer: buf,
                         global: { process: process, Buffer: buf, console: console }
                     }
-                    try {
-                        generateCodeAndExecution(codeMap, mod.source)
-                    } catch (er) {
-                        console.debug(er.message)
-                        if (mod.type !== MODULE) {
-                            mod.source = wrap(name, Babel.transform(result_code, babel_option).code)
-                            generateCodeAndExecution(codeMap, mod.source)
-                        }
-                    }
+                    generateCodeAndExecution(codeMap, mod.source)
                     wes.filestack.pop()
                     break
                 case EXT_JSON:
@@ -328,7 +323,7 @@ try {
             // execute OLE, if it is OLE
             try {
                 return WScript.CreateObject(query)
-            } catch (e) {}
+            } catch (e) { }
 
             // execute req function, if it is a mapping[ query ]
             var parentModule = getPathToModule(caller)
@@ -365,34 +360,62 @@ try {
     }
 } catch (error) {
     if (!!console) {
+        var errorStack = unescape(error.stack.split('$').join('%'))
+        errorStack = stacktrace(errorStack)
+
         var orange = ansi.color(255, 165, 0)
+        var current = wes.filestack.slice(-1)[0]
+        if (wes.main !== 'REP') console.log('%SWhere the error occurred: %S', ansi.yellow, current)
 
-        var errorStack = stacktrace(error.stack)
-        var current = wes.filestack.slice(-1)
-
-        if (!(error instanceof SyntaxError)) {
-            if (wes.main === 'REP') console.log('%S%S', orange, errorStack)
-            else console.log('%SWhere the error occurred: %S\n%S%S', ansi.yellow, current, orange, errorStack)
-        } else {
-            var fmt = retry(require.bind(null, resolve(WorkingDirectory, '*')), 'fmt', '@wachaon/fmt')
-            if (fmt != null) {
-                var source
-                if (wes.main === 'REP') {
-                    var file = Object.keys(wes.Modules).filter(function error_filter_callback(key) {
-                        return starts(key, '{')
-                    })[0]
-                    source = wes.Modules[file].source
-                } else {
-                    source = readTextFileSync(current)
-                }
-                try {
-                    fmt.format(source)
-                } catch (e) {
-                    var estack = stacktrace(e.stack)
-                    if (wes.main === 'REP') console.log('%S%S', orange, estack)
-                    else console.log('%SWhere the error occurred: %S\n%S%S', ansi.yellow, current, orange, estack)
-                }
+        if (error instanceof SyntaxError) {
+            var mods = wes.Modules
+            try {
+                var fmt = retry(require.bind(null, resolve(WorkingDirectory, '*')), 'fmt', '@wachaon/fmt')
+                var errorSource =
+                    wes.main === 'REP'
+                        ? mods[
+                            Object.keys(mods).find(function errorSource_find(key) {
+                                return starts(key, '{')
+                            })
+                        ].source
+                        : readTextFileSync(
+                            mods[
+                                Object.keys(mods).find(function errorSource_find(key) {
+                                    return starts(mods[key].path, current)
+                                })
+                            ].path
+                        )
+                fmt.format(errorSource)
+            } catch (syntaxerror) {
+                console.log('%S%S', orange, syntaxerror.stack)
             }
+        } else {
+            var errorSource = Modules[Object.keys(Modules)[Object.keys(Modules).length - 1]].source
+
+            var rLine = new RegExp(current + '\\s\\((\\d+)')
+            var errorRow = (rLine.test(errorStack) ? errorStack.match(rLine)[1] : 0) - 0
+
+            var line = errorSource.split(rCR_LF)
+            var ret
+            if (errorRow === 0) ret = NONE
+            else if (errorRow < 4) {
+                ret = [
+                    (errorRow === 1 ? ansi.redBright : ansi.clear) +
+                    '     1 | ' +
+                    line[0].slice(line[0].indexOf('{') + 1),
+                    (errorRow === 2 ? ansi.redBright : ansi.clear) + '     2 | ' + line[1],
+                    (errorRow === 3 ? ansi.redBright : ansi.clear) + '     3 | ' + line[2] + orange
+                ].join(LF)
+            } else {
+                ret = [
+                    ansi.clear + ('     ' + (errorRow - 1)).slice(-5) + ' | ' + line[errorRow - 2],
+                    ansi.redBright + ('     ' + errorRow).slice(-5) + ' | ' + line[errorRow - 1],
+                    ansi.clear + ('     ' + (errorRow + 1)).slice(-5) + ' | ' + (line[errorRow] || '') + orange
+                ].join(LF)
+            }
+
+            var customError = errorStack.replace('\n', ' \n' + ret + '\n')
+            console.log('%S %S\n', orange, customError)
         }
     } else WScript.Popup('[error]' + error.message)
 }
@@ -408,7 +431,7 @@ function retry() {
         try {
             res = action(args.shift())
             break
-        } catch (error) {}
+        } catch (error) { }
     }
     return res
 }
@@ -459,7 +482,7 @@ function generateCodeAndExecution(map, source) {
 }
 
 function wrap(name, source) {
-    return '(function ' + name + '() { ' + source + '\n} )()'
+    return '(function ' + name + '() {' + source + '\n} )()'
 }
 
 function stacktrace(stack) {
