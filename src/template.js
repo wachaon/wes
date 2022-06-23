@@ -11,11 +11,11 @@ try {
         filestack: [WScript.ScriptFullName.split(WIN32SEP).join(POSIXSEP)]
     }
 
-    var argv = function () { }
+    var argv = function () {}
 
-    var ansi = function () { }
+    var ansi = function () {}
 
-    var console = function () { }
+    var console = function () {}
 
     if (!argv.has('engine', 'Chakra')) {
         var cpu =
@@ -323,7 +323,7 @@ try {
             // execute OLE, if it is OLE
             try {
                 return WScript.CreateObject(query)
-            } catch (e) { }
+            } catch (e) {}
 
             // execute req function, if it is a mapping[ query ]
             var parentModule = getPathToModule(caller)
@@ -365,7 +365,7 @@ try {
 
         var orange = ansi.color(255, 165, 0)
         var current = wes.filestack.slice(-1)[0]
-        if (wes.main !== 'REP') console.log('%SWhere the error occurred: %S', ansi.yellow, current)
+        if (wes.main !== 'REP') console.log('%CWhere the error occurred: %S', ansi.yellow, current)
 
         if (error instanceof SyntaxError) {
             var mods = wes.Modules
@@ -374,20 +374,20 @@ try {
                 var errorSource =
                     wes.main === 'REP'
                         ? mods[
-                            Object.keys(mods).find(function errorSource_find(key) {
-                                return starts(key, '{')
-                            })
-                        ].source
+                              Object.keys(mods).find(function errorSource_find(key) {
+                                  return starts(key, '{')
+                              })
+                          ].source
                         : readTextFileSync(
-                            mods[
-                                Object.keys(mods).find(function errorSource_find(key) {
-                                    return starts(mods[key].path, current)
-                                })
-                            ].path
-                        )
+                              mods[
+                                  Object.keys(mods).find(function errorSource_find(key) {
+                                      return starts(mods[key].path, current)
+                                  })
+                              ].path
+                          )
                 fmt.format(errorSource)
             } catch (syntaxerror) {
-                console.log('%S%S', orange, syntaxerror.stack)
+                console.log('%C%S', orange, syntaxerror.stack)
             }
         } else {
             var errorSource = Modules[Object.keys(Modules)[Object.keys(Modules).length - 1]].source
@@ -401,8 +401,8 @@ try {
             else if (errorRow < 4) {
                 ret = [
                     (errorRow === 1 ? ansi.redBright : ansi.clear) +
-                    '     1 | ' +
-                    line[0].slice(line[0].indexOf('{') + 1),
+                        '     1 | ' +
+                        line[0].slice(line[0].indexOf('{') + 1),
                     (errorRow === 2 ? ansi.redBright : ansi.clear) + '     2 | ' + line[1],
                     (errorRow === 3 ? ansi.redBright : ansi.clear) + '     3 | ' + line[2] + orange
                 ].join(LF)
@@ -415,7 +415,7 @@ try {
             }
 
             var customError = errorStack.replace('\n', ' \n' + ret + '\n')
-            console.log('%S %S\n', orange, customError)
+            console.log('%C %S\n', orange, customError)
         }
     } else WScript.Popup('[error]' + error.message)
 }
@@ -431,7 +431,7 @@ function retry() {
         try {
             res = action(args.shift())
             break
-        } catch (error) { }
+        } catch (error) {}
     }
     return res
 }
