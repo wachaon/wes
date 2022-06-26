@@ -364,6 +364,9 @@ try {
         errorStack = stacktrace(errorStack)
 
         var orange = ansi.color(255, 165, 0)
+        var redBright = ansi.redBright
+        var clear = ansi.clear
+        var spaces = '     '
         var current = wes.filestack.slice(-1)[0]
         if (wes.main !== 'REP') console.log('%CWhere the error occurred: %S', ansi.yellow, current)
 
@@ -400,17 +403,15 @@ try {
             if (errorRow === 0) ret = NONE
             else if (errorRow < 4) {
                 ret = [
-                    (errorRow === 1 ? ansi.redBright : ansi.clear) +
-                        '     1 | ' +
-                        line[0].slice(line[0].indexOf('{') + 1),
-                    (errorRow === 2 ? ansi.redBright : ansi.clear) + '     2 | ' + line[1],
-                    (errorRow === 3 ? ansi.redBright : ansi.clear) + '     3 | ' + line[2] + orange
+                    (errorRow === 1 ? redBright : clear) + '     1 | ' + line[0].slice(line[0].indexOf('{') + 1),
+                    (errorRow === 2 ? redBright : clear) + '     2 | ' + line[1],
+                    (errorRow === 3 ? redBright : clear) + '     3 | ' + line[2] + orange
                 ].join(LF)
             } else {
                 ret = [
-                    ansi.clear + ('     ' + (errorRow - 1)).slice(-5) + ' | ' + line[errorRow - 2],
-                    ansi.redBright + ('     ' + errorRow).slice(-5) + ' | ' + line[errorRow - 1],
-                    ansi.clear + ('     ' + (errorRow + 1)).slice(-5) + ' | ' + (line[errorRow] || '') + orange
+                    clear + (spaces + (errorRow - 1)).slice(-5) + ' | ' + line[errorRow - 2],
+                    redBright + (spaces + errorRow).slice(-5) + ' | ' + line[errorRow - 1],
+                    clear + (spaces + (errorRow + 1)).slice(-5) + ' | ' + (line[errorRow] || '') + orange
                 ].join(LF)
             }
 
