@@ -354,12 +354,17 @@ function sub (a, b) {
     return b - a
 }
 
+function div (a, b) {
+    return a / b
+}
+
 const add5 = add.bind(null, 5)
 const sub3 = sub.bind(null, 3)
 
 pipe()
   .use(add5)
   .use(sub3)
+  .use(div, 4)
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
