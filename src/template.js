@@ -415,7 +415,7 @@ try {
                 ].join(LF)
             }
 
-            var customError = errorStack.replace('\n', ' \n' + ret + '\n')
+            var customError = errorStack.replace('\n   at', '\n' + ret + '\n   at')
             console.log('%C %S\n', orange, customError)
         }
     } else WScript.Popup('[error]' + error.message)
