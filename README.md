@@ -1,7 +1,5 @@
 # *WES*
-
 *wes* は *WSH (Windows Script Host)* で *ECMAScript* を実行する、コンソール用のフレームワークです。
-
 *README* の原文は [*japanese*](/README.md) になります。日本語以外は機械翻訳の文章になります。  
 他言語の文章は下記から選択してください。
 
@@ -20,7 +18,6 @@
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
-
 # 特徴
 
 -  スクリプトエンジンを *Chakra* に変更して *ECMAScript2015+* の仕様で記述できます
@@ -37,7 +34,6 @@
 -  `WScript.CreateObject` の第二引数の *event prefix* の使用はできません
 
 # ダウンロード
-
 *wes* に必要なのは *wes.js* ファイルのみです。
 ダウンロードするには [*@wachaon/wes*](https://github.com/wachaon/wes) から *wes.js* をコピーするかコンソールで次のコマンドを実行してください。
 
@@ -49,7 +45,6 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 *wes.js* を保存するディレクトリのパスに *ascii* 以外文字が含まれていると `SendKeys` で正しくキーが送れず、
 スクリプトが実行できません。  
 *wes.js* の保存先のパスは *ascii* のみで構成してください。
-
 既に *wes* をダウンロード済みの場合は次のコマンドでアップデートできます。
 
 ```bat
@@ -57,7 +52,6 @@ wes update
 ```
 
 # 使い方
-
 `wes` のキーワードに続きプログラムの起点となるファイルを指定したコマンドをコンソールへ入力します。
 スクリプトの拡張子 *.js* は省略できます。
 
@@ -72,11 +66,10 @@ wes index
 wes
 ```
 
- *REP* は空行を２つ入力するまでスクリプトの入力を受け付けます。*README.md* でのサンプルスクリプトの
+*REP* は空行を２つ入力するまでスクリプトの入力を受け付けます。*README.md* でのサンプルスクリプトの
 実行も *REP* で確認できます。
 
 ## コマンドラインオプション
-
 *wes* の起動オプションは下記になります。
 
 | named              | Description                                       |
@@ -93,15 +86,12 @@ wes
 `--safe` `--usual` `--unsafe` `--dangerous` `--debug` の実装は不完全ですが、名前付き引数は予約されています。
 
 # モジュールシステム
-
 *wes* は `require()` を使用する *commonjs module* のシステムと `import` を使用する *es module* の２つのモジュールシステムに対応しています。(*dynamic import* は非同期処理の為、対応していません)
 
 ## *commonjs module*
-
 `module.exports` への代入と `require()` での呼び出しでモジュールを管理します。
 絶対パスと `./` と `../` から始まる相対パス以外のパスは *wes_modules* ディレクトリと
 利便上 *node_modules* ディレクトリからモジュールを探します。
-
 *wes* の `require()` はモジュールファイルのエンコードを自動推測しますが、
 正しく推測しない場合に第二引数でエンコードを指定も可能です。
 
@@ -110,14 +100,12 @@ wes
 function add (a, b) {
     return a + b
 }
-
 module.exports = add
 ```
 
 ```javascript
 // ./main.js
 const add = require('./add')
-
 console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
@@ -131,13 +119,10 @@ Shell.UndoMinimizeAll()
 ```
 
 ## *es module*
-
 スクリプトの実行エンジンである *Chakra* は `imoprt` などの構文を解釈しますが `cscript` としての処理方法が定義されていないのか、そのままでは実行できません。
 *wes* では *babel* をビルトインモジュールに加えることで、*es module* に対しても逐次トランスパイルしながら実行しています。そのためコストとして処理のオーバーヘッドと *wes.js* ファイルが肥大化しています。
-
 *es module* で記述されているモジュールもトランスパイルで `require()` に変換されるため、*ActiveX* の呼び出しも可能です。
 しかしながら *es module* でのモジュールファイルのエンコード指定には対応していません。全て自動推測で読み込まれます。
-
 *es module* として読み込ませるには拡張子を `.mjs` にするか `package.json` の `"type"` フィールドを `"module"` にしてください。
 
 ```javascript
@@ -150,18 +135,14 @@ export default function sub (a, b) {
 ```javascript
 // ./main2.js
 import sub from './sub.mjs'
-
 console.log('sub(7, 3) // => %O', sub(7, 3))
 ```
 
 # ビルトインオブジェクト
-
 *wes* は *WSH (JScript)* には無い *built-in objects* があります。
 
 ## *console*
-
 *wes* では `WScript.Echo` や `WScript.StdErr.WriteLine` の代わりに *console* を使用します。
-
 `console.log` でコンソールに文字を出力します。また書式化文字列にも対応しています。
 書式化演算子 `%` 使用して書式化文字列を出力します。
 
@@ -188,7 +169,6 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 `WScript.Echo` や `WScript.StdOut.WriteLine` は出力を遮断されています。`WScript.StdErr.WriteLine` もしくは `console.log` を使用してください。
 
 ## *Buffer*
-
 バッファーを扱うことができます。
 
 ```javascript
@@ -198,7 +178,6 @@ console.log(`${content} %O`, buff)
 ```
 
 ## `__dirname` and `__filename`
-
 `__filename` は現在実行しているモジュールファイルのパスが格納されています。
 `__dirname` は `__filename` のディレクトリが格納されています。
 
@@ -207,11 +186,9 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 ```
 
 # ビルトインモジュール
-
 *wes* では基本的な処理を簡略・共通化するための *built-in modules* があります。
 
 ## *ansi*
-
 `ansi` は *ANSI escape code* で、標準出力の色や効果を変更できます。
 使用するコンソールアプリケーションの種類や設定によって色や効果などは異なる場合があります。
 
@@ -232,13 +209,10 @@ console.log(orange + 'Hello World')
 ```
 
 ## *argv*
-
 コマンドライン引数のを取得します。
 `cscript.exe` のコマンドライン引数は `/` で名前付き引数を宣言しますが、*wes* では `-` および `--` で
 名前付き引数を宣言します。
-
 *argv.unnamed* および *argv.named* はコマンドライン引数の値の型を *String* *Number* *Boolean* の何れかにキャストします。
-
 *REP* と一緒にコマンドライン引数を入力します。
 
 ```bat
@@ -256,9 +230,7 @@ argv, argv.unnamed, argv.named)
 ```
 
 ## *pathname*
-
 パスの操作をします。
-
 一般的には `/` および `\` から開始されるパスはドライブルートからの相対パスを指します。
 例えば `/filename` と `C:/filename` は同じパスになる場合があります。
 `wes` ではセキュリティーの観点から `/` および `\` で開始されるパスはワーキングディレクトリからの相対パスと解釈されます。 
@@ -270,7 +242,6 @@ console.log('file %O', file)
 ```
 
 ## *filesystem*
-
 ファイルの操作やディレクトリの操作をします。
 `readTextFileSync` はファイルのエンコードを自動推測して読み込みます。
 
@@ -283,13 +254,10 @@ console.log(contents)
 ```
 
 ## *chardet*
-
 https://github.com/runk/node-chardet の一部の機能を使用しています。
-
 エンコード固有の文字を増やすことで自動推測の精度を上げられます。
 
 ## *JScript*
-
 スクリプトエンジンを *Chakra* に変更すると、*JScript* 固有の *Enumerator* などが使用できなくなります。
 ビルトインモジュールの *JScript* はそれらを使用可能にします。
 ただし、*Enumerator* は *Enumerator object* ではなく *Array* を返します。
@@ -306,7 +274,6 @@ files.forEach(file => console.log(file.Name))
 
 ```javascript
 const { GetObject, Enumerator } = require('JScript')
-
 const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service")
 new Enumerator(ServiceSet).forEach(service => console.log(
     'Name: %O\nDescription: %O\n',
@@ -316,7 +283,6 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ```
 
 ## *VBScript*
-
 *VBScript* は *JScript* にはない機能のいくつかを提供します。
 
 ```javascript
@@ -326,7 +292,6 @@ console.log(TypeName(FSO))
 ```
 
 ## *httprequest*
-
 *httprequest* は *http request* を発行します。
 
 ```javascript
@@ -336,55 +301,102 @@ console.log('%O', JSON.parse(content))
 ```
 
 ## *minitest*
-
 *minitest* は簡易的なテストを記述できます。
+単純な構文、少ないアサーション
+version `0.10.71` から基本コンセプトに立ち返って、アサーションの種類を３種類に減らしました。
+
+### usage
+`describe` でグループに分け、`it` でテストを記述し、`assert` で検証します。
+`pass` は `it` の出現回数と合格数の配列になります。
 
 ```javascript
-const { describe, it, assert } = require('minitest')
-
-function add (a, b) {
-  return a + b
-}
-
-describe( '# calc test', () => {
-  it('add(2, 5) === 7', () => {
-    assert(add(2, 5) === 7)
-  })
+const { describe, it, assert, pass } = require('minitest')
+describe('minitest', () => {
+    describe('add', () => {
+        const add = (a, b) => a + b
+        it('2 plus 3 is 5', () => {
+            assert.equal(5, add(2, 3))
+        })
+        it('0 plus 0 is 0', () => {
+            assert(0 === add(0, 0))
+        })
+        it('"4" plus "5" is 9', () => {
+            assert.equal(9, add("4", "5"))
+        })
+        it('NaN plus 3 is NaN', () => {
+            assert.equal(NaN, add(NaN, 3))
+        })
+    })
+    describe('sub', () => {
+        it('5 minus 4 is 1', () => {
+            const sub = (a, b) => a - b
+            assert.equal(1, sub(5, 4))
+        })
+    })
 })
+console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
-## *pipe*
+### assertion
 
+#### `assert(value, message)` `assert.ok(value, message)`
+厳密等価演算子 `===` で `true` と比較します。`value` が関数の場合は関数を実行した結果を評価します。
+
+| Param     | Type                 | Description                    |
+|:----------|:---------------------|:-------------------------------|
+| `value`   | `{Function|Boolean}` | 真偽値もしくは真偽値を返す関数 |
+| `message` | `{String}`           | 失敗した場合のメッセージ       |
+
+#### `assert.equal(expected, actual)`
+オブジェクトを参照先ではなく、メンバーが同値かどうかで比較します。  
+通常の厳密等価演算子では `true` にらない `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` や
+`{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` なども成立します。  
+クラス（オブジェクト）同士の比較の場合は同じコンストラクタもしくは `actual` が `expected` のスーパークラスである必要があります。
+
+| Param      | Type    | Description |
+|:-----------|:--------|:------------|
+| `expected` | `{Any}` | 期待する値  |
+| `actual`   | `{Any}` | 実際の値    |
+
+#### `assert.throws(value, expected, message)`
+正しくエラーが投げられているかを検証します。  
+エラーが正しいかどうかは、期待されたエラーの *constructor* なのか、もしくは *message* が同値、 正規表現が *stack* を評価に合格するかどうかで判断されます。
+
+| Param      | Type                   | Description                                                                     |
+|:-----------|:-----------------------|:--------------------------------------------------------------------------------|
+| `value`    | `{Error}`              | エラー                                                                          |
+| `expected` | `{Error|String|RegExp}` | 期待するエラーの *constructor* か *message* もしくは *stack* を評価する正規表現 |
+| `message`  | `{String}`             | 失敗した場合のメッセージ                                                        |
+
+## *pipe*
 *pipe* はパイプ処理を簡素化します。
 
 ```javascript
 const pipe = require('pipe')
-
 function add (a, b) {
     return b + a
 }
-
 function sub (a, b) {
     return b - a
 }
-
+function div (a, b) {
+    return a / b
+}
 const add5 = add.bind(null, 5)
 const sub3 = sub.bind(null, 3)
-
 pipe()
   .use(add5)
   .use(sub3)
+  .use(div, 4)
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
 ## *typecheck*
-
 スクリプトの型の判定をします。
 
 ```javascript
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
 const log = require('log')
-
 log(() => isString("ECMAScript"))
 log(() => isNumber(43.5))
 log(() => isBoolean(false))
@@ -392,25 +404,23 @@ log(() => isObject(function(){}))
 ```
 
 ## *zip*
-
 ファイルやフォルダの圧縮と圧縮ファイルの解凍をします。
 内部で *PowerShell* 呼び出して処理をしています。
 
 ```javascript
 const {zip, unzip} = require('zip')
-
 console.log(zip('docs\\*', 'dox.zip'))
 console.log(unzip('dox.zip'))
 ```
 
 `zip(path, destinationPath)` の `path` にはワイルドカード `*` が記述できます。
-
 *CLI (Command Line Interface)* と *module* の両方で使用できます。
 
 ```bat
 wes zip docs\* dox.zip
 wes zip -p dox.zip
 ```
+
 `path` に拡張子 `.zip` があれば `unzip()` を処理し、拡張子 `.zip` の記述がない。もしくは拡張子 `.zip` があってもワイルドカード `*` の記述があれば `zip()` の処理を行います。
 
 | unnamed |  Description                      |
@@ -424,18 +434,14 @@ wes zip -p dox.zip
 | `--dest` | `-d`        | `dest` 出力するフォルダファイル   |
 
 # モジュールのバンドル（パッケージ化）とインストール
-
 *wes* ではいくつかのモジュールをバンドルしたものをパッケージといいます。
 *github* で公開されている *wes* 用のパッケージをインストールできます。
 パッケージを公開する為には *github repository* が必要になります。
 またリポジトリ名とローカルのディレクトリ名は同名にする必要があります。
 
 ## *bundle*
-
  *github* にパッケージを公開するにあたり、*bundle* は必要なモジュールをバンドルし、インストールで取り込める形式に変更します。
-
 安全性を考え、*wes* では直接実行できる形式のパッケージを取り込みをさせないため、*bundle* では *.json* ファイルを作成します。
-
 パッケージ化をさせるにはいくつかの条件があります。
 
 1.  １つの *repository* で公開できるパッケージは１つになります
@@ -454,13 +460,11 @@ wes zip -p dox.zip
     でバンドルしてください
 
 ## *install*
-
 *github* に公開されている *wes* 用のパッケージをインストールするのに使用します。
 `version 0.10.28` からインストールフォルダが `node_modules` から `wes_modules` に変更になります。
 `node_modules` にインストールする場合は、`--node` オプションを追加してください。
 
 ### 使い方
-
 *install* には `@author/repository` という書式で引数を渡します。
 
 ```bat
@@ -487,9 +491,7 @@ wes install @wachaon/fmt --bare --unsafe
 ```
 
 # プライベートリポジトリにあるパッケージのインストール
-
 *install* は *github* のパブリックリポジトリのパッケージだけでなく、プライベートリポジトリのパッケージもインストールできます。
-
 *install* では *@author/repository* でパッケージを指定します。
 実装では下記 url のダウンロードを試みます。
 
@@ -499,7 +501,6 @@ wes install @wachaon/fmt --bare --unsafe
 
 ブラウザでプライベートリポジトリの *raw* にアクセスすると *token* が表示されますので、
 その *token* をコピーして使用します。
-
 *token* の有効時間内にコンソールで実行すれば、プライベートリポジトリのパッケージもインストールできます。
 
 ```bat
@@ -507,11 +508,9 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
 # パッケージの紹介
-
 ここではいくつかの外部パッケージを紹介します。
 
 ## *@wachaon/fmt*
-
 *@wachaon/fmt* は *prettier* を *wes* 用にパッケージ化したもので、スクリプトのフォーマットをします。
 また、*@wachaon/fmt* がインストールされている状態で *Syntax Error* が発生した場合に
 そのエラー箇所を提示できます。
@@ -523,7 +522,6 @@ wes install @wachaon/fmt
 ```
 
 ### 使い方
-
 ワーキングディレクトリに *.prettierrc* (JSON フォーマット) があれば設定に反映させます。
 *fmt* は *CLI* と *module* の両方で使用できます。
 
@@ -542,7 +540,7 @@ wes @wachaon/fmt src/sample --write
 | --------- | ----------- | ---------------- |
 | `--write` | `-w`        | 上書きを許可する |
 
- `--write` もしくは `-w` の名前付き引数の指定があればフォーマットしたスクリプトでファイルを上書きします。
+`--write` もしくは `-w` の名前付き引数の指定があればフォーマットしたスクリプトでファイルを上書きします。
 
 #### モジュールとして使用する
 
@@ -550,24 +548,21 @@ wes @wachaon/fmt src/sample --write
 const fmt = require('@wachaon/fmt')
 const { readTextFileSync, writeTextFileSync } = require('filesystem')
 const { join, workingDirectory } = require('pathname')
-
 const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
 ## *@wachaon/edge*
-
 *Internet Explorer* が 2022/6/15 を以てサポートを完了します。それに伴い `require('InternetExplorer.Application')` でのアプリケーションの操作も不可能になると予想されます。
-
 代替案は、*Microsoft Edge based on Chromium* を *web driver* 経由で操作することになります。`@wachaon/edge` は *Edge* の自動操縦を簡素化します。
 
 ### インストール
-
 まずはパッケージをインストールします。
 
 ```bat
 wes install @wachaon/edge --unsafe --bare
 ```
+
 次に *web driver* をダウンロードします。
 
 ```bat
@@ -577,40 +572,31 @@ wes edge --download
 インストールされている *Edge* のバージョンを確認して対応した *web driver* をダウンロードします。
 
 ### 使い方
-
 簡単な使い方になります。
 
 ```javascript
 const edge = require('edge')
-
 edge((window, navi, res) => {
     window.rect({x: 1 ,y: 1, width: 1200, height: 500})
     res.exports = []
-
     navi.on(/https?:\/\/.+/, (url) => {
         console.log('URL: %O', url)
         res.exports.push(url)
     })
-
     window.navigate('https://www.google.com')
 })
 ```
-このスクリプトは訪問した *URL* を順次コンソールに出力します。
 
+このスクリプトは訪問した *URL* を順次コンソールに出力します。
 `@wachaon/edge` は *URL* に対してイベントを登録して `res.exports` にデータを追加していきます。
 登録する *URL* は `String` `RegExp` どちらでも可能で、柔軟な設定ができます。
-
 イベントドリブンにすることで、自動操縦では対応が困難な処理などはあえてイベントを設定しないことで、容易に手動操作への切り替えが可能です。
-
 スクリプトを停止させたい場合は、`navi.emit('terminate', res)` を実行するか、*Edge* を手動で終了させます。
-
 終了処理はデフォルト値として `res.exports` を *.json* ファイルとして出力します。
 終了処理を設定したい場合は、`edge(callback, terminate)` の `terminate` を設定します。
-
 `window` はブラウザでの `window` ではなく、*@wachaon/webdriver* の *Window* クラスのインスタンスになります。
 
 ## *@wachaon/webdriver*
-
 ブラウザを操作する *web driver* に対してリクエストを送るパッケージになります。
 *@wachaon/edge* に組み込まれています。
 *@wachaon/edge* と同様ブラウザ操作には *web driver* が別途必要になります。
