@@ -5,7 +5,7 @@ const { resolve } = require('pathname')
 
 const UTF8 = 'UTF-8N'
 
-console.log('%SStart formatting', blueBright)
+console.log('%SStart formatting script', blueBright)
 function formatter(dir) {
     readdirsSync(resolve(process.cwd(), dir), UTF8)
         .filter((spec) => spec.type === 'file' && spec.path.endsWith('.js'))
@@ -18,3 +18,11 @@ function formatter(dir) {
 
 formatter('lib')
 formatter('src')
+
+console.log('\n%SStart formatting document', blueBright)
+readdirsSync(resolve(process.cwd(), 'docs'), (file, dir) => {
+    console.log('%O', writeFileSync(file, readTextFileSync(file).replace(/(\r?\n){3,}/g, '\n\n'), UTF8))
+})
+
+const doc = resolve(process.cwd(), 'README.md')
+console.log('%O', writeFileSync(doc, readTextFileSync(doc).replace(/(\r?\n){3,}/g, '\n\n'), UTF8))
