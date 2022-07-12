@@ -393,26 +393,31 @@ try {
                 console.log('%C%S', orange, syntaxerror.stack)
             }
         } else {
-            var errorSource = Modules[Object.keys(Modules)[Object.keys(Modules).length - 1]].source
+            var errorSource = Object.keys(Modules).find(function getErrorSource(mod) {
+                return Modulues[mod].path === current
+            }).source
 
-            var rLine = new RegExp(current + '\\s\\((\\d+)')
-            var errorRow = (rLine.test(errorStack) ? errorStack.match(rLine)[1] : 0) - 0
+            if (errorSource == null) console.log('Error File identification failed.')
+            else {
+                var rLine = new RegExp(current + '\\s\\((\\d+)')
+                var errorRow = (rLine.test(errorStack) ? errorStack.match(rLine)[1] : 0) - 0
 
-            var line = errorSource.split(rCR_LF)
-            var ret
-            if (errorRow === 0) ret = NONE
-            else if (errorRow < 4) {
-                ret = [
-                    (errorRow === 1 ? redBright : clear) + '     1 | ' + line[0].slice(line[0].indexOf('{') + 1),
-                    (errorRow === 2 ? redBright : clear) + '     2 | ' + line[1],
-                    (errorRow === 3 ? redBright : clear) + '     3 | ' + line[2] + orange
-                ].join(LF)
-            } else {
-                ret = [
-                    clear + (spaces + (errorRow - 1)).slice(-5) + ' | ' + line[errorRow - 2],
-                    redBright + (spaces + errorRow).slice(-5) + ' | ' + line[errorRow - 1],
-                    clear + (spaces + (errorRow + 1)).slice(-5) + ' | ' + (line[errorRow] || '') + orange
-                ].join(LF)
+                var line = errorSource.split(rCR_LF)
+                var ret
+                if (errorRow === 0) ret = NONE
+                else if (errorRow < 4) {
+                    ret = [
+                        (errorRow === 1 ? redBright : clear) + '     1 | ' + line[0].slice(line[0].indexOf('{') + 1),
+                        (errorRow === 2 ? redBright : clear) + '     2 | ' + line[1],
+                        (errorRow === 3 ? redBright : clear) + '     3 | ' + line[2] + orange
+                    ].join(LF)
+                } else {
+                    ret = [
+                        clear + (spaces + (errorRow - 1)).slice(-5) + ' | ' + line[errorRow - 2],
+                        redBright + (spaces + errorRow).slice(-5) + ' | ' + line[errorRow - 1],
+                        clear + (spaces + (errorRow + 1)).slice(-5) + ' | ' + (line[errorRow] || '') + orange
+                    ].join(LF)
+                }
             }
 
             var customError = errorStack.replace('\n   at', '\n' + ret + '\n   at')
