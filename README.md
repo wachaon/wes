@@ -302,7 +302,6 @@ console.log('%O', JSON.parse(content))
 
 ## *minitest*
 *minitest* は簡易的なテストを記述できます。
-単純な構文、少ないアサーション
 version `0.10.71` から基本コンセプトに立ち返って、アサーションの種類を３種類に減らしました。
 
 ### usage
@@ -344,7 +343,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 | Param     | Type                 | Description                    |
 |:----------|:---------------------|:-------------------------------|
-| `value`   | `{Function|Boolean}` | 真偽値もしくは真偽値を返す関数 |
+| `value`   | `{Function\|Boolean}` | 真偽値もしくは真偽値を返す関数 |
 | `message` | `{String}`           | 失敗した場合のメッセージ       |
 
 #### `assert.equal(expected, actual)`
@@ -365,7 +364,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 | Param      | Type                   | Description                                                                     |
 |:-----------|:-----------------------|:--------------------------------------------------------------------------------|
 | `value`    | `{Error}`              | エラー                                                                          |
-| `expected` | `{Error|String|RegExp}` | 期待するエラーの *constructor* か *message* もしくは *stack* を評価する正規表現 |
+| `expected` | `{Error|String\|RegExp}` | 期待するエラーの *constructor* か *message* もしくは *stack* を評価する正規表現 |
 | `message`  | `{String}`             | 失敗した場合のメッセージ                                                        |
 
 ## *pipe*
