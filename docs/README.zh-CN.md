@@ -103,7 +103,7 @@ const add = require('./add')
 console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
-您还可以使用*require* `require('WScript.Shell')`导入*ActiveX* 。
+您也可以使用*require* `require('WScript.Shell')`导入*ActiveX* 。
 
 ```javascript
 const Shell = require('Shell.Application')
@@ -182,7 +182,7 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 
 ## *ansi*
 
-`ansi`是一个*ANSI escape code* ，允许您更改标准输出的颜色和效果。颜色和效果可能会因使用的控制台应用程序的类型和设置而异。
+`ansi`是一个*ANSI escape code* ，允许您更改标准输出的颜色和效果。颜色和效果可能因使用的控制台应用程序的类型和设置而异。
 
 ```javascript
 const { redBright, yellow } = require('ansi')
@@ -254,7 +254,7 @@ const files = new Enumerator(dir)
 files.forEach(file => console.log(file.Name))
 ```
 
-*GetObject*作为`WScript.GetObject`的替代品。
+*GetObject*充当`WScript.GetObject`的替代品。
 
 ```javascript
 const { GetObject, Enumerator } = require('JScript')
@@ -288,7 +288,7 @@ console.log('%O', JSON.parse(content))
 
 ## *minitest*
 
-*minitest*可以编写简单的测试。语法简单，断言少 回到`0.10.71`版本的基本概念，我们将断言类型的数量减少到三种。
+*minitest*可以编写简单的测试。回到`0.10.71`版本的基本概念，我们将断言的类型减少到三种。
 
 ### 用法
 
@@ -328,14 +328,14 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 将`true`与完全相等运算符`===`进行比较。如果`value`是一个函数，则评估执行该函数的结果。
 
-| 参数        | 类型         | 描述     |
-| :-------- | :--------- | :----- |
-| `value`   | \`{函数      | 布尔} \` |
-| `message` | `{String}` | 失败时的消息 |
+| 参数        | 类型                    | 描述           |
+| :-------- | :-------------------- | :----------- |
+| `value`   | `{Function\|Boolean}` | 返回布尔值或布尔值的函数 |
+| `message` | `{String}`            | 失败时的消息       |
 
 #### `assert.equal(expected, actual)`
 
-通过其成员是否等价而不是通过引用来比较对象。  
+通过对象的成员是否等价而不是通过引用来比较对象。  
 NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` and `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]`等也成立。  
 比较类（对象）时，相同的构造函数或`actual`必须是`expected`的超类。
 
@@ -349,11 +349,11 @@ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegEx
 验证错误是否正确抛出。  
 错误是否正确取决于它是否是预期错误的*constructor* ，或者*message*是否等效并且正则表达式通过*stack*评估。
 
-| 参数         | 类型         | 描述     |
-| :--------- | :--------- | :----- |
-| `value`    | `{Error}`  | 错误     |
-| `expected` | \`{错误      | 细绳     |
-| `message`  | `{String}` | 失败时的消息 |
+| 参数         | 类型                        | 描述                                             |
+| :--------- | :------------------------ | :--------------------------------------------- |
+| `value`    | `{Error}`                 | 错误                                             |
+| `expected` | `{Error\|String\|RegExp}` | 计算预期错误的*constructor* 、 *message*或*stack*的正则表达式 |
+| `message`  | `{String}`                | 失败时的消息                                         |
 
 ## *pipe*
 
@@ -423,7 +423,7 @@ wes zip -p dox.zip
 
 # 模块捆绑和安装
 
-在*wes*中，多个模块的捆绑包称为包。您可以安装在*github*上发布的*wes*软件包。您将需要一个*github repository*来发布包。此外，存储库名称和本地目录名称必须相同。
+在*wes*中，几个模块的捆绑称为一个包。您可以安装在*github*上发布的*wes*软件包。您将需要一个*github repository*来发布包。此外，存储库名称和本地目录名称必须相同。
 
 ## *bundle*
 
@@ -433,7 +433,7 @@ wes zip -p dox.zip
 
 2.  确保*github*上的仓库名称和本地工作目录名称相同。
 
-3.  如果您发布包，请*public*存储库
+3.  如果您发布包，请将存储库*public*
 
 4.  在顶层范围内声明模块获取
 
@@ -472,7 +472,7 @@ wes install @wachaon/fmt
 | `--bare`      | `-b` | 不要创建*@author*文件夹                              |
 | `--global`    | `-g` | 将包安装到*wes.js*所在的文件夹中                          |
 | `--save`      | `-S` | 将包名称和版本添加到*package.json*的*dependencies*项字段中   |
-| `--save--dev` | `-D` | 将包名称和版本添加到*package.json*中的*devDependencies*字段 |
+| `--save--dev` | `-D` | 将包名称和版本添加到*package.json*的*devDependencies*字段中 |
 | `--node`      | `-n` | 安装在*node_module*文件夹中                          |
 
 `--bare`选项可以省略从`author@repository`到`repository`的`require`参数。 `--global`选项使已安装的软件包可用于所有脚本。 `--node`或`-n`选项必须与*wes*安全选项`--unsafe`或`--dangerous` 。
@@ -528,7 +528,7 @@ wes @wachaon/fmt src/sample --write
 | --------- | ---- | ---- |
 | `--write` | `-w` | 允许覆盖 |
 
-如果指定`--write`或`-w`的命名参数，则使用格式化脚本覆盖文件。
+如果指定`--write`或`-w`的命名参数，则使用格式化的脚本覆盖文件。
 
 #### 作为模块使用
 
@@ -577,7 +577,7 @@ edge((window, navi, res) => {
 })
 ```
 
-此脚本将按顺序将访问的*URL*输出到控制台。 `@wachaon/edge`为*URL*注册一个事件并将数据添加到`res.exports` 。要注册的*URL*可以是`String` `RegExp` ，可以进行灵活的设置。通过使其成为事件驱动，可以通过不设置自动驾驶难以处理的事件来轻松切换到手动操作。如果要停止脚本，请运行`navi.emit('terminate', res)`或手动终止*Edge* 。终止进程将`res.exports`输出为*.json*文件作为默认值。如果要设置终止过程，设置`edge(callback, terminate)` `terminate` `window`不是浏览器中的`window` ，而是*@wachaon/webdriver*的*Window*类的一个实例。
+此脚本将按顺序将访问的*URL*输出到控制台。 `@wachaon/edge`为*URL*注册一个事件并将数据添加到`res.exports` 。要注册的*URL*可以是`String` `RegExp` ，可以进行灵活的设置。通过使其成为事件驱动，可以通过不设置自动驾驶难以处理的处理事件来轻松切换到手动操作。如果要停止脚本，请运行`navi.emit('terminate', res)`或手动终止*Edge* 。终止进程将`res.exports`输出为*.json*文件作为默认值。如果要设置终止过程，设置`edge(callback, terminate)` `terminate` `window`不是浏览器中的`window` ，而是*@wachaon/webdriver*的*Window*类的一个实例。
 
 ## *@wachaon/webdriver*
 

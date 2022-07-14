@@ -1,6 +1,6 @@
 # *WES*
 
-*wes*是一個在*WSH (Windows Script Host)*上運行*ECMAScript*的控制台框架。 *README*文件的原文是[*japanese*](/README.md) 。除了日語，它是機器翻譯的句子。  
+*wes*是一個在*WSH (Windows Script Host)*上運行*ECMAScript*的控制台框架。 *README*的原文是[*japanese*](/README.md) 。除了日語，它是機器翻譯的句子。  
 請從以下選擇其他語言的句子。
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
@@ -103,7 +103,7 @@ const add = require('./add')
 console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
-您還可以使用*require* `require('WScript.Shell')`導入*ActiveX* 。
+您也可以使用*require* `require('WScript.Shell')`導入*ActiveX* 。
 
 ```javascript
 const Shell = require('Shell.Application')
@@ -278,7 +278,7 @@ console.log(TypeName(FSO))
 
 ## *httprequest*
 
-*httprequest* *http request*發出一個http請求。
+*httprequest*發出一個*http request* 。
 
 ```javascript
 const request = require('httprequest')
@@ -288,7 +288,7 @@ console.log('%O', JSON.parse(content))
 
 ## *minitest*
 
-*minitest*可以編寫簡單的測試。語法簡單，斷言少 回到`0.10.71`版本的基本概念，我們將斷言類型的數量減少到三種。
+*minitest*可以編寫簡單的測試。回到`0.10.71`版本的基本概念，我們將斷言的類型減少到三種。
 
 ### 用法
 
@@ -328,10 +328,10 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 將`true`與完全相等運算符`===`進行比較。如果`value`是一個函數，則評估執行該函數的結果。
 
-| 參數        | 類型         | 描述     |
-| :-------- | :--------- | :----- |
-| `value`   | \`{函數      | 布爾} \` |
-| `message` | `{String}` | 失敗時的消息 |
+| 參數        | 類型                    | 描述           |
+| :-------- | :-------------------- | :----------- |
+| `value`   | `{Function\|Boolean}` | 返回布爾值或布爾值的函數 |
+| `message` | `{String}`            | 失敗時的消息       |
 
 #### `assert.equal(expected, actual)`
 
@@ -349,11 +349,11 @@ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegEx
 驗證錯誤是否正確拋出。  
 錯誤是否正確取決於它是否是預期錯誤的*constructor* ，或者*message*是否等效並且正則表達式通過*stack*評估。
 
-| 參數         | 類型         | 描述     |
-| :--------- | :--------- | :----- |
-| `value`    | `{Error}`  | 錯誤     |
-| `expected` | \`{錯誤      | 細繩     |
-| `message`  | `{String}` | 失敗時的消息 |
+| 參數         | 類型                        | 描述                                             |
+| :--------- | :------------------------ | :--------------------------------------------- |
+| `value`    | `{Error}`                 | 錯誤                                             |
+| `expected` | `{Error\|String\|RegExp}` | 計算預期錯誤的*constructor* 、 *message*或*stack*的正則表達式 |
+| `message`  | `{String}`                | 失敗時的消息                                         |
 
 ## *pipe*
 
@@ -433,7 +433,7 @@ wes zip -p dox.zip
 
 2.  確保*github*上的倉庫名稱和​​本地工作目錄名稱相同。
 
-3.  如果您發布包，請將存儲庫*public*
+3.  如果您發布包，請*public*存儲庫
 
 4.  在頂層範圍內聲明模塊獲取
 
@@ -528,7 +528,7 @@ wes @wachaon/fmt src/sample --write
 | --------- | ---- | ---- |
 | `--write` | `-w` | 允許覆蓋 |
 
-如果指定`--write`或`-w`的命名參數，則使用格式化腳本覆蓋文件。
+如果指定`--write`或`-w`的命名參數，則使用格式化的腳本覆蓋文件。
 
 #### 作為模塊使用
 

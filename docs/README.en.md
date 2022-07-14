@@ -288,7 +288,7 @@ console.log('%O', JSON.parse(content))
 
 ## *minitest*
 
-*minitest* can write simple tests. Simple syntax, few assertions Returning to the basic concept from version `0.10.71` , we have reduced the number of types of assertions to three.
+*minitest* can write simple tests. Going back to the basic concept from version `0.10.71` , we reduced the types of assertions to three.
 
 ### usage
 
@@ -328,10 +328,10 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 Compare with `true` with the exact equality operator `===` . If `value` is a function, evaluate the result of executing the function.
 
-| Param     | Type        | Description                |
-| :-------- | :---------- | :------------------------- |
-| `value`   | \`{Function | Boolean} \`                |
-| `message` | `{String}`  | Message in case of failure |
+| Param     | Type                  | Description                                              |
+| :-------- | :-------------------- | :------------------------------------------------------- |
+| `value`   | `{Function\|Boolean}` | Function that returns a boolean value or a boolean value |
+| `message` | `{String}`            | Message in case of failure                               |
 
 #### `assert.equal(expected, actual)`
 
@@ -349,11 +349,11 @@ When comparing classes (objects), the same constructor or `actual` must be a sup
 Verify that the error is being thrown correctly.  
 Whether the error is correct is determined by whether it is the *constructor* of the expected error, or if the *message* is equivalent and the regular expression passes the *stack* evaluation.
 
-| Param      | Type       | Description                |
-| :--------- | :--------- | :------------------------- |
-| `value`    | `{Error}`  | error                      |
-| `expected` | \`{Error   | String                     |
-| `message`  | `{String}` | Message in case of failure |
+| Param      | Type                      | Description                                                                                          |
+| :--------- | :------------------------ | :--------------------------------------------------------------------------------------------------- |
+| `value`    | `{Error}`                 | error                                                                                                |
+| `expected` | `{Error\|String\|RegExp}` | A regular expression that evaluates the *constructor* , *message* , or *stack* of the expected error |
+| `message`  | `{String}`                | Message in case of failure                                                                           |
 
 ## *pipe*
 
@@ -455,7 +455,7 @@ When publishing the package to *github* , *bundle* bundles the required modules 
 
 ## *install*
 
-Used to install the package for *wes* published on *github* . From `version 0.10.28` the installation folder will be changed from `node_modules` to `wes_modules` . If you are installing to `node_modules` , add the `--node` option.
+Used to install the package for *wes* published on *github* . From `version 0.10.28` , the installation folder will be changed from `node_modules` to `wes_modules` . If you are installing to `node_modules` , add the `--node` option.
 
 ### How to use
 

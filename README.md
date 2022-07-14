@@ -364,7 +364,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 | Param      | Type                   | Description                                                                     |
 |:-----------|:-----------------------|:--------------------------------------------------------------------------------|
 | `value`    | `{Error}`              | エラー                                                                          |
-| `expected` | `{Error|String\|RegExp}` | 期待するエラーの *constructor* か *message* もしくは *stack* を評価する正規表現 |
+| `expected` | `{Error\|String\|RegExp}` | 期待するエラーの *constructor* か *message* もしくは *stack* を評価する正規表現 |
 | `message`  | `{String}`             | 失敗した場合のメッセージ                                                        |
 
 ## *pipe*

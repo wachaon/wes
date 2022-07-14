@@ -182,7 +182,7 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 
 ## *ansi*
 
-`ansi` is een *ANSI escape code* waarmee u de kleur en het effect van de standaarduitvoer kunt wijzigen. Kleuren en effecten kunnen variëren, afhankelijk van het type en de instellingen van de gebruikte consoletoepassing.
+`ansi` is een *ANSI escape code* waarmee u de kleur en het effect van standaarduitvoer kunt wijzigen. Kleuren en effecten kunnen variëren, afhankelijk van het type en de instellingen van de gebruikte consoletoepassing.
 
 ```javascript
 const { redBright, yellow } = require('ansi')
@@ -190,7 +190,7 @@ const message = 'File does not exist'
 console.log(redBright + 'Error: ' + yellow + message)
 ```
 
-U kunt ook uw eigen kleuren maken met `ansi.color()` en `ansi.bgColor()` . Argumenten gebruiken *RGB* zoals `255, 165, 0` en *color code* zoals `'#FFA500'` . Het ondersteunt geen *color name* zoals `orange` .
+U kunt ook uw eigen kleuren maken met `ansi.color()` en `ansi.bgColor()` . Het argument gebruikt *RGB* zoals `255, 165, 0` of *color code* zoals `'#FFA500'` . Het ondersteunt geen *color name* zoals `orange` .
 
 ```javascript
 const { color } = require('ansi')
@@ -288,7 +288,7 @@ console.log('%O', JSON.parse(content))
 
 ## *minitest*
 
-*minitest* kan eenvoudige tests schrijven. Eenvoudige syntaxis, weinig beweringen Terugkerend naar het basisconcept van versie `0.10.71` hebben we het aantal soorten beweringen teruggebracht tot drie.
+*minitest* kan eenvoudige tests schrijven. Terugkomend op het basisconcept van versie `0.10.71` hebben we het aantal soorten beweringen teruggebracht tot drie.
 
 ### gebruik
 
@@ -328,10 +328,10 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 Vergelijk met `true` met de exacte gelijkheidsoperator `===` . Als `value` een functie is, evalueer dan het resultaat van het uitvoeren van de functie.
 
-| Param     | Type        | Beschrijving        |
-| :-------- | :---------- | :------------------ |
-| `value`   | \`{Functie' | Booleaans} \`       |
-| `message` | `{String}`  | Bericht bij storing |
+| Param     | Type                  | Beschrijving                                                           |
+| :-------- | :-------------------- | :--------------------------------------------------------------------- |
+| `value`   | `{Function\|Boolean}` | Functie die een booleaanse waarde of een booleaanse waarde retourneert |
+| `message` | `{String}`            | Bericht bij storing                                                    |
 
 #### `assert.equal(expected, actual)`
 
@@ -349,11 +349,11 @@ Bij het vergelijken van klassen (objecten) moet dezelfde constructor of `actual`
 Controleer of de fout correct wordt gegenereerd.  
 Of de fout correct is, wordt bepaald door of het de *constructor* van de verwachte fout is, of dat het *message* equivalent is en de reguliere expressie de *stack* doorstaat.
 
-| Param      | Type       | Beschrijving        |
-| :--------- | :--------- | :------------------ |
-| `value`    | `{Error}`  | fout                |
-| `expected` | \`{Fout'   | Snaar               |
-| `message`  | `{String}` | Bericht bij storing |
+| Param      | Type                      | Beschrijving                                                                                        |
+| :--------- | :------------------------ | :-------------------------------------------------------------------------------------------------- |
+| `value`    | `{Error}`                 | fout                                                                                                |
+| `expected` | `{Error\|String\|RegExp}` | Een reguliere expressie die de *constructor* , *message* of *stack* van de verwachte fout evalueert |
+| `message`  | `{String}`                | Bericht bij storing                                                                                 |
 
 ## *pipe*
 
@@ -455,7 +455,7 @@ Wanneer u het pakket naar *github* , *bundle* u de vereiste modules en wijzigt u
 
 ## *install*
 
-Wordt gebruikt om het pakket voor *wes* te installeren dat op *github* is gepubliceerd. Vanaf `version 0.10.28` de installatiemap gewijzigd van `node_modules` naar `wes_modules` . Als u installeert op `node_modules` , voeg dan de `--node` optie toe.
+Wordt gebruikt om het pakket voor *wes* te installeren dat op *github* is gepubliceerd. Vanaf `version 0.10.28` wordt de installatiemap gewijzigd van `node_modules` naar `wes_modules` . Als u installeert op `node_modules` , voeg dan de `--node` optie toe.
 
 ### Hoe te gebruiken
 
@@ -501,7 +501,7 @@ Hier zijn enkele externe pakketten.
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* is een *prettier* verpakking voor *wes* en formatteert het script. Als er een *Syntax Error* optreedt met *@wachaon/fmt* geïnstalleerd, kunt u ook de locatie van de fout aangeven.
+*@wachaon/fmt* is een *prettier* verpakking voor *wes* en formatteert het script. Ook als *@wachaon/fmt* is geïnstalleerd en er treedt een *Syntax Error* op, kunt u de locatie van de fout aangeven.
 
 ### installeren
 

@@ -1,6 +1,6 @@
 # *WES*
 
-*wes* é uma estrutura de console que executa *ECMAScript* no *WSH (Windows Script Host)* . O texto original do *README* é [*japanese*](/README.md) . Além do japonês, é uma frase traduzida por máquina.  
+*wes* é uma estrutura de console que executa *ECMAScript* em *WSH (Windows Script Host)* . O texto original do *README* é [*japanese*](/README.md) . Além do japonês, é uma frase traduzida por máquina.  
 Por favor, selecione frases em outros idiomas a partir do seguinte.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
@@ -288,7 +288,7 @@ console.log('%O', JSON.parse(content))
 
 ## *minitest*
 
-*minitest* pode escrever testes simples. Sintaxe simples, poucas asserções Voltando ao conceito básico da versão `0.10.71` , reduzimos o número de tipos de asserções para três.
+*minitest* pode escrever testes simples. Voltando ao conceito básico da versão `0.10.71` , reduzimos os tipos de assertivas para três.
 
 ### uso
 
@@ -328,10 +328,10 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 Compare com `true` com o operador de igualdade exata `===` . Se `value` for uma função, avalie o resultado da execução da função.
 
-| Parâmetro | Modelo     | Descrição                 |
-| :-------- | :--------- | :------------------------ |
-| `value`   | \`{Função  | Booleano} \`              |
-| `message` | `{String}` | Mensagem em caso de falha |
+| Parâmetro | Modelo                | Descrição                                                 |
+| :-------- | :-------------------- | :-------------------------------------------------------- |
+| `value`   | `{Function\|Boolean}` | Função que retorna um valor booleano ou um valor booleano |
+| `message` | `{String}`            | Mensagem em caso de falha                                 |
 
 #### `assert.equal(expected, actual)`
 
@@ -349,11 +349,11 @@ Ao comparar classes (objetos), o mesmo construtor ou `actual` `expected` ser uma
 Verifique se o erro está sendo lançado corretamente.  
 Se o erro está correto é determinado se ele é o *constructor* do erro esperado ou se a *message* é equivalente e a expressão regular passa na avaliação da *stack* .
 
-| Parâmetro  | Modelo     | Descrição                 |
-| :--------- | :--------- | :------------------------ |
-| `value`    | `{Error}`  | erro                      |
-| `expected` | \`{Erro    | Corda                     |
-| `message`  | `{String}` | Mensagem em caso de falha |
+| Parâmetro  | Modelo                    | Descrição                                                                                    |
+| :--------- | :------------------------ | :------------------------------------------------------------------------------------------- |
+| `value`    | `{Error}`                 | erro                                                                                         |
+| `expected` | `{Error\|String\|RegExp}` | Uma expressão regular que avalia o *constructor* , a *message* ou a *stack* do erro esperado |
+| `message`  | `{String}`                | Mensagem em caso de falha                                                                    |
 
 ## *pipe*
 
@@ -472,7 +472,7 @@ wes install @wachaon/fmt
 | `--bare`      | `-b`       | Não crie a pasta *@author*                                                        |
 | `--global`    | `-g`       | Instale o pacote na pasta onde *wes.js* está                                      |
 | `--save`      | `-S`       | Adicione o nome e a versão do pacote ao campo de *dependencies* do *package.json* |
-| `--save--dev` | `-D`       | Adicione o nome e a versão do pacote ao campo *devDependencies* de *package.json* |
+| `--save--dev` | `-D`       | Adicione o nome e a versão do pacote ao campo *devDependencies* em *package.json* |
 | `--node`      | `-n`       | Instale na pasta *node_module*                                                    |
 
 `--bare` pode omitir o argumento `require` de `author@repository` para `repository` . `--global` disponibiliza o pacote instalado para todos os scripts. `--node` ou `-n` deve ser especificada ao mesmo tempo que a opção *wes* security `--unsafe` ou `--dangerous` .

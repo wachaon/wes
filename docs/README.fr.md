@@ -56,7 +56,7 @@ Entrez la commande de la console qui spécifie le fichier qui sera le point de d
 wes index
 ```
 
-De plus, *wes* a un *REP* , donc si vous le démarrez uniquement avec `wes` , vous pouvez entrer directement le script.
+De plus, *wes* a un *REP* , donc si vous ne le démarrez qu'avec `wes` , vous pouvez entrer directement le script.
 
 ```bat
 wes
@@ -288,7 +288,7 @@ console.log('%O', JSON.parse(content))
 
 ## *minitest*
 
-*minitest* peut écrire des tests simples. Syntaxe simple, peu d'assertions Revenant au concept de base de la version `0.10.71` , nous avons réduit le nombre de types d'assertions à trois.
+*minitest* peut écrire des tests simples. En revenant au concept de base de la version `0.10.71` , nous avons réduit les types d'assertions à trois.
 
 ### usage
 
@@ -328,10 +328,10 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 Comparez `true` avec l'opérateur d'égalité exacte `===` . Si `value` est une fonction, évalue le résultat de l'exécution de la fonction.
 
-| Param     | Taper       | La description         |
-| :-------- | :---------- | :--------------------- |
-| `value`   | \`{Fonction | Booléen} \`            |
-| `message` | `{String}`  | Message en cas d'échec |
+| Param     | Taper                 | La description                                                    |
+| :-------- | :-------------------- | :---------------------------------------------------------------- |
+| `value`   | `{Function\|Boolean}` | Fonction qui renvoie une valeur booléenne ou une valeur booléenne |
+| `message` | `{String}`            | Message en cas d'échec                                            |
 
 #### `assert.equal(expected, actual)`
 
@@ -349,11 +349,11 @@ Lors de la comparaison de classes (objets), le même constructeur ou `actual` do
 Vérifiez que l'erreur est générée correctement.  
 Le fait que l'erreur soit correcte est déterminé par le fait qu'il s'agit du *constructor* de l'erreur attendue ou si le *message* est équivalent et que l'expression régulière réussit l'évaluation de la *stack* .
 
-| Param      | Taper      | La description         |
-| :--------- | :--------- | :--------------------- |
-| `value`    | `{Error}`  | Erreur                 |
-| `expected` | \`{Erreur  | Chaîne de caractères   |
-| `message`  | `{String}` | Message en cas d'échec |
+| Param      | Taper                     | La description                                                                                         |
+| :--------- | :------------------------ | :----------------------------------------------------------------------------------------------------- |
+| `value`    | `{Error}`                 | Erreur                                                                                                 |
+| `expected` | `{Error\|String\|RegExp}` | Une expression régulière qui évalue le *constructor* , le *message* ou la *stack* de l'erreur attendue |
+| `message`  | `{String}`                | Message en cas d'échec                                                                                 |
 
 ## *pipe*
 
@@ -413,12 +413,12 @@ Si `path` a l'extension `.zip` , `unzip()` est traité et il n'y a pas de descri
 
 | anonyme | La description                              |
 | ------- | ------------------------------------------- |
-| `1`     | `path` Dossier ou fichier à saisir          |
+| `1`     | `path` Dossier ou fichier à entrer          |
 | `2`     | fichier de dossier vers la `dest` de sortie |
 
 | nommé    | nommé court | La description                              |
 | -------- | ----------- | ------------------------------------------- |
-| `--path` | `-p`        | `path` Dossier ou fichier à saisir          |
+| `--path` | `-p`        | `path` Dossier ou fichier à entrer          |
 | `--dest` | `-d`        | fichier de dossier vers la `dest` de sortie |
 
 # Regroupement et installation de modules

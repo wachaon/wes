@@ -21,7 +21,7 @@ Seleccione oraciones en otros idiomas de las siguientes.
 # rasgo
 
 -   Puede cambiar el motor de script a *Chakra* y escribirlo en la especificación *ECMAScript2015*
--   Siempre ejecuta *cscript.exe* de 32 bits, por lo que no tiene ningún problema inherente en un entorno de 64 bits.
+-   Siempre ejecuta *cscript.exe* de 32 bits, por lo que no hay problemas inherentes en un entorno de 64 bits.
 -   Con un sistema modular, puede desarrollar de manera más eficiente que el *WSH* tradicional
 -   El módulo incorporado admite el procesamiento básico, como la entrada/salida de archivos y la salida de caracteres de colores a la consola.
 -   No tiene que preocuparse por la codificación porque puede hacer que la lectura del archivo adivine automáticamente la codificación.
@@ -30,7 +30,7 @@ Seleccione oraciones en otros idiomas de las siguientes.
 # Problemas *wes* que no podemos resolver
 
 -   `WScript.Quit` no puede interrumpir el programa y no devuelve un código de error
--   No es posible el procesamiento asíncrono como `setTimeout` y `Promise`
+-   El procesamiento asíncrono como `setTimeout` y `Promise` no es posible
 -   No puede usar el *event prefix* como segundo argumento de `WScript.CreateObject`
 
 # descargar
@@ -50,7 +50,7 @@ wes update
 
 # Cómo utilizar
 
-Ingrese el comando a la consola que especifica el archivo que será el punto de inicio del programa siguiendo la palabra clave `wes` . La extensión de secuencia de comandos *.js* se puede omitir.
+Ingrese el comando a la consola que especifica el archivo que será el punto de partida del programa siguiendo la palabra clave `wes` . La extensión de secuencia de comandos *.js* se puede omitir.
 
 ```bat
 wes index
@@ -87,7 +87,7 @@ La implementación de `--safe` `--usual` `--unsafe` `--dangerous` `--debug` est�
 
 ## *commonjs module*
 
-Administre módulos asignándolos a `module.exports` y llamando con `require()` . Para rutas que no sean rutas absolutas y rutas relativas que comiencen con `./` y `../` , busque módulos en el directorio *wes_modules* y, para mayor comodidad, en el directorio *node_modules* . *wes* `require()` adivina automáticamente la codificación del archivo del módulo, pero si no adivina correctamente, puede especificar la codificación con el segundo argumento.
+Administre módulos asignándolos a `module.exports` y llamando con `require()` . Para rutas que no sean rutas absolutas y rutas relativas que comiencen con `./` y `../` , busque módulos en el directorio *wes_modules* y, para mayor comodidad, en el directorio *node_modules* . *wes* `require()` adivina automáticamente la codificación del archivo del módulo, pero si no lo hace correctamente, puede especificar la codificación con el segundo argumento.
 
 ```javascript
 // ./add.js
@@ -200,7 +200,7 @@ console.log(orange + 'Hello World')
 
 ## *argv*
 
-Obtiene el argumento de la línea de comando. Los argumentos de la línea de comandos en `cscript.exe` declaran argumentos con nombre con `/` `--` mientras que *wes* declara argumentos con nombre con `-` y -. *argv.unnamed* y *argv.named* el tipo de valor del argumento de la línea de comando en uno de los *Boolean* de *Number* de *String* . Introduzca los argumentos de la línea de comandos junto con el *REP* .
+Obtiene el argumento de la línea de comandos. Los argumentos de la línea de comandos en `cscript.exe` declaran argumentos con nombre con `/` `--` mientras que *wes* declara argumentos con nombre con `-` y -. *argv.unnamed* y *argv.named* el tipo de valor del argumento de la línea de comando en uno de los *Boolean* de *Number* de *String* . Introduzca los argumentos de la línea de comandos junto con el *REP* .
 
 ```bat
 wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
@@ -288,7 +288,7 @@ console.log('%O', JSON.parse(content))
 
 ## *minitest*
 
-*minitest* puede escribir pruebas simples. Sintaxis simple, pocas aserciones Volviendo al concepto básico de la versión `0.10.71` , hemos reducido el número de tipos de aserciones a tres.
+*minitest* puede escribir pruebas simples. Volviendo al concepto básico de la versión `0.10.71` , redujimos los tipos de aserciones a tres.
 
 ### uso
 
@@ -328,10 +328,10 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 Compare con `true` con el operador de igualdad exacta `===` . Si el `value` es una función, evalúa el resultado de ejecutar la función.
 
-| Parámetro | Escribe    | Descripción              |
-| :-------- | :--------- | :----------------------- |
-| `value`   | \`{Función | booleano} \`             |
-| `message` | `{String}` | Mensaje en caso de falla |
+| Parámetro | Escribe               | Descripción                                                |
+| :-------- | :-------------------- | :--------------------------------------------------------- |
+| `value`   | `{Function\|Boolean}` | Función que devuelve un valor booleano o un valor booleano |
+| `message` | `{String}`            | Mensaje en caso de falla                                   |
 
 #### `assert.equal(expected, actual)`
 
@@ -349,11 +349,11 @@ Al comparar clases (objetos), el mismo constructor o `actual` debe ser una super
 Verifique que el error se esté lanzando correctamente.  
 Si el error es correcto se determina si es el *constructor* del error esperado o si el *message* es equivalente y la expresión regular pasa la evaluación de la *stack* .
 
-| Parámetro  | Escribe    | Descripción              |
-| :--------- | :--------- | :----------------------- |
-| `value`    | `{Error}`  | error                    |
-| `expected` | \`{Error   | Cuerda                   |
-| `message`  | `{String}` | Mensaje en caso de falla |
+| Parámetro  | Escribe                   | Descripción                                                                                      |
+| :--------- | :------------------------ | :----------------------------------------------------------------------------------------------- |
+| `value`    | `{Error}`                 | error                                                                                            |
+| `expected` | `{Error\|String\|RegExp}` | Una expresión regular que evalúa el *constructor* , el *message* o la *stack* del error esperado |
+| `message`  | `{String}`                | Mensaje en caso de falla                                                                         |
 
 ## *pipe*
 
@@ -435,7 +435,7 @@ Al publicar el paquete en *github* , *bundle* agrupa los módulos necesarios y c
 
 3.  Si publica el paquete, haga *public* el repositorio
 
-4.  Declarar la adquisición del módulo en el ámbito de nivel superior
+4.  Declarar la adquisición del módulo en el alcance de nivel superior
 
 5.  El archivo *.json* del paquete se crea en su *directory_name.json* de trabajo con el nombre nombre_directorio.json. Si cambia el nombre del archivo o lo mueve, no podrá consultarlo durante la instalación.
 
@@ -472,7 +472,7 @@ wes install @wachaon/fmt
 | `--bare`      | `-b`         | No cree la carpeta *@author*                                                            |
 | `--global`    | `-g`         | Instale el paquete en la carpeta donde se encuentra *wes.js*                            |
 | `--save`      | `-S`         | Agregue el nombre y la versión del paquete al campo de *dependencies* de *package.json* |
-| `--save--dev` | `-D`         | Agregue el nombre y la versión del paquete al campo *devDependencies* en *package.json* |
+| `--save--dev` | `-D`         | Agregue el nombre y la versión del paquete al campo *devDependencies* de *package.json* |
 | `--node`      | `-n`         | Instalar en la carpeta *node_module*                                                    |
 
 `--bare` puede omitir el argumento `require` de `author@repository` a `repository` . `--global` hace que el paquete instalado esté disponible para todos los scripts. `--node` o `-n` debe especificarse al mismo tiempo que la opción de seguridad *wes* `--unsafe` o `--dangerous` .
@@ -501,7 +501,7 @@ Aquí hay algunos paquetes externos.
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* es un paquete *prettier* para *wes* y formatea el script. Además, si ocurre un *Syntax Error* con *@wachaon/fmt* instalado, puede indicar la ubicación del error.
+*@wachaon/fmt* es un paquete *prettier* para *wes* y formatea el script. Además, si *@wachaon/fmt* está instalado y se produce un *Syntax Error* , puede indicar la ubicación del error.
 
 ### Instalar en pc
 

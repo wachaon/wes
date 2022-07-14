@@ -21,7 +21,7 @@ Bitte wählen Sie aus den folgenden Sätzen in anderen Sprachen aus.
 # Besonderheit
 
 -   Sie können die Skript-Engine in *Chakra* ändern und in die *ECMAScript2015* -Spezifikation schreiben
--   Es wird immer 32-Bit *cscript.exe* , sodass in einer 64-Bit-Umgebung keine Probleme auftreten.
+-   Es wird immer 32-Bit *cscript.exe* , sodass in einer 64-Bit-Umgebung keine inhärenten Probleme auftreten.
 -   Mit einem modularen System können Sie effizienter entwickeln als mit herkömmlichem *WSH*
 -   Das eingebaute Modul unterstützt die grundlegende Verarbeitung wie Dateieingabe / -ausgabe und Ausgabe von farbigen Zeichen an die Konsole.
 -   Sie müssen sich keine Gedanken über die Kodierung machen, da Sie die Datei automatisch lesen lassen können, um die Kodierung zu erraten.
@@ -278,7 +278,7 @@ console.log(TypeName(FSO))
 
 ## *httprequest*
 
-*httprequest* - *http request* gibt eine http-Anfrage aus.
+*httprequest* gibt eine *http request* aus.
 
 ```javascript
 const request = require('httprequest')
@@ -288,11 +288,11 @@ console.log('%O', JSON.parse(content))
 
 ## *minitest*
 
-*minitest* kann einfache Tests schreiben. Einfache Syntax, wenige Zusicherungen Um auf das Grundkonzept von Version `0.10.71` , haben wir die Anzahl der Arten von Zusicherungen auf drei reduziert.
+*minitest* kann einfache Tests schreiben. Um auf das Grundkonzept von Version `0.10.71` , haben wir die Arten von Behauptungen auf drei reduziert.
 
 ### Verwendungszweck
 
-Teilen Sie sich mit `describe` in Gruppen auf, schreiben `it` Tests und bestätigen Sie mit " `assert` ". `pass` ist ein Array aus der Anzahl der Vorkommen `it` und der Anzahl der Durchgänge.
+Teilen Sie sich mit `describe` in Gruppen auf, schreiben `it` Tests und bestätigen Sie mit " `assert` ". `pass` ist ein Array aus der Anzahl der Vorkommen `it` und der Anzahl der Durchläufe.
 
 ```javascript
 const { describe, it, assert, pass } = require('minitest')
@@ -328,10 +328,10 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 Vergleichen Sie mit `true` mit dem exakten Gleichheitsoperator `===` . Wenn der `value` eine Funktion ist, werten Sie das Ergebnis der Ausführung der Funktion aus.
 
-| Parameter | Typ         | Beschreibung          |
-| :-------- | :---------- | :-------------------- |
-| `value`   | \`{Funktion | Boolesch} \`          |
-| `message` | `{String}`  | Meldung im Fehlerfall |
+| Parameter | Typ                   | Beschreibung                                                              |
+| :-------- | :-------------------- | :------------------------------------------------------------------------ |
+| `value`   | `{Function\|Boolean}` | Funktion, die einen booleschen Wert oder einen booleschen Wert zurückgibt |
+| `message` | `{String}`            | Meldung im Fehlerfall                                                     |
 
 #### `assert.equal(expected, actual)`
 
@@ -349,11 +349,11 @@ Beim Vergleich von Klassen (Objekten) muss derselbe Konstruktor oder `actual` ei
 Stellen Sie sicher, dass der Fehler korrekt ausgegeben wird.  
 Ob der Fehler korrekt ist, wird dadurch bestimmt, ob es sich um den *constructor* des erwarteten Fehlers handelt oder ob die *message* äquivalent ist und der reguläre Ausdruck die *stack* besteht.
 
-| Parameter  | Typ        | Beschreibung          |
-| :--------- | :--------- | :-------------------- |
-| `value`    | `{Error}`  | Error                 |
-| `expected` | \`{Fehler  | Schnur                |
-| `message`  | `{String}` | Meldung im Fehlerfall |
+| Parameter  | Typ                       | Beschreibung                                                                                                    |
+| :--------- | :------------------------ | :-------------------------------------------------------------------------------------------------------------- |
+| `value`    | `{Error}`                 | Error                                                                                                           |
+| `expected` | `{Error\|String\|RegExp}` | Ein regulärer Ausdruck, der den *constructor* , die *message* oder den *stack* des erwarteten Fehlers auswertet |
+| `message`  | `{String}`                | Meldung im Fehlerfall                                                                                           |
 
 ## *pipe*
 
@@ -472,7 +472,7 @@ wes install @wachaon/fmt
 | `--bare`      | `-b`         | Erstellen Sie keinen *@author* Ordner                                                   |
 | `--global`    | `-g`         | Installieren Sie das Paket in dem Ordner, in dem sich *wes.js* befindet                 |
 | `--save`      | `-S`         | Fügen Sie den Paketnamen und die Version zum Feld „ *dependencies* “ von *package.json* |
-| `--save--dev` | `-D`         | Fügen Sie den Paketnamen und die Version zum Feld *devDependencies* in *package.json*   |
+| `--save--dev` | `-D`         | Fügen Sie den Paketnamen und die Version zum Feld *devDependencies* von *package.json*  |
 | `--node`      | `-n`         | Installieren Sie im Ordner *node_module*                                                |
 
 `--bare` kann das `require` -Argument von `author@repository` an `repository` weglassen. `--global` macht das installierte Paket für alle Skripte verfügbar. `--node` oder `-n` muss gleichzeitig mit der *wes* -Sicherheitsoption `--unsafe` oder `--dangerous` .

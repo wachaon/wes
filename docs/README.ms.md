@@ -21,7 +21,7 @@ Sila pilih ayat dalam bahasa lain daripada yang berikut.
 # ciri
 
 -   Anda boleh menukar enjin skrip kepada *Chakra* dan menulisnya dalam spesifikasi *ECMAScript2015*
--   Ia sentiasa menjalankan 32bit *cscript.exe* , jadi tiada masalah yang wujud dalam persekitaran 64bit.
+-   Ia sentiasa menjalankan 32bit *cscript.exe* , jadi ia tidak mempunyai sebarang masalah yang wujud dalam persekitaran 64bit.
 -   Dengan sistem modular, anda boleh membangun dengan lebih cekap daripada *WSH* tradisional
 -   Modul terbina dalam menyokong pemprosesan asas seperti input / output fail dan output aksara berwarna ke konsol.
 -   Anda tidak perlu risau tentang pengekodan kerana anda boleh meminta fail dibaca secara automatik meneka pengekodan.
@@ -288,7 +288,7 @@ console.log('%O', JSON.parse(content))
 
 ## *minitest*
 
-*minitest* boleh menulis ujian mudah. Sintaks mudah, beberapa penegasan Kembali kepada konsep asas dari versi `0.10.71` , kami telah mengurangkan bilangan jenis penegasan kepada tiga.
+*minitest* boleh menulis ujian mudah. Berbalik kepada konsep asas dari versi `0.10.71` , kami mengurangkan jenis penegasan kepada tiga.
 
 ### penggunaan
 
@@ -328,10 +328,10 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 Bandingkan dengan `true` dengan pengendali kesaksamaan yang tepat `===` . Jika `value` ialah fungsi, nilaikan hasil pelaksanaan fungsi tersebut.
 
-| Param     | taip       | Penerangan                        |
-| :-------- | :--------- | :-------------------------------- |
-| `value`   | \`{Fungsi  | Boolean} \`                       |
-| `message` | `{String}` | Mesej sekiranya berlaku kegagalan |
+| Param     | taip                  | Penerangan                                                 |
+| :-------- | :-------------------- | :--------------------------------------------------------- |
+| `value`   | `{Function\|Boolean}` | Fungsi yang mengembalikan nilai boolean atau nilai boolean |
+| `message` | `{String}`            | Mesej sekiranya berlaku kegagalan                          |
 
 #### `assert.equal(expected, actual)`
 
@@ -349,11 +349,11 @@ Apabila membandingkan kelas (objek), pembina atau `actual` yang sama mestilah su
 Sahkan bahawa ralat dilemparkan dengan betul.  
 Sama ada ralat itu betul ditentukan oleh sama ada ia adalah *constructor* ralat yang dijangkakan, atau jika *message* itu setara dan ungkapan biasa melepasi penilaian *stack* .
 
-| Param      | taip       | Penerangan                        |
-| :--------- | :--------- | :-------------------------------- |
-| `value`    | `{Error}`  | kesilapan                         |
-| `expected` | \`{Ralat   | Tali                              |
-| `message`  | `{String}` | Mesej sekiranya berlaku kegagalan |
+| Param      | taip                      | Penerangan                                                                                |
+| :--------- | :------------------------ | :---------------------------------------------------------------------------------------- |
+| `value`    | `{Error}`                 | kesilapan                                                                                 |
+| `expected` | `{Error\|String\|RegExp}` | Ungkapan biasa yang menilai *constructor* , *message* atau *stack* ralat yang dijangkakan |
+| `message`  | `{String}`                | Mesej sekiranya berlaku kegagalan                                                         |
 
 ## *pipe*
 
@@ -423,7 +423,7 @@ Jika `path` mempunyai sambungan `.zip` , `unzip()` diproses dan tiada perihalan 
 
 # Penggabungan dan pemasangan modul
 
-Dalam *wes* , himpunan beberapa modul dipanggil pakej. Anda boleh memasang pakej untuk *wes* diterbitkan di *github* . Anda memerlukan *github repository* untuk menerbitkan pakej tersebut. Selain itu, nama repositori dan nama direktori tempatan mestilah sama.
+Dalam *wes* , himpunan beberapa modul dipanggil pakej. Anda boleh memasang pakej untuk *wes* diterbitkan di *github* . Anda memerlukan *github repository* untuk menerbitkan pakej. Selain itu, nama repositori dan nama direktori tempatan mestilah sama.
 
 ## *bundle*
 
@@ -455,7 +455,7 @@ Apabila menerbitkan pakej ke *github* , *bundle* modul yang diperlukan dan menuk
 
 ## *install*
 
-Digunakan untuk memasang pakej untuk *wes* diterbitkan di *github* . Dari `version 0.10.28` folder pemasangan akan ditukar daripada `node_modules` kepada `wes_modules` . Jika anda memasang ke `node_modules` , tambahkan pilihan `--node` .
+Digunakan untuk memasang pakej untuk *wes* diterbitkan di *github* . Daripada `version 0.10.28` , folder pemasangan akan ditukar daripada `node_modules` kepada `wes_modules` . Jika anda memasang ke `node_modules` , tambahkan pilihan `--node` .
 
 ### Bagaimana nak guna
 
@@ -501,7 +501,7 @@ Berikut adalah beberapa pakej luaran.
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* adalah pakej yang *prettier* untuk *wes* dan memformat skrip. Selain itu, jika *Syntax Error* berlaku dengan *@wachaon/fmt* dipasang, anda boleh menunjukkan lokasi ralat.
+*@wachaon/fmt* adalah pakej yang *prettier* untuk *wes* dan memformat skrip. Juga, jika *@wachaon/fmt* dipasang dan *Syntax Error* berlaku, anda boleh menunjukkan lokasi ralat.
 
 ### pasang
 

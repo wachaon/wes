@@ -114,7 +114,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra* , che è il motore di esecuzione dello script, interpreta la sintassi come `imoprt` , ma non può essere eseguito così com'è perché il metodo di elaborazione come `cscript` non è definito. In *wes* , aggiungendo *babel* al modulo integrato, lo stiamo eseguendo durante la transpilazione sequenziale nel *es module* . Di conseguenza, il sovraccarico di elaborazione e il file *wes.js* sono gonfiati come costo. I moduli descritti da *es module* vengono anche trasferiti in `require()` , quindi sono possibili chiamate *ActiveX* . Tuttavia, non supporta la specifica di codifica del file del modulo in *es module* . Tutti vengono letti per indovinare automaticamente. Per caricarlo come *es module* , imposta l'estensione su `.mjs` o il campo `"type"` di `package.json` su `"module"` .
+*Chakra* , che è il motore di esecuzione dello script, interpreta la sintassi come `imoprt` , ma non può essere eseguito così com'è perché il metodo di elaborazione come `cscript` non è definito. In *wes* , aggiungendo *babel* al modulo integrato, lo stiamo eseguendo durante la traspilazione sequenziale al *es module* . Di conseguenza, il sovraccarico di elaborazione e il file *wes.js* sono gonfiati come costo. I moduli descritti da *es module* vengono anche trasferiti in `require()` , quindi sono possibili chiamate *ActiveX* . Tuttavia, non supporta la specifica di codifica del file del modulo in *es module* . Tutti vengono letti per indovinare automaticamente. Per caricarlo come *es module* , imposta l'estensione su `.mjs` o il campo `"type"` di `package.json` su `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -238,9 +238,7 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+## *chardet*
 
 Sto usando alcune funzionalità di <https://github.com/runk/node-chardet> . È possibile migliorare la precisione dell'ipotesi automatica aumentando i caratteri specifici della codifica.
 
@@ -272,9 +270,11 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 
 *VBScript* fornisce alcune funzionalità che *JScript* non ha.
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+```javascript
+const { TypeName } = require('VBScript')
+const FSO = require('Scripting.FileSystemObject')
+console.log(TypeName(FSO))
+```
 
 ## *httprequest*
 
@@ -288,7 +288,7 @@ console.log('%O', JSON.parse(content))
 
 ## *minitest*
 
-*minitest* può scrivere semplici test. Sintassi semplice, poche asserzioni Tornando al concetto di base dalla versione `0.10.71` , abbiamo ridotto a tre il numero dei tipi di asserzioni.
+*minitest* può scrivere semplici test. Tornando al concetto di base dalla versione `0.10.71` , abbiamo ridotto a tre i tipi di asserzioni.
 
 ### utilizzo
 
@@ -322,18 +322,16 @@ describe('minitest', () => {
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+### asserzione
 
 #### `assert(value, message)` `assert.ok(value, message)`
 
 Confronta con `true` con l'esatto operatore di uguaglianza `===` . Se `value` è una funzione, valuta il risultato dell'esecuzione della funzione.
 
-| Param     | Tipo        | Descrizione                 |
-| :-------- | :---------- | :-------------------------- |
-| `value`   | \`{Funzione | Booleano} \`                |
-| `message` | `{String}`  | Messaggio in caso di guasto |
+| Param     | Tipo                  | Descrizione                                                      |
+| :-------- | :-------------------- | :--------------------------------------------------------------- |
+| `value`   | `{Function\|Boolean}` | Funzione che restituisce un valore booleano o un valore booleano |
+| `message` | `{String}`            | Messaggio in caso di guasto                                      |
 
 #### `assert.equal(expected, actual)`
 
@@ -351,21 +349,35 @@ Quando si confrontano classi (oggetti), lo stesso costruttore o `actual` deve es
 Verificare che l'errore venga generato correttamente.  
 Se l'errore è corretto è determinato dal fatto che sia il *constructor* dell'errore previsto o se il *message* è equivalente e l'espressione regolare supera la valutazione dello *stack* .
 
-| Param      | Tipo       | Descrizione                 |
-| :--------- | :--------- | :-------------------------- |
-| `value`    | `{Error}`  | errore                      |
-| `expected` | \`{Errore  | Corda                       |
-| `message`  | `{String}` | Messaggio in caso di guasto |
+| Param      | Tipo                      | Descrizione                                                                                          |
+| :--------- | :------------------------ | :--------------------------------------------------------------------------------------------------- |
+| `value`    | `{Error}`                 | errore                                                                                               |
+| `expected` | `{Error\|String\|RegExp}` | Un'espressione regolare che valuta il *constructor* , il *message* o lo *stack* dell'errore previsto |
+| `message`  | `{String}`                | Messaggio in caso di guasto                                                                          |
 
 ## *pipe*
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
+*pipe* semplifica la lavorazione dei tubi.
 
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
-
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+```javascript
+const pipe = require('pipe')
+function add (a, b) {
+    return b + a
+}
+function sub (a, b) {
+    return b - a
+}
+function div (a, b) {
+    return a / b
+}
+const add5 = add.bind(null, 5)
+const sub3 = sub.bind(null, 3)
+pipe()
+  .use(add5)
+  .use(sub3)
+  .use(div, 4)
+  .process(10, (err, res) => console.log('res: %O', res))
+```
 
 ## *typecheck*
 
@@ -443,7 +455,7 @@ Quando si pubblica il pacchetto su *github* , *bundle* raggruppa i moduli richie
 
 ## *install*
 
-Utilizzato per installare il pacchetto per *wes* pubblicato su *github* . Dalla `version 0.10.28` la cartella di installazione verrà modificata da `node_modules` a `wes_modules` . Se stai installando su `node_modules` , aggiungi l'opzione `--node` .
+Utilizzato per installare il pacchetto per *wes* pubblicato su *github* . Dalla `version 0.10.28` , la cartella di installazione verrà modificata da `node_modules` a `wes_modules` . Se stai installando su `node_modules` , aggiungi l'opzione `--node` .
 
 ### Come usare
 
@@ -463,9 +475,7 @@ wes install @wachaon/fmt
 | `--save--dev` | `-D`       | Aggiungi il nome e la versione del pacchetto al campo *devDependencies* in *package.json*    |
 | `--node`      | `-n`       | Installa nella cartella *node_module*                                                        |
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+`--bare` può omettere l'argomento `require` da `author@repository` a `repository` . `--global` rende il pacchetto installato disponibile per tutti gli script. `--node` o `-n` deve essere specificata contemporaneamente all'opzione di sicurezza *wes* `--unsafe` o `--dangerous` .
 
 ```bat
 wes install @wachaon/fmt --bare --unsafe
@@ -544,9 +554,9 @@ wes install @wachaon/edge --unsafe --bare
 
 Quindi scaricare il *web driver* .
 
-![Google Apps Script](//ssl.gstatic.com/docs/script/images/logo.png)
-
-Exception: 1 日にサービス translate を実行した回数が多すぎます。（行 4、ファイル「コード」）
+```bat
+wes edge --download
+```
 
 Verificare la versione installata di *Edge* e scaricare il *web driver* corrispondente.
 
