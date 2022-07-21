@@ -1,5 +1,6 @@
 const path = require('/lib/pathname')
 const { describe, it, assert, pass } = require('/lib/minitest')
+const { NONE } = require('/lib/text')
 
 describe('# test pathname', () => {
     describe('## test extname', () => {
@@ -16,7 +17,7 @@ describe('# test pathname', () => {
             assert(path.extname('index.') === '.')
         })
         it('index', () => {
-            assert(path.extname('index') === '')
+            assert(path.extname('index') === NONE)
         })
         it('.index.md', () => {
             assert(path.extname('.index.md') === '.md')

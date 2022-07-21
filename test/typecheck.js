@@ -1,10 +1,11 @@
 const typecheck = require('/lib/typecheck')
 const { describe, it, assert, pass } = require('/lib/minitest')
+const { STRING, FUNCTION, _NULL } = require('/lib/text')
 
 describe('# test typecheck', () => {
     describe('## isNull', () => {
         const { isNull } = typecheck
-        it('null', () => {
+        it(_NULL, () => {
             assert(isNull(null))
         })
         it('isNull( undefined ) === false', () => {
@@ -52,7 +53,7 @@ describe('# test typecheck', () => {
         it('() => {}', () => {
             assert(isFunction(() => { }))
         })
-        it('String', () => {
+        it(STRING, () => {
             assert(isFunction(String))
         })
         it('typecheck.isFunction', () => {
@@ -166,10 +167,10 @@ describe('# test typecheck', () => {
 
     describe('## isClass', () => {
         const { isClass } = typecheck
-        it('String', () => {
+        it(STRING, () => {
             assert(isClass(new String(5), String))
         })
-        it('Function', () => {
+        it(FUNCTION, () => {
             assert(isClass(new Function('return 5'), Function))
         })
         it('class One', () => {

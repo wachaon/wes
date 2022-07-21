@@ -1,7 +1,7 @@
 try {
     var LF = '\n'
     var rCR_LF = /\r?\n/
-    var NONE = ''
+    var NONE = NONE
     var SPACE = ' '
     var POSIXSEP = '/'
     var WIN32SEP = '\\'
@@ -415,7 +415,7 @@ try {
                     ret = [
                         clear + (spaces + (errorRow - 1)).slice(-5) + ' | ' + line[errorRow - 2],
                         redBright + (spaces + errorRow).slice(-5) + ' | ' + line[errorRow - 1],
-                        clear + (spaces + (errorRow + 1)).slice(-5) + ' | ' + (line[errorRow] || '') + orange
+                        clear + (spaces + (errorRow + 1)).slice(-5) + ' | ' + (line[errorRow] || NONE) + orange
                     ].join(LF)
                 }
             }
