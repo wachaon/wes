@@ -420,7 +420,7 @@ try {
                 }
             }
 
-            var customError = errorStack.replace('\n   at', '\n' + ret + '\n   at')
+            var customError = errorStack.replace('\n   at', LF + ret + '\n   at')
             console.log('%C %S\n', orange, customError)
         }
     } else WScript.Popup('[error]' + error.message)
