@@ -30,6 +30,7 @@ describe('#test Enumerator', () => {
             'pathname.js',
             'pipe.js',
             'REP.js',
+            'task.js',
             'text.js',
             'typecheck.js',
             'update.js',
