@@ -224,12 +224,7 @@ try {
             switch (extname(entry)) {
                 case EXT_MJS:
                 case EXT_JS:
-                    var name = entry
-                        .split(NONE)
-                        .map(function createModule_map_callback(ch) {
-                            return '$' + ch.codePointAt().toString(16).toUpperCase()
-                        })
-                        .join(NONE)
+                    var name = escapeName(entry)
                     wes.filestack.push(entry)
 
                     var result_code = '"use strict";' + mod.source
@@ -359,9 +354,9 @@ try {
         require(resolve(WorkingDirectory, '_'), main, argv.get('encoding'))
     }
 } catch (error) {
-    if (!!console) {
-        var errorStack = unescape(error.stack.split('$').join('%'))
-        errorStack = stacktrace(errorStack)
+    if (console == null) WScript.Popup('[error]' + error.message)
+    else {
+        var errorStack = stacktrace(error.stack)
 
         var orange = ansi.color(255, 165, 0)
         var redBright = ansi.redBright
@@ -415,15 +410,19 @@ try {
                     ret = [
                         clear + (spaces + (errorRow - 1)).slice(-5) + ' | ' + line[errorRow - 2],
                         redBright + (spaces + errorRow).slice(-5) + ' | ' + line[errorRow - 1],
-                        clear + (spaces + (errorRow + 1)).slice(-5) + ' | ' + (line[errorRow] || NONE) + orange
+                        clear +
+                            (spaces + (errorRow + 1)).slice(-5) +
+                            ' | ' +
+                            (line[errorRow] != null ? line[errorRow] : NONE) +
+                            orange
                     ].join(LF)
                 }
             }
 
             var customError = errorStack.replace('\n   at', LF + ret + '\n   at')
-            console.log('%C %S\n', orange, customError)
+            console.log('%C%S\n', orange, customError)
         }
-    } else WScript.Popup('[error]' + error.message)
+    }
 }
 
 // util
@@ -508,4 +507,24 @@ function stacktrace(stack) {
         .join(NONE)
         .split('Global code (:')
         .join('Global code (')
+        .split('(,')
+        .join('(')
+}
+
+function escapeName(name) {
+    return Array.from(name)
+        .map(function escapeName_map(ch) {
+            return '$' + ch.codePointAt().toString(16)
+        })
+        .join('')
+}
+
+function unescapeName($name) {
+    return $name
+        .split('$')
+        .slice(1)
+        .map(function unescapeName_map(ch) {
+            return String.fromCodePoint(parseInt('0x' + ch))
+        })
+        .join('')
 }
