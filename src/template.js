@@ -356,6 +356,7 @@ try {
 } catch (error) {
     if (console == null) WScript.Popup('[error]' + error.message)
     else {
+        if (argv.has('debug')) console.error(error.stack)
         var errorStack = stacktrace(error.stack)
 
         var orange = ansi.color(255, 165, 0)
