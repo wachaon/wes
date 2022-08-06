@@ -366,10 +366,13 @@ try {
         var current = wes.filestack.slice(-1)[0]
         if (wes.main !== 'REP') console.log('%CWhere the error occurred: %S', ansi.yellow, current)
 
-        if (error instanceof SyntaxError) {
+        var fmt
+        if (
+            error instanceof SyntaxError &&
+            (fmt = retry(require.bind(null, resolve(WorkingDirectory, '*')), 'fmt', '@wachaon/fmt'))
+        ) {
             var mods = wes.Modules
             try {
-                var fmt = retry(require.bind(null, resolve(WorkingDirectory, '*')), 'fmt', '@wachaon/fmt')
                 var errorSource =
                     wes.main === 'REP'
                         ? mods[
