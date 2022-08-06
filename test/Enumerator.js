@@ -18,6 +18,7 @@ describe('#test Enumerator', () => {
             'event.js',
             'filesystem.js',
             'genGUID.js',
+            'getMember.js',
             'help.js',
             'hex.js',
             'httprequest.js',
