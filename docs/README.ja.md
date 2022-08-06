@@ -96,7 +96,7 @@ const add = require('./add')
 console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
-また、`require('WScript.Shell')` の様に *ActiveX* に対しても *require* でインポート可能です。
+また、`require('WScript.Shell')` の様に *COM Object* に対しても *require* でインポート可能です。
 
 ```javascript
 const Shell = require('Shell.Application')
@@ -108,7 +108,7 @@ Shell.UndoMinimizeAll()
 ## *es module*
 スクリプトの実行エンジンである *Chakra* は `imoprt` などの構文を解釈しますが `cscript` としての処理方法が定義されていないのか、そのままでは実行できません。
 *wes* では *babel* をビルトインモジュールに加えることで、*es module* に対しても逐次トランスパイルしながら実行しています。そのためコストとして処理のオーバーヘッドと *wes.js* ファイルが肥大化しています。
-*es module* で記述されているモジュールもトランスパイルで `require()` に変換されるため、*ActiveX* の呼び出しも可能です。
+*es module* で記述されているモジュールもトランスパイルで `require()` に変換されるため、*COM Object* の呼び出しも可能です。
 しかしながら *es module* でのモジュールファイルのエンコード指定には対応していません。全て自動推測で読み込まれます。
 *es module* として読み込ませるには拡張子を `.mjs` にするか `package.json` の `"type"` フィールドを `"module"` にしてください。
 
@@ -387,6 +387,42 @@ log(() => isString("ECMAScript"))
 log(() => isNumber(43.5))
 log(() => isBoolean(false))
 log(() => isObject(function(){}))
+```
+<!--
+## *task*
+タスクの出力の待ちをします。
+
+```javascript
+const Task = require('task')
+const task = new Task
+let progress = '|----------|----------|'
+const count = 437
+let i = 0
+
+task.register(() => {
+    const prog = Math.ceil(i++ / count * 10)
+
+    console.print(
+        '%C%S%C',
+        '\u001B[0K',
+        progress = progress.replace('-', '*'),
+        '\u001B[1G'
+    )
+}, 50, count)
+task.run()
+
+//'\u001B[0K', ProgID, ['|', '/', '-', '\\'][i++ % 4], i, '\u001B[1G'
+
+```
+-->
+
+## *getMember*
+*ProgID* から *COM Object* のメンバーの種類と説明を取得します。
+
+```javascript
+const getMember = require('getMember')
+const FileSystemObject = 'Scripting.FileSystemObject'
+console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
 ```
 
 ## *zip*
