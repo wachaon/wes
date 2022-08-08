@@ -1,9 +1,7 @@
 # *WES*
 
-
 *wes* is a console framework for running *ECMAScript* on *WSH (Windows Script Host)* . The original [*japanese*](/README.md) of the *README* will be in Japanese. Texts other than Japanese will be machine translated.  
 For texts in other languages, please select from the options below.
-
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -20,10 +18,7 @@ For texts in other languages, please select from the options below.
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
-
-
 # feature
-
 
 -   You can change the script engine to *Chakra* and write according to *ECMAScript2015* specifications.
 -   Since 32bit *cscript.exe* is always executed, there is no unique problem in 64bit environment.
@@ -32,62 +27,46 @@ For texts in other languages, please select from the options below.
 -   You can let file reading automatically guess the encoding, so you don't have to worry about encoding etc.
 -   Package modules to support external publishing and retrieval
 
-
 # *wes* issues that we can't solve
-
 
 -   `WScript.Quit` cannot abort the program and does not return an error code
 -   Asynchronous processing such as `setTimeout` and `Promise` is not possible
 -   You cannot use the *event prefix* of the second argument of `WScript.CreateObject`
 
-
 # download
 
-
 *wes.js* *wes* . To download, copy *wes.js* from [*@wachaon/wes*](https://github.com/wachaon/wes) or run the following command in your console.
-
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-
 *WScript.Shell* *wes* `SendKeys` at runtime as an implementation. If the path of the directory where *wes.js* is saved contains characters other than *ascii* , `SendKeys` cannot send the key correctly and the script cannot be executed.  
 Configure the path *wes.js* is stored in *ascii* only. If you have already downloaded *wes* , you can update it with the following command.
-
 
 ```bat
 wes update
 ```
 
-
 # Usage
 
-
 Enter the `wes` keyword followed by a command specifying the starting file of the program to the console. The script extension *.js* can be omitted.
-
 
 ```bat
 wes index
 ```
 
-
 Also, since *wes* is equipped with *REP* , you can enter scripts directly by starting `wes` alone.
-
 
 ```bat
 wes
 ```
 
-
 *REP* accepts script input until you enter two blank lines. You can also see *REP* running the sample scripts in *README.md* .
-
 
 ## command line options
 
-
 *wes* startup options are as follows.
-
 
 | named              | Description                                   |
 | ------------------ | --------------------------------------------- |
@@ -100,21 +79,15 @@ wes
 | `--encoding=UTF-8` | Specifies the encoding of the first file read |
 | `--engine=Chakra`  | This option is added automatically by *wes*   |
 
-
 `--safe` `--usual` `--unsafe` `--dangerous` `--debug` 's implementation is incomplete, but named arguments are reserved.
-
 
 # module system
 
-
 *wes* supports two module systems, the *commonjs module* system using `require()` and the *es module* system using `import` . ( *dynamic import* is not supported because it is an asynchronous process)
-
 
 ## *commonjs module*
 
-
 Manage modules by assigning to `module.exports` and calling `require()` . Paths other than absolute paths and relative paths starting with `./` and `../` look for modules in the *wes_modules* directory and conveniently the *node_modules* directory. *wes* 's `require()` automatically guesses the encoding of the module file, but you can specify the encoding with the second argument if it doesn't guess correctly.
-
 
 ```javascript
 // ./add.js
@@ -124,16 +97,13 @@ function add (a, b) {
 module.exports = add
 ```
 
-
 ```javascript
 // ./main.js
 const add = require('./add')
 console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
-
 Also, it is possible to import with *require* for *COM Object* like `require('WScript.Shell')` .
-
 
 ```javascript
 const Shell = require('Shell.Application')
@@ -142,12 +112,9 @@ WScript.Sleep(2000)
 Shell.UndoMinimizeAll()
 ```
 
-
 ## *es module*
 
-
 *Chakra* , which is the script execution engine, interprets syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. In *wes* , by adding *babel* to the built-in modules, *es module* are also executed while being transpiled one by one. This costs us processing overhead and a bloated *wes.js* file. Modules written in *es module* are also converted to `require()` by transpiling, so it is possible to call *COM Object* . However, it does not support specifying the encoding of the module file with *es module* . Everything is loaded automatically. To load it as an *es module* , set the extension to `.mjs` or set the `"type"` field in `package.json` to `"module"` .
-
 
 ```javascript
 // ./sub.mjs
@@ -156,30 +123,23 @@ export default function sub (a, b) {
 }
 ```
 
-
 ```javascript
 // ./main2.js
 import sub from './sub.mjs'
 console.log('sub(7, 3) // => %O', sub(7, 3))
 ```
 
-
 # built-in object
-
 
 *wes* has *built-in objects* not found in *WSH (JScript)* .
 
-
 ## *console*
 
-
 `WScript.Echo` uses *console* instead of *wes* and `WScript.StdErr.WriteLine` . Output characters to the console with `console.log` . It also supports formatted strings. Outputs a formatted string using the `%` formatting operator.
-
 
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
-
 
 | Format specifier | Description                      |
 | ---------------- | -------------------------------- |
@@ -196,15 +156,11 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`             | object dump                      |
 | `%O`             | Object dump (indented/colorful)  |
 
-
 `WScript.StdOut.WriteLine` *wes* of `WScript.StdErr.WriteLine` to output colored strings. `WScript.Echo` and `WScript.StdOut.WriteLine` are blocked output. `WScript.StdErr.WriteLine` or `console.log` .
-
 
 ## *Buffer*
 
-
 You can handle buffers.
-
 
 ```javascript
 const content = 'Hello World'
@@ -212,29 +168,21 @@ const buff = Buffer.from(content)
 console.log(`${content} %O`, buff)
 ```
 
-
 ## `__dirname` and `__filename`
 
-
 `__filename` stores the path of the currently executing module file. `__dirname` contains the directory of `__filename` .
-
 
 ```javascript
 console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 ```
 
-
 # Built-in module
-
 
 *wes* has *built-in modules* to simplify and standardize basic processing.
 
-
 ## *ansi*
 
-
 `ansi` is *ANSI escape code* that can change standard output colors and effects. Colors and effects may differ depending on the type and settings of the console application used.
-
 
 ```javascript
 const { redBright, yellow } = require('ansi')
@@ -242,9 +190,7 @@ const message = 'File does not exist'
 console.log(redBright + 'Error: ' + yellow + message)
 ```
 
-
 You can also create your own colors with `ansi.color()` and `ansi.bgColor()` . Arguments use *RGB* such as `255, 165, 0` and *color code* such as `'#FFA500'` . *color name* such as `orange` are not supported.
-
 
 ```javascript
 const { color } = require('ansi')
@@ -252,20 +198,15 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
-
 ## *argv*
 
-
 Get command line arguments. `cscript.exe` 's command line arguments declare named arguments with `/` , while *wes* declares named arguments with `-` and `--` . *argv.unnamed* and *argv.named* the command line argument value type to either *String* *Number* *Boolean* . Enter command line arguments with *REP* .
-
 
 ```bat
 wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
-
 Run the following script on *REP* .
-
 
 ```javascript
 const argv = require('argv')
@@ -275,12 +216,9 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
-
 ## *pathname*
 
-
 Manipulate paths. Paths starting with `/` and `\` are generally relative to the drive root. For example `/filename` and `C:/filename` can be the same path. For security reasons, `wes` interprets paths starting with `/` and `\` relative to the working directory.
-
 
 ```javascript
 const path = require('pathname')
@@ -288,12 +226,9 @@ const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
 
-
 ## *filesystem*
 
-
 Manipulate files and directories. `readTextFileSync` automatically guesses the encoding of the file and reads it.
-
 
 ```javascript
 const fs = require('filesystem')
@@ -303,18 +238,13 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
-
 ## *chardet*
-
 
 I am using some features from <https://github.com/runk/node-chardet> . You can increase the accuracy of auto-guessing by increasing encoding-specific characters.
 
-
 ## *JScript*
 
-
 If you change the script engine to *Chakra* , you won't be able to use *JScript* -specific *Enumerator* , etc. The built-in module *JScript* makes them available. However, *Enumerator* returns an *Array* , not an *Enumerator object* .
-
 
 ```javascript
 const { Enumerator, ActiveXObject } = require('JScript')
@@ -324,9 +254,7 @@ const files = new Enumerator(dir)
 files.forEach(file => console.log(file.Name))
 ```
 
-
 *GetObject* works as an alternative to `WScript.GetObject` .
-
 
 ```javascript
 const { GetObject, Enumerator } = require('JScript')
@@ -338,12 +266,9 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
-
 ## *VBScript*
 
-
 *VBScript* offers some features that *JScript* does not.
-
 
 ```javascript
 const { TypeName } = require('VBScript')
@@ -351,12 +276,9 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
-
 ## *httprequest*
 
-
 *httprequest* issues an *http request* .
-
 
 ```javascript
 const request = require('httprequest')
@@ -364,18 +286,13 @@ const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
 
-
 ## *minitest*
-
 
 *minitest* can write simple tests. From version `0.10.71` , we went back to the basic concept and reduced the types of assertions to 3 types.
 
-
 ### Usage
 
-
 Group with `describe` , test with `it` , and verify with `assert` . `pass` will be an array of the number of occurrences of `it` and the number of passes.
-
 
 ```javascript
 const { describe, it, assert, pass } = require('minitest')
@@ -405,42 +322,32 @@ describe('minitest', () => {
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
-
 ### assertion
-
 
 #### `assert(value, message)` `assert.ok(value, message)`
 
-
 Compare to `true` with the strict equality operator `===` . If `value` is a function, evaluate the result of executing the function.
-
 
 | Param     | Type                  | Description                           |
 | :-------- | :-------------------- | :------------------------------------ |
 | `value`   | `{Function\|Boolean}` | boolean or boolean-returning function |
 | `message` | `{String}`            | message in case of failure            |
 
-
 #### `assert.equal(expected, actual)`
-
 
 Compares objects for member equality, not by reference.  
 NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` or `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` etc.  
 When comparing classes (objects), they must have the same constructor or a superclass whose `actual` is `expected` .
-
 
 | Param      | Type    | Description    |
 | :--------- | :------ | :------------- |
 | `expected` | `{Any}` | expected value |
 | `actual`   | `{Any}` | Actual value   |
 
-
 #### `assert.throws(value, expected, message)`
-
 
 Verify that errors are being thrown correctly.  
 Whether or not the error is correct is determined by whether the expected error *constructor* , *message* is equal, and the regular expression passes *stack* evaluation.
-
 
 | Param      | Type                      | Description                                                                                   |
 | :--------- | :------------------------ | :-------------------------------------------------------------------------------------------- |
@@ -448,15 +355,11 @@ Whether or not the error is correct is determined by whether the expected error 
 | `expected` | `{Error\|String\|RegExp}` | A regular expression that evaluates the expected error *constructor* , *message* , or *stack* |
 | `message`  | `{String}`                | message in case of failure                                                                    |
 
-
 ## *pipe*
-
 
 *pipe* simplifies piping.
 
-
 ### Usage
-
 
 ```javascript
 const pipe = require('pipe')
@@ -478,15 +381,11 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
-
 ## *typecheck*
-
 
 Determine the script type.
 
-
 ### Usage
-
 
 ```javascript
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
@@ -497,18 +396,13 @@ log(() => isBoolean(false))
 log(() => isObject(function(){}))
 ```
 
-
 ## *task*
-
 
 A *task* is used to periodically perform multiple processes.
 
-
 ### Usage
 
-
 If the process takes a long time, it would be nice to display the progress on the console.
-
 
 ```javascript
 const Task = require('task')
@@ -560,51 +454,35 @@ task.register(() => {
 task.run()
 ```
 
-
 #### `static genProgressIndicator(animation)`
-
 
 Generate a function.
 
-
 #### `register(callback, interval, conditional)`
-
 
 Register processing. Multiple processes can be registered and processed in parallel.
 
-
 #### `stop()`
-
 
 Suspend the *task* .
 
-
 #### `cancel(queue)`
-
 
 Suspends a specific process.
 
-
 #### `run()`
-
 
 Start parallel processing.
 
-
 #### `view`
-
 
 Specifies the characters that are printed to the console. Switch characters at regular intervals.
 
-
 ## *getMember*
-
 
 Get member type and description of *COM Object* from *ProgID* .
 
-
 ### Usage
-
 
 ```javascript
 const getMember = require('getMember')
@@ -612,15 +490,11 @@ const FileSystemObject = 'Scripting.FileSystemObject'
 console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
 ```
 
-
 ## *zip*
-
 
 Compresses files and folders and decompresses compressed files. Internally, *PowerShell* is called and processed.
 
-
 ### Usage
-
 
 ```javascript
 const {zip, unzip} = require('zip')
@@ -628,42 +502,32 @@ console.log(zip('docs\\*', 'dox.zip'))
 console.log(unzip('dox.zip'))
 ```
 
-
 A wildcard `*` can be written in the `path` of `zip(path, destinationPath)` . It can be used in both *CLI (Command Line Interface)* and *module* .
-
 
 ```bat
 wes zip docs\* dox.zip
 wes zip -p dox.zip
 ```
 
-
 If the `path` has the extension `.zip` , `unzip()` is processed, and there is no description of the extension `.zip` . Alternatively, even if there is an extension `.zip` , if there is a wildcard `*` description, `zip()` will be processed.
-
 
 | unnamed | Description                  |
 | ------- | ---------------------------- |
 | `1`     | `path` or file to enter      |
 | `2`     | folder file to output `dest` |
 
-
 | named    | short named | Description                  |
 | -------- | ----------- | ---------------------------- |
 | `--path` | `-p`        | `path` or file to enter      |
 | `--dest` | `-d`        | folder file to output `dest` |
 
-
 # Bundling (packaging) and installing modules
-
 
 In *wes* , a bundle of several modules is called a package. You can install the package for *wes* published on *github* . A *github repository* is required to publish a package. Also, the repository name and local directory name must be the same.
 
-
 ## *bundle*
 
-
 When publishing a package to *github* , *bundle* bundles the necessary modules and changes them into a format that can be included by installation. For security reasons, *bundle* *.json* *wes* because we doesn't allow you to import directly executable packages. There are some conditions for packaging.
-
 
 1.  Only one package can be published in one *repository*
 
@@ -689,26 +553,19 @@ When publishing a package to *github* , *bundle* bundles the necessary modules a
 
     Please bundle with
 
-
 ## *install*
-
 
 Used to install the package for *wes* published on *github* . From `version 0.10.28` , the installation folder is changed from `node_modules` to `wes_modules` . If you want to install in `node_modules` add `--node` option.
 
-
 ### Usage
 
-
 Pass arguments to *install* in the form `@author/repository` .
-
 
 ```bat
 wes install @wachaon/fmt
 ```
 
-
 *install* has options.
-
 
 | named         | short named | Description                                                               |
 | ------------- | ----------- | ------------------------------------------------------------------------- |
@@ -718,84 +575,62 @@ wes install @wachaon/fmt
 | `--save--dev` | `-D`        | Add package name and version to *devDependencies* field in *package.json* |
 | `--node`      | `-n`        | Install in *node_module* folder                                           |
 
-
 `--bare` option can omit the `require` argument from `author@repository` to `repository` . `--global` option makes installed packages available to all scripts. `--node` or `-n` option must be specified together with the *wes* security option `--unsafe` or `--dangerous` .
-
 
 ```bat
 wes install @wachaon/fmt --bare --unsafe
 ```
 
-
 # Installing packages from private repositories
 
-
 *install* can install not only packages from public *github* repositories, but also packages from private repositories. In *install* , specify the package with *@author/repository* . The implementation tries to download the following url.
-
 
 ```javascript
 `https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
 ```
 
-
 If you access the private repository *raw* with a browser, the *token* will be displayed, so copy the *token* and use it. You can also install packages from private repositories by running it in the console while the *token* is valid.
-
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
-
 # Package introduction
-
 
 Here are some external packages.
 
-
 ## *@wachaon/fmt*
-
 
 *@wachaon/fmt* is *prettier* packaged for *wes* to format scripts. Also, if a *Syntax Error* occurs while *@wachaon/fmt* is installed, you can show the location of the error.
 
-
 ### install
-
 
 ```bat
 wes install @wachaon/fmt
 ```
 
-
 ### Usage
-
 
 If there is *.prettierrc* (JSON format) in the working directory, it will be reflected in the settings. *fmt* is available in both *CLI* and *module* .
 
-
 #### Use as *CLI* .
-
 
 ```bat
 wes @wachaon/fmt src/sample --write
 ```
-
 
 | unnamed number | Description                                       |
 | -------------- | ------------------------------------------------- |
 | 0              | -                                                 |
 | 1              | Required. the path of the file you want to format |
 
-
 | named     | short named | Description     |
 | --------- | ----------- | --------------- |
 | `--write` | `-w`        | allow overwrite |
 
-
 Overwrite the file with the formatted script if `--write` or the `-w` named argument is specified.
 
-
 #### use as a module
-
 
 ```javascript
 const fmt = require('@wachaon/fmt')
@@ -805,40 +640,29 @@ const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
-
 ## *@wachaon/edge*
-
 
 *Internet Explorer* will end support on June 15, 2022. Along with that, it is expected that application operation with `require('InternetExplorer.Application')` will also become impossible. An alternative would be to work with *Microsoft Edge based on Chromium* via the *web driver* . `@wachaon/edge` simplifies *Edge* autopilot.
 
-
 ### install
 
-
 First install the package.
-
 
 ```bat
 wes install @wachaon/edge --unsafe --bare
 ```
 
-
 Then download the *web driver* .
-
 
 ```bat
 wes edge --download
 ```
 
-
 Check the installed *Edge* version and download the corresponding *web driver* .
-
 
 ### Usage
 
-
 It will be easy to use.
-
 
 ```javascript
 const edge = require('edge')
@@ -853,26 +677,19 @@ edge((window, navi, res) => {
 })
 ```
 
-
 This script prints the visited *URL* to the console in sequence. `@wachaon/edge` registers events for *URL* and adds data to `res.exports` . The *URL* to be registered can be either `String` `RegExp` , and can be set flexibly. By making it event-driven, you can easily switch to manual operation by not setting events for processes that are difficult to handle with autopilot. If you want the script to stop, `navi.emit('terminate', res)` or terminate *Edge* manually. Finalization outputs `res.exports` as a *.json* file by default. If you want to set termination processing, set `terminate` of `edge(callback, terminate)` . `window` is an instance of *@wachaon/webdriver* 's *Window* class, not the browser's `window` .
-
 
 ## *@wachaon/webdriver*
 
-
 It will be a package that sends requests to the *web driver* that operates the browser. Built in *@wachaon/edge* . As with *@wachaon/edge* , a separate *web driver* is required for browser operation.
 
-
 ### install
-
 
 ```bat
 wes install @wachaon/webdriver --unsafe --bare
 ```
 
-
 Download the *Chromium* -based *Microsoft Edge* *web driver* if you don't have it. Also, if the version of *edge* and the version of *web driver* are different, download the same version of *web driver* .
-
 
 ```bat
 wes webdriver --download
