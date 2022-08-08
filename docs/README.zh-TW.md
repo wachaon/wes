@@ -1,7 +1,9 @@
 # *WES*
 
-*wes*是一個在*WSH (Windows Script Host)*上運行*ECMAScript*的控制台框架。 *README*的原文是[*japanese*](/README.md) 。除了日語，它是機器翻譯的句子。  
-請從以下選擇其他語言的句子。
+
+*wes*是一個控制台框架，用於在*WSH (Windows Script Host)*上運行*ECMAScript* 。 *README*文件的[*japanese*](/README.md)將是日文。日語以外的文本將被機器翻譯。  
+對於其他語言的文本，請從以下選項中選擇。
+
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -18,76 +20,101 @@
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
+
+
 # 特徵
 
--   您可以將腳本引擎更改為*Chakra* ，並將其寫入*ECMAScript2015*規範中
--   它始終運行 32 位*cscript.exe* ，因此在 64 位環境中沒有任何固有問題。
--   使用模塊化系統，您可以比傳統*WSH*更高效地開發
--   內置模塊支持文件輸入/輸出、彩色字符輸出到控制台等基本處理。
--   您不必擔心編碼，因為您可以讓文件讀取自動猜測編碼。
--   我們還打包模塊以支持外部發布和檢索。
 
-# 我們*wes*已知問題
+-   您可以將腳本引擎更改為*Chakra*並根據*ECMAScript2015*規範編寫。
+-   由於始終執行 32 位*cscript.exe* ，因此在 64 位環境中沒有唯一問題。
+-   由於有一個模塊系統，它可以比傳統的*WSH*更有效地開發
+-   內置模塊支持基本處理，例如文件輸入/輸出和彩色文本輸出到控制台
+-   您可以讓文件讀取自動猜測編碼，因此您不必擔心編碼等。
+-   打包模塊以支持外部發布和檢索
 
--   `WScript.Quit`不能中斷程序並且不返回錯誤代碼
+
+# 我們無法解決的*wes*問題
+
+
+-   `WScript.Quit`不能中止程序並且不返回錯誤代碼
 -   無法進行`setTimeout`和`Promise`等異步處理
--   您不能將*event prefix*用作`WScript.CreateObject`的第二個參數
+-   您不能使用`WScript.CreateObject`的第二個參數的*event prefix*
+
 
 # 下載
 
-*wes.js* *wes* 。要下載，請從[*@wachaon/wes*](https://github.com/wachaon/wes) wes 複製*wes.js*或在控制台中運行以下命令。
+
+*wes.js* *wes* 。要下載，請從[*@wachaon/wes*](https://github.com/wachaon/wes)複製*wes.js*或在控制台中運行以下命令。
+
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-*WScript.Shell*在運行時使用*wes*中的`SendKeys`作為實現。如果*wes.js*保存目錄的路徑中包含*ascii*以外的字符， `SendKeys`將無法正確發送密鑰，腳本將無法執行。  
-請僅配置*wes.js*的保存目標路徑*ascii* 。如果您已經下載了*wes* ，您可以使用以下命令對其進行更新。
+
+我們在運行時*WScript.Shell* *wes* `SendKeys`作為實現。如果*wes.js*保存目錄的路徑中包含*ascii*以外的字符，則`SendKeys`無法正確發送密鑰，腳本無法執行。  
+配置*wes.js*僅存儲在*ascii*中的路徑。如果您已經下載了*wes* ，您可以使用以下命令對其進行更新。
+
 
 ```bat
 wes update
 ```
 
-# 如何使用
 
-向控制台輸入命令，該命令在`wes`關鍵字之後指定將成為程序起點的文件。腳本擴展名*.js*可以省略。
+# 用法
+
+
+輸入`wes`關鍵字，然後輸入指定文件的命令，該文件將成為控制台程序的起點。腳本擴展名*.js*可以省略。
+
 
 ```bat
 wes index
 ```
 
-而且*wes*有一個*REP* ，所以如果你只用`wes`啟動它，你可以直接進入腳本。
+
+此外，由於*wes*配備了*REP* ，因此您可以通過單獨啟動`wes`直接輸入腳本。
+
 
 ```bat
 wes
 ```
 
-*REP*接受腳本輸入，直到您輸入兩個空行。您還可以使用*REP*檢查*README.md*中示例腳本的執行情況。
+
+*REP*接受腳本輸入，直到您輸入兩個空行。您還可以看到*REP*在*README.md*中運行示例腳本。
+
 
 ## 命令行選項
 
-*wes*的啟動選項如下。
+
+*wes*啟動選項如下。
+
 
 | 命名為                | 描述                   |
 | ------------------ | -------------------- |
 | `--monotone`       | 消除*ANSI escape code* |
-| `--safe`           | 在安全模式下運行腳本           |
+| `--safe`           | 以安全模式運行腳本            |
 | `--usual`          | 以正常模式運行腳本（默認）        |
 | `--unsafe`         | 在不安全模式下運行腳本          |
 | `--dangerous`      | 以危險模式運行腳本            |
 | `--debug`          | 在調試模式下運行腳本           |
-| `--encoding=UTF-8` | 指定要讀取的第一個文件的編碼       |
+| `--encoding=UTF-8` | 指定讀取的第一個文件的編碼        |
 | `--engine=Chakra`  | 此選項由*wes*自動添加        |
 
-`--safe` `--usual` `--unsafe` `--dangerous` `--debug`的實現是不完整的，但命名參數是保留的。
 
-# 模塊化系統
+`--safe` `--usual` `--unsafe` `--dangerous` `--debug`的實現不完整，但保留了命名參數。
 
-*wes*支持兩個模塊系統，一個使用`require()`的*commonjs module*系統和一個使用`import`的*es module* 。 （ *dynamic import*為異步處理，不支持）
+
+# 模塊系統
+
+
+*wes*支持兩種模塊系統，使用`require()`的*commonjs module*系統和使用`import`的*es module*系統。 （不支持*dynamic import* ，因為它是一個異步過程）
+
 
 ## *commonjs module*
 
-通過分配給`module.exports`並使用`require()`調用來管理模塊。對於以`./`和`../`開頭的絕對路徑和相對路徑以外的路徑，請在*wes_modules*目錄中查找模塊，為方便起見，請在*node_modules*目錄中查找。 *wes* `require()`會自動猜測模塊文件的編碼，但如果沒有猜測正確，可以用第二個參數指定編碼。
+
+通過分配給`module.exports`並調用`require()`來管理模塊。以`./`和`../`開頭的絕對路徑和相對路徑以外的路徑在*wes_modules*目錄和*node_modules*目錄中查找模塊。 *wes*的`require()`會自動猜測模塊文件的編碼，但如果沒有正確猜測，您可以使用第二個參數指定編碼。
+
 
 ```javascript
 // ./add.js
@@ -97,13 +124,16 @@ function add (a, b) {
 module.exports = add
 ```
 
+
 ```javascript
 // ./main.js
 const add = require('./add')
 console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
-您也可以使用*require* `require('WScript.Shell')`導入*ActiveX* 。
+
+此外，還可以使用*require* `require('WScript.Shell')`類的*COM Object*導入。
+
 
 ```javascript
 const Shell = require('Shell.Application')
@@ -112,9 +142,12 @@ WScript.Sleep(2000)
 Shell.UndoMinimizeAll()
 ```
 
+
 ## *es module*
 
-腳本的執行引擎*Chakra*解釋了諸如`imoprt`之類的語法，但由於未定義`cscript`的處理方法，因此無法按原樣執行。在*wes*中，通過將*babel*添加到內置模塊中，我們在執行它的同時按順序轉譯到*es module* 。結果，處理開銷和*wes.js*文件作為成本而膨脹。 *es module*模塊描述的模塊也被轉譯為`require()` ，因此*ActiveX*調用是可能的。但是，它不支持*es module*中模塊文件的編碼規範。都是通過自動猜測讀取的。要將其作為*es module*加載，請將擴展名設置為`.mjs`或將`package.json`的`"type"`字段設置為`"module"` 。
+
+腳本執行引擎*Chakra*解釋了諸如`imoprt`之類的語法，但由於未定義`cscript`的處理方法，因此無法按原樣執行。在*wes*中，通過在內置模塊中添加*babel* ， *es module*也在被一個一個轉譯的同時執行。這會花費我們處理開銷和臃腫的*wes.js*文件。用*es module*模塊寫的模塊也通過轉譯轉換成`require()` ，所以可以調用*COM Object* 。但是，它不支持使用*es module*指定模塊文件的編碼。一切都是自動加載的。要將其作為*es module*加載，請將擴展名設置為`.mjs`或將`package.json`中的`"type"`字段設置為`"module"` 。
+
 
 ```javascript
 // ./sub.mjs
@@ -123,23 +156,30 @@ export default function sub (a, b) {
 }
 ```
 
+
 ```javascript
 // ./main2.js
 import sub from './sub.mjs'
 console.log('sub(7, 3) // => %O', sub(7, 3))
 ```
 
+
 # 內置對象
 
-*wes*具有*WSH (JScript)*所沒有*built-in objects* 。
+
+*wes*有*WSH (JScript)*中沒有的*built-in objects* 。
+
 
 ## *console*
 
-*wes*使用*console*而不是`WScript.Echo`或`WScript.StdErr.WriteLine` 。在`console.log`中將字符打印到控制台。它還支持格式化字符串。使用格式化運算符`%`打印格式化字符串。
+
+`WScript.Echo`使用*console*而不是*wes*和`WScript.StdErr.WriteLine` 。使用`console.log`將字符輸出到控制台。它還支持格式化字符串。使用`%`格式化運算符輸出格式化字符串。
+
 
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
+
 
 | 格式說明符 | 描述                               |
 | ----- | -------------------------------- |
@@ -154,13 +194,17 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%j`  | `JSON.stringify(value)`          |
 | `%J`  | `JSON.stringify(value, null, 2)` |
 | `%o`  | 對象轉儲                             |
-| `%O`  | 對象轉儲（縮進彩色）                       |
+| `%O`  | 對象轉儲（縮進/彩色）                      |
 
-`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`來輸出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`被阻止輸出。 `WScript.StdErr.WriteLine`或`console.log` 。
+
+`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`來輸出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`被阻止。 `WScript.StdErr.WriteLine`或`console.log` 。
+
 
 ## *Buffer*
 
-可以處理緩衝區。
+
+您可以處理緩衝區。
+
 
 ```javascript
 const content = 'Hello World'
@@ -168,21 +212,29 @@ const buff = Buffer.from(content)
 console.log(`${content} %O`, buff)
 ```
 
+
 ## `__dirname`和`__filename`
 
-`__filename`包含當前運行的模塊文件的路徑。 `__dirname`包含`__filename`的目錄。
+
+`__filename`存儲當前執行的模塊文件的路徑。 `__dirname`包含`__filename`的目錄。
+
 
 ```javascript
 console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 ```
 
+
 # 內置模塊
+
 
 *wes*有*built-in modules*來簡化和標準化基本處理。
 
+
 ## *ansi*
 
-`ansi`是一個*ANSI escape code* ，允許您更改標準輸出的顏色和效果。顏色和效果可能會因使用的控制台應用程序的類型和設置而異。
+
+`ansi`是*ANSI escape code* ，可以更改標準輸出顏色和效果。顏色和效果可能因使用的控制台應用程序的類型和設置而異。
+
 
 ```javascript
 const { redBright, yellow } = require('ansi')
@@ -190,7 +242,9 @@ const message = 'File does not exist'
 console.log(redBright + 'Error: ' + yellow + message)
 ```
 
-您還可以使用`ansi.color()`和`ansi.bgColor()`創建自己的顏色。該參數使用*RGB* `255, 165, 0`例如 255、165、0 或*color code* ，例如`'#FFA500'` 。它不支持諸如`orange`之類的*color name* 。
+
+您還可以使用`ansi.color()`和`ansi.bgColor()`創建自己的顏色。參數使用*RGB* （例如`255, 165, 0` ）和*color code* （例如`'#FFA500'` 。不支持`orange`等*color name* 。
+
 
 ```javascript
 const { color } = require('ansi')
@@ -198,15 +252,20 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
+
 ## *argv*
 
-獲取命令行參數。 `cscript.exe`中的命令行參數用`/` *wes*命名參數`--`而我們用`-`和 - 聲明命名參數。 *argv.unnamed*和*argv.named*將命令行參數的值類型轉換為*String* *Number* *Boolean*之一。與*REP*一起輸入命令行參數。
+
+獲取命令行參數。 `cscript.exe`的命令行參數用`/`聲明命名參數，而*wes*用`-`和`--`聲明命名參數。 *argv.unnamed*和*argv.named*命令行參數值類型轉換為*String* *Number* *Boolean* 。使用*REP*輸入命令行參數。
+
 
 ```bat
 wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
-在*REP*中運行以下腳本。
+
+在*REP*上運行以下腳本。
+
 
 ```javascript
 const argv = require('argv')
@@ -216,9 +275,12 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
+
 ## *pathname*
 
-操作路徑。以`/`和`\`開頭的路徑通常是指相對於驅動器根目錄的路徑。例如， `/filename`和`C:/filename`可能具有相同的路徑。出於安全原因， `wes`將以`/`和`\`開頭的路徑解釋為相對於工作目錄。
+
+操縱路徑。以`/`和`\`開頭的路徑通常相對於驅動器根目錄。例如`/filename`和`C:/filename`可以是相同的路徑。出於安全原因， `wes`解釋以`/`和`\`開頭的相對於工作目錄的路徑。
+
 
 ```javascript
 const path = require('pathname')
@@ -226,9 +288,12 @@ const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
 
+
 ## *filesystem*
 
+
 操作文件和目錄。 `readTextFileSync`自動猜測文件的編碼並讀取它。
+
 
 ```javascript
 const fs = require('filesystem')
@@ -238,13 +303,18 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
+
 ## *chardet*
+
 
 我正在使用<https://github.com/runk/node-chardet>的一些功能。您可以通過增加特定於編碼的字符來提高自動猜測的準確性。
 
+
 ## *JScript*
 
-如果您將腳本引擎更改為*Chakra* ，您將無法使用*JScript*特定的*Enumerator*等。內置模塊*JScript*使它們可用。但是， *Enumerator*返回一個*Array*而不是*Enumerator object* 。
+
+如果您將腳本引擎更改為*Chakra* ，您將無法使用*JScript*特定的*Enumerator*等。內置模塊*JScript*使它們可用。但是， *Enumerator*返回一個*Array* ，而不是*Enumerator object* 。
+
 
 ```javascript
 const { Enumerator, ActiveXObject } = require('JScript')
@@ -254,7 +324,9 @@ const files = new Enumerator(dir)
 files.forEach(file => console.log(file.Name))
 ```
 
+
 *GetObject*作為`WScript.GetObject`的替代品。
+
 
 ```javascript
 const { GetObject, Enumerator } = require('JScript')
@@ -266,9 +338,12 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
+
 ## *VBScript*
 
-*VBScript*提供了一些*JScript*沒有的特性。
+
+*VBScript*提供了一些*JScript*沒有的功能。
+
 
 ```javascript
 const { TypeName } = require('VBScript')
@@ -276,9 +351,12 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
+
 ## *httprequest*
 
+
 *httprequest*發出一個*http request* 。
+
 
 ```javascript
 const request = require('httprequest')
@@ -286,13 +364,18 @@ const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
 
+
 ## *minitest*
 
-*minitest*可以編寫簡單的測試。回到`0.10.71`版本的基本概念，我們將斷言的類型減少到三種。
+
+*minitest*可以編寫簡單的測試。從`0.10.71`版本開始，我們回到了基本概念，將斷言的類型減少到 3 種。
+
 
 ### 用法
 
-用`describe`分組，用`it`編寫測試，用`assert`驗證。 `pass`是`it`的出現次數和通過次數的數組。
+
+用`describe`分組，用`it`測試，用`assert`驗證。 `pass`將是`it`的出現次數和通過次數的數組。
+
 
 ```javascript
 const { describe, it, assert, pass } = require('minitest')
@@ -322,42 +405,58 @@ describe('minitest', () => {
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
+
 ### 斷言
+
 
 #### `assert(value, message)` `assert.ok(value, message)`
 
-將`true`與完全相等運算符`===`進行比較。如果`value`是一個函數，則評估執行該函數的結果。
 
-| 參數        | 類型                    | 描述           |
-| :-------- | :-------------------- | :----------- |
-| `value`   | `{Function\|Boolean}` | 返回布爾值或布爾值的函數 |
-| `message` | `{String}`            | 失敗時的消息       |
+使用嚴格相等運算符`===`與`true`進行比較。如果`value`是一個函數，則評估執行該函數的結果。
+
+
+| 參數        | 類型                    | 描述        |
+| :-------- | :-------------------- | :-------- |
+| `value`   | `{Function\|Boolean}` | 布爾或布爾返回函數 |
+| `message` | `{String}`            | 失敗消息      |
+
 
 #### `assert.equal(expected, actual)`
 
-通過其成員是否等價而不是通過引用來比較對象。  
-NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` and `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]`等也成立。  
-比較類（對象）時，相同的構造函數或`actual`必須是`expected`的超類。
+
+比較對象的成員相等性，而不是通過引用。  
+NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g`或`{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]`等等。  
+比較類（對象）時，它們必須具有相同的構造函數或`actual` `expected`的超類。
+
 
 | 參數         | 類型      | 描述   |
 | :--------- | :------ | :--- |
 | `expected` | `{Any}` | 期望值  |
 | `actual`   | `{Any}` | 實際價值 |
 
+
 #### `assert.throws(value, expected, message)`
 
-驗證錯誤是否正確拋出。  
-錯誤是否正確取決於它是否是預期錯誤的*constructor* ，或者*message*是否等效並且正則表達式通過*stack*評估。
 
-| 參數         | 類型                        | 描述                                             |
-| :--------- | :------------------------ | :--------------------------------------------- |
-| `value`    | `{Error}`                 | 錯誤                                             |
-| `expected` | `{Error\|String\|RegExp}` | 計算預期錯誤的*constructor* 、 *message*或*stack*的正則表達式 |
-| `message`  | `{String}`                | 失敗時的消息                                         |
+驗證錯誤是否正確拋出。  
+錯誤是否正確取決於預期的錯誤*constructor* 、 *message*是否相等，以及正則表達式是否通過*stack*評估。
+
+
+| 參數         | 類型                        | 描述                                            |
+| :--------- | :------------------------ | :-------------------------------------------- |
+| `value`    | `{Error}`                 | 錯誤                                            |
+| `expected` | `{Error\|String\|RegExp}` | 計算預期錯誤*constructor* 、 *message*或*stack*的正則表達式 |
+| `message`  | `{String}`                | 失敗時的消息                                        |
+
 
 ## *pipe*
 
-*pipe*簡化了管道處理。
+
+*pipe*簡化了管道。
+
+
+### 用法
+
 
 ```javascript
 const pipe = require('pipe')
@@ -379,9 +478,15 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
+
 ## *typecheck*
 
-確定腳本的類型。
+
+確定腳本類型。
+
+
+### 用法
+
 
 ```javascript
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
@@ -392,9 +497,130 @@ log(() => isBoolean(false))
 log(() => isObject(function(){}))
 ```
 
+
+## *task*
+
+
+一個*task*用於週期性地執行多個進程。
+
+
+### 用法
+
+
+如果該過程需要很長時間，最好在控制台上顯示進度。
+
+
+```javascript
+const Task = require('task')
+const task = new Task
+const size = 23
+let counter = 0
+
+const progress = Task.genProgressIndicator([
+    '|----------|----------|',
+    '|*---------|----------|',
+    '|**--------|----------|',
+    '|***-------|----------|',
+    '|****------|----------|',
+    '|*****-----|----------|',
+    '|******----|----------|',
+    '|*******---|----------|',
+    '|********--|----------|',
+    '|*********-|----------|',
+    '|**********|----------|',
+    '|**********|*---------|',
+    '|**********|**--------|',
+    '|**********|***-------|',
+    '|**********|****------|',
+    '|**********|*****-----|',
+    '|**********|******----|',
+    '|**********|*******---|',
+    '|**********|********--|',
+    '|**********|*********-|',
+    '|**********|**********|',
+])
+
+const indigator = Task.genProgressIndicator(['   ', '.  ', '.. ', '...'])
+
+task.register(() => {
+    let prog = counter / size
+    if (prog >= 1) {
+        prog = 1
+        task.stop()
+    }
+
+    task.view = console.format(
+        '%S %S %S',
+        progress(Math.ceil(prog * 20)),
+        ('  ' + Math.ceil(prog * 100) + '%').slice(-4),
+        prog < 1 ? 'loading' + indigator(counter) : 'finished!'
+    )
+    counter++
+}, 100, Number.MAX_VALUE)
+task.run()
+```
+
+
+#### `static genProgressIndicator(animation)`
+
+
+生成一個函數。
+
+
+#### `register(callback, interval, conditional)`
+
+
+註冊處理。可以並行註冊和處理多個進程。
+
+
+#### `stop()`
+
+
+暫停*task* 。
+
+
+#### `cancel(queue)`
+
+
+暫停特定進程。
+
+
+#### `run()`
+
+
+開始並行處理。
+
+
+#### `view`
+
+
+指定打印到控制台的字符。定期切換字符。
+
+
+## *getMember*
+
+
+從*ProgID*獲取*COM Object*的成員類型和描述。
+
+
+### 用法
+
+
+```javascript
+const getMember = require('getMember')
+const FileSystemObject = 'Scripting.FileSystemObject'
+console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
+```
+
+
 ## *zip*
 
-壓縮文件和文件夾並解壓縮壓縮文件。它在內部調用*PowerShell*並對其進行處理。
+
+壓縮文件和文件夾並解壓縮壓縮文件。在內部， *PowerShell*被調用和處理。
+
+
+### 用法
+
 
 ```javascript
 const {zip, unzip} = require('zip')
@@ -402,44 +628,54 @@ console.log(zip('docs\\*', 'dox.zip'))
 console.log(unzip('dox.zip'))
 ```
 
-通配符`*`可以寫在`zip(path, destinationPath)` `path`路徑中。它可以與*CLI (Command Line Interface)*和*module*一起使用。
+
+通配符`*`可以寫在`zip(path, destinationPath)` `path`路徑中。它可以在*CLI (Command Line Interface)*和*module*中使用。
+
 
 ```bat
 wes zip docs\* dox.zip
 wes zip -p dox.zip
 ```
 
-如果`path`具有擴展名`.zip` ，則處理`unzip()`並且沒有擴展名`.zip`的描述。或者即使有`.zip`擴展名，如果有通配符`*`的描述，也會處理`zip()` 。
+
+如果`path`具有擴展名`.zip` ，則處理`unzip()` ，並且沒有擴展名`.zip`的描述。或者，即使有擴展名`.zip` ，如果有通配符`*`描述，也會處理`zip()` 。
+
 
 | 未命名 | 描述               |
 | --- | ---------------- |
 | `1` | `path`要輸入的文件夾或文件 |
 | `2` | 文件夾文件輸出`dest`    |
 
+
 | 命名為      | 簡稱   | 描述               |
 | -------- | ---- | ---------------- |
 | `--path` | `-p` | `path`要輸入的文件夾或文件 |
 | `--dest` | `-d` | 文件夾文件輸出`dest`    |
 
-# 模塊捆綁和安裝
 
-在*wes*中，幾個模塊的捆綁稱為一個包。您可以安裝在*github*上發布的*wes*軟件包。您將需要一個*github repository*來發布包。此外，存儲庫名稱和本地目錄名稱必須相同。
+# 捆綁（打包）和安裝模塊
+
+
+在*wes*中，多個模塊的捆綁包稱為包。您可以安裝在*github*上發布的*wes*軟件包。發布包需要*github repository* 。此外，存儲庫名稱和本地目錄名稱必須相同。
+
 
 ## *bundle*
 
-將包發佈到*github*時， *bundle*會捆綁所需的模塊並更改格式，以便可以通過安裝導入。出於安全原因， *bundle*會創建一個*.json*文件，因為*wes*不允許您以可以直接執行的格式導入包。包裝有一些條件。
+
+將包發佈到*github*時， *bundle*會捆綁必要的模塊並將它們更改為可以通過安裝包含的格式。出於安全原因， *bundle* *.json* *wes* ，因為我們不允許您直接導入可執行包。包裝有一些條件。
+
 
 1.  一個*repository*只能發布一個包
 
-2.  確保*github*上的倉庫名稱和​​本地工作目錄名稱相同。
+2.  *github*存儲庫名稱和本地工作目錄名稱請使用相同的名稱
 
-3.  如果您發布包，請*public*存儲庫
+3.  如果要發布包，請*public*存儲庫
 
-4.  在頂層範圍內聲明模塊獲取
+4.  在頂層範圍內聲明模塊的獲取
 
-5.  包*.json*文件在您的工作目錄中創建，名稱為*directory_name.json* 。如果重命名文件或移動文件，安裝時無法引用。
+5.  包的*.json*文件在名為*directory_name.json*的工作目錄中創建。如果更改文件名或移動文件，則在安裝過程中無法引用它。
 
-6.  `node_modules/directory_name`是 bundle 的起點
+6.  `node_modules/directory_name`是包的起點
 
     ```bat
         wes bundle directory_name
@@ -453,84 +689,113 @@ wes zip -p dox.zip
 
     請捆綁
 
+
 ## *install*
 
-用於安裝*github*上發布的*wes*包。從`version 0.10.28` ，安裝文件夾將從`node_modules`更改為`wes_modules` 。如果要安裝到`node_modules` ，請添加`--node`選項。
 
-### 如何使用
+用於安裝*github*上發布的*wes*包。從`version 0.10.28` ，安裝文件夾從`node_modules`更改為`wes_modules` 。如果要安裝在`node_modules`中，請添加`--node`選項。
 
-以`@author/repository`格式傳遞參數以進行*install* 。
+
+### 用法
+
+
+以`@author/repository`的形式傳遞要*install*的參數。
+
 
 ```bat
 wes install @wachaon/fmt
 ```
 
+
 *install*有選項。
+
 
 | 命名為           | 簡稱   | 描述                                            |
 | ------------- | ---- | --------------------------------------------- |
 | `--bare`      | `-b` | 不要創建*@author*文件夾                              |
 | `--global`    | `-g` | 將包安裝到*wes.js*所在的文件夾中                          |
-| `--save`      | `-S` | 將包名稱和版本添加到*package.json*的*dependencies*項字段中   |
+| `--save`      | `-S` | 將包名稱和版本添加到*package.json*中的*dependencies*項字段   |
 | `--save--dev` | `-D` | 將包名稱和版本添加到*package.json*中的*devDependencies*字段 |
 | `--node`      | `-n` | 安裝在*node_module*文件夾中                          |
 
-`--bare`選項可以省略從`author@repository`到`repository`的`require`參數。 `--global`選項使已安裝的軟件包可用於所有腳本。 `--node`或`-n`選項必須與*wes*安全選項`--unsafe`或`--dangerous` 。
+
+`--bare`選項可以省略從`author@repository`到`repository`的`require`參數。 `--global`選項使已安裝的軟件包可用於所有腳本。 `--node`或`-n`選項必須與*wes*安全選項`--unsafe`或`--dangerous`一起指定。
+
 
 ```bat
 wes install @wachaon/fmt --bare --unsafe
 ```
 
-# 在私有存儲庫中安裝包
 
-*install*可以將包安裝在私有存儲庫中，也可以將包安裝在*github*上的公共存儲庫中。在*install*中，使用*@author/repository*指定包。該實現將嘗試下載以下 url。
+# 從私有倉庫安裝包
+
+
+*install*不僅可以安裝來自公共*github*存儲庫的包，還可以安裝來自私有存儲庫的包。在*install*中，使用*@author/repository*指定包。該實現嘗試下載以下網址。
+
 
 ```javascript
 `https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
 ```
 
-當您使用瀏覽器訪問私有倉庫的*raw*時，將顯示*token* ，因此請複制*token*並使用它。您還可以通過在*token*的生命週期內在控制台中運行它們來將包安裝到私有存儲庫中。
+
+如果您使用瀏覽器訪問*raw*存儲庫，則會顯示*token* ，因此請複制*token*並使用它。您還可以通過在*token*有效時在控制台中運行來從私有存儲庫安裝包。
+
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
+
 # 包裝介紹
+
 
 這是一些外部軟件包。
 
+
 ## *@wachaon/fmt*
 
-@ *wes* *@wachaon/fmt*是為*prettier*打包並格式化腳本的一個更漂亮的工具。此外，如果在安裝*@wachaon/fmt*時出現*Syntax Error* ，您可以指出錯誤位置。
+
+*@wachaon/fmt* *prettier*地打包為*wes*格式化腳本。此外，如果在安裝*@wachaon/fmt*時出現*Syntax Error* ，您可以顯示錯誤的位置。
+
 
 ### 安裝
+
 
 ```bat
 wes install @wachaon/fmt
 ```
 
-### 如何使用
 
-如果工作目錄中有*.prettierrc* （JSON 格式），會反映在設置中。 *fmt*可以與*CLI*和*module*一起使用。
+### 用法
+
+
+如果工作目錄中有*.prettierrc* （JSON 格式），它會反映在設置中。 *fmt*在*CLI*和*module*中都可用。
+
 
 #### 用作*CLI* 。
+
 
 ```bat
 wes @wachaon/fmt src/sample --write
 ```
 
+
 | 無名號碼 | 描述             |
 | ---- | -------------- |
-| 0    | ――――           |
+| 0    | -              |
 | 1    | 必需的。要格式化的文件的路徑 |
+
 
 | 命名為       | 簡稱   | 描述   |
 | --------- | ---- | ---- |
 | `--write` | `-w` | 允許覆蓋 |
 
-如果指定`--write`或`-w`的命名參數，則使用格式化的腳本覆蓋文件。
 
-#### 作為模塊使用
+如果指定了`--write`或`-w`命名參數，則使用格式化腳本覆蓋文件。
+
+
+#### 作為一個模塊使用
+
 
 ```javascript
 const fmt = require('@wachaon/fmt')
@@ -540,29 +805,40 @@ const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
+
 ## *@wachaon/edge*
 
-*Internet Explorer*將於 2022/6/15 完成支持。因此，預計將無法使用`require('InternetExplorer.Application')`操作應用程序。另一種方法是通過*web driver*運行*Microsoft Edge based on Chromium* 。 `@wachaon/edge`簡化了*Edge*自動駕駛儀。
+
+*Internet Explorer*將於 2022 年 6 月 15 日終止支持。與此同時，預計使用`require('InternetExplorer.Application')`應用程序操作也將變得不可能。另一種方法是通過*web driver*使用*Microsoft Edge based on Chromium* 。 `@wachaon/edge`簡化了*Edge*自動駕駛儀。
+
 
 ### 安裝
 
-首先，安裝軟件包。
+
+首先安裝軟件包。
+
 
 ```bat
 wes install @wachaon/edge --unsafe --bare
 ```
 
+
 然後下載*web driver* 。
+
 
 ```bat
 wes edge --download
 ```
 
+
 檢查安裝的*Edge*版本並下載相應的*web driver* 。
 
-### 如何使用
+
+### 用法
+
 
 這將很容易使用。
+
 
 ```javascript
 const edge = require('edge')
@@ -577,19 +853,26 @@ edge((window, navi, res) => {
 })
 ```
 
-此腳本將按順序將訪問的*URL*輸出到控制台。 `@wachaon/edge`為*URL*註冊一個事件並將數據添加到`res.exports` 。要註冊的*URL*可以是`String` `RegExp` ，可以進行靈活的設置。通過使其成為事件驅動，可以通過不設置自動駕駛難以處理的處理事件來輕鬆切換到手動操作。如果要停止腳本，請運行`navi.emit('terminate', res)`或手動終止*Edge* 。終止進程將`res.exports`輸出為*.json*文件作為默認值。如果要設置終止過程，設置`edge(callback, terminate)` `terminate` `window`不是瀏覽器中的`window` ，而是*@wachaon/webdriver*的*Window*類的一個實例。
+
+此腳本按順序將訪問的*URL*打印到控制台。 `@wachaon/edge`為*URL*註冊事件並將數據添加到`res.exports` 。要註冊的*URL*可以是`String` `RegExp` ，可以靈活設置。通過使其事件驅動，您可以通過不為自動駕駛難以處理的流程設置事件來輕鬆切換到手動操作。如果您希望腳本停止， `navi.emit('terminate', res)`或手動終止*Edge* 。 Finalization 默認將`res.exports`輸出為*.json*文件。如果要設置`terminate`處理，請設置`edge(callback, terminate)`的終止。 `window`是*@wachaon/webdriver*的*Window*類的實例，而不是瀏覽器的`window` 。
+
 
 ## *@wachaon/webdriver*
 
-它是一個向操作瀏覽器的*web driver*發送請求的包。內置在*@wachaon/edge*中。與*@wachaon/edge*一樣，瀏覽器操作需要*web driver* 。
+
+它將是一個向操作瀏覽器的*web driver*發送請求的包。內置*@wachaon/edge* 。與*@wachaon/edge* ，瀏覽器操作需要單獨的*web driver* 。
+
 
 ### 安裝
+
 
 ```bat
 wes install @wachaon/webdriver --unsafe --bare
 ```
 
-如果您沒有基於*Chromium*的*Microsoft Edge* *web driver* ，請下載它。另外，如果*edge*版本和*web driver*版本不同，請下載相同版本的*web driver* 。
+
+如果沒有，請下載基於*Chromium*的*Microsoft Edge* *web driver* 。另外，如果*edge*版本和*web driver*版本不同，請下載相同版本的*web driver* 。
+
 
 ```bat
 wes webdriver --download

@@ -18,6 +18,7 @@
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
+
 # 特徴
 
 -  スクリプトエンジンを *Chakra* に変更して *ECMAScript2015+* の仕様で記述できます
@@ -109,7 +110,7 @@ const add = require('./add')
 console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
-また、`require('WScript.Shell')` の様に *ActiveX* に対しても *require* でインポート可能です。
+また、`require('WScript.Shell')` の様に *COM Object* に対しても *require* でインポート可能です。
 
 ```javascript
 const Shell = require('Shell.Application')
@@ -121,7 +122,7 @@ Shell.UndoMinimizeAll()
 ## *es module*
 スクリプトの実行エンジンである *Chakra* は `imoprt` などの構文を解釈しますが `cscript` としての処理方法が定義されていないのか、そのままでは実行できません。
 *wes* では *babel* をビルトインモジュールに加えることで、*es module* に対しても逐次トランスパイルしながら実行しています。そのためコストとして処理のオーバーヘッドと *wes.js* ファイルが肥大化しています。
-*es module* で記述されているモジュールもトランスパイルで `require()` に変換されるため、*ActiveX* の呼び出しも可能です。
+*es module* で記述されているモジュールもトランスパイルで `require()` に変換されるため、*COM Object* の呼び出しも可能です。
 しかしながら *es module* でのモジュールファイルのエンコード指定には対応していません。全て自動推測で読み込まれます。
 *es module* として読み込ませるには拡張子を `.mjs` にするか `package.json` の `"type"` フィールドを `"module"` にしてください。
 
@@ -304,7 +305,7 @@ console.log('%O', JSON.parse(content))
 *minitest* は簡易的なテストを記述できます。
 version `0.10.71` から基本コンセプトに立ち返って、アサーションの種類を３種類に減らしました。
 
-### usage
+### 使い方
 `describe` でグループに分け、`it` でテストを記述し、`assert` で検証します。
 `pass` は `it` の出現回数と合格数の配列になります。
 
@@ -370,6 +371,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 ## *pipe*
 *pipe* はパイプ処理を簡素化します。
 
+### 使い方
 ```javascript
 const pipe = require('pipe')
 function add (a, b) {
@@ -393,6 +395,7 @@ pipe()
 ## *typecheck*
 スクリプトの型の判定をします。
 
+### 使い方
 ```javascript
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
 const log = require('log')
@@ -401,11 +404,103 @@ log(() => isNumber(43.5))
 log(() => isBoolean(false))
 log(() => isObject(function(){}))
 ```
+## *task*
+*task* は複数の処理を定期的に行う場合に使用します。
+
+### 使い方
+処理に時間が掛かる場合は進捗をコンソールに表示させた方が親切です。
+
+```javascript
+const Task = require('task')
+const task = new Task
+const size = 23
+let counter = 0
+
+const progress = Task.genProgressIndicator([
+    '|----------|----------|',
+    '|*---------|----------|',
+    '|**--------|----------|',
+    '|***-------|----------|',
+    '|****------|----------|',
+    '|*****-----|----------|',
+    '|******----|----------|',
+    '|*******---|----------|',
+    '|********--|----------|',
+    '|*********-|----------|',
+    '|**********|----------|',
+    '|**********|*---------|',
+    '|**********|**--------|',
+    '|**********|***-------|',
+    '|**********|****------|',
+    '|**********|*****-----|',
+    '|**********|******----|',
+    '|**********|*******---|',
+    '|**********|********--|',
+    '|**********|*********-|',
+    '|**********|**********|',
+])
+
+const indigator = Task.genProgressIndicator(['   ', '.  ', '.. ', '...'])
+
+task.register(() => {
+    let prog = counter / size
+    if (prog >= 1) {
+        prog = 1
+        task.stop()
+    }
+
+    task.view = console.format(
+        '%S %S %S',
+        progress(Math.ceil(prog * 20)),
+        ('  ' + Math.ceil(prog * 100) + '%').slice(-4),
+        prog < 1 ? 'loading' + indigator(counter) : 'finished!'
+    )
+    counter++
+}, 100, Number.MAX_VALUE)
+task.run()
+```
+
+#### `static genProgressIndicator(animation)`
+
+関数を生成します。
+
+#### `register(callback, interval, conditional)`
+
+処理を登録します。処理は複数登録でき、平行処理します。
+
+#### `stop()`
+
+*task* を中断します。
+
+#### `cancel(queue)`
+
+特定の処理を中断します。
+
+#### `run()`
+
+平行処理を開始します。
+
+#### `view`
+
+コンソールに出力される文字を指定します。
+一定間隔毎に文字を切り替えます。
+
+
+## *getMember*
+*ProgID* から *COM Object* のメンバーの種類と説明を取得します。
+
+### 使い方
+```javascript
+const getMember = require('getMember')
+const FileSystemObject = 'Scripting.FileSystemObject'
+console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
+```
 
 ## *zip*
 ファイルやフォルダの圧縮と圧縮ファイルの解凍をします。
 内部で *PowerShell* 呼び出して処理をしています。
 
+### 使い方
 ```javascript
 const {zip, unzip} = require('zip')
 console.log(zip('docs\\*', 'dox.zip'))

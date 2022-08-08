@@ -291,7 +291,7 @@ console.log('%O', JSON.parse(content))
 *minitest* は簡易的なテストを記述できます。
 version `0.10.71` から基本コンセプトに立ち返って、アサーションの種類を３種類に減らしました。
 
-### usage
+### 使い方
 `describe` でグループに分け、`it` でテストを記述し、`assert` で検証します。
 `pass` は `it` の出現回数と合格数の配列になります。
 
@@ -357,6 +357,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 ## *pipe*
 *pipe* はパイプ処理を簡素化します。
 
+### 使い方
 ```javascript
 const pipe = require('pipe')
 function add (a, b) {
@@ -380,6 +381,7 @@ pipe()
 ## *typecheck*
 スクリプトの型の判定をします。
 
+### 使い方
 ```javascript
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
 const log = require('log')
@@ -388,37 +390,92 @@ log(() => isNumber(43.5))
 log(() => isBoolean(false))
 log(() => isObject(function(){}))
 ```
-<!--
 ## *task*
-タスクの出力の待ちをします。
+*task* は複数の処理を定期的に行う場合に使用します。
+
+### 使い方
+処理に時間が掛かる場合は進捗をコンソールに表示させた方が親切です。
 
 ```javascript
 const Task = require('task')
 const task = new Task
-let progress = '|----------|----------|'
-const count = 437
-let i = 0
+const size = 23
+let counter = 0
+
+const progress = Task.genProgressIndicator([
+    '|----------|----------|',
+    '|*---------|----------|',
+    '|**--------|----------|',
+    '|***-------|----------|',
+    '|****------|----------|',
+    '|*****-----|----------|',
+    '|******----|----------|',
+    '|*******---|----------|',
+    '|********--|----------|',
+    '|*********-|----------|',
+    '|**********|----------|',
+    '|**********|*---------|',
+    '|**********|**--------|',
+    '|**********|***-------|',
+    '|**********|****------|',
+    '|**********|*****-----|',
+    '|**********|******----|',
+    '|**********|*******---|',
+    '|**********|********--|',
+    '|**********|*********-|',
+    '|**********|**********|',
+])
+
+const indigator = Task.genProgressIndicator(['   ', '.  ', '.. ', '...'])
 
 task.register(() => {
-    const prog = Math.ceil(i++ / count * 10)
+    let prog = counter / size
+    if (prog >= 1) {
+        prog = 1
+        task.stop()
+    }
 
-    console.print(
-        '%C%S%C',
-        '\u001B[0K',
-        progress = progress.replace('-', '*'),
-        '\u001B[1G'
+    task.view = console.format(
+        '%S %S %S',
+        progress(Math.ceil(prog * 20)),
+        ('  ' + Math.ceil(prog * 100) + '%').slice(-4),
+        prog < 1 ? 'loading' + indigator(counter) : 'finished!'
     )
-}, 50, count)
+    counter++
+}, 100, Number.MAX_VALUE)
 task.run()
-
-//'\u001B[0K', ProgID, ['|', '/', '-', '\\'][i++ % 4], i, '\u001B[1G'
-
 ```
--->
+
+#### `static genProgressIndicator(animation)`
+
+関数を生成します。
+
+#### `register(callback, interval, conditional)`
+
+処理を登録します。処理は複数登録でき、平行処理します。
+
+#### `stop()`
+
+*task* を中断します。
+
+#### `cancel(queue)`
+
+特定の処理を中断します。
+
+#### `run()`
+
+平行処理を開始します。
+
+#### `view`
+
+コンソールに出力される文字を指定します。
+一定間隔毎に文字を切り替えます。
+
 
 ## *getMember*
 *ProgID* から *COM Object* のメンバーの種類と説明を取得します。
 
+### 使い方
 ```javascript
 const getMember = require('getMember')
 const FileSystemObject = 'Scripting.FileSystemObject'
@@ -429,6 +486,7 @@ console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObje
 ファイルやフォルダの圧縮と圧縮ファイルの解凍をします。
 内部で *PowerShell* 呼び出して処理をしています。
 
+### 使い方
 ```javascript
 const {zip, unzip} = require('zip')
 console.log(zip('docs\\*', 'dox.zip'))
