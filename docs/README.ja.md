@@ -390,19 +390,19 @@ log(() => isNumber(43.5))
 log(() => isBoolean(false))
 log(() => isObject(function(){}))
 ```
-## *task*
-*task* は複数の処理を定期的に行う場合に使用します。
+## *animate*
+*animate* はコンソールの表示をアニメーションさせる手助けをします。
 
 ### 使い方
-処理に時間が掛かる場合は進捗をコンソールに表示させた方が親切です。
+処理に時間が掛かる場合は進捗度合をコンソールにアニメーションとして表示させた方が親切です。
 
 ```javascript
-const Task = require('task')
-const task = new Task
+const Animate = require('animate')
+const animate = new Animate
 const size = 23
 let counter = 0
 
-const progress = Task.genProgressIndicator([
+const progress = Animate.genProgressIndicator([
     '|----------|----------|',
     '|*---------|----------|',
     '|**--------|----------|',
@@ -426,16 +426,16 @@ const progress = Task.genProgressIndicator([
     '|**********|**********|',
 ])
 
-const indigator = Task.genProgressIndicator(['   ', '.  ', '.. ', '...'])
+const indigator = Animate.genProgressIndicator(['   ', '.  ', '.. ', '...'])
 
-task.register(() => {
+animate.register(() => {
     let prog = counter / size
     if (prog >= 1) {
         prog = 1
-        task.stop()
+        animate.stop()
     }
 
-    task.view = console.format(
+    animate.view = console.format(
         '%S %S %S',
         progress(Math.ceil(prog * 20)),
         ('  ' + Math.ceil(prog * 100) + '%').slice(-4),
@@ -443,33 +443,106 @@ task.register(() => {
     )
     counter++
 }, 100, Number.MAX_VALUE)
-task.run()
+animate.run()
 ```
 
-#### `static genProgressIndicator(animation)`
+### `constructor(complete)`
+全てのキューが完了するか、`stop()` が実行された場合に`complete` 関数を実行します。
 
-関数を生成します。
+#### `static genProgressIndicator(animation)`
+循環するアニメーションを表示する関数を生成します。
 
 #### `register(callback, interval, conditional)`
-
 処理を登録します。処理は複数登録でき、平行処理します。
+`callback` の中で、アニメーションのストップの指示や、表示するビューの書き込みをします。
+`interval` は処理間隔を指定します。
+`conditional` は関数の場合は `conditional(count, queue)` を実行して結果が真の場合は次も継続して実行します。
+`conditional` は数値の場合は `decrement(count)` を実行して結果が正の数値の場合は次も継続して実行します。
+`conditional` が未定義の場合は1回のみ実行します。
+注意するのは関数を指定した場合の `count` は増加するのに対し、数値を指定したの場合の `count` は減少します。
 
 #### `stop()`
 
-*task* を中断します。
+*animate* を中断します。
 
 #### `cancel(queue)`
 
-特定の処理を中断します。
+特定キューの処理を中断します。
 
 #### `run()`
 
-平行処理を開始します。
+アニメーションを開始します。
 
 #### `view`
 
 コンソールに出力される文字を指定します。
 一定間隔毎に文字を切り替えます。
+`view` には *Arrary* と *String* のどちらかを代入します。
+単一のアニメーションを更新する場合は *String* が便利で、
+複数の行を個別にアニメーションする場合は *Array* が便利です。
+
+```javascript
+const Animate = require('/lib/animate')
+const animate = new Animate(
+    () => console.log('All Finished!!')
+)
+
+const progress = Animate.genProgressIndicator([
+    '|----------|----------|',
+    '|*---------|----------|',
+    '|**--------|----------|',
+    '|***-------|----------|',
+    '|****------|----------|',
+    '|*****-----|----------|',
+    '|******----|----------|',
+    '|*******---|----------|',
+    '|********--|----------|',
+    '|*********-|----------|',
+    '|**********|----------|',
+    '|**********|*---------|',
+    '|**********|**--------|',
+    '|**********|***-------|',
+    '|**********|****------|',
+    '|**********|*****-----|',
+    '|**********|******----|',
+    '|**********|*******---|',
+    '|**********|********--|',
+    '|**********|*********-|',
+    '|**********|**********|',
+])
+
+const indigator = Animate.genProgressIndicator(['   ', '.  ', '.. ', '...'])
+
+const state = {
+    one: null,
+    two: null,
+    three: null
+}
+
+function upload(name, size, row) {
+    let counter = 0
+    return () => {
+        let prog = counter / size
+        if (prog >= 1) {
+            prog = 1
+            animate.cancel(state[name])
+        }
+
+        animate.view[row] = console.format(
+            '%S %S %S',
+            progress(Math.ceil(prog * 20)),
+            ('  ' + Math.ceil(prog * 100) + '%').slice(-4),
+            prog < 1 ? name + ' loading' + indigator(counter) : name + ' finished! '
+        )
+        counter++
+    }
+}
+
+state.one = animate.register(upload('one', 63, 0), 50, Number.MAX_VALUE)
+state.two = animate.register(upload('two', 49, 1), 60, Number.MAX_VALUE)
+state.three = animate.register(upload('three', 109, 2), 40, Number.MAX_VALUE)
+animate.run()
+```
 
 ## *getMember*
 *ProgID* から *COM Object* のメンバーの種類と説明を取得します。
