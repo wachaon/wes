@@ -366,30 +366,31 @@ try {
         var current = wes.filestack.slice(-1)[0]
         if (wes.main !== 'REP') console.log('%CWhere the error occurred: %S', ansi.yellow, current)
 
-        var fmt
-        if (
-            error instanceof SyntaxError &&
-            (fmt = retry(require.bind(null, resolve(WorkingDirectory, '*')), 'fmt', '@wachaon/fmt'))
-        ) {
+        if (error instanceof SyntaxError) {
             var mods = wes.Modules
-            try {
-                var errorSource =
-                    wes.main === 'REP'
-                        ? mods[
+            var errorSource =
+                wes.main === 'REP'
+                    ? mods[
+                          Object.keys(mods).find(function errorSource_find(key) {
+                              return starts(key, '{')
+                          })
+                      ].source
+                    : readTextFileSync(
+                          mods[
                               Object.keys(mods).find(function errorSource_find(key) {
-                                  return starts(key, '{')
+                                  return starts(mods[key].path, current)
                               })
-                          ].source
-                        : readTextFileSync(
-                              mods[
-                                  Object.keys(mods).find(function errorSource_find(key) {
-                                      return starts(mods[key].path, current)
-                                  })
-                              ].path
-                          )
-                fmt.format(errorSource)
-            } catch (syntaxerror) {
-                console.log('%C%S', orange, syntaxerror.stack)
+                          ].path
+                      )
+            var Babel = req('babel-standalone')
+            var babel_option = {
+                presets: ['env'],
+                comments: false
+            }
+            try {
+                Babel.transform(errorSource, babel_option)
+            } catch (syntaxError) {
+                console.log('%S%S', orange, syntaxError.stack)
             }
         } else {
             var errorTarget = Object.keys(Modules).find(function getErrorSource(mod) {
