@@ -393,39 +393,45 @@ try {
                 console.log('%S%S', orange, syntaxError.stack)
             }
         } else {
-            var errorTarget = Object.keys(Modules).find(function getErrorSource(mod) {
-                return Modules[mod].path === current
-            })
-            if (errorTarget == null) console.log('Error File identification failed.')
-            else {
-                var errorSource = Modules[errorTarget].source
-                var rLine = new RegExp(current + '\\s\\((\\d+)')
-                var errorRow = (rLine.test(errorStack) ? errorStack.match(rLine)[1] : 0) - 0
+            try {
+                var errorTarget = Object.keys(Modules).find(function getErrorSource(mod) {
+                    return Modules[mod].path === current
+                })
+                if (errorTarget == null) console.log('Error File identification failed.')
+                else {
+                    var errorSource = Modules[errorTarget].source
+                    var rLine = new RegExp(current + '\\s\\((\\d+)')
+                    var errorRow = (rLine.test(errorStack) ? errorStack.match(rLine)[1] : 0) - 0
 
-                var line = errorSource.split(rCR_LF)
-                var ret
-                if (errorRow === 0) ret = NONE
-                else if (errorRow < 4) {
-                    ret = [
-                        (errorRow === 1 ? redBright : clear) + '     1 | ' + line[0].slice(line[0].indexOf('{') + 1),
-                        (errorRow === 2 ? redBright : clear) + '     2 | ' + line[1],
-                        (errorRow === 3 ? redBright : clear) + '     3 | ' + line[2] + orange
-                    ].join(LF)
-                } else {
-                    ret = [
-                        clear + (spaces + (errorRow - 1)).slice(-5) + ' | ' + line[errorRow - 2],
-                        redBright + (spaces + errorRow).slice(-5) + ' | ' + line[errorRow - 1],
-                        clear +
-                            (spaces + (errorRow + 1)).slice(-5) +
-                            ' | ' +
-                            (line[errorRow] != null ? line[errorRow] : NONE) +
-                            orange
-                    ].join(LF)
+                    var line = errorSource.split(rCR_LF)
+                    var ret
+                    if (errorRow === 0) ret = NONE
+                    else if (errorRow < 4) {
+                        ret = [
+                            (errorRow === 1 ? redBright : clear) +
+                                '     1 | ' +
+                                line[0].slice(line[0].indexOf('{') + 1),
+                            (errorRow === 2 ? redBright : clear) + '     2 | ' + line[1],
+                            (errorRow === 3 ? redBright : clear) + '     3 | ' + line[2] + orange
+                        ].join(LF)
+                    } else {
+                        ret = [
+                            clear + (spaces + (errorRow - 1)).slice(-5) + ' | ' + line[errorRow - 2],
+                            redBright + (spaces + errorRow).slice(-5) + ' | ' + line[errorRow - 1],
+                            clear +
+                                (spaces + (errorRow + 1)).slice(-5) +
+                                ' | ' +
+                                (line[errorRow] != null ? line[errorRow] : NONE) +
+                                orange
+                        ].join(LF)
+                    }
                 }
-            }
 
-            var customError = errorStack.replace('\n   at', LF + ret + '\n   at')
-            console.log('%C%S\n', orange, customError)
+                var customError = errorStack.replace('\n   at', LF + ret + '\n   at')
+                console.log('%C%S\n', orange, customError)
+            } catch (er) {
+                console.log('%C%S\n', orange, errorStack)
+            }
         }
     }
 }
