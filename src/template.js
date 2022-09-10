@@ -504,8 +504,8 @@ function wrap(name, source) {
 }
 
 function unwrap(source) {
-    return source.replace(/^(\(function [^\(]+\(\) \{)([\s\S]+)(\n\} \)\(\))/, function (match, $1, $2, $3) {
-        return $2
+    return source.replace(/^(\(function [^\(]+\(\) \{("use strict";\n)?\n)([\s\S]+)(\n\} \)\(\))$/, function () {
+        return arguments[3]
     })
 }
 
