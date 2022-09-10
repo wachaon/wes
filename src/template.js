@@ -236,10 +236,10 @@ try {
                         comments: false
                     }
 
-                    if (mod.type === MODULE) mod.source = wrap(name, Babel.transform(result_code, babel_option).code)
-                    else mod.source = wrap(name, result_code)
-
-                    mod.type = TRANSPILED
+                    if (mod.type === MODULE) {
+                        mod.source = wrap(name, Babel.transform(result_code, babel_option).code)
+                        mod.type = TRANSPILED
+                    } else mod.source = wrap(name, result_code)
 
                     var buf = entry === 'buffer' ? null : req('buffer')
 
