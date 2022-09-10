@@ -232,7 +232,7 @@ try {
                     var result_code = USE_STRICT + mod.source
                     var Babel = req('babel-standalone')
                     var babel_option = {
-                        presets: ['env'],
+                        presets: ['es2015'],
                         comments: false
                     }
 
@@ -386,7 +386,7 @@ try {
                       )
             var Babel = req('babel-standalone')
             var babel_option = {
-                presets: ['env'],
+                presets: ['es2015'],
                 comments: false
             }
             try {
