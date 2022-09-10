@@ -503,6 +503,12 @@ function wrap(name, source) {
     return '(function ' + name + '() {' + source + '\n} )()'
 }
 
+function unwrap(source) {
+    return source.replace(/^(\(function [^\(]+\(\) \{)([\s\S]+)(\n\} \)\(\))/, function (match, $1, $2, $3) {
+        return $2
+    })
+}
+
 function stacktrace(stack) {
     return unescape(stack.split('$').join('%'))
         .split(/\r?\n/)
