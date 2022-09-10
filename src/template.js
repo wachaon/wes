@@ -11,11 +11,11 @@ try {
         filestack: [WScript.ScriptFullName.split(WIN32SEP).join(POSIXSEP)]
     }
 
-    var argv = function () { }
+    var argv = function () {}
 
-    var ansi = function () { }
+    var ansi = function () {}
 
-    var console = function () { }
+    var console = function () {}
 
     if (!argv.has('engine', 'Chakra')) {
         var cpu =
@@ -69,6 +69,8 @@ try {
         var ROOT_DIR = '/'
         var CURRENT_DIR = './'
         var PARENT_DIR = '../'
+        var TRANSPILED = 'transpiled'
+        var USE_STRICT = '"use strict";'
 
         var pathname = req(PATHNAME)
         var resolve = pathname.resolve
@@ -227,7 +229,7 @@ try {
                     var name = escapeName(entry)
                     wes.filestack.push(entry)
 
-                    var result_code = '"use strict";' + mod.source
+                    var result_code = USE_STRICT + mod.source
                     var Babel = req('babel-standalone')
                     var babel_option = {
                         presets: ['env'],
@@ -237,7 +239,7 @@ try {
                     if (mod.type === MODULE) mod.source = wrap(name, Babel.transform(result_code, babel_option).code)
                     else mod.source = wrap(name, result_code)
 
-                    mod.type = 'transpiled'
+                    mod.type = TRANSPILED
 
                     var buf = entry === 'buffer' ? null : req('buffer')
 
@@ -318,7 +320,7 @@ try {
             // execute OLE, if it is OLE
             try {
                 return WScript.CreateObject(query)
-            } catch (e) { }
+            } catch (e) {}
 
             // execute req function, if it is a mapping[ query ]
             var parentModule = getPathToModule(caller)
@@ -371,17 +373,17 @@ try {
             var errorSource =
                 wes.main === 'REP'
                     ? mods[
-                        Object.keys(mods).find(function errorSource_find(key) {
-                            return starts(key, '{')
-                        })
-                    ].source
+                          Object.keys(mods).find(function errorSource_find(key) {
+                              return starts(key, '{')
+                          })
+                      ].source
                     : readTextFileSync(
-                        mods[
-                            Object.keys(mods).find(function errorSource_find(key) {
-                                return starts(mods[key].path, current)
-                            })
-                        ].path
-                    )
+                          mods[
+                              Object.keys(mods).find(function errorSource_find(key) {
+                                  return starts(mods[key].path, current)
+                              })
+                          ].path
+                      )
             var Babel = req('babel-standalone')
             var babel_option = {
                 presets: ['env'],
@@ -409,8 +411,8 @@ try {
                     else if (errorRow < 4) {
                         ret = [
                             (errorRow === 1 ? redBright : clear) +
-                            '     1 | ' +
-                            line[0].slice(line[0].indexOf('{') + 1),
+                                '     1 | ' +
+                                line[0].slice(line[0].indexOf('{') + 1),
                             (errorRow === 2 ? redBright : clear) + '     2 | ' + line[1],
                             (errorRow === 3 ? redBright : clear) + '     3 | ' + line[2] + orange
                         ].join(LF)
@@ -419,10 +421,10 @@ try {
                             clear + (spaces + (errorRow - 1)).slice(-5) + ' | ' + line[errorRow - 2],
                             redBright + (spaces + errorRow).slice(-5) + ' | ' + line[errorRow - 1],
                             clear +
-                            (spaces + (errorRow + 1)).slice(-5) +
-                            ' | ' +
-                            (line[errorRow] != null ? line[errorRow] : NONE) +
-                            orange
+                                (spaces + (errorRow + 1)).slice(-5) +
+                                ' | ' +
+                                (line[errorRow] != null ? line[errorRow] : NONE) +
+                                orange
                         ].join(LF)
                     }
                 }
@@ -447,7 +449,7 @@ function retry() {
         try {
             res = action(args.shift())
             break
-        } catch (error) { }
+        } catch (error) {}
     }
     return res
 }
