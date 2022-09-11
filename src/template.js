@@ -359,7 +359,6 @@ try {
         require(resolve(WorkingDirectory, '_'), main, argv.get('encoding'))
     }
 } catch (error) {
-    console.log(error.stack)
     if (console == null) WScript.Popup('[error]' + error.message)
     else {
         if (argv.has('debug')) console.error(error.stack)
