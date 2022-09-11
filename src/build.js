@@ -49,6 +49,9 @@ const rAnsi = '    var ansi = function () {}'
 const Argv = fs.readTextFileSync('lib/argv.js')
 const rArgv = '    var argv = function () {}'
 
+const Utility = fs.readTextFileSync('lib/utility.js')
+const rUtility = '    var utility = function () {}'
+
 let res = format(
     line
         .map((value) => {
@@ -69,6 +72,12 @@ let res = format(
                 return (
                     'var argv = (function () {\n    var module = { exports: {} };\n        (function () {' +
                     Argv +
+                    '        })()\n    return module.exports\n})()'
+                )
+            else if (rUtility === value)
+                return (
+                    'var utility = (function () {\n    var module = { exports: {} };\n        (function () {' +
+                    Utility +
                     '        })()\n    return module.exports\n})()'
                 )
             else return value
