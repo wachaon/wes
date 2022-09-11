@@ -1,6 +1,6 @@
 try {
     var LF = '\n'
-    var rCR_LF = /\r?\n/
+    var rLINE_SEP = /\r?\n/
     var NONE = ''
     var SPACE = ' '
     var POSIXSEP = '/'
@@ -73,6 +73,7 @@ try {
         var PARENT_DIR = '../'
         var TRANSPILED = 'transpiled'
         var USE_STRICT = '"use strict";'
+        var AT = '   at '
 
         var pathname = req(PATHNAME)
         var resolve = pathname.resolve
@@ -232,17 +233,25 @@ try {
                     var name = escapeName(entry)
                     wes.filestack.push(entry)
 
-                    var result_code = USE_STRICT + mod.source
                     var Babel = req('babel-standalone')
                     var babel_option = {
                         presets: ['es2015'],
+                        sourceMaps: true,
                         comments: false
                     }
 
                     if (mod.type === MODULE) {
-                        mod.source = wrap(name, Babel.transform(result_code, babel_option).code)
+                        var transpiled = Babel.transform(mod.source, babel_option)
+                        mod.map = transpiled.map
+                        mod.data = mod.source
+                        mod.code = transpiled.code
+                        mod.source = wrap(name, transpiled.code)
                         mod.type = TRANSPILED
-                    } else mod.source = wrap(name, result_code)
+                    } else {
+                        mod.data = mod.source
+                        mod.code = mod.source
+                        mod.source = wrap(name, USE_STRICT + mod.source)
+                    }
 
                     var buf = entry === 'buffer' ? null : req('buffer')
 
@@ -359,82 +368,76 @@ try {
         require(resolve(WorkingDirectory, '_'), main, argv.get('encoding'))
     }
 } catch (error) {
-    if (console == null) WScript.Popup('[error]' + error.message)
-    else {
-        if (argv.has('debug')) console.error(error.stack)
-        var errorStack = stacktrace(error.stack)
-
-        var orange = ansi.color(255, 165, 0)
-        var redBright = ansi.redBright
+    ;(function errortrace() {
+        var errorColor = ansi.color(255, 165, 0)
         var clear = ansi.clear
-        var spaces = '     '
-        var current = wes.filestack.slice(-1)[0]
-        if (wes.main !== 'REP') console.log('%CWhere the error occurred: %S', ansi.yellow, current)
+        var reverse = ansi.reverse
 
-        if (error instanceof SyntaxError) {
-            var mods = wes.Modules
-            var errorSource =
-                wes.main === 'REP'
-                    ? find(mods, function (id, mod) {
-                          return starts(id, '{')
-                      }).source
-                    : readTextFileSync(
-                          find(mods, function (id, mod) {
-                              return starts(mod.path, current)
-                          }).path
-                      )
-            var Babel = req('babel-standalone')
-            var babel_option = {
-                presets: ['es2015'],
-                comments: false
-            }
-            try {
-                Babel.transform(errorSource, babel_option)
-            } catch (syntaxError) {
-                console.log('%S%S', orange, syntaxError.stack)
-            }
-        } else {
-            try {
-                var errorTarget = find(Modules, function getErrorSource(id, mod) {
-                    return mod.path === current
-                })
-                if (errorTarget == null) console.log('Error File identification failed.')
-                else {
-                    var errorSource = Modules[errorTarget].source
-                    var rLine = new RegExp(current + '\\s\\((\\d+)')
-                    var errorRow = (rLine.test(errorStack) ? errorStack.match(rLine)[1] : 0) - 0
+        if (console == null) return WScript.Popup('[error]' + error.message)
+        var generation = { type: MODULE }
 
-                    var line = errorSource.split(rCR_LF)
-                    var ret
-                    if (errorRow === 0) ret = NONE
-                    else if (errorRow < 4) {
-                        ret = [
-                            (errorRow === 1 ? redBright : clear) +
-                                '     1 | ' +
-                                line[0].slice(line[0].indexOf('{') + 1),
-                            (errorRow === 2 ? redBright : clear) + '     2 | ' + line[1],
-                            (errorRow === 3 ? redBright : clear) + '     3 | ' + line[2] + orange
-                        ].join(LF)
-                    } else {
-                        ret = [
-                            clear + (spaces + (errorRow - 1)).slice(-5) + ' | ' + line[errorRow - 2],
-                            redBright + (spaces + errorRow).slice(-5) + ' | ' + line[errorRow - 1],
-                            clear +
-                                (spaces + (errorRow + 1)).slice(-5) +
-                                ' | ' +
-                                (line[errorRow] != null ? line[errorRow] : NONE) +
-                                orange
-                        ].join(LF)
+        if (generation.type === MODULE && error instanceof SyntaxError) return console.log(errorColor + stack)
+        if (argv.has('debug')) return console.error(errorColor + stack)
+
+        var stack = stacktrace(error.stack)
+            .split(rLINE_SEP)
+            .map(function errortrace_map(line) {
+                if (!line.startsWith(AT)) return errorColor + line + clear
+                if (!line.includes(POSIXSEP)) return errorColor + line + clear
+                return line.replace(/^   at (.+) \((Function code:)?(\d+):(\d+)\)$/, function errortrace_replace(
+                    _,
+                    spec,
+                    __,
+                    $1,
+                    $2
+                ) {
+                    var row = $1 - 0
+                    var column = $2 - 0
+                    console.log('spec: %s, row: %O, column: \n', spec, row, column)
+                    var mod = find(wes.Modules, function errortrace_find(id, mod) {
+                        return mod.path === spec
+                    })
+
+                    if (mod.type === COMMONJS) {
+                        return showErrorCode(mod, row, column)
+                    } else if (mod.type === MODULE || mod.type === TRANSPILED) {
+                        return showErrorCode(mod, row, column)
                     }
-                }
+                })
+            })
+            .join(LF)
 
-                var customError = errorStack.replace('\n   at', LF + ret + '\n   at')
-                console.log('%C%S\n', orange, customError)
-            } catch (er) {
-                console.log('%C%S\n', orange, errorStack)
-            }
+        console.log(stack)
+
+        function addLineNumber(source) {
+            var lines = source.split(rLINE_SEP)
+            var max = String(lines.length).length + 4
+            return lines
+                .map(function addLineNumber_map(line, i) {
+                    return (SPACE.repeat(max) + String(i + 1) + ' | ').slice(max * -1) + line
+                })
+                .join(LF)
         }
-    }
+
+        function showErrorCode(mod, row, column) {
+            var target = row
+            var min = Math.max(target - 2, 0)
+            var max = Math.min(mod.code.length, target + 2)
+            var pickup = addLineNumber(mod.code)
+                .split(rLINE_SEP)
+                .map(function showErrorCode_map(line, i) {
+                    var lineRow = i + 1
+                    if (lineRow === target) return errorColor + reverse + line + clear
+                    else return errorColor + line + clear
+                })
+                .filter(function showErrorCode_filter(line, i) {
+                    var lineRow = i + 1
+                    return min <= lineRow && lineRow <= max ? true : false
+                })
+                .join(LF)
+            return LF + pickup + LF + LF + errorColor + AT + mod.path + '(' + target + ':' + column + ')' + clear
+        }
+    })()
 }
 
 // util
