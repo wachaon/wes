@@ -384,16 +384,9 @@ try {
             .map(function errortrace_map(line) {
                 if (!line.startsWith(AT)) return errorColor + line + clear
                 if (!line.includes(POSIXSEP)) return errorColor + line + clear
-                return line.replace(/^   at (.+) \((Function code:)?(\d+):(\d+)\)$/, function errortrace_replace(
-                    _,
-                    spec,
-                    __,
-                    $1,
-                    $2
-                ) {
+                return line.replace(/^   at (.+) \((\d+):(\d+)\)$/, function errortrace_replace(_, spec, $1, $2) {
                     var row = $1 - 0
                     var column = $2 - 0
-                    console.log('spec: %s, row: %O, column: \n', spec, row, column)
                     var mod = find(wes.Modules, function errortrace_find(id, mod) {
                         return mod.path === spec
                     })
@@ -435,7 +428,7 @@ try {
                     return min <= lineRow && lineRow <= max ? true : false
                 })
                 .join(LF)
-            return LF + pickup + LF + LF + errorColor + AT + mod.path + '(' + target + ':' + column + ')' + clear
+            return LF + pickup + LF + LF + errorColor + AT + mod.path + ' (' + target + ':' + column + ')' + clear
         }
     })()
 }
