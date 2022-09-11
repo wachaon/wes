@@ -17,6 +17,8 @@ try {
 
     var console = function () {}
 
+    var utility = function () {}
+
     if (!argv.has('engine', 'Chakra')) {
         var cpu =
             WShell.ExpandEnvironmentStrings('%PROCESSOR_ARCHITECTURE%') !== 'x86'
@@ -84,13 +86,14 @@ try {
         var existsFileSync = filesystem.existsFileSync
         var readTextFileSync = filesystem.readTextFileSync
 
+        var find = utility.find
+        var map = utility.map
+
         // util
         function getPathToModule(filespec) {
-            var mod = Object.keys(Modules).find(function getPathToModule_callback(key) {
-                if (!has(Modules[key], PATH)) return false
-                return Modules[key].path === filespec
+            return find(Modules, function getPathToModule_matcher(id, mod) {
+                return PATH in mod && mod[PATH] === filespec
             })
-            return Modules[mod]
         }
 
         function getField(json, path) {
@@ -356,6 +359,7 @@ try {
         require(resolve(WorkingDirectory, '_'), main, argv.get('encoding'))
     }
 } catch (error) {
+    console.log(error.stack)
     if (console == null) WScript.Popup('[error]' + error.message)
     else {
         if (argv.has('debug')) console.error(error.stack)
@@ -372,17 +376,13 @@ try {
             var mods = wes.Modules
             var errorSource =
                 wes.main === 'REP'
-                    ? mods[
-                          Object.keys(mods).find(function errorSource_find(key) {
-                              return starts(key, '{')
-                          })
-                      ].source
+                    ? find(mods, function (id, mod) {
+                          return starts(id, '{')
+                      }).source
                     : readTextFileSync(
-                          mods[
-                              Object.keys(mods).find(function errorSource_find(key) {
-                                  return starts(mods[key].path, current)
-                              })
-                          ].path
+                          find(mods, function (id, mod) {
+                              return starts(mod.path, current)
+                          }).path
                       )
             var Babel = req('babel-standalone')
             var babel_option = {
@@ -396,8 +396,8 @@ try {
             }
         } else {
             try {
-                var errorTarget = Object.keys(Modules).find(function getErrorSource(mod) {
-                    return Modules[mod].path === current
+                var errorTarget = find(Modules, function getErrorSource(id, mod) {
+                    return mod.path === current
                 })
                 if (errorTarget == null) console.log('Error File identification failed.')
                 else {
