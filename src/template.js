@@ -243,16 +243,15 @@ try {
                         comments: false
                     }
 
+                    mod.data = mod.source + ''
                     if (mod.type === MODULE) {
                         var transpiled = Babel.transform(mod.source, babel_option)
                         mod.map = transpiled.map
-                        mod.data = mod.source + ''
                         mod.code = transpiled.code
                         mod.source = wrap(name, transpiled.code)
                         mod.type = TRANSPILED
                     } else {
-                        mod.data = mod.source
-                        mod.code = mod.source
+                        mod.code = mod.data
                         mod.source = wrap(name, USE_STRICT + mod.source)
                     }
 
