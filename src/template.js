@@ -74,6 +74,8 @@ try {
         var TRANSPILED = 'transpiled'
         var USE_STRICT = '"use strict";'
         var AT = '   at '
+        var SHEBANG = '#!'
+        var LINE_COMMENT = '//'
 
         var pathname = req(PATHNAME)
         var resolve = pathname.resolve
@@ -226,7 +228,7 @@ try {
                 path: entry,
                 mapping: {}
             }
-            if (starts(mod.source, '#!')) mod.source = mod.source.split(LF).slice(1).join(LF)
+            if (starts(mod.source, SHEBANG)) mod.source = LINE_COMMENT + mod.source
 
             Modules[GUID] = mod
             mod.type = getModuleType(mod)
