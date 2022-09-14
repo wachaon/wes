@@ -384,9 +384,18 @@ try {
         var generation = find(wes.Modules, function (id, mod) {
             return mod.path === wes.history[wes.history.length - 1]
         })
-        // error thrown by babel
-        if (generation != null && generation.type === MODULE && error instanceof SyntaxError)
-            return console.log(errorColor + stack)
+        if (generation != null && error instanceof SyntaxError) {
+            if (generation.type === MODULE) return console.log(errorColor + stack)
+            else {
+                try {
+                    req('babel-standalone').transform(generation.data, {
+                        presets: ['es2015']
+                    })
+                } catch (e) {
+                    console.log(errorColor + e.stack)
+                }
+            }
+        }
 
         stack = stacktrace(stack)
             .split(rLINE_SEP)
