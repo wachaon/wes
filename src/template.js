@@ -8,7 +8,7 @@ try {
 
     var WShell = WScript.CreateObject('WScript.Shell')
     var wes = {
-        filestack: [WScript.ScriptFullName.split(WIN32SEP).join(POSIXSEP)]
+        history: [WScript.ScriptFullName.split(WIN32SEP).join(POSIXSEP)]
     }
 
     var argv = function () {}
@@ -234,7 +234,7 @@ try {
                 case EXT_MJS:
                 case EXT_JS:
                     var name = escapeName(entry)
-                    wes.filestack.push(entry)
+                    wes.history.push(entry)
 
                     var Babel = req('babel-standalone')
                     var babel_option = {
@@ -246,7 +246,7 @@ try {
                     if (mod.type === MODULE) {
                         var transpiled = Babel.transform(mod.source, babel_option)
                         mod.map = transpiled.map
-                        mod.data = mod.source
+                        mod.data = mod.source + ''
                         mod.code = transpiled.code
                         mod.source = wrap(name, transpiled.code)
                         mod.type = TRANSPILED
@@ -270,7 +270,7 @@ try {
                         global: { process: process, Buffer: buf, console: console }
                     }
                     generateCodeAndExecution(codeMap, mod.source)
-                    wes.filestack.pop()
+                    wes.history.pop()
                     break
                 case EXT_JSON:
                     mod.module.exports = JSON.parse(mod.source)
@@ -373,16 +373,22 @@ try {
 } catch (error) {
     ;(function errortrace() {
         var errorColor = ansi.color(255, 165, 0)
+        var specColor = ansi.redBright
         var clear = ansi.clear
         var reverse = ansi.reverse
+        var stack = error.stack
 
-        if (console == null) return WScript.Popup('[error]' + error.message)
-        var generation = { type: MODULE }
+        if (console == null) return WScript.Popup('[error]:\n' + stack)
 
-        if (generation.type === MODULE && error instanceof SyntaxError) return console.log(errorColor + stack)
-        if (argv.has('debug')) return console.error(errorColor + stack)
+        // find module object from history
+        var generation = find(wes.Modules, function (id, mod) {
+            return mod.path === wes.history[wes.history.length - 1]
+        })
+        // error thrown by babel
+        if (generation != null && generation.type === MODULE && error instanceof SyntaxError)
+            return console.log(errorColor + stack)
 
-        var stack = stacktrace(error.stack)
+        stack = stacktrace(stack)
             .split(rLINE_SEP)
             .map(function errortrace_map(line) {
                 if (!line.startsWith(AT)) return errorColor + line + clear
@@ -393,17 +399,19 @@ try {
                     var mod = find(wes.Modules, function errortrace_find(id, mod) {
                         return mod.path === spec
                     })
-
                     if (mod.type === COMMONJS) {
-                        return showErrorCode(mod, row, column)
+                        return showErrorCode(mod.code, mod.path, row, column)
                     } else if (mod.type === MODULE || mod.type === TRANSPILED) {
-                        return showErrorCode(mod, row, column)
+                        var decoded = decodeMappings(mod.map.mappings)
+                        var mapping = decoded[row - 1][column - 1]
+                        return showErrorCode(mod.data, mod.path, mapping[2] + 1, mapping[3] + 1)
                     }
                 })
             })
             .join(LF)
 
-        console.log(stack)
+        if (argv.has('debug')) return console.log(errorColor + error.stack)
+        else return console.log(stack)
 
         function addLineNumber(source) {
             var lines = source.split(rLINE_SEP)
@@ -415,11 +423,12 @@ try {
                 .join(LF)
         }
 
-        function showErrorCode(mod, row, column) {
+        function showErrorCode(code, path, row, column) {
+            console.log('[code]:\n%s', code)
             var target = row
             var min = Math.max(target - 2, 0)
-            var max = Math.min(mod.code.length, target + 2)
-            var pickup = addLineNumber(mod.code)
+            var max = Math.min(code.length, target + 2)
+            var pickup = addLineNumber(code)
                 .split(rLINE_SEP)
                 .map(function showErrorCode_map(line, i) {
                     var lineRow = i + 1
@@ -431,7 +440,125 @@ try {
                     return min <= lineRow && lineRow <= max ? true : false
                 })
                 .join(LF)
-            return LF + pickup + LF + LF + errorColor + AT + mod.path + ' (' + target + ':' + column + ')' + clear
+            return LF + pickup + LF + specColor + '\u21B3  at ' + path + ' (' + target + ':' + column + ')' + clear
+        }
+
+        function decodeMappings(mappings) {
+            var charToInteger = {
+                '43': 62,
+                '47': 63,
+                '48': 52,
+                '49': 53,
+                '50': 54,
+                '51': 55,
+                '52': 56,
+                '53': 57,
+                '54': 58,
+                '55': 59,
+                '56': 60,
+                '57': 61,
+                '61': 64,
+                '65': 0,
+                '66': 1,
+                '67': 2,
+                '68': 3,
+                '69': 4,
+                '70': 5,
+                '71': 6,
+                '72': 7,
+                '73': 8,
+                '74': 9,
+                '75': 10,
+                '76': 11,
+                '77': 12,
+                '78': 13,
+                '79': 14,
+                '80': 15,
+                '81': 16,
+                '82': 17,
+                '83': 18,
+                '84': 19,
+                '85': 20,
+                '86': 21,
+                '87': 22,
+                '88': 23,
+                '89': 24,
+                '90': 25,
+                '97': 26,
+                '98': 27,
+                '99': 28,
+                '100': 29,
+                '101': 30,
+                '102': 31,
+                '103': 32,
+                '104': 33,
+                '105': 34,
+                '106': 35,
+                '107': 36,
+                '108': 37,
+                '109': 38,
+                '110': 39,
+                '111': 40,
+                '112': 41,
+                '113': 42,
+                '114': 43,
+                '115': 44,
+                '116': 45,
+                '117': 46,
+                '118': 47,
+                '119': 48,
+                '120': 49,
+                '121': 50,
+                '122': 51
+            }
+            var decoded = []
+            var line = []
+            var segment = [0, 0, 0, 0, 0]
+            var j = 0
+            for (var i = 0, shift = 0, value = 0; i < mappings.length; i++) {
+                var c = mappings.charCodeAt(i)
+                if (c === 44) {
+                    // ","
+                    segmentify(line, segment, j)
+                    j = 0
+                } else if (c === 59) {
+                    // ";"
+                    segmentify(line, segment, j)
+                    j = 0
+                    decoded.push(line)
+                    line = []
+                    segment[0] = 0
+                } else {
+                    var integer = charToInteger[c]
+                    if (integer === undefined) {
+                        throw new Error('Invalid character (' + String.fromCharCode(c) + ')')
+                    }
+                    var hasContinuationBit = integer & 32
+                    integer &= 31
+                    value += integer << shift
+                    if (hasContinuationBit) {
+                        shift += 5
+                    } else {
+                        var shouldNegate = value & 1
+                        value >>>= 1
+                        if (shouldNegate) {
+                            value = value === 0 ? -0x80000000 : -value
+                        }
+                        segment[j] += value
+                        j++
+                        value = shift = 0 // reset
+                    }
+                }
+            }
+            segmentify(line, segment, j)
+            decoded.push(line)
+            return decoded
+
+            function segmentify(line, segment, j) {
+                if (j === 4) line.push([segment[0], segment[1], segment[2], segment[3]])
+                else if (j === 5) line.push([segment[0], segment[1], segment[2], segment[3], segment[4]])
+                else if (j === 1) line.push([segment[0]])
+            }
         }
     })()
 }
