@@ -434,7 +434,6 @@ try {
         }
 
         function showErrorCode(code, path, row, column) {
-            console.log('[code]:\n%s', code)
             var target = row
             var min = Math.max(target - 2, 0)
             var max = Math.min(code.length, target + 2)
