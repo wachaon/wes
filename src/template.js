@@ -574,20 +574,6 @@ try {
 
 // util
 
-function retry() {
-    var args = Array.from(arguments)
-    if (args.length < 2) return null
-    var action = args.shift()
-    var res = null
-    while (args.length) {
-        try {
-            res = action(args.shift())
-            break
-        } catch (error) {}
-    }
-    return res
-}
-
 function has(cls, prop) {
     if (cls == null) throw new Error(prop + ' is null')
     return cls.hasOwnProperty(prop)
@@ -637,12 +623,6 @@ function wrap(name, source) {
     return '(function ' + name + '() {' + source + '\n} )()'
 }
 
-function unwrap(source) {
-    return source.replace(/^(\(function [^\(]+\(\) \{("use strict";\n)?\n)([\s\S]+)(\n\} \)\(\))$/, function () {
-        return arguments[3]
-    })
-}
-
 function stacktrace(stack) {
     return unescape(stack.split('$').join('%'))
         .split(/\r?\n/)
@@ -668,16 +648,6 @@ function escapeName(name) {
     return Array.from(name)
         .map(function escapeName_map(ch) {
             return '$' + ch.codePointAt().toString(16)
-        })
-        .join('')
-}
-
-function unescapeName($name) {
-    return $name
-        .split('$')
-        .slice(1)
-        .map(function unescapeName_map(ch) {
-            return String.fromCodePoint(parseInt('0x' + ch))
         })
         .join('')
 }
