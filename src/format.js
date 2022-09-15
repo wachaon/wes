@@ -1,5 +1,5 @@
 const { blueBright } = require('ansi')
-const { readdirsSync, readFileSync, writeFileSync } = require('filesystem')
+const { readdirsSync, readFileSync, writeFileSync, readTextFileSync } = require('filesystem')
 const { format } = require('fmt')
 const { resolve } = require('pathname')
 
