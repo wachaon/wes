@@ -639,7 +639,7 @@
                     starts(line, '   at generateCodeAndExecution (')
                 )
             })
-            .join('\r\n')
+            .join(LF)
             .split('Function code:')
             .join(NONE)
             .split('Global code (:')
@@ -653,6 +653,6 @@
             .map(function escapeName_map(ch) {
                 return '$' + ch.codePointAt().toString(16)
             })
-            .join('')
+            .join(NONE)
     }
 })()
