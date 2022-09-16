@@ -68,12 +68,16 @@
             var MAIN = 'main'
             var PATH = 'path'
             var string = 'string'
+            var REP = 'REP'
+            var BUFFER = 'buffer'
+            var GEN_GUID = 'genGUID'
             var PATHNAME = 'pathname'
             var FILESYSTEM = 'filesystem'
             var BABEL_STANDALONE = 'babel-standalone'
             var ROOT_DIR = '/'
             var CURRENT_DIR = './'
             var PARENT_DIR = '../'
+            var WIN32 = 'win32'
             var TRANSPILED = 'transpiled'
             var USE_STRICT = '"use strict";'
             var AT = '   at '
@@ -94,13 +98,12 @@
 
             var find = utility.find
 
-            // local require
             var process = {
                 env: { NODE_ENV: NONE },
                 cwd: function process_cwd() {
                     return WorkingDirectory
                 },
-                platform: 'win32'
+                platform: WIN32
             }
 
             // util
@@ -268,7 +271,7 @@
                             mod.source = wrap(name, USE_STRICT + mod.source)
                         }
 
-                        var buf = entry === 'buffer' ? null : req('buffer')
+                        var buf = entry === BUFFER ? null : req(BUFFER)
 
                         var codeMap = {
                             require: require.bind(null, entry),
@@ -306,7 +309,7 @@
                         }
                         var dirname = entry.split(POSIXSEP).slice(0, -1).join(POSIXSEP)
                         mod.mapping = mod.mapping || {}
-                        var buf = entry === 'buffer' ? null : req('buffer')
+                        var buf = entry === BUFFER ? null : req(BUFFER)
                         var codeMap = {
                             require: require.bind(null, entry),
                             module: mod.module,
@@ -358,7 +361,7 @@
                         'no module:\n' + 'caller: ' + caller + '\nquery: ' + query + LF + JSON.stringify(areas, null, 2)
                     )
 
-                var modId = req('genGUID')()
+                var modId = req(GEN_GUID)()
                 if (wes.main == null) wes.main = modId
                 var mod = createModule(modId, entry, query, parentModule, encode)
                 mod.exports = mod.module.exports
@@ -368,7 +371,7 @@
 
             wes.Modules = Modules
 
-            var main = argv.unnamed[0] != null ? argv.unnamed[0] : 'REP'
+            var main = argv.unnamed[0] != null ? argv.unnamed[0] : REP
             if (main in wes.Modules) wes.main = main
             require(resolve(WorkingDirectory, '_'), main, argv.get('encoding'))
         }
