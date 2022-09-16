@@ -41,16 +41,16 @@ let line = template.split(sep)
 const rModule = /^\s+var Modules = \{\}$/
 
 const Console = fs.readTextFileSync('lib/console.js')
-const rConsole = '    var console = function () {}'
+const rConsole = '        var console = function () {}'
 
 const Ansi = fs.readTextFileSync('lib/ansi.js')
-const rAnsi = '    var ansi = function () {}'
+const rAnsi = '        var ansi = function () {}'
 
 const Argv = fs.readTextFileSync('lib/argv.js')
-const rArgv = '    var argv = function () {}'
+const rArgv = '        var argv = function () {}'
 
 const Utility = fs.readTextFileSync('lib/utility.js')
-const rUtility = '    var utility = function () {}'
+const rUtility = '        var utility = function () {}'
 
 let res = format(
     line
