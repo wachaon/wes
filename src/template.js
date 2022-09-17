@@ -1,4 +1,4 @@
-;(function () {
+; (function () {
     try {
         var LF = '\n'
         var rLINE_SEP = /\r?\n/
@@ -12,13 +12,13 @@
             history: [WScript.ScriptFullName.split(WIN32SEP).join(POSIXSEP)]
         }
 
-        var argv = function () {}
+        var argv = function () { }
 
-        var ansi = function () {}
+        var ansi = function () { }
 
-        var console = function () {}
+        var console = function () { }
 
-        var utility = function () {}
+        var utility = function () { }
 
         if (!argv.has('engine', 'Chakra')) {
             var cpu =
@@ -204,13 +204,20 @@
                         var pkg = nearestPackageJson(dir)
                         var exp = getField(pkg, EXPORTS)
                         if (exp != null) {
-                            if (typeof exp === string) areas.push(resolve(dir, exp))
+                            if (typeof exp === string && existsFileSync(entry = resolve(dir, exp))) return entry
                             else {
                                 var dot = getField(exp, '.')
                                 if (dot != null) {
                                     var type = getField(pkg, TYPE) || COMMONJS
-                                    if (typeof dot === string) areas.push(resolve(dir, dot))
+                                    if (typeof dot === string && existsFileSync(entry = resolve(dir, dot))) return entry
                                     else if (Array.isArray(dot)) {
+                                        for (var i = 0; i < dot.length; i++) {
+                                            var val = dot[i]
+                                            if (typeof val === string && existsFileSync(entry = resolve(dir, val))) return entry
+                                            if (type === COMMONJS && REQUIRE in val && existsFileSync(entry = resolve(dir, val[REQUIRE]))) return entry
+                                            if (type === MODULE && IMPORT in val && existsFileSync(entry = resolve(dir, val[IMPORT]))) return entry
+                                        }
+                                        /*
                                         dot.find(function getEntry_find_callback(val) {
                                             if (typeof val === string) {
                                                 areas.push(resolve(dir, val))
@@ -220,12 +227,17 @@
                                                 areas.push(resolve(dir, val[IMPORT]))
                                             }
                                         })
+                                        */
                                     } else {
+                                        if (type === COMMONJS && REQUIRE in dot && existsFileSync(entry = resolve(dir, dot[REQUIRE]))) return entry
+                                        if (type === MODULE && IMPORT in dot && existsFileSync(entry = resolve(dir, dot[IMPORT]))) return entry
+                                        /*
                                         if (type === COMMONJS && REQUIRE in dot) {
                                             areas.push(resolve(dir, dot[REQUIRE]))
                                         } else if (type === MODULE && IMPORT in dot) {
                                             areas.push(resolve(dir, dot[IMPORT]))
                                         }
+                                        */
                                     }
                                 }
                             }
@@ -343,7 +355,7 @@
                 // execute OLE, if it is OLE
                 try {
                     return WScript.CreateObject(query)
-                } catch (e) {}
+                } catch (e) { }
 
                 // execute req function, if it is a mapping[ query ]
                 var parentModule = getPathToModule(caller)
@@ -379,7 +391,7 @@
             require(resolve(WorkingDirectory, '_'), main, argv.get('encoding'))
         }
     } catch (error) {
-        ;(function errortrace() {
+        ; (function errortrace() {
             var errorColor = ansi.color(255, 165, 0)
             var specColor = ansi.redBright
             var clear = ansi.clear
