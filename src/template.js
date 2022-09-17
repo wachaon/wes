@@ -267,7 +267,6 @@
                             mod.source = wrap(name, transpiled.code)
                             mod.type = TRANSPILED
                         } else {
-                            mod.code = mod.data
                             mod.source = wrap(name, USE_STRICT + mod.source)
                         }
 
@@ -414,7 +413,7 @@
                             return mod.path === spec
                         })
                         if (mod.type === COMMONJS) {
-                            return showErrorCode(mod.code, mod.path, row, column)
+                            return showErrorCode(mod.data, mod.path, row, column)
                         } else if (mod.type === MODULE || mod.type === TRANSPILED) {
                             var decoded = decodeMappings(mod.map.mappings)
                             var mapping = decoded[row - 1][column - 1]
