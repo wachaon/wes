@@ -266,15 +266,13 @@
 
                         var Babel = req(BABEL_STANDALONE)
 
-                        mod.data = mod.source + ''
                         if (mod.type === MODULE) {
                             var transpiled = Babel.transform(mod.source, Babel_option)
                             mod.map = transpiled.map
-                            mod.code = transpiled.code
-                            mod.source = wrap(name, transpiled.code)
+                            mod.code = wrap(name, transpiled.code)
                             mod.type = TRANSPILED
                         } else {
-                            mod.source = wrap(name, USE_STRICT + mod.source)
+                            mod.code = wrap(name, USE_STRICT + mod.source)
                         }
 
                         var buf = entry === BUFFER ? null : req(BUFFER)
@@ -290,7 +288,7 @@
                             Buffer: buf,
                             process: process
                         }
-                        generateCodeAndExecution(codeMap, mod.source)
+                        generateCodeAndExecution(codeMap, mod.code)
                         wes.history.pop()
                         break
                     case EXT_JSON:
@@ -328,7 +326,7 @@
                             Buffer: buf,
                             process: process
                         }
-                        generateCodeAndExecution(codeMap, mod.source)
+                        generateCodeAndExecution(codeMap, mod.code || mod.source)
                     }
                     mod.exports = mod.module.exports
                 }
@@ -397,11 +395,12 @@
                 return mod.path === wes.history[wes.history.length - 1]
             })
 
-            if (generation != null && error instanceof SyntaxError) {
-                if (generation.type === MODULE) return console.log(errorColor + stack)
+            if (error instanceof SyntaxError) {
+                if (generation != null && generation.type === MODULE) return console.log(errorColor + stack)
                 else {
                     try {
-                        req(BABEL_STANDALONE).transform(generation.data, Babel_option)
+                        console.log('Syntax Error throw BABEL')
+                        req(BABEL_STANDALONE).transform(generation.source, Babel_option)
                     } catch (e) {
                         console.log(errorColor + e.stack)
                     }
@@ -420,11 +419,11 @@
                             return mod.path === spec
                         })
                         if (mod.type === COMMONJS) {
-                            return showErrorCode(mod.data, mod.path, row, column)
+                            return showErrorCode(mod.source, mod.path, row, column)
                         } else if (mod.type === MODULE || mod.type === TRANSPILED) {
                             var decoded = decodeMappings(mod.map.mappings)
                             var mapping = decoded[row - 1][column - 1]
-                            return showErrorCode(mod.data, mod.path, mapping[2] + 1, mapping[3] + 1)
+                            return showErrorCode(mod.source, mod.path, mapping[2] + 1, mapping[3] + 1)
                         }
                     })
                 })
