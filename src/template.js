@@ -139,11 +139,11 @@
                 var areas = []
 
                 // Replace '/' with Current Directory if query starts with '/'
-                if (starts(query, ROOT_DIR)) {
+                if (query.startsWith(ROOT_DIR)) {
                     areas.push(resolve(WorkingDirectory, query.replace(ROOT_DIR, NONE)))
 
                     // combine the caller's path and the query, if relative path
-                } else if (starts(query, CURRENT_DIR) || starts(query, PARENT_DIR)) {
+                } else if (query.startsWith(CURRENT_DIR) || query.startsWith(PARENT_DIR)) {
                     areas.push(resolve(dirname(caller), query))
                 } else {
                     areas.push(resolve(dirname(caller), query))
@@ -242,7 +242,7 @@
                     path: entry,
                     mapping: {}
                 }
-                if (starts(mod.source, SHEBANG)) mod.source = LINE_COMMENT + mod.source
+                if (mod.source.startsWith(SHEBANG)) mod.source = LINE_COMMENT + mod.source
 
                 Modules[GUID] = mod
                 mod.type = getModuleType(mod)
@@ -301,7 +301,7 @@
                 if (!has(mod, EXPORTS)) {
                     if (!has(mod, MODULE)) {
                         mod.module = { exports: {} }
-                        if (ends(mod.path, EXT_JSON)) {
+                        if (mod.path.endsWith(EXT_JSON)) {
                             mod.module.exports = JSON.parse(mod.source)
                             mod.exports = mod.module.exports
                             return mod.exports
@@ -576,18 +576,9 @@
     }
 
     // util
-
     function has(cls, prop) {
         if (cls == null) throw new Error(prop + ' is null')
         return cls.hasOwnProperty(prop)
-    }
-
-    function starts(str, word) {
-        return str.startsWith(word)
-    }
-
-    function ends(str, word) {
-        return str.endsWith(word)
     }
 
     function bubblingDirectory(dir, query) {
@@ -631,11 +622,11 @@
             .split(/\r?\n/)
             .filter(function error_stack_callback(line) {
                 return !(
-                    starts(line, '   at Function code (Function code:') ||
-                    starts(line, '   at createModule (') ||
-                    starts(line, '   at require (') ||
-                    starts(line, '   at req (') ||
-                    starts(line, '   at generateCodeAndExecution (')
+                    line.startsWith('   at Function code (Function code:') ||
+                    line.startsWith('   at createModule (') ||
+                    line.startsWith('   at require (') ||
+                    line.startsWith('   at req (') ||
+                    line.startsWith('   at generateCodeAndExecution (')
                 )
             })
             .join(LF)
