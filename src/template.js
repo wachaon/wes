@@ -83,6 +83,7 @@
             var AT = '   at '
             var SHEBANG = '#!'
             var LINE_COMMENT = '//'
+            var PRESETS = 'env'
 
             var pathname = req(PATHNAME)
             var resolve = pathname.resolve
@@ -254,7 +255,7 @@
 
                         var Babel = req(BABEL_STANDALONE)
                         var babel_option = {
-                            presets: ['es2015'],
+                            presets: [PRESETS],
                             sourceMaps: true,
                             comments: false
                         }
@@ -309,6 +310,7 @@
                         var dirname = entry.split(POSIXSEP).slice(0, -1).join(POSIXSEP)
                         mod.mapping = mod.mapping || {}
                         var buf = entry === BUFFER ? null : req(BUFFER)
+
                         var codeMap = {
                             require: require.bind(null, entry),
                             module: mod.module,
@@ -388,12 +390,13 @@
             var generation = find(wes.Modules, function (id, mod) {
                 return mod.path === wes.history[wes.history.length - 1]
             })
+
             if (generation != null && error instanceof SyntaxError) {
                 if (generation.type === MODULE) return console.log(errorColor + stack)
                 else {
                     try {
                         req(BABEL_STANDALONE).transform(generation.data, {
-                            presets: ['es2015']
+                            presets: [PRESETS]
                         })
                     } catch (e) {
                         console.log(errorColor + e.stack)
@@ -618,7 +621,10 @@
     }
 
     function stacktrace(stack) {
-        return unescape(stack.split('$').join('%'))
+        return stack
+            .replace(/ ([A-Z]\$3a\$2f|\$7b)[^ ]+ /g, function ($1) {
+                return unescape($1.split('$').join('%'))
+            })
             .split(/\r?\n/)
             .filter(function error_stack_callback(line) {
                 return !(
@@ -639,10 +645,11 @@
     }
 
     function escapeName(name) {
-        return Array.from(name)
+        return name
+            .split('')
             .map(function escapeName_map(ch) {
-                return '$' + ch.codePointAt().toString(16)
+                return /\w/.test(ch) ? ch : '$' + ch.codePointAt(0).toString(16)
             })
-            .join(NONE)
+            .join('')
     }
 })()
