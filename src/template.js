@@ -107,6 +107,13 @@
                 platform: WIN32
             }
 
+            var Babel_option = {
+                plugins: ['transform-modules-commonjs', 'proposal-object-rest-spread'],
+                presets: ['es2017'],
+                sourceMaps: true,
+                comments: false
+            }
+
             // util
             function getPathToModule(filespec) {
                 return find(Modules, function getPathToModule_matcher(id, mod) {
@@ -189,7 +196,7 @@
                     if (existsFileSync((entry = area + EXT_MJS))) return entry
                     if (existsFileSync((entry = area + EXT_JSON))) return entry
                     if (existsFileSync((entry = resolve(area, INDEX_JS)))) return entry
-                    if (existsFileSync((entry = resolve(area, INDEX_CJS)))) return entry
+                    //if (existsFileSync((entry = resolve(area, INDEX_CJS)))) return entry
                     if (existsFileSync((entry = resolve(area, INDEX_MJS)))) return entry
                     if (existsFileSync((entry = resolve(area, INDEX_JSON)))) return entry
                     if (existsFileSync((temp = resolve(area, PACKAGE_JSON)))) {
@@ -254,15 +261,10 @@
                         wes.history.push(entry)
 
                         var Babel = req(BABEL_STANDALONE)
-                        var babel_option = {
-                            presets: [PRESETS],
-                            sourceMaps: true,
-                            comments: false
-                        }
 
                         mod.data = mod.source + ''
                         if (mod.type === MODULE) {
-                            var transpiled = Babel.transform(mod.source, babel_option)
+                            var transpiled = Babel.transform(mod.source, Babel_option)
                             mod.map = transpiled.map
                             mod.code = transpiled.code
                             mod.source = wrap(name, transpiled.code)
@@ -395,9 +397,7 @@
                 if (generation.type === MODULE) return console.log(errorColor + stack)
                 else {
                     try {
-                        req(BABEL_STANDALONE).transform(generation.data, {
-                            presets: [PRESETS]
-                        })
+                        req(BABEL_STANDALONE).transform(generation.data, Babel_option)
                     } catch (e) {
                         console.log(errorColor + e.stack)
                     }
