@@ -83,7 +83,6 @@
             var AT = '   at '
             var SHEBANG = '#!'
             var LINE_COMMENT = '//'
-            var PRESETS = 'env'
 
             var pathname = req(PATHNAME)
             var resolve = pathname.resolve
