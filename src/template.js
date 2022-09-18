@@ -197,7 +197,14 @@
                     if (existsFileSync((entry = area + EXT_JSON))) return entry
                     if (existsFileSync((temp = resolve(area, PACKAGE_JSON)))) {
                         var pkg = JSON.parse(readTextFileSync(temp))
-                        if (has(pkg, MAIN)) return resolve(area, pkg[MAIN])
+                        if (
+                            has(pkg, MAIN) &&
+                            (existsFileSync((entry = resolve(area, pkg[MAIN]))) ||
+                                existsFileSync((entry = resolve(area, pkg[MAIN] + EXT_JS))) ||
+                                existsFileSync((entry = resolve(area, pkg[MAIN] + EXT_CJS))) ||
+                                existsFileSync((entry = resolve(area, pkg[MAIN] + EXT_MJS))))
+                        )
+                            return entry
                     }
                     if (existsFileSync((entry = resolve(area, INDEX_JS)))) return entry
                     if (existsFileSync((entry = resolve(area, INDEX_CJS)))) return entry
