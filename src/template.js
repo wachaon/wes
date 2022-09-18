@@ -191,10 +191,6 @@
                     var area = areas.shift()
                     var temp
                     if (existsFileSync((entry = area))) return entry
-                    if (existsFileSync((entry = area + EXT_JS))) return entry
-                    if (existsFileSync((entry = area + EXT_CJS))) return entry
-                    if (existsFileSync((entry = area + EXT_MJS))) return entry
-                    if (existsFileSync((entry = area + EXT_JSON))) return entry
                     if (existsFileSync((temp = resolve(area, PACKAGE_JSON)))) {
                         var pkg = JSON.parse(readTextFileSync(temp))
                         if (
@@ -206,6 +202,10 @@
                         )
                             return entry
                     }
+                    if (existsFileSync((entry = area + EXT_JS))) return entry
+                    if (existsFileSync((entry = area + EXT_CJS))) return entry
+                    if (existsFileSync((entry = area + EXT_MJS))) return entry
+                    if (existsFileSync((entry = area + EXT_JSON))) return entry
                     if (existsFileSync((entry = resolve(area, INDEX_JS)))) return entry
                     if (existsFileSync((entry = resolve(area, INDEX_CJS)))) return entry
                     if (existsFileSync((entry = resolve(area, INDEX_MJS)))) return entry
@@ -405,11 +405,14 @@
             if (error instanceof SyntaxError) {
                 if (generation != null && generation.type === MODULE) return console.log(errorColor + stack)
                 else {
+                    var err = null
                     try {
                         console.log('Syntax Error throw BABEL')
                         req(BABEL_STANDALONE).transform(generation.source, Babel_option)
                     } catch (e) {
-                        console.log(errorColor + e.stack)
+                        err = e.stack
+                    } finally {
+                        console.log(errorColor + (err || stack))
                     }
                 }
             }
