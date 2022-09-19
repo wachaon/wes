@@ -83,6 +83,7 @@
             var AT = '   at '
             var SHEBANG = '#!'
             var LINE_COMMENT = '//'
+            var rAT = /^   at (.+) \((\d+):(\d+)\)$/
 
             var pathname = req(PATHNAME)
             var resolve = pathname.resolve
@@ -387,8 +388,12 @@
             require(resolve(WorkingDirectory, '_'), main, argv.get('encoding'))
         }
     } catch (error) {
+        // Wrap the process in a function so that you can leave the process in the middle.
         ;(function errortrace() {
-            var errorColor = ansi.color(255, 165, 0)
+            var orange = ansi.color(255, 165, 0)
+            var lime = ansi.color(181, 255, 20)
+            var aqua = ansi.color(24, 235, 249)
+            var errorColor = orange
             var specColor = ansi.redBright
             var clear = ansi.clear
             var reverse = ansi.reverse
@@ -396,32 +401,32 @@
 
             if (console == null) return WScript.Popup('[error]:\n' + stack)
 
-            // find module object from history
+            // find module object from history.
             var generation = find(wes.Modules, function (id, mod) {
                 return mod.path === wes.history[wes.history.length - 1]
             })
 
+            // Leave the display of syntax errors to Babel.
             if (error instanceof SyntaxError) {
-                if (generation != null && generation.type === MODULE) return console.log(errorColor + stack)
-                else {
-                    var err = null
+                if (generation.type === COMMONJS) {
                     try {
-                        console.log('Syntax Error throw BABEL')
-                        req(BABEL_STANDALONE).transform(generation.source, Babel_option)
+                        req(BABEL_STANDALONE).transform(generation.code, Babel_option)
+                        return console.log(errorColor + stack)
                     } catch (e) {
-                        err = e.stack
-                    } finally {
-                        console.log(errorColor + (err || stack))
+                        return console.log(errorColor + e.stack)
                     }
-                }
+                } else return console.log(errorColor + stack)
             }
 
+            // If the error stack shows the file path from which the error originated, the error source is displayed based on that.
+            var errorSource = false
             stack = stacktrace(stack)
                 .split(rLINE_SEP)
                 .map(function errortrace_map(line) {
                     if (!line.startsWith(AT)) return errorColor + line + clear
                     if (!line.includes(POSIXSEP)) return errorColor + line + clear
-                    return line.replace(/^   at (.+) \((\d+):(\d+)\)$/, function errortrace_replace(_, spec, $1, $2) {
+                    errorSource = true
+                    return line.replace(rAT, function errortrace_replace(_, spec, $1, $2) {
                         var row = $1 - 0
                         var column = $2 - 0
                         var mod = find(wes.Modules, function errortrace_find(id, mod) {
@@ -438,8 +443,28 @@
                 })
                 .join(LF)
 
+            // If the debug option is enabled, the error stack is displayed as is.
             if (argv.has('debug')) return console.log(errorColor + error.stack)
-            else return console.log(stack)
+            else if (errorSource) console.log(stack)
+            else {
+                // For errors that do not fall into either category, the source of the error is predicted and displayed based on the file history.
+                stack = console.removeColor(stack)
+                var error_row, error_column, rep
+                stack = stack
+                    .split(rLINE_SEP)
+                    .map(function (line) {
+                        if (rAT.test(line) && rep != true) {
+                            line.replace(rAT, function (_, spec, $1, $2) {
+                                error_row = $1 - 0
+                                error_column = $2 - 0
+                                rep = true
+                            })
+                            return showErrorCode(generation.source, generation.path, error_row, error_column)
+                        } else return errorColor + line + clear
+                    })
+                    .join(LF)
+                console.log(stack)
+            }
 
             function addLineNumber(source) {
                 var lines = source.split(rLINE_SEP)
