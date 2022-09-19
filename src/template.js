@@ -408,6 +408,7 @@
 
             // Leave the display of syntax errors to Babel.
             if (error instanceof SyntaxError) {
+                console.debug(lime + 'Syntax error handling')
                 if (generation.type === COMMONJS) {
                     try {
                         req(BABEL_STANDALONE).transform(generation.code, Babel_option)
@@ -443,11 +444,12 @@
                 })
                 .join(LF)
 
-            // If the debug option is enabled, the error stack is displayed as is.
-            if (argv.has('debug')) return console.log(errorColor + error.stack)
-            else if (errorSource) console.log(stack)
-            else {
+            if (errorSource) {
+                console.debug(lime + 'General error handling')
+                console.log(stack)
+            } else {
                 // For errors that do not fall into either category, the source of the error is predicted and displayed based on the file history.
+                console.debug(lime + 'Other error handling')
                 stack = console.removeColor(stack)
                 var error_row, error_column, rep
                 stack = stack
@@ -465,6 +467,9 @@
                     .join(LF)
                 console.log(stack)
             }
+
+            // If the debug option is enabled, the error stack is displayed as is.
+            if (argv.has('debug')) return console.log(LF + aqua + error.stack)
 
             function addLineNumber(source) {
                 var lines = source.split(rLINE_SEP)
