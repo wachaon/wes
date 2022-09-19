@@ -405,10 +405,25 @@
             var generation = find(wes.Modules, function (id, mod) {
                 return mod.path === wes.history[wes.history.length - 1]
             })
+            if (generation == null)
+                generation = find(wes.Modules, function (id, mod) {
+                    return id.startsWith('{')
+                })
+
+            console.debug(LF + aqua + error.stack)
+            // console.debug('\n%chistry%c: %O', lime, clear, wes.history)
+            // console.debug('\n%cgeneration%c: %O', aqua, clear, generation)
 
             // Leave the display of syntax errors to Babel.
             if (error instanceof SyntaxError) {
                 console.debug(lime + 'Syntax error handling')
+                /*
+                console.debug(
+                    'generation.type; %O\ngeneration.type === COMMONJS // => %O',
+                    generation.type,
+                    generation.type === COMMONJS
+                )
+                */
                 if (generation.type === COMMONJS) {
                     try {
                         req(BABEL_STANDALONE).transform(generation.code, Babel_option)
@@ -424,7 +439,7 @@
             stack = stacktrace(stack)
                 .split(rLINE_SEP)
                 .map(function errortrace_map(line) {
-                    if (!line.startsWith(AT)) return errorColor + line + clear
+                    if (!rAT.test(line)) return errorColor + line + clear
                     if (!line.includes(POSIXSEP)) return errorColor + line + clear
                     errorSource = true
                     return line.replace(rAT, function errortrace_replace(_, spec, $1, $2) {
@@ -444,32 +459,33 @@
                 })
                 .join(LF)
 
+            // console.debug('errorSource: %O', errorSource)
+
             if (errorSource) {
                 console.debug(lime + 'General error handling')
-                console.log(stack)
-            } else {
-                // For errors that do not fall into either category, the source of the error is predicted and displayed based on the file history.
-                console.debug(lime + 'Other error handling')
-                stack = console.removeColor(stack)
-                var error_row, error_column, rep
-                stack = stack
-                    .split(rLINE_SEP)
-                    .map(function (line) {
-                        if (rAT.test(line) && rep != true) {
-                            line.replace(rAT, function (_, spec, $1, $2) {
-                                error_row = $1 - 0
-                                error_column = $2 - 0
-                                rep = true
-                            })
-                            return showErrorCode(generation.source, generation.path, error_row, error_column)
-                        } else return errorColor + line + clear
-                    })
-                    .join(LF)
-                console.log(stack)
+                return console.log(stack)
             }
 
+            // For errors that do not fall into either category, the source of the error is predicted and displayed based on the file history.
+            console.debug(lime + 'Other error handling')
+            stack = console.removeColor(stack)
+            var error_row, error_column, rep
+            stack = stack
+                .split(rLINE_SEP)
+                .map(function (line) {
+                    if (rAT.test(line) && rep != true) {
+                        line.replace(rAT, function (_, spec, $1, $2) {
+                            error_row = $1 - 0
+                            error_column = $2 - 0
+                            rep = true
+                        })
+                        return showErrorCode(generation.source, generation.path, error_row, error_column)
+                    } else return errorColor + line + clear
+                })
+                .join(LF)
+            console.log(stack)
+
             // If the debug option is enabled, the error stack is displayed as is.
-            if (argv.has('debug')) return console.log(LF + aqua + error.stack)
 
             function addLineNumber(source) {
                 var lines = source.split(rLINE_SEP)
@@ -670,11 +686,13 @@
             .split(/\r?\n/)
             .filter(function error_stack_callback(line) {
                 return !(
-                    line.startsWith('   at Function code (Function code:') ||
-                    line.startsWith('   at createModule (') ||
-                    line.startsWith('   at require (') ||
-                    line.startsWith('   at req (') ||
-                    line.startsWith('   at generateCodeAndExecution (')
+                    //line.startsWith('   at Function code (Function code:') ||
+                    (
+                        line.startsWith('   at createModule (') ||
+                        line.startsWith('   at require (') ||
+                        line.startsWith('   at req (') ||
+                        line.startsWith('   at generateCodeAndExecution (')
+                    )
                 )
             })
             .join(LF)
