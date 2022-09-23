@@ -417,28 +417,6 @@
 
             if (mod == null) return console.log(coloring(error.stack, ORANGE))
 
-            if (wes.main === REP) {
-                // console.log(AQUA + 'error commonjs')
-                if (error instanceof SyntaxError) {
-                    if (mod.type === COMMONJS) {
-                        try {
-                            req(BABEL_STANDALONE).transform(mod.source, Babel_option)
-                            return console.log(ORANGE + error.stack)
-                        } catch (e) {
-                            return console.log(coloring(unescapeName(e.stack), LIME))
-                        }
-                    } else {
-                        return console.log(coloring(error.stack, LEMON))
-                    }
-                }
-                error.stack = error.stack.replace(rFunction, function (_, _row, _column) {
-                    var row = _row - 0
-                    var column = _column - 0
-                    return showErrorCode(mod.source, '[Real-Eval-Print]', row, column)
-                })
-                return console.log(coloring(error.stack, LEMON))
-            }
-
             if (mod.type === COMMONJS) {
                 // console.log(AQUA + 'error commonjs')
                 if (error instanceof SyntaxError) {
@@ -454,7 +432,8 @@
                     error.stack = error.stack.replace(rSTACK_FIRST_LINE, function (_, __, _row, _column) {
                         var row = _row - 0
                         var column = _column - 0
-                        return showErrorCode(mod.source, mod.path, row, column)
+                        var spec = wes.main === REP ? '[Real-Eval-Print]' : mod.path
+                        return showErrorCode(mod.source, spec, row, column)
                     })
                 }
 
@@ -485,7 +464,8 @@
                         var decoded = decodeMappings(mod.map.mappings)
                         var mapping = decoded[row - 1][column - 1]
 
-                        return showErrorCode(mod.source, mod.path, mapping[2] + 1, mapping[3] + 1)
+                        var spec = wes.main === REP ? '[Real-Eval-Print]' : mod.path
+                        return showErrorCode(mod.source, spec, mapping[2] + 1, mapping[3] + 1)
                     })
                 }
 
