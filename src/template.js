@@ -80,10 +80,13 @@
             var WIN32 = 'win32'
             var TRANSPILED = 'transpiled'
             var USE_STRICT = '"use strict";'
-            var AT = '   at '
             var SHEBANG = '#!'
             var LINE_COMMENT = '//'
-            var rAT = /^   at (.+) \((\d+):(\d+)\)$/
+            var rSTACK_LINE = /   at ([A-z]:\/.+|\{.+\}.+) \(Function code:(\d+):(\d+)\)/gm
+            var rSTACK_FIRST_LINE = /   at (.+) \(Function code:(\d+):(\d+)\)/m
+            var rFunction = /^   at Function code \(Function code:(\d+):(\d+)\)$/m
+            var BRACKET_START = '{'
+            var ENV = 'env'
 
             var pathname = req(PATHNAME)
             var resolve = pathname.resolve
@@ -388,104 +391,143 @@
             require(resolve(WorkingDirectory, '_'), main, argv.get('encoding'))
         }
     } catch (error) {
-        // Wrap the process in a function so that you can leave the process in the middle.
-        ;(function errortrace() {
-            var orange = ansi.color(255, 165, 0)
-            var lime = ansi.color(181, 255, 20)
-            var aqua = ansi.color(24, 235, 249)
-            var errorColor = orange
-            var specColor = ansi.redBright
-            var clear = ansi.clear
-            var reverse = ansi.reverse
-            var stack = error.stack
+        ;(function () {
+            var ORANGE = ansi.color(255, 165, 0)
+            var LIME = ansi.color(181, 255, 20)
+            var AQUA = ansi.color(24, 235, 249)
+            var LEMON = ansi.color(253, 255, 0)
+            var CARMINE = ansi.color(215, 0, 53)
+            var REVERSE = ansi.reverse
+            var ERROR = LIME
+            var CLEAR = ansi.clear
 
-            if (console == null) return WScript.Popup('[error]:\n' + stack)
+            error.stack = unescapeName(error.stack)
 
-            // find module object from history.
-            var generation = find(wes.Modules, function (id, mod) {
-                return mod.path === wes.history[wes.history.length - 1]
-            })
-            if (generation == null)
-                generation = find(wes.Modules, function (id, mod) {
-                    return id.startsWith('{')
-                })
+            if (console == null) WScript.Popup(error.stack)
 
-            console.debug(LF + aqua + error.stack)
-            // console.debug('\n%chistry%c: %O', lime, clear, wes.history)
-            // console.debug('\n%cgeneration%c: %O', aqua, clear, generation)
+            var mod =
+                wes.main === REP
+                    ? find(Modules, function (_id, _mod) {
+                          return _id.startsWith(BRACKET_START)
+                      })
+                    : find(Modules, function (_id, _mod) {
+                          return _mod.path === wes.history[wes.history.length - 1]
+                      })
 
-            // Leave the display of syntax errors to Babel.
-            if (error instanceof SyntaxError) {
-                console.debug(lime + 'Syntax error handling')
-                /*
-                console.debug(
-                    'generation.type; %O\ngeneration.type === COMMONJS // => %O',
-                    generation.type,
-                    generation.type === COMMONJS
-                )
-                */
-                if (generation.type === COMMONJS) {
-                    try {
-                        req(BABEL_STANDALONE).transform(generation.code, Babel_option)
-                        return console.log(errorColor + stack)
-                    } catch (e) {
-                        return console.log(errorColor + e.stack)
-                    }
-                } else return console.log(errorColor + stack)
-            }
+            if (mod == null) return console.log(coloring(error.stack, ORANGE))
 
-            // If the error stack shows the file path from which the error originated, the error source is displayed based on that.
-            var errorSource = false
-            stack = stacktrace(stack)
-                .split(rLINE_SEP)
-                .map(function errortrace_map(line) {
-                    if (!rAT.test(line)) return errorColor + line + clear
-                    if (!line.includes(POSIXSEP)) return errorColor + line + clear
-                    errorSource = true
-                    return line.replace(rAT, function errortrace_replace(_, spec, $1, $2) {
-                        var row = $1 - 0
-                        var column = $2 - 0
-                        var mod = find(wes.Modules, function errortrace_find(id, mod) {
-                            return mod.path === spec
-                        })
-                        if (mod.type === COMMONJS) {
-                            return showErrorCode(mod.source, mod.path, row, column)
-                        } else if (mod.type === MODULE || mod.type === TRANSPILED) {
-                            var decoded = decodeMappings(mod.map.mappings)
-                            var mapping = decoded[row - 1][column - 1]
-                            return showErrorCode(mod.source, mod.path, mapping[2] + 1, mapping[3] + 1)
+            if (wes.main === REP) {
+                // console.log(AQUA + 'error commonjs')
+                if (error instanceof SyntaxError) {
+                    if (mod.type === COMMONJS) {
+                        try {
+                            req(BABEL_STANDALONE).transform(mod.source, Babel_option)
+                            return console.log(ORANGE + error.stack)
+                        } catch (e) {
+                            return console.log(coloring(unescapeName(e.stack), LIME))
                         }
-                    })
+                    } else {
+                        return console.log(coloring(error.stack, LIME))
+                    }
+                }
+                error.stack = error.stack.replace(rFunction, function (_, _row, _column) {
+                    var row = _row - 0
+                    var column = _column - 0
+                    return showErrorCode(mod.source, '[Real-Eval-Print]', row, column)
                 })
-                .join(LF)
-
-            // console.debug('errorSource: %O', errorSource)
-
-            if (errorSource) {
-                console.debug(lime + 'General error handling')
-                return console.log(stack)
+                return console.log(coloring(error.stack, LEMON))
             }
 
-            // For errors that do not fall into either category, the source of the error is predicted and displayed based on the file history.
-            console.debug(lime + 'Other error handling')
-            stack = console.removeColor(stack)
-            var error_row, error_column, rep
-            stack = stack
-                .split(rLINE_SEP)
-                .map(function (line) {
-                    if (rAT.test(line) && rep != true) {
-                        line.replace(rAT, function (_, spec, $1, $2) {
-                            error_row = $1 - 0
-                            error_column = $2 - 0
-                            rep = true
-                        })
-                        return showErrorCode(generation.source, generation.path, error_row, error_column)
-                    } else return errorColor + line + clear
-                })
-                .join(LF)
-            console.log(stack)
+            if (mod.type === COMMONJS) {
+                // console.log(AQUA + 'error commonjs')
+                if (error instanceof SyntaxError) {
+                    try {
+                        req(BABEL_STANDALONE).transform(mod.source, Babel_option)
+                        return console.log(coloring(error.stack, LIME))
+                    } catch (e) {
+                        return console.log(coloring(unescapeName(e.stack), LEMON))
+                    }
+                }
 
-            // If the debug option is enabled, the error stack is displayed as is.
+                if (!rSTACK_LINE.test(error.stack)) {
+                    error.stack = error.stack.replace(rSTACK_FIRST_LINE, function stack_line_replace(
+                        _,
+                        __,
+                        _row,
+                        _column
+                    ) {
+                        var row = _row - 0
+                        var column = _column - 0
+                        return showErrorCode(mod.source, mod.path, row, column)
+                    })
+                }
+
+                error.stack = error.stack.replace(rSTACK_LINE, function stack_line_replace2(_, _spec, _row, _column) {
+                    var row = _row - 0
+                    var column = _column - 0
+
+                    var mod = find(Modules, function stack_line_find(_id, _mod) {
+                        return _mod.path === _spec
+                    })
+
+                    return showErrorCode(mod.source, mod.path, row, column)
+                })
+                return console.log(coloring(error.stack, LEMON))
+            }
+
+            if (mod.type === MODULE || mod.type === TRANSPILED) {
+                // console.log(LIME + 'error esmodule')
+                if (error instanceof SyntaxError) {
+                    return console.log(LEMON + error.stack)
+                }
+
+                if (!rSTACK_LINE.test(error.stack)) {
+                    error.stack = error.stack.replace(rSTACK_FIRST_LINE, function stack_line_replace3(
+                        _,
+                        __,
+                        _row,
+                        _column
+                    ) {
+                        var row = _row - 0
+                        var column = _column - 0
+                        var decoded = decodeMappings(mod.map.mappings)
+                        var mapping = decoded[row - 1][column - 1]
+
+                        return showErrorCode(mod.source, mod.path, mapping[2] + 1, mapping[3] + 1)
+                    })
+                }
+
+                error.stack = error.stack.replace(rSTACK_LINE, function stack_line_replace4(_, _spec, _row, _column) {
+                    var row = _row - 0
+                    var column = _column - 0
+                    var mod = find(Modules, function stack_line_find2(_id, _mod) {
+                        return _mod.path === _spec
+                    })
+
+                    var decoded = decodeMappings(mod.map.mappings)
+                    var mapping = decoded[row - 1][column - 1]
+                    return showErrorCode(mod.source, mod.path, mapping[2] + 1, mapping[3] + 1)
+                })
+                console.log(coloring(error.stack, LEMON))
+            }
+
+            function unescapeName(stack) {
+                return stack
+                    .split(rLINE_SEP)
+                    .join(LF)
+                    .replace(/ ([A-Z]\$3a\$2f|\$7b)[^ ]+ /g, function unescapeName_replace(_spec) {
+                        return unescape(_spec.split('$').join('%'))
+                    })
+            }
+
+            function coloring(message, color) {
+                return message
+                    .split(rLINE_SEP)
+                    .map(function coloring_map(line) {
+                        return color + line + CLEAR
+                    })
+                    .join(LF)
+            }
 
             function addLineNumber(source) {
                 var lines = source.split(rLINE_SEP)
@@ -505,15 +547,15 @@
                     .split(rLINE_SEP)
                     .map(function showErrorCode_map(line, i) {
                         var lineRow = i + 1
-                        if (lineRow === target) return errorColor + reverse + line + clear
-                        else return errorColor + line + clear
+                        if (lineRow === target) return REVERSE + line + CLEAR
+                        else return line
                     })
                     .filter(function showErrorCode_filter(line, i) {
                         var lineRow = i + 1
                         return min <= lineRow && lineRow <= max ? true : false
                     })
                     .join(LF)
-                return LF + pickup + LF + specColor + '\u21B3  at ' + path + ' (' + target + ':' + column + ')' + clear
+                return LF + pickup + LF + CARMINE + '\u21B3  at ' + path + ' (' + target + ':' + column + ')' + CLEAR
             }
 
             function decodeMappings(mappings) {
@@ -626,12 +668,12 @@
                 segmentify(line, segment, j)
                 decoded.push(line)
                 return decoded
+            }
 
-                function segmentify(line, segment, j) {
-                    if (j === 4) line.push([segment[0], segment[1], segment[2], segment[3]])
-                    else if (j === 5) line.push([segment[0], segment[1], segment[2], segment[3], segment[4]])
-                    else if (j === 1) line.push([segment[0]])
-                }
+            function segmentify(line, segment, j) {
+                if (j === 4) line.push([segment[0], segment[1], segment[2], segment[3]])
+                else if (j === 5) line.push([segment[0], segment[1], segment[2], segment[3], segment[4]])
+                else if (j === 1) line.push([segment[0]])
             }
         })()
     }
