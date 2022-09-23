@@ -428,7 +428,7 @@
                             return console.log(coloring(unescapeName(e.stack), LIME))
                         }
                     } else {
-                        return console.log(coloring(error.stack, LIME))
+                        return console.log(coloring(error.stack, LEMON))
                     }
                 }
                 error.stack = error.stack.replace(rFunction, function (_, _row, _column) {
