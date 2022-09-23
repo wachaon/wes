@@ -422,7 +422,7 @@
                 if (error instanceof SyntaxError) {
                     try {
                         req(BABEL_STANDALONE).transform(mod.source, Babel_option)
-                        return console.log(coloring(error.stack, LIME))
+                        return console.log(coloring(error.stack, LEMON))
                     } catch (e) {
                         return console.log(coloring(unescapeName(e.stack), LEMON))
                     }
