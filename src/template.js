@@ -87,6 +87,8 @@
             var rFunction = /^   at Function code \(Function code:(\d+):(\d+)\)$/m
             var BRACKET_START = '{'
             var ENV = 'env'
+            var DOLLAR = '$'
+            var PERCENT = '%'
 
             var pathname = req(PATHNAME)
             var resolve = pathname.resolve
@@ -119,8 +121,8 @@
 
             // util
             function getPathToModule(filespec) {
-                return find(Modules, function getPathToModule_matcher(id, mod) {
-                    return PATH in mod && mod[PATH] === filespec
+                return find(Modules, function (_id, _mod) {
+                    return PATH in _mod && _mod[PATH] === filespec
                 })
             }
 
@@ -225,7 +227,7 @@
                                     var type = getField(pkg, TYPE) || COMMONJS
                                     if (typeof dot === string) areas.push(resolve(dir, dot))
                                     else if (Array.isArray(dot)) {
-                                        dot.find(function getEntry_find_callback(val) {
+                                        dot.find(function (val) {
                                             if (typeof val === string) {
                                                 areas.push(resolve(dir, val))
                                             } else if (type === COMMONJS && REQUIRE in val) {
@@ -398,7 +400,6 @@
             var LEMON = ansi.color(253, 255, 0)
             var CARMINE = ansi.color(215, 0, 53)
             var REVERSE = ansi.reverse
-            var ERROR = LIME
             var CLEAR = ansi.clear
 
             error.stack = unescapeName(error.stack)
@@ -450,19 +451,14 @@
                 }
 
                 if (!rSTACK_LINE.test(error.stack)) {
-                    error.stack = error.stack.replace(rSTACK_FIRST_LINE, function stack_line_replace(
-                        _,
-                        __,
-                        _row,
-                        _column
-                    ) {
+                    error.stack = error.stack.replace(rSTACK_FIRST_LINE, function (_, __, _row, _column) {
                         var row = _row - 0
                         var column = _column - 0
                         return showErrorCode(mod.source, mod.path, row, column)
                     })
                 }
 
-                error.stack = error.stack.replace(rSTACK_LINE, function stack_line_replace2(_, _spec, _row, _column) {
+                error.stack = error.stack.replace(rSTACK_LINE, function (_, _spec, _row, _column) {
                     var row = _row - 0
                     var column = _column - 0
 
@@ -478,18 +474,14 @@
             if (mod.type === MODULE || mod.type === TRANSPILED) {
                 // console.log(LIME + 'error esmodule')
                 if (error instanceof SyntaxError) {
-                    return console.log(LEMON + error.stack)
+                    return console.log(coloring(error.stack, LEMON))
                 }
 
                 if (!rSTACK_LINE.test(error.stack)) {
-                    error.stack = error.stack.replace(rSTACK_FIRST_LINE, function stack_line_replace3(
-                        _,
-                        __,
-                        _row,
-                        _column
-                    ) {
+                    error.stack = error.stack.replace(rSTACK_FIRST_LINE, function (_, __, _row, _column) {
                         var row = _row - 0
                         var column = _column - 0
+
                         var decoded = decodeMappings(mod.map.mappings)
                         var mapping = decoded[row - 1][column - 1]
 
@@ -497,15 +489,17 @@
                     })
                 }
 
-                error.stack = error.stack.replace(rSTACK_LINE, function stack_line_replace4(_, _spec, _row, _column) {
+                error.stack = error.stack.replace(rSTACK_LINE, function (_, _spec, _row, _column) {
                     var row = _row - 0
                     var column = _column - 0
-                    var mod = find(Modules, function stack_line_find2(_id, _mod) {
+
+                    var mod = find(Modules, function (_id, _mod) {
                         return _mod.path === _spec
                     })
 
                     var decoded = decodeMappings(mod.map.mappings)
                     var mapping = decoded[row - 1][column - 1]
+
                     return showErrorCode(mod.source, mod.path, mapping[2] + 1, mapping[3] + 1)
                 })
                 console.log(coloring(error.stack, LEMON))
@@ -515,8 +509,8 @@
                 return stack
                     .split(rLINE_SEP)
                     .join(LF)
-                    .replace(/ ([A-Z]\$3a\$2f|\$7b)[^ ]+ /g, function unescapeName_replace(_spec) {
-                        return unescape(_spec.split('$').join('%'))
+                    .replace(/ ([A-Z]\$3a\$2f|\$7b)[^ ]+ /g, function (_spec) {
+                        return unescape(_spec.split(DOLLAR).join(PERCENT))
                     })
             }
 
@@ -533,7 +527,7 @@
                 var lines = source.split(rLINE_SEP)
                 var max = String(lines.length).length + 4
                 return lines
-                    .map(function addLineNumber_map(line, i) {
+                    .map(function (line, i) {
                         return (SPACE.repeat(max) + String(i + 1) + ' | ').slice(max * -1) + line
                     })
                     .join(LF)
@@ -550,7 +544,7 @@
                         if (lineRow === target) return REVERSE + line + CLEAR
                         else return line
                     })
-                    .filter(function showErrorCode_filter(line, i) {
+                    .filter(function (line, i) {
                         var lineRow = i + 1
                         return min <= lineRow && lineRow <= max ? true : false
                     })
@@ -697,7 +691,7 @@
     function nearestPackageJson(dir) {
         var pkgSpec = bubblingDirectory(dir, PACKAGE_JSON)
             .reverse()
-            .find(function nearestPackageJson_find_callback(spec) {
+            .find(function (spec) {
                 return existsFileSync(spec)
             })
         return pkgSpec ? JSON.parse(readTextFileSync(pkgSpec)) : {}
@@ -705,7 +699,7 @@
 
     function generateCodeAndExecution(map, source) {
         var args = Object.keys(map)
-        var prop = args.map(function generateCodeAndExecution_map_callback(key) {
+        var prop = args.map(function (key) {
             return map[key]
         })
         args.unshift(null)
@@ -720,38 +714,12 @@
         return '(function ' + name + '() {' + source + '\n} )()'
     }
 
-    function stacktrace(stack) {
-        return stack
-            .replace(/ ([A-Z]\$3a\$2f|\$7b)[^ ]+ /g, function ($1) {
-                return unescape($1.split('$').join('%'))
-            })
-            .split(/\r?\n/)
-            .filter(function error_stack_callback(line) {
-                return !(
-                    //line.startsWith('   at Function code (Function code:') ||
-                    (
-                        line.startsWith('   at createModule (') ||
-                        line.startsWith('   at require (') ||
-                        line.startsWith('   at req (') ||
-                        line.startsWith('   at generateCodeAndExecution (')
-                    )
-                )
-            })
-            .join(LF)
-            .split('Function code:')
-            .join(NONE)
-            .split('Global code (:')
-            .join('Global code (')
-            .split('(,')
-            .join('(')
-    }
-
     function escapeName(name) {
         return name
-            .split('')
-            .map(function escapeName_map(ch) {
-                return /\w/.test(ch) ? ch : '$' + ch.codePointAt(0).toString(16)
+            .split(NONE)
+            .map(function (ch) {
+                return /\w/.test(ch) ? ch : DOLLAR + ch.codePointAt(0).toString(16)
             })
-            .join('')
+            .join(NONE)
     }
 })()
