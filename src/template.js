@@ -399,12 +399,16 @@
             var AQUA = ansi.color(24, 235, 249)
             var LEMON = ansi.color(253, 255, 0)
             var CARMINE = ansi.color(215, 0, 53)
+            var ERROR_COLOR = ansi.red
+            var FILE_PATH_COLOR = ansi.redBright
             var REVERSE = ansi.reverse
+            var UNDERSCORE = ansi.underscore
             var CLEAR = ansi.clear
 
             error.stack = unescapeName(error.stack)
 
             if (console == null) WScript.Popup(error.stack)
+            console.debug(error.stack)
 
             var mod =
                 wes.main === REP
@@ -415,16 +419,16 @@
                           return _mod.path === wes.history[wes.history.length - 1]
                       })
 
-            if (mod == null) return console.log(coloring(error.stack, ORANGE))
+            if (mod == null) return console.log(coloring(error.stack, ERROR_COLOR))
 
             if (mod.type === COMMONJS) {
                 // console.log(AQUA + 'error commonjs')
                 if (error instanceof SyntaxError) {
                     try {
                         req(BABEL_STANDALONE).transform(mod.source, Babel_option)
-                        return console.log(coloring(error.stack, LEMON))
+                        return console.log(coloring(error.stack, ERROR_COLOR))
                     } catch (e) {
-                        return console.log(coloring(unescapeName(e.stack), LEMON))
+                        return console.log(coloring(unescapeName(e.stack), ERROR_COLOR))
                     }
                 }
 
@@ -447,13 +451,13 @@
 
                     return showErrorCode(mod.source, mod.path, row, column)
                 })
-                return console.log(coloring(error.stack, LEMON))
+                return console.log(coloring(error.stack, ERROR_COLOR))
             }
 
             if (mod.type === MODULE || mod.type === TRANSPILED) {
                 // console.log(LIME + 'error esmodule')
                 if (error instanceof SyntaxError) {
-                    return console.log(coloring(error.stack, LEMON))
+                    return console.log(coloring(error.stack, ERROR_COLOR))
                 }
 
                 if (!rSTACK_LINE.test(error.stack)) {
@@ -482,7 +486,7 @@
 
                     return showErrorCode(mod.source, mod.path, mapping[2] + 1, mapping[3] + 1)
                 })
-                console.log(coloring(error.stack, LEMON))
+                console.log(coloring(error.stack, ERROR_COLOR))
             }
 
             function unescapeName(stack) {
@@ -529,7 +533,21 @@
                         return min <= lineRow && lineRow <= max ? true : false
                     })
                     .join(LF)
-                return LF + pickup + LF + CARMINE + '\u21B3  at ' + path + ' (' + target + ':' + column + ')' + CLEAR
+
+                return (
+                    LF +
+                    pickup +
+                    LF +
+                    FILE_PATH_COLOR +
+                    '\u21B3  at ' +
+                    path +
+                    ' (' +
+                    target +
+                    ':' +
+                    column +
+                    ')' +
+                    CLEAR
+                )
             }
 
             function decodeMappings(mappings) {
