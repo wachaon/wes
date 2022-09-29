@@ -8,8 +8,12 @@
         var WIN32SEP = '\\'
 
         var WShell = WScript.CreateObject('WScript.Shell')
+        var history = [WScript.ScriptFullName.split(WIN32SEP).join(POSIXSEP)]
+        var timestamps = {}
+
         var wes = {
-            history: [WScript.ScriptFullName.split(WIN32SEP).join(POSIXSEP)]
+            history: history,
+            timestamps: timestamps
         }
 
         var argv = function () {}
@@ -103,6 +107,7 @@
             var readTextFileSync = filesystem.readTextFileSync
 
             var find = utility.find
+            var map = utility.map
 
             var process = {
                 env: { NODE_ENV: NONE },
@@ -121,7 +126,7 @@
 
             // util
             function getPathToModule(filespec) {
-                return find(Modules, function (_id, _mod) {
+                return find(Modules, function (_mod, _id) {
                     return PATH in _mod && _mod[PATH] === filespec
                 })
             }
@@ -347,16 +352,30 @@
 
             // require
             function require(caller, query, encode) {
+                var start = Date.now()
                 // execute req function, if it is a core module
                 if (!query.includes(POSIXSEP)) {
                     if (has(Modules, query)) {
-                        return req(query)
+                        var builtinMod = req(query)
+                        if (!has(timestamps, query))
+                            timestamps[query] = {
+                                parent: caller,
+                                timestamp: Date.now() - start
+                            }
+                        return builtinMod
                     }
                 }
 
                 // execute OLE, if it is OLE
                 try {
-                    return WScript.CreateObject(query)
+                    var com = WScript.CreateObject(query)
+                    if (!has(timestamps, query))
+                        timestamps[query] = {
+                            parent: caller,
+                            timestamp: Date.now() - start
+                        }
+
+                    return com
                 } catch (e) {}
 
                 // execute req function, if it is a mapping[ query ]
@@ -364,7 +383,15 @@
                 var mappingID
                 if (parentModule) {
                     if ((mappingID = parentModule.mapping[query])) {
-                        return req(mappingID)
+                        var mappingMod = req(mappingID)
+                        var path = mappingMod.path
+                        if (!has(timestamps, path))
+                            timestamps[path] = {
+                                parent: caller,
+                                timestamp: Date.now() - start
+                            }
+
+                        return mappingMod
                     }
                 }
 
@@ -383,6 +410,12 @@
                 var mod = createModule(modId, entry, query, parentModule, encode)
                 mod.exports = mod.module.exports
 
+                var modPath = mod.path
+                timestamps[modPath] = {
+                    parent: caller,
+                    timestamp: Date.now() - start
+                }
+
                 return mod.exports
             }
 
@@ -391,6 +424,48 @@
             var main = argv.unnamed[0] != null ? argv.unnamed[0] : REP
             if (main in wes.Modules) wes.main = main
             require(resolve(WorkingDirectory, '_'), main, argv.get('encoding'))
+
+            if (argv.get('timestamp')) {
+                var modules = {}
+
+                map(Modules, function (mod, id) {
+                    modules[mod.path] = {
+                        // path: mod.path,
+                        children: map(mod.mapping, function (value, key) {
+                            return Modules[value].path
+                        })
+                    }
+                    if (Object.keys(modules[mod.path].children).length === 0) delete modules[mod.path].children
+                })
+
+                console.log('modules; %O', modules)
+
+                /*
+                console.log('\n[timestamps]: %O', timestamps)
+                var first = find(Modules, function (mod, id) {
+                    return id.startsWith(BRACKET_START)
+                })
+
+                console.log('mapping: %O', visit(first.path))
+
+                function visit(spec) {
+                    var base = { children: {} }
+                    return v(spec, base)
+
+                    function v(spec, curr) {
+                        var mapping = getPathToModule(spec).mapping
+                        var m = Object.keys(mapping).map(function (key) {
+                            return Modules[mapping[key]].path
+                        })
+                        m.forEach(function (path) {
+                            curr.children[path] = { children: {} }
+                            v(path, curr.children[path])
+                        })
+                        return curr
+                    }
+                }
+                */
+            }
         }
     } catch (error) {
         ;(function () {
@@ -412,10 +487,10 @@
 
             var mod =
                 wes.main === REP
-                    ? find(Modules, function (_id, _mod) {
+                    ? find(Modules, function (_mod, _id) {
                           return _id.startsWith(BRACKET_START)
                       })
-                    : find(Modules, function (_id, _mod) {
+                    : find(Modules, function (_mod, _id) {
                           return _mod.path === wes.history[wes.history.length - 1]
                       })
 
@@ -445,7 +520,7 @@
                     var row = _row - 0
                     var column = _column - 0
 
-                    var mod = find(Modules, function stack_line_find(_id, _mod) {
+                    var mod = find(Modules, function (_mod, _id) {
                         return _mod.path === _spec
                     })
 
@@ -477,7 +552,7 @@
                     var row = _row - 0
                     var column = _column - 0
 
-                    var mod = find(Modules, function (_id, _mod) {
+                    var mod = find(Modules, function (_mod, _id) {
                         return _mod.path === _spec
                     })
 
