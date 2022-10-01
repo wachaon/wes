@@ -9,11 +9,11 @@
 
         var WShell = WScript.CreateObject('WScript.Shell')
         var history = [WScript.ScriptFullName.split(WIN32SEP).join(POSIXSEP)]
-        var timestamps = {}
+        var entry_point = null
 
         var wes = {
             history: history,
-            timestamps: timestamps
+            entry_point: entry_point
         }
 
         /* insert argv */
@@ -88,9 +88,7 @@
             var LINE_COMMENT = '//'
             var rSTACK_LINE = /   at ([A-z]:\/.+|\{.+\}.+) \(Function code:(\d+):(\d+)\)/gm
             var rSTACK_FIRST_LINE = /   at (.+) \(Function code:(\d+):(\d+)\)/m
-            var rFunction = /^   at Function code \(Function code:(\d+):(\d+)\)$/m
             var BRACKET_START = '{'
-            var ENV = 'env'
             var DOLLAR = '$'
             var PERCENT = '%'
 
@@ -107,7 +105,6 @@
             var readTextFileSync = filesystem.readTextFileSync
 
             var find = utility.find
-            var map = utility.map
 
             var process = {
                 env: { NODE_ENV: NONE },
@@ -351,17 +348,12 @@
                 return mod.exports
             }
 
-            var story = []
-            var entries = {}
-            var entry_point = null
-
             // require
             function require(callee, query, encode) {
                 // execute req function, if it is a core module
                 if (!query.includes(POSIXSEP)) {
                     if (has(Modules, query)) {
                         var builtinMod = req(query)
-
                         return builtinMod
                     }
                 }
@@ -369,7 +361,6 @@
                 // execute OLE, if it is OLE
                 try {
                     var com = WScript.CreateObject(query)
-
                     return com
                 } catch (e) {}
 
@@ -379,7 +370,6 @@
                 if (parentModule) {
                     if ((mappingID = parentModule.mapping[query])) {
                         var mappingMod = req(mappingID)
-
                         return mappingMod
                     }
                 }
@@ -395,13 +385,13 @@
                     )
 
                 var modId = req(GEN_GUID)()
-                if (wes.main == null) wes.main = modId
 
-                if (callee === founder) entry_point = entry
+                if (callee === founder) {
+                    wes.entry_point = entry
+                    wes.main = modId
+                }
 
                 var mod = createModule(modId, entry, query, parentModule, encode)
-
-                story.pop()
 
                 mod.exports = mod.module.exports
                 return mod.exports
@@ -414,12 +404,6 @@
 
             var founder = resolve(WorkingDirectory, '*')
             require(founder, main, argv.get('encoding'))
-
-            if (argv.get('entries')) {
-                console.log('entry_point: %O', entry_point)
-                console.log('entries: %O', entries)
-                console.log('story: %O', story)
-            }
         }
     } catch (error) {
         ;(function () {
@@ -431,7 +415,6 @@
             var ERROR_COLOR = ansi.red
             var FILE_PATH_COLOR = ansi.redBright
             var REVERSE = ansi.reverse
-            var UNDERSCORE = ansi.underscore
             var CLEAR = ansi.clear
 
             error.stack = unescapeName(error.stack)
@@ -724,10 +707,10 @@
         return pkgSpec ? JSON.parse(readTextFileSync(pkgSpec)) : {}
     }
 
-    function generateCodeAndExecution(map, source) {
-        var args = Object.keys(map)
+    function generateCodeAndExecution(hash, source) {
+        var args = Object.keys(hash)
         var prop = args.map(function (key) {
-            return map[key]
+            return hash[key]
         })
         args.unshift(null)
         args.push(source)
@@ -748,15 +731,5 @@
                 return /\w/.test(ch) ? ch : DOLLAR + ch.codePointAt(0).toString(16)
             })
             .join(NONE)
-    }
-
-    function seq(object, types) {
-        console.debug(object, types)
-        if (!types.length) return object
-        return types.reduce(function (acc, curr) {
-            return acc.children.find(function (key) {
-                return key.type === curr
-            })
-        }, object)
     }
 })()
