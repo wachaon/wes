@@ -351,12 +351,11 @@
             // require
             function require(callee, query, encode) {
                 var start = Date.now()
-                var node
+                var element
                 // execute req function, if it is a core module
                 if (!query.includes(POSIXSEP)) {
                     if (has(Modules, query)) {
-                        var builtinMod = req(query)
-                        return builtinMod
+                        return req(query)
                     }
                 }
 
@@ -373,12 +372,12 @@
                     if ((mappingID = parentModule.mapping[query])) {
                         current = seq(tree, properties)
                         current.children = current.children || []
-                        node = { type: Modules[mappingID].path }
-                        current.children.push(node)
+                        element = { type: Modules[mappingID].path }
+                        current.children.push(element)
                         properties.push(Modules[mappingID].path)
 
                         var mappingMod = req(mappingID)
-                        node.value = Date.now() - start
+                        element.value = Date.now() - start
 
                         properties.pop()
 
@@ -405,12 +404,12 @@
 
                 current = seq(tree, properties)
                 current.children = current.children || []
-                node = { type: entry }
-                current.children.push(node)
+                element = { type: entry }
+                current.children.push(element)
                 properties.push(entry)
 
                 var mod = createModule(modId, entry, query, parentModule, encode)
-                node.value = Date.now() - start
+                element.value = Date.now() - start
 
                 properties.pop()
 
