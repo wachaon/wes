@@ -121,302 +121,6 @@
                 comments: false
             }
 
-            // util
-            function getPathToModule(filespec) {
-                return find(Modules, function (_mod, _id) {
-                    return PATH in _mod && _mod[PATH] === filespec
-                })
-            }
-
-            function getField(json, path) {
-                var parts = path.split(POSIXSEP)
-                var part = null
-                var curr = json
-                while (parts.length) {
-                    part = parts.shift()
-                    if (part in curr) curr = curr[part]
-                    else return undefined
-                }
-                return curr
-            }
-
-            function getPkgField(dir, field) {
-                var pkg = resolve(dir, PACKAGE_JSON)
-                if (!existsFileSync(pkg)) return undefined
-                var file = readTextFileSync(pkg)
-                var json = JSON.parse(file)
-                return getField(json, field)
-            }
-
-            function getAreas(callee, _query) {
-                var query = toPosixSep(_query)
-
-                var areas = []
-
-                // Replace '/' with Current Directory if query starts with '/'
-                if (query.startsWith(ROOT_DIR)) {
-                    areas.push(resolve(WorkingDirectory, query.replace(ROOT_DIR, NONE)))
-
-                    // combine the callee's path and the query, if relative path
-                } else if (query.startsWith(CURRENT_DIR) || query.startsWith(PARENT_DIR)) {
-                    areas.push(resolve(dirname(callee), query))
-                } else {
-                    areas.push(resolve(dirname(callee), query))
-
-                    // Otherwise, combine node_module while going back directory
-                    var hierarchy = dirname(callee)
-
-                    while (hierarchy !== NONE) {
-                        areas.push(resolve(hierarchy, WES_MODULES, query))
-                        areas.push(resolve(hierarchy, NODE_MODULES, query))
-                        var _hierarchy = dirname(hierarchy)
-                        if (hierarchy === _hierarchy) break
-                        hierarchy = _hierarchy
-                    }
-                    var ScriptFullName = WScript.ScriptFullName
-                    areas.push(resolve(dirname(ScriptFullName), NODE_MODULES, query))
-                    areas.push(resolve(dirname(ScriptFullName), WES_MODULES, query))
-                }
-                return areas
-            }
-
-            function getModuleType(mod) {
-                var ext = extname(mod.path)
-                if (ext === EXT_JSON) return JSONTYPE
-                if (ext === EXT_CJS) return COMMONJS
-                if (ext === EXT_MJS) return MODULE
-                var dir = dirname(mod.path)
-                var pkg = nearestPackageJson(dir)
-                var type
-                if ((type = getField(pkg, TYPE))) return type
-                return COMMONJS
-            }
-
-            function getEntry(areas) {
-                var entry = null
-                while (areas.length) {
-                    var area = areas.shift()
-                    var temp
-                    if (existsFileSync((entry = area))) return entry
-                    if (existsFileSync((temp = resolve(area, PACKAGE_JSON)))) {
-                        var pkg = JSON.parse(readTextFileSync(temp))
-                        if (
-                            has(pkg, MAIN) &&
-                            (existsFileSync((entry = resolve(area, pkg[MAIN]))) ||
-                                existsFileSync((entry = resolve(area, pkg[MAIN] + EXT_JS))) ||
-                                existsFileSync((entry = resolve(area, pkg[MAIN] + EXT_CJS))) ||
-                                existsFileSync((entry = resolve(area, pkg[MAIN] + EXT_MJS))))
-                        )
-                            return entry
-                    }
-                    if (existsFileSync((entry = area + EXT_JS))) return entry
-                    if (existsFileSync((entry = area + EXT_CJS))) return entry
-                    if (existsFileSync((entry = area + EXT_MJS))) return entry
-                    if (existsFileSync((entry = area + EXT_JSON))) return entry
-                    if (existsFileSync((entry = resolve(area, INDEX_JS)))) return entry
-                    if (existsFileSync((entry = resolve(area, INDEX_CJS)))) return entry
-                    if (existsFileSync((entry = resolve(area, INDEX_MJS)))) return entry
-                    if (existsFileSync((entry = resolve(area, INDEX_JSON)))) return entry
-                    if (existsFileSync((temp = resolve(area, PACKAGE_JSON)))) {
-                        var dir = dirname(temp)
-                        var pkg = nearestPackageJson(dir)
-                        var exp = getField(pkg, EXPORTS)
-                        if (exp != null) {
-                            if (typeof exp === string) areas.push(resolve(dir, exp))
-                            else {
-                                var dot = getField(exp, '.')
-                                if (dot != null) {
-                                    var type = getField(pkg, TYPE) || COMMONJS
-                                    if (typeof dot === string) areas.push(resolve(dir, dot))
-                                    else if (Array.isArray(dot)) {
-                                        dot.find(function (val) {
-                                            if (typeof val === string) {
-                                                l
-                                                areas.push(resolve(dir, val))
-                                            } else if (type === COMMONJS && REQUIRE in val) {
-                                                areas.push(resolve(dir, val[REQUIRE]))
-                                            } else if (type === MODULE && IMPORT in val) {
-                                                areas.push(resolve(dir, val[IMPORT]))
-                                            }
-                                        })
-                                    } else {
-                                        if (type === COMMONJS && REQUIRE in dot) {
-                                            areas.push(resolve(dir, dot[REQUIRE]))
-                                        } else if (type === MODULE && IMPORT in dot) {
-                                            areas.push(resolve(dir, dot[IMPORT]))
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        var main = getPkgField(dirname(temp), MAIN)
-                        if (main == null) continue
-                        areas.unshift(resolve(area, main))
-                    }
-                }
-            }
-
-            function createModule(GUID, entry, query, parentModule, encode) {
-                if (parentModule) parentModule.mapping[query] = GUID
-
-                console.debug('%O require to %O ', parentModule ? parentModule.path : null, entry)
-
-                var mod = {
-                    source: readTextFileSync(entry, encode != null ? encode : null),
-                    module: {
-                        exports: {}
-                    },
-                    path: entry,
-                    mapping: {}
-                }
-                if (mod.source.startsWith(SHEBANG)) mod.source = LINE_COMMENT + mod.source
-
-                Modules[GUID] = mod
-                mod.type = getModuleType(mod)
-                switch (extname(entry)) {
-                    case EXT_MJS:
-                    case EXT_JS:
-                        var name = escapeName(entry)
-                        wes.history.push(entry)
-
-                        var Babel = req(BABEL_STANDALONE)
-
-                        if (mod.type === MODULE) {
-                            var transpiled = Babel.transform(mod.source, Babel_option)
-                            mod.map = transpiled.map
-                            mod.code = wrap(name, transpiled.code)
-                            mod.type = TRANSPILED
-                        } else {
-                            mod.code = wrap(name, USE_STRICT + mod.source)
-                        }
-
-                        var buf = entry === BUFFER ? null : req(BUFFER)
-
-                        var codeMap = {
-                            require: require.bind(null, entry),
-                            module: mod.module,
-                            exports: mod.module.exports,
-                            console: console,
-                            __dirname: dirname(entry),
-                            __filename: entry,
-                            wes: wes,
-                            Buffer: buf,
-                            process: process
-                        }
-                        generateCodeAndExecution(codeMap, mod.code)
-                        wes.history.pop()
-                        break
-                    case EXT_JSON:
-                        mod.module.exports = JSON.parse(mod.source)
-                        break
-                    default:
-                        mod.module.exports = mod.source
-                }
-                return mod
-            }
-
-            function req(moduleID) {
-                var mod = Modules[moduleID]
-                var entry = mod.path || POSIXSEP
-                if (!has(mod, EXPORTS)) {
-                    if (!has(mod, MODULE)) {
-                        mod.module = { exports: {} }
-                        if (mod.path.endsWith(EXT_JSON)) {
-                            mod.module.exports = JSON.parse(mod.source)
-                            mod.exports = mod.module.exports
-                            return mod.exports
-                        }
-                        var dirname = entry.split(POSIXSEP).slice(0, -1).join(POSIXSEP)
-                        mod.mapping = mod.mapping || {}
-                        var buf = entry === BUFFER ? null : req(BUFFER)
-
-                        var codeMap = {
-                            require: require.bind(null, entry),
-                            module: mod.module,
-                            exports: mod.module.exports,
-                            console: console,
-                            __dirname: dirname,
-                            __filename: entry,
-                            wes: wes,
-                            Buffer: buf,
-                            process: process
-                        }
-                        generateCodeAndExecution(codeMap, mod.code || mod.source)
-                    }
-                    mod.exports = mod.module.exports
-                }
-                return mod.exports
-            }
-
-            // require
-            function require(callee, query, encode) {
-                var start = Date.now()
-                var element
-                // execute req function, if it is a core module
-                if (!query.includes(POSIXSEP)) {
-                    if (has(Modules, query)) {
-                        return req(query)
-                    }
-                }
-
-                // execute OLE, if it is OLE
-                try {
-                    var com = WScript.CreateObject(query)
-                    return com
-                } catch (e) {}
-
-                // execute req function, if it is a mapping[ query ]
-                var parentModule = getPathToModule(callee)
-                var mappingID
-                if (parentModule) {
-                    if ((mappingID = parentModule.mapping[query])) {
-                        current = seq(tree, properties)
-                        current.children = current.children || []
-                        element = { type: Modules[mappingID].path }
-                        current.children.push(element)
-                        properties.push(Modules[mappingID].path)
-
-                        var mappingMod = req(mappingID)
-                        element.value = Date.now() - start
-
-                        properties.pop()
-
-                        return mappingMod
-                    }
-                }
-
-                var areas = []
-                if (isAbsolute(query)) areas = [resolve(query)]
-                else areas = getAreas(callee, query)
-
-                var entry = getEntry(areas)
-                if (entry == null)
-                    throw new Error(
-                        'no module:\n' + 'callee: ' + callee + '\nquery: ' + query + LF + JSON.stringify(areas, null, 2)
-                    )
-
-                var modId = req(GEN_GUID)()
-
-                if (callee === founder) {
-                    wes.entry_point = entry
-                    wes.main = modId
-                }
-
-                current = seq(tree, properties)
-                current.children = current.children || []
-                element = { type: entry }
-                current.children.push(element)
-                properties.push(entry)
-
-                var mod = createModule(modId, entry, query, parentModule, encode)
-                element.value = Date.now() - start
-
-                properties.pop()
-
-                mod.exports = mod.module.exports
-                return mod.exports
-            }
-
             wes.Modules = Modules
 
             var main = argv.unnamed[0] != null ? argv.unnamed[0] : REP
@@ -714,6 +418,231 @@
         })()
     }
 
+    function getEntry(areas) {
+        var entry = null
+        while (areas.length) {
+            var area = areas.shift()
+            var temp
+            if (existsFileSync((entry = area))) return entry
+            if (existsFileSync((temp = resolve(area, PACKAGE_JSON)))) {
+                var pkg = JSON.parse(readTextFileSync(temp))
+                if (
+                    has(pkg, MAIN) &&
+                    (existsFileSync((entry = resolve(area, pkg[MAIN]))) ||
+                        existsFileSync((entry = resolve(area, pkg[MAIN] + EXT_JS))) ||
+                        existsFileSync((entry = resolve(area, pkg[MAIN] + EXT_CJS))) ||
+                        existsFileSync((entry = resolve(area, pkg[MAIN] + EXT_MJS))))
+                )
+                    return entry
+            }
+            if (existsFileSync((entry = area + EXT_JS))) return entry
+            if (existsFileSync((entry = area + EXT_CJS))) return entry
+            if (existsFileSync((entry = area + EXT_MJS))) return entry
+            if (existsFileSync((entry = area + EXT_JSON))) return entry
+            if (existsFileSync((entry = resolve(area, INDEX_JS)))) return entry
+            if (existsFileSync((entry = resolve(area, INDEX_CJS)))) return entry
+            if (existsFileSync((entry = resolve(area, INDEX_MJS)))) return entry
+            if (existsFileSync((entry = resolve(area, INDEX_JSON)))) return entry
+            if (existsFileSync((temp = resolve(area, PACKAGE_JSON)))) {
+                var dir = dirname(temp)
+                var pkg = nearestPackageJson(dir)
+                var exp = getField(pkg, EXPORTS)
+                if (exp != null) {
+                    if (typeof exp === string) areas.push(resolve(dir, exp))
+                    else {
+                        var dot = getField(exp, '.')
+                        if (dot != null) {
+                            var type = getField(pkg, TYPE) || COMMONJS
+                            if (typeof dot === string) areas.push(resolve(dir, dot))
+                            else if (Array.isArray(dot)) {
+                                dot.find(function (val) {
+                                    if (typeof val === string) {
+                                        l
+                                        areas.push(resolve(dir, val))
+                                    } else if (type === COMMONJS && REQUIRE in val) {
+                                        areas.push(resolve(dir, val[REQUIRE]))
+                                    } else if (type === MODULE && IMPORT in val) {
+                                        areas.push(resolve(dir, val[IMPORT]))
+                                    }
+                                })
+                            } else {
+                                if (type === COMMONJS && REQUIRE in dot) {
+                                    areas.push(resolve(dir, dot[REQUIRE]))
+                                } else if (type === MODULE && IMPORT in dot) {
+                                    areas.push(resolve(dir, dot[IMPORT]))
+                                }
+                            }
+                        }
+                    }
+                }
+                var main = getPkgField(dirname(temp), MAIN)
+                if (main == null) continue
+                areas.unshift(resolve(area, main))
+            }
+        }
+    }
+
+    function createModule(GUID, entry, query, parentModule, encode) {
+        if (parentModule) parentModule.mapping[query] = GUID
+
+        console.debug('%O require to %O ', parentModule ? parentModule.path : null, entry)
+
+        var mod = {
+            source: readTextFileSync(entry, encode != null ? encode : null),
+            module: {
+                exports: {}
+            },
+            path: entry,
+            mapping: {}
+        }
+        if (mod.source.startsWith(SHEBANG)) mod.source = LINE_COMMENT + mod.source
+
+        Modules[GUID] = mod
+        mod.type = getModuleType(mod)
+        switch (extname(entry)) {
+            case EXT_MJS:
+            case EXT_JS:
+                var name = escapeName(entry)
+                wes.history.push(entry)
+
+                var Babel = req(BABEL_STANDALONE)
+
+                if (mod.type === MODULE) {
+                    var transpiled = Babel.transform(mod.source, Babel_option)
+                    mod.map = transpiled.map
+                    mod.code = wrap(name, transpiled.code)
+                    mod.type = TRANSPILED
+                } else {
+                    mod.code = wrap(name, USE_STRICT + mod.source)
+                }
+
+                var buf = entry === BUFFER ? null : req(BUFFER)
+
+                var codeMap = {
+                    require: require.bind(null, entry),
+                    module: mod.module,
+                    exports: mod.module.exports,
+                    console: console,
+                    __dirname: dirname(entry),
+                    __filename: entry,
+                    wes: wes,
+                    Buffer: buf,
+                    process: process
+                }
+                generateCodeAndExecution(codeMap, mod.code)
+                wes.history.pop()
+                break
+            case EXT_JSON:
+                mod.module.exports = JSON.parse(mod.source)
+                break
+            default:
+                mod.module.exports = mod.source
+        }
+        return mod
+    }
+
+    function req(moduleID) {
+        var mod = Modules[moduleID]
+        var entry = mod.path || POSIXSEP
+        if (!has(mod, EXPORTS)) {
+            if (!has(mod, MODULE)) {
+                mod.module = { exports: {} }
+                if (mod.path.endsWith(EXT_JSON)) {
+                    mod.module.exports = JSON.parse(mod.source)
+                    mod.exports = mod.module.exports
+                    return mod.exports
+                }
+                var dirname = entry.split(POSIXSEP).slice(0, -1).join(POSIXSEP)
+                mod.mapping = mod.mapping || {}
+                var buf = entry === BUFFER ? null : req(BUFFER)
+
+                var codeMap = {
+                    require: require.bind(null, entry),
+                    module: mod.module,
+                    exports: mod.module.exports,
+                    console: console,
+                    __dirname: dirname,
+                    __filename: entry,
+                    wes: wes,
+                    Buffer: buf,
+                    process: process
+                }
+                generateCodeAndExecution(codeMap, mod.code || mod.source)
+            }
+            mod.exports = mod.module.exports
+        }
+        return mod.exports
+    }
+
+    // require
+    function require(callee, query, encode) {
+        var start = Date.now()
+        var element
+        // execute req function, if it is a core module
+        if (!query.includes(POSIXSEP)) {
+            if (has(Modules, query)) {
+                return req(query)
+            }
+        }
+
+        // execute OLE, if it is OLE
+        try {
+            var com = WScript.CreateObject(query)
+            return com
+        } catch (e) {}
+
+        // execute req function, if it is a mapping[ query ]
+        var parentModule = getPathToModule(callee)
+        var mappingID
+        if (parentModule) {
+            if ((mappingID = parentModule.mapping[query])) {
+                current = seq(tree, properties)
+                current.children = current.children || []
+                element = { type: Modules[mappingID].path }
+                current.children.push(element)
+                properties.push(Modules[mappingID].path)
+
+                var mappingMod = req(mappingID)
+                element.value = Date.now() - start
+
+                properties.pop()
+
+                return mappingMod
+            }
+        }
+
+        var areas = []
+        if (isAbsolute(query)) areas = [resolve(query)]
+        else areas = getAreas(callee, query)
+
+        var entry = getEntry(areas)
+        if (entry == null)
+            throw new Error(
+                'no module:\n' + 'callee: ' + callee + '\nquery: ' + query + LF + JSON.stringify(areas, null, 2)
+            )
+
+        var modId = req(GEN_GUID)()
+
+        if (callee === founder) {
+            wes.entry_point = entry
+            wes.main = modId
+        }
+
+        current = seq(tree, properties)
+        current.children = current.children || []
+        element = { type: entry }
+        current.children.push(element)
+        properties.push(entry)
+
+        var mod = createModule(modId, entry, query, parentModule, encode)
+        element.value = Date.now() - start
+
+        properties.pop()
+
+        mod.exports = mod.module.exports
+        return mod.exports
+    }
+
     // util
     function has(cls, prop) {
         if (cls == null) throw new Error(prop + ' is null')
@@ -773,5 +702,76 @@
                 return elm.type === curr
             })
         }, target)
+    }
+
+    // util
+    function getPathToModule(filespec) {
+        return find(Modules, function (_mod, _id) {
+            return PATH in _mod && _mod[PATH] === filespec
+        })
+    }
+
+    function getField(json, path) {
+        var parts = path.split(POSIXSEP)
+        var part = null
+        var curr = json
+        while (parts.length) {
+            part = parts.shift()
+            if (part in curr) curr = curr[part]
+            else return undefined
+        }
+        return curr
+    }
+
+    function getPkgField(dir, field) {
+        var pkg = resolve(dir, PACKAGE_JSON)
+        if (!existsFileSync(pkg)) return undefined
+        var file = readTextFileSync(pkg)
+        var json = JSON.parse(file)
+        return getField(json, field)
+    }
+
+    function getAreas(callee, _query) {
+        var query = toPosixSep(_query)
+
+        var areas = []
+
+        // Replace '/' with Current Directory if query starts with '/'
+        if (query.startsWith(ROOT_DIR)) {
+            areas.push(resolve(WorkingDirectory, query.replace(ROOT_DIR, NONE)))
+
+            // combine the callee's path and the query, if relative path
+        } else if (query.startsWith(CURRENT_DIR) || query.startsWith(PARENT_DIR)) {
+            areas.push(resolve(dirname(callee), query))
+        } else {
+            areas.push(resolve(dirname(callee), query))
+
+            // Otherwise, combine node_module while going back directory
+            var hierarchy = dirname(callee)
+
+            while (hierarchy !== NONE) {
+                areas.push(resolve(hierarchy, WES_MODULES, query))
+                areas.push(resolve(hierarchy, NODE_MODULES, query))
+                var _hierarchy = dirname(hierarchy)
+                if (hierarchy === _hierarchy) break
+                hierarchy = _hierarchy
+            }
+            var ScriptFullName = WScript.ScriptFullName
+            areas.push(resolve(dirname(ScriptFullName), NODE_MODULES, query))
+            areas.push(resolve(dirname(ScriptFullName), WES_MODULES, query))
+        }
+        return areas
+    }
+
+    function getModuleType(mod) {
+        var ext = extname(mod.path)
+        if (ext === EXT_JSON) return JSONTYPE
+        if (ext === EXT_CJS) return COMMONJS
+        if (ext === EXT_MJS) return MODULE
+        var dir = dirname(mod.path)
+        var pkg = nearestPackageJson(dir)
+        var type
+        if ((type = getField(pkg, TYPE))) return type
+        return COMMONJS
     }
 })()
