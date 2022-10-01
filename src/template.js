@@ -10,10 +10,12 @@
         var WShell = WScript.CreateObject('WScript.Shell')
         var history = [WScript.ScriptFullName.split(WIN32SEP).join(POSIXSEP)]
         var entry_point = null
+        var ARCHITECTURE = WShell.ExpandEnvironmentStrings('%PROCESSOR_ARCHITECTURE%')
 
         var wes = {
             history: history,
-            entry_point: entry_point
+            entry_point: entry_point,
+            architecture: ARCHITECTURE
         }
 
         /* insert argv */
@@ -25,10 +27,7 @@
         /* insert utility */
 
         if (!argv.has('engine', 'Chakra')) {
-            var cpu =
-                WShell.ExpandEnvironmentStrings('%PROCESSOR_ARCHITECTURE%') !== 'x86'
-                    ? '{%}windir{%}\\SysWOW64\\cscript'
-                    : 'cscript'
+            var cpu = ARCHITECTURE !== 'x86' ? '{%}windir{%}\\SysWOW64\\cscript' : 'cscript'
             var nologo = '//nologo'
             var engin = '--engine=Chakra'
             var chakra = '//E:{{}1b7cd997-e5ff-4932-a7a6-2a9e636da385{}}'
@@ -111,6 +110,7 @@
                 cwd: function process_cwd() {
                     return WorkingDirectory
                 },
+                arch: ARCHITECTURE,
                 platform: WIN32
             }
 
