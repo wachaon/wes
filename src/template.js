@@ -350,6 +350,8 @@
 
             // require
             function require(callee, query, encode) {
+                var start = Date.now()
+                var node
                 // execute req function, if it is a core module
                 if (!query.includes(POSIXSEP)) {
                     if (has(Modules, query)) {
@@ -369,7 +371,17 @@
                 var mappingID
                 if (parentModule) {
                     if ((mappingID = parentModule.mapping[query])) {
+                        current = seq(tree, properties)
+                        current.children = current.children || []
+                        node = { type: Modules[mappingID].path }
+                        current.children.push(node)
+                        properties.push(Modules[mappingID].path)
+
                         var mappingMod = req(mappingID)
+                        node.value = Date.now() - start
+
+                        properties.pop()
+
                         return mappingMod
                     }
                 }
@@ -391,7 +403,16 @@
                     wes.main = modId
                 }
 
+                current = seq(tree, properties)
+                current.children = current.children || []
+                node = { type: entry }
+                current.children.push(node)
+                properties.push(entry)
+
                 var mod = createModule(modId, entry, query, parentModule, encode)
+                node.value = Date.now() - start
+
+                properties.pop()
 
                 mod.exports = mod.module.exports
                 return mod.exports
@@ -403,7 +424,19 @@
             if (main in wes.Modules) wes.main = main
 
             var founder = resolve(WorkingDirectory, '*')
+
+            var tree = {}
+            var properties = []
+            var current = null
+
+            current = seq(tree, properties)
+            current.type = founder
+
             require(founder, main, argv.get('encoding'))
+
+            if (argv.get('debug') && argv.get('measure')) {
+                console.log('\n[measure]: %O', tree)
+            }
         }
     } catch (error) {
         ;(function () {
@@ -731,5 +764,15 @@
                 return /\w/.test(ch) ? ch : DOLLAR + ch.codePointAt(0).toString(16)
             })
             .join(NONE)
+    }
+
+    function seq(target, props) {
+        if (!Array.isArray(props) || props.length === 0) return target
+        return props.reduce(function (acc, curr) {
+            acc.children = acc.children || []
+            return acc.children.find(function (elm) {
+                return elm.type === curr
+            })
+        }, target)
     }
 })()
