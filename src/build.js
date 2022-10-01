@@ -38,43 +38,43 @@ let template = fs.readTextFileSync('src/template.js')
 let sep = rCRLF.test(template) ? CRLF : LF
 let line = template.split(sep)
 
-const rModule = /^\s+var Modules = \{\}$/
+const rModule = /\/\* insert Modules \*\//
 
 const Console = fs.readTextFileSync('lib/console.js')
-const rConsole = '        var console = function () {}'
+const rConsole = /\/\* insert console \*\//
 
 const Ansi = fs.readTextFileSync('lib/ansi.js')
-const rAnsi = '        var ansi = function () {}'
+const rAnsi = /\/\* insert ansi \*\//
 
 const Argv = fs.readTextFileSync('lib/argv.js')
-const rArgv = '        var argv = function () {}'
+const rArgv = /\/\* insert argv \*\//
 
 const Utility = fs.readTextFileSync('lib/utility.js')
-const rUtility = '        var utility = function () {}'
+const rUtility = /\/\* insert utility \*\//
 
 let res = format(
     line
         .map((value) => {
             if (rModule.test(value)) return 'var Modules = ' + graph.trim()
-            if (rConsole === value)
+            if (rConsole.test(value))
                 return (
                     'var console = (function () {\n    var module = { exports: {} };\n        (function () {' +
                     Console +
                     '        })()\n    return module.exports\n})()'
                 )
-            else if (rAnsi === value)
+            else if (rAnsi.test(value))
                 return (
                     'var ansi = (function () {\n    var module = { exports: {} };\n        (function () {' +
                     Ansi +
                     '        })()\n    return module.exports\n})()'
                 )
-            else if (rArgv === value)
+            else if (rArgv.test(value))
                 return (
                     'var argv = (function () {\n    var module = { exports: {} };\n        (function () {' +
                     Argv +
                     '        })()\n    return module.exports\n})()'
                 )
-            else if (rUtility === value)
+            else if (rUtility.test(value))
                 return (
                     'var utility = (function () {\n    var module = { exports: {} };\n        (function () {' +
                     Utility +

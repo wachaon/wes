@@ -16,13 +16,13 @@
             timestamps: timestamps
         }
 
-        var argv = function () {}
+        /* insert argv */
 
-        var ansi = function () {}
+        /* insert ansi */
 
-        var console = function () {}
+        /* insert console */
 
-        var utility = function () {}
+        /* insert utility */
 
         if (!argv.has('engine', 'Chakra')) {
             var cpu =
@@ -48,7 +48,7 @@
 
             WScript.Quit()
         } else {
-            var Modules = {}
+            /* insert Modules */
 
             var EXT_JS = '.js'
             var EXT_CJS = '.cjs'
@@ -151,7 +151,7 @@
                 return getField(json, field)
             }
 
-            function getAreas(caller, _query) {
+            function getAreas(callee, _query) {
                 var query = toPosixSep(_query)
 
                 var areas = []
@@ -160,14 +160,14 @@
                 if (query.startsWith(ROOT_DIR)) {
                     areas.push(resolve(WorkingDirectory, query.replace(ROOT_DIR, NONE)))
 
-                    // combine the caller's path and the query, if relative path
+                    // combine the callee's path and the query, if relative path
                 } else if (query.startsWith(CURRENT_DIR) || query.startsWith(PARENT_DIR)) {
-                    areas.push(resolve(dirname(caller), query))
+                    areas.push(resolve(dirname(callee), query))
                 } else {
-                    areas.push(resolve(dirname(caller), query))
+                    areas.push(resolve(dirname(callee), query))
 
                     // Otherwise, combine node_module while going back directory
-                    var hierarchy = dirname(caller)
+                    var hierarchy = dirname(callee)
 
                     while (hierarchy !== NONE) {
                         areas.push(resolve(hierarchy, WES_MODULES, query))
@@ -234,6 +234,7 @@
                                     else if (Array.isArray(dot)) {
                                         dot.find(function (val) {
                                             if (typeof val === string) {
+                                                l
                                                 areas.push(resolve(dir, val))
                                             } else if (type === COMMONJS && REQUIRE in val) {
                                                 areas.push(resolve(dir, val[REQUIRE]))
@@ -350,18 +351,17 @@
                 return mod.exports
             }
 
+            var story = []
+            var entries = {}
+            var entry_point = null
+
             // require
-            function require(caller, query, encode) {
-                var start = Date.now()
+            function require(callee, query, encode) {
                 // execute req function, if it is a core module
                 if (!query.includes(POSIXSEP)) {
                     if (has(Modules, query)) {
                         var builtinMod = req(query)
-                        if (!has(timestamps, query))
-                            timestamps[query] = {
-                                parent: caller,
-                                timestamp: Date.now() - start
-                            }
+
                         return builtinMod
                     }
                 }
@@ -369,27 +369,16 @@
                 // execute OLE, if it is OLE
                 try {
                     var com = WScript.CreateObject(query)
-                    if (!has(timestamps, query))
-                        timestamps[query] = {
-                            parent: caller,
-                            timestamp: Date.now() - start
-                        }
 
                     return com
                 } catch (e) {}
 
                 // execute req function, if it is a mapping[ query ]
-                var parentModule = getPathToModule(caller)
+                var parentModule = getPathToModule(callee)
                 var mappingID
                 if (parentModule) {
                     if ((mappingID = parentModule.mapping[query])) {
                         var mappingMod = req(mappingID)
-                        var path = mappingMod.path
-                        if (!has(timestamps, path))
-                            timestamps[path] = {
-                                parent: caller,
-                                timestamp: Date.now() - start
-                            }
 
                         return mappingMod
                     }
@@ -397,25 +386,24 @@
 
                 var areas = []
                 if (isAbsolute(query)) areas = [resolve(query)]
-                else areas = getAreas(caller, query)
+                else areas = getAreas(callee, query)
 
                 var entry = getEntry(areas)
                 if (entry == null)
                     throw new Error(
-                        'no module:\n' + 'caller: ' + caller + '\nquery: ' + query + LF + JSON.stringify(areas, null, 2)
+                        'no module:\n' + 'callee: ' + callee + '\nquery: ' + query + LF + JSON.stringify(areas, null, 2)
                     )
 
                 var modId = req(GEN_GUID)()
                 if (wes.main == null) wes.main = modId
+
+                if (callee === founder) entry_point = entry
+
                 var mod = createModule(modId, entry, query, parentModule, encode)
+
+                story.pop()
+
                 mod.exports = mod.module.exports
-
-                var modPath = mod.path
-                timestamps[modPath] = {
-                    parent: caller,
-                    timestamp: Date.now() - start
-                }
-
                 return mod.exports
             }
 
@@ -423,48 +411,14 @@
 
             var main = argv.unnamed[0] != null ? argv.unnamed[0] : REP
             if (main in wes.Modules) wes.main = main
-            require(resolve(WorkingDirectory, '_'), main, argv.get('encoding'))
 
-            if (argv.get('timestamp')) {
-                var modules = {}
+            var founder = resolve(WorkingDirectory, '*')
+            require(founder, main, argv.get('encoding'))
 
-                map(Modules, function (mod, id) {
-                    modules[mod.path] = {
-                        // path: mod.path,
-                        children: map(mod.mapping, function (value, key) {
-                            return Modules[value].path
-                        })
-                    }
-                    if (Object.keys(modules[mod.path].children).length === 0) delete modules[mod.path].children
-                })
-
-                console.log('modules; %O', modules)
-
-                /*
-                console.log('\n[timestamps]: %O', timestamps)
-                var first = find(Modules, function (mod, id) {
-                    return id.startsWith(BRACKET_START)
-                })
-
-                console.log('mapping: %O', visit(first.path))
-
-                function visit(spec) {
-                    var base = { children: {} }
-                    return v(spec, base)
-
-                    function v(spec, curr) {
-                        var mapping = getPathToModule(spec).mapping
-                        var m = Object.keys(mapping).map(function (key) {
-                            return Modules[mapping[key]].path
-                        })
-                        m.forEach(function (path) {
-                            curr.children[path] = { children: {} }
-                            v(path, curr.children[path])
-                        })
-                        return curr
-                    }
-                }
-                */
+            if (argv.get('entries')) {
+                console.log('entry_point: %O', entry_point)
+                console.log('entries: %O', entries)
+                console.log('story: %O', story)
             }
         }
     } catch (error) {
@@ -794,5 +748,15 @@
                 return /\w/.test(ch) ? ch : DOLLAR + ch.codePointAt(0).toString(16)
             })
             .join(NONE)
+    }
+
+    function seq(object, types) {
+        console.debug(object, types)
+        if (!types.length) return object
+        return types.reduce(function (acc, curr) {
+            return acc.children.find(function (key) {
+                return key.type === curr
+            })
+        }, object)
     }
 })()
