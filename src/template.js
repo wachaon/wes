@@ -170,7 +170,6 @@
             if (mod == null) return console.log(coloring(error.stack, ERROR_COLOR))
 
             if (mod.type === COMMONJS) {
-                // console.log(AQUA + 'error commonjs')
                 if (error instanceof SyntaxError) {
                     try {
                         req(BABEL_STANDALONE).transform(mod.source, Babel_option)
@@ -203,7 +202,6 @@
             }
 
             if (mod.type === MODULE || mod.type === TRANSPILED) {
-                // console.log(LIME + 'error esmodule')
                 if (error instanceof SyntaxError) {
                     return console.log(coloring(error.stack, ERROR_COLOR))
                 }
@@ -235,185 +233,6 @@
                     return showErrorCode(mod.source, mod.path, mapping[2] + 1, mapping[3] + 1)
                 })
                 console.log(coloring(error.stack, ERROR_COLOR))
-            }
-
-            function unescapeName(stack) {
-                return stack
-                    .split(rLINE_SEP)
-                    .join(LF)
-                    .replace(/ ([A-Z]\$3a\$2f|\$7b)[^ ]+ /g, function (_spec) {
-                        return unescape(_spec.split(DOLLAR).join(PERCENT))
-                    })
-            }
-
-            function coloring(message, color) {
-                return message
-                    .split(rLINE_SEP)
-                    .map(function coloring_map(line) {
-                        return color + line + CLEAR
-                    })
-                    .join(LF)
-            }
-
-            function addLineNumber(source) {
-                var lines = source.split(rLINE_SEP)
-                var max = String(lines.length).length + 4
-                return lines
-                    .map(function (line, i) {
-                        return (SPACE.repeat(max) + String(i + 1) + ' | ').slice(max * -1) + line
-                    })
-                    .join(LF)
-            }
-
-            function showErrorCode(code, path, row, column) {
-                var target = row
-                var min = Math.max(target - 2, 0)
-                var max = Math.min(code.length, target + 2)
-                var pickup = addLineNumber(code)
-                    .split(rLINE_SEP)
-                    .map(function showErrorCode_map(line, i) {
-                        var lineRow = i + 1
-                        if (lineRow === target) return REVERSE + line + CLEAR
-                        else return line
-                    })
-                    .filter(function (line, i) {
-                        var lineRow = i + 1
-                        return min <= lineRow && lineRow <= max ? true : false
-                    })
-                    .join(LF)
-
-                return (
-                    LF +
-                    pickup +
-                    LF +
-                    FILE_PATH_COLOR +
-                    '\u21B3  at ' +
-                    path +
-                    ' (' +
-                    target +
-                    ':' +
-                    column +
-                    ')' +
-                    CLEAR
-                )
-            }
-
-            function decodeMappings(mappings) {
-                var charToInteger = {
-                    '43': 62,
-                    '47': 63,
-                    '48': 52,
-                    '49': 53,
-                    '50': 54,
-                    '51': 55,
-                    '52': 56,
-                    '53': 57,
-                    '54': 58,
-                    '55': 59,
-                    '56': 60,
-                    '57': 61,
-                    '61': 64,
-                    '65': 0,
-                    '66': 1,
-                    '67': 2,
-                    '68': 3,
-                    '69': 4,
-                    '70': 5,
-                    '71': 6,
-                    '72': 7,
-                    '73': 8,
-                    '74': 9,
-                    '75': 10,
-                    '76': 11,
-                    '77': 12,
-                    '78': 13,
-                    '79': 14,
-                    '80': 15,
-                    '81': 16,
-                    '82': 17,
-                    '83': 18,
-                    '84': 19,
-                    '85': 20,
-                    '86': 21,
-                    '87': 22,
-                    '88': 23,
-                    '89': 24,
-                    '90': 25,
-                    '97': 26,
-                    '98': 27,
-                    '99': 28,
-                    '100': 29,
-                    '101': 30,
-                    '102': 31,
-                    '103': 32,
-                    '104': 33,
-                    '105': 34,
-                    '106': 35,
-                    '107': 36,
-                    '108': 37,
-                    '109': 38,
-                    '110': 39,
-                    '111': 40,
-                    '112': 41,
-                    '113': 42,
-                    '114': 43,
-                    '115': 44,
-                    '116': 45,
-                    '117': 46,
-                    '118': 47,
-                    '119': 48,
-                    '120': 49,
-                    '121': 50,
-                    '122': 51
-                }
-                var decoded = []
-                var line = []
-                var segment = [0, 0, 0, 0, 0]
-                var j = 0
-                for (var i = 0, shift = 0, value = 0; i < mappings.length; i++) {
-                    var c = mappings.charCodeAt(i)
-                    if (c === 44) {
-                        // ","
-                        segmentify(line, segment, j)
-                        j = 0
-                    } else if (c === 59) {
-                        // ";"
-                        segmentify(line, segment, j)
-                        j = 0
-                        decoded.push(line)
-                        line = []
-                        segment[0] = 0
-                    } else {
-                        var integer = charToInteger[c]
-                        if (integer === undefined) {
-                            throw new Error('Invalid character (' + String.fromCharCode(c) + ')')
-                        }
-                        var hasContinuationBit = integer & 32
-                        integer &= 31
-                        value += integer << shift
-                        if (hasContinuationBit) {
-                            shift += 5
-                        } else {
-                            var shouldNegate = value & 1
-                            value >>>= 1
-                            if (shouldNegate) {
-                                value = value === 0 ? -0x80000000 : -value
-                            }
-                            segment[j] += value
-                            j++
-                            value = shift = 0 // reset
-                        }
-                    }
-                }
-                segmentify(line, segment, j)
-                decoded.push(line)
-                return decoded
-            }
-
-            function segmentify(line, segment, j) {
-                if (j === 4) line.push([segment[0], segment[1], segment[2], segment[3]])
-                else if (j === 5) line.push([segment[0], segment[1], segment[2], segment[3], segment[4]])
-                else if (j === 1) line.push([segment[0]])
             }
         })()
     }
@@ -578,6 +397,7 @@
     function require(callee, query, encode) {
         var start = Date.now()
         var element
+
         // execute req function, if it is a core module
         if (!query.includes(POSIXSEP)) {
             if (has(Modules, query)) {
@@ -704,7 +524,6 @@
         }, target)
     }
 
-    // util
     function getPathToModule(filespec) {
         return find(Modules, function (_mod, _id) {
             return PATH in _mod && _mod[PATH] === filespec
@@ -773,5 +592,170 @@
         var type
         if ((type = getField(pkg, TYPE))) return type
         return COMMONJS
+    }
+    function unescapeName(stack) {
+        return stack
+            .split(rLINE_SEP)
+            .join(LF)
+            .replace(/ ([A-Z]\$3a\$2f|\$7b)[^ ]+ /g, function (_spec) {
+                return unescape(_spec.split(DOLLAR).join(PERCENT))
+            })
+    }
+
+    function coloring(message, color) {
+        return message
+            .split(rLINE_SEP)
+            .map(function coloring_map(line) {
+                return color + line + CLEAR
+            })
+            .join(LF)
+    }
+
+    function addLineNumber(source) {
+        var lines = source.split(rLINE_SEP)
+        var max = String(lines.length).length + 4
+        return lines
+            .map(function (line, i) {
+                return (SPACE.repeat(max) + String(i + 1) + ' | ').slice(max * -1) + line
+            })
+            .join(LF)
+    }
+
+    function showErrorCode(code, path, row, column) {
+        var target = row
+        var min = Math.max(target - 2, 0)
+        var max = Math.min(code.length, target + 2)
+        var pickup = addLineNumber(code)
+            .split(rLINE_SEP)
+            .map(function showErrorCode_map(line, i) {
+                var lineRow = i + 1
+                if (lineRow === target) return REVERSE + line + CLEAR
+                else return line
+            })
+            .filter(function (line, i) {
+                var lineRow = i + 1
+                return min <= lineRow && lineRow <= max ? true : false
+            })
+            .join(LF)
+
+        return LF + pickup + LF + FILE_PATH_COLOR + '\u21B3  at ' + path + ' (' + target + ':' + column + ')' + CLEAR
+    }
+
+    function decodeMappings(mappings) {
+        var charToInteger = {
+            '43': 62,
+            '47': 63,
+            '48': 52,
+            '49': 53,
+            '50': 54,
+            '51': 55,
+            '52': 56,
+            '53': 57,
+            '54': 58,
+            '55': 59,
+            '56': 60,
+            '57': 61,
+            '61': 64,
+            '65': 0,
+            '66': 1,
+            '67': 2,
+            '68': 3,
+            '69': 4,
+            '70': 5,
+            '71': 6,
+            '72': 7,
+            '73': 8,
+            '74': 9,
+            '75': 10,
+            '76': 11,
+            '77': 12,
+            '78': 13,
+            '79': 14,
+            '80': 15,
+            '81': 16,
+            '82': 17,
+            '83': 18,
+            '84': 19,
+            '85': 20,
+            '86': 21,
+            '87': 22,
+            '88': 23,
+            '89': 24,
+            '90': 25,
+            '97': 26,
+            '98': 27,
+            '99': 28,
+            '100': 29,
+            '101': 30,
+            '102': 31,
+            '103': 32,
+            '104': 33,
+            '105': 34,
+            '106': 35,
+            '107': 36,
+            '108': 37,
+            '109': 38,
+            '110': 39,
+            '111': 40,
+            '112': 41,
+            '113': 42,
+            '114': 43,
+            '115': 44,
+            '116': 45,
+            '117': 46,
+            '118': 47,
+            '119': 48,
+            '120': 49,
+            '121': 50,
+            '122': 51
+        }
+        var decoded = []
+        var line = []
+        var segment = [0, 0, 0, 0, 0]
+        var j = 0
+        for (var i = 0, shift = 0, value = 0; i < mappings.length; i++) {
+            var c = mappings.charCodeAt(i)
+            if (c === 44) {
+                // ","
+                segmentify(line, segment, j)
+                j = 0
+            } else if (c === 59) {
+                // ";"
+                segmentify(line, segment, j)
+                j = 0
+                decoded.push(line)
+                line = []
+                segment[0] = 0
+            } else {
+                var integer = charToInteger[c]
+                if (integer === undefined) {
+                    throw new Error('Invalid character (' + String.fromCharCode(c) + ')')
+                }
+                var hasContinuationBit = integer & 32
+                integer &= 31
+                value += integer << shift
+                if (hasContinuationBit) {
+                    shift += 5
+                } else {
+                    var shouldNegate = value & 1
+                    value >>>= 1
+                    if (shouldNegate) {
+                        value = value === 0 ? -0x80000000 : -value
+                    }
+                    segment[j] += value
+                    j++
+                    value = shift = 0 // reset
+                }
+            }
+        }
+        segmentify(line, segment, j)
+        decoded.push(line)
+        return decoded
+    }
+
+    function segmentify(line, segment, j) {
+        if (j === 4) line.push([segment[0], segment[1], segment[2], segment[3]])
+        else if (j === 5) line.push([segment[0], segment[1], segment[2], segment[3], segment[4]])
+        else if (j === 1) line.push([segment[0]])
     }
 })()
