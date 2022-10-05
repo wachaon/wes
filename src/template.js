@@ -142,17 +142,17 @@
             }
         }
     } catch (error) {
-        ;(function () {
-            var ORANGE = ansi.color(255, 165, 0)
-            var LIME = ansi.color(181, 255, 20)
-            var AQUA = ansi.color(24, 235, 249)
-            var LEMON = ansi.color(253, 255, 0)
-            var CARMINE = ansi.color(215, 0, 53)
-            var ERROR_COLOR = ansi.red
-            var FILE_PATH_COLOR = ansi.redBright
-            var REVERSE = ansi.reverse
-            var CLEAR = ansi.clear
+        var ORANGE = ansi.color(255, 165, 0)
+        var LIME = ansi.color(181, 255, 20)
+        var AQUA = ansi.color(24, 235, 249)
+        var LEMON = ansi.color(253, 255, 0)
+        var CARMINE = ansi.color(215, 0, 53)
+        var ERROR_COLOR = ansi.red
+        var FILE_PATH_COLOR = ansi.redBright
+        var REVERSE = ansi.reverse
+        var CLEAR = ansi.clear
 
+        ;(function () {
             error.stack = unescapeName(error.stack)
 
             if (console == null) WScript.Popup(error.stack)
