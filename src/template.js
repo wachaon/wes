@@ -137,9 +137,7 @@
 
             require(founder, main, argv.get('encoding'))
 
-            if (argv.get('debug') && argv.get('measure')) {
-                console.log('\n[measure]: %O', tree)
-            }
+            if (argv.get('relation')) console.log('\n[relation]: %O', tree)
         }
     } catch (error) {
         var ORANGE = ansi.color(255, 165, 0)
@@ -153,6 +151,7 @@
         var CLEAR = ansi.clear
 
         ;(function () {
+            if (argv.get('relation')) console.log('\n[relation]: %O', tree)
             error.stack = unescapeName(error.stack)
 
             if (console == null) WScript.Popup(error.stack)
@@ -398,9 +397,12 @@
         var start = Date.now()
         var element
 
+        if (argv.get('dump')) console.print('callee: ' + callee)
+
         // execute req function, if it is a core module
         if (!query.includes(POSIXSEP)) {
             if (has(Modules, query)) {
+                if (argv.get('dump')) console.log(' => <built-in>: ' + query)
                 return req(query)
             }
         }
@@ -408,6 +410,7 @@
         // execute OLE, if it is OLE
         try {
             var com = WScript.CreateObject(query)
+            if (argv.get('dump')) console.log(' => <com>: ' + query)
             return com
         } catch (e) {}
 
@@ -422,6 +425,7 @@
                 current.children.push(element)
                 properties.push(Modules[mappingID].path)
 
+                if (argv.get('dump')) console.log(' => <mapping>: ' + element.type)
                 var mappingMod = req(mappingID)
                 element.value = Date.now() - start
 
@@ -454,6 +458,7 @@
         current.children.push(element)
         properties.push(entry)
 
+        if (argv.get('dump')) console.log(' => <module>: ' + entry)
         var mod = createModule(modId, entry, query, parentModule, encode)
         element.value = Date.now() - start
 
