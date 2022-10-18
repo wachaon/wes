@@ -232,6 +232,7 @@
                     return showErrorCode(mod.source, mod.path, mapping[2] + 1, mapping[3] + 1)
                 })
                 console.log(coloring(error.stack, ERROR_COLOR))
+                console.debug('history: %O', history)
             }
         })()
     }
@@ -334,8 +335,7 @@
                     mod.code = wrap(name, USE_STRICT + mod.source)
                 }
 
-                var buf = entry === BUFFER ? null : req(BUFFER)
-
+                var script = mod.code
                 var codeMap = {
                     require: require.bind(null, entry),
                     module: mod.module,
@@ -344,10 +344,11 @@
                     __dirname: dirname(entry),
                     __filename: entry,
                     wes: wes,
-                    Buffer: buf,
                     process: process
                 }
-                generateCodeAndExecution(codeMap, mod.code)
+                if (!(entry === BUFFER || /(class|var|let|const)\s+Buffer\b/.test(script))) codeMap.Buffer = req(BUFFER)
+
+                generateCodeAndExecution(codeMap, script)
                 wes.history.pop()
                 break
             case EXT_JSON:
@@ -372,7 +373,8 @@
                 }
                 var dirname = entry.split(POSIXSEP).slice(0, -1).join(POSIXSEP)
                 mod.mapping = mod.mapping || {}
-                var buf = entry === BUFFER ? null : req(BUFFER)
+
+                var script = mod.code || mod.source
 
                 var codeMap = {
                     require: require.bind(null, entry),
@@ -382,10 +384,12 @@
                     __dirname: dirname,
                     __filename: entry,
                     wes: wes,
-                    Buffer: buf,
                     process: process
                 }
-                generateCodeAndExecution(codeMap, mod.code || mod.source)
+                if (!(entry === BUFFER || /(class|var|let|const)[\n\s]+Buffer\b/.test(script)))
+                    codeMap.Buffer = req(BUFFER)
+
+                generateCodeAndExecution(codeMap, script)
             }
             mod.exports = mod.module.exports
         }
@@ -402,7 +406,7 @@
         // execute req function, if it is a core module
         if (!query.includes(POSIXSEP)) {
             if (has(Modules, query)) {
-                if (argv.get('dump')) console.log(' => <built-in>: ' + query)
+                if (argv.get('dump')) console.log(' => ' + ansi.blueBright + '<built-in>: ' + query)
                 return req(query)
             }
         }
@@ -410,7 +414,7 @@
         // execute OLE, if it is OLE
         try {
             var com = WScript.CreateObject(query)
-            if (argv.get('dump')) console.log(' => <com>: ' + query)
+            if (argv.get('dump')) console.log(' => ' + ansi.yellowBright + '<com>: ' + query)
             return com
         } catch (e) {}
 
@@ -425,7 +429,7 @@
                 current.children.push(element)
                 properties.push(Modules[mappingID].path)
 
-                if (argv.get('dump')) console.log(' => <mapping>: ' + element.type)
+                if (argv.get('dump')) console.log(' => ' + ansi.cyanBright + '<mapping>: ' + element.type)
                 var mappingMod = req(mappingID)
                 element.value = Date.now() - start
 
@@ -458,7 +462,7 @@
         current.children.push(element)
         properties.push(entry)
 
-        if (argv.get('dump')) console.log(' => <module>: ' + entry)
+        if (argv.get('dump')) console.log(' => ' + ansi.magentaBright + '<module>: ' + entry)
         var mod = createModule(modId, entry, query, parentModule, encode)
         element.value = Date.now() - start
 
@@ -503,7 +507,8 @@
 
         var code = new (Function.prototype.bind.apply(Function, args))()
 
-        return code.apply(null, prop)
+        var script = code.apply(null, prop)
+        return script
     }
 
     function wrap(name, source) {
@@ -598,6 +603,7 @@
         if ((type = getField(pkg, TYPE))) return type
         return COMMONJS
     }
+
     function unescapeName(stack) {
         return stack
             .split(rLINE_SEP)
