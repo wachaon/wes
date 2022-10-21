@@ -171,6 +171,7 @@
             if (mod.type === COMMONJS) {
                 if (error instanceof SyntaxError) {
                     try {
+                        console.log(FILE_PATH_COLOR + 'Predicted error source is ' + mod.path)
                         req(BABEL_STANDALONE).transform(mod.source, Babel_option)
                         return console.log(coloring(error.stack, ERROR_COLOR))
                     } catch (e) {
@@ -202,6 +203,7 @@
 
             if (mod.type === MODULE || mod.type === TRANSPILED) {
                 if (error instanceof SyntaxError) {
+                    console.log(FILE_PATH_COLOR + 'Predicted error source is ' + mod.path)
                     return console.log(coloring(error.stack, ERROR_COLOR))
                 }
 
