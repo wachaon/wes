@@ -494,7 +494,15 @@
             .find(function (spec) {
                 return existsFileSync(spec)
             })
-        return pkgSpec ? JSON.parse(readTextFileSync(pkgSpec)) : {}
+        if (pkgSpec) {
+            var modId = req(GEN_GUID)()
+            Modules[modId] = {
+                source: readTextFileSync(pkgSpec),
+                path: pkgSpec
+            }
+            return req(modId)
+        }
+        return {}
     }
 
     function generateCodeAndExecution(hash, source) {
