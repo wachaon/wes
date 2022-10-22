@@ -602,32 +602,32 @@ wes zip -p dox.zip
 *wes* ではいくつかのモジュールをバンドルしたものをパッケージといいます。
 *github* で公開されている *wes* 用のパッケージをインストールできます。
 パッケージを公開する為には *github repository* が必要になります。
-またリポジトリ名とローカルのディレクトリ名は同名にする必要があります。
 
 ## *bundle*
- *github* にパッケージを公開するにあたり、*bundle* は必要なモジュールをバンドルし、インストールで取り込める形式に変更します。
-安全性を考え、*wes* では直接実行できる形式のパッケージを取り込みをさせないため、*bundle* では *.json* ファイルを作成します。
-パッケージ化をさせるにはいくつかの条件があります。
+ *github* にパッケージを公開するにあたり、*bundle* は必要なモジュールをバンドルし、*bundle.json* を作成します。
 
 1.  １つの *repository* で公開できるパッケージは１つになります
-2.  *github* のリポジトリ名とローカルのワーキングディレクトリ名は同名にしてください
-3.  パッケージを公開する場合はリポジトリを *public* にしてください
-4.  モジュールの取得はトップレベルのスコープで宣言してください
-5.  パッケージの *.json* ファイルはワーキングディレクトリに *directory_name.json* という名前で作成されます。ファイル名の変更やファイルを移動するとインストールする際に参照できません
-6.  `node_modules/directory_name` をバンドルの起点にする場合は
-    ```bat
-        wes bundle directory_name
+2.  *package.json* が必須になります。
+    最低限 `main` フィールドの記述が必須です。
+    ```json
+    {
+        main: "index.js"
+    }
     ```
-    でバンドルせずに
-    ```bat
-        wes bundle node_modules/directory_name
-    ```
-    でバンドルしてください
+2.  パッケージを公開する場合はリポジトリを *public* にしてください
+3.  `version 0.12.0` からワーキングディレクトリより上層のディレクトリへの直接的なモジュール読み込みがあるパッケージはバンドル不可になります。上層のディレクトリ *wes_modules* もしくは *node_modules* にあるパッケージはバンドル可能です。
+
+バンドルするには以下のコマンドを入力します。何をバンドルするかは *package.json* を参照します。
+
+```bat
+    wes bundle 
+```
 
 ## *install*
 *github* に公開されている *wes* 用のパッケージをインストールするのに使用します。
 `version 0.10.28` からインストールフォルダが `node_modules` から `wes_modules` に変更になります。
 `node_modules` にインストールする場合は、`--node` オプションを追加してください。
+`version 0.12.0` からファイルを *bandle.json* から解凍して保存するようになります。仕様変更の為 `version 0.12.0` 未満でバンドルされたパッケージは `version 0.12.0` 以降では正しくインストールされない場合があります。
 
 ### 使い方
 *install* には `@author/repository` という書式で引数を渡します。
@@ -648,11 +648,9 @@ wes install @wachaon/fmt
 
 `--bare` オプションは `require` の引数を `author@repository` から `repository` に省略できます。
 `--global` オプションはインストールしたパッケージを全てのスクリプトから利用できます。
-`--node` もしくは `-n` オプションは *wes* のセキュリティーオプション `--unsafe` もしくは `--dangerous` と
-同時に指定する必要があります。
 
 ```bat
-wes install @wachaon/fmt --bare --unsafe
+wes install @wachaon/fmt --bare
 ```
 
 # プライベートリポジトリにあるパッケージのインストール
@@ -661,7 +659,7 @@ wes install @wachaon/fmt --bare --unsafe
 実装では下記 url のダウンロードを試みます。
 
 ```javascript
-`https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
+`https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
 ブラウザでプライベートリポジトリの *raw* にアクセスすると *token* が表示されますので、

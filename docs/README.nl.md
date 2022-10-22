@@ -35,7 +35,7 @@ Voor teksten in andere talen kunt u een keuze maken uit de onderstaande opties.
 
 # downloaden
 
-Wes heeft alleen het *wes* *wes.js* . Om te downloaden, kopieert u *wes.js* van [*@wachaon/wes*](https://github.com/wachaon/wes) of voert u de volgende opdracht uit in uw console.
+Wes heeft alleen het *wes* *wes.js* . Om te downloaden, kopieert u *wes.js* van [*@wachaon/wes*](https://github.com/wachaon/wes) of voert u de volgende opdracht uit in de console.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -50,7 +50,7 @@ wes update
 
 # Gebruik
 
-Voer het `wes` -sleutelwoord in en de opdracht die het bestand specificeert dat het startpunt van het programma naar de console zal zijn. De *.js* kan worden weggelaten.
+Voer het `wes` -sleutelwoord in gevolgd door de opdracht die het bestand specificeert dat het startpunt van het programma naar de console zal zijn. De *.js* kan worden weggelaten.
 
 ```bat
 wes index
@@ -103,7 +103,7 @@ const add = require('./add')
 console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
-Het is ook mogelijk om te importeren met *require* for *COM Object* zoals `require('WScript.Shell')` .
+Het is ook mogelijk om te importeren met *require* voor *COM Object* zoals `require('WScript.Shell')` .
 
 ```javascript
 const Shell = require('Shell.Application')
@@ -114,7 +114,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra* , de scriptuitvoeringsengine, interpreteert syntaxis zoals `imoprt` , maar het kan niet worden uitgevoerd zoals het is omdat de verwerkingsmethode als `cscript` niet is gedefinieerd. In *wes* , door *babel* toe te voegen aan de ingebouwde modules, worden *es module* ook uitgevoerd terwijl ze één voor één worden getranspileerd. Dit kost ons verwerkingskosten en een opgeblazen *wes.js* -bestand. Modules die in de *es module* zijn geschreven, worden ook geconverteerd naar required `require()` door te transpileren, dus het is mogelijk om *COM Object* aan te roepen. Het ondersteunt echter niet het specificeren van de codering van het modulebestand met *es module* . Alles wordt automatisch geladen. Om het als een *es module* te laden, stelt u de extensie in op `.mjs` of stelt u het veld `"type"` in `package.json` in op `"module"` .
+*Chakra* , een scriptuitvoeringsengine, interpreteert syntaxis zoals `imoprt` , maar het kan niet worden uitgevoerd zoals het is omdat de verwerkingsmethode als `cscript` niet is gedefinieerd. In *wes* , door *babel* toe te voegen aan de ingebouwde modules, worden *es module* ook uitgevoerd terwijl ze sequentieel worden getranspileerd. Dit kost ons verwerkingskosten en een opgeblazen *wes.js* -bestand. Modules die in de *es module* zijn geschreven, worden ook geconverteerd naar required `require()` door te transpileren, dus het is mogelijk om *COM Object* aan te roepen. Het ondersteunt echter niet het specificeren van de codering van het modulebestand met *es module* . Alles wordt automatisch geladen. Om het als een *es module* te laden, stelt u de extensie in op `.mjs` of stelt u het veld `"type"` in `package.json` in op `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -156,7 +156,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`                | object dump                         |
 | `%O`                | Objectdump (ingesprongen/kleurrijk) |
 
-`WScript.StdOut.WriteLine` *wes* van `WScript.StdErr.WriteLine` om gekleurde tekenreeksen uit te voeren. `WScript.Echo` en `WScript.StdOut.WriteLine` zijn geblokkeerde uitvoer. `WScript.StdErr.WriteLine` of `console.log` .
+`WScript.StdOut.WriteLine` *wes* van `WScript.StdErr.WriteLine` om gekleurde tekenreeksen uit te voeren. `WScript.Echo` en `WScript.StdOut.WriteLine` zijn geblokkeerd. `WScript.StdErr.WriteLine` of `console.log` .
 
 ## *Buffer*
 
@@ -331,12 +331,12 @@ Vergelijk met `true` met de operator voor strikte gelijkheid `===` . Als `value`
 | Param     | Type                  | Beschrijving                                  |
 | :-------- | :-------------------- | :-------------------------------------------- |
 | `value`   | `{Function\|Boolean}` | booleaanse of booleaanse terugkerende functie |
-| `message` | `{String}`            | bericht in geval van storing                  |
+| `message` | `{String}`            | bericht bij mislukking                        |
 
 #### `assert.equal(expected, actual)`
 
 Vergelijkt objecten voor gelijkheid van leden, niet door verwijzing.  
-NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` en `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` enz.  
+NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` of `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` enz.  
 Bij het vergelijken van klassen (objecten) moeten ze dezelfde constructor of een superklasse hebben waarvan de `actual` wordt `expected` .
 
 | Param      | Type    | Beschrijving      |
@@ -464,7 +464,7 @@ Genereer een functie die een fietsanimatie weergeeft.
 
 #### `register(callback, interval, conditional)`
 
-Verwerking registreren. Meerdere processen kunnen parallel worden geregistreerd en verwerkt. In de `callback` zullen we instrueren om de animatie te stoppen en de weergave te schrijven die moet worden weergegeven. `interval` specificeert het verwerkingsinterval. Als de `conditional` functie een functie is, voert deze `conditional(count, queue)` en als het resultaat waar is, gaat het verder met de volgende. De `conditional` voert `decrement(count)` uit als het een getal is en gaat door als het resultaat een positief getal is. Wordt slechts één keer uitgevoerd als `conditional` niet gedefinieerd is. Merk op dat het specificeren van een functie de `count` verhoogt, terwijl het specificeren van een getal de `count` verlaagt.
+Verwerking registreren. Meerdere processen kunnen parallel worden geregistreerd en verwerkt. In de `callback` zullen we instrueren om de animatie te stoppen en de weergave te schrijven die moet worden weergegeven. `interval` specificeert het verwerkingsinterval. Als de `conditional` een functie is, zal deze `conditional(count, queue)` en als het resultaat waar is, zal het doorgaan. De `conditional` voert `decrement(count)` uit als het een getal is en gaat door als het resultaat een positief getal is. Wordt slechts één keer uitgevoerd als `conditional` niet gedefinieerd is. Merk op dat het specificeren van een functie de `count` verhoogt, terwijl het specificeren van een getal de `count` verlaagt.
 
 #### `stop()`
 
@@ -590,39 +590,35 @@ Als het `path` de extensie `.zip` heeft, wordt `unzip()` verwerkt en is er geen 
 
 # Modules bundelen (verpakken) en installeren
 
-In *wes* wordt een bundel van meerdere modules een pakket genoemd. U kunt het pakket voor *wes* installeren dat op *github* is gepubliceerd. Een *github repository* is vereist om een ​​pakket te publiceren. De naam van de repository en de naam van de lokale map moeten ook hetzelfde zijn.
+In *wes* wordt een bundel van meerdere modules een pakket genoemd. U kunt het pakket voor *wes* installeren dat op *github* is gepubliceerd. Een *github repository* is vereist om een ​​pakket te publiceren.
 
 ## *bundle*
 
-Bij het publiceren van een pakket naar *github* *bundle* u de benodigde modules en wijzigt u deze in een formaat dat door de installatie kan worden opgenomen. Om veiligheidsredenen maakt *bundle* *.json* *wes* omdat we je niet toestaan ​​om direct uitvoerbare pakketten te importeren. Er zijn enkele voorwaarden voor het verpakken.
+Bij het publiceren van een pakket naar *github* , *bundle* bundel de vereiste modules en maakt *bundle.json* .
 
 1.  Er kan slechts één pakket in één *repository* worden gepubliceerd
 
-2.  Gebruik dezelfde naam voor de naam van de *github* repository en de naam van de lokale werkmap
+2.  *package.json* is vereist. De beschrijving van het `main` is minimaal vereist.
+
+    ```json
+    {
+        main: "index.js"
+    }
+    ```
 
 3.  Maak de repository *public* als u het pakket wilt publiceren
 
-4.  De acquisitie van de module op het hoogste niveau declareren
+4.  Vanaf `version 0.12.0` worden pakketten met een directe module die in een map boven de werkmap wordt geladen, niet gebundeld. Pakketten in de bovenste directory *wes_modules* of *node_modules* kunnen worden gebundeld.
 
-5.  Een *.json* -bestand voor het pakket wordt gemaakt in de werkdirectory met de naam *directory_name.json* . Als u de bestandsnaam wijzigt of het bestand verplaatst, kunt u er tijdens de installatie niet naar verwijzen.
+Voer de volgende opdracht in om te bundelen: Raadpleeg *package.json* voor wat u moet bundelen.
 
-6.  `node_modules/directory_name` het startpunt van de bundel is
-
-    ```bat
-        wes bundle directory_name
-    ```
-
-    zonder bundelen met
-
-    ```bat
-        wes bundle node_modules/directory_name
-    ```
-
-    Gelieve te bundelen met
+```bat
+    wes bundle 
+```
 
 ## *install*
 
-Wordt gebruikt om het pakket voor *wes* te installeren dat op *github* is gepubliceerd. Vanaf `version 0.10.28` is de installatiemap gewijzigd van `node_modules` naar `wes_modules` . Als je in `node_modules` wilt installeren, voeg `--node` toe.
+Wordt gebruikt om het pakket voor *wes* te installeren dat op *github* is gepubliceerd. Vanaf `version 0.10.28` is de installatiemap gewijzigd van `node_modules` naar `wes_modules` . Als je in `node_modules` wilt installeren, voeg `--node` toe. Vanaf `version 0.12.0` worden bestanden uit *bandle.json* uitgepakt en opgeslagen. Als gevolg van specificatiewijzigingen zijn pakketten die zijn gebundeld met een `version 0.12.0` lager dan 0.12.0 mogelijk niet correct geïnstalleerd met `version 0.12.0` of hoger.
 
 ### Gebruik
 
@@ -642,10 +638,10 @@ wes install @wachaon/fmt
 | `--save--dev` | `-D`       | Voeg pakketnaam en -versie toe aan het veld *devDependencies* in *package.json* |
 | `--node`      | `-n`       | Installeer in de map *node_module*                                              |
 
-`--bare` optie kan het argument ' `require` ' van `author@repository` naar `repository` weglaten. `--global` optie maakt geïnstalleerde pakketten beschikbaar voor alle scripts. `--node` of `-n` optie moet samen met de *wes* security optie `--unsafe` of `--dangerous` worden opgegeven.
+`--bare` optie kan het argument ' `require` ' van `author@repository` naar `repository` weglaten. `--global` optie maakt geïnstalleerde pakketten beschikbaar voor alle scripts.
 
 ```bat
-wes install @wachaon/fmt --bare --unsafe
+wes install @wachaon/fmt --bare
 ```
 
 # Pakketten installeren vanuit privé-repository's
@@ -653,10 +649,10 @@ wes install @wachaon/fmt --bare --unsafe
 *install* kan niet alleen pakketten van openbare *github* repositories installeren, maar ook pakketten van private repositories. Geef in *install* het pakket op met *@author/repository* . De implementatie probeert de volgende url te downloaden.
 
 ```javascript
-`https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
+`https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-Wanneer u de *raw* versie van de privérepository opent met een browser, wordt het *token* weergegeven, dus kopieer het *token* en gebruik het. U kunt ook pakketten installeren vanuit privérepository's door het in de console uit te voeren terwijl het *token* geldig is.
+Als u de private repository *raw* met een browser, wordt het *token* weergegeven, dus kopieer het *token* en gebruik het. U kunt ook pakketten installeren vanuit privérepository's door het in de console uit te voeren terwijl het *token* geldig is.
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
@@ -668,7 +664,7 @@ Hier zijn enkele externe pakketten.
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* is *prettier* verpakt voor *wes* om scripts te formatteren. Als er een *Syntax Error* optreedt terwijl *@wachaon/fmt* is geïnstalleerd, kan de locatie van de fout worden weergegeven.
+*@wachaon/fmt* is *prettier* verpakt voor *wes* om scripts te formatteren. Als er een *Syntax Error* optreedt terwijl *@wachaon/fmt* is geïnstalleerd, kunt u ook de locatie van de fout weergeven.
 
 ### installeren
 
@@ -709,7 +705,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 ## *@wachaon/edge*
 
-*Internet Explorer* stopt de ondersteuning op 15 juni 2022. Daarnaast wordt verwacht dat het werken met applicaties met `require('InternetExplorer.Application')` ook onmogelijk zal worden. Een alternatief zou zijn om te werken met *Microsoft Edge based on Chromium* via de *web driver* . `@wachaon/edge` vereenvoudigt *Edge* -stuurautomaat.
+*Internet Explorer* stopt de ondersteuning op 15 juni 2022. Daarnaast wordt verwacht dat applicatiebewerkingen met `require('InternetExplorer.Application')` ook onmogelijk zullen worden. Een alternatief zou zijn om te werken met *Microsoft Edge based on Chromium* via de *web driver* . `@wachaon/edge` vereenvoudigt *Edge* -stuurautomaat.
 
 ### installeren
 
@@ -725,7 +721,7 @@ Download vervolgens het *web driver* .
 wes edge --download
 ```
 
-Controleer de versie van *Edge* die is geïnstalleerd en download het bijbehorende *web driver* .
+Controleer de geïnstalleerde *Edge* -versie en download de bijbehorende *web driver* .
 
 ### Gebruik
 
@@ -748,7 +744,7 @@ Dit script drukt de bezochte *URL* in volgorde af naar de console. `@wachaon/edg
 
 ## *@wachaon/webdriver*
 
-Het zal een pakket zijn dat verzoeken verzendt naar het *web driver* dat de browser bestuurt. Ingebouwde *@wachaon/edge* . Net als bij *@wachaon/edge* is een apart *web driver* vereist voor browserbediening.
+Het zal een pakket zijn dat verzoeken verzendt naar het *web driver* dat de browser bestuurt. Ingebouwde *@wachaon/edge* . Net als bij *@wachaon/edge* is een apart *web driver* vereist voor browserbewerkingen.
 
 ### installeren
 

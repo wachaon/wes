@@ -35,7 +35,7 @@ Para textos en otros idiomas, seleccione entre las opciones a continuación.
 
 # descargar
 
-Wes solo necesita el *wes* *wes.js* Para descargar, copie *wes.js* desde [*@wachaon/wes*](https://github.com/wachaon/wes) o ejecute el siguiente comando en su consola.
+Wes solo necesita el *wes* *wes.js* Para descargar, copie *wes.js* desde [*@wachaon/wes*](https://github.com/wachaon/wes) o ejecute el siguiente comando en la consola.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -50,7 +50,7 @@ wes update
 
 # Uso
 
-Ingrese la palabra clave `wes` seguida de un comando que especifique el archivo de inicio del programa en la consola. La extensión de secuencia de comandos *.js* se puede omitir.
+Ingrese la palabra clave `wes` seguida del comando que especifica el archivo que será el punto de partida del programa en la consola. La extensión de secuencia de comandos *.js* se puede omitir.
 
 ```bat
 wes index
@@ -114,7 +114,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra* , que es el motor de ejecución de secuencias de comandos, interpreta sintaxis como `imoprt` , pero no se puede ejecutar tal cual porque el método de procesamiento como `cscript` no está definido. En *wes* , al agregar *babel* a los módulos incorporados, *es module* es también se ejecutan mientras se transpilan uno por uno. Esto nos cuesta la sobrecarga de procesamiento y un archivo *wes.js* . Los módulos escritos en el *es module* es también se convierten a `require()` mediante la transpilación, por lo que es posible llamar a *COM Object* . Sin embargo, no admite especificar la codificación del archivo del módulo con el *es module* . Todo se carga automáticamente. Para cargarlo como un *es module* , configure la extensión en `.mjs` o configure el campo `"type"` en `package.json` en `"module"` .
+*Chakra* , que es un motor de ejecución de scripts, interpreta sintaxis como `imoprt` , pero no se puede ejecutar tal cual porque el método de procesamiento como `cscript` no está definido. En *wes* , al agregar *babel* a los módulos incorporados, *es module* es también se ejecutan mientras se transpilan secuencialmente. Esto nos cuesta la sobrecarga de procesamiento y un archivo *wes.js* . Los módulos escritos en el *es module* es también se convierten a `require()` mediante la transpilación, por lo que es posible llamar a *COM Object* . Sin embargo, no admite especificar la codificación del archivo del módulo con el *es module* . Todo se carga automáticamente. Para cargarlo como un *es module* , configure la extensión en `.mjs` o configure el campo `"type"` en `package.json` en `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -156,7 +156,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`                     | volcado de objetos                    |
 | `%O`                     | Volcado de objeto (sangrado/colorido) |
 
-`WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` para generar cadenas de colores. `WScript.Echo` y `WScript.StdOut.WriteLine` están bloqueados. `WScript.StdErr.WriteLine` o `console.log` .
+`WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` para generar cadenas de colores. `WScript.Echo` y `WScript.StdOut.WriteLine` son salidas bloqueadas. `WScript.StdErr.WriteLine` o `console.log` .
 
 ## *Buffer*
 
@@ -218,7 +218,7 @@ argv, argv.unnamed, argv.named)
 
 ## *pathname*
 
-Manipular caminos. Las rutas que comienzan con `/` y `\` generalmente son relativas a la raíz de la unidad. Por ejemplo `/filename` y `C:/filename` pueden ser la misma ruta. Por razones de seguridad, `wes` interpreta las rutas que comienzan con `/` y `\` relativas al directorio de trabajo.
+Manipular caminos. Las rutas que comienzan con `/` y `\` son generalmente relativas a la raíz de la unidad. Por ejemplo `/filename` y `C:/filename` pueden ser la misma ruta. Por razones de seguridad, `wes` interpreta las rutas que comienzan con `/` y `\` relativas al directorio de trabajo.
 
 ```javascript
 const path = require('pathname')
@@ -331,7 +331,7 @@ Compare con `true` con el operador de igualdad estricta `===` . Si el `value` es
 | Parámetro | Escribe               | Descripción                            |
 | :-------- | :-------------------- | :------------------------------------- |
 | `value`   | `{Function\|Boolean}` | función booleana o de retorno booleano |
-| `message` | `{String}`            | mensaje en caso de falla               |
+| `message` | `{String}`            | mensaje de falla                       |
 
 #### `assert.equal(expected, actual)`
 
@@ -346,7 +346,7 @@ Al comparar clases (objetos), deben tener el mismo constructor o una superclase 
 
 #### `assert.throws(value, expected, message)`
 
-Verifique que el error se esté lanzando correctamente.  
+Verifique que los errores se estén lanzando correctamente.  
 Si el error es correcto o no se determina si el *constructor* de error esperado, el *message* es igual y la expresión regular pasa la evaluación de la *stack* .
 
 | Parámetro  | Escribe                   | Descripción                                                                            |
@@ -456,7 +456,7 @@ animate.run()
 
 ### `constructor(complete)`
 
-Ejecuta la función `complete` cuando todas las colas están completas o cuando se llama a `stop()` .
+Ejecute la función `complete` cuando se completen todas las colas o se llame a `stop()` .
 
 #### `static genProgressIndicator(animation)`
 
@@ -590,39 +590,35 @@ Si la `path` tiene la extensión `.zip` , se procesa `unzip()` y no hay una desc
 
 # Agrupación (embalaje) e instalación de módulos
 
-En *wes* , un conjunto de varios módulos se denomina paquete. Puede instalar el paquete para *wes* publicado en *github* . Se requiere un *github repository* para publicar un paquete. Además, el nombre del repositorio y el nombre del directorio local deben ser iguales.
+En *wes* , un conjunto de varios módulos se denomina paquete. Puede instalar el paquete para *wes* publicado en *github* . Se requiere un *github repository* para publicar un paquete.
 
 ## *bundle*
 
-Al publicar un paquete en *github* , *bundle* agrupa los módulos necesarios y los cambia a un formato que se puede incluir mediante la instalación. Por razones de seguridad, el *bundle* crea un *wes* *.json* porque no le permitimos importar paquetes ejecutables directamente. Hay algunas condiciones para el embalaje.
+Al publicar un paquete en *github* , *bundle* agrupa los módulos necesarios y crea *bundle.json* .
 
 1.  Solo se puede publicar un paquete en un *repository*
 
-2.  Utilice el mismo nombre para el nombre del repositorio de *github* y el nombre del directorio de trabajo local
+2.  Se requiere *package.json* . Como mínimo, se requiere la descripción del campo `main` .
+
+    ```json
+    {
+        main: "index.js"
+    }
+    ```
 
 3.  Haga *public* el repositorio si desea publicar el paquete
 
-4.  Declarar la adquisición del módulo en el ámbito de nivel superior
+4.  A partir de `version 0.12.0` , los paquetes con módulos que se cargan directamente en un directorio por encima del directorio de trabajo no se incluirán. Los paquetes en el directorio superior *wes_modules* o *node_modules* se pueden agrupar.
 
-5.  Se crea un archivo *.json* para el paquete en el *directory_name.json* de trabajo con el nombre nombre_directorio.json. Si cambia el nombre del archivo o mueve el archivo, no podrá consultarlo durante la instalación.
+Ingrese el siguiente comando para agrupar: Consulte *package.json* para saber qué empaquetar.
 
-6.  `node_modules/directory_name` es el punto de partida del paquete
-
-    ```bat
-        wes bundle directory_name
-    ```
-
-    sin liarse con
-
-    ```bat
-        wes bundle node_modules/directory_name
-    ```
-
-    Paquete con
+```bat
+    wes bundle 
+```
 
 ## *install*
 
-Se usa para instalar el paquete para *wes* publicado en *github* . A partir de la `version 0.10.28` , la carpeta de instalación se cambia de `node_modules` a `wes_modules` . Si desea instalar en `node_modules` , agregue la opción `--node` .
+Se usa para instalar el paquete para *wes* publicado en *github* . A partir de la `version 0.10.28` , la carpeta de instalación se cambia de `node_modules` a `wes_modules` . Si desea instalar en `node_modules` , agregue la opción `--node` . A partir de `version 0.12.0` , los archivos se descomprimirán de *bandle.json* y se guardarán. Debido a cambios en las especificaciones, es posible que los paquetes incluidos con una `version 0.12.0` anterior a la 0.12.0 no se instalen correctamente con `version 0.12.0` o posterior.
 
 ### Uso
 
@@ -642,10 +638,10 @@ wes install @wachaon/fmt
 | `--save--dev` | `-D`         | Agregue el nombre y la versión del paquete al campo *devDependencies* en *package.json* |
 | `--node`      | `-n`         | Instalar en la carpeta *node_module*                                                    |
 
-`--bare` puede omitir el argumento `require` de `author@repository` a `repository` . `--global` hace que los paquetes instalados estén disponibles para todos los scripts. `--node` o `-n` debe especificarse junto con la opción de seguridad *wes* `--unsafe` o `--dangerous` .
+`--bare` puede omitir el argumento `require` de `author@repository` a `repository` . `--global` hace que los paquetes instalados estén disponibles para todos los scripts.
 
 ```bat
-wes install @wachaon/fmt --bare --unsafe
+wes install @wachaon/fmt --bare
 ```
 
 # Instalar paquetes desde repositorios privados
@@ -653,10 +649,10 @@ wes install @wachaon/fmt --bare --unsafe
 *install* puede instalar no solo paquetes de repositorios públicos de *github* , sino también paquetes de repositorios privados. En la *install* , especifique el paquete con *@author/repository* . La implementación intenta descargar la siguiente url.
 
 ```javascript
-`https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
+`https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-Si accede al repositorio privado *raw* con un navegador, se mostrará el *token* , así que copie el *token* y utilícelo. También puede instalar paquetes desde repositorios privados ejecutándolos en la consola mientras el *token* es válido.
+Cuando acceda al *raw* del repositorio privado con un navegador, se mostrará el *token* , así que copie el *token* y utilícelo. Los paquetes de repositorios privados también se pueden instalar si se ejecutan en la consola mientras el *token* es válido.
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
@@ -668,7 +664,7 @@ Aquí hay algunos paquetes externos.
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* *prettier* mejor empaquetado para que *wes* forme scripts. Además, si se produce un *Syntax Error* mientras está instalado *@wachaon/fmt* , se puede mostrar la ubicación del error.
+*@wachaon/fmt* *prettier* mejor empaquetado para que *wes* forme scripts. Además, si se produce un *Syntax Error* mientras está instalado *@wachaon/fmt* , puede mostrar la ubicación del error.
 
 ### Instalar en pc
 

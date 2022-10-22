@@ -1,7 +1,7 @@
 # *WES*
 
 *wes*是一個控制台框架，用於在*WSH (Windows Script Host)*上運行*ECMAScript* 。 *README*文件的[*japanese*](/README.md)將是日文。日語以外的文本將被機器翻譯。  
-對於其他語言的文本，請從以下選項中進行選擇。
+對於其他語言的文本，請從以下選項中選擇。
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -21,8 +21,8 @@
 # 特徵
 
 -   您可以將腳本引擎更改為*Chakra*並根據*ECMAScript2015*規範編寫。
--   由於始終執行 32 位*cscript.exe* ，因此在 64 位環境中沒有唯一問題。
--   由於有一個模塊系統，它可以比傳統的*WSH*更有效地開發
+-   由於總是執行 32 位*cscript.exe* ，因此在 64 位環境中沒有獨特的問題。
+-   由於有模塊系統，因此可以比傳統的*WSH*更高效地開發
 -   內置模塊支持基本處理，例如文件輸入/輸出和彩色文本輸出到控制台
 -   您可以讓文件讀取自動猜測編碼，因此您不必擔心編碼等。
 -   打包模塊以支持外部發布和檢索
@@ -35,13 +35,13 @@
 
 # 下載
 
-*wes.js* *wes* 。要下載，請從[*@wachaon/wes*](https://github.com/wachaon/wes) wes 複製*wes.js*或在控制台中運行以下命令。
+*wes.js* *wes* 。要下載，請從[*@wachaon/wes*](https://github.com/wachaon/wes)複製*wes.js*或在控制台中運行以下命令。
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-我們在運行時*WScript.Shell* *wes* `SendKeys`作為實現。如果*wes.js*保存目錄的路徑中包含*ascii*以外的字符， `SendKeys`無法正確發送密鑰，腳本無法執行。  
+我們在運行時*WScript.Shell* *wes* `SendKeys`作為實現。如果*wes.js*保存目錄的路徑中包含*ascii*以外的字符，則`SendKeys`無法正確發送密鑰，腳本無法執行。  
 配置*wes.js*僅存儲在*ascii*中的路徑。如果您已經下載了*wes* ，您可以使用以下命令對其進行更新。
 
 ```bat
@@ -50,7 +50,7 @@ wes update
 
 # 用法
 
-輸入`wes`關鍵字和指定將成為控制台程序起點的文件的命令。腳本擴展名*.js*可以省略。
+輸入`wes`關鍵字，然後輸入命令，指定將成為控制台程序起點的文件。腳本擴展名*.js*可以省略。
 
 ```bat
 wes index
@@ -87,7 +87,7 @@ wes
 
 ## *commonjs module*
 
-通過分配給`module.exports`並調用`require()`來管理模塊。以`./`和`../`開頭的絕對路徑和相對路徑以外的路徑在*wes_modules*目錄和*node_modules*目錄中查找模塊。 *wes*的`require()`會自動猜測模塊文件的編碼，但如果它沒有正確猜測，您可以使用第二個參數指定編碼。
+通過分配給`module.exports`並調用`require()`來管理模塊。以`./`和`../`開頭的絕對路徑和相對路徑以外的路徑在*wes_modules*目錄和*node_modules*目錄中查找模塊。 *wes*的`require()`會自動猜測模塊文件的編碼，但如果沒有正確猜測，您可以使用第二個參數指定編碼。
 
 ```javascript
 // ./add.js
@@ -114,7 +114,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-腳本執行引擎*Chakra*解釋了諸如`imoprt`之類的語法，但由於未定義`cscript`的處理方法，因此無法按原樣執行。在*wes*中，通過在內置模塊中添加*babel* ， *es module*也在被一個一個轉譯的同時執行。這會花費我們處理開銷和臃腫的*wes.js*文件。 *es module*中寫的模塊也通過轉譯轉換為`require()` ，因此可以調用*COM Object* 。但是，它不支持使用*es module*指定模塊文件的編碼。一切都是自動加載的。要將其加載為*es module* ，請將擴展名設置為`.mjs`或將`package.json`中的`"type"`字段設置為`"module"` 。
+*Chakra*是一個腳本執行引擎，可以解釋諸如`imoprt`之類的語法，但由於沒有定義`cscript`的處理方法，因此無法按原樣執行。在*wes*中，通過在內置模塊中添加*babel* ， *es module*也在被順序轉譯的同時執行。這會花費我們處理開銷和臃腫的*wes.js*文件。 *es module*中寫的模塊也通過轉譯轉換為`require()` ，因此可以調用*COM Object* 。但是，它不支持使用*es module*指定模塊文件的編碼。一切都是自動加載的。要將其加載為*es module* ，請將擴展名設置為`.mjs`或將`package.json`中的`"type"`字段設置為`"module"` 。
 
 ```javascript
 // ./sub.mjs
@@ -331,13 +331,13 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 | 參數        | 類型                    | 描述        |
 | :-------- | :-------------------- | :-------- |
 | `value`   | `{Function\|Boolean}` | 布爾或布爾返回函數 |
-| `message` | `{String}`            | 失敗時的消息    |
+| `message` | `{String}`            | 失敗消息      |
 
 #### `assert.equal(expected, actual)`
 
 比較對象的成員相等性，而不是通過引用。  
-NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g`和`{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]`等等。  
-比較類（對象）時，它們必須具有相同的構造函數或`actual` `expected`的超類。
+NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g`或`{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]`等等。  
+在比較類（對象）時，它們必須具有相同的構造函數或`actual` `expected`的超類。
 
 | 參數         | 類型      | 描述   |
 | :--------- | :------ | :--- |
@@ -402,7 +402,7 @@ log(() => isObject(function(){}))
 
 ### 用法
 
-如果處理需要很長時間，將進度顯示為控制台上的動畫會很有幫助。
+如果處理需要很長時間，最好在控制台上將進度顯示為動畫。
 
 ```javascript
 const Animate = require('animate')
@@ -456,7 +456,7 @@ animate.run()
 
 ### `constructor(complete)`
 
-當所有隊列都完成或調用`stop()`時執行`complete`函數。
+當所有隊列完成或調用`stop()`時執行`complete`函數。
 
 #### `static genProgressIndicator(animation)`
 
@@ -590,39 +590,35 @@ wes zip -p dox.zip
 
 # 捆綁（打包）和安裝模塊
 
-在*wes*中，多個模塊的捆綁包稱為包。您可以安裝發佈在*github*上的*wes*軟件包。發布包需要*github repository* 。此外，存儲庫名稱和本地目錄名稱必須相同。
+在*wes*中，多個模塊的捆綁包稱為包。您可以安裝在*github*上發布的*wes*軟件包。發布包需要*github repository* 。
 
 ## *bundle*
 
-將包發佈到*github*時， *bundle*會捆綁必要的模塊並將它們更改為可以通過安裝包含的格式。出於安全原因， *bundle* *.json* *wes* ，因為我們不允許您直接導入可執行包。包裝有一些條件。
+將包發佈到*github*時， *bundle*會捆綁所需的模塊並創建*bundle.json* 。
 
 1.  一個*repository*只能發布一個包
 
-2.  *github*存儲庫名稱和本地工作目錄名稱請使用相同的名稱
+2.  *package.json*是必需的。至少， `main`字段的描述是必需的。
+
+    ```json
+    {
+        main: "index.js"
+    }
+    ```
 
 3.  如果要發布包，請*public*存儲庫
 
-4.  在頂層範圍內聲明模塊的獲取
+4.  從`version 0.12.0`開始，直接模塊加載到工作目錄之上的目錄的包將不會被捆綁。可以捆綁上層目錄*wes_modules*或*node_modules*中的包。
 
-5.  包的*.json*文件在名為*directory_name.json*的工作目錄中創建。如果更改文件名或移動文件，則在安裝過程中無法引用它。
+輸入以下命令進行捆綁：請參閱*package.json*以了解要捆綁的內容。
 
-6.  `node_modules/directory_name`是包的起點
-
-    ```bat
-        wes bundle directory_name
-    ```
-
-    不捆綁
-
-    ```bat
-        wes bundle node_modules/directory_name
-    ```
-
-    請捆綁
+```bat
+    wes bundle 
+```
 
 ## *install*
 
-用於安裝*github*上發布的*wes*包。從`version 0.10.28` ，安裝文件夾從`node_modules`更改為`wes_modules` 。如果要安裝在`node_modules`中，請添加`--node`選項。
+用於安裝*github*上發布的*wes*包。從`version 0.10.28` ，安裝文件夾從`node_modules`更改為`wes_modules` 。如果要在`node_modules`中安裝，請添加`--node`選項。從`version 0.12.0`開始，文件將從*bandle.json*解壓縮並保存。由於規範更改，與 0.12.0 以下`version 0.12.0`捆綁的軟件包可能無法與`version 0.12.0`正確安裝。
 
 ### 用法
 
@@ -642,21 +638,21 @@ wes install @wachaon/fmt
 | `--save--dev` | `-D` | 將包名稱和版本添加到*package.json*中的*devDependencies*字段 |
 | `--node`      | `-n` | 安裝在*node_module*文件夾中                          |
 
-`--bare`選項可以省略從`author@repository`到`repository`的`require`參數。 `--global`選項使已安裝的軟件包可用於所有腳本。 `--node`或`-n`選項必須與*wes*安全選項`--unsafe`或`--dangerous`一起指定。
+`--bare`選項可以省略從`author@repository`到`repository`的`require`參數。 `--global`選項使已安裝的軟件包可用於所有腳本。
 
 ```bat
-wes install @wachaon/fmt --bare --unsafe
+wes install @wachaon/fmt --bare
 ```
 
 # 從私有倉庫安裝包
 
-*install*不僅可以安裝來自公共*github*存儲庫的包，還可以安裝來自私有存儲庫的包。在*install*中，使用*@author/repository*指定包。該實現嘗試下載以下網址。
+*install*不僅可以安裝來自公共*github*存儲庫的包，還可以安裝來自私有存儲庫的包。在*install*中，使用*@author/repository*指定包。該實現嘗試下載以下 url。
 
 ```javascript
-`https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
+`https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-如果您使用瀏覽器訪問*raw*存儲庫，則會顯示*token* ，因此請複制*token*並使用它。您還可以通過在*token*有效時在控制台中運行來從私有存儲庫安裝包。
+如果您使用瀏覽器訪問*raw*存儲庫，則會顯示*token* ，因此請複制*token*並使用它。您還可以通過在*token*有效時在控制台中運行來安裝私有存儲庫中的軟件包。
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA

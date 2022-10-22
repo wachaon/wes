@@ -35,7 +35,7 @@ For texts in other languages, please select from the options below.
 
 # download
 
-*wes.js* *wes* . To download, copy *wes.js* from [*@wachaon/wes*](https://github.com/wachaon/wes) or run the following command in your console.
+*wes.js* *wes* . To download, copy *wes.js* from [*@wachaon/wes*](https://github.com/wachaon/wes) or run the following command in console.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -50,13 +50,13 @@ wes update
 
 # Usage
 
-Enter the `wes` keyword followed by the command specifying the starting file of the program to the console. The script extension *.js* can be omitted.
+Enter the `wes` keyword followed by the command specifying the file that will be the starting point of the program to the console. The script extension *.js* can be omitted.
 
 ```bat
 wes index
 ```
 
-Also, since *wes* is equipped with *REP* , you can directly enter scripts by starting `wes` alone.
+Also, since *wes* is equipped with *REP* , you can enter scripts directly by starting `wes` alone.
 
 ```bat
 wes
@@ -156,7 +156,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`             | object dump                      |
 | `%O`             | Object dump (indented/colorful)  |
 
-`WScript.StdOut.WriteLine` *wes* of `WScript.StdErr.WriteLine` to output colored strings. `WScript.Echo` and `WScript.StdOut.WriteLine` are blocked. `WScript.StdErr.WriteLine` or `console.log` .
+`WScript.StdOut.WriteLine` *wes* of `WScript.StdErr.WriteLine` to output colored strings. `WScript.Echo` and `WScript.StdOut.WriteLine` are blocked output. `WScript.StdErr.WriteLine` or `console.log` .
 
 ## *Buffer*
 
@@ -331,7 +331,7 @@ Compare to `true` with the strict equality operator `===` . If `value` is a func
 | Param     | Type                  | Description                           |
 | :-------- | :-------------------- | :------------------------------------ |
 | `value`   | `{Function\|Boolean}` | boolean or boolean-returning function |
-| `message` | `{String}`            | message on failure                    |
+| `message` | `{String}`            | message in case of failure            |
 
 #### `assert.equal(expected, actual)`
 
@@ -353,7 +353,7 @@ Whether or not the error is correct is determined by whether the expected error 
 | :--------- | :------------------------ | :-------------------------------------------------------------------------------------------- |
 | `value`    | `{Error}`                 | error                                                                                         |
 | `expected` | `{Error\|String\|RegExp}` | A regular expression that evaluates the expected error *constructor* , *message* , or *stack* |
-| `message`  | `{String}`                | message on failure                                                                            |
+| `message`  | `{String}`                | message in case of failure                                                                    |
 
 ## *pipe*
 
@@ -464,7 +464,7 @@ Generate a function that displays a cycling animation.
 
 #### `register(callback, interval, conditional)`
 
-Register processing. Multiple processes can be registered and processed in parallel. In the `callback` , we will instruct to stop the animation and write the view to be displayed. `interval` specifies the processing interval. If the `conditional` is a function, it executes `conditional(count, queue)` and if the result is true, it continues to the next. The `conditional` executes `decrement(count)` if it is a number and continues if the result is a positive number. Executes only once if `conditional` is undefined. Note that specifying a function increases the `count` , whereas specifying a number decreases the `count` .
+Register processing. Multiple processes can be registered and processed in parallel. In the `callback` , we will instruct to stop the animation and write the view to be displayed. `interval` specifies the processing interval. If the `conditional` is a function, it will execute `conditional(count, queue)` and if the result is true, it will continue. The `conditional` executes `decrement(count)` if it is a number and continues if the result is a positive number. Executes only once if `conditional` is undefined. Note that specifying a function increases the `count` , whereas specifying a number decreases the `count` .
 
 #### `stop()`
 
@@ -590,39 +590,35 @@ If the `path` has the extension `.zip` , `unzip()` is processed, and there is no
 
 # Bundling (packaging) and installing modules
 
-In *wes* , a bundle of several modules is called a package. You can install the package for *wes* published on *github* . A *github repository* is required to publish a package. Also, the repository name and the local directory name must be the same.
+In *wes* , a bundle of several modules is called a package. You can install the package for *wes* published on *github* . A *github repository* is required to publish a package.
 
 ## *bundle*
 
-When publishing a package to *github* , *bundle* bundles the necessary modules and changes them into a format that can be included by installation. For security reasons, *bundle* *.json* *wes* because we doesn't allow you to import directly executable packages. There are some conditions for packaging.
+When publishing a package to *github* , *bundle* bundles the required modules and creates *bundle.json* .
 
 1.  Only one package can be published in one *repository*
 
-2.  Please use the same name for the *github* repository name and the local working directory name
+2.  *package.json* is required. At a minimum, the description of the `main` field is required.
+
+    ```json
+    {
+        main: "index.js"
+    }
+    ```
 
 3.  Make the repository *public* if you want to publish the package
 
-4.  Declare the acquisition of the module in the top-level scope
+4.  Starting with `version 0.12.0` , packages with direct module loading into a directory above the working directory will not be bundled. Packages in the upper directory *wes_modules* or *node_modules* can be bundled.
 
-5.  A *.json* file for the package is created in the working directory with the name *directory_name.json* . If you change the file name or move the file, you cannot refer to it during installation.
+Enter the following command to bundle: Refer to *package.json* for what to bundle.
 
-6.  `node_modules/directory_name` is the starting point of the bundle
-
-    ```bat
-        wes bundle directory_name
-    ```
-
-    without bundling with
-
-    ```bat
-        wes bundle node_modules/directory_name
-    ```
-
-    Please bundle with
+```bat
+    wes bundle 
+```
 
 ## *install*
 
-Used to install the package for *wes* published on *github* . From `version 0.10.28` , the installation folder is changed from `node_modules` to `wes_modules` . If you want to install in `node_modules` add `--node` option.
+Used to install the package for *wes* published on *github* . From `version 0.10.28` , the installation folder is changed from `node_modules` to `wes_modules` . If you want to install in `node_modules` add `--node` option. Starting with `version 0.12.0` , files will be unzipped from *bandle.json* and saved. Due to specification changes, packages bundled with `version 0.12.0` less than 0.12.0 may not be installed correctly with `version 0.12.0` or later.
 
 ### Usage
 
@@ -642,10 +638,10 @@ wes install @wachaon/fmt
 | `--save--dev` | `-D`        | Add package name and version to *devDependencies* field in *package.json* |
 | `--node`      | `-n`        | Install in *node_module* folder                                           |
 
-`--bare` option can omit the `require` argument from `author@repository` to `repository` . `--global` option makes installed packages available to all scripts. `--node` or `-n` option must be specified together with the *wes* security option `--unsafe` or `--dangerous` .
+`--bare` option can omit the `require` argument from `author@repository` to `repository` . `--global` option makes installed packages available to all scripts.
 
 ```bat
-wes install @wachaon/fmt --bare --unsafe
+wes install @wachaon/fmt --bare
 ```
 
 # Installing packages from private repositories
@@ -653,7 +649,7 @@ wes install @wachaon/fmt --bare --unsafe
 *install* can install not only packages from public *github* repositories, but also packages from private repositories. In *install* , specify the package with *@author/repository* . The implementation tries to download the following url.
 
 ```javascript
-`https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
+`https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
 If you access the private repository *raw* with a browser, the *token* will be displayed, so copy the *token* and use it. You can also install packages from private repositories by running it in the console while the *token* is valid.
@@ -725,7 +721,7 @@ Then download the *web driver* .
 wes edge --download
 ```
 
-Check the version of *Edge* installed and download the corresponding *web driver* .
+Check the installed *Edge* version and download the corresponding *web driver* .
 
 ### Usage
 

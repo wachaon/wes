@@ -35,7 +35,7 @@ Pour les textes dans d'autres langues, veuillez sélectionner l'une des options 
 
 # Télécharger
 
-Wes n'a besoin que du *wes* *wes.js* . Pour télécharger, copiez *wes.js* depuis [*@wachaon/wes*](https://github.com/wachaon/wes) ou exécutez la commande suivante dans votre console.
+Wes n'a besoin que du *wes* *wes.js* . Pour télécharger, copiez *wes.js* depuis [*@wachaon/wes*](https://github.com/wachaon/wes) ou exécutez la commande suivante dans la console.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -156,7 +156,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`                    | vidage d'objet                   |
 | `%O`                    | Vidage d'objet (indenté/coloré)  |
 
-`WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` pour générer des chaînes colorées. `WScript.Echo` et `WScript.StdOut.WriteLine` sont bloqués. `WScript.StdErr.WriteLine` ou `console.log` .
+`WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` pour générer des chaînes colorées. `WScript.Echo` et `WScript.StdOut.WriteLine` sont des sorties bloquées. `WScript.StdErr.WriteLine` ou `console.log` .
 
 ## *Buffer*
 
@@ -336,7 +336,7 @@ Comparez à `true` avec l'opérateur d'égalité stricte `===` . Si `value` est 
 #### `assert.equal(expected, actual)`
 
 Compare les objets pour l'égalité des membres, pas par référence.  
-NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` et `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` etc.  
+NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` ou `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` etc.  
 Lors de la comparaison de classes (objets), elles doivent avoir le même constructeur ou une superclasse dont `actual` est `expected` .
 
 | Param      | Taper   | La description  |
@@ -346,7 +346,7 @@ Lors de la comparaison de classes (objets), elles doivent avoir le même constru
 
 #### `assert.throws(value, expected, message)`
 
-Vérifiez que l'erreur est générée correctement.  
+Vérifiez que les erreurs sont générées correctement.  
 Le fait que l'erreur soit correcte ou non est déterminé par le fait que le *constructor* d'erreur attendu, *message* est égal et que l'expression régulière réussit l'évaluation de la *stack* .
 
 | Param      | Taper                     | La description                                                                                   |
@@ -464,7 +464,7 @@ Générez une fonction qui affiche une animation de cyclisme.
 
 #### `register(callback, interval, conditional)`
 
-Traitement des registres. Plusieurs processus peuvent être enregistrés et traités en parallèle. Dans le `callback` , nous demanderons d'arrêter l'animation et d'écrire la vue à afficher. `interval` spécifie l'intervalle de traitement. Si la `conditional` est une fonction, elle exécutera `conditional(count, queue)` et si le résultat est vrai, elle continuera. La `conditional` exécute `decrement(count)` s'il s'agit d'un nombre et continue si le résultat est un nombre positif. S'exécute une seule fois si `conditional` n'est pas défini. Notez que la spécification d'une fonction augmente le `count` , tandis que la spécification d'un nombre diminue le `count` .
+Traitement des registres. Plusieurs processus peuvent être enregistrés et traités en parallèle. Dans le `callback` , nous demanderons d'arrêter l'animation et d'écrire la vue à afficher. `interval` spécifie l'intervalle de traitement. Si la `conditional` est une fonction, elle exécute `conditional(count, queue)` et si le résultat est vrai, elle passe à la suivante. La `conditional` exécute `decrement(count)` s'il s'agit d'un nombre et continue si le résultat est un nombre positif. S'exécute une seule fois si `conditional` n'est pas défini. Notez que la spécification d'une fonction augmente le `count` , tandis que la spécification d'un nombre diminue le `count` .
 
 #### `stop()`
 
@@ -590,39 +590,35 @@ Si le `path` a l'extension `.zip` , `unzip()` est traité et il n'y a pas de des
 
 # Regroupement (conditionnement) et installation de modules
 
-Dans *wes* , un bundle de plusieurs modules est appelé un package. Vous pouvez installer le package pour *wes* publié sur *github* . Un *github repository* est requis pour publier un package. De plus, le nom du référentiel et le nom du répertoire local doivent être identiques.
+Dans *wes* , un bundle de plusieurs modules est appelé un package. Vous pouvez installer le package pour *wes* publié sur *github* . Un *github repository* est requis pour publier un package.
 
 ## *bundle*
 
-Lors de la publication d'un package sur *github* , *bundle* regroupe les modules nécessaires et les modifie dans un format pouvant être inclus par l'installation. Pour des raisons de sécurité, *bundle* crée un *wes* *.json* car nous ne vous permettons pas d'importer des packages directement exécutables. Il y a certaines conditions pour l'emballage.
+Lors de la publication d'un package sur *github* , *bundle* regroupe les modules requis et crée *bundle.json* .
 
 1.  Un seul package peut être publié dans un *repository*
 
-2.  Veuillez utiliser le même nom pour le nom du référentiel *github* et le nom du répertoire de travail local
+2.  *package.json* est requis. Au minimum, la description du champ `main` est requise.
+
+    ```json
+    {
+        main: "index.js"
+    }
+    ```
 
 3.  Rendez le référentiel *public* si vous souhaitez publier le package
 
-4.  Déclarer l'acquisition du module dans le périmètre de niveau supérieur
+4.  À partir de la `version 0.12.0` , les packages avec chargement direct du module dans un répertoire au-dessus du répertoire de travail ne seront pas regroupés. Les packages du répertoire supérieur *wes_modules* ou *node_modules* peuvent être regroupés.
 
-5.  Un fichier *.json* pour le package est créé dans le répertoire de travail avec le nom *directory_name.json* . Si vous modifiez le nom du fichier ou déplacez le fichier, vous ne pouvez pas vous y référer pendant l'installation.
+Saisissez la commande suivante pour regrouper : Reportez-vous à *package.json* pour savoir quoi regrouper.
 
-6.  `node_modules/directory_name` est le point de départ du bundle
-
-    ```bat
-        wes bundle directory_name
-    ```
-
-    sans grouper avec
-
-    ```bat
-        wes bundle node_modules/directory_name
-    ```
-
-    Veuillez regrouper avec
+```bat
+    wes bundle 
+```
 
 ## *install*
 
-Utilisé pour installer le package pour *wes* publié sur *github* . À partir de la `version 0.10.28` , le dossier d'installation est modifié de `node_modules` à `wes_modules` . Si vous souhaitez installer dans `node_modules` ajoutez l'option `--node` .
+Utilisé pour installer le package pour *wes* publié sur *github* . À partir de la `version 0.10.28` , le dossier d'installation est modifié de `node_modules` à `wes_modules` . Si vous souhaitez installer dans `node_modules` ajoutez l'option `--node` . À partir de la `version 0.12.0` , les fichiers seront décompressés de *bandle.json* et enregistrés. En raison de changements de spécifications, les packages fournis avec une `version 0.12.0` inférieure à 0.12.0 peuvent ne pas être installés correctement avec la `version 0.12.0` ou ultérieure.
 
 ### Usage
 
@@ -642,10 +638,10 @@ wes install @wachaon/fmt
 | `--save--dev` | `-D`        | Ajouter le nom et la version du package au champ *devDependencies* dans *package.json*  |
 | `--node`      | `-n`        | Installer dans le dossier *node_module*                                                 |
 
-`--bare` peut omettre l'argument `require` de `author@repository` à `repository` . `--global` rend les packages installés disponibles pour tous les scripts. `--node` ou `-n` doit être spécifiée avec l'option de sécurité *wes* `--unsafe` ou `--dangerous` .
+`--bare` peut omettre l'argument `require` de `author@repository` à `repository` . `--global` rend les packages installés disponibles pour tous les scripts.
 
 ```bat
-wes install @wachaon/fmt --bare --unsafe
+wes install @wachaon/fmt --bare
 ```
 
 # Installation de packages à partir de référentiels privés
@@ -653,7 +649,7 @@ wes install @wachaon/fmt --bare --unsafe
 *install* peut installer non seulement des packages à partir de référentiels *github* publics, mais également des packages à partir de référentiels privés. Dans *install* , spécifiez le package avec *@author/repository* . L'implémentation tente de télécharger l'URL suivante.
 
 ```javascript
-`https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
+`https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
 Si vous accédez au référentiel privé *raw* avec un navigateur, le *token* sera affiché, alors copiez le *token* et utilisez-le. Vous pouvez également installer des packages à partir de référentiels privés en les exécutant dans la console pendant que le *token* est valide.
@@ -662,7 +658,7 @@ Si vous accédez au référentiel privé *raw* avec un navigateur, le *token* se
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
-# Présentation du forfait
+# Présentation du paquet
 
 Voici quelques packages externes.
 
@@ -725,7 +721,7 @@ Ensuite, téléchargez le *web driver* .
 wes edge --download
 ```
 
-Vérifiez la version d' *Edge* installée et téléchargez le *web driver* correspondant.
+Vérifiez la version *Edge* installée et téléchargez le *web driver* correspondant.
 
 ### Usage
 
@@ -756,7 +752,7 @@ Ce sera un package qui envoie des requêtes au *web driver* qui exploite le navi
 wes install @wachaon/webdriver --unsafe --bare
 ```
 
-Téléchargez le *web driver* *Microsoft Edge* basé sur *Chromium* si vous ne l'avez pas. De même, si la version d' *edge* et la version du *web driver* sont différentes, téléchargez la même version du *web driver* .
+Téléchargez le *web driver* *Microsoft Edge* basé sur *Chromium* si vous ne l'avez pas. De plus, si la version d' *edge* et la version du *web driver* sont différentes, téléchargez la même version du *web driver* .
 
 ```bat
 wes webdriver --download

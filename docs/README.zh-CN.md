@@ -21,8 +21,8 @@
 # 特征
 
 -   您可以将脚本引擎更改为*Chakra*并根据*ECMAScript2015*规范编写。
--   由于始终执行 32 位*cscript.exe* ，因此在 64 位环境中没有唯一问题。
--   由于有一个模块系统，它可以比传统的*WSH*更有效地开发
+-   由于总是执行 32 位*cscript.exe* ，因此在 64 位环境中没有独特的问题。
+-   由于有模块系统，因此可以比传统的*WSH*更高效地开发
 -   内置模块支持基本处理，例如文件输入/输出和彩色文本输出到控制台
 -   您可以让文件读取自动猜测编码，因此您不必担心编码等。
 -   打包模块以支持外部发布和检索
@@ -35,7 +35,7 @@
 
 # 下载
 
-*wes.js* *wes* 。要下载，请从[*@wachaon/wes*](https://github.com/wachaon/wes) wes 复制*wes.js*或在控制台中运行以下命令。
+*wes.js* *wes* 。要下载，请从[*@wachaon/wes*](https://github.com/wachaon/wes)复制*wes.js*或在控制台中运行以下命令。
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -50,7 +50,7 @@ wes update
 
 # 用法
 
-输入`wes`关键字和指定将成为控制台程序起点的文件的命令。脚本扩展名*.js*可以省略。
+输入`wes`关键字，然后输入指定文件的命令，该文件将成为控制台程序的起点。脚本扩展名*.js*可以省略。
 
 ```bat
 wes index
@@ -83,11 +83,11 @@ wes
 
 # 模块系统
 
-*wes*支持两种模块系统，使用`require()`的*commonjs module*系统和使用`import`的*es module*系统。 （不支持*dynamic import* ，因为它是一个异步过程）
+*wes*支持两个模块系统，使用`require()`的*commonjs module*系统和使用`import`的*es module*系统。 （不支持*dynamic import* ，因为它是一个异步过程）
 
 ## *commonjs module*
 
-通过分配给`module.exports`并调用`require()`来管理模块。以`./`和`../`开头的绝对路径和相对路径以外的路径在*wes_modules*目录和*node_modules*目录中查找模块。 *wes*的`require()`会自动猜测模块文件的编码，但如果没有正确猜测，您可以使用第二个参数指定编码。
+通过分配给`module.exports`并调用`require()`来管理模块。绝对路径和以`./`和`../`开头的相对路径以外的路径在*wes_modules*目录中查找模块，并且方便地在*node_modules*目录中查找。 *wes*的`require()`会自动猜测模块文件的编码，但如果猜测不正确，您可以使用第二个参数指定编码。
 
 ```javascript
 // ./add.js
@@ -114,7 +114,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-脚本执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过在内置模块中添加*babel* ， *es module*也在被一个一个转译的同时执行。这会花费我们处理开销和臃肿的*wes.js*文件。用*es module*模块写的模块也通过转译转换成`require()` ，所以可以调用*COM Object* 。但是，它不支持使用*es module*指定模块文件的编码。一切都是自动加载的。要将其作为*es module*加载，请将扩展名设置为`.mjs`或将`package.json`中的`"type"`字段设置为`"module"` 。
+*Chakra*是一个脚本执行引擎，可以解释诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过在内置模块中添加*babel* ， *es module*也在被顺序转译的同时执行。这会花费我们处理开销和臃肿的*wes.js*文件。用*es module*模块写的模块也通过转译转换成`require()` ，所以可以调用*COM Object* 。但是，它不支持使用*es module*指定模块文件的编码。一切都是自动加载的。要将其作为*es module*加载，请将扩展名设置为`.mjs`或将`package.json`中的`"type"`字段设置为`"module"` 。
 
 ```javascript
 // ./sub.mjs
@@ -156,7 +156,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`  | 对象转储                             |
 | `%O`  | 对象转储（缩进/彩色）                      |
 
-`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`来输出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`被阻止。 `WScript.StdErr.WriteLine`或`console.log` 。
+`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`来输出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`是阻塞输出。 `WScript.StdErr.WriteLine`或`console.log` 。
 
 ## *Buffer*
 
@@ -337,7 +337,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 比较对象的成员相等性，而不是通过引用。  
 NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g`或`{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]`等等。  
-比较类（对象）时，它们必须具有相同的构造函数或`actual` `expected`的超类。
+在比较类（对象）时，它们必须具有相同的构造函数或`actual` `expected`的超类。
 
 | 参数         | 类型      | 描述   |
 | :--------- | :------ | :--- |
@@ -353,7 +353,7 @@ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegEx
 | :--------- | :------------------------ | :-------------------------------------------- |
 | `value`    | `{Error}`                 | 错误                                            |
 | `expected` | `{Error\|String\|RegExp}` | 计算预期错误*constructor* 、 *message*或*stack*的正则表达式 |
-| `message`  | `{String}`                | 失败时的消息                                        |
+| `message`  | `{String}`                | 失败消息                                          |
 
 ## *pipe*
 
@@ -456,7 +456,7 @@ animate.run()
 
 ### `constructor(complete)`
 
-当所有队列都完成或调用`stop()`时执行`complete`函数。
+当所有队列完成或调用`stop()`时执行`complete`函数。
 
 #### `static genProgressIndicator(animation)`
 
@@ -590,39 +590,35 @@ wes zip -p dox.zip
 
 # 捆绑（打包）和安装模块
 
-在*wes*中，多个模块的捆绑包称为包。您可以安装发布在*github*上的*wes*软件包。发布包需要*github repository* 。此外，存储库名称和本地目录名称必须相同。
+在*wes*中，多个模块的捆绑包称为包。您可以安装在*github*上发布的*wes*软件包。发布包需要*github repository* 。
 
 ## *bundle*
 
-将包发布到*github*时， *bundle*会捆绑必要的模块并将它们更改为可以通过安装包含的格式。出于安全原因， *bundle* *.json* *wes* ，因为我们不允许您直接导入可执行包。包装有一些条件。
+将包发布到*github*时， *bundle*会捆绑所需的模块并创建*bundle.json* 。
 
 1.  一个*repository*只能发布一个包
 
-2.  *github*存储库名称和本地工作目录名称请使用相同的名称
+2.  *package.json*是必需的。至少， `main`字段的描述是必需的。
+
+    ```json
+    {
+        main: "index.js"
+    }
+    ```
 
 3.  如果要发布包，请*public*存储库
 
-4.  在顶层范围内声明模块的获取
+4.  从`version 0.12.0`开始，直接模块加载到工作目录之上的目录的包将不会被捆绑。可以捆绑上层目录*wes_modules*或*node_modules*中的包。
 
-5.  包的*.json*文件在名为*directory_name.json*的工作目录中创建。如果更改文件名或移动文件，则在安装过程中无法引用它。
+输入以下命令进行捆绑：请参阅*package.json*以了解要捆绑的内容。
 
-6.  `node_modules/directory_name`是包的起点
-
-    ```bat
-        wes bundle directory_name
-    ```
-
-    不捆绑
-
-    ```bat
-        wes bundle node_modules/directory_name
-    ```
-
-    请捆绑
+```bat
+    wes bundle 
+```
 
 ## *install*
 
-用于安装*github*上发布的*wes*包。从`version 0.10.28` ，安装文件夹从`node_modules`更改为`wes_modules` 。如果要在`node_modules`中安装，请添加`--node`选项。
+用于安装*github*上发布的*wes*包。从`version 0.10.28` ，安装文件夹从`node_modules`更改为`wes_modules` 。如果要在`node_modules`中安装，请添加`--node`选项。从`version 0.12.0`开始，文件将从*bandle.json*解压缩并保存。由于规范更改，与 0.12.0 以下`version 0.12.0`捆绑的软件包可能无法与`version 0.12.0`正确安装。
 
 ### 用法
 
@@ -642,10 +638,10 @@ wes install @wachaon/fmt
 | `--save--dev` | `-D` | 将包名称和版本添加到*package.json*中的*devDependencies*字段 |
 | `--node`      | `-n` | 安装在*node_module*文件夹中                          |
 
-`--bare`选项可以省略从`author@repository`到`repository`的`require`参数。 `--global`选项使已安装的软件包可用于所有脚本。 `--node`或`-n`选项必须与*wes*安全选项`--unsafe`或`--dangerous`一起指定。
+`--bare`选项可以省略从`author@repository`到`repository`的`require`参数。 `--global`选项使已安装的软件包可用于所有脚本。
 
 ```bat
-wes install @wachaon/fmt --bare --unsafe
+wes install @wachaon/fmt --bare
 ```
 
 # 从私有仓库安装包
@@ -653,7 +649,7 @@ wes install @wachaon/fmt --bare --unsafe
 *install*不仅可以安装来自公共*github*存储库的包，还可以安装来自私有存储库的包。在*install*中，使用*@author/repository*指定包。该实现尝试下载以下 url。
 
 ```javascript
-`https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
+`https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
 如果您使用浏览器访问*raw*存储库，则会显示*token* ，因此请复制*token*并使用它。您还可以通过在*token*有效时在控制台中运行来从私有存储库安装包。
@@ -697,7 +693,7 @@ wes @wachaon/fmt src/sample --write
 
 如果指定了`--write`或`-w`命名参数，则使用格式化脚本覆盖文件。
 
-#### 作为模块使用
+#### 作为一个模块使用
 
 ```javascript
 const fmt = require('@wachaon/fmt')

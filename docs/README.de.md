@@ -35,7 +35,7 @@ Für Texte in anderen Sprachen wählen Sie bitte aus den folgenden Optionen aus.
 
 # Download
 
-Wes benötigt nur die *wes* *wes.js* . Kopieren Sie zum Herunterladen *wes.js* von [*@wachaon/wes*](https://github.com/wachaon/wes) oder führen Sie den folgenden Befehl in Ihrer Konsole aus.
+Wes benötigt nur die *wes* *wes.js* . Kopieren Sie zum Herunterladen *wes.js* von [*@wachaon/wes*](https://github.com/wachaon/wes) oder führen Sie den folgenden Befehl in der Konsole aus.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -460,7 +460,7 @@ Führt die Funktion `complete` aus, wenn alle Warteschlangen vollständig sind o
 
 #### `static genProgressIndicator(animation)`
 
-Generieren Sie eine Funktion, die eine zyklische Animation anzeigt.
+Generieren Sie eine Funktion, die eine Fahrradanimation anzeigt.
 
 #### `register(callback, interval, conditional)`
 
@@ -590,39 +590,35 @@ Wenn der `path` die Erweiterung `.zip` hat, wird `unzip()` verarbeitet und es gi
 
 # Bündeln (Verpacken) und Installieren von Modulen
 
-In *wes* wird ein Bündel aus mehreren Modulen als Paket bezeichnet. Sie können das auf *github* veröffentlichte Paket für *wes* installieren. Zum Veröffentlichen eines Pakets ist ein *github repository* erforderlich. Außerdem müssen der Name des Repositorys und der Name des lokalen Verzeichnisses identisch sein.
+In *wes* wird ein Bündel aus mehreren Modulen als Paket bezeichnet. Sie können das auf *github* veröffentlichte Paket für *wes* installieren. Zum Veröffentlichen eines Pakets ist ein *github repository* erforderlich.
 
 ## *bundle*
 
-Beim Veröffentlichen eines Pakets auf *github* bündelt *bundle* die erforderlichen Module und ändert sie in ein Format, das durch die Installation eingeschlossen werden kann. *bundle* *.json* *wes* da wir Ihnen nicht erlauben, direkt ausführbare Pakete zu importieren. Es gibt einige Bedingungen für die Verpackung.
+Beim Veröffentlichen eines Pakets auf *github* bündelt *bundle* die erforderlichen Module und erstellt *bundle.json* .
 
 1.  In einem *repository* kann nur ein Paket veröffentlicht werden
 
-2.  Bitte verwenden Sie denselben Namen für den *github* Repository-Namen und den Namen des lokalen Arbeitsverzeichnisses
+2.  *package.json* ist erforderlich. Als Minimum ist die Beschreibung des `main` erforderlich.
+
+    ```json
+    {
+        main: "index.js"
+    }
+    ```
 
 3.  Machen Sie das Repository *public* , wenn Sie das Paket veröffentlichen möchten
 
-4.  Erklären Sie den Erwerb des Moduls im obersten Leistungsbereich
+4.  Ab `version 0.12.0` werden Pakete mit direktem Modulladen in ein Verzeichnis oberhalb des Arbeitsverzeichnisses nicht mehr gebündelt. Pakete im oberen Verzeichnis *wes_modules* oder *node_modules* können gebündelt werden.
 
-5.  Im Arbeitsverzeichnis wird eine *.json* -Datei für das Paket mit dem Namen *directory_name.json* erstellt. Wenn Sie den Dateinamen ändern oder die Datei verschieben, können Sie während der Installation nicht darauf verweisen.
+Geben Sie zum Bündeln den folgenden Befehl ein: *package.json* Sie, was gebündelt werden soll.
 
-6.  `node_modules/directory_name` der Ausgangspunkt des Bundles ist
-
-    ```bat
-        wes bundle directory_name
-    ```
-
-    ohne Bündelung mit
-
-    ```bat
-        wes bundle node_modules/directory_name
-    ```
-
-    Bitte bündeln Sie mit
+```bat
+    wes bundle 
+```
 
 ## *install*
 
-Wird verwendet, um das auf *github* veröffentlichte Paket für *wes* zu installieren. Ab `version 0.10.28` wird der Installationsordner von `node_modules` auf `wes_modules` . Wenn Sie in `node_modules` installieren möchten, fügen `--node` Option --node hinzu.
+Wird verwendet, um das auf *github* veröffentlichte Paket für *wes* zu installieren. Ab `version 0.10.28` wird der Installationsordner von `node_modules` auf `wes_modules` . Wenn Sie in `node_modules` installieren möchten, fügen `--node` Option --node hinzu. Ab `version 0.12.0` werden Dateien aus *bandle.json* und gespeichert. Aufgrund von Spezifikationsänderungen werden Pakete, die mit einer `version 0.12.0` kleiner als 0.12.0 gebündelt sind, möglicherweise nicht korrekt mit `version 0.12.0` oder höher installiert.
 
 ### Verwendungszweck
 
@@ -642,10 +638,10 @@ wes install @wachaon/fmt
 | `--save--dev` | `-D`         | Fügen Sie den Paketnamen und die Version zum Feld „ *devDependencies* in *package.json* |
 | `--node`      | `-n`         | Installieren Sie im Ordner *node_module*                                                |
 
-`--bare` kann das `require` -Argument von `author@repository` zu `repository` weglassen. `--global` macht installierte Pakete für alle Skripte verfügbar. `--node` oder `-n` muss zusammen mit der *wes* -Sicherheitsoption `--unsafe` oder `--dangerous` .
+`--bare` kann das `require` -Argument von `author@repository` zu `repository` weglassen. `--global` macht installierte Pakete für alle Skripte verfügbar.
 
 ```bat
-wes install @wachaon/fmt --bare --unsafe
+wes install @wachaon/fmt --bare
 ```
 
 # Installieren von Paketen aus privaten Repositories
@@ -653,10 +649,10 @@ wes install @wachaon/fmt --bare --unsafe
 *install* kann nicht nur Pakete aus öffentlichen *github* Repositories installieren, sondern auch Pakete aus privaten Repositories. Geben Sie bei *install* das Paket mit *@author/repository* an. Die Implementierung versucht, die folgende URL herunterzuladen.
 
 ```javascript
-`https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
+`https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-Wenn Sie mit einem Browser *raw* auf das private Repository zugreifen, wird das *token* angezeigt, also kopieren Sie das *token* und verwenden Sie es. Sie können Pakete auch aus privaten Repositorys installieren, indem Sie sie in der Konsole ausführen, solange das *token* gültig ist.
+Wenn Sie mit einem Browser auf das *raw* des privaten Repositorys zugreifen, wird das *token* angezeigt, also kopieren Sie das *token* und verwenden Sie es. Sie können Pakete auch aus privaten Repositorys installieren, indem Sie sie in der Konsole ausführen, solange das *token* gültig ist.
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
@@ -725,7 +721,7 @@ Laden Sie dann den *web driver* herunter.
 wes edge --download
 ```
 
-Überprüfen Sie die installierte Version von *Edge* und laden Sie den entsprechenden *web driver* herunter.
+Überprüfen Sie die installierte *Edge* -Version und laden Sie den entsprechenden *web driver* herunter.
 
 ### Verwendungszweck
 
@@ -744,7 +740,7 @@ edge((window, navi, res) => {
 })
 ```
 
-Dieses Skript gibt die besuchten *URL* der Reihe nach auf der Konsole aus. `@wachaon/edge` registriert Ereignisse für *URL* und fügt Daten zu `res.exports` hinzu. Die zu registrierende *URL* kann entweder `String` `RegExp` sein und kann flexibel festgelegt werden. Indem Sie es ereignisgesteuert machen, können Sie einfach auf manuellen Betrieb umschalten, indem Sie keine Ereignisse für Prozesse festlegen, die mit Autopilot schwierig zu handhaben sind. Wenn Sie möchten, dass das Skript beendet wird, `navi.emit('terminate', res)` oder beenden Sie *Edge* manuell. Die Finalisierung gibt `res.exports` als *.json* -Datei aus. Wenn Sie die Beendigungsverarbeitung festlegen möchten, setzen Sie „ `terminate` of `edge(callback, terminate)` . `window` ist eine Instanz der *Window* -Klasse von *@wachaon/webdriver* , nicht das `window` des Browsers .
+Dieses Skript gibt die besuchten *URL* der Reihe nach auf der Konsole aus. `@wachaon/edge` registriert Ereignisse für *URL* und fügt Daten zu `res.exports` hinzu. Die zu registrierende *URL* kann entweder `String` `RegExp` sein und kann flexibel festgelegt werden. Indem Sie es ereignisgesteuert machen, können Sie einfach auf manuellen Betrieb umschalten, indem Sie keine Ereignisse für Prozesse festlegen, die mit Autopilot schwierig zu handhaben sind. Wenn Sie möchten, dass das Skript beendet wird, `navi.emit('terminate', res)` oder beenden Sie *Edge* manuell. Die Finalisierung gibt `res.exports` als *.json* -Datei aus. Wenn Sie die Beendigungsverarbeitung festlegen möchten, setzen Sie „ `terminate` of `edge(callback, terminate)` . `window` ist eine Instanz der *Window* -Klasse von *@wachaon/webdriver* , nicht das `window` des Browsers.
 
 ## *@wachaon/webdriver*
 

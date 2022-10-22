@@ -1,6 +1,6 @@
 # *WES*
 
-*wes* هو إطار عمل لوحدة التحكم لتشغيل *ECMAScript* على *WSH (Windows Script Host)* . سيكون [*japanese*](/README.md) الأصلي من *README* باللغة اليابانية. ستتم ترجمة النصوص غير اليابانية آليًا.  
+*wes* هو إطار عمل لوحدة التحكم لتشغيل *ECMAScript* على *WSH (Windows Script Host)* . سيكون [*japanese*](/README.md) الأصلي من *README* باللغة اليابانية. سيتم ترجمة النصوص غير اليابانية آليًا.  
 للنصوص بلغات أخرى ، يرجى التحديد من الخيارات أدناه.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
@@ -35,7 +35,7 @@
 
 # تحميل
 
-يحتاج Wes فقط إلى *wes* *wes.js* للتنزيل ، انسخ *wes.js* من [*@wachaon/wes*](https://github.com/wachaon/wes) أو قم بتشغيل الأمر التالي في وحدة التحكم الخاصة بك.
+يحتاج Wes إلى *wes* *wes.js* . للتنزيل ، انسخ *wes.js* من [*@wachaon/wes*](https://github.com/wachaon/wes) أو قم بتشغيل الأمر التالي في وحدة التحكم.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -50,7 +50,7 @@ wes update
 
 # إستعمال
 
-أدخل الكلمة الأساسية `wes` والأمر الذي يحدد الملف الذي سيكون نقطة انطلاق البرنامج إلى وحدة التحكم. يمكن حذف ملحق البرنامج النصي *.js* .
+أدخل الكلمة الأساسية `wes` متبوعة بالأمر الذي يحدد الملف الذي سيكون نقطة انطلاق البرنامج إلى وحدة التحكم. يمكن حذف ملحق البرنامج النصي *.js* .
 
 ```bat
 wes index
@@ -79,11 +79,11 @@ wes
 | `--encoding=UTF-8` | يحدد ترميز أول ملف تمت قراءته                  |
 | `--engine=Chakra`  | هذا الخيار يضاف تلقائيا من قبل *wes*           |
 
-`--safe` - العادي - غير `--dangerous` - `--debug` `--usual` `--unsafe` ، لكن الحجج المسماة محفوظة.
+`--safe` - `--debug` `--unsafe` - `--dangerous` - التنفيذ غير `--usual` ، لكن الحجج المسماة محفوظة.
 
 # نظام الوحدة
 
-يدعم *wes* نظامين للوحدات النمطية ، وهما نظام *commonjs module* باستخدام نظام `require()` ونظام *es module* باستخدام `import` . ( *dynamic import* غير مدعوم لأنه عملية غير متزامنة)
+يدعم *wes* نظامين للوحدات النمطية ، وهما نظام *commonjs module* باستخدام `require()` ونظام *es module* باستخدام `import` . ( *dynamic import* غير مدعوم لأنه عملية غير متزامنة)
 
 ## *commonjs module*
 
@@ -114,7 +114,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-يفسر *Chakra* ، وهو محرك تنفيذ البرنامج النصي ، بناء الجملة مثل `imoprt` ، ولكن لا يمكن تنفيذه كما هو لأن طريقة المعالجة مثل `cscript` غير محددة. في *wes* ، من خلال إضافة *babel* إلى الوحدات المدمجة ، يتم أيضًا تنفيذ *es module* أثناء نقلها واحدة تلو الأخرى. هذا يكلفنا معالجة النفقات العامة وملف *wes.js* المتضخم. يتم أيضًا تحويل الوحدات المكتوبة في *es module* إلى `require()` عن طريق التحويل ، لذلك من الممكن استدعاء *COM Object* . ومع ذلك ، فإنه لا يدعم تحديد ترميز ملف الوحدة النمطية باستخدام *es module* . يتم تحميل كل شيء تلقائيًا. لتحميلها كوحدة *es module* ، اضبط الامتداد على `.mjs` أو اضبط حقل `"type"` في `package.json` على `"module"` .
+*Chakra* ، وهو محرك تنفيذ نصي ، يفسر بناء الجملة مثل `imoprt` ، لكن لا يمكن تنفيذه كما هو لأن طريقة المعالجة مثل `cscript` غير محددة. في *wes* ، من خلال إضافة *babel* إلى الوحدات المدمجة ، يتم أيضًا تنفيذ *es module* أثناء نقلها بالتسلسل. هذا يكلفنا معالجة النفقات العامة وملف *wes.js* المتضخم. يتم أيضًا تحويل الوحدات المكتوبة في *es module* إلى `require()` عن طريق التحويل ، لذلك من الممكن استدعاء *COM Object* . ومع ذلك ، فإنه لا يدعم تحديد ترميز ملف الوحدة النمطية باستخدام *es module* . يتم تحميل كل شيء تلقائيًا. لتحميلها كوحدة *es module* ، اضبط الامتداد على `.mjs` أو اضبط حقل `"type"` في `package.json` على `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -156,7 +156,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`         | تفريغ الكائن                       |
 | `%O`         | تفريغ الكائن (مسافة بادئة / ملونة) |
 
-`WScript.StdOut.WriteLine` *wes* من `WScript.StdErr.WriteLine` لإخراج السلاسل الملونة. تم حظر `WScript.Echo` و `WScript.StdOut.WriteLine` . `WScript.StdErr.WriteLine` أو `console.log` .
+`WScript.StdOut.WriteLine` *wes* من `WScript.StdErr.WriteLine` لإخراج السلاسل الملونة. يتم حظر إخراج `WScript.Echo` و `WScript.StdOut.WriteLine` . `WScript.StdErr.WriteLine` أو `console.log` .
 
 ## *Buffer*
 
@@ -200,7 +200,7 @@ console.log(orange + 'Hello World')
 
 ## *argv*
 
-احصل على وسيطات سطر الأوامر. تعلن وسيطات سطر الأوامر الخاصة بـ `cscript.exe` عن الوسائط المسماة بـ `/` ، بينما يعلن *wes* عن الوسائط المسماة بـ `-` و `--` . *argv.unnamed* و *argv.named* نوع قيمة وسيطة سطر الأوامر إلى *String* *Number* *Boolean* . أدخل وسيطات سطر الأوامر باستخدام *REP* .
+احصل على وسيطات سطر الأوامر. تعلن وسيطات سطر الأوامر الخاصة بـ `cscript.exe` عن الوسائط المسماة بـ `/` ، بينما يعلن *wes* عن الوسائط المسماة بـ `-` و `--` . *argv.unnamed* و argv. *argv.named* نوع قيمة وسيطة سطر الأوامر إما إلى *String* *Number* *Boolean* . أدخل وسيطات سطر الأوامر باستخدام *REP* .
 
 ```bat
 wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
@@ -326,7 +326,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 #### `assert(value, message)` `assert.ok(value, message)`
 
-قارن بـ " `true` " مع عامل المساواة الصارم `===` . إذا كانت `value` دالة ، فقم بتقييم نتيجة تنفيذ الوظيفة.
+قارن مع `true` مع عامل المساواة الصارم `===` . إذا كانت `value` دالة ، فقم بتقييم نتيجة تنفيذ الوظيفة.
 
 | بارام     | يكتب                  | وصف                         |
 | :-------- | :-------------------- | :-------------------------- |
@@ -336,7 +336,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 #### `assert.equal(expected, actual)`
 
 يقارن الكائنات من أجل مساواة الأعضاء ، وليس بالإشارة.  
-NaN `true` دالة `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` و `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` إلخ.  
+NaN `true` دالة `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` أو `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` إلخ.  
 عند مقارنة الفئات (الكائنات) ، يجب أن يكون لها نفس المُنشئ أو فئة فائقة `expected` `actual` .
 
 | بارام      | يكتب    | وصف             |
@@ -464,7 +464,7 @@ animate.run()
 
 #### `register(callback, interval, conditional)`
 
-معالجة التسجيل. يمكن تسجيل عمليات متعددة ومعالجتها بالتوازي. في `callback` ، سنصدر تعليمات بإيقاف الرسوم المتحركة وكتابة العرض المراد عرضه. `interval` يحدد الفاصل الزمني للمعالجة. إذا كانت `conditional` دالة ، فإنها تنفذ `conditional(count, queue)` وإذا كانت النتيجة صحيحة ، فإنها تستمر إلى التالية. ينفذ `conditional` `decrement(count)` إذا كان رقمًا ويستمر إذا كانت النتيجة رقمًا موجبًا. يتم التنفيذ مرة واحدة فقط إذا كان `conditional` غير محدد. لاحظ أن تحديد دالة يؤدي إلى زيادة `count` ، بينما يؤدي تحديد رقم إلى تقليل `count` .
+معالجة التسجيل. يمكن تسجيل عمليات متعددة ومعالجتها بالتوازي. في `callback` ، سنصدر تعليمات بإيقاف الرسوم المتحركة وكتابة العرض المراد عرضه. `interval` يحدد الفاصل الزمني للمعالجة. إذا كانت `conditional` عبارة عن دالة ، فسوف تنفذ `conditional(count, queue)` وإذا كانت النتيجة صحيحة ، فستستمر. ينفذ `conditional` `decrement(count)` إذا كان رقمًا ويستمر إذا كانت النتيجة رقمًا موجبًا. يتم التنفيذ مرة واحدة فقط إذا كان `conditional` غير محدد. لاحظ أن تحديد دالة يؤدي إلى زيادة `count` ، بينما يؤدي تحديد رقم إلى تقليل `count` .
 
 #### `stop()`
 
@@ -590,39 +590,35 @@ wes zip -p dox.zip
 
 # تجميع (تغليف) وتثبيت الوحدات
 
-في *wes* ، تسمى حزمة من عدة وحدات حزمة. يمكنك تثبيت الحزمة الخاصة بـ *wes* المنشورة على *github* . مطلوب *github repository* لنشر الحزمة. أيضًا ، يجب أن يكون اسم المستودع واسم الدليل المحلي متماثلين.
+في *wes* ، تسمى حزمة من عدة وحدات حزمة. يمكنك تثبيت الحزمة الخاصة بـ *wes* المنشورة على *github* . مطلوب *github repository* لنشر الحزمة.
 
 ## *bundle*
 
-عند نشر *bundle* على *github* ، قم بتجميع الوحدات النمطية الضرورية في حزم وتغييرها إلى تنسيق يمكن تضمينه عن طريق التثبيت. لأسباب أمنية ، تنشئ *bundle* *wes* *.json* لأننا لا نسمح لك باستيراد الحزم القابلة للتنفيذ مباشرة. هناك بعض الشروط للتغليف.
+عند نشر *bundle* على *github* ، قم بتجميع الوحدات النمطية المطلوبة في حزم وإنشاء *bundle.json* .
 
 1.  يمكن نشر حزمة واحدة فقط في *repository* واحد
 
-2.  الرجاء استخدام نفس الاسم لاسم مستودع *github* واسم دليل العمل المحلي
+2.  *package.json* مطلوب. كحد أدنى ، مطلوب وصف الحقل `main` .
+
+    ```json
+    {
+        main: "index.js"
+    }
+    ```
 
 3.  اجعل المستودع *public* إذا كنت تريد نشر الحزمة
 
-4.  أعلن عن اقتناء الوحدة في نطاق المستوى الأعلى
+4.  بدءًا من `version 0.12.0` ، لن يتم تجميع الحزم ذات التحميل المباشر للوحدة في دليل أعلى دليل العمل. يمكن تجميع الحزم الموجودة في الدليل العلوي *wes_modules* أو *node_modules* .
 
-5.  يتم إنشاء ملف *.json* للحزمة في دليل العمل بالاسم *directory_name.json* . إذا قمت بتغيير اسم الملف أو نقل الملف ، فلا يمكنك الرجوع إليه أثناء التثبيت.
+أدخل الأمر التالي للحزمة: ارجع إلى *package.json* لمعرفة ما تريد تجميعه.
 
-6.  `node_modules/directory_name` هي نقطة البداية للحزمة
-
-    ```bat
-        wes bundle directory_name
-    ```
-
-    بدون تجميع
-
-    ```bat
-        wes bundle node_modules/directory_name
-    ```
-
-    يرجى الحزمة مع
+```bat
+    wes bundle 
+```
 
 ## *install*
 
-تستخدم لتثبيت حزمة *wes* المنشورة على *github* . من `version 0.10.28` ، يتم تغيير مجلد التثبيت من `node_modules` إلى `wes_modules` . إذا كنت تريد التثبيت في `node_modules` أضف خيار `--node` .
+تستخدم لتثبيت حزمة *wes* المنشورة على *github* . من `version 0.10.28` ، يتم تغيير مجلد التثبيت من `node_modules` إلى `wes_modules` . إذا كنت تريد التثبيت في `node_modules` أضف خيار `--node` . بدءًا من `version 0.12.0` ، سيتم فك ضغط الملفات من *bandle.json* وحفظها. نظرًا لتغييرات المواصفات ، قد لا يتم تثبيت الحزم المرفقة `version 0.12.0` أقل من 0.12.0 بشكل صحيح مع `version 0.12.0` أو أحدث.
 
 ### إستعمال
 
@@ -642,10 +638,10 @@ wes install @wachaon/fmt
 | `--save--dev` | `-D`     | أضف اسم الحزمة والإصدار إلى حقل *devDependencies* في *package.json* |
 | `--node`      | `-n`     | التثبيت في مجلد *node_module*                                       |
 
-يمكن أن يحذف الخيار `--bare` الوسيطة `require` من `author@repository` إلى `repository` . `--global` الحزم المثبتة لجميع البرامج النصية. يجب تحديد الخيار `--node` or `-n` مع خيار أمان *wes* `--unsafe` أو `--dangerous` .
+يمكن أن يحذف الخيار `--bare` الوسيطة `require` من `author@repository` إلى `repository` . `--global` الحزم المثبتة لجميع البرامج النصية.
 
 ```bat
-wes install @wachaon/fmt --bare --unsafe
+wes install @wachaon/fmt --bare
 ```
 
 # تركيب الحزم من المستودعات الخاصة
@@ -653,10 +649,10 @@ wes install @wachaon/fmt --bare --unsafe
 يمكن *install* ليس فقط تثبيت الحزم من مستودعات *github* العامة ، ولكن أيضًا الحزم من المستودعات الخاصة. في *install* ، حدد الحزمة مع *@author/repository* . يحاول التنفيذ تنزيل عنوان url التالي.
 
 ```javascript
-`https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
+`https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-إذا قمت بالوصول إلى المستودع الخاص بشكل *raw* باستخدام متصفح ، فسيتم عرض *token* ، لذا انسخ *token* . يمكنك أيضًا تثبيت الحزم من المستودعات الخاصة عن طريق تشغيلها في وحدة التحكم أثناء صلاحية *token* .
+عند الوصول إلى النسخة *raw* من المستودع الخاص باستخدام متصفح ، سيتم عرض *token* ، لذا انسخ *token* . يمكن أيضًا تثبيت الحزم من المستودعات الخاصة إذا تم تنفيذها في وحدة التحكم أثناء صلاحية *token* .
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
@@ -668,7 +664,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* *wes* *prettier* من أجل تنسيق البرامج النصية. أيضًا ، إذا حدث *Syntax Error* أثناء *@wachaon/fmt* ، يمكنك إظهار موقع الخطأ.
+*@wachaon/fmt* *wes* *prettier* من أجل تنسيق البرامج النصية. أيضًا ، في حالة حدوث *Syntax Error* أثناء *@wachaon/fmt* ، يمكنك إظهار موقع الخطأ.
 
 ### تثبيت
 
@@ -678,7 +674,7 @@ wes install @wachaon/fmt
 
 ### إستعمال
 
-إذا كان هناك *.prettierrc* (تنسيق JSON) في دليل العمل ، فسوف ينعكس في الإعدادات. يتوفر *fmt* في كل من *CLI* *module* .
+إذا كان هناك تنسيق *.prettierrc* (تنسيق JSON) في دليل العمل ، فسوف ينعكس في الإعدادات. يتوفر *fmt* في كل من *CLI* *module* .
 
 #### استخدام *CLI* .
 
@@ -697,7 +693,7 @@ wes @wachaon/fmt src/sample --write
 
 الكتابة فوق الملف بالبرنامج النصي المنسق إذا تم تحديد الوسيطة `--write` أو `-w` المسماة.
 
-#### استخدم كوحدة نمطية
+#### استخدام كوحدة نمطية
 
 ```javascript
 const fmt = require('@wachaon/fmt')
@@ -748,7 +744,7 @@ edge((window, navi, res) => {
 
 ## *@wachaon/webdriver*
 
-ستكون حزمة ترسل طلبات إلى *web driver* الذي يقوم بتشغيل المتصفح. مدمج في *@wachaon/edge* . كما هو الحال مع *@wachaon/edge* ، يلزم وجود *web driver* منفصل لتشغيل المتصفح.
+ستكون حزمة ترسل الطلبات إلى *web driver* الذي يقوم بتشغيل المتصفح. بني في *@wachaon/edge* . كما هو الحال مع *@wachaon/edge* ، يلزم وجود *web driver* منفصل لعمليات المتصفح.
 
 ### تثبيت
 

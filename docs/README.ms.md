@@ -22,7 +22,7 @@ Untuk teks dalam bahasa lain, sila pilih daripada pilihan di bawah.
 
 -   Anda boleh menukar enjin skrip kepada *Chakra* dan menulis mengikut spesifikasi *ECMAScript2015* .
 -   Memandangkan 32bit *cscript.exe* sentiasa dilaksanakan, tiada masalah unik dalam persekitaran 64bit.
--   Memandangkan terdapat sistem modul, ia boleh dibangunkan dengan lebih cekap daripada *WSH* konvensional
+-   Oleh kerana terdapat sistem modul, ia boleh dibangunkan dengan lebih cekap daripada *WSH* konvensional
 -   Modul terbina dalam menyokong pemprosesan asas seperti input/output fail dan output teks berwarna ke konsol
 -   Anda boleh membiarkan pembacaan fail meneka pengekodan secara automatik, jadi anda tidak perlu risau tentang pengekodan dsb.
 -   Pakej modul untuk menyokong penerbitan dan pengambilan luaran
@@ -35,7 +35,7 @@ Untuk teks dalam bahasa lain, sila pilih daripada pilihan di bawah.
 
 # muat turun
 
-Wes hanya memerlukan *wes* *wes.js* . Untuk memuat turun, salin *wes.js* daripada [*@wachaon/wes*](https://github.com/wachaon/wes) atau jalankan arahan berikut dalam konsol anda.
+Wes hanya memerlukan *wes* *wes.js* . Untuk memuat turun, salin *wes.js* daripada [*@wachaon/wes*](https://github.com/wachaon/wes) atau jalankan arahan berikut dalam konsol.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -50,7 +50,7 @@ wes update
 
 # Penggunaan
 
-Masukkan kata kunci `wes` diikuti dengan arahan yang menyatakan fail permulaan program ke konsol. Sambungan skrip *.js* boleh diabaikan.
+Masukkan kata kunci `wes` diikuti dengan arahan yang menyatakan fail yang akan menjadi titik permulaan program ke konsol. Sambungan skrip *.js* boleh diabaikan.
 
 ```bat
 wes index
@@ -87,7 +87,7 @@ Pilihan permulaan *wes* adalah seperti berikut.
 
 ## *commonjs module*
 
-Urus modul dengan memberikan kepada `module.exports` dan memanggil `require()` . Laluan selain daripada laluan mutlak dan laluan relatif bermula dengan `./` dan `../` cari modul dalam direktori *wes_modules* dan dengan mudah direktori *node_modules* . *wes* 's `require()` secara automatik meneka pengekodan fail modul, tetapi anda boleh menentukan pengekodan dengan hujah kedua jika ia tidak meneka dengan betul.
+Urus modul dengan memberikan kepada `module.exports` dan memanggil `require()` . Laluan selain daripada laluan mutlak dan laluan relatif bermula dengan `./` dan `../` cari modul dalam direktori *wes_modules* dan dengan mudah direktori *node_modules* . *wes* `require()` secara automatik meneka pengekodan fail modul, tetapi anda boleh menentukan pengekodan dengan hujah kedua jika ia tidak meneka dengan betul.
 
 ```javascript
 // ./add.js
@@ -156,7 +156,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`           | tempat pembuangan objek                    |
 | `%O`           | Pembuangan objek (berinden/berwarna-warni) |
 
-`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine` untuk mengeluarkan rentetan berwarna. `WScript.Echo` dan `WScript.StdOut.WriteLine` disekat output. `WScript.StdErr.WriteLine` atau `console.log` .
+`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine` untuk mengeluarkan rentetan berwarna. `WScript.Echo` dan `WScript.StdOut.WriteLine` disekat. `WScript.StdErr.WriteLine` atau `console.log` .
 
 ## *Buffer*
 
@@ -336,7 +336,7 @@ Bandingkan dengan `true` dengan pengendali kesaksamaan yang ketat `===` . Jika `
 #### `assert.equal(expected, actual)`
 
 Membandingkan objek untuk kesaksamaan ahli, bukan dengan rujukan.  
-NaN `true` Fungsi `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` dan `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` dsb.  
+NaN `true` Fungsi `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` atau `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` dsb.  
 Apabila membandingkan kelas (objek), mereka mesti mempunyai pembina yang sama atau superclass yang `actual` `expected` .
 
 | Param      | taip    | Penerangan             |
@@ -402,7 +402,7 @@ log(() => isObject(function(){}))
 
 ### Penggunaan
 
-Jika pemprosesan mengambil masa yang lama, adalah berguna untuk memaparkan kemajuan sebagai animasi pada konsol.
+Jika pemprosesan mengambil masa yang lama, adalah baik untuk memaparkan kemajuan sebagai animasi pada konsol.
 
 ```javascript
 const Animate = require('animate')
@@ -590,39 +590,35 @@ Jika `path` mempunyai sambungan `.zip` , `unzip()` diproses dan tiada perihalan 
 
 # Mengikat (pembungkusan) dan memasang modul
 
-Dalam *wes* , himpunan beberapa modul dipanggil pakej. Anda boleh memasang pakej untuk *wes* diterbitkan di *github* . *github repository* diperlukan untuk menerbitkan pakej. Selain itu, nama repositori dan nama direktori tempatan mestilah sama.
+Dalam *wes* , himpunan beberapa modul dipanggil pakej. Anda boleh memasang pakej untuk *wes* diterbitkan di *github* . *github repository* diperlukan untuk menerbitkan pakej.
 
 ## *bundle*
 
-Apabila menerbitkan pakej ke *github* , *bundle* modul yang diperlukan dan menukarnya ke dalam format yang boleh disertakan dengan pemasangan. Atas sebab keselamatan, *bundle* *.json* *wes* .json kerana kami tidak membenarkan anda mengimport pakej boleh laku secara langsung. Terdapat beberapa syarat untuk pembungkusan.
+Apabila menerbitkan pakej ke *github* , *bundle* modul yang diperlukan dan mencipta *bundle.json* .
 
 1.  Hanya satu pakej boleh diterbitkan dalam satu *repository*
 
-2.  Sila gunakan nama yang sama untuk nama repositori *github* dan nama direktori kerja tempatan
+2.  *package.json* diperlukan. Sekurang-kurangnya, perihalan medan `main` diperlukan.
+
+    ```json
+    {
+        main: "index.js"
+    }
+    ```
 
 3.  Jadikan repositori *public* jika anda ingin menerbitkan pakej
 
-4.  Isytiharkan pemerolehan modul dalam skop peringkat atasan
+4.  Bermula dengan `version 0.12.0` , pakej dengan pemuatan modul langsung ke dalam direktori di atas direktori kerja tidak akan digabungkan. Pakej dalam direktori atas *wes_modules* atau *node_modules* boleh digabungkan.
 
-5.  Fail *.json* untuk pakej dibuat dalam direktori kerja dengan nama *directory_name.json* . Jika anda menukar nama fail atau memindahkan fail, anda tidak boleh merujuknya semasa pemasangan.
+Masukkan arahan berikut untuk digabungkan: Rujuk *package.json* untuk mengetahui perkara yang hendak digabungkan.
 
-6.  `node_modules/directory_name` ialah titik permulaan berkas
-
-    ```bat
-        wes bundle directory_name
-    ```
-
-    tanpa digabungkan dengan
-
-    ```bat
-        wes bundle node_modules/directory_name
-    ```
-
-    Sila ikat dengan
+```bat
+    wes bundle 
+```
 
 ## *install*
 
-Digunakan untuk memasang pakej untuk *wes* diterbitkan di *github* . Daripada `version 0.10.28` , folder pemasangan ditukar daripada `node_modules` kepada `wes_modules` . Jika anda ingin memasang dalam `node_modules` tambah `--node` pilihan.
+Digunakan untuk memasang pakej untuk *wes* diterbitkan di *github* . Daripada `version 0.10.28` , folder pemasangan ditukar daripada `node_modules` kepada `wes_modules` . Jika anda ingin memasang dalam `node_modules` tambah `--node` pilihan. Bermula dengan `version 0.12.0` , fail akan dinyahzip daripada *bandle.json* dan disimpan. Disebabkan oleh perubahan spesifikasi, pakej yang digabungkan dengan `version 0.12.0` kurang daripada 0.12.0 mungkin tidak dipasang dengan betul dengan `version 0.12.0` atau lebih baru.
 
 ### Penggunaan
 
@@ -642,10 +638,10 @@ wes install @wachaon/fmt
 | `--save--dev` | `-D`           | Tambahkan nama pakej dan versi pada medan *devDependencies* dalam *package.json* |
 | `--node`      | `-n`           | Pasang dalam folder *node_module*                                                |
 
-`--bare` boleh menghilangkan hujah `require` daripada `author@repository` ke `repository` . `--global` menjadikan pakej yang dipasang tersedia untuk semua skrip. `--node` atau `-n` mesti dinyatakan bersama dengan pilihan keselamatan *wes* `--unsafe` atau `--dangerous` .
+`--bare` boleh menghilangkan hujah `require` daripada `author@repository` ke `repository` . `--global` menjadikan pakej yang dipasang tersedia untuk semua skrip.
 
 ```bat
-wes install @wachaon/fmt --bare --unsafe
+wes install @wachaon/fmt --bare
 ```
 
 # Memasang pakej dari repositori peribadi
@@ -653,10 +649,10 @@ wes install @wachaon/fmt --bare --unsafe
 *install* boleh memasang bukan sahaja pakej dari repositori *github* awam, tetapi juga pakej dari repositori peribadi. Dalam *install* , nyatakan pakej dengan *@author/repository* . Pelaksanaan cuba memuat turun url berikut.
 
 ```javascript
-`https://raw.githubusercontent.com/${author}/${repository}/master/${repository}.json`
+`https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-Jika anda mengakses repositori persendirian *raw* dengan penyemak imbas, *token* akan dipaparkan, jadi salin *token* dan gunakannya. Anda juga boleh memasang pakej dari repositori peribadi dengan menjalankannya dalam konsol semasa *token* itu sah.
+Apabila anda mengakses *raw* repositori peribadi dengan penyemak imbas, *token* akan dipaparkan, jadi salin *token* dan gunakannya. Pakej daripada repositori peribadi juga boleh dipasang jika dilaksanakan dalam konsol semasa *token* itu sah.
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
@@ -725,7 +721,7 @@ Kemudian muat turun *web driver* .
 wes edge --download
 ```
 
-Semak versi *Edge* yang dipasang dan muat turun *web driver* yang sepadan.
+Semak versi *Edge* yang dipasang dan muat turun *web driver* yang sepadan .
 
 ### Penggunaan
 
