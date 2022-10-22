@@ -602,7 +602,7 @@ Bij het publiceren van een pakket naar *github* , *bundle* bundel de vereiste mo
 
     ```json
     {
-        main: "index.js"
+        "main": "index.js"
     }
     ```
 

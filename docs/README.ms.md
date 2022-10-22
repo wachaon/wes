@@ -602,7 +602,7 @@ Apabila menerbitkan pakej ke *github* , *bundle* modul yang diperlukan dan menci
 
     ```json
     {
-        main: "index.js"
+        "main": "index.js"
     }
     ```
 

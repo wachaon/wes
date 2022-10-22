@@ -602,7 +602,7 @@ wes zip -p dox.zip
 
     ```json
     {
-        main: "index.js"
+        "main": "index.js"
     }
     ```
 

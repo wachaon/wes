@@ -598,7 +598,7 @@ wes zip -p dox.zip
     最低限 `main` フィールドの記述が必須です。
     ```json
     {
-        main: "index.js"
+        "main": "index.js"
     }
     ```
 2.  パッケージを公開する場合はリポジトリを *public* にしてください

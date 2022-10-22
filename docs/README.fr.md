@@ -602,7 +602,7 @@ Lors de la publication d'un package sur *github* , *bundle* regroupe les modules
 
     ```json
     {
-        main: "index.js"
+        "main": "index.js"
     }
     ```
 

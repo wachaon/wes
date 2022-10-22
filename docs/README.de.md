@@ -602,7 +602,7 @@ Beim Veröffentlichen eines Pakets auf *github* bündelt *bundle* die erforderli
 
     ```json
     {
-        main: "index.js"
+        "main": "index.js"
     }
     ```
 
