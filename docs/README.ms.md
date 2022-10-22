@@ -657,7 +657,7 @@ Apabila anda mengakses *raw* repositori peribadi dengan penyemak imbas, *token* 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
-
+<!--
 # Pengenalan pakej
 
 Berikut adalah beberapa pakej luaran.
@@ -757,3 +757,4 @@ Muat turun *web driver* *Microsoft Edge* berasaskan *Chromium* jika anda tidak m
 ```bat
 wes webdriver --download
 ```
+-->

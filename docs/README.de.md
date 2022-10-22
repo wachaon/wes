@@ -657,7 +657,7 @@ Wenn Sie mit einem Browser auf das *raw* des privaten Repositorys zugreifen, wir
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
-
+<!--
 # Paket Einführung
 
 Hier sind einige externe Pakete.
@@ -677,8 +677,8 @@ wes install @wachaon/fmt
 Wenn im Arbeitsverzeichnis *.prettierrc* (JSON-Format) vorhanden ist, wird dies in den Einstellungen widergespiegelt. *fmt* ist sowohl im *CLI* als auch im *module* verfügbar.
 
 #### Als *CLI* verwenden.
-
 ```bat
+
 wes @wachaon/fmt src/sample --write
 ```
 
@@ -757,3 +757,4 @@ Laden Sie den *Chromium* -basierten *Microsoft Edge* *web driver* herunter, wenn
 ```bat
 wes webdriver --download
 ```
+-->

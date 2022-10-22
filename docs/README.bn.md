@@ -657,7 +657,7 @@ wes install @wachaon/fmt --bare
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
-
+<!--
 # প্যাকেজ পরিচিতি
 
 এখানে কিছু বাহ্যিক প্যাকেজ আছে.
@@ -757,3 +757,4 @@ wes install @wachaon/webdriver --unsafe --bare
 ```bat
 wes webdriver --download
 ```
+-->

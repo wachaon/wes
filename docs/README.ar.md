@@ -657,7 +657,7 @@ wes install @wachaon/fmt --bare
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
-
+<!--
 # مقدمة الحزمة
 
 فيما يلي بعض الحزم الخارجية.
@@ -757,3 +757,4 @@ wes install @wachaon/webdriver --unsafe --bare
 ```bat
 wes webdriver --download
 ```
+-->

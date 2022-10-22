@@ -657,7 +657,7 @@ wes install @wachaon/fmt --bare
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
-
+<!--
 # 包裝介紹
 
 這是一些外部軟件包。
@@ -757,3 +757,4 @@ wes install @wachaon/webdriver --unsafe --bare
 ```bat
 wes webdriver --download
 ```
+-->

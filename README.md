@@ -669,7 +669,7 @@ wes install @wachaon/fmt --bare
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
-
+<!--
 # パッケージの紹介
 ここではいくつかの外部パッケージを紹介します。
 
@@ -775,3 +775,4 @@ wes install @wachaon/webdriver --unsafe --bare
 ```bat
 wes webdriver --download
 ```
+-->

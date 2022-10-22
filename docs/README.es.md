@@ -657,7 +657,7 @@ Cuando acceda al *raw* del repositorio privado con un navegador, se mostrará el
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
-
+<!--
 # Introducción del paquete
 
 Aquí hay algunos paquetes externos.
@@ -757,3 +757,4 @@ Descargue el *web driver* de *Microsoft Edge* basado en *Chromium* si no lo tien
 ```bat
 wes webdriver --download
 ```
+-->

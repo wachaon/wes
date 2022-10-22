@@ -657,7 +657,7 @@ Als u de private repository *raw* met een browser, wordt het *token* weergegeven
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
-
+<!--
 # Pakket introductie:
 
 Hier zijn enkele externe pakketten.
@@ -757,3 +757,4 @@ Download het op *Chromium* gebaseerde *Microsoft Edge* *web driver* als u dat ni
 ```bat
 wes webdriver --download
 ```
+-->
