@@ -22,7 +22,7 @@ Untuk teks dalam bahasa lain, sila pilih daripada pilihan di bawah.
 
 -   Anda boleh menukar enjin skrip kepada *Chakra* dan menulis mengikut spesifikasi *ECMAScript2015* .
 -   Memandangkan 32bit *cscript.exe* sentiasa dilaksanakan, tiada masalah unik dalam persekitaran 64bit.
--   Oleh kerana terdapat sistem modul, ia boleh dibangunkan dengan lebih cekap daripada *WSH* konvensional
+-   Memandangkan terdapat sistem modul, ia boleh dibangunkan dengan lebih cekap daripada *WSH* konvensional
 -   Modul terbina dalam menyokong pemprosesan asas seperti input/output fail dan output teks berwarna ke konsol
 -   Anda boleh membiarkan pembacaan fail meneka pengekodan secara automatik, jadi anda tidak perlu risau tentang pengekodan dsb.
 -   Pakej modul untuk menyokong penerbitan dan pengambilan luaran
@@ -30,7 +30,7 @@ Untuk teks dalam bahasa lain, sila pilih daripada pilihan di bawah.
 # Isu yang *wes* yang tidak dapat kami selesaikan
 
 -   `WScript.Quit` tidak boleh membatalkan program dan tidak mengembalikan kod ralat
--   Pemprosesan tak segerak seperti `setTimeout` dan `Promise` tidak boleh dilakukan
+-   Pemprosesan tak segerak tidak berfungsi dengan betul
 -   Anda tidak boleh menggunakan *event prefix* bagi argumen kedua `WScript.CreateObject`
 
 # muat turun
@@ -71,15 +71,9 @@ Pilihan permulaan *wes* adalah seperti berikut.
 | bernama            | Penerangan                                       |
 | ------------------ | ------------------------------------------------ |
 | `--monotone`       | Menghapuskan *ANSI escape code*                  |
-| `--safe`           | jalankan skrip dalam mod selamat                 |
-| `--usual`          | Jalankan skrip dalam mod biasa (lalai)           |
-| `--unsafe`         | jalankan skrip dalam mod tidak selamat           |
-| `--dangerous`      | jalankan skrip dalam mod berbahaya               |
 | `--debug`          | jalankan skrip dalam mod nyahpepijat             |
 | `--encoding=UTF-8` | Menentukan pengekodan fail pertama dibaca        |
 | `--engine=Chakra`  | Pilihan ini ditambah secara automatik oleh *wes* |
-
-`--safe` `--usual` `--unsafe` `--dangerous` `--debug` tidak lengkap, tetapi hujah yang dinamakan dikhaskan.
 
 # sistem modul
 
@@ -156,7 +150,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`           | tempat pembuangan objek                    |
 | `%O`           | Pembuangan objek (berinden/berwarna-warni) |
 
-`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine` untuk mengeluarkan rentetan berwarna. `WScript.Echo` dan `WScript.StdOut.WriteLine` disekat. `WScript.StdErr.WriteLine` atau `console.log` .
+`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine` untuk mengeluarkan rentetan berwarna. `WScript.Echo` dan `WScript.StdOut.WriteLine` disekat output. `WScript.StdErr.WriteLine` atau `console.log` .
 
 ## *Buffer*
 
@@ -174,6 +168,30 @@ console.log(`${content} %O`, buff)
 
 ```javascript
 console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+```
+
+## *setTimeout* *setInterval* *setImmediate* *Promise*
+
+Memandangkan *wes* ialah persekitaran pelaksanaan untuk pemprosesan segerak, *setTimeout* *setInterval* *setImmediate* *Promise* tidak berfungsi sebagai pemprosesan tak segerak, tetapi ia dilaksanakan untuk menyokong modul yang menganggap pelaksanaan *Promise* .
+
+```javascript
+const example = () => {
+  const promise = new Promise((resolve, reject) => {
+    console.log('promise')
+
+    setTimeout(() => {
+      console.log('setTimeout') 
+      resolve('resolved');
+    }, 2000);
+  }).then((val) => {
+    console.log(val)
+  });
+  console.log('sub')
+};
+
+console.log('start')
+example();
+console.log('end')
 ```
 
 # Modul terbina dalam
@@ -353,7 +371,7 @@ Sama ada ralat itu betul atau tidak ditentukan oleh sama ada *constructor* ralat
 | :--------- | :------------------------ | :--------------------------------------------------------------------------------------- |
 | `value`    | `{Error}`                 | kesilapan                                                                                |
 | `expected` | `{Error\|String\|RegExp}` | Ungkapan biasa yang menilai *constructor* ralat, *message* atau *stack* yang dijangkakan |
-| `message`  | `{String}`                | mesej sekiranya berlaku kegagalan                                                        |
+| `message`  | `{String}`                | mesej tentang kegagalan                                                                  |
 
 ## *pipe*
 
@@ -464,7 +482,7 @@ Hasilkan fungsi yang memaparkan animasi berbasikal.
 
 #### `register(callback, interval, conditional)`
 
-Pemprosesan daftar. Pelbagai proses boleh didaftarkan dan diproses secara selari. Dalam `callback` , kami akan mengarahkan untuk menghentikan animasi dan menulis paparan untuk dipaparkan. `interval` menentukan selang pemprosesan. Jika `conditional` ialah fungsi, ia melaksanakan `conditional(count, queue)` dan jika hasilnya benar, ia meneruskan ke seterusnya. `conditional` melaksanakan `decrement(count)` jika ia adalah nombor dan berterusan jika hasilnya ialah nombor positif. Laksanakan sekali sahaja jika `conditional` tidak ditentukan. Ambil perhatian bahawa menentukan fungsi meningkatkan `count` , manakala menyatakan nombor mengurangkan `count` .
+Pemprosesan daftar. Pelbagai proses boleh didaftarkan dan diproses secara selari. Dalam `callback` , kami akan mengarahkan untuk menghentikan animasi dan menulis paparan untuk dipaparkan. `interval` menentukan selang pemprosesan. Jika `conditional` ialah fungsi, ia akan melaksanakan `conditional(count, queue)` dan jika hasilnya benar, ia akan diteruskan. `conditional` melaksanakan `decrement(count)` jika ia adalah nombor dan berterusan jika hasilnya ialah nombor positif. Laksanakan sekali sahaja jika `conditional` tidak ditentukan. Ambil perhatian bahawa menentukan fungsi meningkatkan `count` , manakala menyatakan nombor mengurangkan `count` .
 
 #### `stop()`
 
@@ -652,109 +670,8 @@ wes install @wachaon/fmt --bare
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-Apabila anda mengakses *raw* repositori peribadi dengan penyemak imbas, *token* akan dipaparkan, jadi salin *token* dan gunakannya. Pakej daripada repositori peribadi juga boleh dipasang jika dilaksanakan dalam konsol semasa *token* itu sah.
+Jika anda mengakses repositori persendirian *raw* dengan penyemak imbas, *token* akan dipaparkan, jadi salin *token* dan gunakannya. Anda juga boleh memasang pakej dari repositori peribadi dengan menjalankannya dalam konsol semasa *token* itu sah.
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
-<!--
-# Pengenalan pakej
-
-Berikut adalah beberapa pakej luaran.
-
-## *@wachaon/fmt*
-
-*@wachaon/fmt* dibungkus *prettier* untuk *wes* memformat skrip. Selain itu, jika *Syntax Error* berlaku semasa *@wachaon/fmt* dipasang, anda boleh menunjukkan lokasi ralat itu.
-
-### pasang
-
-```bat
-wes install @wachaon/fmt
-```
-
-### Penggunaan
-
-Jika terdapat *.prettierrc* (format JSON) dalam direktori kerja, ia akan ditunjukkan dalam tetapan. *fmt* tersedia dalam kedua-dua *CLI* dan *module* .
-
-#### Gunakan sebagai *CLI* .
-
-```bat
-wes @wachaon/fmt src/sample --write
-```
-
-| nombor tanpa nama | Penerangan                                        |
-| ----------------- | ------------------------------------------------- |
-| 0                 | -                                                 |
-| 1                 | Diperlukan. laluan fail yang ingin anda formatkan |
-
-| bernama   | pendek bernama | Penerangan           |
-| --------- | -------------- | -------------------- |
-| `--write` | `-w`           | benarkan tulis ganti |
-
-Tulis ganti fail dengan skrip terformat jika `--write` atau argumen bernama `-w` ditentukan.
-
-#### digunakan sebagai modul
-
-```javascript
-const fmt = require('@wachaon/fmt')
-const { readTextFileSync, writeTextFileSync } = require('filesystem')
-const { join, workingDirectory } = require('pathname')
-const target = join(workingDirectory, 'index.js')
-console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
-```
-
-## *@wachaon/edge*
-
-*Internet Explorer* akan menamatkan sokongan pada 15 Jun 2022. Seiring dengan itu, operasi aplikasi dengan `require('InternetExplorer.Application')` dijangka juga akan menjadi mustahil. Alternatifnya ialah bekerja dengan *Microsoft Edge based on Chromium* melalui *web driver* . `@wachaon/edge` memudahkan autopilot *Edge* .
-
-### pasang
-
-Mula-mula pasang pakej.
-
-```bat
-wes install @wachaon/edge --unsafe --bare
-```
-
-Kemudian muat turun *web driver* .
-
-```bat
-wes edge --download
-```
-
-Semak versi *Edge* yang dipasang dan muat turun *web driver* yang sepadan .
-
-### Penggunaan
-
-Ia akan menjadi mudah untuk digunakan.
-
-```javascript
-const edge = require('edge')
-edge((window, navi, res) => {
-    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
-    res.exports = []
-    navi.on(/https?:\/\/.+/, (url) => {
-        console.log('URL: %O', url)
-        res.exports.push(url)
-    })
-    window.navigate('https://www.google.com')
-})
-```
-
-Skrip ini mencetak *URL* yang dilawati ke konsol dalam urutan. `@wachaon/edge` mendaftarkan acara untuk *URL* dan menambahkan data pada `res.exports` . *URL* yang hendak didaftarkan boleh sama ada `String` `RegExp` , dan boleh ditetapkan secara fleksibel. Dengan menjadikannya dipacu peristiwa, anda boleh beralih kepada operasi manual dengan mudah dengan tidak menetapkan acara untuk proses yang sukar dikendalikan dengan autopilot. Jika anda mahu skrip berhenti, `navi.emit('terminate', res)` atau tamatkan *Edge* secara manual. Pengakhiran mengeluarkan `res.exports` sebagai fail *.json* secara lalai. Jika anda ingin menetapkan pemprosesan penamatan, tetapkan `terminate` `edge(callback, terminate)` . `window` ialah contoh kelas *Window* *@wachaon/webdriver* , bukan window's `window` .
-
-## *@wachaon/webdriver*
-
-Ia akan menjadi pakej yang menghantar permintaan kepada *web driver* yang mengendalikan penyemak imbas. Dibina dalam *@wachaon/edge* . Seperti *@wachaon/edge* , *web driver* yang berasingan diperlukan untuk operasi penyemak imbas.
-
-### pasang
-
-```bat
-wes install @wachaon/webdriver --unsafe --bare
-```
-
-Muat turun *web driver* *Microsoft Edge* berasaskan *Chromium* jika anda tidak memilikinya. Selain itu, jika versi *edge* dan versi *web driver* adalah berbeza, muat turun versi *web driver* yang sama .
-
-```bat
-wes webdriver --download
-```
--->

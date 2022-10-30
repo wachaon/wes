@@ -30,12 +30,12 @@ Para textos en otros idiomas, seleccione entre las opciones a continuación.
 # Problemas *wes* que no podemos resolver
 
 -   `WScript.Quit` no puede cancelar el programa y no devuelve un código de error
--   No es posible el procesamiento asíncrono como `setTimeout` y `Promise`
+-   El procesamiento asíncrono no funciona correctamente
 -   No puede usar el *event prefix* del segundo argumento de `WScript.CreateObject`
 
 # descargar
 
-Wes solo necesita el *wes* *wes.js* Para descargar, copie *wes.js* desde [*@wachaon/wes*](https://github.com/wachaon/wes) o ejecute el siguiente comando en la consola.
+Wes solo necesita el *wes* *wes.js* Para descargar, copie *wes.js* desde [*@wachaon/wes*](https://github.com/wachaon/wes) o ejecute el siguiente comando en su consola.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -71,15 +71,9 @@ Las opciones de inicio de *wes* son las siguientes.
 | nombrada           | Descripción                                         |
 | ------------------ | --------------------------------------------------- |
 | `--monotone`       | Elimina *ANSI escape code*                          |
-| `--safe`           | ejecutar el script en modo seguro                   |
-| `--usual`          | Ejecutar script en modo normal (predeterminado)     |
-| `--unsafe`         | ejecutar el script en modo inseguro                 |
-| `--dangerous`      | ejecutar el script en modo peligroso                |
 | `--debug`          | ejecutar el script en modo de depuración            |
 | `--encoding=UTF-8` | Especifica la codificación del primer archivo leído |
 | `--engine=Chakra`  | Esta opción es agregada automáticamente por *wes*   |
-
-`--safe` `--usual` `--unsafe` `--dangerous` `--debug` La implementación de está incompleta, pero los argumentos con nombre están reservados.
 
 # sistema de módulos
 
@@ -114,7 +108,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra* , que es un motor de ejecución de scripts, interpreta sintaxis como `imoprt` , pero no se puede ejecutar tal cual porque el método de procesamiento como `cscript` no está definido. En *wes* , al agregar *babel* a los módulos incorporados, *es module* es también se ejecutan mientras se transpilan secuencialmente. Esto nos cuesta la sobrecarga de procesamiento y un archivo *wes.js* . Los módulos escritos en el *es module* es también se convierten a `require()` mediante la transpilación, por lo que es posible llamar a *COM Object* . Sin embargo, no admite especificar la codificación del archivo del módulo con el *es module* . Todo se carga automáticamente. Para cargarlo como un *es module* , configure la extensión en `.mjs` o configure el campo `"type"` en `package.json` en `"module"` .
+*Chakra* , que es el motor de ejecución de secuencias de comandos, interpreta sintaxis como `imoprt` , pero no se puede ejecutar tal cual porque el método de procesamiento como `cscript` no está definido. En *wes* , al agregar *babel* a los módulos incorporados, *es module* es también se ejecutan mientras se transpilan uno por uno. Esto nos cuesta la sobrecarga de procesamiento y un archivo *wes.js* . Los módulos escritos en el *es module* es también se convierten a `require()` mediante la transpilación, por lo que es posible llamar a *COM Object* . Sin embargo, no admite especificar la codificación del archivo del módulo con el *es module* . Todo se carga automáticamente. Para cargarlo como un *es module* , configure la extensión en `.mjs` o configure el campo `"type"` en `package.json` en `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -156,7 +150,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`                     | volcado de objetos                    |
 | `%O`                     | Volcado de objeto (sangrado/colorido) |
 
-`WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` para generar cadenas de colores. `WScript.Echo` y `WScript.StdOut.WriteLine` son salidas bloqueadas. `WScript.StdErr.WriteLine` o `console.log` .
+`WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` para generar cadenas de colores. `WScript.Echo` y `WScript.StdOut.WriteLine` están bloqueados. `WScript.StdErr.WriteLine` o `console.log` .
 
 ## *Buffer*
 
@@ -174,6 +168,30 @@ console.log(`${content} %O`, buff)
 
 ```javascript
 console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+```
+
+## *setTimeout* *setInterval* *setImmediate* *Promise*
+
+Dado que *wes* es un entorno de ejecución para procesamiento síncrono, *setTimeout* *setInterval* *setImmediate* *Promise* no funciona como procesamiento asíncrono, pero se implementa para admitir módulos que asumen la implementación de *Promise* .
+
+```javascript
+const example = () => {
+  const promise = new Promise((resolve, reject) => {
+    console.log('promise')
+
+    setTimeout(() => {
+      console.log('setTimeout') 
+      resolve('resolved');
+    }, 2000);
+  }).then((val) => {
+    console.log(val)
+  });
+  console.log('sub')
+};
+
+console.log('start')
+example();
+console.log('end')
 ```
 
 # Módulo incorporado
@@ -331,7 +349,7 @@ Compare con `true` con el operador de igualdad estricta `===` . Si el `value` es
 | Parámetro | Escribe               | Descripción                            |
 | :-------- | :-------------------- | :------------------------------------- |
 | `value`   | `{Function\|Boolean}` | función booleana o de retorno booleano |
-| `message` | `{String}`            | mensaje de falla                       |
+| `message` | `{String}`            | mensaje en caso de falla               |
 
 #### `assert.equal(expected, actual)`
 
@@ -353,7 +371,7 @@ Si el error es correcto o no se determina si el *constructor* de error esperado,
 | :--------- | :------------------------ | :------------------------------------------------------------------------------------- |
 | `value`    | `{Error}`                 | error                                                                                  |
 | `expected` | `{Error\|String\|RegExp}` | Una expresión regular que evalúa el error esperado *constructor* , *message* o *stack* |
-| `message`  | `{String}`                | mensaje en caso de falla                                                               |
+| `message`  | `{String}`                | mensaje de falla                                                                       |
 
 ## *pipe*
 
@@ -464,7 +482,7 @@ Genere una función que muestre una animación de ciclismo.
 
 #### `register(callback, interval, conditional)`
 
-Tramitación de registros. Se pueden registrar y procesar múltiples procesos en paralelo. En la `callback` de llamada, le indicaremos que detenga la animación y escriba la vista que se mostrará. `interval` especifica el intervalo de procesamiento. Si el `conditional` es una función, ejecuta `conditional(count, queue)` y si el resultado es verdadero, continúa con el siguiente. El `conditional` ejecuta `decrement(count)` si es un número y continúa si el resultado es un número positivo. Se ejecuta solo una vez si `conditional` no está definido. Tenga en cuenta que especificar una función aumenta la `count` , mientras que especificar un `count` la disminuye.
+Tramitación de registros. Se pueden registrar y procesar múltiples procesos en paralelo. En la `callback` de llamada, le indicaremos que detenga la animación y escriba la vista que se mostrará. `interval` especifica el intervalo de procesamiento. Si el `conditional` es una función, ejecutará `conditional(count, queue)` y si el resultado es verdadero, continuará. El `conditional` ejecuta `decrement(count)` si es un número y continúa si el resultado es un número positivo. Se ejecuta solo una vez si `conditional` no está definido. Tenga en cuenta que especificar una función aumenta la `count` , mientras que especificar un `count` la disminuye.
 
 #### `stop()`
 
@@ -652,109 +670,8 @@ wes install @wachaon/fmt --bare
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-Cuando acceda al *raw* del repositorio privado con un navegador, se mostrará el *token* , así que copie el *token* y utilícelo. Los paquetes de repositorios privados también se pueden instalar si se ejecutan en la consola mientras el *token* es válido.
+Si accede al repositorio privado *raw* con un navegador, se mostrará el *token* , así que copie el *token* y utilícelo. También puede instalar paquetes desde repositorios privados ejecutándolos en la consola mientras el *token* es válido.
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
-<!--
-# Introducción del paquete
-
-Aquí hay algunos paquetes externos.
-
-## *@wachaon/fmt*
-
-*@wachaon/fmt* *prettier* mejor empaquetado para que *wes* forme scripts. Además, si se produce un *Syntax Error* mientras está instalado *@wachaon/fmt* , puede mostrar la ubicación del error.
-
-### Instalar en pc
-
-```bat
-wes install @wachaon/fmt
-```
-
-### Uso
-
-Si hay *.prettierrc* (formato JSON) en el directorio de trabajo, se reflejará en la configuración. *fmt* está disponible tanto en *CLI* como en *module* .
-
-#### Utilizar como *CLI* .
-
-```bat
-wes @wachaon/fmt src/sample --write
-```
-
-| número sin nombre | Descripción                                        |
-| ----------------- | -------------------------------------------------- |
-| 0                 | -                                                  |
-| 1                 | Requerido. la ruta del archivo que desea formatear |
-
-| nombrada  | nombre corto | Descripción           |
-| --------- | ------------ | --------------------- |
-| `--write` | `-w`         | permitir sobrescribir |
-
-Sobrescriba el archivo con el script formateado si se `--write` o el argumento con nombre `-w` .
-
-#### utilizar como módulo
-
-```javascript
-const fmt = require('@wachaon/fmt')
-const { readTextFileSync, writeTextFileSync } = require('filesystem')
-const { join, workingDirectory } = require('pathname')
-const target = join(workingDirectory, 'index.js')
-console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
-```
-
-## *@wachaon/edge*
-
-*Internet Explorer* dejará de ser compatible el 15 de junio de 2022. Junto con eso, se espera que la operación de la aplicación con `require('InternetExplorer.Application')` también sea imposible. Una alternativa sería trabajar con *Microsoft Edge based on Chromium* través del *web driver* . `@wachaon/edge` *Edge* el piloto automático perimetral.
-
-### Instalar en pc
-
-Primero instale el paquete.
-
-```bat
-wes install @wachaon/edge --unsafe --bare
-```
-
-Luego descargue el *web driver* .
-
-```bat
-wes edge --download
-```
-
-Comprueba la versión de *Edge* instalada y descarga el *web driver* correspondiente.
-
-### Uso
-
-Será fácil de usar.
-
-```javascript
-const edge = require('edge')
-edge((window, navi, res) => {
-    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
-    res.exports = []
-    navi.on(/https?:\/\/.+/, (url) => {
-        console.log('URL: %O', url)
-        res.exports.push(url)
-    })
-    window.navigate('https://www.google.com')
-})
-```
-
-Este script imprime las *URL* visitadas en la consola en secuencia. `@wachaon/edge` registra eventos para *URL* y agrega datos a `res.exports` . La *URL* que se va a registrar puede ser `String` `RegExp` y se puede configurar de forma flexible. Al hacerlo controlado por eventos, puede cambiar fácilmente a la operación manual al no configurar eventos para procesos que son difíciles de manejar con el piloto automático. Si desea que la secuencia de comandos se detenga, `navi.emit('terminate', res)` o finalice *Edge* manualmente. La finalización genera `res.exports` como un archivo *.json* de forma predeterminada. Si desea configurar el procesamiento de terminación, configure la `terminate` de `edge(callback, terminate)` . `window` es una instancia de la clase *Window* de *@wachaon/webdriver* , no la `window` del navegador.
-
-## *@wachaon/webdriver*
-
-Será un paquete que envía solicitudes al *web driver* que opera el navegador. Construido en *@wachaon/edge* . Al igual que con *@wachaon/edge* , se requiere un *web driver* independiente para el funcionamiento del navegador.
-
-### Instalar en pc
-
-```bat
-wes install @wachaon/webdriver --unsafe --bare
-```
-
-Descargue el *web driver* de *Microsoft Edge* basado en *Chromium* si no lo tiene. Además, si la versión de *edge* y la versión del *web driver* son diferentes, descargue la misma versión del *web driver* .
-
-```bat
-wes webdriver --download
-```
--->

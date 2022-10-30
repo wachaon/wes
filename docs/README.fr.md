@@ -30,12 +30,12 @@ Pour les textes dans d'autres langues, veuillez sélectionner l'une des options 
 # Problèmes *wes* que nous ne pouvons pas résoudre
 
 -   `WScript.Quit` ne peut pas interrompre le programme et ne renvoie pas de code d'erreur
--   Le traitement asynchrone tel que `setTimeout` et `Promise` n'est pas possible
+-   Le traitement asynchrone ne fonctionne pas correctement
 -   Vous ne pouvez pas utiliser le *event prefix* du deuxième argument de `WScript.CreateObject`
 
 # Télécharger
 
-Wes n'a besoin que du *wes* *wes.js* . Pour télécharger, copiez *wes.js* depuis [*@wachaon/wes*](https://github.com/wachaon/wes) ou exécutez la commande suivante dans la console.
+Wes n'a besoin que du *wes* *wes.js* . Pour télécharger, copiez *wes.js* depuis [*@wachaon/wes*](https://github.com/wachaon/wes) ou exécutez la commande suivante dans votre console.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -50,7 +50,7 @@ wes update
 
 # Usage
 
-Entrez le mot-clé `wes` et la commande spécifiant le fichier qui sera le point de départ du programme vers la console. L'extension de script *.js* peut être omise.
+Entrez le mot-clé `wes` suivi de la commande spécifiant le fichier qui sera le point de départ du programme vers la console. L'extension de script *.js* peut être omise.
 
 ```bat
 wes index
@@ -71,15 +71,9 @@ Les options de démarrage de *wes* sont les suivantes.
 | nommé              | La description                                     |
 | ------------------ | -------------------------------------------------- |
 | `--monotone`       | Élimine *ANSI escape code*                         |
-| `--safe`           | exécuter le script en mode sans échec              |
-| `--usual`          | Exécuter le script en mode normal (par défaut)     |
-| `--unsafe`         | exécuter le script en mode non sécurisé            |
-| `--dangerous`      | exécuter le script en mode dangereux               |
 | `--debug`          | exécuter le script en mode débogage                |
 | `--encoding=UTF-8` | Spécifie l'encodage du premier fichier lu          |
 | `--engine=Chakra`  | Cette option est ajoutée automatiquement par *wes* |
-
-`--safe` `--usual` `--unsafe` `--dangerous` `--debug` est incomplète, mais les arguments nommés sont réservés.
 
 # système de modules
 
@@ -156,7 +150,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`                    | vidage d'objet                   |
 | `%O`                    | Vidage d'objet (indenté/coloré)  |
 
-`WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` pour générer des chaînes colorées. `WScript.Echo` et `WScript.StdOut.WriteLine` sont des sorties bloquées. `WScript.StdErr.WriteLine` ou `console.log` .
+`WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` pour générer des chaînes colorées. `WScript.Echo` et `WScript.StdOut.WriteLine` sont bloqués. `WScript.StdErr.WriteLine` ou `console.log` .
 
 ## *Buffer*
 
@@ -174,6 +168,30 @@ console.log(`${content} %O`, buff)
 
 ```javascript
 console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+```
+
+## *setTimeout* *setInterval* *setImmediate* *Promise*
+
+Étant donné que *wes* est un environnement d'exécution pour le traitement synchrone, *setTimeout* *setInterval* *setImmediate* *Promise* ne fonctionne pas comme un traitement asynchrone, mais il est implémenté pour prendre en charge les modules qui supposent l'implémentation de *Promise* .
+
+```javascript
+const example = () => {
+  const promise = new Promise((resolve, reject) => {
+    console.log('promise')
+
+    setTimeout(() => {
+      console.log('setTimeout') 
+      resolve('resolved');
+    }, 2000);
+  }).then((val) => {
+    console.log(val)
+  });
+  console.log('sub')
+};
+
+console.log('start')
+example();
+console.log('end')
 ```
 
 # Module intégré
@@ -456,7 +474,7 @@ animate.run()
 
 ### `constructor(complete)`
 
-Exécute la fonction `complete` lorsque toutes les files d'attente sont complètes ou lorsque `stop()` est appelé.
+Exécute la fonction `complete` lorsque toutes les files d'attente sont terminées ou que `stop()` est appelé.
 
 #### `static genProgressIndicator(animation)`
 
@@ -464,7 +482,7 @@ Générez une fonction qui affiche une animation de cyclisme.
 
 #### `register(callback, interval, conditional)`
 
-Traitement des registres. Plusieurs processus peuvent être enregistrés et traités en parallèle. Dans le `callback` , nous demanderons d'arrêter l'animation et d'écrire la vue à afficher. `interval` spécifie l'intervalle de traitement. Si la `conditional` est une fonction, elle exécute `conditional(count, queue)` et si le résultat est vrai, elle passe à la suivante. La `conditional` exécute `decrement(count)` s'il s'agit d'un nombre et continue si le résultat est un nombre positif. S'exécute une seule fois si `conditional` n'est pas défini. Notez que la spécification d'une fonction augmente le `count` , tandis que la spécification d'un nombre diminue le `count` .
+Traitement des registres. Plusieurs processus peuvent être enregistrés et traités en parallèle. Dans le `callback` , nous demanderons d'arrêter l'animation et d'écrire la vue à afficher. `interval` spécifie l'intervalle de traitement. Si la `conditional` est une fonction, elle exécutera `conditional(count, queue)` et si le résultat est vrai, elle continuera. La `conditional` exécute `decrement(count)` s'il s'agit d'un nombre et continue si le résultat est un nombre positif. S'exécute une seule fois si `conditional` n'est pas défini. Notez que la spécification d'une fonction augmente le `count` , tandis que la spécification d'un nombre diminue le `count` .
 
 #### `stop()`
 
@@ -585,7 +603,7 @@ Si le `path` a l'extension `.zip` , `unzip()` est traité et il n'y a pas de des
 
 | nommé    | nommé court | La description                              |
 | -------- | ----------- | ------------------------------------------- |
-| `--path` | `-p`        | `path` ou fichier à saisir                  |
+| `--path` | `-p`        | `path` ou fichier à entrer                  |
 | `--dest` | `-d`        | fichier de dossier vers la `dest` de sortie |
 
 # Regroupement (conditionnement) et installation de modules
@@ -657,104 +675,3 @@ Si vous accédez au référentiel privé *raw* avec un navigateur, le *token* se
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
-<!--
-# Présentation du paquet
-
-Voici quelques packages externes.
-
-## *@wachaon/fmt*
-
-*@wachaon/fmt* est *prettier* emballé pour *wes* pour formater les scripts. De plus, si une *Syntax Error* se produit pendant *@wachaon/fmt* , vous pouvez afficher l'emplacement de l'erreur.
-
-### installer
-
-```bat
-wes install @wachaon/fmt
-```
-
-### Usage
-
-S'il y a *.prettierrc* (format JSON) dans le répertoire de travail, cela sera reflété dans les paramètres. *fmt* est disponible à la fois dans la *CLI* et dans le *module* .
-
-#### Utiliser comme *CLI* .
-
-```bat
-wes @wachaon/fmt src/sample --write
-```
-
-| numéro anonyme | La description                                                |
-| -------------- | ------------------------------------------------------------- |
-| 0              | -                                                             |
-| 1              | Obligatoire. le chemin du fichier que vous souhaitez formater |
-
-| nommé     | nommé court | La description            |
-| --------- | ----------- | ------------------------- |
-| `--write` | `-w`        | autoriser le remplacement |
-
-Remplacez le fichier par le script formaté si `--write` ou l'argument nommé `-w` est spécifié.
-
-#### utiliser comme module
-
-```javascript
-const fmt = require('@wachaon/fmt')
-const { readTextFileSync, writeTextFileSync } = require('filesystem')
-const { join, workingDirectory } = require('pathname')
-const target = join(workingDirectory, 'index.js')
-console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
-```
-
-## *@wachaon/edge*
-
-*Internet Explorer* mettra fin au support le 15 juin 2022. Parallèlement à cela, on s'attend à ce que le fonctionnement de l'application avec `require('InternetExplorer.Application')` devienne également impossible. Une alternative serait de travailler avec *Microsoft Edge based on Chromium* via le *web driver* . `@wachaon/edge` *Edge* le pilotage automatique des bords.
-
-### installer
-
-Installez d'abord le paquet.
-
-```bat
-wes install @wachaon/edge --unsafe --bare
-```
-
-Ensuite, téléchargez le *web driver* .
-
-```bat
-wes edge --download
-```
-
-Vérifiez la version *Edge* installée et téléchargez le *web driver* correspondant.
-
-### Usage
-
-Il sera facile à utiliser.
-
-```javascript
-const edge = require('edge')
-edge((window, navi, res) => {
-    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
-    res.exports = []
-    navi.on(/https?:\/\/.+/, (url) => {
-        console.log('URL: %O', url)
-        res.exports.push(url)
-    })
-    window.navigate('https://www.google.com')
-})
-```
-
-Ce script imprime les *URL* visitées sur la console dans l'ordre. `@wachaon/edge` enregistre les événements pour *URL* et ajoute des données à `res.exports` . L' *URL* à enregistrer peut être soit `String` `RegExp` , et peut être définie de manière flexible. En le rendant piloté par les événements, vous pouvez facilement passer au fonctionnement manuel en ne définissant pas d'événements pour les processus difficiles à gérer avec le pilote automatique. Si vous souhaitez que le script s'arrête, `navi.emit('terminate', res)` ou terminez *Edge* manuellement. La finalisation génère par défaut `res.exports` sous la forme d'un fichier *.json* . Si vous souhaitez définir le traitement de terminaison, définissez `terminate` of `edge(callback, terminate)` . `window` est une instance de la classe *Window* de *@wachaon/webdriver* , et non la `window` du navigateur.
-
-## *@wachaon/webdriver*
-
-Ce sera un package qui envoie des requêtes au *web driver* qui exploite le navigateur. Construit en *@wachaon/edge* . Comme avec *@wachaon/edge* , un *web driver* distinct est requis pour le fonctionnement du navigateur.
-
-### installer
-
-```bat
-wes install @wachaon/webdriver --unsafe --bare
-```
-
-Téléchargez le *web driver* *Microsoft Edge* basé sur *Chromium* si vous ne l'avez pas. De plus, si la version d' *edge* et la version du *web driver* sont différentes, téléchargez la même version du *web driver* .
-
-```bat
-wes webdriver --download
-```
--->

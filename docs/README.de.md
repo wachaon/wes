@@ -30,7 +30,7 @@ Für Texte in anderen Sprachen wählen Sie bitte aus den folgenden Optionen aus.
 # *wes* Probleme, die wir nicht lösen können
 
 -   `WScript.Quit` kann das Programm nicht abbrechen und gibt keinen Fehlercode zurück
--   Eine asynchrone Verarbeitung wie `setTimeout` und `Promise` ist nicht möglich
+-   Die asynchrone Verarbeitung funktioniert nicht richtig
 -   Sie können das *event prefix* des zweiten Arguments von `WScript.CreateObject` nicht verwenden
 
 # Download
@@ -50,7 +50,7 @@ wes update
 
 # Verwendungszweck
 
-Geben Sie das Schlüsselwort `wes` und den Befehl ein, der die Datei angibt, die der Startpunkt des Programms für die Konsole sein wird. Die *.js* kann weggelassen werden.
+Geben Sie das Schlüsselwort `wes` gefolgt von dem Befehl ein, der die Datei angibt, die der Startpunkt des Programms für die Konsole sein wird. Die *.js* kann weggelassen werden.
 
 ```bat
 wes index
@@ -71,15 +71,9 @@ wes
 | genannt            | Beschreibung                                        |
 | ------------------ | --------------------------------------------------- |
 | `--monotone`       | Beseitigt *ANSI escape code*                        |
-| `--safe`           | Führen Sie das Skript im abgesicherten Modus aus    |
-| `--usual`          | Skript im normalen Modus ausführen (Standard)       |
-| `--unsafe`         | Führen Sie das Skript im unsicheren Modus aus       |
-| `--dangerous`      | Führen Sie das Skript im gefährlichen Modus aus     |
 | `--debug`          | Führen Sie das Skript im Debug-Modus aus            |
 | `--encoding=UTF-8` | Gibt die Kodierung der ersten gelesenen Datei an    |
 | `--engine=Chakra`  | Diese Option wird automatisch von *wes* hinzugefügt |
-
-Die Implementierung von `--safe` `--usual` `--unsafe` `--dangerous` `--debug` ist unvollständig, aber benannte Argumente sind reserviert.
 
 # Modulsystem
 
@@ -156,7 +150,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`             | Objekt-Dump                      |
 | `%O`             | Objekt-Dump (eingerückt/bunt)    |
 
-`WScript.StdOut.WriteLine` *wes* von `WScript.StdErr.WriteLine` , um farbige Zeichenfolgen auszugeben. `WScript.Echo` und `WScript.StdOut.WriteLine` sind blockierte Ausgaben. `WScript.StdErr.WriteLine` oder `console.log` .
+`WScript.StdOut.WriteLine` *wes* von `WScript.StdErr.WriteLine` , um farbige Zeichenfolgen auszugeben. `WScript.Echo` und `WScript.StdOut.WriteLine` werden blockiert. `WScript.StdErr.WriteLine` oder `console.log` .
 
 ## *Buffer*
 
@@ -174,6 +168,30 @@ console.log(`${content} %O`, buff)
 
 ```javascript
 console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+```
+
+## *setTimeout* *setInterval* *setImmediate* *Promise*
+
+Da *wes* eine Ausführungsumgebung für synchrone Verarbeitung ist, *setTimeout* *setInterval* *setImmediate* *Promise* nicht als asynchrone Verarbeitung, sondern wird implementiert, um Module zu unterstützen, die eine *Promise* -Implementierung voraussetzen.
+
+```javascript
+const example = () => {
+  const promise = new Promise((resolve, reject) => {
+    console.log('promise')
+
+    setTimeout(() => {
+      console.log('setTimeout') 
+      resolve('resolved');
+    }, 2000);
+  }).then((val) => {
+    console.log(val)
+  });
+  console.log('sub')
+};
+
+console.log('start')
+example();
+console.log('end')
 ```
 
 # Eingebautes Modul
@@ -346,7 +364,7 @@ Beim Vergleich von Klassen (Objekten) müssen sie denselben Konstruktor oder ein
 
 #### `assert.throws(value, expected, message)`
 
-Stellen Sie sicher, dass der Fehler korrekt ausgegeben wird.  
+Stellen Sie sicher, dass Fehler korrekt ausgegeben werden.  
 Ob der Fehler korrekt ist oder nicht, wird dadurch bestimmt, ob der erwartete Fehlerkonstruktor und *constructor* *message* gleich sind und der reguläre Ausdruck die *stack* besteht.
 
 | Parameter  | Typ                       | Beschreibung                                                                                                     |
@@ -456,7 +474,7 @@ animate.run()
 
 ### `constructor(complete)`
 
-Führt die Funktion `complete` aus, wenn alle Warteschlangen vollständig sind oder wenn `stop()` aufgerufen wird.
+Führt die `complete` Funktion aus, wenn alle Warteschlangen abgeschlossen sind oder `stop()` aufgerufen wird.
 
 #### `static genProgressIndicator(animation)`
 
@@ -652,109 +670,8 @@ wes install @wachaon/fmt --bare
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-Wenn Sie mit einem Browser auf das *raw* des privaten Repositorys zugreifen, wird das *token* angezeigt, also kopieren Sie das *token* und verwenden Sie es. Sie können Pakete auch aus privaten Repositorys installieren, indem Sie sie in der Konsole ausführen, solange das *token* gültig ist.
+Wenn Sie mit einem Browser *raw* auf das private Repository zugreifen, wird das *token* angezeigt, also kopieren Sie das *token* und verwenden Sie es. Sie können Pakete auch aus privaten Repositorys installieren, indem Sie sie in der Konsole ausführen, solange das *token* gültig ist.
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
-<!--
-# Paket Einführung
-
-Hier sind einige externe Pakete.
-
-## *@wachaon/fmt*
-
-*@wachaon/fmt* ist *prettier* verpackt, damit *wes* Skripte formatieren können. Wenn während der Installation von *@wachaon/fmt* ein *Syntax Error* auftritt, können Sie außerdem den Ort des Fehlers anzeigen.
-
-### Installieren
-
-```bat
-wes install @wachaon/fmt
-```
-
-### Verwendungszweck
-
-Wenn im Arbeitsverzeichnis *.prettierrc* (JSON-Format) vorhanden ist, wird dies in den Einstellungen widergespiegelt. *fmt* ist sowohl im *CLI* als auch im *module* verfügbar.
-
-#### Als *CLI* verwenden.
-```bat
-
-wes @wachaon/fmt src/sample --write
-```
-
-| unbenannte Nummer | Beschreibung                                                  |
-| ----------------- | ------------------------------------------------------------- |
-| 0                 | -                                                             |
-| 1                 | Erforderlich. den Pfad der Datei, die Sie formatieren möchten |
-
-| genannt   | kurz benannt | Beschreibung           |
-| --------- | ------------ | ---------------------- |
-| `--write` | `-w`         | Überschreiben zulassen |
-
-Überschreiben Sie die Datei mit dem formatierten Skript, wenn `--write` oder das benannte Argument `-w` angegeben ist.
-
-#### als Modul verwenden
-
-```javascript
-const fmt = require('@wachaon/fmt')
-const { readTextFileSync, writeTextFileSync } = require('filesystem')
-const { join, workingDirectory } = require('pathname')
-const target = join(workingDirectory, 'index.js')
-console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
-```
-
-## *@wachaon/edge*
-
-Der Support für *Internet Explorer* endet am 15. Juni 2022. Außerdem wird erwartet, dass der Anwendungsbetrieb mit `require('InternetExplorer.Application')` ebenfalls unmöglich wird. Eine Alternative wäre, mit *Microsoft Edge based on Chromium* über den *web driver* zu arbeiten. `@wachaon/edge` vereinfacht den *Edge* -Autopiloten.
-
-### Installieren
-
-Installieren Sie zuerst das Paket.
-
-```bat
-wes install @wachaon/edge --unsafe --bare
-```
-
-Laden Sie dann den *web driver* herunter.
-
-```bat
-wes edge --download
-```
-
-Überprüfen Sie die installierte *Edge* -Version und laden Sie den entsprechenden *web driver* herunter.
-
-### Verwendungszweck
-
-Es wird einfach zu bedienen sein.
-
-```javascript
-const edge = require('edge')
-edge((window, navi, res) => {
-    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
-    res.exports = []
-    navi.on(/https?:\/\/.+/, (url) => {
-        console.log('URL: %O', url)
-        res.exports.push(url)
-    })
-    window.navigate('https://www.google.com')
-})
-```
-
-Dieses Skript gibt die besuchten *URL* der Reihe nach auf der Konsole aus. `@wachaon/edge` registriert Ereignisse für *URL* und fügt Daten zu `res.exports` hinzu. Die zu registrierende *URL* kann entweder `String` `RegExp` sein und kann flexibel festgelegt werden. Indem Sie es ereignisgesteuert machen, können Sie einfach auf manuellen Betrieb umschalten, indem Sie keine Ereignisse für Prozesse festlegen, die mit Autopilot schwierig zu handhaben sind. Wenn Sie möchten, dass das Skript beendet wird, `navi.emit('terminate', res)` oder beenden Sie *Edge* manuell. Die Finalisierung gibt `res.exports` als *.json* -Datei aus. Wenn Sie die Beendigungsverarbeitung festlegen möchten, setzen Sie „ `terminate` of `edge(callback, terminate)` . `window` ist eine Instanz der *Window* -Klasse von *@wachaon/webdriver* , nicht das `window` des Browsers.
-
-## *@wachaon/webdriver*
-
-Es wird ein Paket sein, das Anfragen an den *web driver* sendet, der den Browser betreibt. Eingebaut in *@wachaon/edge* . Wie bei *@wachaon/edge* wird für den Browserbetrieb ein separater *web driver* benötigt.
-
-### Installieren
-
-```bat
-wes install @wachaon/webdriver --unsafe --bare
-```
-
-Laden Sie den *Chromium* -basierten *Microsoft Edge* *web driver* herunter, wenn Sie ihn nicht haben. Wenn die Version von *edge* und die Version des *web driver* unterschiedlich sind, laden Sie dieselbe Version des *web driver* herunter.
-
-```bat
-wes webdriver --download
-```
--->

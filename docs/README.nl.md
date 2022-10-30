@@ -1,6 +1,6 @@
 # *WES*
 
-*wes* is een consoleframework voor het uitvoeren van *ECMAScript* op *WSH (Windows Script Host)* . De originele [*japanese*](/README.md) van de *README* zal in het Japans zijn. Andere teksten dan Japans worden machinaal vertaald.  
+*wes* is een consoleframework voor het uitvoeren van *ECMAScript* op *WSH (Windows Script Host)* . De originele [*japanese*](/README.md) van de *README* zal in het Japans zijn. Andere teksten dan het Japans worden machinaal vertaald.  
 Voor teksten in andere talen kunt u een keuze maken uit de onderstaande opties.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
@@ -30,7 +30,7 @@ Voor teksten in andere talen kunt u een keuze maken uit de onderstaande opties.
 # *wes* problemen die we niet kunnen oplossen
 
 -   `WScript.Quit` kan het programma niet afbreken en geeft geen foutcode terug
--   Asynchrone verwerking zoals `setTimeout` en `Promise` is niet mogelijk
+-   Asynchrone verwerking werkt niet goed
 -   U kunt het *event prefix* van het tweede argument van `WScript.CreateObject` . niet gebruiken
 
 # downloaden
@@ -71,15 +71,9 @@ De opstartopties van *wes* zijn als volgt.
 | genaamd            | Beschrijving                                            |
 | ------------------ | ------------------------------------------------------- |
 | `--monotone`       | Elimineert *ANSI escape code*                           |
-| `--safe`           | voer het script uit in de veilige modus                 |
-| `--usual`          | Script uitvoeren in normale modus (standaard)           |
-| `--unsafe`         | voer het script uit in de onveilige modus               |
-| `--dangerous`      | voer het script uit in de gevaarlijke modus             |
 | `--debug`          | voer het script uit in debug-modus                      |
 | `--encoding=UTF-8` | Specificeert de codering van het eerste gelezen bestand |
 | `--engine=Chakra`  | Deze optie wordt automatisch toegevoegd door *wes*      |
-
-`--safe` `--usual` `--unsafe` `--dangerous` `--debug` 's implementatie is onvolledig, maar benoemde argumenten zijn gereserveerd.
 
 # module systeem
 
@@ -103,7 +97,7 @@ const add = require('./add')
 console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
-Het is ook mogelijk om te importeren met *require* voor *COM Object* zoals `require('WScript.Shell')` .
+Het is ook mogelijk om te importeren met *require* for *COM Object* zoals `require('WScript.Shell')` .
 
 ```javascript
 const Shell = require('Shell.Application')
@@ -114,7 +108,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra* , een scriptuitvoeringsengine, interpreteert syntaxis zoals `imoprt` , maar het kan niet worden uitgevoerd zoals het is omdat de verwerkingsmethode als `cscript` niet is gedefinieerd. In *wes* , door *babel* toe te voegen aan de ingebouwde modules, worden *es module* ook uitgevoerd terwijl ze sequentieel worden getranspileerd. Dit kost ons verwerkingskosten en een opgeblazen *wes.js* -bestand. Modules die in de *es module* zijn geschreven, worden ook geconverteerd naar required `require()` door te transpileren, dus het is mogelijk om *COM Object* aan te roepen. Het ondersteunt echter niet het specificeren van de codering van het modulebestand met *es module* . Alles wordt automatisch geladen. Om het als een *es module* te laden, stelt u de extensie in op `.mjs` of stelt u het veld `"type"` in `package.json` in op `"module"` .
+*Chakra* , de scriptuitvoeringsengine, interpreteert syntaxis zoals `imoprt` , maar het kan niet worden uitgevoerd zoals het is omdat de verwerkingsmethode als `cscript` niet is gedefinieerd. In *wes* , door *babel* toe te voegen aan de ingebouwde modules, worden *es module* ook uitgevoerd terwijl ze één voor één worden getranspileerd. Dit kost ons verwerkingskosten en een opgeblazen *wes.js* -bestand. Modules die in de *es module* zijn geschreven, worden ook geconverteerd naar required `require()` door te transpileren, dus het is mogelijk om *COM Object* aan te roepen. Het ondersteunt echter niet het specificeren van de codering van het modulebestand met *es module* . Alles wordt automatisch geladen. Om het als een *es module* te laden, stelt u de extensie in op `.mjs` of stelt u het veld `"type"` in `package.json` in op `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -174,6 +168,30 @@ console.log(`${content} %O`, buff)
 
 ```javascript
 console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+```
+
+## *setTimeout* *setInterval* *setImmediate* *Promise*
+
+Aangezien *wes* een uitvoeringsomgeving is voor synchrone verwerking, werkt *setTimeout* *setInterval* *setImmediate* *Promise* niet als asynchrone verwerking, maar wordt het geïmplementeerd om modules te ondersteunen die de implementatie van *Promise* veronderstellen.
+
+```javascript
+const example = () => {
+  const promise = new Promise((resolve, reject) => {
+    console.log('promise')
+
+    setTimeout(() => {
+      console.log('setTimeout') 
+      resolve('resolved');
+    }, 2000);
+  }).then((val) => {
+    console.log(val)
+  });
+  console.log('sub')
+};
+
+console.log('start')
+example();
+console.log('end')
 ```
 
 # Ingebouwde module
@@ -331,7 +349,7 @@ Vergelijk met `true` met de operator voor strikte gelijkheid `===` . Als `value`
 | Param     | Type                  | Beschrijving                                  |
 | :-------- | :-------------------- | :-------------------------------------------- |
 | `value`   | `{Function\|Boolean}` | booleaanse of booleaanse terugkerende functie |
-| `message` | `{String}`            | bericht bij mislukking                        |
+| `message` | `{String}`            | bericht in geval van storing                  |
 
 #### `assert.equal(expected, actual)`
 
@@ -346,7 +364,7 @@ Bij het vergelijken van klassen (objecten) moeten ze dezelfde constructor of een
 
 #### `assert.throws(value, expected, message)`
 
-Controleer of de fout correct wordt gegenereerd.  
+Controleer of fouten correct worden gegenereerd.  
 Of de fout al dan niet correct is, wordt bepaald door of de verwachte *constructor* , het *message* gelijk is en de reguliere expressie de *stack* doorstaat.
 
 | Param      | Type                      | Beschrijving                                                                            |
@@ -657,104 +675,3 @@ Als u de private repository *raw* met een browser, wordt het *token* weergegeven
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
-<!--
-# Pakket introductie:
-
-Hier zijn enkele externe pakketten.
-
-## *@wachaon/fmt*
-
-*@wachaon/fmt* is *prettier* verpakt voor *wes* om scripts te formatteren. Als er een *Syntax Error* optreedt terwijl *@wachaon/fmt* is geïnstalleerd, kunt u ook de locatie van de fout weergeven.
-
-### installeren
-
-```bat
-wes install @wachaon/fmt
-```
-
-### Gebruik
-
-Als er *.prettierrc* (JSON-indeling) in de werkmap staat, wordt dit weergegeven in de instellingen. *fmt* is beschikbaar in zowel *CLI* als *module* .
-
-#### Gebruik als *CLI* .
-
-```bat
-wes @wachaon/fmt src/sample --write
-```
-
-| naamloos nummer | Beschrijving                                              |
-| --------------- | --------------------------------------------------------- |
-| 0               | -                                                         |
-| 1               | Verplicht. het pad van het bestand dat u wilt formatteren |
-
-| genaamd   | korte naam | Beschrijving           |
-| --------- | ---------- | ---------------------- |
-| `--write` | `-w`       | overschrijven toestaan |
-
-Overschrijf het bestand met het opgemaakte script als `--write` of het `-w` benoemde argument is opgegeven.
-
-#### gebruik als een module
-
-```javascript
-const fmt = require('@wachaon/fmt')
-const { readTextFileSync, writeTextFileSync } = require('filesystem')
-const { join, workingDirectory } = require('pathname')
-const target = join(workingDirectory, 'index.js')
-console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
-```
-
-## *@wachaon/edge*
-
-*Internet Explorer* stopt de ondersteuning op 15 juni 2022. Daarnaast wordt verwacht dat applicatiebewerkingen met `require('InternetExplorer.Application')` ook onmogelijk zullen worden. Een alternatief zou zijn om te werken met *Microsoft Edge based on Chromium* via de *web driver* . `@wachaon/edge` vereenvoudigt *Edge* -stuurautomaat.
-
-### installeren
-
-Installeer eerst het pakket.
-
-```bat
-wes install @wachaon/edge --unsafe --bare
-```
-
-Download vervolgens het *web driver* .
-
-```bat
-wes edge --download
-```
-
-Controleer de geïnstalleerde *Edge* -versie en download de bijbehorende *web driver* .
-
-### Gebruik
-
-Het zal gemakkelijk te gebruiken zijn.
-
-```javascript
-const edge = require('edge')
-edge((window, navi, res) => {
-    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
-    res.exports = []
-    navi.on(/https?:\/\/.+/, (url) => {
-        console.log('URL: %O', url)
-        res.exports.push(url)
-    })
-    window.navigate('https://www.google.com')
-})
-```
-
-Dit script drukt de bezochte *URL* in volgorde af naar de console. `@wachaon/edge` registreert gebeurtenissen voor *URL* en voegt gegevens toe aan `res.exports` . De te registreren *URL* kan `String` `RegExp` zijn en kan flexibel worden ingesteld. Door het gebeurtenisgestuurd te maken, kunt u eenvoudig overschakelen naar handmatige bediening door geen gebeurtenissen in te stellen voor processen die moeilijk te hanteren zijn met de automatische piloot. Als u wilt dat het script stopt, `navi.emit('terminate', res)` of beëindigt u *Edge* handmatig. Finalisatie voert `res.exports` als een *.json* bestand. Als u beëindigingsverwerking wilt instellen, stelt `terminate` van `edge(callback, terminate)` . `window` is een instantie van *@wachaon/webdriver* 's *Window* class, niet het `window` .
-
-## *@wachaon/webdriver*
-
-Het zal een pakket zijn dat verzoeken verzendt naar het *web driver* dat de browser bestuurt. Ingebouwde *@wachaon/edge* . Net als bij *@wachaon/edge* is een apart *web driver* vereist voor browserbewerkingen.
-
-### installeren
-
-```bat
-wes install @wachaon/webdriver --unsafe --bare
-```
-
-Download het op *Chromium* gebaseerde *Microsoft Edge* *web driver* als u dat niet hebt. Als de versie van *edge* en de versie van *web driver* verschillen, download dan dezelfde versie van *web driver* .
-
-```bat
-wes webdriver --download
-```
--->

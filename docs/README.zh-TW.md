@@ -30,12 +30,12 @@
 # 我們無法解決的*wes*問題
 
 -   `WScript.Quit`不能中止程序並且不返回錯誤代碼
--   無法進行`setTimeout`和`Promise`等異步處理
+-   異步處理無法正常工作
 -   您不能使用`WScript.CreateObject`的第二個參數的*event prefix*
 
 # 下載
 
-*wes.js* *wes* 。要下載，請從[*@wachaon/wes*](https://github.com/wachaon/wes)複製*wes.js*或在控制台中運行以下命令。
+*wes.js* *wes* 。要下載，請從[*@wachaon/wes*](https://github.com/wachaon/wes) wes 複製*wes.js*或在控制台中運行以下命令。
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -50,13 +50,13 @@ wes update
 
 # 用法
 
-輸入`wes`關鍵字，然後輸入命令，指定將成為控制台程序起點的文件。腳本擴展名*.js*可以省略。
+輸入`wes`關鍵字，然後輸入指定文件的命令，該文件將成為控制台程序的起點。腳本擴展名*.js*可以省略。
 
 ```bat
 wes index
 ```
 
-此外，由於*wes*配備了*REP* ，您可以通過單獨啟動`wes`直接輸入腳本。
+此外，由於*wes*配備了*REP* ，因此您可以通過單獨啟動`wes`直接輸入腳本。
 
 ```bat
 wes
@@ -71,15 +71,9 @@ wes
 | 命名為                | 描述                   |
 | ------------------ | -------------------- |
 | `--monotone`       | 消除*ANSI escape code* |
-| `--safe`           | 以安全模式運行腳本            |
-| `--usual`          | 以正常模式運行腳本（默認）        |
-| `--unsafe`         | 在不安全模式下運行腳本          |
-| `--dangerous`      | 以危險模式運行腳本            |
 | `--debug`          | 在調試模式下運行腳本           |
 | `--encoding=UTF-8` | 指定讀取的第一個文件的編碼        |
 | `--engine=Chakra`  | 此選項由*wes*自動添加        |
-
-`--safe` `--usual` `--unsafe` `--dangerous` `--debug`的實現不完整，但保留了命名參數。
 
 # 模塊系統
 
@@ -114,7 +108,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra*是一個腳本執行引擎，可以解釋諸如`imoprt`之類的語法，但由於沒有定義`cscript`的處理方法，因此無法按原樣執行。在*wes*中，通過在內置模塊中添加*babel* ， *es module*也在被順序轉譯的同時執行。這會花費我們處理開銷和臃腫的*wes.js*文件。 *es module*中寫的模塊也通過轉譯轉換為`require()` ，因此可以調用*COM Object* 。但是，它不支持使用*es module*指定模塊文件的編碼。一切都是自動加載的。要將其加載為*es module* ，請將擴展名設置為`.mjs`或將`package.json`中的`"type"`字段設置為`"module"` 。
+腳本執行引擎*Chakra*解釋了諸如`imoprt`之類的語法，但由於未定義`cscript`的處理方法，因此無法按原樣執行。在*wes*中，通過在內置模塊中添加*babel* ， *es module*也在被一個一個轉譯的同時執行。這會花費我們處理開銷和臃腫的*wes.js*文件。用*es module*模塊寫的模塊也通過轉譯轉換成`require()` ，所以可以調用*COM Object* 。但是，它不支持使用*es module*指定模塊文件的編碼。一切都是自動加載的。要將其作為*es module*加載，請將擴展名設置為`.mjs`或將`package.json`中的`"type"`字段設置為`"module"` 。
 
 ```javascript
 // ./sub.mjs
@@ -156,7 +150,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`  | 對象轉儲                             |
 | `%O`  | 對象轉儲（縮進/彩色）                      |
 
-`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`來輸出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`是阻塞輸出。 `WScript.StdErr.WriteLine`或`console.log` 。
+`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`來輸出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`被阻止。 `WScript.StdErr.WriteLine`或`console.log` 。
 
 ## *Buffer*
 
@@ -174,6 +168,30 @@ console.log(`${content} %O`, buff)
 
 ```javascript
 console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+```
+
+## *setTimeout* *setInterval* *setImmediate* *Promise*
+
+由於*wes*是用於同步處理的執行環境，因此*setTimeout* *setInterval* *setImmediate* *Promise*不起到異步處理的作用，但它的實現是為了支持假設*Promise*實現的模塊。
+
+```javascript
+const example = () => {
+  const promise = new Promise((resolve, reject) => {
+    console.log('promise')
+
+    setTimeout(() => {
+      console.log('setTimeout') 
+      resolve('resolved');
+    }, 2000);
+  }).then((val) => {
+    console.log(val)
+  });
+  console.log('sub')
+};
+
+console.log('start')
+example();
+console.log('end')
 ```
 
 # 內置模塊
@@ -646,115 +664,14 @@ wes install @wachaon/fmt --bare
 
 # 從私有倉庫安裝包
 
-*install*不僅可以安裝來自公共*github*存儲庫的包，還可以安裝來自私有存儲庫的包。在*install*中，使用*@author/repository*指定包。該實現嘗試下載以下 url。
+*install*不僅可以安裝來自公共*github*存儲庫的包，還可以安裝來自私有存儲庫的包。在*install*中，使用*@author/repository*指定包。該實現嘗試下載以下網址。
 
 ```javascript
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-如果您使用瀏覽器訪問*raw*存儲庫，則會顯示*token* ，因此請複制*token*並使用它。您還可以通過在*token*有效時在控制台中運行來安裝私有存儲庫中的軟件包。
+當您使用瀏覽器訪問私有存儲庫的*raw*文件時，將顯示*token* ，因此請複制*token*並使用它。如果在*token*有效時在控制台中執行，也可以安裝來自私有存儲庫的包。
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
-<!--
-# 包裝介紹
-
-這是一些外部軟件包。
-
-## *@wachaon/fmt*
-
-*@wachaon/fmt* *prettier*地打包為*wes*格式化腳本。此外，如果在安裝*@wachaon/fmt*時出現*Syntax Error* ，您可以顯示錯誤的位置。
-
-### 安裝
-
-```bat
-wes install @wachaon/fmt
-```
-
-### 用法
-
-如果工作目錄中有*.prettierrc* （JSON 格式），它會反映在設置中。 *fmt*在*CLI*和*module*中都可用。
-
-#### 用作*CLI* 。
-
-```bat
-wes @wachaon/fmt src/sample --write
-```
-
-| 無名號碼 | 描述             |
-| ---- | -------------- |
-| 0    | -              |
-| 1    | 必需的。要格式化的文件的路徑 |
-
-| 命名為       | 簡稱   | 描述   |
-| --------- | ---- | ---- |
-| `--write` | `-w` | 允許覆蓋 |
-
-如果指定了`--write`或`-w`命名參數，則使用格式化腳本覆蓋文件。
-
-#### 作為一個模塊使用
-
-```javascript
-const fmt = require('@wachaon/fmt')
-const { readTextFileSync, writeTextFileSync } = require('filesystem')
-const { join, workingDirectory } = require('pathname')
-const target = join(workingDirectory, 'index.js')
-console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
-```
-
-## *@wachaon/edge*
-
-*Internet Explorer*將於 2022 年 6 月 15 日終止支持。與此同時，預計使用`require('InternetExplorer.Application')`應用程序操作也將變得不可能。另一種方法是通過*web driver*使用*Microsoft Edge based on Chromium* 。 `@wachaon/edge`簡化了*Edge*自動駕駛儀。
-
-### 安裝
-
-首先安裝軟件包。
-
-```bat
-wes install @wachaon/edge --unsafe --bare
-```
-
-然後下載*web driver* 。
-
-```bat
-wes edge --download
-```
-
-檢查安裝的*Edge*版本並下載相應的*web driver* 。
-
-### 用法
-
-這將很容易使用。
-
-```javascript
-const edge = require('edge')
-edge((window, navi, res) => {
-    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
-    res.exports = []
-    navi.on(/https?:\/\/.+/, (url) => {
-        console.log('URL: %O', url)
-        res.exports.push(url)
-    })
-    window.navigate('https://www.google.com')
-})
-```
-
-此腳本按順序將訪問的*URL*打印到控制台。 `@wachaon/edge`為*URL*註冊事件並將數據添加到`res.exports` 。要註冊的*URL*可以是`String` `RegExp` ，可以靈活設置。通過使其成為事件驅動，您可以通過不為自動駕駛難以處理的流程設置事件來輕鬆切換到手動操作。如果您希望腳本停止， `navi.emit('terminate', res)`或手動終止*Edge* 。 Finalization 默認將`res.exports`輸出為*.json*文件。如果要設置`terminate`處理，請設置`edge(callback, terminate)`的終止。 `window`是*@wachaon/webdriver*的*Window*類的實例，而不是瀏覽器的`window` 。
-
-## *@wachaon/webdriver*
-
-它將是一個向操作瀏覽器的*web driver*發送請求的包。內置*@wachaon/edge* 。與*@wachaon/edge* ，瀏覽器操作需要單獨的*web driver* 。
-
-### 安裝
-
-```bat
-wes install @wachaon/webdriver --unsafe --bare
-```
-
-如果沒有，請下載基於*Chromium*的*Microsoft Edge* *web driver* 。另外，如果*edge*版本和*web driver*版本不同，請下載相同版本的*web driver* 。
-
-```bat
-wes webdriver --download
-```
--->

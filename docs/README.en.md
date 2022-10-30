@@ -30,7 +30,7 @@ For texts in other languages, please select from the options below.
 # *wes* issues that we can't solve
 
 -   `WScript.Quit` cannot abort the program and does not return an error code
--   Asynchronous processing such as `setTimeout` and `Promise` is not possible
+-   Asynchronous processing does not work properly
 -   You cannot use the *event prefix* of the second argument of `WScript.CreateObject`
 
 # download
@@ -50,7 +50,7 @@ wes update
 
 # Usage
 
-Enter the `wes` keyword followed by the command specifying the file that will be the starting point of the program to the console. The script extension *.js* can be omitted.
+Enter the `wes` keyword and the command specifying the file that will be the starting point of the program to the console. The script extension *.js* can be omitted.
 
 ```bat
 wes index
@@ -71,15 +71,9 @@ wes
 | named              | Description                                   |
 | ------------------ | --------------------------------------------- |
 | `--monotone`       | Eliminates *ANSI escape code*                 |
-| `--safe`           | run the script in safe mode                   |
-| `--usual`          | Run script in normal mode (default)           |
-| `--unsafe`         | run the script in insecure mode               |
-| `--dangerous`      | run the script in dangerous mode              |
 | `--debug`          | run the script in debug mode                  |
 | `--encoding=UTF-8` | Specifies the encoding of the first file read |
 | `--engine=Chakra`  | This option is added automatically by *wes*   |
-
-`--safe` `--usual` `--unsafe` `--dangerous` `--debug` 's implementation is incomplete, but named arguments are reserved.
 
 # module system
 
@@ -114,7 +108,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra* , which is the script execution engine, interprets syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. In *wes* , by adding *babel* to the built-in modules, *es module* are also executed while being transpiled one by one. This costs us processing overhead and a bloated *wes.js* file. Modules written in *es module* are also converted to `require()` by transpiling, so it is possible to call *COM Object* . However, it does not support specifying the encoding of the module file with *es module* . Everything is loaded automatically. To load it as an *es module* , set the extension to `.mjs` or set the `"type"` field in `package.json` to `"module"` .
+*Chakra* , which is a script execution engine, interprets syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. In *wes* , by adding *babel* to the built-in modules, *es module* are also executed while being sequentially transpiled. This costs us processing overhead and a bloated *wes.js* file. Modules written in *es module* are also converted to `require()` by transpiling, so it is possible to call *COM Object* . However, it does not support specifying the encoding of the module file with *es module* . Everything is loaded automatically. To load it as an *es module* , set the extension to `.mjs` or set the `"type"` field in `package.json` to `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -174,6 +168,30 @@ console.log(`${content} %O`, buff)
 
 ```javascript
 console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+```
+
+## *setTimeout* *setInterval* *setImmediate* *Promise*
+
+Since *wes* is an execution environment for synchronous processing, *setTimeout* *setInterval* *setImmediate* *Promise* does not function as asynchronous processing, but it is implemented to support modules that assume *Promise* implementation.
+
+```javascript
+const example = () => {
+  const promise = new Promise((resolve, reject) => {
+    console.log('promise')
+
+    setTimeout(() => {
+      console.log('setTimeout') 
+      resolve('resolved');
+    }, 2000);
+  }).then((val) => {
+    console.log(val)
+  });
+  console.log('sub')
+};
+
+console.log('start')
+example();
+console.log('end')
 ```
 
 # Built-in module
@@ -331,7 +349,7 @@ Compare to `true` with the strict equality operator `===` . If `value` is a func
 | Param     | Type                  | Description                           |
 | :-------- | :-------------------- | :------------------------------------ |
 | `value`   | `{Function\|Boolean}` | boolean or boolean-returning function |
-| `message` | `{String}`            | message in case of failure            |
+| `message` | `{String}`            | message on failure                    |
 
 #### `assert.equal(expected, actual)`
 
@@ -353,7 +371,7 @@ Whether or not the error is correct is determined by whether the expected error 
 | :--------- | :------------------------ | :-------------------------------------------------------------------------------------------- |
 | `value`    | `{Error}`                 | error                                                                                         |
 | `expected` | `{Error\|String\|RegExp}` | A regular expression that evaluates the expected error *constructor* , *message* , or *stack* |
-| `message`  | `{String}`                | message in case of failure                                                                    |
+| `message`  | `{String}`                | message on failure                                                                            |
 
 ## *pipe*
 
@@ -456,7 +474,7 @@ animate.run()
 
 ### `constructor(complete)`
 
-Execute the `complete` function when all queues are completed or `stop()` is called.
+Executes the `complete` function when all queues are completed or `stop()` is called.
 
 #### `static genProgressIndicator(animation)`
 
@@ -464,7 +482,7 @@ Generate a function that displays a cycling animation.
 
 #### `register(callback, interval, conditional)`
 
-Register processing. Multiple processes can be registered and processed in parallel. In the `callback` , we will instruct to stop the animation and write the view to be displayed. `interval` specifies the processing interval. If the `conditional` is a function, it will execute `conditional(count, queue)` and if the result is true, it will continue. The `conditional` executes `decrement(count)` if it is a number and continues if the result is a positive number. Executes only once if `conditional` is undefined. Note that specifying a function increases the `count` , whereas specifying a number decreases the `count` .
+Register processing. Multiple processes can be registered and processed in parallel. In the `callback` , we will instruct to stop the animation and write the view to be displayed. `interval` specifies the processing interval. If the `conditional` is a function, it executes `conditional(count, queue)` and if the result is true, it continues to the next. The `conditional` executes `decrement(count)` if it is a number and continues if the result is a positive number. Executes only once if `conditional` is undefined. Note that specifying a function increases the `count` , whereas specifying a number decreases the `count` .
 
 #### `stop()`
 
@@ -657,104 +675,3 @@ If you access the private repository *raw* with a browser, the *token* will be d
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
-<!--
-# Package introduction
-
-Here are some external packages.
-
-## *@wachaon/fmt*
-
-*@wachaon/fmt* is *prettier* packaged for *wes* to format scripts. Also, if a *Syntax Error* occurs while *@wachaon/fmt* is installed, you can show the location of the error.
-
-### install
-
-```bat
-wes install @wachaon/fmt
-```
-
-### Usage
-
-If there is *.prettierrc* (JSON format) in the working directory, it will be reflected in the settings. *fmt* is available in both *CLI* and *module* .
-
-#### Use as *CLI* .
-
-```bat
-wes @wachaon/fmt src/sample --write
-```
-
-| unnamed number | Description                                       |
-| -------------- | ------------------------------------------------- |
-| 0              | -                                                 |
-| 1              | Required. the path of the file you want to format |
-
-| named     | short named | Description     |
-| --------- | ----------- | --------------- |
-| `--write` | `-w`        | allow overwrite |
-
-Overwrite the file with the formatted script if `--write` or the `-w` named argument is specified.
-
-#### use as a module
-
-```javascript
-const fmt = require('@wachaon/fmt')
-const { readTextFileSync, writeTextFileSync } = require('filesystem')
-const { join, workingDirectory } = require('pathname')
-const target = join(workingDirectory, 'index.js')
-console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
-```
-
-## *@wachaon/edge*
-
-*Internet Explorer* will end support on June 15, 2022. Along with that, it is expected that application operation with `require('InternetExplorer.Application')` will also become impossible. An alternative would be to work with *Microsoft Edge based on Chromium* via the *web driver* . `@wachaon/edge` simplifies *Edge* autopilot.
-
-### install
-
-First install the package.
-
-```bat
-wes install @wachaon/edge --unsafe --bare
-```
-
-Then download the *web driver* .
-
-```bat
-wes edge --download
-```
-
-Check the installed *Edge* version and download the corresponding *web driver* .
-
-### Usage
-
-It will be easy to use.
-
-```javascript
-const edge = require('edge')
-edge((window, navi, res) => {
-    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
-    res.exports = []
-    navi.on(/https?:\/\/.+/, (url) => {
-        console.log('URL: %O', url)
-        res.exports.push(url)
-    })
-    window.navigate('https://www.google.com')
-})
-```
-
-This script prints the visited *URL* to the console in sequence. `@wachaon/edge` registers events for *URL* and adds data to `res.exports` . The *URL* to be registered can be either `String` `RegExp` , and can be set flexibly. By making it event-driven, you can easily switch to manual operation by not setting events for processes that are difficult to handle with autopilot. If you want the script to stop, `navi.emit('terminate', res)` or terminate *Edge* manually. Finalization outputs `res.exports` as a *.json* file by default. If you want to set termination processing, set `terminate` of `edge(callback, terminate)` . `window` is an instance of *@wachaon/webdriver* 's *Window* class, not the browser's `window` .
-
-## *@wachaon/webdriver*
-
-It will be a package that sends requests to the *web driver* that operates the browser. Built in *@wachaon/edge* . As with *@wachaon/edge* , a separate *web driver* is required for browser operation.
-
-### install
-
-```bat
-wes install @wachaon/webdriver --unsafe --bare
-```
-
-Download the *Chromium* -based *Microsoft Edge* *web driver* if you don't have it. Also, if the version of *edge* and the version of *web driver* are different, download the same version of *web driver* .
-
-```bat
-wes webdriver --download
-```
--->

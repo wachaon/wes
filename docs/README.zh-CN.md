@@ -1,7 +1,7 @@
 # *WES*
 
 *wes*是一个控制台框架，用于在*WSH (Windows Script Host)*上运行*ECMAScript* 。 *README*文件的[*japanese*](/README.md)将是日文。日语以外的文本将被机器翻译。  
-对于其他语言的文本，请从以下选项中选择。
+对于其他语言的文本，请从以下选项中进行选择。
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -30,7 +30,7 @@
 # 我们无法解决的*wes*问题
 
 -   `WScript.Quit`不能中止程序并且不返回错误代码
--   无法进行`setTimeout`和`Promise`等异步处理
+-   异步处理无法正常工作
 -   您不能使用`WScript.CreateObject`的第二个参数的*event prefix*
 
 # 下载
@@ -50,13 +50,13 @@ wes update
 
 # 用法
 
-输入`wes`关键字，然后输入指定文件的命令，该文件将成为控制台程序的起点。脚本扩展名*.js*可以省略。
+输入`wes`关键字和指定将成为控制台程序起点的文件的命令。脚本扩展名*.js*可以省略。
 
 ```bat
 wes index
 ```
 
-此外，由于*wes*配备了*REP* ，因此您可以通过单独启动`wes`直接输入脚本。
+此外，由于*wes*配备了*REP* ，您可以通过单独启动`wes`直接输入脚本。
 
 ```bat
 wes
@@ -71,19 +71,13 @@ wes
 | 命名为                | 描述                   |
 | ------------------ | -------------------- |
 | `--monotone`       | 消除*ANSI escape code* |
-| `--safe`           | 以安全模式运行脚本            |
-| `--usual`          | 以正常模式运行脚本（默认）        |
-| `--unsafe`         | 在不安全模式下运行脚本          |
-| `--dangerous`      | 以危险模式运行脚本            |
 | `--debug`          | 在调试模式下运行脚本           |
 | `--encoding=UTF-8` | 指定读取的第一个文件的编码        |
 | `--engine=Chakra`  | 此选项由*wes*自动添加        |
 
-`--safe` `--usual` `--unsafe` `--dangerous` `--debug`的实现不完整，但保留了命名参数。
-
 # 模块系统
 
-*wes*支持两个模块系统，使用`require()`的*commonjs module*系统和使用`import`的*es module*系统。 （不支持*dynamic import* ，因为它是一个异步过程）
+*wes*支持两种模块系统，使用`require()`的*commonjs module*系统和使用`import`的*es module*系统。 （不支持*dynamic import* ，因为它是一个异步过程）
 
 ## *commonjs module*
 
@@ -114,7 +108,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra*是一个脚本执行引擎，可以解释诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过在内置模块中添加*babel* ， *es module*也在被顺序转译的同时执行。这会花费我们处理开销和臃肿的*wes.js*文件。用*es module*模块写的模块也通过转译转换成`require()` ，所以可以调用*COM Object* 。但是，它不支持使用*es module*指定模块文件的编码。一切都是自动加载的。要将其作为*es module*加载，请将扩展名设置为`.mjs`或将`package.json`中的`"type"`字段设置为`"module"` 。
+脚本执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过在内置模块中添加*babel* ， *es module*也在被一个一个转译的同时执行。这会花费我们处理开销和臃肿的*wes.js*文件。 *es module*中写的模块也通过转译转换为`require()` ，因此可以调用*COM Object* 。但是，它不支持使用*es module*指定模块文件的编码。一切都是自动加载的。要将其加载为*es module* ，请将扩展名设置为`.mjs`或将`package.json`中的`"type"`字段设置为`"module"` 。
 
 ```javascript
 // ./sub.mjs
@@ -156,7 +150,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`  | 对象转储                             |
 | `%O`  | 对象转储（缩进/彩色）                      |
 
-`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`来输出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`是阻塞输出。 `WScript.StdErr.WriteLine`或`console.log` 。
+`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`来输出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`被阻止。 `WScript.StdErr.WriteLine`或`console.log` 。
 
 ## *Buffer*
 
@@ -174,6 +168,30 @@ console.log(`${content} %O`, buff)
 
 ```javascript
 console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+```
+
+## *setTimeout* *setInterval* *setImmediate* *Promise*
+
+由于*wes*是用于同步处理的执行环境，因此*setTimeout* *setInterval* *setImmediate* *Promise*不起到异步处理的作用，但它的实现是为了支持假设*Promise*实现的模块。
+
+```javascript
+const example = () => {
+  const promise = new Promise((resolve, reject) => {
+    console.log('promise')
+
+    setTimeout(() => {
+      console.log('setTimeout') 
+      resolve('resolved');
+    }, 2000);
+  }).then((val) => {
+    console.log(val)
+  });
+  console.log('sub')
+};
+
+console.log('start')
+example();
+console.log('end')
 ```
 
 # 内置模块
@@ -331,7 +349,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 | 参数        | 类型                    | 描述        |
 | :-------- | :-------------------- | :-------- |
 | `value`   | `{Function\|Boolean}` | 布尔或布尔返回函数 |
-| `message` | `{String}`            | 失败时的消息    |
+| `message` | `{String}`            | 失败消息      |
 
 #### `assert.equal(expected, actual)`
 
@@ -646,115 +664,14 @@ wes install @wachaon/fmt --bare
 
 # 从私有仓库安装包
 
-*install*不仅可以安装来自公共*github*存储库的包，还可以安装来自私有存储库的包。在*install*中，使用*@author/repository*指定包。该实现尝试下载以下 url。
+*install*不仅可以安装来自公共*github*存储库的包，还可以安装来自私有存储库的包。在*install*中，使用*@author/repository*指定包。该实现尝试下载以下网址。
 
 ```javascript
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-如果您使用浏览器访问*raw*存储库，则会显示*token* ，因此请复制*token*并使用它。您还可以通过在*token*有效时在控制台中运行来从私有存储库安装包。
+当您使用浏览器访问私有存储库的*raw*文件时，将显示*token* ，因此请复制*token*并使用它。如果在*token*有效时在控制台中执行，也可以安装来自私有存储库的包。
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
-<!--
-# 包装介绍
-
-这是一些外部软件包。
-
-## *@wachaon/fmt*
-
-*@wachaon/fmt* *prettier*地打包为*wes*格式化脚本。此外，如果在安装*@wachaon/fmt*时出现*Syntax Error* ，您可以显示错误的位置。
-
-### 安装
-
-```bat
-wes install @wachaon/fmt
-```
-
-### 用法
-
-如果工作目录中有*.prettierrc* （JSON 格式），它会反映在设置中。 *fmt*在*CLI*和*module*中都可用。
-
-#### 用作*CLI* 。
-
-```bat
-wes @wachaon/fmt src/sample --write
-```
-
-| 无名号码 | 描述             |
-| ---- | -------------- |
-| 0    | -              |
-| 1    | 必需的。要格式化的文件的路径 |
-
-| 命名为       | 简称   | 描述   |
-| --------- | ---- | ---- |
-| `--write` | `-w` | 允许覆盖 |
-
-如果指定了`--write`或`-w`命名参数，则使用格式化脚本覆盖文件。
-
-#### 作为一个模块使用
-
-```javascript
-const fmt = require('@wachaon/fmt')
-const { readTextFileSync, writeTextFileSync } = require('filesystem')
-const { join, workingDirectory } = require('pathname')
-const target = join(workingDirectory, 'index.js')
-console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
-```
-
-## *@wachaon/edge*
-
-*Internet Explorer*将于 2022 年 6 月 15 日终止支持。与此同时，预计使用`require('InternetExplorer.Application')`应用程序操作也将变得不可能。另一种方法是通过*web driver*使用*Microsoft Edge based on Chromium* 。 `@wachaon/edge`简化了*Edge*自动驾驶仪。
-
-### 安装
-
-首先安装软件包。
-
-```bat
-wes install @wachaon/edge --unsafe --bare
-```
-
-然后下载*web driver* 。
-
-```bat
-wes edge --download
-```
-
-检查安装的*Edge*版本并下载相应的*web driver* 。
-
-### 用法
-
-这将很容易使用。
-
-```javascript
-const edge = require('edge')
-edge((window, navi, res) => {
-    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
-    res.exports = []
-    navi.on(/https?:\/\/.+/, (url) => {
-        console.log('URL: %O', url)
-        res.exports.push(url)
-    })
-    window.navigate('https://www.google.com')
-})
-```
-
-此脚本按顺序将访问的*URL*打印到控制台。 `@wachaon/edge`为*URL*注册事件并将数据添加到`res.exports` 。要注册的*URL*可以是`String` `RegExp` ，可以灵活设置。通过使其成为事件驱动，您可以通过不为自动驾驶难以处理的流程设置事件来轻松切换到手动操作。如果您希望脚本停止， `navi.emit('terminate', res)`或手动终止*Edge* 。 Finalization 默认将`res.exports`输出为*.json*文件。如果要设置`terminate`处理，请设置`edge(callback, terminate)`的终止。 `window`是*@wachaon/webdriver*的*Window*类的实例，而不是浏览器的`window` 。
-
-## *@wachaon/webdriver*
-
-它将是一个向操作浏览器的*web driver*发送请求的包。内置*@wachaon/edge* 。与*@wachaon/edge* ，浏览器操作需要单独的*web driver* 。
-
-### 安装
-
-```bat
-wes install @wachaon/webdriver --unsafe --bare
-```
-
-如果没有，请下载基于*Chromium*的*Microsoft Edge* *web driver* 。另外，如果*edge*版本和*web driver*版本不同，请下载相同版本的*web driver* 。
-
-```bat
-wes webdriver --download
-```
--->

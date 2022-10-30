@@ -24,13 +24,13 @@ Para textos em outros idiomas, selecione uma das opções abaixo.
 -   Como o *cscript.exe* de 32 bits é sempre executado, não há nenhum problema exclusivo no ambiente de 64 bits.
 -   Como existe um sistema de módulos, ele pode ser desenvolvido de forma mais eficiente que o *WSH* convencional
 -   Módulos integrados suportam processamento básico, como entrada/saída de arquivo e saída de texto colorido para o console
--   Você pode deixar a leitura do arquivo adivinhar automaticamente a codificação, para que você não precise se preocupar com a codificação, etc.
+-   Você pode permitir que a leitura do arquivo adivinhe automaticamente a codificação, para que você não precise se preocupar com a codificação, etc.
 -   Módulos de pacote para dar suporte à publicação e recuperação externas
 
 # *wes* que não podemos resolver
 
 -   `WScript.Quit` não pode abortar o programa e não retorna um código de erro
--   Processamento assíncrono como `setTimeout` e `Promise` não é possível
+-   O processamento assíncrono não funciona corretamente
 -   Você não pode usar o *event prefix* do segundo argumento de `WScript.CreateObject`
 
 # download
@@ -71,15 +71,9 @@ As opções de inicialização do *wes* são as seguintes.
 | nomeado            | Descrição                                         |
 | ------------------ | ------------------------------------------------- |
 | `--monotone`       | Elimina *ANSI escape code*                        |
-| `--safe`           | execute o script no modo de segurança             |
-| `--usual`          | Executar script no modo normal (padrão)           |
-| `--unsafe`         | execute o script no modo inseguro                 |
-| `--dangerous`      | execute o script no modo perigoso                 |
 | `--debug`          | execute o script no modo de depuração             |
 | `--encoding=UTF-8` | Especifica a codificação do primeiro arquivo lido |
 | `--engine=Chakra`  | Esta opção é adicionada automaticamente por *wes* |
-
-`--safe` `--usual` `--unsafe` `--dangerous` `--debug` 's implementação está incompleta, mas os argumentos nomeados são reservados.
 
 # sistema de módulos
 
@@ -114,7 +108,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra* , que é um mecanismo de execução de scripts, interpreta sintaxe como `imoprt` , mas não pode ser executado porque o método de processamento como `cscript` não está definido. Em *wes* , adicionando *babel* aos módulos embutidos, os módulos *es module* também são executados enquanto são transpilados sequencialmente. Isso nos custa a sobrecarga de processamento e um arquivo *wes.js* inchado. Módulos escritos no *es module* também são convertidos para `require()` por transpilação, então é possível chamar *COM Object* . No entanto, ele não suporta especificar a codificação do arquivo de módulo com *es module* . Tudo é carregado automaticamente. Para carregá-lo como um *es module* , defina a extensão para `.mjs` ou defina o campo `"type"` em `package.json` para `"module"` .
+*Chakra* , que é o mecanismo de execução de scripts, interpreta sintaxe como `imoprt` , mas não pode ser executado como está porque o método de processamento como `cscript` não está definido. Em *wes* , adicionando *babel* aos módulos embutidos, os módulos *es module* também são executados enquanto são transpilados um a um. Isso nos custa a sobrecarga de processamento e um arquivo *wes.js* inchado. Módulos escritos no *es module* também são convertidos para `require()` por transpilação, então é possível chamar *COM Object* . No entanto, ele não suporta especificar a codificação do arquivo de módulo com *es module* . Tudo é carregado automaticamente. Para carregá-lo como um *es module* , defina a extensão para `.mjs` ou defina o campo `"type"` em `package.json` para `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -174,6 +168,30 @@ console.log(`${content} %O`, buff)
 
 ```javascript
 console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+```
+
+## *setTimeout* *setInterval* *setImmediate* *Promise*
+
+Como *wes* é um ambiente de execução para processamento síncrono, *setTimeout* *setInterval* *setImmediate* *Promise* não funciona como processamento assíncrono, mas é implementado para suportar módulos que assumem a implementação de *Promise* .
+
+```javascript
+const example = () => {
+  const promise = new Promise((resolve, reject) => {
+    console.log('promise')
+
+    setTimeout(() => {
+      console.log('setTimeout') 
+      resolve('resolved');
+    }, 2000);
+  }).then((val) => {
+    console.log(val)
+  });
+  console.log('sub')
+};
+
+console.log('start')
+example();
+console.log('end')
 ```
 
 # Módulo embutido
@@ -353,7 +371,7 @@ Se o erro está correto ou não, é determinado se o *constructor* de erro esper
 | :--------- | :------------------------ | :--------------------------------------------------------------------------------------- |
 | `value`    | `{Error}`                 | erro                                                                                     |
 | `expected` | `{Error\|String\|RegExp}` | Uma expressão regular que avalia o *constructor* , *message* ou *stack* de erro esperado |
-| `message`  | `{String}`                | mensagem em caso de falha                                                                |
+| `message`  | `{String}`                | mensagem sobre falha                                                                     |
 
 ## *pipe*
 
@@ -652,109 +670,8 @@ wes install @wachaon/fmt --bare
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-Se você acessar o repositório privado *raw* com um navegador, o *token* será exibido, então copie o *token* e use-o. Você também pode instalar pacotes de repositórios privados executando-o no console enquanto o *token* é válido.
+Quando você acessar o *raw* do repositório privado com um navegador, o *token* será exibido, então copie o *token* e use-o. Pacotes de repositórios privados também podem ser instalados se executados no console enquanto o *token* for válido.
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
-<!--
-# Introdução do pacote
-
-Aqui estão alguns pacotes externos.
-
-## *@wachaon/fmt*
-
-*@wachaon/fmt* é um pacote *prettier* para o *wes* formatar scripts. Além disso, se ocorrer um *Syntax Error* enquanto *@wachaon/fmt* estiver instalado, você poderá mostrar o local do erro.
-
-### instalar
-
-```bat
-wes install @wachaon/fmt
-```
-
-### Uso
-
-Se houver *.prettierrc* (formato JSON) no diretório de trabalho, isso será refletido nas configurações. *fmt* está disponível na *CLI* e no *module* .
-
-#### Use como *CLI* .
-
-```bat
-wes @wachaon/fmt src/sample --write
-```
-
-| número sem nome | Descrição                                                 |
-| --------------- | --------------------------------------------------------- |
-| 0               | -                                                         |
-| 1               | Requeridos. o caminho do arquivo que você deseja formatar |
-
-| nomeado   | nome curto | Descrição             |
-| --------- | ---------- | --------------------- |
-| `--write` | `-w`       | permitir sobrescrever |
-
-Sobrescreva o arquivo com o script formatado se `--write` ou `-w` o argumento nomeado for especificado.
-
-#### usar como módulo
-
-```javascript
-const fmt = require('@wachaon/fmt')
-const { readTextFileSync, writeTextFileSync } = require('filesystem')
-const { join, workingDirectory } = require('pathname')
-const target = join(workingDirectory, 'index.js')
-console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
-```
-
-## *@wachaon/edge*
-
-*Internet Explorer* encerrará o suporte em 15 de junho de 2022. Junto com isso, espera-se que a operação do aplicativo com `require('InternetExplorer.Application')` também se torne impossível. Uma alternativa seria trabalhar com *Microsoft Edge based on Chromium* através do *web driver* . `@wachaon/edge` simplifica o piloto automático de *Edge* .
-
-### instalar
-
-Primeiro instale o pacote.
-
-```bat
-wes install @wachaon/edge --unsafe --bare
-```
-
-Em seguida, baixe o *web driver* .
-
-```bat
-wes edge --download
-```
-
-Verifique a versão do *Edge* instalada e baixe o *web driver* correspondente.
-
-### Uso
-
-Será fácil de usar.
-
-```javascript
-const edge = require('edge')
-edge((window, navi, res) => {
-    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
-    res.exports = []
-    navi.on(/https?:\/\/.+/, (url) => {
-        console.log('URL: %O', url)
-        res.exports.push(url)
-    })
-    window.navigate('https://www.google.com')
-})
-```
-
-Este script imprime os *URL* visitados no console em sequência. `@wachaon/edge` registra eventos para *URL* e adiciona dados a `res.exports` . A *URL* a ser registrada pode ser `String` `RegExp` e pode ser definida de forma flexível. Ao torná-lo orientado a eventos, você pode alternar facilmente para a operação manual, não configurando eventos para processos difíceis de lidar com o piloto automático. Se você quiser que o script pare, `navi.emit('terminate', res)` ou encerre o *Edge* manualmente. A finalização gera `res.exports` como um arquivo *.json* por padrão. Se você quiser definir o processamento de finalização, defina `terminate` de `edge(callback, terminate)` . `window` é uma instância da classe *Window* do *@wachaon/webdriver* , não a `window` do navegador .
-
-## *@wachaon/webdriver*
-
-Será um pacote que envia requisições para o *web driver* que opera o navegador. Construído em *@wachaon/edge* . Assim como *@wachaon/edge* , é necessário um *web driver* separado para a operação do navegador.
-
-### instalar
-
-```bat
-wes install @wachaon/webdriver --unsafe --bare
-```
-
-Baixe o *web driver* do *Microsoft Edge* baseado no *Chromium* se você não o tiver. Além disso, se a versão do *edge* e a versão do *web driver* forem diferentes, baixe a mesma versão do *web driver* .
-
-```bat
-wes webdriver --download
-```
--->

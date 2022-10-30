@@ -17,7 +17,7 @@
 # *wes* が解決できない既知の問題
 
 -  `WScript.Quit` はプログラムを中断出来ず、エラーコードも返しません
--  `setTimeout` や `Promise` など非同期処理はできません
+-  非同期処理は正しく機能しません
 -  `WScript.CreateObject` の第二引数の *event prefix* の使用はできません
 
 # ダウンロード
@@ -62,15 +62,9 @@ wes
 | named              | Description                                       |
 | ------------------ | ------------------------------------------------- |
 | `--monotone`       | *ANSI escape code* を排除します                   |
-| `--safe`           | スクリプトを安全モードで実行します                |
-| `--usual`          | スクリプトを通常モードで実行します (デフォルト)   |
-| `--unsafe`         | スクリプトを安全ではないモードで実行します        |
-| `--dangerous`      | スクリプトを危険なモードで実行します              |
 | `--debug`          | スクリプトをデバッグモードで実行します            |
 | `--encoding=UTF-8` | 最初に読み込むファイルのエンコードを指定します    |
 | `--engine=Chakra`  | このオプションは *wes* によって自動で付加されます |
-
-`--safe` `--usual` `--unsafe` `--dangerous` `--debug` の実装は不完全ですが、名前付き引数は予約されています。
 
 # モジュールシステム
 *wes* は `require()` を使用する *commonjs module* のシステムと `import` を使用する *es module* の２つのモジュールシステムに対応しています。(*dynamic import* は非同期処理の為、対応していません)
@@ -170,6 +164,30 @@ console.log(`${content} %O`, buff)
 
 ```javascript
 console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+```
+
+## *setTimeout* *setInterval* *setImmediate* *Promise*
+*wes* は同期処理の実行環境なので、*setTimeout* *setInterval* *setImmediate*  *Promise* は
+非同期処理として機能しませんが、*Promise* の実装が前提のモジュールの対応の為に実装しています。
+
+```javascript
+const example = () => {
+  const promise = new Promise((resolve, reject) => {
+    console.log('promise')
+
+    setTimeout(() => {
+      console.log('setTimeout') 
+      resolve('resolved');
+    }, 2000);
+  }).then((val) => {
+    console.log(val)
+  });
+  console.log('sub')
+};
+
+console.log('start')
+example();
+console.log('end')
 ```
 
 # ビルトインモジュール

@@ -30,7 +30,7 @@
 # المشكلات *wes* التي لا يمكننا حلها
 
 -   لا يمكن لـ `WScript.Quit` إحباط البرنامج ولا يُرجع رمز خطأ
--   المعالجة غير المتزامنة مثل `setTimeout` و `Promise` غير ممكنة
+-   المعالجة غير المتزامنة لا تعمل بشكل صحيح
 -   لا يمكنك استخدام *event prefix* للوسيطة الثانية من `WScript.CreateObject`
 
 # تحميل
@@ -50,7 +50,7 @@ wes update
 
 # إستعمال
 
-أدخل الكلمة الأساسية `wes` متبوعة بالأمر الذي يحدد الملف الذي سيكون نقطة انطلاق البرنامج إلى وحدة التحكم. يمكن حذف ملحق البرنامج النصي *.js* .
+أدخل الكلمة الأساسية `wes` والأمر الذي يحدد الملف الذي سيكون نقطة انطلاق البرنامج إلى وحدة التحكم. يمكن حذف ملحق البرنامج النصي *.js* .
 
 ```bat
 wes index
@@ -68,18 +68,12 @@ wes
 
 خيارات بدء التشغيل *wes* كما يلي.
 
-| اسم الشيئ          | وصف                                            |
-| ------------------ | ---------------------------------------------- |
-| `--monotone`       | يلغي *ANSI escape code*                        |
-| `--safe`           | قم بتشغيل البرنامج النصي في الوضع الآمن        |
-| `--usual`          | تشغيل البرنامج النصي في الوضع العادي (افتراضي) |
-| `--unsafe`         | قم بتشغيل البرنامج النصي في الوضع غير الآمن    |
-| `--dangerous`      | قم بتشغيل البرنامج النصي في الوضع الخطير       |
-| `--debug`          | قم بتشغيل البرنامج النصي في وضع التصحيح        |
-| `--encoding=UTF-8` | يحدد ترميز أول ملف تمت قراءته                  |
-| `--engine=Chakra`  | هذا الخيار يضاف تلقائيا من قبل *wes*           |
-
-`--safe` - `--debug` `--unsafe` - `--dangerous` - التنفيذ غير `--usual` ، لكن الحجج المسماة محفوظة.
+| اسم الشيئ          | وصف                                     |
+| ------------------ | --------------------------------------- |
+| `--monotone`       | يلغي *ANSI escape code*                 |
+| `--debug`          | قم بتشغيل البرنامج النصي في وضع التصحيح |
+| `--encoding=UTF-8` | يحدد ترميز أول ملف تمت قراءته           |
+| `--engine=Chakra`  | هذا الخيار يضاف تلقائيا من قبل *wes*    |
 
 # نظام الوحدة
 
@@ -114,7 +108,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra* ، وهو محرك تنفيذ نصي ، يفسر بناء الجملة مثل `imoprt` ، لكن لا يمكن تنفيذه كما هو لأن طريقة المعالجة مثل `cscript` غير محددة. في *wes* ، من خلال إضافة *babel* إلى الوحدات المدمجة ، يتم أيضًا تنفيذ *es module* أثناء نقلها بالتسلسل. هذا يكلفنا معالجة النفقات العامة وملف *wes.js* المتضخم. يتم أيضًا تحويل الوحدات المكتوبة في *es module* إلى `require()` عن طريق التحويل ، لذلك من الممكن استدعاء *COM Object* . ومع ذلك ، فإنه لا يدعم تحديد ترميز ملف الوحدة النمطية باستخدام *es module* . يتم تحميل كل شيء تلقائيًا. لتحميلها كوحدة *es module* ، اضبط الامتداد على `.mjs` أو اضبط حقل `"type"` في `package.json` على `"module"` .
+يفسر *Chakra* ، وهو محرك تنفيذ البرنامج النصي ، بناء الجملة مثل `imoprt` ، ولكن لا يمكن تنفيذه كما هو لأن طريقة المعالجة مثل `cscript` غير محددة. في *wes* ، من خلال إضافة *babel* إلى الوحدات المدمجة ، يتم أيضًا تنفيذ *es module* أثناء نقلها واحدة تلو الأخرى. هذا يكلفنا معالجة النفقات العامة وملف *wes.js* المتضخم. يتم أيضًا تحويل الوحدات المكتوبة في *es module* إلى `require()` عن طريق التحويل ، لذلك من الممكن استدعاء *COM Object* . ومع ذلك ، فإنه لا يدعم تحديد ترميز ملف الوحدة النمطية باستخدام *es module* . يتم تحميل كل شيء تلقائيًا. لتحميلها كوحدة *es module* ، اضبط الامتداد على `.mjs` أو اضبط حقل `"type"` في `package.json` على `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -156,7 +150,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`         | تفريغ الكائن                       |
 | `%O`         | تفريغ الكائن (مسافة بادئة / ملونة) |
 
-`WScript.StdOut.WriteLine` *wes* من `WScript.StdErr.WriteLine` لإخراج السلاسل الملونة. يتم حظر إخراج `WScript.Echo` و `WScript.StdOut.WriteLine` . `WScript.StdErr.WriteLine` أو `console.log` .
+`WScript.StdOut.WriteLine` *wes* من `WScript.StdErr.WriteLine` لإخراج السلاسل الملونة. تم حظر `WScript.Echo` و `WScript.StdOut.WriteLine` . `WScript.StdErr.WriteLine` أو `console.log` .
 
 ## *Buffer*
 
@@ -174,6 +168,30 @@ console.log(`${content} %O`, buff)
 
 ```javascript
 console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+```
+
+## *setTimeout* *setInterval* *setImmediate* *Promise* الفوري
+
+نظرًا لأن *wes* هي بيئة تنفيذ للمعالجة المتزامنة ، فإن *setTimeout* *setInterval* *setImmediate* لا تعمل كعملية غير متزامنة ، ولكن يتم تنفيذها لدعم الوحدات النمطية التي *Promise* *Promise*
+
+```javascript
+const example = () => {
+  const promise = new Promise((resolve, reject) => {
+    console.log('promise')
+
+    setTimeout(() => {
+      console.log('setTimeout') 
+      resolve('resolved');
+    }, 2000);
+  }).then((val) => {
+    console.log(val)
+  });
+  console.log('sub')
+};
+
+console.log('start')
+example();
+console.log('end')
 ```
 
 # وحدة مدمجة
@@ -326,12 +344,12 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 #### `assert(value, message)` `assert.ok(value, message)`
 
-قارن مع `true` مع عامل المساواة الصارم `===` . إذا كانت `value` دالة ، فقم بتقييم نتيجة تنفيذ الوظيفة.
+قارن بـ " `true` " مع عامل المساواة الصارم `===` . إذا كانت `value` دالة ، فقم بتقييم نتيجة تنفيذ الوظيفة.
 
 | بارام     | يكتب                  | وصف                         |
 | :-------- | :-------------------- | :-------------------------- |
 | `value`   | `{Function\|Boolean}` | دالة عائدة منطقية أو منطقية |
-| `message` | `{String}`            | رسالة في حالة الفشل         |
+| `message` | `{String}`            | رسالة عن الفشل              |
 
 #### `assert.equal(expected, actual)`
 
@@ -346,7 +364,7 @@ NaN `true` دالة `NaN === NaN` `function (){} === function (){}` `/RegExp/g =
 
 #### `assert.throws(value, expected, message)`
 
-تحقق من إلقاء الخطأ بشكل صحيح.  
+تحقق من أن الأخطاء يتم طرحها بشكل صحيح.  
 يتم تحديد ما إذا كان الخطأ صحيحًا أم لا من خلال ما إذا كان *constructor* الخطأ المتوقع ، *message* متساوية ، ويمرر التعبير العادي تقييم *stack* .
 
 | بارام      | يكتب                      | وصف                                                                        |
@@ -464,7 +482,7 @@ animate.run()
 
 #### `register(callback, interval, conditional)`
 
-معالجة التسجيل. يمكن تسجيل عمليات متعددة ومعالجتها بالتوازي. في `callback` ، سنصدر تعليمات بإيقاف الرسوم المتحركة وكتابة العرض المراد عرضه. `interval` يحدد الفاصل الزمني للمعالجة. إذا كانت `conditional` عبارة عن دالة ، فسوف تنفذ `conditional(count, queue)` وإذا كانت النتيجة صحيحة ، فستستمر. ينفذ `conditional` `decrement(count)` إذا كان رقمًا ويستمر إذا كانت النتيجة رقمًا موجبًا. يتم التنفيذ مرة واحدة فقط إذا كان `conditional` غير محدد. لاحظ أن تحديد دالة يؤدي إلى زيادة `count` ، بينما يؤدي تحديد رقم إلى تقليل `count` .
+معالجة التسجيل. يمكن تسجيل عمليات متعددة ومعالجتها بالتوازي. في `callback` ، سنصدر تعليمات بإيقاف الرسوم المتحركة وكتابة العرض المراد عرضه. `interval` يحدد الفاصل الزمني للمعالجة. إذا كانت `conditional` دالة ، فستنفذ `conditional(count, queue)` وإذا كانت النتيجة صحيحة ، فستستمر. ينفذ `conditional` `decrement(count)` إذا كان رقمًا ويستمر إذا كانت النتيجة رقمًا موجبًا. يتم التنفيذ مرة واحدة فقط إذا كان `conditional` غير محدد. لاحظ أن تحديد دالة يؤدي إلى زيادة `count` ، بينما يؤدي تحديد رقم إلى تقليل `count` .
 
 #### `stop()`
 
@@ -657,104 +675,3 @@ wes install @wachaon/fmt --bare
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
-<!--
-# مقدمة الحزمة
-
-فيما يلي بعض الحزم الخارجية.
-
-## *@wachaon/fmt*
-
-*@wachaon/fmt* *wes* *prettier* من أجل تنسيق البرامج النصية. أيضًا ، في حالة حدوث *Syntax Error* أثناء *@wachaon/fmt* ، يمكنك إظهار موقع الخطأ.
-
-### تثبيت
-
-```bat
-wes install @wachaon/fmt
-```
-
-### إستعمال
-
-إذا كان هناك تنسيق *.prettierrc* (تنسيق JSON) في دليل العمل ، فسوف ينعكس في الإعدادات. يتوفر *fmt* في كل من *CLI* *module* .
-
-#### استخدام *CLI* .
-
-```bat
-wes @wachaon/fmt src/sample --write
-```
-
-| رقم غير مسمى | وصف                                |
-| ------------ | ---------------------------------- |
-| 0            | -                                  |
-| 1            | مطلوب. مسار الملف الذي تريد تنسيقه |
-
-| اسم الشيئ | اسم قصير | وصف             |
-| --------- | -------- | --------------- |
-| `--write` | `-w`     | السماح بالكتابة |
-
-الكتابة فوق الملف بالبرنامج النصي المنسق إذا تم تحديد الوسيطة `--write` أو `-w` المسماة.
-
-#### استخدام كوحدة نمطية
-
-```javascript
-const fmt = require('@wachaon/fmt')
-const { readTextFileSync, writeTextFileSync } = require('filesystem')
-const { join, workingDirectory } = require('pathname')
-const target = join(workingDirectory, 'index.js')
-console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
-```
-
-## *@wachaon/edge*
-
-سينهي *Internet Explorer* الدعم في 15 يونيو 2022. إلى جانب ذلك ، من المتوقع أن تصبح عملية التطبيق باستخدام `require('InternetExplorer.Application')` مستحيلة أيضًا. سيكون البديل هو العمل مع *Microsoft Edge based on Chromium* عبر *web driver* . `@wachaon/edge` يبسط الطيار الآلي *Edge* .
-
-### تثبيت
-
-قم أولاً بتثبيت الحزمة.
-
-```bat
-wes install @wachaon/edge --unsafe --bare
-```
-
-ثم قم بتنزيل *web driver* .
-
-```bat
-wes edge --download
-```
-
-تحقق من إصدار *Edge* المثبت وقم بتنزيل *web driver* المقابل.
-
-### إستعمال
-
-سيكون سهل الاستخدام.
-
-```javascript
-const edge = require('edge')
-edge((window, navi, res) => {
-    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
-    res.exports = []
-    navi.on(/https?:\/\/.+/, (url) => {
-        console.log('URL: %O', url)
-        res.exports.push(url)
-    })
-    window.navigate('https://www.google.com')
-})
-```
-
-يقوم هذا البرنامج النصي بطباعة *URL* التي تمت زيارتها إلى وحدة التحكم بالتسلسل. `@wachaon/edge` الأحداث *URL* ويضيف البيانات إلى `res.exports` . يمكن أن يكون *URL* المراد تسجيله إما `String` `RegExp` ، ويمكن تعيينه بمرونة. من خلال جعلها مدفوعة بالأحداث ، يمكنك التبديل بسهولة إلى التشغيل اليدوي من خلال عدم تعيين أحداث للعمليات التي يصعب التعامل معها باستخدام الطيار الآلي. إذا كنت تريد أن يتوقف البرنامج النصي ، `navi.emit('terminate', res)` أو إنهاء *Edge* يدويًا. ينتج عن `res.exports` كملف *.json* افتراضيًا. إذا كنت ترغب في تعيين معالجة الإنهاء ، فقم بتعيين `terminate` `edge(callback, terminate)` . `window` هو مثيل لفئة *Window* *@wachaon/webdriver* ، وليس `window` المتصفح.
-
-## *@wachaon/webdriver*
-
-ستكون حزمة ترسل الطلبات إلى *web driver* الذي يقوم بتشغيل المتصفح. بني في *@wachaon/edge* . كما هو الحال مع *@wachaon/edge* ، يلزم وجود *web driver* منفصل لعمليات المتصفح.
-
-### تثبيت
-
-```bat
-wes install @wachaon/webdriver --unsafe --bare
-```
-
-قم بتنزيل *web driver* *Microsoft Edge* المستند إلى *Chromium* إذا لم يكن لديك. أيضًا ، إذا كان إصدار *edge* وإصدار *web driver* مختلفين ، فقم بتنزيل الإصدار نفسه من *web driver* .
-
-```bat
-wes webdriver --download
-```
--->
