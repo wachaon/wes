@@ -26,6 +26,59 @@
 
         /* insert utility */
 
+        var timeout = false
+        function setTimeout() {
+            var args = Array.from(arguments)
+            var fn = args.shift()
+            var delay = args.length ? args.shift() : 0
+
+            timeout = true
+            WScript.Sleep(delay)
+            if (timeout) fn.apply(null, args)
+            timeout = false
+            return 1
+        }
+
+        function clearTimeout(id) {
+            timeout = false
+        }
+
+        var interval = false
+        function setInterval() {
+            var args = Array.from(arguments)
+            var fn = args.shift()
+            var delay = args.length ? args.shift() : 0
+
+            interval = true
+            while (interval) {
+                WScript.Sleep(delay)
+                fn.apply(null, args)
+            }
+            interval = false
+            return 1
+        }
+
+        function clearInterval(id) {
+            interval = false
+        }
+
+        var immediate = false
+        function setImmediate() {
+            var args = Array.from(arguments)
+            var fn = args.shift()
+            var delay = args.length ? args.shift() : 0
+
+            immediate = true
+            WScript.Sleep(delay)
+            if (immediate) fn.apply(null, args)
+            immediate = false
+            return 1
+        }
+
+        function clearImmediate() {
+            immediate = false
+        }
+
         if (!argv.has('engine', 'Chakra')) {
             var cpu = ARCHITECTURE !== 'x86' ? '{%}windir{%}\\SysWOW64\\cscript' : 'cscript'
             var nologo = '//nologo'
@@ -90,6 +143,7 @@
             var BRACKET_START = '{'
             var DOLLAR = '$'
             var PERCENT = '%'
+            var PROMISE = 'promise'
 
             var pathname = req(PATHNAME)
             var resolve = pathname.resolve
@@ -346,9 +400,17 @@
                     __dirname: dirname(entry),
                     __filename: entry,
                     wes: wes,
-                    process: process
+                    process: process,
+                    setTimeout: setTimeout,
+                    clearTimeout: clearTimeout,
+                    setInterval: setInterval,
+                    clearInterval: clearInterval,
+                    setImmediate: setImmediate,
+                    clearImmediate: clearImmediate
                 }
                 if (!(entry === BUFFER || /(class|var|let|const)\s+Buffer\b/.test(script))) codeMap.Buffer = req(BUFFER)
+                if (!(entry === PROMISE || /(class|var|let|const)\s+Promise\b/.test(script)))
+                    codeMap.Promise = req(PROMISE)
 
                 generateCodeAndExecution(codeMap, script)
                 wes.history.pop()
@@ -386,10 +448,18 @@
                     __dirname: dirname,
                     __filename: entry,
                     wes: wes,
-                    process: process
+                    process: process,
+                    setTimeout: setTimeout,
+                    clearTimeout: clearTimeout,
+                    setInterval: setInterval,
+                    clearInterval: clearInterval,
+                    setImmediate: setImmediate,
+                    clearImmediate: clearImmediate
                 }
                 if (!(entry === BUFFER || /(class|var|let|const)[\n\s]+Buffer\b/.test(script)))
                     codeMap.Buffer = req(BUFFER)
+                if (!(entry === PROMISE || /(class|var|let|const)\s+Promise\b/.test(script)))
+                    codeMap.Promise = req(PROMISE)
 
                 generateCodeAndExecution(codeMap, script)
             }
