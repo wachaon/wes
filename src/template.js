@@ -165,7 +165,8 @@
                     return WorkingDirectory
                 },
                 arch: ARCHITECTURE,
-                platform: WIN32
+                platform: WIN32,
+                version: JSON.parse(readTextFileSync(PACKAGE_JSON)).version
             }
 
             var Babel_option = {
@@ -332,7 +333,6 @@
                             else if (Array.isArray(dot)) {
                                 dot.find(function (val) {
                                     if (typeof val === string) {
-                                        l
                                         areas.push(resolve(dir, val))
                                     } else if (type === COMMONJS && REQUIRE in val) {
                                         areas.push(resolve(dir, val[REQUIRE]))
