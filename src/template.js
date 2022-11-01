@@ -408,9 +408,9 @@
                     setImmediate: setImmediate,
                     clearImmediate: clearImmediate
                 }
-                if (!(entry === BUFFER || /(class|var|let|const)\s+Buffer\b/.test(script))) codeMap.Buffer = req(BUFFER)
-                if (!(entry === PROMISE || /(class|var|let|const)\s+Promise\b/.test(script)))
-                    codeMap.Promise = req(PROMISE)
+                if (!(entry === BUFFER || /(class|var|let|const)\s+Buffer\b/.test(script)))
+                    codeMap.Buffer = req(BUFFER).Buffer
+                if (entry !== PROMISE) codeMap.Promise = req(PROMISE)
 
                 generateCodeAndExecution(codeMap, script)
                 wes.history.pop()
@@ -456,10 +456,9 @@
                     setImmediate: setImmediate,
                     clearImmediate: clearImmediate
                 }
-                if (!(entry === BUFFER || /(class|var|let|const)[\n\s]+Buffer\b/.test(script)))
-                    codeMap.Buffer = req(BUFFER)
-                if (!(entry === PROMISE || /(class|var|let|const)\s+Promise\b/.test(script)))
-                    codeMap.Promise = req(PROMISE)
+                if (!(entry === BUFFER || /(class|var|let|const)\s+Buffer\b/.test(script)))
+                    codeMap.Buffer = req(BUFFER).Buffer
+                if (entry !== PROMISE) codeMap.Promise = req(PROMISE)
 
                 generateCodeAndExecution(codeMap, script)
             }
