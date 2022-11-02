@@ -1,4 +1,4 @@
-;(function () {
+; (function () {
     try {
         var LF = '\n'
         var rLINE_SEP = /\r?\n/
@@ -195,103 +195,103 @@
             //// if (argv.get('relation')) console.log('\n[relation]: %O', tree)
         }
     } catch (error) {
-        var ORANGE = ansi.color(255, 165, 0)
-        var LIME = ansi.color(181, 255, 20)
-        var AQUA = ansi.color(24, 235, 249)
-        var LEMON = ansi.color(253, 255, 0)
-        var CARMINE = ansi.color(215, 0, 53)
+        // var ORANGE = ansi.color(255, 165, 0)
+        // var LIME = ansi.color(181, 255, 20)
+        // var AQUA = ansi.color(24, 235, 249)
+        // var LEMON = ansi.color(253, 255, 0)
+        // var CARMINE = ansi.color(215, 0, 53)
         var ERROR_COLOR = ansi.red
         var FILE_PATH_COLOR = ansi.redBright
         var REVERSE = ansi.reverse
         var CLEAR = ansi.clear
 
-        ;(function () {
-            //// if (argv.get('relation')) console.log('\n[relation]: %O', tree)
-            error.stack = unescapeName(error.stack)
+            ; (function () {
+                //// if (argv.get('relation')) console.log('\n[relation]: %O', tree)
+                error.stack = unescapeName(error.stack)
 
-            if (console == null) WScript.Popup(error.stack)
-            console.debug(error.stack)
+                if (console == null) WScript.Popup(error.stack)
+                console.debug(error.stack)
 
-            var mod =
-                wes.main === REP
-                    ? find(Modules, function (_mod, _id) {
-                          return _id.startsWith(BRACKET_START)
-                      })
-                    : find(Modules, function (_mod, _id) {
-                          return _mod.path === wes.history[wes.history.length - 1]
-                      })
+                var mod =
+                    wes.main === REP
+                        ? find(Modules, function (_mod, _id) {
+                            return _id.startsWith(BRACKET_START)
+                        })
+                        : find(Modules, function (_mod, _id) {
+                            return _mod.path === wes.history[wes.history.length - 1]
+                        })
 
-            if (mod == null) return console.log(coloring(error.stack, ERROR_COLOR))
+                if (mod == null) return console.log(coloring(error.stack, ERROR_COLOR))
 
-            if (mod.type === COMMONJS) {
-                if (error instanceof SyntaxError) {
-                    try {
-                        console.log(FILE_PATH_COLOR + 'Predicted error source is ' + mod.path)
-                        req(BABEL_STANDALONE).transform(mod.source, Babel_option)
-                        return console.log(coloring(error.stack, ERROR_COLOR))
-                    } catch (e) {
-                        return console.log(coloring(unescapeName(e.stack), ERROR_COLOR))
+                if (mod.type === COMMONJS) {
+                    if (error instanceof SyntaxError) {
+                        try {
+                            console.log(FILE_PATH_COLOR + 'Predicted error source is ' + mod.path)
+                            req(BABEL_STANDALONE).transform(mod.source, Babel_option)
+                            return console.log(coloring(error.stack, ERROR_COLOR))
+                        } catch (e) {
+                            return console.log(coloring(unescapeName(e.stack), ERROR_COLOR))
+                        }
                     }
-                }
 
-                if (!rSTACK_LINE.test(error.stack)) {
-                    error.stack = error.stack.replace(rSTACK_FIRST_LINE, function (_, __, _row, _column) {
+                    if (!rSTACK_LINE.test(error.stack)) {
+                        error.stack = error.stack.replace(rSTACK_FIRST_LINE, function (_, __, _row, _column) {
+                            var row = _row - 0
+                            var column = _column - 0
+                            var spec = wes.main === REP ? '[Real-Eval-Print]' : mod.path
+                            return showErrorCode(mod.source, spec, row, column)
+                        })
+                    }
+
+                    error.stack = error.stack.replace(rSTACK_LINE, function (_, _spec, _row, _column) {
                         var row = _row - 0
                         var column = _column - 0
-                        var spec = wes.main === REP ? '[Real-Eval-Print]' : mod.path
-                        return showErrorCode(mod.source, spec, row, column)
+
+                        var mod = find(Modules, function (_mod, _id) {
+                            return _mod.path === _spec
+                        })
+
+                        return showErrorCode(mod.source, mod.path, row, column)
                     })
-                }
-
-                error.stack = error.stack.replace(rSTACK_LINE, function (_, _spec, _row, _column) {
-                    var row = _row - 0
-                    var column = _column - 0
-
-                    var mod = find(Modules, function (_mod, _id) {
-                        return _mod.path === _spec
-                    })
-
-                    return showErrorCode(mod.source, mod.path, row, column)
-                })
-                return console.log(coloring(error.stack, ERROR_COLOR))
-            }
-
-            if (mod.type === MODULE || mod.type === TRANSPILED) {
-                if (error instanceof SyntaxError) {
-                    console.log(FILE_PATH_COLOR + 'Predicted error source is ' + mod.path)
                     return console.log(coloring(error.stack, ERROR_COLOR))
                 }
 
-                if (!rSTACK_LINE.test(error.stack)) {
-                    error.stack = error.stack.replace(rSTACK_FIRST_LINE, function (_, __, _row, _column) {
+                if (mod.type === MODULE || mod.type === TRANSPILED) {
+                    if (error instanceof SyntaxError) {
+                        console.log(FILE_PATH_COLOR + 'Predicted error source is ' + mod.path)
+                        return console.log(coloring(error.stack, ERROR_COLOR))
+                    }
+
+                    if (!rSTACK_LINE.test(error.stack)) {
+                        error.stack = error.stack.replace(rSTACK_FIRST_LINE, function (_, __, _row, _column) {
+                            var row = _row - 0
+                            var column = _column - 0
+
+                            var decoded = decodeMappings(mod.map.mappings)
+                            var mapping = decoded[row - 1][column - 1]
+
+                            var spec = wes.main === REP ? '[Real-Eval-Print]' : mod.path
+                            return showErrorCode(mod.source, spec, mapping[2] + 1, mapping[3] + 1)
+                        })
+                    }
+
+                    error.stack = error.stack.replace(rSTACK_LINE, function (_, _spec, _row, _column) {
                         var row = _row - 0
                         var column = _column - 0
+
+                        var mod = find(Modules, function (_mod, _id) {
+                            return _mod.path === _spec
+                        })
 
                         var decoded = decodeMappings(mod.map.mappings)
                         var mapping = decoded[row - 1][column - 1]
 
-                        var spec = wes.main === REP ? '[Real-Eval-Print]' : mod.path
-                        return showErrorCode(mod.source, spec, mapping[2] + 1, mapping[3] + 1)
+                        return showErrorCode(mod.source, mod.path, mapping[2] + 1, mapping[3] + 1)
                     })
+                    console.log(coloring(error.stack, ERROR_COLOR))
+                    console.debug('history: %O', history)
                 }
-
-                error.stack = error.stack.replace(rSTACK_LINE, function (_, _spec, _row, _column) {
-                    var row = _row - 0
-                    var column = _column - 0
-
-                    var mod = find(Modules, function (_mod, _id) {
-                        return _mod.path === _spec
-                    })
-
-                    var decoded = decodeMappings(mod.map.mappings)
-                    var mapping = decoded[row - 1][column - 1]
-
-                    return showErrorCode(mod.source, mod.path, mapping[2] + 1, mapping[3] + 1)
-                })
-                console.log(coloring(error.stack, ERROR_COLOR))
-                console.debug('history: %O', history)
-            }
-        })()
+            })()
     }
 
     function getEntry(areas) {
@@ -487,7 +487,7 @@
             var com = WScript.CreateObject(query)
             if (argv.get('dump')) console.log(' => ' + ansi.yellowBright + '<com>: ' + query)
             return com
-        } catch (e) {}
+        } catch (e) { }
 
         // execute req function, if it is a mapping[ query ]
         var parentModule = getPathToModule(callee)
