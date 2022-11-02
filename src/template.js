@@ -183,16 +183,16 @@
 
             var founder = resolve(WorkingDirectory, '*')
 
-            var tree = {}
-            var properties = []
-            var current = null
+            //// var tree = {}
+            //// var properties = []
+            //// var current = null
 
-            current = seq(tree, properties)
-            current.type = founder
+            //// current = seq(tree, properties)
+            //// current.type = founder
 
             require(founder, main, argv.get('encoding'))
 
-            if (argv.get('relation')) console.log('\n[relation]: %O', tree)
+            //// if (argv.get('relation')) console.log('\n[relation]: %O', tree)
         }
     } catch (error) {
         var ORANGE = ansi.color(255, 165, 0)
@@ -206,7 +206,7 @@
         var CLEAR = ansi.clear
 
         ;(function () {
-            if (argv.get('relation')) console.log('\n[relation]: %O', tree)
+            //// if (argv.get('relation')) console.log('\n[relation]: %O', tree)
             error.stack = unescapeName(error.stack)
 
             if (console == null) WScript.Popup(error.stack)
@@ -469,8 +469,8 @@
 
     // require
     function require(callee, query, encode) {
-        var start = Date.now()
-        var element
+        //// var start = Date.now()
+        //// var element
 
         if (argv.get('dump')) console.print('callee: ' + callee)
 
@@ -494,17 +494,17 @@
         var mappingID
         if (parentModule) {
             if ((mappingID = parentModule.mapping[query])) {
-                current = seq(tree, properties)
-                current.children = current.children || []
-                element = { type: Modules[mappingID].path }
-                current.children.push(element)
-                properties.push(Modules[mappingID].path)
+                //// current = seq(tree, properties)
+                //// current.children = current.children || []
+                //// element = { type: Modules[mappingID].path }
+                //// current.children.push(element)
+                //// properties.push(Modules[mappingID].path)
 
                 if (argv.get('dump')) console.log(' => ' + ansi.cyanBright + '<mapping>: ' + element.type)
                 var mappingMod = req(mappingID)
-                element.value = Date.now() - start
+                //// element.value = Date.now() - start
 
-                properties.pop()
+                //// properties.pop()
 
                 return mappingMod
             }
@@ -527,17 +527,17 @@
             wes.main = modId
         }
 
-        current = seq(tree, properties)
-        current.children = current.children || []
-        element = { type: entry }
-        current.children.push(element)
-        properties.push(entry)
+        //// current = seq(tree, properties)
+        //// current.children = current.children || []
+        //// element = { type: entry }
+        //// current.children.push(element)
+        //// properties.push(entry)
 
         if (argv.get('dump')) console.log(' => ' + ansi.magentaBright + '<module>: ' + entry)
         var mod = createModule(modId, entry, query, parentModule, encode)
-        element.value = Date.now() - start
+        //// element.value = Date.now() - start
 
-        properties.pop()
+        //// properties.pop()
 
         mod.exports = mod.module.exports
         return mod.exports
