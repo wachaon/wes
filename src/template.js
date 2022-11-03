@@ -453,6 +453,7 @@
                 }
             }
 
+            query = query.replace(/^node:/, '')
             var areas = []
             if (isAbsolute(query)) areas = [resolve(query)]
             else areas = getAreas(callee, query)
@@ -806,93 +807,113 @@
         var REVERSE = ansi.reverse
         var CLEAR = ansi.clear
 
+        console.error(unescapeName(error.stack))
         ;(function () {
-            error.stack = unescapeName(error.stack)
+            try {
+                error.stack = unescapeName(error.stack)
 
-            if (console == null) return WScript.Popup(error.stack)
-            console.debug(error.stack)
+                console.debug('step: 1')
+                if (console == null) return WScript.Popup(error.stack)
+                console.debug(error.stack)
 
-            var mod =
-                wes.main === REP
-                    ? find(Modules, function (_mod, _id) {
-                          return _id.startsWith(BRACKET_START)
-                      })
-                    : find(Modules, function (_mod, _id) {
-                          return _mod.path === wes.history[wes.history.length - 1]
-                      })
+                console.debug('step: 2')
+                var mod =
+                    wes.main === REP
+                        ? find(Modules, function (_mod, _id) {
+                              return _id.startsWith(BRACKET_START)
+                          })
+                        : find(Modules, function (_mod, _id) {
+                              return _mod.path === wes.history[wes.history.length - 1]
+                          })
 
-            if (mod == null) return console.log(coloring(error.stack, ERROR_COLOR))
+                console.debug('step: 3')
+                if (mod == null) return console.log(coloring(error.stack, ERROR_COLOR))
 
-            if (mod.type === COMMONJS) {
-                if (error instanceof SyntaxError) {
-                    console.log('commonjs syntax error')
-                    try {
-                        console.log(FILE_PATH_COLOR + 'Predicted error source is ' + mod.path)
-                        req(BABEL_STANDALONE).transform(mod.source, Babel_option)
-                        return console.log(coloring(error.stack, ERROR_COLOR))
-                    } catch (e) {
-                        return console.log(coloring(unescapeName(e.stack), ERROR_COLOR))
+                console.log('[mod.type]: // => ' + mod.type)
+                if (mod.type === COMMONJS) {
+                    console.debug('step: 4')
+                    if (error instanceof SyntaxError) {
+                        // console.log('commonjs syntax error')
+                        try {
+                            console.log(FILE_PATH_COLOR + 'Predicted error source is ' + mod.path)
+                            req(BABEL_STANDALONE).transform(mod.source, Babel_option)
+                            return console.log(coloring(error.stack, ERROR_COLOR))
+                        } catch (e) {
+                            return console.log(coloring(unescapeName(e.stack), ERROR_COLOR))
+                        }
                     }
-                }
 
-                if (!rSTACK_LINE.test(error.stack)) {
-                    error.stack = error.stack.replace(rSTACK_FIRST_LINE, function (_, __, _row, _column) {
-                        var row = _row - 0
-                        var column = _column - 0
-                        var spec = wes.main === REP ? '[Real-Eval-Print]' : mod.path
-                        return showErrorCode(mod.source, spec, row, column)
-                    })
-                }
+                    console.debug('step: 5')
+                    if (!rSTACK_LINE.test(error.stack)) {
+                        console.debug('step: 5a')
+                        error.stack = error.stack.replace(rSTACK_FIRST_LINE, function (_, __, _row, _column) {
+                            var row = _row - 0
+                            var column = _column - 0
+                            var spec = wes.main === REP ? '[Real-Eval-Print]' : mod.path
+                            return showErrorCode(mod.source, spec, row, column)
+                        })
+                    } else {
+                        console.debug('step: 5b')
+                        error.stack = error.stack.replace(rSTACK_LINE, function (_, _spec, _row, _column) {
+                            var row = _row - 0
+                            var column = _column - 0
 
-                error.stack = error.stack.replace(rSTACK_LINE, function (_, _spec, _row, _column) {
-                    var row = _row - 0
-                    var column = _column - 0
+                            var mod = find(Modules, function (_mod, _id) {
+                                return _mod.path === _spec
+                            })
 
-                    var mod = find(Modules, function (_mod, _id) {
-                        return _mod.path === _spec
-                    })
-
-                    return showErrorCode(mod.source, mod.path, row, column)
-                })
-                return console.log(coloring(error.stack, ERROR_COLOR))
-            }
-
-            if (mod.type === MODULE) {
-                if (error instanceof SyntaxError) {
-                    console.log('esmodule syntax error')
-
-                    console.log(FILE_PATH_COLOR + 'Predicted error source is ' + mod.path)
+                            return showErrorCode(mod.source, mod.path, row, column)
+                        })
+                    }
+                    console.debug('step: 6')
                     return console.log(coloring(error.stack, ERROR_COLOR))
                 }
 
-                if (!rSTACK_LINE.test(error.stack)) {
-                    error.stack = error.stack.replace(rSTACK_FIRST_LINE, function (_, __, _row, _column) {
-                        var row = _row - 0
-                        var column = _column - 0
+                if (mod.type === MODULE || mod.type === TRANSPILED) {
+                    console.debug('step: 7')
+                    if (error instanceof SyntaxError) {
+                        console.log('esmodule syntax error')
 
-                        var decoded = decodeMappings(mod.map.mappings)
-                        var mapping = decoded[row - 1][column - 1]
+                        console.log(FILE_PATH_COLOR + 'Predicted error source is ' + mod.path)
+                        return console.log(coloring(error.stack, ERROR_COLOR))
+                    }
 
-                        var spec = wes.main === REP ? '[Real-Eval-Print]' : mod.path
-                        return showErrorCode(mod.source, spec, mapping[2] + 1, mapping[3] + 1)
-                    })
+                    if (!rSTACK_LINE.test(error.stack)) {
+                        console.debug('step: 8a')
+                        error.stack = error.stack.replace(rSTACK_FIRST_LINE, function (_, __, _row, _column) {
+                            var row = _row - 0
+                            var column = _column - 0
+
+                            var decoded = decodeMappings(mod.map.mappings)
+                            var mapping = decoded[row - 1][column - 1]
+
+                            var spec = wes.main === REP ? '[Real-Eval-Print]' : mod.path
+                            return showErrorCode(mod.source, spec, mapping[2] + 1, mapping[3] + 1)
+                        })
+                    } else {
+                        console.debug('step: 8b')
+                        error.stack = error.stack.replace(rSTACK_LINE, function (_, _spec, _row, _column) {
+                            var row = _row - 0
+                            var column = _column - 0
+
+                            var mod = find(Modules, function (_mod, _id) {
+                                return _mod.path === _spec
+                            })
+
+                            var decoded = decodeMappings(mod.map.mappings)
+                            var mapping = decoded[row - 1][column - 1]
+
+                            return showErrorCode(mod.source, mod.path, mapping[2] + 1, mapping[3] + 1)
+                        })
+                    }
+                    console.debug('step: 9')
+                    console.log(coloring(error.stack, ERROR_COLOR))
                 }
-
-                error.stack = error.stack.replace(rSTACK_LINE, function (_, _spec, _row, _column) {
-                    var row = _row - 0
-                    var column = _column - 0
-
-                    var mod = find(Modules, function (_mod, _id) {
-                        return _mod.path === _spec
-                    })
-
-                    var decoded = decodeMappings(mod.map.mappings)
-                    var mapping = decoded[row - 1][column - 1]
-
-                    return showErrorCode(mod.source, mod.path, mapping[2] + 1, mapping[3] + 1)
-                })
-                console.log(coloring(error.stack, ERROR_COLOR))
+                console.debug('step: 10')
                 console.debug('history: %O', history)
+            } catch (e) {
+                console.debug('step: 11')
+                console.log(e.stack)
             }
         })()
     }
