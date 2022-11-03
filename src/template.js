@@ -812,11 +812,11 @@
             try {
                 error.stack = unescapeName(error.stack)
 
-                console.debug('step: 1')
+                console.debug('step: 1. An error is displayed with WScript.Popup() before applying console.')
                 if (console == null) return WScript.Popup(error.stack)
                 console.debug(error.stack)
 
-                console.debug('step: 2')
+                console.debug('step: 2. Identify the module that caused the error')
                 var mod =
                     wes.main === REP
                         ? find(Modules, function (_mod, _id) {
@@ -826,14 +826,16 @@
                               return _mod.path === wes.history[wes.history.length - 1]
                           })
 
-                console.debug('step: 3')
-                if (mod == null) return console.log(coloring(error.stack, ERROR_COLOR))
+                if (mod == null) {
+                    console.debug('step: 3. If the module could not be identified, print error.stack and exit.')
+                    return console.log(coloring(error.stack, ERROR_COLOR))
+                }
 
-                console.log('[mod.type]: // => ' + mod.type)
+                console.log('step: 4. module type is ' + mod.type)
                 if (mod.type === COMMONJS) {
-                    console.debug('step: 4')
+                    console.debug('step: 5. If the module type is commonjs')
                     if (error instanceof SyntaxError) {
-                        // console.log('commonjs syntax error')
+                        console.log('step: 6a. commonjs syntax error')
                         try {
                             console.log(FILE_PATH_COLOR + 'Predicted error source is ' + mod.path)
                             req(BABEL_STANDALONE).transform(mod.source, Babel_option)
@@ -843,9 +845,8 @@
                         }
                     }
 
-                    console.debug('step: 5')
                     if (!rSTACK_LINE.test(error.stack)) {
-                        console.debug('step: 5a')
+                        console.debug('step: 6b. If there is no line describing the file path in error.stack')
                         error.stack = error.stack.replace(rSTACK_FIRST_LINE, function (_, __, _row, _column) {
                             var row = _row - 0
                             var column = _column - 0
@@ -853,7 +854,7 @@
                             return showErrorCode(mod.source, spec, row, column)
                         })
                     } else {
-                        console.debug('step: 5b')
+                        console.debug('step: 6c. If there is a line describing the file path in error.stack')
                         error.stack = error.stack.replace(rSTACK_LINE, function (_, _spec, _row, _column) {
                             var row = _row - 0
                             var column = _column - 0
@@ -865,21 +866,19 @@
                             return showErrorCode(mod.source, mod.path, row, column)
                         })
                     }
-                    console.debug('step: 6')
-                    return console.log(coloring(error.stack, ERROR_COLOR))
                 }
 
                 if (mod.type === MODULE || mod.type === TRANSPILED) {
-                    console.debug('step: 7')
+                    console.debug('step: 8a. If the module type is esmodule')
                     if (error instanceof SyntaxError) {
-                        console.log('esmodule syntax error')
+                        console.debug('step: 8b. esmodule syntax error')
 
                         console.log(FILE_PATH_COLOR + 'Predicted error source is ' + mod.path)
                         return console.log(coloring(error.stack, ERROR_COLOR))
                     }
 
                     if (!rSTACK_LINE.test(error.stack)) {
-                        console.debug('step: 8a')
+                        console.debug('step: 8c If there is no line describing the file path in error.stack')
                         error.stack = error.stack.replace(rSTACK_FIRST_LINE, function (_, __, _row, _column) {
                             var row = _row - 0
                             var column = _column - 0
@@ -891,7 +890,7 @@
                             return showErrorCode(mod.source, spec, mapping[2] + 1, mapping[3] + 1)
                         })
                     } else {
-                        console.debug('step: 8b')
+                        console.debug('step: 8d. If there is a line describing the file path in error.stack')
                         error.stack = error.stack.replace(rSTACK_LINE, function (_, _spec, _row, _column) {
                             var row = _row - 0
                             var column = _column - 0
@@ -906,13 +905,12 @@
                             return showErrorCode(mod.source, mod.path, mapping[2] + 1, mapping[3] + 1)
                         })
                     }
-                    console.debug('step: 9')
+                    console.debug("step: 9. If you don't see an error")
                     console.log(coloring(error.stack, ERROR_COLOR))
                 }
-                console.debug('step: 10')
                 console.debug('history: %O', history)
             } catch (e) {
-                console.debug('step: 11')
+                console.debug('step: 10. If an error occurs during error handling')
                 console.log(e.stack)
             }
         })()
