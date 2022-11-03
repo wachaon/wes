@@ -27,7 +27,7 @@ Untuk teks dalam bahasa lain, sila pilih daripada pilihan di bawah.
 -   Anda boleh membiarkan pembacaan fail meneka pengekodan secara automatik, jadi anda tidak perlu risau tentang pengekodan dsb.
 -   Pakej modul untuk menyokong penerbitan dan pengambilan luaran
 
-# Isu yang *wes* yang tidak dapat kami selesaikan
+# Isu-isu yang *wes* yang tidak dapat kami selesaikan
 
 -   `WScript.Quit` tidak boleh membatalkan program dan tidak mengembalikan kod ralat
 -   Pemprosesan tak segerak tidak berfungsi dengan betul
@@ -35,7 +35,7 @@ Untuk teks dalam bahasa lain, sila pilih daripada pilihan di bawah.
 
 # muat turun
 
-Wes hanya memerlukan *wes* *wes.js* . Untuk memuat turun, salin *wes.js* daripada [*@wachaon/wes*](https://github.com/wachaon/wes) atau jalankan arahan berikut dalam konsol.
+Wes hanya memerlukan *wes* *wes.js* . Untuk memuat turun, salin *wes.js* daripada [*@wachaon/wes*](https://github.com/wachaon/wes) atau jalankan arahan berikut dalam konsol anda.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -108,7 +108,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra* , yang merupakan enjin pelaksanaan skrip, mentafsir sintaks seperti `imoprt` , tetapi ia tidak boleh dilaksanakan kerana kaedah pemprosesan sebagai `cscript` tidak ditakrifkan. Di *wes* , dengan menambahkan *babel* pada modul terbina dalam, modul *es module* juga dilaksanakan semasa ditranspile satu demi satu. Ini membebankan kami memproses overhed dan fail *wes.js* yang kembung. Modul yang ditulis dalam *es module* juga ditukar kepada `require()` dengan mengalihkan, jadi adalah mungkin untuk memanggil *COM Object* . Walau bagaimanapun, ia tidak menyokong menentukan pengekodan fail modul dengan *es module* . Semuanya dimuatkan secara automatik. Untuk memuatkannya sebagai *es module* , tetapkan sambungan kepada `.mjs` atau tetapkan medan `"type"` dalam `package.json` kepada `"module"` .
+*Chakra* , yang merupakan enjin pelaksanaan skrip, mentafsir sintaks seperti `imoprt` , tetapi ia tidak boleh dilaksanakan kerana kaedah pemprosesan sebagai `cscript` tidak ditakrifkan. Di *wes* , dengan menambahkan *babel* pada modul terbina dalam, modul *es module* juga dilaksanakan semasa ditranspilasi satu demi satu. Ini membebankan kami memproses overhed dan fail *wes.js* yang kembung. Modul yang ditulis dalam *es module* juga ditukar kepada `require()` dengan mengalihkan, jadi adalah mungkin untuk memanggil *COM Object* . Walau bagaimanapun, ia tidak menyokong menentukan pengekodan fail modul dengan *es module* . Semuanya dimuatkan secara automatik. Untuk memuatkannya sebagai *es module* , tetapkan sambungan kepada `.mjs` atau tetapkan medan `"type"` dalam `package.json` kepada `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -150,7 +150,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`           | tempat pembuangan objek                    |
 | `%O`           | Pembuangan objek (berinden/berwarna-warni) |
 
-`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine` untuk mengeluarkan rentetan berwarna. `WScript.Echo` dan `WScript.StdOut.WriteLine` disekat output. `WScript.StdErr.WriteLine` atau `console.log` .
+`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine` untuk mengeluarkan rentetan berwarna. `WScript.Echo` dan `WScript.StdOut.WriteLine` disekat. `WScript.StdErr.WriteLine` atau `console.log` .
 
 ## *Buffer*
 
@@ -349,7 +349,7 @@ Bandingkan dengan `true` dengan pengendali kesaksamaan yang ketat `===` . Jika `
 | Param     | taip                  | Penerangan                               |
 | :-------- | :-------------------- | :--------------------------------------- |
 | `value`   | `{Function\|Boolean}` | boolean atau fungsi pengembalian boolean |
-| `message` | `{String}`            | mesej sekiranya berlaku kegagalan        |
+| `message` | `{String}`            | mesej tentang kegagalan                  |
 
 #### `assert.equal(expected, actual)`
 
@@ -482,7 +482,7 @@ Hasilkan fungsi yang memaparkan animasi berbasikal.
 
 #### `register(callback, interval, conditional)`
 
-Pemprosesan daftar. Pelbagai proses boleh didaftarkan dan diproses secara selari. Dalam `callback` , kami akan mengarahkan untuk menghentikan animasi dan menulis paparan untuk dipaparkan. `interval` menentukan selang pemprosesan. Jika `conditional` ialah fungsi, ia akan melaksanakan `conditional(count, queue)` dan jika hasilnya benar, ia akan diteruskan. `conditional` melaksanakan `decrement(count)` jika ia adalah nombor dan berterusan jika hasilnya ialah nombor positif. Laksanakan sekali sahaja jika `conditional` tidak ditentukan. Ambil perhatian bahawa menentukan fungsi meningkatkan `count` , manakala menyatakan nombor mengurangkan `count` .
+Pemprosesan daftar. Pelbagai proses boleh didaftarkan dan diproses secara selari. Dalam `callback` , kami akan mengarahkan untuk menghentikan animasi dan menulis paparan untuk dipaparkan. `interval` menentukan selang pemprosesan. Jika `conditional` ialah fungsi, ia melaksanakan `conditional(count, queue)` dan jika hasilnya benar, ia meneruskan ke seterusnya. `conditional` melaksanakan `decrement(count)` jika ia adalah nombor dan berterusan jika hasilnya ialah nombor positif. Laksanakan sekali sahaja jika `conditional` tidak ditentukan. Ambil perhatian bahawa menentukan fungsi meningkatkan `count` , manakala menyatakan nombor mengurangkan `count` .
 
 #### `stop()`
 
@@ -624,7 +624,7 @@ Apabila menerbitkan pakej ke *github* , *bundle* modul yang diperlukan dan menci
     }
     ```
 
-3.  Jadikan repositori *public* jika anda ingin menerbitkan pakej
+3.  Jadikan repositori *public* jika anda ingin menerbitkan pakej tersebut
 
 4.  Bermula dengan `version 0.12.0` , pakej dengan pemuatan modul langsung ke dalam direktori di atas direktori kerja tidak akan digabungkan. Pakej dalam direktori atas *wes_modules* atau *node_modules* boleh digabungkan.
 
@@ -674,4 +674,48 @@ Jika anda mengakses repositori persendirian *raw* dengan penyemak imbas, *token*
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
+```
+
+# Pengenalan pakej
+
+Berikut adalah beberapa pakej luaran.
+
+## *@wachaon/fmt*
+
+*@wachaon/fmt* dibungkus *prettier* untuk *wes* memformat skrip. Selain itu, jika *Syntax Error* berlaku semasa *@wachaon/fmt* dipasang, anda boleh menunjukkan lokasi ralat itu.
+
+### pasang
+
+```bat
+wes install @wachaon/fmt
+```
+
+### Penggunaan
+
+Jika terdapat *.prettierrc* (format JSON) dalam direktori kerja, ia akan ditunjukkan dalam tetapan. *fmt* tersedia dalam kedua-dua *CLI* dan *module* .
+
+#### Gunakan sebagai *CLI* .
+
+```bat
+wes @wachaon/fmt src/sample --write
+```
+
+| nombor tanpa nama | Penerangan                                        |
+| ----------------- | ------------------------------------------------- |
+| 1                 | Diperlukan. laluan fail yang ingin anda formatkan |
+
+| bernama   | pendek bernama | Penerangan           |
+| --------- | -------------- | -------------------- |
+| `--write` | `-w`           | benarkan tulis ganti |
+
+Tulis ganti fail dengan skrip terformat jika `--write` atau argumen bernama `-w` ditentukan.
+
+#### digunakan sebagai modul
+
+```javascript
+const fmt = require('@wachaon/fmt')
+const { readTextFileSync, writeTextFileSync } = require('filesystem')
+const { join, workingDirectory } = require('pathname')
+const target = join(workingDirectory, 'index.js')
+console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```

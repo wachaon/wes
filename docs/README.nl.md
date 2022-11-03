@@ -35,7 +35,7 @@ Voor teksten in andere talen kunt u een keuze maken uit de onderstaande opties.
 
 # downloaden
 
-Wes heeft alleen het *wes* *wes.js* . Om te downloaden, kopieert u *wes.js* van [*@wachaon/wes*](https://github.com/wachaon/wes) of voert u de volgende opdracht uit in de console.
+Wes heeft alleen het *wes* *wes.js* . Om te downloaden, kopieert u *wes.js* van [*@wachaon/wes*](https://github.com/wachaon/wes) of voert u de volgende opdracht uit in uw console.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -150,7 +150,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`                | object dump                         |
 | `%O`                | Objectdump (ingesprongen/kleurrijk) |
 
-`WScript.StdOut.WriteLine` *wes* van `WScript.StdErr.WriteLine` om gekleurde tekenreeksen uit te voeren. `WScript.Echo` en `WScript.StdOut.WriteLine` zijn geblokkeerd. `WScript.StdErr.WriteLine` of `console.log` .
+`WScript.StdOut.WriteLine` *wes* van `WScript.StdErr.WriteLine` om gekleurde tekenreeksen uit te voeren. `WScript.Echo` en `WScript.StdOut.WriteLine` zijn geblokkeerde uitvoer. `WScript.StdErr.WriteLine` of `console.log` .
 
 ## *Buffer*
 
@@ -349,7 +349,7 @@ Vergelijk met `true` met de operator voor strikte gelijkheid `===` . Als `value`
 | Param     | Type                  | Beschrijving                                  |
 | :-------- | :-------------------- | :-------------------------------------------- |
 | `value`   | `{Function\|Boolean}` | booleaanse of booleaanse terugkerende functie |
-| `message` | `{String}`            | bericht in geval van storing                  |
+| `message` | `{String}`            | bericht bij mislukking                        |
 
 #### `assert.equal(expected, actual)`
 
@@ -474,7 +474,7 @@ animate.run()
 
 ### `constructor(complete)`
 
-Voer de `complete` functie uit wanneer alle wachtrijen zijn voltooid of `stop()` wordt aangeroepen.
+Voert de `complete` functie uit wanneer alle wachtrijen zijn voltooid of `stop()` wordt aangeroepen.
 
 #### `static genProgressIndicator(animation)`
 
@@ -482,7 +482,7 @@ Genereer een functie die een fietsanimatie weergeeft.
 
 #### `register(callback, interval, conditional)`
 
-Verwerking registreren. Meerdere processen kunnen parallel worden geregistreerd en verwerkt. In de `callback` zullen we instrueren om de animatie te stoppen en de weergave te schrijven die moet worden weergegeven. `interval` specificeert het verwerkingsinterval. Als de `conditional` een functie is, zal deze `conditional(count, queue)` en als het resultaat waar is, zal het doorgaan. De `conditional` voert `decrement(count)` uit als het een getal is en gaat door als het resultaat een positief getal is. Wordt slechts één keer uitgevoerd als `conditional` niet gedefinieerd is. Merk op dat het specificeren van een functie de `count` verhoogt, terwijl het specificeren van een getal de `count` verlaagt.
+Verwerking registreren. Meerdere processen kunnen parallel worden geregistreerd en verwerkt. In de `callback` zullen we instrueren om de animatie te stoppen en de weergave te schrijven die moet worden weergegeven. `interval` specificeert het verwerkingsinterval. Als de `conditional` functie een functie is, voert deze `conditional(count, queue)` en als het resultaat waar is, gaat het verder met de volgende. De `conditional` voert `decrement(count)` uit als het een getal is en gaat door als het resultaat een positief getal is. Wordt slechts één keer uitgevoerd als `conditional` niet gedefinieerd is. Merk op dat het specificeren van een functie de `count` verhoogt, terwijl het specificeren van een getal de `count` verlaagt.
 
 #### `stop()`
 
@@ -674,4 +674,48 @@ Als u de private repository *raw* met een browser, wordt het *token* weergegeven
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
+```
+
+# Pakket introductie:
+
+Hier zijn enkele externe pakketten.
+
+## *@wachaon/fmt*
+
+*@wachaon/fmt* is *prettier* verpakt voor *wes* om scripts te formatteren. Als er een *Syntax Error* optreedt terwijl *@wachaon/fmt* is geïnstalleerd, kunt u ook de locatie van de fout weergeven.
+
+### installeren
+
+```bat
+wes install @wachaon/fmt
+```
+
+### Gebruik
+
+Als er *.prettierrc* (JSON-indeling) in de werkmap staat, wordt dit weergegeven in de instellingen. *fmt* is beschikbaar in zowel *CLI* als *module* .
+
+#### Gebruik als *CLI* .
+
+```bat
+wes @wachaon/fmt src/sample --write
+```
+
+| naamloos nummer | Beschrijving                                              |
+| --------------- | --------------------------------------------------------- |
+| 1               | Verplicht. het pad van het bestand dat u wilt formatteren |
+
+| genaamd   | korte naam | Beschrijving           |
+| --------- | ---------- | ---------------------- |
+| `--write` | `-w`       | overschrijven toestaan |
+
+Overschrijf het bestand met het opgemaakte script als `--write` of het `-w` benoemde argument is opgegeven.
+
+#### gebruik als een module
+
+```javascript
+const fmt = require('@wachaon/fmt')
+const { readTextFileSync, writeTextFileSync } = require('filesystem')
+const { join, workingDirectory } = require('pathname')
+const target = join(workingDirectory, 'index.js')
+console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```

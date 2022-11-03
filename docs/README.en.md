@@ -50,7 +50,7 @@ wes update
 
 # Usage
 
-Enter the `wes` keyword and the command specifying the file that will be the starting point of the program to the console. The script extension *.js* can be omitted.
+Enter the `wes` keyword followed by the command specifying the file that will be the starting point of the program to the console. The script extension *.js* can be omitted.
 
 ```bat
 wes index
@@ -349,7 +349,7 @@ Compare to `true` with the strict equality operator `===` . If `value` is a func
 | Param     | Type                  | Description                           |
 | :-------- | :-------------------- | :------------------------------------ |
 | `value`   | `{Function\|Boolean}` | boolean or boolean-returning function |
-| `message` | `{String}`            | message on failure                    |
+| `message` | `{String}`            | message in case of failure            |
 
 #### `assert.equal(expected, actual)`
 
@@ -371,7 +371,7 @@ Whether or not the error is correct is determined by whether the expected error 
 | :--------- | :------------------------ | :-------------------------------------------------------------------------------------------- |
 | `value`    | `{Error}`                 | error                                                                                         |
 | `expected` | `{Error\|String\|RegExp}` | A regular expression that evaluates the expected error *constructor* , *message* , or *stack* |
-| `message`  | `{String}`                | message on failure                                                                            |
+| `message`  | `{String}`                | message in case of failure                                                                    |
 
 ## *pipe*
 
@@ -474,7 +474,7 @@ animate.run()
 
 ### `constructor(complete)`
 
-Executes the `complete` function when all queues are completed or `stop()` is called.
+Execute the `complete` function when all queues are completed or `stop()` is called.
 
 #### `static genProgressIndicator(animation)`
 
@@ -482,7 +482,7 @@ Generate a function that displays a cycling animation.
 
 #### `register(callback, interval, conditional)`
 
-Register processing. Multiple processes can be registered and processed in parallel. In the `callback` , we will instruct to stop the animation and write the view to be displayed. `interval` specifies the processing interval. If the `conditional` is a function, it executes `conditional(count, queue)` and if the result is true, it continues to the next. The `conditional` executes `decrement(count)` if it is a number and continues if the result is a positive number. Executes only once if `conditional` is undefined. Note that specifying a function increases the `count` , whereas specifying a number decreases the `count` .
+Register processing. Multiple processes can be registered and processed in parallel. In the `callback` , we will instruct to stop the animation and write the view to be displayed. `interval` specifies the processing interval. If the `conditional` is a function, it will execute `conditional(count, queue)` and if the result is true, it will continue. The `conditional` executes `decrement(count)` if it is a number and continues if the result is a positive number. Executes only once if `conditional` is undefined. Note that specifying a function increases the `count` , whereas specifying a number decreases the `count` .
 
 #### `stop()`
 
@@ -674,4 +674,48 @@ If you access the private repository *raw* with a browser, the *token* will be d
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
+```
+
+# Package introduction
+
+Here are some external packages.
+
+## *@wachaon/fmt*
+
+*@wachaon/fmt* is *prettier* packaged for *wes* to format scripts. Also, if a *Syntax Error* occurs while *@wachaon/fmt* is installed, the location of the error can be shown.
+
+### install
+
+```bat
+wes install @wachaon/fmt
+```
+
+### Usage
+
+If there is *.prettierrc* (JSON format) in the working directory, it will be reflected in the settings. *fmt* is available in both *CLI* and *module* .
+
+#### Use as *CLI* .
+
+```bat
+wes @wachaon/fmt src/sample --write
+```
+
+| unnamed number | Description                                       |
+| -------------- | ------------------------------------------------- |
+| 1              | Required. the path of the file you want to format |
+
+| named     | short named | Description     |
+| --------- | ----------- | --------------- |
+| `--write` | `-w`        | allow overwrite |
+
+Overwrite the file with the formatted script if `--write` or the `-w` named argument is specified.
+
+#### use as a module
+
+```javascript
+const fmt = require('@wachaon/fmt')
+const { readTextFileSync, writeTextFileSync } = require('filesystem')
+const { join, workingDirectory } = require('pathname')
+const target = join(workingDirectory, 'index.js')
+console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```

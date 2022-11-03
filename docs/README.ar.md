@@ -35,7 +35,7 @@
 
 # تحميل
 
-يحتاج Wes إلى *wes* *wes.js* . للتنزيل ، انسخ *wes.js* من [*@wachaon/wes*](https://github.com/wachaon/wes) أو قم بتشغيل الأمر التالي في وحدة التحكم.
+يحتاج Wes إلى *wes* *wes.js* . للتنزيل ، انسخ *wes.js* من [*@wachaon/wes*](https://github.com/wachaon/wes) أو قم بتشغيل الأمر التالي في وحدة التحكم الخاصة بك.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -150,7 +150,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`         | تفريغ الكائن                       |
 | `%O`         | تفريغ الكائن (مسافة بادئة / ملونة) |
 
-`WScript.StdOut.WriteLine` *wes* من `WScript.StdErr.WriteLine` لإخراج السلاسل الملونة. تم حظر `WScript.Echo` و `WScript.StdOut.WriteLine` . `WScript.StdErr.WriteLine` أو `console.log` .
+`WScript.StdOut.WriteLine` *wes* من `WScript.StdErr.WriteLine` لإخراج السلاسل الملونة. يتم حظر إخراج `WScript.Echo` و `WScript.StdOut.WriteLine` . `WScript.StdErr.WriteLine` أو `console.log` .
 
 ## *Buffer*
 
@@ -344,7 +344,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 #### `assert(value, message)` `assert.ok(value, message)`
 
-قارن بـ " `true` " مع عامل المساواة الصارم `===` . إذا كانت `value` دالة ، فقم بتقييم نتيجة تنفيذ الوظيفة.
+قارن مع `true` مع عامل المساواة الصارم `===` . إذا كانت `value` دالة ، فقم بتقييم نتيجة تنفيذ الوظيفة.
 
 | بارام     | يكتب                  | وصف                         |
 | :-------- | :-------------------- | :-------------------------- |
@@ -364,14 +364,14 @@ NaN `true` دالة `NaN === NaN` `function (){} === function (){}` `/RegExp/g =
 
 #### `assert.throws(value, expected, message)`
 
-تحقق من أن الأخطاء يتم طرحها بشكل صحيح.  
+تحقق من إلقاء الخطأ بشكل صحيح.  
 يتم تحديد ما إذا كان الخطأ صحيحًا أم لا من خلال ما إذا كان *constructor* الخطأ المتوقع ، *message* متساوية ، ويمرر التعبير العادي تقييم *stack* .
 
 | بارام      | يكتب                      | وصف                                                                        |
 | :--------- | :------------------------ | :------------------------------------------------------------------------- |
 | `value`    | `{Error}`                 | خطأ                                                                        |
 | `expected` | `{Error\|String\|RegExp}` | تعبير عادي يقوم بتقييم *constructor* الخطأ أو *message* أو *stack* المتوقع |
-| `message`  | `{String}`                | رسالة في حالة الفشل                                                        |
+| `message`  | `{String}`                | رسالة عن الفشل                                                             |
 
 ## *pipe*
 
@@ -482,7 +482,7 @@ animate.run()
 
 #### `register(callback, interval, conditional)`
 
-معالجة التسجيل. يمكن تسجيل عمليات متعددة ومعالجتها بالتوازي. في `callback` ، سنصدر تعليمات بإيقاف الرسوم المتحركة وكتابة العرض المراد عرضه. `interval` يحدد الفاصل الزمني للمعالجة. إذا كانت `conditional` دالة ، فستنفذ `conditional(count, queue)` وإذا كانت النتيجة صحيحة ، فستستمر. ينفذ `conditional` `decrement(count)` إذا كان رقمًا ويستمر إذا كانت النتيجة رقمًا موجبًا. يتم التنفيذ مرة واحدة فقط إذا كان `conditional` غير محدد. لاحظ أن تحديد دالة يؤدي إلى زيادة `count` ، بينما يؤدي تحديد رقم إلى تقليل `count` .
+معالجة التسجيل. يمكن تسجيل عمليات متعددة ومعالجتها بالتوازي. في `callback` ، سنصدر تعليمات بإيقاف الرسوم المتحركة وكتابة العرض المراد عرضه. `interval` يحدد الفاصل الزمني للمعالجة. إذا كانت `conditional` دالة ، فإنها تنفذ `conditional(count, queue)` وإذا كانت النتيجة صحيحة ، فإنها تستمر إلى التالية. ينفذ `conditional` `decrement(count)` إذا كان رقمًا ويستمر إذا كانت النتيجة رقمًا موجبًا. يتم التنفيذ مرة واحدة فقط إذا كان `conditional` غير محدد. لاحظ أن تحديد دالة يؤدي إلى زيادة `count` ، بينما يؤدي تحديد رقم إلى تقليل `count` .
 
 #### `stop()`
 
@@ -670,8 +670,52 @@ wes install @wachaon/fmt --bare
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-عند الوصول إلى النسخة *raw* من المستودع الخاص باستخدام متصفح ، سيتم عرض *token* ، لذا انسخ *token* . يمكن أيضًا تثبيت الحزم من المستودعات الخاصة إذا تم تنفيذها في وحدة التحكم أثناء صلاحية *token* .
+إذا قمت بالوصول إلى المستودع الخاص بشكل *raw* باستخدام متصفح ، فسيتم عرض *token* ، لذا انسخ *token* . يمكنك أيضًا تثبيت الحزم من المستودعات الخاصة عن طريق تشغيلها في وحدة التحكم أثناء صلاحية *token* .
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
+```
+
+# مقدمة الحزمة
+
+فيما يلي بعض الحزم الخارجية.
+
+## *@wachaon/fmt*
+
+*@wachaon/fmt* *wes* *prettier* من أجل تنسيق البرامج النصية. أيضًا ، في حالة حدوث *Syntax Error* أثناء *@wachaon/fmt* ، يمكنك إظهار موقع الخطأ.
+
+### تثبيت
+
+```bat
+wes install @wachaon/fmt
+```
+
+### إستعمال
+
+إذا كان هناك *.prettierrc* (تنسيق JSON) في دليل العمل ، فسوف ينعكس في الإعدادات. يتوفر *fmt* في كل من *CLI* *module* .
+
+#### استخدام *CLI* .
+
+```bat
+wes @wachaon/fmt src/sample --write
+```
+
+| رقم غير مسمى | وصف                                |
+| ------------ | ---------------------------------- |
+| 1            | مطلوب. مسار الملف الذي تريد تنسيقه |
+
+| اسم الشيئ | اسم قصير | وصف             |
+| --------- | -------- | --------------- |
+| `--write` | `-w`     | السماح بالكتابة |
+
+الكتابة فوق الملف بالبرنامج النصي المنسق إذا تم تحديد الوسيطة `--write` أو `-w` المسماة.
+
+#### استخدم كوحدة نمطية
+
+```javascript
+const fmt = require('@wachaon/fmt')
+const { readTextFileSync, writeTextFileSync } = require('filesystem')
+const { join, workingDirectory } = require('pathname')
+const target = join(workingDirectory, 'index.js')
+console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```

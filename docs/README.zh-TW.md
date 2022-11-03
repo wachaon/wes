@@ -50,7 +50,7 @@ wes update
 
 # 用法
 
-輸入`wes`關鍵字，然後輸入指定文件的命令，該文件將成為控制台程序的起點。腳本擴展名*.js*可以省略。
+輸入`wes`關鍵字，然後輸入命令，指定將成為控制台程序起點的文件。腳本擴展名*.js*可以省略。
 
 ```bat
 wes index
@@ -108,7 +108,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-腳本執行引擎*Chakra*解釋了諸如`imoprt`之類的語法，但由於未定義`cscript`的處理方法，因此無法按原樣執行。在*wes*中，通過在內置模塊中添加*babel* ， *es module*也在被一個一個轉譯的同時執行。這會花費我們處理開銷和臃腫的*wes.js*文件。用*es module*模塊寫的模塊也通過轉譯轉換成`require()` ，所以可以調用*COM Object* 。但是，它不支持使用*es module*指定模塊文件的編碼。一切都是自動加載的。要將其作為*es module*加載，請將擴展名設置為`.mjs`或將`package.json`中的`"type"`字段設置為`"module"` 。
+腳本執行引擎*Chakra*解釋了諸如`imoprt`之類的語法，但由於未定義`cscript`的處理方法，因此無法按原樣執行。在*wes*中，通過在內置模塊中添加*babel* ， *es module*也在被一個一個轉譯的同時執行。這會花費我們處理開銷和臃腫的*wes.js*文件。 *es module*中寫的模塊也通過轉譯轉換為`require()` ，因此可以調用*COM Object* 。但是，它不支持使用*es module*指定模塊文件的編碼。一切都是自動加載的。要將其加載為*es module* ，請將擴展名設置為`.mjs`或將`package.json`中的`"type"`字段設置為`"module"` 。
 
 ```javascript
 // ./sub.mjs
@@ -150,7 +150,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`  | 對象轉儲                             |
 | `%O`  | 對象轉儲（縮進/彩色）                      |
 
-`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`來輸出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`被阻止。 `WScript.StdErr.WriteLine`或`console.log` 。
+`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`來輸出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`是阻塞輸出。 `WScript.StdErr.WriteLine`或`console.log` 。
 
 ## *Buffer*
 
@@ -349,7 +349,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 | 參數        | 類型                    | 描述        |
 | :-------- | :-------------------- | :-------- |
 | `value`   | `{Function\|Boolean}` | 布爾或布爾返回函數 |
-| `message` | `{String}`            | 失敗消息      |
+| `message` | `{String}`            | 失敗時的消息    |
 
 #### `assert.equal(expected, actual)`
 
@@ -482,7 +482,7 @@ animate.run()
 
 #### `register(callback, interval, conditional)`
 
-註冊處理。可以並行註冊和處理多個進程。在`callback`中，我們將指示停止動畫並編寫要顯示的視圖。 `interval`指定處理間隔。如果`conditional`是一個函數，它將執行`conditional(count, queue)` ，如果結果為真，它將繼續。如果`conditional`是數字，則執行`decrement(count)` ，如果結果是正數，則繼續。如果`conditional`未定義，則僅執行一次。請注意，指定函數會增加`count` ，而指定數字會減少`count` 。
+註冊處理。可以並行註冊和處理多個進程。在`callback`中，我們將指示停止動畫並編寫要顯示的視圖。 `interval`指定處理間隔。如果`conditional`是一個函數，它執行`conditional(count, queue)` ，如果結果為真，它繼續下一個。如果`conditional`是數字，則執行`decrement(count)` ，如果結果是正數，則繼續。如果`conditional`未定義，則僅執行一次。請注意，指定函數會增加`count` ，而指定數字會減少`count` 。
 
 #### `stop()`
 
@@ -670,8 +670,52 @@ wes install @wachaon/fmt --bare
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-當您使用瀏覽器訪問私有存儲庫的*raw*文件時，將顯示*token* ，因此請複制*token*並使用它。如果在*token*有效時在控制台中執行，也可以安裝來自私有存儲庫的包。
+如果您使用瀏覽器訪問*raw*存儲庫，則會顯示*token* ，因此請複制*token*並使用它。您還可以通過在*token*有效時在控制台中運行來安裝私有存儲庫中的軟件包。
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
+```
+
+# 包裝介紹
+
+這是一些外部軟件包。
+
+## *@wachaon/fmt*
+
+*@wachaon/fmt* *prettier*地打包為*wes*格式化腳本。此外，如果在安裝*@wachaon/fmt*時出現*Syntax Error* ，您可以顯示錯誤的位置。
+
+### 安裝
+
+```bat
+wes install @wachaon/fmt
+```
+
+### 用法
+
+如果工作目錄中有*.prettierrc* （JSON 格式），它會反映在設置中。 *fmt*在*CLI*和*module*中都可用。
+
+#### 用作*CLI* 。
+
+```bat
+wes @wachaon/fmt src/sample --write
+```
+
+| 無名號碼 | 描述             |
+| ---- | -------------- |
+| 1    | 必需的。要格式化的文件的路徑 |
+
+| 命名為       | 簡稱   | 描述   |
+| --------- | ---- | ---- |
+| `--write` | `-w` | 允許覆蓋 |
+
+如果指定了`--write`或`-w`命名參數，則使用格式化腳本覆蓋文件。
+
+#### 作為一個模塊使用
+
+```javascript
+const fmt = require('@wachaon/fmt')
+const { readTextFileSync, writeTextFileSync } = require('filesystem')
+const { join, workingDirectory } = require('pathname')
+const target = join(workingDirectory, 'index.js')
+console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```

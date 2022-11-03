@@ -35,7 +35,7 @@ Für Texte in anderen Sprachen wählen Sie bitte aus den folgenden Optionen aus.
 
 # Download
 
-Wes benötigt nur die *wes* *wes.js* . Kopieren Sie zum Herunterladen *wes.js* von [*@wachaon/wes*](https://github.com/wachaon/wes) oder führen Sie den folgenden Befehl in der Konsole aus.
+Wes benötigt nur die *wes* *wes.js* . Kopieren Sie zum Herunterladen *wes.js* von [*@wachaon/wes*](https://github.com/wachaon/wes) oder führen Sie den folgenden Befehl in Ihrer Konsole aus.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -349,7 +349,7 @@ Mit dem strikten Gleichheitsoperator `===` mit `true` vergleichen. Wenn der `val
 | Parameter | Typ                   | Beschreibung                              |
 | :-------- | :-------------------- | :---------------------------------------- |
 | `value`   | `{Function\|Boolean}` | boolesche oder boolesche Rückgabefunktion |
-| `message` | `{String}`            | Meldung im Fehlerfall                     |
+| `message` | `{String}`            | Meldung bei Ausfall                       |
 
 #### `assert.equal(expected, actual)`
 
@@ -474,7 +474,7 @@ animate.run()
 
 ### `constructor(complete)`
 
-Führt die `complete` Funktion aus, wenn alle Warteschlangen abgeschlossen sind oder `stop()` aufgerufen wird.
+Führen Sie die Funktion `complete` aus, wenn alle Warteschlangen abgeschlossen sind oder `stop()` aufgerufen wird.
 
 #### `static genProgressIndicator(animation)`
 
@@ -482,7 +482,7 @@ Generieren Sie eine Funktion, die eine Fahrradanimation anzeigt.
 
 #### `register(callback, interval, conditional)`
 
-Verarbeitung registrieren. Es können mehrere Prozesse registriert und parallel verarbeitet werden. Im `callback` wir an, die Animation zu stoppen und die anzuzeigende Ansicht zu schreiben. `interval` gibt das Verarbeitungsintervall an. Wenn die `conditional` eine Funktion ist, wird `conditional(count, queue)` ausgeführt, und wenn das Ergebnis wahr ist, wird sie fortgesetzt. Die `conditional` führt `decrement(count)` aus, wenn es sich um eine Zahl handelt, und fährt fort, wenn das Ergebnis eine positive Zahl ist. Wird nur einmal ausgeführt, wenn `conditional` nicht definiert ist. Beachten Sie, dass die Angabe einer Funktion die `count` erhöht, während die Angabe einer Zahl die `count` verringert.
+Verarbeitung registrieren. Es können mehrere Prozesse registriert und parallel verarbeitet werden. Im `callback` wir an, die Animation zu stoppen und die anzuzeigende Ansicht zu schreiben. `interval` gibt das Verarbeitungsintervall an. Wenn die `conditional` eine Funktion ist, führt sie `conditional(count, queue)` aus und wenn das Ergebnis wahr ist, fährt sie mit der nächsten fort. Die `conditional` führt `decrement(count)` aus, wenn es sich um eine Zahl handelt, und fährt fort, wenn das Ergebnis eine positive Zahl ist. Wird nur einmal ausgeführt, wenn `conditional` nicht definiert ist. Beachten Sie, dass die Angabe einer Funktion die `count` erhöht, während die Angabe einer Zahl die `count` verringert.
 
 #### `stop()`
 
@@ -594,7 +594,7 @@ wes zip docs\* dox.zip
 wes zip -p dox.zip
 ```
 
-Wenn der `path` die Erweiterung `.zip` hat, wird `unzip()` verarbeitet und es gibt keine Beschreibung der Erweiterung `.zip` . Alternativ, auch wenn es eine Erweiterung `.zip` gibt, wird `zip()` verarbeitet, wenn eine Platzhalter `*` Beschreibung vorhanden ist.
+Wenn der `path` die Erweiterung `.zip` hat, wird `unzip()` verarbeitet und es gibt keine Beschreibung der Erweiterung `.zip` . Alternativ, selbst wenn es eine Erweiterung `.zip` gibt, wird `zip()` verarbeitet, wenn es eine Beschreibung mit Platzhalter `*` gibt.
 
 | unbenannt | Beschreibung                                  |
 | --------- | --------------------------------------------- |
@@ -674,4 +674,48 @@ Wenn Sie mit einem Browser *raw* auf das private Repository zugreifen, wird das 
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
+```
+
+# Paket Einführung
+
+Hier sind einige externe Pakete.
+
+## *@wachaon/fmt*
+
+*@wachaon/fmt* ist *prettier* verpackt, damit *wes* Skripte formatieren können. Wenn während der Installation von *@wachaon/fmt* ein *Syntax Error* auftritt, können Sie außerdem den Ort des Fehlers anzeigen.
+
+### Installieren
+
+```bat
+wes install @wachaon/fmt
+```
+
+### Verwendungszweck
+
+Wenn im Arbeitsverzeichnis *.prettierrc* (JSON-Format) vorhanden ist, wird dies in den Einstellungen widergespiegelt. *fmt* ist sowohl im *CLI* als auch im *module* verfügbar.
+
+#### Als *CLI* verwenden.
+
+```bat
+wes @wachaon/fmt src/sample --write
+```
+
+| unbenannte Nummer | Beschreibung                                                  |
+| ----------------- | ------------------------------------------------------------- |
+| 1                 | Erforderlich. den Pfad der Datei, die Sie formatieren möchten |
+
+| genannt   | kurz benannt | Beschreibung           |
+| --------- | ------------ | ---------------------- |
+| `--write` | `-w`         | Überschreiben zulassen |
+
+Überschreiben Sie die Datei mit dem formatierten Skript, wenn `--write` oder das benannte Argument `-w` angegeben ist.
+
+#### als Modul verwenden
+
+```javascript
+const fmt = require('@wachaon/fmt')
+const { readTextFileSync, writeTextFileSync } = require('filesystem')
+const { join, workingDirectory } = require('pathname')
+const target = join(workingDirectory, 'index.js')
+console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```

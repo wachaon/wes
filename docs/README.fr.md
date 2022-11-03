@@ -1,7 +1,7 @@
 # *WES*
 
 *wes* est un framework de console pour exécuter *ECMAScript* sur *WSH (Windows Script Host)* . Le [*japanese*](/README.md) original du *README* sera en japonais. Les textes autres que le japonais seront traduits automatiquement.  
-Pour les textes dans d'autres langues, veuillez sélectionner l'une des options ci-dessous.
+Pour les textes dans d'autres langues, veuillez sélectionner parmi les options ci-dessous.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -35,7 +35,7 @@ Pour les textes dans d'autres langues, veuillez sélectionner l'une des options 
 
 # Télécharger
 
-Wes n'a besoin que du *wes* *wes.js* . Pour télécharger, copiez *wes.js* depuis [*@wachaon/wes*](https://github.com/wachaon/wes) ou exécutez la commande suivante dans votre console.
+Wes n'a besoin que du *wes* *wes.js* . Pour télécharger, copiez *wes.js* depuis [*@wachaon/wes*](https://github.com/wachaon/wes) ou exécutez la commande suivante dans la console.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -50,7 +50,7 @@ wes update
 
 # Usage
 
-Entrez le mot-clé `wes` suivi de la commande spécifiant le fichier qui sera le point de départ du programme vers la console. L'extension de script *.js* peut être omise.
+Entrez le mot-clé `wes` et la commande spécifiant le fichier qui sera le point de départ du programme vers la console. L'extension de script *.js* peut être omise.
 
 ```bat
 wes index
@@ -123,7 +123,7 @@ import sub from './sub.mjs'
 console.log('sub(7, 3) // => %O', sub(7, 3))
 ```
 
-# objet intégré
+# objet incorporé
 
 *wes* a *built-in objects* introuvables dans *WSH (JScript)* .
 
@@ -364,7 +364,7 @@ Lors de la comparaison de classes (objets), elles doivent avoir le même constru
 
 #### `assert.throws(value, expected, message)`
 
-Vérifiez que les erreurs sont générées correctement.  
+Vérifiez que l'erreur est générée correctement.  
 Le fait que l'erreur soit correcte ou non est déterminé par le fait que le *constructor* d'erreur attendu, *message* est égal et que l'expression régulière réussit l'évaluation de la *stack* .
 
 | Param      | Taper                     | La description                                                                                   |
@@ -482,7 +482,7 @@ Générez une fonction qui affiche une animation de cyclisme.
 
 #### `register(callback, interval, conditional)`
 
-Traitement des registres. Plusieurs processus peuvent être enregistrés et traités en parallèle. Dans le `callback` , nous demanderons d'arrêter l'animation et d'écrire la vue à afficher. `interval` spécifie l'intervalle de traitement. Si la `conditional` est une fonction, elle exécutera `conditional(count, queue)` et si le résultat est vrai, elle continuera. La `conditional` exécute `decrement(count)` s'il s'agit d'un nombre et continue si le résultat est un nombre positif. S'exécute une seule fois si `conditional` n'est pas défini. Notez que la spécification d'une fonction augmente le `count` , tandis que la spécification d'un nombre diminue le `count` .
+Traitement des registres. Plusieurs processus peuvent être enregistrés et traités en parallèle. Dans le `callback` , nous demanderons d'arrêter l'animation et d'écrire la vue à afficher. `interval` spécifie l'intervalle de traitement. Si la `conditional` est une fonction, elle exécute `conditional(count, queue)` et si le résultat est vrai, elle passe à la suivante. La `conditional` exécute `decrement(count)` s'il s'agit d'un nombre et continue si le résultat est un nombre positif. S'exécute une seule fois si `conditional` n'est pas défini. Notez que la spécification d'une fonction augmente le `count` , tandis que la spécification d'un nombre diminue le `count` .
 
 #### `stop()`
 
@@ -603,7 +603,7 @@ Si le `path` a l'extension `.zip` , `unzip()` est traité et il n'y a pas de des
 
 | nommé    | nommé court | La description                              |
 | -------- | ----------- | ------------------------------------------- |
-| `--path` | `-p`        | `path` ou fichier à entrer                  |
+| `--path` | `-p`        | `path` ou fichier à saisir                  |
 | `--dest` | `-d`        | fichier de dossier vers la `dest` de sortie |
 
 # Regroupement (conditionnement) et installation de modules
@@ -636,7 +636,7 @@ Saisissez la commande suivante pour regrouper : Reportez-vous à *package.json* 
 
 ## *install*
 
-Utilisé pour installer le package pour *wes* publié sur *github* . À partir de la `version 0.10.28` , le dossier d'installation est modifié de `node_modules` à `wes_modules` . Si vous souhaitez installer dans `node_modules` ajoutez l'option `--node` . À partir de la `version 0.12.0` , les fichiers seront décompressés de *bandle.json* et enregistrés. En raison de changements de spécifications, les packages fournis avec une `version 0.12.0` inférieure à 0.12.0 peuvent ne pas être installés correctement avec la `version 0.12.0` ou ultérieure.
+Utilisé pour installer le package pour *wes* publié sur *github* . À partir de la `version 0.10.28` , le dossier d'installation est modifié de `node_modules` à `wes_modules` . Si vous souhaitez installer dans `node_modules` ajoutez l'option `--node` . À partir de la `version 0.12.0` , les fichiers seront décompressés de *bandle.json* et enregistrés. En raison de modifications de spécifications, les packages fournis avec une `version 0.12.0` inférieure à 0.12.0 peuvent ne pas être installés correctement avec la `version 0.12.0` ou ultérieure.
 
 ### Usage
 
@@ -674,4 +674,48 @@ Si vous accédez au référentiel privé *raw* avec un navigateur, le *token* se
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
+```
+
+# Présentation du paquet
+
+Voici quelques packages externes.
+
+## *@wachaon/fmt*
+
+*@wachaon/fmt* est *prettier* emballé pour *wes* pour formater les scripts. De plus, si une *Syntax Error* se produit pendant *@wachaon/fmt* , l'emplacement de l'erreur peut être affiché.
+
+### installer
+
+```bat
+wes install @wachaon/fmt
+```
+
+### Usage
+
+S'il y a *.prettierrc* (format JSON) dans le répertoire de travail, cela sera reflété dans les paramètres. *fmt* est disponible à la fois dans la *CLI* et dans le *module* .
+
+#### Utiliser comme *CLI* .
+
+```bat
+wes @wachaon/fmt src/sample --write
+```
+
+| numéro anonyme | La description                                                |
+| -------------- | ------------------------------------------------------------- |
+| 1              | Obligatoire. le chemin du fichier que vous souhaitez formater |
+
+| nommé     | nommé court | La description            |
+| --------- | ----------- | ------------------------- |
+| `--write` | `-w`        | autoriser le remplacement |
+
+Remplacez le fichier par le script formaté si `--write` ou l'argument nommé `-w` est spécifié.
+
+#### utiliser comme module
+
+```javascript
+const fmt = require('@wachaon/fmt')
+const { readTextFileSync, writeTextFileSync } = require('filesystem')
+const { join, workingDirectory } = require('pathname')
+const target = join(workingDirectory, 'index.js')
+console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```

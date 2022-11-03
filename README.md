@@ -687,7 +687,7 @@ wes install @wachaon/fmt --bare
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
-<!--
+
 # パッケージの紹介
 ここではいくつかの外部パッケージを紹介します。
 
@@ -714,7 +714,6 @@ wes @wachaon/fmt src/sample --write
 
 | unnamed number | Description                            |
 | -------------- | -------------------------------------- |
-| 0              | -                                      |
 | 1              | 必須。フォーマットしたいファイルのパス |
 
 | named     | short named | Description      |
@@ -732,7 +731,7 @@ const { join, workingDirectory } = require('pathname')
 const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
-
+<!--
 ## *@wachaon/edge*
 *Internet Explorer* が 2022/6/15 を以てサポートを完了します。それに伴い `require('InternetExplorer.Application')` でのアプリケーションの操作も不可能になると予想されます。
 代替案は、*Microsoft Edge based on Chromium* を *web driver* 経由で操作することになります。`@wachaon/edge` は *Edge* の自動操縦を簡素化します。

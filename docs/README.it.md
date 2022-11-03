@@ -364,14 +364,14 @@ Quando si confrontano classi (oggetti), devono avere lo stesso costruttore o una
 
 #### `assert.throws(value, expected, message)`
 
-Verificare che gli errori vengano generati correttamente.  
+Verificare che l'errore venga generato correttamente.  
 Se l'errore è corretto o meno è determinato dal fatto che il *constructor* di errori previsto , il *message* sia uguale e l'espressione regolare superi la valutazione *stack* .
 
 | Param      | Tipo                      | Descrizione                                                                                       |
 | :--------- | :------------------------ | :------------------------------------------------------------------------------------------------ |
 | `value`    | `{Error}`                 | errore                                                                                            |
 | `expected` | `{Error\|String\|RegExp}` | Un'espressione regolare che valuta il *constructor* , *message* o lo *stack* dell'errore previsto |
-| `message`  | `{String}`                | messaggio in caso di guasto                                                                       |
+| `message`  | `{String}`                | messaggio sul fallimento                                                                          |
 
 ## *pipe*
 
@@ -482,7 +482,7 @@ Genera una funzione che visualizzi un'animazione ciclica.
 
 #### `register(callback, interval, conditional)`
 
-Elaborazione del registro. È possibile registrare ed elaborare più processi in parallelo. Nella `callback` , indicheremo di interrompere l'animazione e scrivere la vista da visualizzare. `interval` specifica l'intervallo di elaborazione. Se il `conditional` è una funzione, verrà eseguito `conditional(count, queue)` e se il risultato è vero, continuerà. Il `conditional` esegue `decrement(count)` se è un numero e continua se il risultato è un numero positivo. Viene eseguito solo una volta se `conditional` non è definito. Si noti che specificando una funzione aumenta il `count` , mentre specificando un numero diminuisce il `count` .
+Elaborazione del registro. È possibile registrare ed elaborare più processi in parallelo. Nella `callback` , indicheremo di interrompere l'animazione e scrivere la vista da visualizzare. `interval` specifica l'intervallo di elaborazione. Se il `conditional` è una funzione, esegue il `conditional(count, queue)` e se il risultato è vero, continua con il successivo. Il `conditional` esegue `decrement(count)` se è un numero e continua se il risultato è un numero positivo. Viene eseguito solo una volta se `conditional` non è definito. Si noti che specificando una funzione aumenta il `count` , mentre specificando un numero diminuisce il `count` .
 
 #### `stop()`
 
@@ -648,13 +648,13 @@ wes install @wachaon/fmt
 
 *install* ha opzioni.
 
-| di nome       | di nome breve | Descrizione                                                                               |
-| ------------- | ------------- | ----------------------------------------------------------------------------------------- |
-| `--bare`      | `-b`          | Non creare cartelle *@author*                                                             |
-| `--global`    | `-g`          | Installa il pacchetto nella cartella in cui si trova *wes.js*                             |
-| `--save`      | `-S`          | Aggiungi il nome e la versione del pacchetto al campo *dependencies* in *package.json*    |
-| `--save--dev` | `-D`          | Aggiungi il nome e la versione del pacchetto al campo *devDependencies* in *package.json* |
-| `--node`      | `-n`          | Installa nella cartella *node_module*                                                     |
+| di nome       | nome breve | Descrizione                                                                               |
+| ------------- | ---------- | ----------------------------------------------------------------------------------------- |
+| `--bare`      | `-b`       | Non creare cartelle *@author*                                                             |
+| `--global`    | `-g`       | Installa il pacchetto nella cartella in cui si trova *wes.js*                             |
+| `--save`      | `-S`       | Aggiungi il nome e la versione del pacchetto al campo *dependencies* in *package.json*    |
+| `--save--dev` | `-D`       | Aggiungi il nome e la versione del pacchetto al campo *devDependencies* in *package.json* |
+| `--node`      | `-n`       | Installa nella cartella *node_module*                                                     |
 
 `--bare` può omettere l'argomento `require` da `author@repository` al `repository` . `--global` rende i pacchetti installati disponibili per tutti gli script.
 
@@ -670,8 +670,52 @@ wes install @wachaon/fmt --bare
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-Quando accedi al *raw* del repository privato con un browser, il *token* verrà visualizzato, quindi copia il *token* e usalo. I pacchetti da repository privati ​​possono anche essere installati se eseguiti nella console mentre il *token* è valido.
+Se accedi al repository privato *raw* con un browser, il *token* verrà visualizzato, quindi copia il *token* e utilizzalo. Puoi anche installare pacchetti da repository privati ​​eseguendolo nella console mentre il *token* è valido.
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
+```
+
+# Presentazione del pacchetto
+
+Ecco alcuni pacchetti esterni.
+
+## *@wachaon/fmt*
+
+*@wachaon/fmt* è un pacchetto *prettier* *wes* per noi per formattare gli script. Inoltre, se si verifica un *Syntax Error* durante l'installazione di *@wachaon/fmt* , è possibile visualizzare la posizione dell'errore.
+
+### installare
+
+```bat
+wes install @wachaon/fmt
+```
+
+### Utilizzo
+
+Se è presente *.prettierrc* (formato JSON) nella directory di lavoro, si rifletterà nelle impostazioni. *fmt* è disponibile sia in *CLI* che in *module* .
+
+#### Utilizzare come *CLI* .
+
+```bat
+wes @wachaon/fmt src/sample --write
+```
+
+| numero senza nome | Descrizione                                          |
+| ----------------- | ---------------------------------------------------- |
+| 1                 | Necessario. il percorso del file che vuoi formattare |
+
+| di nome   | nome breve | Descrizione                  |
+| --------- | ---------- | ---------------------------- |
+| `--write` | `-w`       | consentire la sovrascrittura |
+
+Sovrascrivi il file con lo script formattato se è specificato `--write` o l'argomento denominato `-w` .
+
+#### utilizzare come modulo
+
+```javascript
+const fmt = require('@wachaon/fmt')
+const { readTextFileSync, writeTextFileSync } = require('filesystem')
+const { join, workingDirectory } = require('pathname')
+const target = join(workingDirectory, 'index.js')
+console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```

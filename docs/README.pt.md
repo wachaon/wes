@@ -35,7 +35,7 @@ Para textos em outros idiomas, selecione uma das opções abaixo.
 
 # download
 
-Wes só precisa do *wes* *wes.js* Para baixar, copie *wes.js* de [*@wachaon/wes*](https://github.com/wachaon/wes) ou execute o seguinte comando no console.
+Wes só precisa do *wes* *wes.js* Para baixar, copie *wes.js* de [*@wachaon/wes*](https://github.com/wachaon/wes) ou execute o seguinte comando em seu console.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -150,7 +150,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`                     | despejo de objetos                   |
 | `%O`                     | Despejo de objeto (recuado/colorido) |
 
-`WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` para produzir strings coloridas. `WScript.Echo` e `WScript.StdOut.WriteLine` estão bloqueados. `WScript.StdErr.WriteLine` ou `console.log` .
+`WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` para produzir strings coloridas. `WScript.Echo` e `WScript.StdOut.WriteLine` são saídas bloqueadas. `WScript.StdErr.WriteLine` ou `console.log` .
 
 ## *Buffer*
 
@@ -482,7 +482,7 @@ Gere uma função que exibe uma animação de ciclismo.
 
 #### `register(callback, interval, conditional)`
 
-Processamento de registro. Vários processos podem ser registrados e processados ​​em paralelo. No `callback` de chamada, instruiremos a parar a animação e escrever a visualização a ser exibida. `interval` especifica o intervalo de processamento. Se a `conditional` for uma função, ela executará `conditional(count, queue)` e se o resultado for verdadeiro, ela continuará. A `conditional` executa `decrement(count)` se for um número e continua se o resultado for um número positivo. Executa apenas uma vez se a `conditional` for indefinida. Observe que a especificação de uma função aumenta a `count` , enquanto a especificação de um número diminui a `count` .
+Processamento de registro. Vários processos podem ser registrados e processados ​​em paralelo. No `callback` de chamada, instruiremos a parar a animação e escrever a visualização a ser exibida. `interval` especifica o intervalo de processamento. Se a `conditional` for uma função, ela executa `conditional(count, queue)` e se o resultado for verdadeiro, continua para a próxima. A `conditional` executa `decrement(count)` se for um número e continua se o resultado for um número positivo. Executa apenas uma vez se a `conditional` for indefinida. Observe que a especificação de uma função aumenta a `count` , enquanto a especificação de um número diminui a `count` .
 
 #### `stop()`
 
@@ -670,8 +670,52 @@ wes install @wachaon/fmt --bare
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-Quando você acessar o *raw* do repositório privado com um navegador, o *token* será exibido, então copie o *token* e use-o. Pacotes de repositórios privados também podem ser instalados se executados no console enquanto o *token* for válido.
+Se você acessar o repositório privado *raw* com um navegador, o *token* será exibido, então copie o *token* e use-o. Você também pode instalar pacotes de repositórios privados executando-o no console enquanto o *token* é válido.
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
+```
+
+# Introdução do pacote
+
+Aqui estão alguns pacotes externos.
+
+## *@wachaon/fmt*
+
+*@wachaon/fmt* é um pacote *prettier* para o *wes* formatar scripts. Além disso, se ocorrer um *Syntax Error* enquanto *@wachaon/fmt* estiver instalado, você poderá mostrar o local do erro.
+
+### instalar
+
+```bat
+wes install @wachaon/fmt
+```
+
+### Uso
+
+Se houver *.prettierrc* (formato JSON) no diretório de trabalho, isso será refletido nas configurações. *fmt* está disponível na *CLI* e no *module* .
+
+#### Use como *CLI* .
+
+```bat
+wes @wachaon/fmt src/sample --write
+```
+
+| número sem nome | Descrição                                                 |
+| --------------- | --------------------------------------------------------- |
+| 1               | Requeridos. o caminho do arquivo que você deseja formatar |
+
+| nomeado   | nome curto | Descrição             |
+| --------- | ---------- | --------------------- |
+| `--write` | `-w`       | permitir sobrescrever |
+
+Sobrescreva o arquivo com o script formatado se `--write` ou `-w` o argumento nomeado for especificado.
+
+#### usar como módulo
+
+```javascript
+const fmt = require('@wachaon/fmt')
+const { readTextFileSync, writeTextFileSync } = require('filesystem')
+const { join, workingDirectory } = require('pathname')
+const target = join(workingDirectory, 'index.js')
+console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```

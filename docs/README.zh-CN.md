@@ -1,7 +1,7 @@
 # *WES*
 
 *wes*是一个控制台框架，用于在*WSH (Windows Script Host)*上运行*ECMAScript* 。 *README*文件的[*japanese*](/README.md)将是日文。日语以外的文本将被机器翻译。  
-对于其他语言的文本，请从以下选项中进行选择。
+对于其他语言的文本，请从以下选项中选择。
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -35,7 +35,7 @@
 
 # 下载
 
-*wes.js* *wes* 。要下载，请从[*@wachaon/wes*](https://github.com/wachaon/wes)复制*wes.js*或在控制台中运行以下命令。
+*wes.js* *wes* 。要下载，请从[*@wachaon/wes*](https://github.com/wachaon/wes) wes 复制*wes.js*或在控制台中运行以下命令。
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -50,13 +50,13 @@ wes update
 
 # 用法
 
-输入`wes`关键字和指定将成为控制台程序起点的文件的命令。脚本扩展名*.js*可以省略。
+输入`wes`关键字，然后输入指定文件的命令，该文件将成为控制台程序的起点。脚本扩展名*.js*可以省略。
 
 ```bat
 wes index
 ```
 
-此外，由于*wes*配备了*REP* ，您可以通过单独启动`wes`直接输入脚本。
+此外，由于*wes*配备了*REP* ，因此您可以通过单独启动`wes`直接输入脚本。
 
 ```bat
 wes
@@ -108,7 +108,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-脚本执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过在内置模块中添加*babel* ， *es module*也在被一个一个转译的同时执行。这会花费我们处理开销和臃肿的*wes.js*文件。 *es module*中写的模块也通过转译转换为`require()` ，因此可以调用*COM Object* 。但是，它不支持使用*es module*指定模块文件的编码。一切都是自动加载的。要将其加载为*es module* ，请将扩展名设置为`.mjs`或将`package.json`中的`"type"`字段设置为`"module"` 。
+*Chakra*是一个脚本执行引擎，可以解释诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过在内置模块中添加*babel* ， *es module*也在被顺序转译的同时执行。这会花费我们处理开销和臃肿的*wes.js*文件。 *es module*中写的模块也通过转译转换为`require()` ，因此可以调用*COM Object* 。但是，它不支持使用*es module*指定模块文件的编码。一切都是自动加载的。要将其加载为*es module* ，请将扩展名设置为`.mjs`或将`package.json`中的`"type"`字段设置为`"module"` 。
 
 ```javascript
 // ./sub.mjs
@@ -482,7 +482,7 @@ animate.run()
 
 #### `register(callback, interval, conditional)`
 
-注册处理。可以并行注册和处理多个进程。在`callback`中，我们将指示停止动画并编写要显示的视图。 `interval`指定处理间隔。如果`conditional`是一个函数，它将执行`conditional(count, queue)` ，如果结果为真，它将继续。如果`conditional`是数字，则执行`decrement(count)` ，如果结果是正数，则继续。如果`conditional`未定义，则仅执行一次。请注意，指定函数会增加`count` ，而指定数字会减少`count` 。
+注册处理。可以并行注册和处理多个进程。在`callback`中，我们将指示停止动画并编写要显示的视图。 `interval`指定处理间隔。如果`conditional`是一个函数，它执行`conditional(count, queue)` ，如果结果为真，它继续下一个。如果`conditional`是数字，则执行`decrement(count)` ，如果结果是正数，则继续。如果`conditional`未定义，则仅执行一次。请注意，指定函数会增加`count` ，而指定数字会减少`count` 。
 
 #### `stop()`
 
@@ -664,14 +664,58 @@ wes install @wachaon/fmt --bare
 
 # 从私有仓库安装包
 
-*install*不仅可以安装来自公共*github*存储库的包，还可以安装来自私有存储库的包。在*install*中，使用*@author/repository*指定包。该实现尝试下载以下网址。
+*install*不仅可以安装来自公共*github*存储库的包，还可以安装来自私有存储库的包。在*install*中，使用*@author/repository*指定包。该实现尝试下载以下 url。
 
 ```javascript
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-当您使用浏览器访问私有存储库的*raw*文件时，将显示*token* ，因此请复制*token*并使用它。如果在*token*有效时在控制台中执行，也可以安装来自私有存储库的包。
+如果您使用浏览器访问*raw*存储库，则会显示*token* ，因此请复制*token*并使用它。您还可以通过在*token*有效时在控制台中运行来从私有存储库安装包。
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
+```
+
+# 包装介绍
+
+这是一些外部软件包。
+
+## *@wachaon/fmt*
+
+*@wachaon/fmt* *prettier*地打包为*wes*格式化脚本。此外，如果在安装*@wachaon/fmt*时出现*Syntax Error* ，您可以显示错误的位置。
+
+### 安装
+
+```bat
+wes install @wachaon/fmt
+```
+
+### 用法
+
+如果工作目录中有*.prettierrc* （JSON 格式），它会反映在设置中。 *fmt*在*CLI*和*module*中都可用。
+
+#### 用作*CLI* 。
+
+```bat
+wes @wachaon/fmt src/sample --write
+```
+
+| 无名号码 | 描述             |
+| ---- | -------------- |
+| 1    | 必需的。要格式化的文件的路径 |
+
+| 命名为       | 简称   | 描述   |
+| --------- | ---- | ---- |
+| `--write` | `-w` | 允许覆盖 |
+
+如果指定了`--write`或`-w`命名参数，则使用格式化脚本覆盖文件。
+
+#### 作为一个模块使用
+
+```javascript
+const fmt = require('@wachaon/fmt')
+const { readTextFileSync, writeTextFileSync } = require('filesystem')
+const { join, workingDirectory } = require('pathname')
+const target = join(workingDirectory, 'index.js')
+console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```

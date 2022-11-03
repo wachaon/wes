@@ -150,7 +150,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`                     | volcado de objetos                    |
 | `%O`                     | Volcado de objeto (sangrado/colorido) |
 
-`WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` para generar cadenas de colores. `WScript.Echo` y `WScript.StdOut.WriteLine` están bloqueados. `WScript.StdErr.WriteLine` o `console.log` .
+`WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` para generar cadenas de colores. `WScript.Echo` y `WScript.StdOut.WriteLine` son salidas bloqueadas. `WScript.StdErr.WriteLine` o `console.log` .
 
 ## *Buffer*
 
@@ -349,7 +349,7 @@ Compare con `true` con el operador de igualdad estricta `===` . Si el `value` es
 | Parámetro | Escribe               | Descripción                            |
 | :-------- | :-------------------- | :------------------------------------- |
 | `value`   | `{Function\|Boolean}` | función booleana o de retorno booleano |
-| `message` | `{String}`            | mensaje en caso de falla               |
+| `message` | `{String}`            | mensaje de falla                       |
 
 #### `assert.equal(expected, actual)`
 
@@ -371,7 +371,7 @@ Si el error es correcto o no se determina si el *constructor* de error esperado,
 | :--------- | :------------------------ | :------------------------------------------------------------------------------------- |
 | `value`    | `{Error}`                 | error                                                                                  |
 | `expected` | `{Error\|String\|RegExp}` | Una expresión regular que evalúa el error esperado *constructor* , *message* o *stack* |
-| `message`  | `{String}`                | mensaje de falla                                                                       |
+| `message`  | `{String}`                | mensaje en caso de falla                                                               |
 
 ## *pipe*
 
@@ -474,7 +474,7 @@ animate.run()
 
 ### `constructor(complete)`
 
-Ejecute la función `complete` cuando se completen todas las colas o se llame a `stop()` .
+Ejecuta la función `complete` cuando se completan todas las colas o se llama a `stop()` .
 
 #### `static genProgressIndicator(animation)`
 
@@ -674,4 +674,48 @@ Si accede al repositorio privado *raw* con un navegador, se mostrará el *token*
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
+```
+
+# Introducción del paquete
+
+Aquí hay algunos paquetes externos.
+
+## *@wachaon/fmt*
+
+*@wachaon/fmt* *prettier* mejor empaquetado para que *wes* forme scripts. Además, si se produce un *Syntax Error* mientras está instalado *@wachaon/fmt* , puede mostrar la ubicación del error.
+
+### Instalar en pc
+
+```bat
+wes install @wachaon/fmt
+```
+
+### Uso
+
+Si hay *.prettierrc* (formato JSON) en el directorio de trabajo, se reflejará en la configuración. *fmt* está disponible tanto en *CLI* como en *module* .
+
+#### Utilizar como *CLI* .
+
+```bat
+wes @wachaon/fmt src/sample --write
+```
+
+| número sin nombre | Descripción                                        |
+| ----------------- | -------------------------------------------------- |
+| 1                 | Requerido. la ruta del archivo que desea formatear |
+
+| nombrada  | nombre corto | Descripción           |
+| --------- | ------------ | --------------------- |
+| `--write` | `-w`         | permitir sobrescribir |
+
+Sobrescriba el archivo con el script formateado si se `--write` o el argumento con nombre `-w` .
+
+#### utilizar como módulo
+
+```javascript
+const fmt = require('@wachaon/fmt')
+const { readTextFileSync, writeTextFileSync } = require('filesystem')
+const { join, workingDirectory } = require('pathname')
+const target = join(workingDirectory, 'index.js')
+console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
