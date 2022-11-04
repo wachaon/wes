@@ -907,6 +907,8 @@
                     console.debug(LIME + "step: 7. If you don't see an error")
                     console.log(coloring(error.stack, ERROR_COLOR))
                 }
+
+                console.log(coloring(error.stack, ERROR_COLOR))
                 console.debug('history: %O', history)
             } catch (e) {
                 console.debug(LIME + 'step: 8. If an error occurs during error handling')
