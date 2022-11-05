@@ -1,7 +1,6 @@
 # *WES*
 
-*wes*是一个控制台框架，用于在*WSH (Windows Script Host)*上运行*ECMAScript* 。 *README*文件的[*japanese*](/README.md)将是日文。日语以外的文本将被机器翻译。  
-对于其他语言的文本，请从以下选项中选择。
+*wes*是一个控制台框架，用于在*WSH (Windows Script Host)*上运行*ECMAScript* 。 *README*文件的[*japanese*](/README.md)将是日文。日语以外的文本将被机器翻译。 \\ 对于其他语言的文本，请从下面选择。
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -35,14 +34,13 @@
 
 # 下载
 
-*wes.js* *wes* 。要下载，请从[*@wachaon/wes*](https://github.com/wachaon/wes) wes 复制*wes.js*或在控制台中运行以下命令。
+*wes.js* *wes* 。要下载，请从[*@wachaon/wes*](https://github.com/wachaon/wes)复制*wes.js*或在控制台中运行以下命令。
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-我们在运行时*WScript.Shell* *wes* `SendKeys`作为实现。如果*wes.js*保存目录的路径中包含*ascii*以外的字符，则`SendKeys`无法正确发送密钥，脚本无法执行。  
-配置*wes.js*仅存储在*ascii*中的路径。如果您已经下载了*wes* ，您可以使用以下命令对其进行更新。
+我们在运行时*WScript.Shell* *wes* `SendKeys`作为实现。如果*wes.js*保存目录的路径中包含*ascii*以外的字符，则`SendKeys`无法正确发送密钥，脚本无法执行。 \\ *wes.js*目标路径只能在*ascii*中配置。如果您已经下载了*wes* ，您可以使用以下命令对其进行更新。
 
 ```bat
 wes update
@@ -50,13 +48,13 @@ wes update
 
 # 用法
 
-输入`wes`关键字，然后输入指定文件的命令，该文件将成为控制台程序的起点。脚本扩展名*.js*可以省略。
+输入`wes`关键字，然后输入命令，指定将成为控制台程序起点的文件。脚本扩展名*.js*可以省略。
 
 ```bat
 wes index
 ```
 
-此外，由于*wes*配备了*REP* ，因此您可以通过单独启动`wes`直接输入脚本。
+此外，由于*wes*配备了*REP* ，您可以通过单独启动`wes`直接输入脚本。
 
 ```bat
 wes
@@ -77,7 +75,7 @@ wes
 
 # 模块系统
 
-*wes*支持两种模块系统，使用`require()`的*commonjs module*系统和使用`import`的*es module*系统。 （不支持*dynamic import* ，因为它是一个异步过程）
+*wes*支持两个模块系统，使用`require()`的*commonjs module*系统和使用`import`的*es module*系统。 （不支持*dynamic import* ，因为它是一个异步过程）
 
 ## *commonjs module*
 
@@ -108,7 +106,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra*是一个脚本执行引擎，可以解释诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过在内置模块中添加*babel* ， *es module*也在被顺序转译的同时执行。这会花费我们处理开销和臃肿的*wes.js*文件。 *es module*中写的模块也通过转译转换为`require()` ，因此可以调用*COM Object* 。但是，它不支持使用*es module*指定模块文件的编码。一切都是自动加载的。要将其加载为*es module* ，请将扩展名设置为`.mjs`或将`package.json`中的`"type"`字段设置为`"module"` 。
+脚本执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过在内置模块中添加*babel* ， *es module*也在被一个一个转译的同时执行。这会花费我们处理开销和臃肿的*wes.js*文件。 *es module*中写的模块也通过转译转换为`require()` ，因此可以调用*COM Object* 。但是，它不支持使用*es module*指定模块文件的编码。一切都是自动加载的。要将其加载为*es module* ，请将扩展名设置为`.mjs`或将`package.json`中的`"type"`字段设置为`"module"` 。
 
 ```javascript
 // ./sub.mjs
@@ -353,9 +351,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 #### `assert.equal(expected, actual)`
 
-比较对象的成员相等性，而不是通过引用。  
-NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g`或`{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]`等等。  
-在比较类（对象）时，它们必须具有相同的构造函数或`actual` `expected`的超类。
+比较对象的成员相等性，而不是通过引用。 \\ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g`或`{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]`等等。 \\ 在比较类（对象）时，它们必须是相同的构造函数或`actual` `expected`的超类。
 
 | 参数         | 类型      | 描述   |
 | :--------- | :------ | :--- |
@@ -364,14 +360,13 @@ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegEx
 
 #### `assert.throws(value, expected, message)`
 
-验证错误是否正确抛出。  
-错误是否正确取决于预期的错误*constructor* 、 *message*是否相等，以及正则表达式是否通过*stack*评估。
+验证错误是否正确抛出。 \\ 错误是否正确取决于是否是预期错误的*constructor* ，或者*message*是否相等且正则表达式通过*stack*评估。
 
 | 参数         | 类型                        | 描述                                            |
 | :--------- | :------------------------ | :-------------------------------------------- |
 | `value`    | `{Error}`                 | 错误                                            |
 | `expected` | `{Error\|String\|RegExp}` | 计算预期错误*constructor* 、 *message*或*stack*的正则表达式 |
-| `message`  | `{String}`                | 失败消息                                          |
+| `message`  | `{String}`                | 失败时的消息                                        |
 
 ## *pipe*
 
@@ -482,7 +477,7 @@ animate.run()
 
 #### `register(callback, interval, conditional)`
 
-注册处理。可以并行注册和处理多个进程。在`callback`中，我们将指示停止动画并编写要显示的视图。 `interval`指定处理间隔。如果`conditional`是一个函数，它执行`conditional(count, queue)` ，如果结果为真，它继续下一个。如果`conditional`是数字，则执行`decrement(count)` ，如果结果是正数，则继续。如果`conditional`未定义，则仅执行一次。请注意，指定函数会增加`count` ，而指定数字会减少`count` 。
+注册处理。可以并行注册和处理多个进程。在`callback`中，我们将指示停止动画并编写要显示的视图。 `interval`指定处理间隔。如果`conditional`是一个函数，它将执行`conditional(count, queue)` ，如果结果为真，它将继续。如果`conditional`是数字，则执行`decrement(count)` ，如果结果是正数，则继续。如果`conditional`未定义，则仅执行一次。请注意，指定函数会增加`count` ，而指定数字会减少`count` 。
 
 #### `stop()`
 
@@ -670,7 +665,7 @@ wes install @wachaon/fmt --bare
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-如果您使用浏览器访问*raw*存储库，则会显示*token* ，因此请复制*token*并使用它。您还可以通过在*token*有效时在控制台中运行来从私有存储库安装包。
+如果您使用浏览器访问*raw*存储库，则会显示*token* ，因此请复制*token*并使用它。您还可以通过在*token*有效时在控制台中运行来安装私有存储库中的软件包。
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA

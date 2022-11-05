@@ -1,7 +1,6 @@
 # *WES*
 
-*wes* ialah rangka kerja konsol untuk menjalankan *ECMAScript* pada *WSH (Windows Script Host)* . [*japanese*](/README.md) asal *README* adalah dalam bahasa Jepun. Teks selain bahasa Jepun akan diterjemahkan mesin.  
-Untuk teks dalam bahasa lain, sila pilih daripada pilihan di bawah.
+*wes* ialah rangka kerja konsol untuk menjalankan *ECMAScript* pada *WSH (Windows Script Host)* . [*japanese*](/README.md) asal *README* adalah dalam bahasa Jepun. Teks selain bahasa Jepun akan diterjemahkan mesin. \\ Untuk teks dalam bahasa lain, sila pilih dari bawah.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -22,12 +21,12 @@ Untuk teks dalam bahasa lain, sila pilih daripada pilihan di bawah.
 
 -   Anda boleh menukar enjin skrip kepada *Chakra* dan menulis mengikut spesifikasi *ECMAScript2015* .
 -   Memandangkan 32bit *cscript.exe* sentiasa dilaksanakan, tiada masalah unik dalam persekitaran 64bit.
--   Memandangkan terdapat sistem modul, ia boleh dibangunkan dengan lebih cekap daripada *WSH* konvensional
+-   Oleh kerana terdapat sistem modul, ia boleh dibangunkan dengan lebih cekap daripada *WSH* konvensional
 -   Modul terbina dalam menyokong pemprosesan asas seperti input/output fail dan output teks berwarna ke konsol
 -   Anda boleh membiarkan pembacaan fail meneka pengekodan secara automatik, jadi anda tidak perlu risau tentang pengekodan dsb.
 -   Pakej modul untuk menyokong penerbitan dan pengambilan luaran
 
-# Isu-isu yang *wes* yang tidak dapat kami selesaikan
+# Isu yang *wes* yang tidak dapat kami selesaikan
 
 -   `WScript.Quit` tidak boleh membatalkan program dan tidak mengembalikan kod ralat
 -   Pemprosesan tak segerak tidak berfungsi dengan betul
@@ -35,14 +34,13 @@ Untuk teks dalam bahasa lain, sila pilih daripada pilihan di bawah.
 
 # muat turun
 
-Wes hanya memerlukan *wes* *wes.js* . Untuk memuat turun, salin *wes.js* daripada [*@wachaon/wes*](https://github.com/wachaon/wes) atau jalankan arahan berikut dalam konsol anda.
+Wes hanya memerlukan *wes* *wes.js* . Untuk memuat turun, salin *wes.js* daripada [*@wachaon/wes*](https://github.com/wachaon/wes) atau jalankan arahan berikut dalam konsol.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-*WScript.Shell* *wes* pada masa `SendKeys` sebagai pelaksanaan. Jika laluan direktori tempat *wes.js* disimpan mengandungi aksara selain *ascii* , `SendKeys` tidak boleh menghantar kunci dengan betul dan skrip tidak boleh dilaksanakan.  
-Konfigurasikan laluan *wes.js* disimpan dalam *ascii* sahaja. Jika anda telah memuat turun *wes* , anda boleh mengemas kininya dengan arahan berikut.
+*WScript.Shell* *wes* pada masa `SendKeys` sebagai pelaksanaan. Jika laluan direktori tempat *wes.js* disimpan mengandungi aksara selain *ascii* , `SendKeys` tidak boleh menghantar kunci dengan betul dan skrip tidak boleh dilaksanakan. \\ laluan destinasi *wes.js* hendaklah dikonfigurasikan dalam *ascii* sahaja. Jika anda telah memuat turun *wes* , anda boleh mengemas kininya dengan arahan berikut.
 
 ```bat
 wes update
@@ -108,7 +106,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra* , yang merupakan enjin pelaksanaan skrip, mentafsir sintaks seperti `imoprt` , tetapi ia tidak boleh dilaksanakan kerana kaedah pemprosesan sebagai `cscript` tidak ditakrifkan. Di *wes* , dengan menambahkan *babel* pada modul terbina dalam, modul *es module* juga dilaksanakan semasa ditranspilasi satu demi satu. Ini membebankan kami memproses overhed dan fail *wes.js* yang kembung. Modul yang ditulis dalam *es module* juga ditukar kepada `require()` dengan mengalihkan, jadi adalah mungkin untuk memanggil *COM Object* . Walau bagaimanapun, ia tidak menyokong menentukan pengekodan fail modul dengan *es module* . Semuanya dimuatkan secara automatik. Untuk memuatkannya sebagai *es module* , tetapkan sambungan kepada `.mjs` atau tetapkan medan `"type"` dalam `package.json` kepada `"module"` .
+*Chakra* , yang merupakan enjin pelaksanaan skrip, mentafsir sintaks seperti `imoprt` , tetapi ia tidak boleh dilaksanakan kerana kaedah pemprosesan sebagai `cscript` tidak ditakrifkan. Di *wes* , dengan menambahkan *babel* pada modul terbina dalam, modul *es module* juga dilaksanakan semasa ditranspile satu demi satu. Ini membebankan kami memproses overhed dan fail *wes.js* yang kembung. Modul yang ditulis dalam *es module* juga ditukar kepada `require()` dengan mengalihkan, jadi adalah mungkin untuk memanggil *COM Object* . Walau bagaimanapun, ia tidak menyokong menentukan pengekodan fail modul dengan *es module* . Semuanya dimuatkan secara automatik. Untuk memuatkannya sebagai *es module* , tetapkan sambungan kepada `.mjs` atau tetapkan medan `"type"` dalam `package.json` kepada `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -353,9 +351,7 @@ Bandingkan dengan `true` dengan pengendali kesaksamaan yang ketat `===` . Jika `
 
 #### `assert.equal(expected, actual)`
 
-Membandingkan objek untuk kesaksamaan ahli, bukan dengan rujukan.  
-NaN `true` Fungsi `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` atau `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` dsb.  
-Apabila membandingkan kelas (objek), mereka mesti mempunyai pembina yang sama atau superclass yang `actual` `expected` .
+Membandingkan objek untuk kesaksamaan ahli, bukan dengan rujukan. \\ NaN `true` Fungsi `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` atau `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` dsb. \\ Apabila membandingkan kelas (objek), mereka mestilah pembina yang sama atau superclass yang `actual` `expected` .
 
 | Param      | taip    | Penerangan             |
 | :--------- | :------ | :--------------------- |
@@ -364,14 +360,13 @@ Apabila membandingkan kelas (objek), mereka mesti mempunyai pembina yang sama at
 
 #### `assert.throws(value, expected, message)`
 
-Sahkan bahawa ralat dilemparkan dengan betul.  
-Sama ada ralat itu betul atau tidak ditentukan oleh sama ada *constructor* ralat yang dijangkakan , *message* adalah sama, dan ungkapan biasa melepasi penilaian *stack* .
+Sahkan bahawa ralat dilemparkan dengan betul. \\ Sama ada ralat adalah betul ditentukan oleh sama ada ia adalah *constructor* ralat yang dijangkakan, atau sama ada *message* itu sama dan ungkapan biasa melepasi penilaian *stack* .
 
 | Param      | taip                      | Penerangan                                                                               |
 | :--------- | :------------------------ | :--------------------------------------------------------------------------------------- |
 | `value`    | `{Error}`                 | kesilapan                                                                                |
 | `expected` | `{Error\|String\|RegExp}` | Ungkapan biasa yang menilai *constructor* ralat, *message* atau *stack* yang dijangkakan |
-| `message`  | `{String}`                | mesej tentang kegagalan                                                                  |
+| `message`  | `{String}`                | mesej sekiranya berlaku kegagalan                                                        |
 
 ## *pipe*
 
@@ -474,7 +469,7 @@ animate.run()
 
 ### `constructor(complete)`
 
-Jalankan fungsi `complete` apabila semua baris gilir selesai atau `stop()` dipanggil.
+Melaksanakan fungsi `complete` apabila semua baris gilir selesai atau `stop()` dipanggil.
 
 #### `static genProgressIndicator(animation)`
 
@@ -482,7 +477,7 @@ Hasilkan fungsi yang memaparkan animasi berbasikal.
 
 #### `register(callback, interval, conditional)`
 
-Pemprosesan daftar. Pelbagai proses boleh didaftarkan dan diproses secara selari. Dalam `callback` , kami akan mengarahkan untuk menghentikan animasi dan menulis paparan untuk dipaparkan. `interval` menentukan selang pemprosesan. Jika `conditional` ialah fungsi, ia melaksanakan `conditional(count, queue)` dan jika hasilnya benar, ia meneruskan ke seterusnya. `conditional` melaksanakan `decrement(count)` jika ia adalah nombor dan berterusan jika hasilnya ialah nombor positif. Laksanakan sekali sahaja jika `conditional` tidak ditentukan. Ambil perhatian bahawa menentukan fungsi meningkatkan `count` , manakala menyatakan nombor mengurangkan `count` .
+Pemprosesan daftar. Pelbagai proses boleh didaftarkan dan diproses secara selari. Dalam `callback` , kami akan mengarahkan untuk menghentikan animasi dan menulis paparan untuk dipaparkan. `interval` menentukan selang pemprosesan. Jika `conditional` ialah fungsi, ia akan melaksanakan `conditional(count, queue)` dan jika hasilnya benar, ia akan diteruskan. `conditional` melaksanakan `decrement(count)` jika ia adalah nombor dan berterusan jika hasilnya ialah nombor positif. Laksanakan sekali sahaja jika `conditional` tidak ditentukan. Ambil perhatian bahawa menentukan fungsi meningkatkan `count` , manakala menyatakan nombor mengurangkan `count` .
 
 #### `stop()`
 

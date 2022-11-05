@@ -1,7 +1,6 @@
 # *WES*
 
-*wes* è un framework console per l'esecuzione di *ECMAScript* su *WSH (Windows Script Host)* . Il [*japanese*](/README.md) originale del *README* sarà in giapponese. I testi diversi dal giapponese verranno tradotti automaticamente.  
-Per testi in altre lingue, seleziona una delle opzioni seguenti.
+*wes* è un framework console per l'esecuzione di *ECMAScript* su *WSH (Windows Script Host)* . Il [*japanese*](/README.md) originale del *README* sarà in giapponese. I testi diversi dal giapponese verranno tradotti automaticamente. \\ Per testi in altre lingue, selezionare da sotto.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -41,8 +40,7 @@ Wes ha bisogno solo del *wes* *wes.js* Per scaricare, copia *wes.js* da [*@wacha
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-Usiamo `SendKeys` *wes* *WScript.Shell* in fase di esecuzione come implementazione. Se il percorso della directory in cui è salvato *wes.js* contiene caratteri diversi da *ascii* , `SendKeys` non può inviare la chiave correttamente e lo script non può essere eseguito.  
-Configura il percorso *wes.js* è archiviato solo in *ascii* . Se hai già scaricato *wes* , puoi aggiornarlo con il seguente comando.
+Usiamo `SendKeys` *wes* *WScript.Shell* in fase di esecuzione come implementazione. Se il percorso della directory in cui è salvato *wes.js* contiene caratteri diversi da *ascii* , `SendKeys` non può inviare la chiave correttamente e lo script non può essere eseguito. \\ Il percorso di destinazione *wes.js* deve essere configurato solo in *ascii* . Se hai già scaricato *wes* , puoi aggiornarlo con il seguente comando.
 
 ```bat
 wes update
@@ -353,9 +351,7 @@ Confronta con `true` con l'operatore di uguaglianza rigorosa `===` . Se `value` 
 
 #### `assert.equal(expected, actual)`
 
-Confronta gli oggetti per l'uguaglianza dei membri, non per riferimento.  
-NaN `true` Funzione `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` o `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` ecc.  
-Quando si confrontano classi (oggetti), devono avere lo stesso costruttore o una superclasse la cui `actual` è `expected` .
+Confronta gli oggetti per l'uguaglianza dei membri, non per riferimento. \\ NaN `true` funzione `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` o `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` ecc. \\ Quando si confrontano classi (oggetti), devono essere lo stesso costruttore o una superclasse la cui `actual` è `expected` .
 
 | Param      | Tipo    | Descrizione    |
 | :--------- | :------ | :------------- |
@@ -364,14 +360,13 @@ Quando si confrontano classi (oggetti), devono avere lo stesso costruttore o una
 
 #### `assert.throws(value, expected, message)`
 
-Verificare che l'errore venga generato correttamente.  
-Se l'errore è corretto o meno è determinato dal fatto che il *constructor* di errori previsto , il *message* sia uguale e l'espressione regolare superi la valutazione *stack* .
+Verificare che gli errori vengano generati correttamente. \\ Se un errore è corretto è determinato dal fatto che sia il *constructor* dell'errore previsto o se il *message* è uguale e l'espressione regolare supera la valutazione *stack* .
 
 | Param      | Tipo                      | Descrizione                                                                                       |
 | :--------- | :------------------------ | :------------------------------------------------------------------------------------------------ |
 | `value`    | `{Error}`                 | errore                                                                                            |
 | `expected` | `{Error\|String\|RegExp}` | Un'espressione regolare che valuta il *constructor* , *message* o lo *stack* dell'errore previsto |
-| `message`  | `{String}`                | messaggio sul fallimento                                                                          |
+| `message`  | `{String}`                | messaggio in caso di guasto                                                                       |
 
 ## *pipe*
 
@@ -482,7 +477,7 @@ Genera una funzione che visualizzi un'animazione ciclica.
 
 #### `register(callback, interval, conditional)`
 
-Elaborazione del registro. È possibile registrare ed elaborare più processi in parallelo. Nella `callback` , indicheremo di interrompere l'animazione e scrivere la vista da visualizzare. `interval` specifica l'intervallo di elaborazione. Se il `conditional` è una funzione, esegue il `conditional(count, queue)` e se il risultato è vero, continua con il successivo. Il `conditional` esegue `decrement(count)` se è un numero e continua se il risultato è un numero positivo. Viene eseguito solo una volta se `conditional` non è definito. Si noti che specificando una funzione aumenta il `count` , mentre specificando un numero diminuisce il `count` .
+Elaborazione del registro. È possibile registrare ed elaborare più processi in parallelo. Nella `callback` , indicheremo di interrompere l'animazione e scrivere la vista da visualizzare. `interval` specifica l'intervallo di elaborazione. Se il `conditional` è una funzione, verrà eseguito `conditional(count, queue)` e se il risultato è vero, continuerà. Il `conditional` esegue `decrement(count)` se è un numero e continua se il risultato è un numero positivo. Viene eseguito solo una volta se `conditional` non è definito. Si noti che specificando una funzione aumenta il `count` , mentre specificando un numero diminuisce il `count` .
 
 #### `stop()`
 
@@ -670,7 +665,7 @@ wes install @wachaon/fmt --bare
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-Se accedi al repository privato *raw* con un browser, il *token* verrà visualizzato, quindi copia il *token* e utilizzalo. Puoi anche installare pacchetti da repository privati ​​eseguendolo nella console mentre il *token* è valido.
+Quando accedi al *raw* del repository privato con un browser, il *token* verrà visualizzato, quindi copia il *token* e usalo. I pacchetti da repository privati ​​possono anche essere installati se eseguiti nella console mentre il *token* è valido.
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA

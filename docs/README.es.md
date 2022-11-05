@@ -1,7 +1,6 @@
 # *WES*
 
-*wes* es un marco de consola para ejecutar *ECMAScript* en *WSH (Windows Script Host)* . El [*japanese*](/README.md) original del *README* estará en japonés. Los textos que no sean en japonés serán traducidos automáticamente.  
-Para textos en otros idiomas, seleccione entre las opciones a continuación.
+*wes* es un marco de consola para ejecutar *ECMAScript* en *WSH (Windows Script Host)* . El [*japanese*](/README.md) original del *README* estará en japonés. Los textos que no sean en japonés serán traducidos automáticamente. \\ Para textos en otros idiomas, seleccione a continuación.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -35,14 +34,13 @@ Para textos en otros idiomas, seleccione entre las opciones a continuación.
 
 # descargar
 
-Wes solo necesita el *wes* *wes.js* Para descargar, copie *wes.js* desde [*@wachaon/wes*](https://github.com/wachaon/wes) o ejecute el siguiente comando en su consola.
+Wes solo necesita el *wes* *wes.js* Para descargar, copie *wes.js* desde [*@wachaon/wes*](https://github.com/wachaon/wes) o ejecute el siguiente comando en la consola.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-Usamos `SendKeys` *wes* *WScript.Shell* en tiempo de ejecución como una implementación. Si la ruta del directorio donde se guarda *wes.js* contiene caracteres que no sean *ascii* , `SendKeys` no puede enviar la clave correctamente y el script no se puede ejecutar.  
-Configure la ruta *wes.js* solo en *ascii* . Si ya ha descargado *wes* , puede actualizarlo con el siguiente comando.
+Usamos `SendKeys` *wes* *WScript.Shell* en tiempo de ejecución como una implementación. Si la ruta del directorio donde se guarda *wes.js* contiene caracteres que no sean *ascii* , `SendKeys` no puede enviar la clave correctamente y el script no se puede ejecutar. \\ La ruta de destino *wes.js* debe configurarse solo en *ascii* . Si ya ha descargado *wes* , puede actualizarlo con el siguiente comando.
 
 ```bat
 wes update
@@ -108,7 +106,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra* , que es el motor de ejecución de secuencias de comandos, interpreta sintaxis como `imoprt` , pero no se puede ejecutar tal cual porque el método de procesamiento como `cscript` no está definido. En *wes* , al agregar *babel* a los módulos incorporados, *es module* es también se ejecutan mientras se transpilan uno por uno. Esto nos cuesta la sobrecarga de procesamiento y un archivo *wes.js* . Los módulos escritos en el *es module* es también se convierten a `require()` mediante la transpilación, por lo que es posible llamar a *COM Object* . Sin embargo, no admite especificar la codificación del archivo del módulo con el *es module* . Todo se carga automáticamente. Para cargarlo como un *es module* , configure la extensión en `.mjs` o configure el campo `"type"` en `package.json` en `"module"` .
+*Chakra* , que es el motor de ejecución de scripts, interpreta sintaxis como `imoprt` , pero no se puede ejecutar tal cual porque el método de procesamiento como `cscript` no está definido. En *wes* , al agregar *babel* a los módulos incorporados, *es module* es también se ejecutan mientras se transpilan uno por uno. Esto nos cuesta la sobrecarga de procesamiento y un archivo *wes.js* . Los módulos escritos en el *es module* es también se convierten a `require()` mediante la transpilación, por lo que es posible llamar a *COM Object* . Sin embargo, no admite especificar la codificación del archivo del módulo con el *es module* . Todo se carga automáticamente. Para cargarlo como un *es module* , configure la extensión en `.mjs` o configure el campo `"type"` en `package.json` en `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -150,7 +148,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`                     | volcado de objetos                    |
 | `%O`                     | Volcado de objeto (sangrado/colorido) |
 
-`WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` para generar cadenas de colores. `WScript.Echo` y `WScript.StdOut.WriteLine` son salidas bloqueadas. `WScript.StdErr.WriteLine` o `console.log` .
+`WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` para generar cadenas de colores. `WScript.Echo` y `WScript.StdOut.WriteLine` son salida bloqueada. `WScript.StdErr.WriteLine` o `console.log` .
 
 ## *Buffer*
 
@@ -349,13 +347,11 @@ Compare con `true` con el operador de igualdad estricta `===` . Si el `value` es
 | Parámetro | Escribe               | Descripción                            |
 | :-------- | :-------------------- | :------------------------------------- |
 | `value`   | `{Function\|Boolean}` | función booleana o de retorno booleano |
-| `message` | `{String}`            | mensaje de falla                       |
+| `message` | `{String}`            | mensaje en caso de falla               |
 
 #### `assert.equal(expected, actual)`
 
-Compara objetos por igualdad de miembros, no por referencia.  
-NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` o `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` etc.  
-Al comparar clases (objetos), deben tener el mismo constructor o una superclase cuyo `actual` se `expected` .
+Compara objetos por igualdad de miembros, no por referencia. \\ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` o `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` etc. \\ Al comparar clases (objetos), deben ser el mismo constructor o la superclase cuyo `actual` se `expected` .
 
 | Parámetro  | Escribe | Descripción    |
 | :--------- | :------ | :------------- |
@@ -364,8 +360,7 @@ Al comparar clases (objetos), deben tener el mismo constructor o una superclase 
 
 #### `assert.throws(value, expected, message)`
 
-Verifique que los errores se estén lanzando correctamente.  
-Si el error es correcto o no se determina si el *constructor* de error esperado, el *message* es igual y la expresión regular pasa la evaluación de la *stack* .
+Verifique que el error se esté lanzando correctamente. \\ Si un error es correcto se determina si es el *constructor* del error esperado o si el *message* es igual y la expresión regular pasa la evaluación de la *stack* .
 
 | Parámetro  | Escribe                   | Descripción                                                                            |
 | :--------- | :------------------------ | :------------------------------------------------------------------------------------- |
@@ -474,7 +469,7 @@ animate.run()
 
 ### `constructor(complete)`
 
-Ejecuta la función `complete` cuando se completan todas las colas o se llama a `stop()` .
+Ejecute la función `complete` cuando se completen todas las colas o se llame a `stop()` .
 
 #### `static genProgressIndicator(animation)`
 

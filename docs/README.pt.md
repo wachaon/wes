@@ -1,7 +1,6 @@
 # *WES*
 
-*wes* é uma estrutura de console para executar o *ECMAScript* no *WSH (Windows Script Host)* . O [*japanese*](/README.md) original do *README* será em japonês. Textos diferentes do japonês serão traduzidos automaticamente.  
-Para textos em outros idiomas, selecione uma das opções abaixo.
+*wes* é uma estrutura de console para executar o *ECMAScript* no *WSH (Windows Script Host)* . O [*japanese*](/README.md) original do *README* será em japonês. Textos diferentes do japonês serão traduzidos automaticamente. \\ Para textos em outros idiomas, selecione abaixo.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -24,7 +23,7 @@ Para textos em outros idiomas, selecione uma das opções abaixo.
 -   Como o *cscript.exe* de 32 bits é sempre executado, não há nenhum problema exclusivo no ambiente de 64 bits.
 -   Como existe um sistema de módulos, ele pode ser desenvolvido de forma mais eficiente que o *WSH* convencional
 -   Módulos integrados suportam processamento básico, como entrada/saída de arquivo e saída de texto colorido para o console
--   Você pode permitir que a leitura do arquivo adivinhe automaticamente a codificação, para que você não precise se preocupar com a codificação, etc.
+-   Você pode deixar a leitura do arquivo adivinhar automaticamente a codificação, para que você não precise se preocupar com a codificação, etc.
 -   Módulos de pacote para dar suporte à publicação e recuperação externas
 
 # *wes* que não podemos resolver
@@ -35,14 +34,13 @@ Para textos em outros idiomas, selecione uma das opções abaixo.
 
 # download
 
-Wes só precisa do *wes* *wes.js* Para baixar, copie *wes.js* de [*@wachaon/wes*](https://github.com/wachaon/wes) ou execute o seguinte comando em seu console.
+Wes só precisa do *wes* *wes.js* Para baixar, copie *wes.js* de [*@wachaon/wes*](https://github.com/wachaon/wes) ou execute o seguinte comando no console.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-Nós usamos `SendKeys` *wes* *WScript.Shell* em tempo de execução como uma implementação. Se o caminho do diretório em que *wes.js* foi salvo contiver caracteres diferentes de *ascii* , `SendKeys` não poderá enviar a chave corretamente e o script não poderá ser executado.  
-Configure o caminho *wes.js* é armazenado apenas em *ascii* . Se você já baixou *wes* , pode atualizá-lo com o seguinte comando.
+Nós usamos `SendKeys` *wes* *WScript.Shell* em tempo de execução como uma implementação. Se o caminho do diretório em que *wes.js* foi salvo contiver caracteres diferentes de *ascii* , `SendKeys` não poderá enviar a chave corretamente e o script não poderá ser executado. O caminho de destino \\ *wes.js* deve consistir apenas em *ascii* . Se você já baixou *wes* , pode atualizá-lo com o seguinte comando.
 
 ```bat
 wes update
@@ -353,9 +351,7 @@ Compare com `true` com o operador de igualdade estrita `===` . Se `value` for um
 
 #### `assert.equal(expected, actual)`
 
-Compara objetos para igualdade de membros, não por referência.  
-NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` ou `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` etc.  
-Ao comparar classes (objetos), eles devem ter o mesmo construtor ou uma superclasse cujo `actual` é `expected` .
+Compara objetos para igualdade de membros, não por referência. \\ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` ou `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` etc. \\ Ao comparar classes (objetos), eles devem ser o mesmo construtor ou a superclasse cujo `actual` é `expected` .
 
 | Parâmetro  | Modelo  | Descrição      |
 | :--------- | :------ | :------------- |
@@ -364,14 +360,13 @@ Ao comparar classes (objetos), eles devem ter o mesmo construtor ou uma supercla
 
 #### `assert.throws(value, expected, message)`
 
-Verifique se os erros estão sendo lançados corretamente.  
-Se o erro está correto ou não, é determinado se o *constructor* de erro esperado, a *message* é igual e a expressão regular passa na avaliação da *stack* .
+Verifique se os erros estão sendo lançados corretamente. \\ Se um erro está correto é determinado se ele é o *constructor* do erro esperado ou se a *message* é igual e a expressão regular passa na avaliação da *stack* .
 
 | Parâmetro  | Modelo                    | Descrição                                                                                |
 | :--------- | :------------------------ | :--------------------------------------------------------------------------------------- |
 | `value`    | `{Error}`                 | erro                                                                                     |
 | `expected` | `{Error\|String\|RegExp}` | Uma expressão regular que avalia o *constructor* , *message* ou *stack* de erro esperado |
-| `message`  | `{String}`                | mensagem sobre falha                                                                     |
+| `message`  | `{String}`                | mensagem em caso de falha                                                                |
 
 ## *pipe*
 
@@ -474,7 +469,7 @@ animate.run()
 
 ### `constructor(complete)`
 
-Execute a função `complete` quando todas as filas estiverem completas ou `stop()` for chamado.
+Executa a função `complete` quando todas as filas são concluídas ou `stop()` é chamado.
 
 #### `static genProgressIndicator(animation)`
 
@@ -482,7 +477,7 @@ Gere uma função que exibe uma animação de ciclismo.
 
 #### `register(callback, interval, conditional)`
 
-Processamento de registro. Vários processos podem ser registrados e processados ​​em paralelo. No `callback` de chamada, instruiremos a parar a animação e escrever a visualização a ser exibida. `interval` especifica o intervalo de processamento. Se a `conditional` for uma função, ela executa `conditional(count, queue)` e se o resultado for verdadeiro, continua para a próxima. A `conditional` executa `decrement(count)` se for um número e continua se o resultado for um número positivo. Executa apenas uma vez se a `conditional` for indefinida. Observe que a especificação de uma função aumenta a `count` , enquanto a especificação de um número diminui a `count` .
+Processamento de registro. Vários processos podem ser registrados e processados ​​em paralelo. No `callback` de chamada, instruiremos a parar a animação e escrever a visualização a ser exibida. `interval` especifica o intervalo de processamento. Se a `conditional` for uma função, ela executará `conditional(count, queue)` e se o resultado for verdadeiro, ela continuará. A `conditional` executa `decrement(count)` se for um número e continua se o resultado for um número positivo. Executa apenas uma vez se a `conditional` for indefinida. Observe que a especificação de uma função aumenta a `count` , enquanto a especificação de um número diminui a `count` .
 
 #### `stop()`
 

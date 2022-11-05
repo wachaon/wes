@@ -1,7 +1,6 @@
 # *WES*
 
-*wes*是一個控制台框架，用於在*WSH (Windows Script Host)*上運行*ECMAScript* 。 *README*文件的[*japanese*](/README.md)將是日文。日語以外的文本將被機器翻譯。  
-對於其他語言的文本，請從以下選項中選擇。
+*wes*是一個控制台框架，用於在*WSH (Windows Script Host)*上運行*ECMAScript* 。 *README*文件的[*japanese*](/README.md)將是日文。日語以外的文本將被機器翻譯。 \\ 對於其他語言的文本，請從下面選擇。
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -35,14 +34,13 @@
 
 # 下載
 
-*wes.js* *wes* 。要下載，請從[*@wachaon/wes*](https://github.com/wachaon/wes) wes 複製*wes.js*或在控制台中運行以下命令。
+*wes.js* *wes* 。要下載，請從[*@wachaon/wes*](https://github.com/wachaon/wes)複製*wes.js*或在控制台中運行以下命令。
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-我們在運行時*WScript.Shell* *wes* `SendKeys`作為實現。如果*wes.js*保存目錄的路徑中包含*ascii*以外的字符，則`SendKeys`無法正確發送密鑰，腳本無法執行。  
-配置*wes.js*僅存儲在*ascii*中的路徑。如果您已經下載了*wes* ，您可以使用以下命令對其進行更新。
+我們在運行時*WScript.Shell* *wes* `SendKeys`作為實現。如果*wes.js*保存目錄的路徑中包含*ascii*以外的字符，則`SendKeys`無法正確發送密鑰，腳本無法執行。 \\ *wes.js*目標路徑應僅在*ascii*中配置。如果您已經下載了*wes* ，您可以使用以下命令對其進行更新。
 
 ```bat
 wes update
@@ -56,7 +54,7 @@ wes update
 wes index
 ```
 
-此外，由於*wes*配備了*REP* ，因此您可以通過單獨啟動`wes`直接輸入腳本。
+此外，由於*wes*配備了*REP* ，您可以通過單獨啟動`wes`直接輸入腳本。
 
 ```bat
 wes
@@ -81,7 +79,7 @@ wes
 
 ## *commonjs module*
 
-通過分配給`module.exports`並調用`require()`來管理模塊。以`./`和`../`開頭的絕對路徑和相對路徑以外的路徑在*wes_modules*目錄和*node_modules*目錄中查找模塊。 *wes*的`require()`會自動猜測模塊文件的編碼，但如果沒有正確猜測，您可以使用第二個參數指定編碼。
+通過分配給`module.exports`並調用`require()`來管理模塊。絕對路徑和以`./`和`../`開頭的相對路徑以外的路徑在*wes_modules*目錄中查找模塊，並且方便地在*node_modules*目錄中查找。 *wes*的`require()`會自動猜測模塊文件的編碼，但如果猜測不正確，您可以使用第二個參數指定編碼。
 
 ```javascript
 // ./add.js
@@ -108,7 +106,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-腳本執行引擎*Chakra*解釋了諸如`imoprt`之類的語法，但由於未定義`cscript`的處理方法，因此無法按原樣執行。在*wes*中，通過在內置模塊中添加*babel* ， *es module*也在被一個一個轉譯的同時執行。這會花費我們處理開銷和臃腫的*wes.js*文件。 *es module*中寫的模塊也通過轉譯轉換為`require()` ，因此可以調用*COM Object* 。但是，它不支持使用*es module*指定模塊文件的編碼。一切都是自動加載的。要將其加載為*es module* ，請將擴展名設置為`.mjs`或將`package.json`中的`"type"`字段設置為`"module"` 。
+腳本執行引擎*Chakra*解釋了諸如`imoprt`之類的語法，但由於未定義`cscript`的處理方法，因此無法按原樣執行。在*wes*中，通過在內置模塊中添加*babel* ， *es module*也在被一個一個轉譯的同時執行。這會花費我們處理開銷和臃腫的*wes.js*文件。用*es module*模塊寫的模塊也通過轉譯轉換成`require()` ，所以可以調用*COM Object* 。但是，它不支持使用*es module*指定模塊文件的編碼。一切都是自動加載的。要將其作為*es module*加載，請將擴展名設置為`.mjs`或將`package.json`中的`"type"`字段設置為`"module"` 。
 
 ```javascript
 // ./sub.mjs
@@ -150,7 +148,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`  | 對象轉儲                             |
 | `%O`  | 對象轉儲（縮進/彩色）                      |
 
-`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`來輸出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`是阻塞輸出。 `WScript.StdErr.WriteLine`或`console.log` 。
+`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`來輸出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`被阻止。 `WScript.StdErr.WriteLine`或`console.log` 。
 
 ## *Buffer*
 
@@ -172,7 +170,7 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
-由於*wes*是用於同步處理的執行環境，因此*setTimeout* *setInterval* *setImmediate* *Promise*不起到異步處理的作用，但它的實現是為了支持假設*Promise*實現的模塊。
+由於*wes*是用於同步處理的執行環境，因此*setTimeout* *setInterval* *setImmediate* *Promise*並不能起到異步處理的作用，但它的實現是為了支持假設*Promise*實現的模塊。
 
 ```javascript
 const example = () => {
@@ -353,9 +351,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 #### `assert.equal(expected, actual)`
 
-比較對象的成員相等性，而不是通過引用。  
-NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g`或`{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]`等等。  
-在比較類（對象）時，它們必須具有相同的構造函數或`actual` `expected`的超類。
+比較對象的成員相等性，而不是通過引用。 \\ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g`或`{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]`等等。 \\ 在比較類（對象）時，它們必須是相同的構造函數或`actual` `expected`的超類。
 
 | 參數         | 類型      | 描述   |
 | :--------- | :------ | :--- |
@@ -364,14 +360,13 @@ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegEx
 
 #### `assert.throws(value, expected, message)`
 
-驗證錯誤是否正確拋出。  
-錯誤是否正確取決於預期的錯誤*constructor* 、 *message*是否相等，以及正則表達式是否通過*stack*評估。
+驗證錯誤是否正確拋出。 \\ 錯誤是否正確取決於是否是預期錯誤的*constructor* ，或者*message*是否相等且正則表達式通過*stack*評估。
 
 | 參數         | 類型                        | 描述                                            |
 | :--------- | :------------------------ | :-------------------------------------------- |
 | `value`    | `{Error}`                 | 錯誤                                            |
 | `expected` | `{Error\|String\|RegExp}` | 計算預期錯誤*constructor* 、 *message*或*stack*的正則表達式 |
-| `message`  | `{String}`                | 失敗時的消息                                        |
+| `message`  | `{String}`                | 失敗消息                                          |
 
 ## *pipe*
 
@@ -474,7 +469,7 @@ animate.run()
 
 ### `constructor(complete)`
 
-當所有隊列完成或調用`stop()`時執行`complete`函數。
+當所有隊列都完成或調用`stop()`時執行`complete`函數。
 
 #### `static genProgressIndicator(animation)`
 
@@ -482,7 +477,7 @@ animate.run()
 
 #### `register(callback, interval, conditional)`
 
-註冊處理。可以並行註冊和處理多個進程。在`callback`中，我們將指示停止動畫並編寫要顯示的視圖。 `interval`指定處理間隔。如果`conditional`是一個函數，它執行`conditional(count, queue)` ，如果結果為真，它繼續下一個。如果`conditional`是數字，則執行`decrement(count)` ，如果結果是正數，則繼續。如果`conditional`未定義，則僅執行一次。請注意，指定函數會增加`count` ，而指定數字會減少`count` 。
+註冊處理。可以並行註冊和處理多個進程。在`callback`中，我們將指示停止動畫並編寫要顯示的視圖。 `interval`指定處理間隔。如果`conditional`是一個函數，它將執行`conditional(count, queue)` ，如果結果為真，它將繼續。如果`conditional`是數字，則執行`decrement(count)` ，如果結果是正數，則繼續。如果`conditional`未定義，則僅執行一次。請注意，指定函數會增加`count` ，而指定數字會減少`count` 。
 
 #### `stop()`
 
@@ -664,7 +659,7 @@ wes install @wachaon/fmt --bare
 
 # 從私有倉庫安裝包
 
-*install*不僅可以安裝來自公共*github*存儲庫的包，還可以安裝來自私有存儲庫的包。在*install*中，使用*@author/repository*指定包。該實現嘗試下載以下網址。
+*install*不僅可以安裝來自公共*github*存儲庫的包，還可以安裝來自私有存儲庫的包。在*install*中，使用*@author/repository*指定包。該實現嘗試下載以下 url。
 
 ```javascript
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`

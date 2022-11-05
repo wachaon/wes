@@ -1,7 +1,6 @@
 # *WES*
 
-*wes* is een consoleframework voor het uitvoeren van *ECMAScript* op *WSH (Windows Script Host)* . De originele [*japanese*](/README.md) van de *README* zal in het Japans zijn. Andere teksten dan het Japans worden machinaal vertaald.  
-Voor teksten in andere talen kunt u een keuze maken uit de onderstaande opties.
+*wes* is een consoleframework voor het uitvoeren van *ECMAScript* op *WSH (Windows Script Host)* . De originele [*japanese*](/README.md) van de *README* zal in het Japans zijn. Andere teksten dan Japans worden machinaal vertaald. \\ Voor teksten in andere talen kunt u hieronder een keuze maken.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -35,14 +34,13 @@ Voor teksten in andere talen kunt u een keuze maken uit de onderstaande opties.
 
 # downloaden
 
-Wes heeft alleen het *wes* *wes.js* . Om te downloaden, kopieert u *wes.js* van [*@wachaon/wes*](https://github.com/wachaon/wes) of voert u de volgende opdracht uit in uw console.
+Wes heeft alleen het *wes* *wes.js* . Om te downloaden, kopieert u *wes.js* van [*@wachaon/wes*](https://github.com/wachaon/wes) of voert u de volgende opdracht uit in de console.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-*WScript.Shell* *wes* `SendKeys` tijdens runtime als implementatie. Als het pad van de map waarin *wes.js* is opgeslagen andere tekens dan *ascii* bevat, kan `SendKeys` de sleutel niet correct verzenden en kan het script niet worden uitgevoerd.  
-Configureer het pad *wes.js* alleen in *ascii* wordt opgeslagen. Als je *wes* al hebt gedownload, kun je het bijwerken met de volgende opdracht.
+*WScript.Shell* *wes* `SendKeys` tijdens runtime als implementatie. Als het pad van de map waarin *wes.js* is opgeslagen andere tekens dan *ascii* bevat, kan `SendKeys` de sleutel niet correct verzenden en kan het script niet worden uitgevoerd. \\ *wes.js* bestemmingspad moet alleen in *ascii* worden geconfigureerd. Als je *wes* al hebt gedownload, kun je het bijwerken met de volgende opdracht.
 
 ```bat
 wes update
@@ -97,7 +95,7 @@ const add = require('./add')
 console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
-Het is ook mogelijk om te importeren met *require* for *COM Object* zoals `require('WScript.Shell')` .
+Het is ook mogelijk om te importeren met *require* voor *COM Object* zoals `require('WScript.Shell')` .
 
 ```javascript
 const Shell = require('Shell.Application')
@@ -150,7 +148,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`                | object dump                         |
 | `%O`                | Objectdump (ingesprongen/kleurrijk) |
 
-`WScript.StdOut.WriteLine` *wes* van `WScript.StdErr.WriteLine` om gekleurde tekenreeksen uit te voeren. `WScript.Echo` en `WScript.StdOut.WriteLine` zijn geblokkeerde uitvoer. `WScript.StdErr.WriteLine` of `console.log` .
+`WScript.StdOut.WriteLine` *wes* van `WScript.StdErr.WriteLine` om gekleurde tekenreeksen uit te voeren. `WScript.Echo` en `WScript.StdOut.WriteLine` zijn geblokkeerd. `WScript.StdErr.WriteLine` of `console.log` .
 
 ## *Buffer*
 
@@ -349,13 +347,11 @@ Vergelijk met `true` met de operator voor strikte gelijkheid `===` . Als `value`
 | Param     | Type                  | Beschrijving                                  |
 | :-------- | :-------------------- | :-------------------------------------------- |
 | `value`   | `{Function\|Boolean}` | booleaanse of booleaanse terugkerende functie |
-| `message` | `{String}`            | bericht bij mislukking                        |
+| `message` | `{String}`            | bericht in geval van storing                  |
 
 #### `assert.equal(expected, actual)`
 
-Vergelijkt objecten voor gelijkheid van leden, niet door verwijzing.  
-NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` of `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` enz.  
-Bij het vergelijken van klassen (objecten) moeten ze dezelfde constructor of een superklasse hebben waarvan de `actual` wordt `expected` .
+Vergelijkt objecten voor gelijkheid van leden, niet door verwijzing. \\ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` of `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` enz. \\ Bij het vergelijken van klassen (objecten), moeten ze dezelfde constructor zijn of de superklasse waarvan de `actual` wordt `expected` .
 
 | Param      | Type    | Beschrijving      |
 | :--------- | :------ | :---------------- |
@@ -364,8 +360,7 @@ Bij het vergelijken van klassen (objecten) moeten ze dezelfde constructor of een
 
 #### `assert.throws(value, expected, message)`
 
-Controleer of fouten correct worden gegenereerd.  
-Of de fout al dan niet correct is, wordt bepaald door of de verwachte *constructor* , het *message* gelijk is en de reguliere expressie de *stack* doorstaat.
+Controleer of de fout correct wordt gegenereerd. \\ Of een fout correct is, wordt bepaald door of het de *constructor* van de verwachte fout is, of dat het *message* gelijk is en de reguliere expressie de *stack* doorstaat.
 
 | Param      | Type                      | Beschrijving                                                                            |
 | :--------- | :------------------------ | :-------------------------------------------------------------------------------------- |
@@ -474,7 +469,7 @@ animate.run()
 
 ### `constructor(complete)`
 
-Voert de `complete` functie uit wanneer alle wachtrijen zijn voltooid of `stop()` wordt aangeroepen.
+Voert de `complete` functie uit wanneer alle wachtrijen zijn voltooid of wanneer `stop()` wordt aangeroepen.
 
 #### `static genProgressIndicator(animation)`
 
@@ -482,7 +477,7 @@ Genereer een functie die een fietsanimatie weergeeft.
 
 #### `register(callback, interval, conditional)`
 
-Verwerking registreren. Meerdere processen kunnen parallel worden geregistreerd en verwerkt. In de `callback` zullen we instrueren om de animatie te stoppen en de weergave te schrijven die moet worden weergegeven. `interval` specificeert het verwerkingsinterval. Als de `conditional` functie een functie is, voert deze `conditional(count, queue)` en als het resultaat waar is, gaat het verder met de volgende. De `conditional` voert `decrement(count)` uit als het een getal is en gaat door als het resultaat een positief getal is. Wordt slechts één keer uitgevoerd als `conditional` niet gedefinieerd is. Merk op dat het specificeren van een functie de `count` verhoogt, terwijl het specificeren van een getal de `count` verlaagt.
+Verwerking registreren. Meerdere processen kunnen parallel worden geregistreerd en verwerkt. In de `callback` zullen we instrueren om de animatie te stoppen en de weergave te schrijven die moet worden weergegeven. `interval` specificeert het verwerkingsinterval. Als de `conditional` een functie is, zal deze `conditional(count, queue)` en als het resultaat waar is, zal het doorgaan. De `conditional` voert `decrement(count)` uit als het een getal is en gaat door als het resultaat een positief getal is. Wordt slechts één keer uitgevoerd als `conditional` niet gedefinieerd is. Merk op dat het specificeren van een functie de `count` verhoogt, terwijl het specificeren van een getal de `count` verlaagt.
 
 #### `stop()`
 

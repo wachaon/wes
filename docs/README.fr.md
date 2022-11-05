@@ -1,7 +1,6 @@
 # *WES*
 
-*wes* est un framework de console pour exécuter *ECMAScript* sur *WSH (Windows Script Host)* . Le [*japanese*](/README.md) original du *README* sera en japonais. Les textes autres que le japonais seront traduits automatiquement.  
-Pour les textes dans d'autres langues, veuillez sélectionner parmi les options ci-dessous.
+*wes* est un framework de console pour exécuter *ECMAScript* sur *WSH (Windows Script Host)* . Le [*japanese*](/README.md) original du *README* sera en japonais. Les textes autres que le japonais seront traduits automatiquement. \\ Pour les textes dans d'autres langues, veuillez sélectionner ci-dessous.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -41,8 +40,7 @@ Wes n'a besoin que du *wes* *wes.js* . Pour télécharger, copiez *wes.js* depui
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-Nous utilisons `SendKeys` *wes* *WScript.Shell* lors de l'exécution en tant qu'implémentation. Si le chemin du répertoire où *wes.js* est enregistré contient des caractères autres que *ascii* , `SendKeys` ne peut pas envoyer la clé correctement et le script ne peut pas être exécuté.  
-Configurez le chemin *wes.js* est stocké en *ascii* uniquement. Si vous avez déjà téléchargé *wes* , vous pouvez le mettre à jour avec la commande suivante.
+Nous utilisons `SendKeys` *wes* *WScript.Shell* lors de l'exécution en tant qu'implémentation. Si le chemin du répertoire où *wes.js* est enregistré contient des caractères autres que *ascii* , `SendKeys` ne peut pas envoyer la clé correctement et le script ne peut pas être exécuté. Le chemin de destination \\ *wes.js* doit être composé uniquement d' *ascii* . Si vous avez déjà téléchargé *wes* , vous pouvez le mettre à jour avec la commande suivante.
 
 ```bat
 wes update
@@ -50,7 +48,7 @@ wes update
 
 # Usage
 
-Entrez le mot-clé `wes` et la commande spécifiant le fichier qui sera le point de départ du programme vers la console. L'extension de script *.js* peut être omise.
+Entrez le mot-clé `wes` suivi de la commande spécifiant le fichier qui sera le point de départ du programme vers la console. L'extension de script *.js* peut être omise.
 
 ```bat
 wes index
@@ -150,7 +148,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`                    | vidage d'objet                   |
 | `%O`                    | Vidage d'objet (indenté/coloré)  |
 
-`WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` pour générer des chaînes colorées. `WScript.Echo` et `WScript.StdOut.WriteLine` sont bloqués. `WScript.StdErr.WriteLine` ou `console.log` .
+`WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` pour générer des chaînes colorées. `WScript.Echo` et `WScript.StdOut.WriteLine` sont des sorties bloquées. `WScript.StdErr.WriteLine` ou `console.log` .
 
 ## *Buffer*
 
@@ -349,13 +347,11 @@ Comparez à `true` avec l'opérateur d'égalité stricte `===` . Si `value` est 
 | Param     | Taper                 | La description                             |
 | :-------- | :-------------------- | :----------------------------------------- |
 | `value`   | `{Function\|Boolean}` | fonction booléenne ou renvoyant un booléen |
-| `message` | `{String}`            | message en cas de panne                    |
+| `message` | `{String}`            | message en cas d'échec                     |
 
 #### `assert.equal(expected, actual)`
 
-Compare les objets pour l'égalité des membres, pas par référence.  
-NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` ou `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` etc.  
-Lors de la comparaison de classes (objets), elles doivent avoir le même constructeur ou une superclasse dont `actual` est `expected` .
+Compare les objets pour l'égalité des membres, pas par référence. \\ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` ou `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` etc. \\ Lors de la comparaison de classes (objets), il doit s'agir du même constructeur ou de la superclasse dont l' `actual` est `expected` .
 
 | Param      | Taper   | La description  |
 | :--------- | :------ | :-------------- |
@@ -364,14 +360,13 @@ Lors de la comparaison de classes (objets), elles doivent avoir le même constru
 
 #### `assert.throws(value, expected, message)`
 
-Vérifiez que l'erreur est générée correctement.  
-Le fait que l'erreur soit correcte ou non est déterminé par le fait que le *constructor* d'erreur attendu, *message* est égal et que l'expression régulière réussit l'évaluation de la *stack* .
+Vérifiez que l'erreur est générée correctement. \\ Le fait qu'une erreur soit correcte est déterminé par le fait qu'il s'agit du *constructor* de l'erreur attendue ou par le fait que le *message* est égal et que l'expression régulière réussit l'évaluation de la *stack* .
 
 | Param      | Taper                     | La description                                                                                   |
 | :--------- | :------------------------ | :----------------------------------------------------------------------------------------------- |
 | `value`    | `{Error}`                 | Erreur                                                                                           |
 | `expected` | `{Error\|String\|RegExp}` | Une expression régulière qui évalue le *constructor* , *message* ou la *stack* d'erreur attendus |
-| `message`  | `{String}`                | message en cas de panne                                                                          |
+| `message`  | `{String}`                | message en cas d'échec                                                                           |
 
 ## *pipe*
 
@@ -482,7 +477,7 @@ Générez une fonction qui affiche une animation de cyclisme.
 
 #### `register(callback, interval, conditional)`
 
-Traitement des registres. Plusieurs processus peuvent être enregistrés et traités en parallèle. Dans le `callback` , nous demanderons d'arrêter l'animation et d'écrire la vue à afficher. `interval` spécifie l'intervalle de traitement. Si la `conditional` est une fonction, elle exécute `conditional(count, queue)` et si le résultat est vrai, elle passe à la suivante. La `conditional` exécute `decrement(count)` s'il s'agit d'un nombre et continue si le résultat est un nombre positif. S'exécute une seule fois si `conditional` n'est pas défini. Notez que la spécification d'une fonction augmente le `count` , tandis que la spécification d'un nombre diminue le `count` .
+Traitement des registres. Plusieurs processus peuvent être enregistrés et traités en parallèle. Dans le `callback` , nous demanderons d'arrêter l'animation et d'écrire la vue à afficher. `interval` spécifie l'intervalle de traitement. Si la `conditional` est une fonction, elle exécutera `conditional(count, queue)` et si le résultat est vrai, elle continuera. La `conditional` exécute `decrement(count)` s'il s'agit d'un nombre et continue si le résultat est un nombre positif. S'exécute une seule fois si `conditional` n'est pas défini. Notez que la spécification d'une fonction augmente le `count` , tandis que la spécification d'un nombre diminue le `count` .
 
 #### `stop()`
 
@@ -598,12 +593,12 @@ Si le `path` a l'extension `.zip` , `unzip()` est traité et il n'y a pas de des
 
 | anonyme | La description                              |
 | ------- | ------------------------------------------- |
-| `1`     | `path` ou fichier à saisir                  |
+| `1`     | `path` ou fichier à entrer                  |
 | `2`     | fichier de dossier vers la `dest` de sortie |
 
 | nommé    | nommé court | La description                              |
 | -------- | ----------- | ------------------------------------------- |
-| `--path` | `-p`        | `path` ou fichier à saisir                  |
+| `--path` | `-p`        | `path` ou fichier à entrer                  |
 | `--dest` | `-d`        | fichier de dossier vers la `dest` de sortie |
 
 # Regroupement (conditionnement) et installation de modules
@@ -682,7 +677,7 @@ Voici quelques packages externes.
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* est *prettier* emballé pour *wes* pour formater les scripts. De plus, si une *Syntax Error* se produit pendant *@wachaon/fmt* , l'emplacement de l'erreur peut être affiché.
+*@wachaon/fmt* est *prettier* emballé pour *wes* pour formater les scripts. De plus, si une *Syntax Error* se produit pendant *@wachaon/fmt* , vous pouvez afficher l'emplacement de l'erreur.
 
 ### installer
 

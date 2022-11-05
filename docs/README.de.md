@@ -1,7 +1,6 @@
 # *WES*
 
-*wes* ist ein Konsolen-Framework zum Ausführen von *ECMAScript* auf *WSH (Windows Script Host)* . Der [*japanese*](/README.md) der *README* wird auf Japanisch sein. Andere Texte als Japanisch werden maschinell übersetzt.  
-Für Texte in anderen Sprachen wählen Sie bitte aus den folgenden Optionen aus.
+*wes* ist ein Konsolen-Framework zum Ausführen von *ECMAScript* auf *WSH (Windows Script Host)* . Der [*japanese*](/README.md) der *README* wird auf Japanisch sein. Andere Texte als Japanisch werden maschinell übersetzt. \\ Für Texte in anderen Sprachen bitte unten auswählen.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -35,14 +34,13 @@ Für Texte in anderen Sprachen wählen Sie bitte aus den folgenden Optionen aus.
 
 # Download
 
-Wes benötigt nur die *wes* *wes.js* . Kopieren Sie zum Herunterladen *wes.js* von [*@wachaon/wes*](https://github.com/wachaon/wes) oder führen Sie den folgenden Befehl in Ihrer Konsole aus.
+Wes benötigt nur die *wes* *wes.js* . Kopieren Sie zum Herunterladen *wes.js* von [*@wachaon/wes*](https://github.com/wachaon/wes) oder führen Sie den folgenden Befehl in der Konsole aus.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-`SendKeys` *WScript.Shell* *wes* zur Laufzeit als Implementierung. Wenn der Pfad des Verzeichnisses, in dem *wes.js* gespeichert ist, andere Zeichen als *ascii* enthält, kann `SendKeys` den Schlüssel nicht korrekt senden und das Skript kann nicht ausgeführt werden.  
-Konfigurieren Sie den Pfad, *wes.js* gespeichert ist, nur in *ascii* . Wenn Sie *wes* bereits heruntergeladen haben, können Sie es mit dem folgenden Befehl aktualisieren.
+`SendKeys` *WScript.Shell* *wes* zur Laufzeit als Implementierung. Wenn der Pfad des Verzeichnisses, in dem *wes.js* gespeichert ist, andere Zeichen als *ascii* enthält, kann `SendKeys` den Schlüssel nicht korrekt senden und das Skript kann nicht ausgeführt werden. \\ *wes.js* sollte nur in *ascii* konfiguriert werden. Wenn Sie *wes* bereits heruntergeladen haben, können Sie es mit dem folgenden Befehl aktualisieren.
 
 ```bat
 wes update
@@ -50,7 +48,7 @@ wes update
 
 # Verwendungszweck
 
-Geben Sie das Schlüsselwort `wes` gefolgt von dem Befehl ein, der die Datei angibt, die der Startpunkt des Programms für die Konsole sein wird. Die *.js* kann weggelassen werden.
+Geben Sie das Schlüsselwort `wes` und den Befehl ein, der die Datei angibt, die der Startpunkt des Programms für die Konsole sein wird. Die *.js* kann weggelassen werden.
 
 ```bat
 wes index
@@ -150,7 +148,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`             | Objekt-Dump                      |
 | `%O`             | Objekt-Dump (eingerückt/bunt)    |
 
-`WScript.StdOut.WriteLine` *wes* von `WScript.StdErr.WriteLine` , um farbige Zeichenfolgen auszugeben. `WScript.Echo` und `WScript.StdOut.WriteLine` werden blockiert. `WScript.StdErr.WriteLine` oder `console.log` .
+`WScript.StdOut.WriteLine` *wes* von `WScript.StdErr.WriteLine` , um farbige Zeichenfolgen auszugeben. `WScript.Echo` und `WScript.StdOut.WriteLine` sind blockierte Ausgaben. `WScript.StdErr.WriteLine` oder `console.log` .
 
 ## *Buffer*
 
@@ -172,7 +170,7 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
-Da *wes* eine Ausführungsumgebung für synchrone Verarbeitung ist, *setTimeout* *setInterval* *setImmediate* *Promise* nicht als asynchrone Verarbeitung, sondern wird implementiert, um Module zu unterstützen, die eine *Promise* -Implementierung voraussetzen.
+Da es sich bei *wes* um eine Ausführungsumgebung für synchrone Verarbeitung handelt, *setTimeout* *setInterval* *setImmediate* *Promise* nicht als asynchrone Verarbeitung, sondern wird implementiert, um Module zu unterstützen, die eine *Promise* -Implementierung voraussetzen.
 
 ```javascript
 const example = () => {
@@ -349,13 +347,11 @@ Mit dem strikten Gleichheitsoperator `===` mit `true` vergleichen. Wenn der `val
 | Parameter | Typ                   | Beschreibung                              |
 | :-------- | :-------------------- | :---------------------------------------- |
 | `value`   | `{Function\|Boolean}` | boolesche oder boolesche Rückgabefunktion |
-| `message` | `{String}`            | Meldung bei Ausfall                       |
+| `message` | `{String}`            | Meldung im Fehlerfall                     |
 
 #### `assert.equal(expected, actual)`
 
-Vergleicht Objekte auf Elementgleichheit, nicht nach Referenz.  
-NaN `true` `NaN === NaN` - `function (){} === function (){}` `/RegExp/g === /RegExp/g` oder `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` usw.  
-Beim Vergleich von Klassen (Objekten) müssen sie denselben Konstruktor oder eine Oberklasse haben, deren `actual` Ergebnis `expected` wird.
+Vergleicht Objekte auf Elementgleichheit, nicht nach Referenz. \\ NaN `true` `NaN === NaN` - `function (){} === function (){}` `/RegExp/g === /RegExp/g` oder `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` usw. \\ Wenn Klassen (Objekte) verglichen werden, müssen sie derselbe Konstruktor oder eine Oberklasse sein, deren `actual` Ergebnis `expected` wird.
 
 | Parameter  | Typ     | Beschreibung       |
 | :--------- | :------ | :----------------- |
@@ -364,8 +360,7 @@ Beim Vergleich von Klassen (Objekten) müssen sie denselben Konstruktor oder ein
 
 #### `assert.throws(value, expected, message)`
 
-Stellen Sie sicher, dass Fehler korrekt ausgegeben werden.  
-Ob der Fehler korrekt ist oder nicht, wird dadurch bestimmt, ob der erwartete Fehlerkonstruktor und *constructor* *message* gleich sind und der reguläre Ausdruck die *stack* besteht.
+Stellen Sie sicher, dass der Fehler korrekt ausgegeben wird. \\ Ob ein Fehler korrekt ist, wird dadurch bestimmt, ob es sich um den *constructor* des erwarteten Fehlers handelt oder ob die *message* gleich ist und der reguläre Ausdruck die *stack* besteht.
 
 | Parameter  | Typ                       | Beschreibung                                                                                                     |
 | :--------- | :------------------------ | :--------------------------------------------------------------------------------------------------------------- |
@@ -474,7 +469,7 @@ animate.run()
 
 ### `constructor(complete)`
 
-Führen Sie die Funktion `complete` aus, wenn alle Warteschlangen abgeschlossen sind oder `stop()` aufgerufen wird.
+Führt die `complete` Funktion aus, wenn alle Warteschlangen abgeschlossen sind oder `stop()` aufgerufen wird.
 
 #### `static genProgressIndicator(animation)`
 
@@ -482,7 +477,7 @@ Generieren Sie eine Funktion, die eine Fahrradanimation anzeigt.
 
 #### `register(callback, interval, conditional)`
 
-Verarbeitung registrieren. Es können mehrere Prozesse registriert und parallel verarbeitet werden. Im `callback` wir an, die Animation zu stoppen und die anzuzeigende Ansicht zu schreiben. `interval` gibt das Verarbeitungsintervall an. Wenn die `conditional` eine Funktion ist, führt sie `conditional(count, queue)` aus und wenn das Ergebnis wahr ist, fährt sie mit der nächsten fort. Die `conditional` führt `decrement(count)` aus, wenn es sich um eine Zahl handelt, und fährt fort, wenn das Ergebnis eine positive Zahl ist. Wird nur einmal ausgeführt, wenn `conditional` nicht definiert ist. Beachten Sie, dass die Angabe einer Funktion die `count` erhöht, während die Angabe einer Zahl die `count` verringert.
+Verarbeitung registrieren. Es können mehrere Prozesse registriert und parallel verarbeitet werden. Im `callback` wir an, die Animation zu stoppen und die anzuzeigende Ansicht zu schreiben. `interval` gibt das Verarbeitungsintervall an. Wenn die `conditional` eine Funktion ist, wird `conditional(count, queue)` ausgeführt, und wenn das Ergebnis wahr ist, wird sie fortgesetzt. Die `conditional` führt `decrement(count)` aus, wenn es sich um eine Zahl handelt, und fährt fort, wenn das Ergebnis eine positive Zahl ist. Wird nur einmal ausgeführt, wenn `conditional` nicht definiert ist. Beachten Sie, dass die Angabe einer Funktion die `count` erhöht, während die Angabe einer Zahl die `count` verringert.
 
 #### `stop()`
 
@@ -594,7 +589,7 @@ wes zip docs\* dox.zip
 wes zip -p dox.zip
 ```
 
-Wenn der `path` die Erweiterung `.zip` hat, wird `unzip()` verarbeitet und es gibt keine Beschreibung der Erweiterung `.zip` . Alternativ, selbst wenn es eine Erweiterung `.zip` gibt, wird `zip()` verarbeitet, wenn es eine Beschreibung mit Platzhalter `*` gibt.
+Wenn der `path` die Erweiterung `.zip` hat, wird `unzip()` verarbeitet und es gibt keine Beschreibung der Erweiterung `.zip` . Alternativ, auch wenn es eine Erweiterung `.zip` gibt, wird `zip()` verarbeitet, wenn eine Platzhalter `*` Beschreibung vorhanden ist.
 
 | unbenannt | Beschreibung                                  |
 | --------- | --------------------------------------------- |
@@ -670,7 +665,7 @@ wes install @wachaon/fmt --bare
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-Wenn Sie mit einem Browser *raw* auf das private Repository zugreifen, wird das *token* angezeigt, also kopieren Sie das *token* und verwenden Sie es. Sie können Pakete auch aus privaten Repositorys installieren, indem Sie sie in der Konsole ausführen, solange das *token* gültig ist.
+Wenn Sie mit einem Browser auf das *raw* des privaten Repositorys zugreifen, wird das *token* angezeigt, also kopieren Sie das *token* und verwenden Sie es. Pakete aus privaten Repositorys können auch installiert werden, wenn sie in der Konsole ausgeführt werden, während das *token* gültig ist.
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA

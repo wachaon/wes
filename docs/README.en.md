@@ -1,7 +1,6 @@
 # *WES*
 
-*wes* is a console framework for running *ECMAScript* on *WSH (Windows Script Host)* . The original [*japanese*](/README.md) of the *README* will be in Japanese. Texts other than Japanese will be machine translated.  
-For texts in other languages, please select from the options below.
+*wes* is a console framework for running *ECMAScript* on *WSH (Windows Script Host)* . The original [*japanese*](/README.md) of the *README* will be in Japanese. Texts other than Japanese will be machine translated. \\ For texts in other languages, please select from below.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -35,14 +34,13 @@ For texts in other languages, please select from the options below.
 
 # download
 
-*wes.js* *wes* . To download, copy *wes.js* from [*@wachaon/wes*](https://github.com/wachaon/wes) or run the following command in console.
+*wes.js* *wes* . To download, copy *wes.js* from [*@wachaon/wes*](https://github.com/wachaon/wes) or run the following command in your console.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-*WScript.Shell* *wes* `SendKeys` at runtime as an implementation. If the path of the directory where *wes.js* is saved contains characters other than *ascii* , `SendKeys` cannot send the key correctly and the script cannot be executed.  
-Configure the path *wes.js* is stored in *ascii* only. If you have already downloaded *wes* , you can update it with the following command.
+*WScript.Shell* *wes* `SendKeys` at runtime as an implementation. If the path of the directory where *wes.js* is saved contains characters other than *ascii* , `SendKeys` cannot send the key correctly and the script cannot be executed. \\ *wes.js* destination path should be configured in *ascii* only. If you have already downloaded *wes* , you can update it with the following command.
 
 ```bat
 wes update
@@ -108,7 +106,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra* , which is a script execution engine, interprets syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. In *wes* , by adding *babel* to the built-in modules, *es module* are also executed while being sequentially transpiled. This costs us processing overhead and a bloated *wes.js* file. Modules written in *es module* are also converted to `require()` by transpiling, so it is possible to call *COM Object* . However, it does not support specifying the encoding of the module file with *es module* . Everything is loaded automatically. To load it as an *es module* , set the extension to `.mjs` or set the `"type"` field in `package.json` to `"module"` .
+*Chakra* , which is the script execution engine, interprets syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. In *wes* , by adding *babel* to the built-in modules, *es module* are also executed while being transpiled one by one. This costs us processing overhead and a bloated *wes.js* file. Modules written in *es module* are also converted to `require()` by transpiling, so it is possible to call *COM Object* . However, it does not support specifying the encoding of the module file with *es module* . Everything is loaded automatically. To load it as an *es module* , set the extension to `.mjs` or set the `"type"` field in `package.json` to `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -353,9 +351,7 @@ Compare to `true` with the strict equality operator `===` . If `value` is a func
 
 #### `assert.equal(expected, actual)`
 
-Compares objects for member equality, not by reference.  
-NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` or `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` etc.  
-When comparing classes (objects), they must have the same constructor or a superclass whose `actual` is `expected` .
+Compares objects for member equality, not by reference. \\ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` or `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` etc. \\ When comparing classes (objects), they must be the same constructor or a superclass whose `actual` is `expected` .
 
 | Param      | Type    | Description    |
 | :--------- | :------ | :------------- |
@@ -364,8 +360,7 @@ When comparing classes (objects), they must have the same constructor or a super
 
 #### `assert.throws(value, expected, message)`
 
-Verify that the error is being thrown correctly.  
-Whether or not the error is correct is determined by whether the expected error *constructor* , *message* is equal, and the regular expression passes *stack* evaluation.
+Verify that errors are being thrown correctly. \\ Whether an error is correct is determined by whether it is the *constructor* of the expected error, or whether the *message* is equal and the regular expression passes *stack* evaluation.
 
 | Param      | Type                      | Description                                                                                   |
 | :--------- | :------------------------ | :-------------------------------------------------------------------------------------------- |
@@ -474,7 +469,7 @@ animate.run()
 
 ### `constructor(complete)`
 
-Execute the `complete` function when all queues are completed or `stop()` is called.
+Executes the `complete` function when all queues are completed or `stop()` is called.
 
 #### `static genProgressIndicator(animation)`
 
@@ -682,7 +677,7 @@ Here are some external packages.
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* is *prettier* packaged for *wes* to format scripts. Also, if a *Syntax Error* occurs while *@wachaon/fmt* is installed, the location of the error can be shown.
+*@wachaon/fmt* is *prettier* packaged for *wes* to format scripts. Also, if a *Syntax Error* occurs while *@wachaon/fmt* is installed, you can show the location of the error.
 
 ### install
 
