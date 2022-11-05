@@ -904,10 +904,9 @@
                             return showErrorCode(mod.source, mod.path, mapping[2] + 1, mapping[3] + 1)
                         })
                     }
-                    console.debug(LIME + "step: 7. If you don't see an error")
-                    console.log(coloring(error.stack, ERROR_COLOR))
                 }
 
+                console.debug(LIME + "step: 7. If you don't see an error")
                 console.log(coloring(error.stack, ERROR_COLOR))
                 console.debug('history: %O', history)
             } catch (e) {
