@@ -168,9 +168,7 @@
 
             var find = utility.find
 
-            var global = {
-                Date: Date
-            }
+            var global = this
 
             var process = {
                 env: {
