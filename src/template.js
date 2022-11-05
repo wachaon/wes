@@ -832,7 +832,7 @@
                 if (mod.type === COMMONJS) {
                     console.debug(LIME + 'step: 5a. If the module type is commonjs')
                     if (error instanceof SyntaxError) {
-                        console.log(LIME + 'step: 5b. commonjs syntax error')
+                        console.debug(LIME + 'step: 5b. commonjs syntax error')
                         try {
                             console.log(FILE_PATH_COLOR + 'Predicted error source is ' + mod.path)
                             req(BABEL_STANDALONE).transform(mod.source, Babel_option)
