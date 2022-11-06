@@ -153,6 +153,8 @@
             var ENCODING = 'encoding'
             var ASTERISK = '*'
             var DUMP = 'dump'
+            var EIL = '\u001B[0K'
+            var BOL = '\u001B[1G'
 
             var pathname = req(PATHNAME)
             var resolve = pathname.resolve
@@ -291,7 +293,14 @@
         function createModule(GUID, entry, query, parentModule, encode) {
             if (parentModule) parentModule.mapping[query] = GUID
 
-            console.debug('%O require to %O ', parentModule ? parentModule.path : null, entry)
+            if (argv.get('debug')) console.debug('%O import to %O ', parentModule ? parentModule.path : null, entry)
+            else {
+                if (entry.length > 120) {
+                    var front = entry.slice(1, 100)
+                    var end = entry.slice(-15)
+                    console.log('import to %O', front + '... ' + end)
+                } else console.log('import to %O', entry)
+            }
 
             var mod = {
                 source: readTextFileSync(entry, encode != null ? encode : null),
@@ -348,6 +357,7 @@
                         codeMap.Buffer = req(BUFFER).Buffer
                     if (entry !== PROMISE) codeMap.Promise = req(PROMISE)
 
+                    if (!argv.get('debug')) console.print(ansi.cursorUp(1) + BOL + EIL)
                     generateCodeAndExecution(codeMap, script)
                     wes.history.pop()
                     break
