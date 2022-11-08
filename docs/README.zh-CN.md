@@ -18,6 +18,8 @@
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
+
+
 # 特征
 
 *   您可以将脚本引擎更改为*Chakra*并根据*ECMAScript2015*规范编写。
@@ -26,12 +28,15 @@
 *   内置模块支持基本处理，例如文件输入/输出和彩色文本输出到控制台
 *   您可以让文件读取自动猜测编码，因此您不必担心编码等。
 *   打包模块以支持外部发布和检索
+*   比*WSH*更友好地显示错误细节
+
 
 # 我们无法解决的*wes*问题
 
 *   `WScript.Quit`不能中止程序并且不返回错误代码
 *   异步处理无法正常工作
 *   您不能使用`WScript.CreateObject`的第二个参数的*event prefix*
+
 
 # 下载
 
@@ -43,6 +48,7 @@
 配置*wes.js*仅存储在*ascii*中的路径。如果您已经下载了*wes* ，您可以使用以下命令对其进行更新。
 
      wes update
+
 
 # 用法
 
@@ -56,6 +62,7 @@
 
 *REP*接受脚本输入，直到您输入两个空行。您还可以在*README.md*中看到*REP*运行示例脚本。
 
+
 ## 命令行选项
 
 *wes*启动选项如下。
@@ -68,9 +75,11 @@
 | `--encoding=UTF-8` | 指定读取的第一个文件的编码               |
 | `--engine=Chakra`  | 此选项由*wes*自动添加               |
 
+
 # 模块系统
 
 *wes*支持两个模块系统，使用`require()`的*commonjs module*系统和使用`import`的*es module*系统。 （不支持*dynamic import* ，因为它是一个异步过程）
+
 
 ## *commonjs module*
 
@@ -86,9 +95,10 @@
 
      const Shell = require('Shell.Application') Shell.MinimizeAll() WScript.Sleep(2000) Shell.UndoMinimizeAll()
 
+
 ## *es module*
 
-*Chakra*是一个脚本执行引擎，可以解释诸如`imoprt`之类的语法，但由于没有定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过在内置模块中添加*babel* ， *es module*也在被顺序转译的同时执行。这会花费我们处理开销和臃肿的*wes.js*文件。 *es module*中写的模块也通过转译转换为`require()` ，因此可以调用*COM Object* 。但是，它不支持使用*es module*指定模块文件的编码。一切都是自动加载的。要将其加载为*es module* ，请将扩展名设置为`.mjs`或将`package.json`中的`"type"`字段设置为`"module"` 。
+脚本执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义*cscript*的处理方法，因此无法按原样执行。在*wes*中，通过在内置模块中添加*babel* ， *es module*也在被一个一个转译的同时执行。这会花费我们处理开销和臃肿的*wes.js*文件。 *es module*中写的模块也通过转译转换为`require()` ，因此可以调用*COM Object* 。但是，它不支持使用*es module*指定模块文件的编码。一切都是自动加载的。要将其加载为*es module* ，请将扩展名设置为`.mjs`或将`package.json`中的`"type"`字段设置为`"module"` 。
 
      // ./sub.mjs export default function sub (a, b) { return a - b }
 
@@ -96,11 +106,14 @@
 
      // ./main2.js import sub from './sub.mjs' console.log('sub(7, 3) // => %O', sub(7, 3))
 
+
 # 内置对象
 
 *wes*有*WSH (JScript)*中没有的*built-in objects* 。
 
+
 undefined
+
 
 ## *Buffer*
 
@@ -108,21 +121,25 @@ undefined
 
      const content = 'Hello World' const buff = Buffer.from(content) console.log(`${content} %O`, buff)
 
+
 ## `__dirname`和`__filename`
 
 `__filename`存储当前执行的模块文件的路径。 `__dirname`包含`__filename`的目录。
 
      console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 
+
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
-由于*wes*是用于同步处理的执行环境，因此*setTimeout* *setInterval* *setImmediate* *Promise*并不能起到异步处理的作用，但它的实现是为了支持假设*Promise*实现的模块。
+由于*wes*是用于同步处理的执行环境，因此*setTimeout* *setInterval* *setImmediate* *Promise*不起到异步处理的作用，但它的实现是为了支持假设*Promise*实现的模块。
 
      const example = () => { const promise = new Promise((resolve, reject) => { console.log('promise') setTimeout(() => { console.log('setTimeout') resolve('resolved'); }, 2000); }).then((val) => { console.log(val) }); console.log('sub') }; console.log('start') example(); console.log('end')
+
 
 # 内置模块
 
 *wes*有*built-in modules*来简化和标准化基本处理。
+
 
 ## *ansi*
 
@@ -134,6 +151,7 @@ undefined
 
      const { color } = require('ansi') const orange = color(255, 165, 0) console.log(orange 'Hello World')
 
+
 ## *argv*
 
 获取命令行参数。 `cscript.exe`的命令行参数用`/`声明命名参数，而*wes*用`-`和`--`声明命名参数。 *argv.unnamed*和*argv.named*命令行参数值类型转换为*String* *Number* *Boolean* 。使用*REP*输入命令行参数。
@@ -144,21 +162,25 @@ undefined
 
      const argv = require('argv') console.log(`argv: %O argv.unnamed: %O argv.named: %O`, argv, argv.unnamed, argv.named)
 
+
 ## *pathname*
 
-操纵路径。以`/`和`\`开头的路径通常相对于驱动器根目录。例如`/filename`和`C:/filename`可以是相同的路径。出于安全原因， `wes`解释以`/`和`\`开头的相对于工作目录的路径。
+操纵路径。以`/`和`\`开头的路径通常相对于驱动器根目录。例如`/filename`和`C:/filename`可以是相同的路径。出于安全原因， *wes*解释以`/`和`\`开头的相对于工作目录的路径。
 
      const path = require('pathname') const file = path.resolve(__dirname, 'index.js') console.log('file %O', file)
 
+
 ## *filesystem*
 
-操作文件和目录。 `readTextFileSync`自动猜测文件的编码并读取它。
+操作文件和目录。 `readTextFileSync()`自动猜测文件的编码并读取它。 （即使`readFileSync()`的第二个参数`encode`为`auto` ，它也会被自动猜测。）
 
-     const fs = require('filesystem') const path = require('pathname') const readme = path.resolve(__dirname, 'README.md') const contents = fs.readTextFileSync(readme) console.log(contents)
+     const fs = require('filesystem') const path = require('pathname') const readme = path.resolve(__dirname, 'README.md') const contents = fs.readTextFileSync(readme) // const contents = fs.readFileSync(readme, 'auto') console.log(contents)
+
 
 ## *chardet*
 
 我正在使用<https://github.com/runk/node-chardet>的一些功能。您可以通过增加特定于编码的字符来提高自动猜测的准确性。
+
 
 ## *JScript*
 
@@ -170,11 +192,13 @@ undefined
 
      const { GetObject, Enumerator } = require('JScript') const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service") new Enumerator(ServiceSet).forEach(service => console.log( 'Name: %O\nDescription: %O\n', service.Name, service.Description ))
 
+
 ## *VBScript*
 
 *VBScript*提供了一些*JScript*没有的功能。
 
      const { TypeName } = require('VBScript') const FSO = require('Scripting.FileSystemObject') console.log(TypeName(FSO))
+
 
 ## *httprequest*
 
@@ -182,7 +206,9 @@ undefined
 
      const request = require('httprequest') const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1') console.log('%O', JSON.parse(content))
 
+
 undefined
+
 
 ## *pipe*
 
@@ -192,6 +218,7 @@ undefined
 
     const pipe = require('pipe') function add (a, b) { return ba } function sub (a, b) { return b - a } function div (a, b) { return a / b } const add5 = add.bind(null, 5) const sub3 = sub.bind(null, 3) pipe() .use(add5) .use(sub3) .use(div, 4) .process(10, (err, res) => console.log('res: %O', res))
 
+
 ## *typecheck*
 
 确定脚本类型。
@@ -200,7 +227,9 @@ undefined
 
     const { isString, isNumber, isBoolean, isObject } = require('typecheck') const log = require('log') log(() => isString("ECMAScript")) log(() => isNumber(43.5)) log(() => isBoolean(false)) log(() => isObject(function(){}))
 
+
 undefined
+
 
 ## *getMember*
 
@@ -209,6 +238,7 @@ undefined
 ### 用法
 
     const getMember = require('getMember') const FileSystemObject = 'Scripting.FileSystemObject' console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
+
 
 ## *zip*
 
@@ -234,9 +264,11 @@ undefined
 | `--path` | `-p` | `path`要输入的文件夹或文件 |
 | `--dest` | `-d` | 文件夹文件输出`dest`    |
 
+
 # 捆绑（打包）和安装模块
 
 在*wes*中，几个模块的捆绑称为一个包。您可以安装在*github*上发布的*wes*软件包。发布包需要*github repository* 。
+
 
 ## *bundle*
 
@@ -256,7 +288,9 @@ undefined
 
      wes bundle
 
+
 undefined
+
 
 # 从私有仓库安装包
 
@@ -268,9 +302,11 @@ undefined
 
      wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
+
 # 包装介绍
 
 这是一些外部软件包。
+
 
 ## *@wachaon/fmt*
 

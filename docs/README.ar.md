@@ -18,6 +18,8 @@
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
+
+
 # خاصية
 
 *   يمكنك تغيير محرك البرنامج النصي إلى *Chakra* والكتابة وفقًا لمواصفات *ECMAScript2015* .
@@ -26,12 +28,15 @@
 *   تدعم الوحدات المدمجة المعالجة الأساسية مثل إدخال / إخراج الملف وإخراج النص الملون إلى وحدة التحكم
 *   يمكنك السماح لقراءة الملف تلقائيًا بتخمين الترميز ، لذلك لا داعي للقلق بشأن الترميز وما إلى ذلك.
 *   وحدات الحزمة لدعم النشر الخارجي والاسترجاع
+*   عرض تفاصيل الخطأ بلطف أكثر من *WSH*
+
 
 # المشكلات *wes* التي لا يمكننا حلها
 
 *   لا يمكن لـ `WScript.Quit` إحباط البرنامج ولا يُرجع رمز خطأ
 *   المعالجة غير المتزامنة لا تعمل بشكل صحيح
 *   لا يمكنك استخدام *event prefix* للوسيطة الثانية من `WScript.CreateObject`
+
 
 # تحميل
 
@@ -43,6 +48,7 @@
 قم بتكوين المسار *wes.js* في ملف *ascii* فقط. إذا قمت بالفعل بتنزيل *wes* ، فيمكنك تحديثه باستخدام الأمر التالي.
 
      wes update
+
 
 # إستعمال
 
@@ -56,6 +62,7 @@
 
 يقبل *REP* إدخال البرنامج النصي حتى تقوم بإدخال سطرين فارغين. يمكنك أيضًا رؤية *REP* يشغل مثال البرنامج النصي في *README.md* .
 
+
 ## خيارات سطر الأوامر
 
 خيارات بدء التشغيل *wes* كما يلي.
@@ -68,9 +75,11 @@
 | `--encoding=UTF-8` | يحدد ترميز أول ملف تمت قراءته                           |
 | `--engine=Chakra`  | هذا الخيار يضاف تلقائيا من قبل *wes*                    |
 
+
 # نظام الوحدة
 
 يدعم *wes* نظامين للوحدات النمطية ، وهما نظام *commonjs module* باستخدام `require()` ونظام *es module* باستخدام `import` . ( *dynamic import* غير مدعوم لأنه عملية غير متزامنة)
+
 
 ## *commonjs module*
 
@@ -86,9 +95,10 @@
 
      const Shell = require('Shell.Application') Shell.MinimizeAll() WScript.Sleep(2000) Shell.UndoMinimizeAll()
 
+
 ## *es module*
 
-*Chakra* ، وهو محرك تنفيذ نصي ، يفسر بناء الجملة مثل `imoprt` ، لكن لا يمكن تنفيذه كما هو لأن طريقة المعالجة مثل `cscript` غير محددة. في *wes* ، من خلال إضافة *babel* إلى الوحدات المدمجة ، يتم أيضًا تنفيذ *es module* أثناء نقلها بالتسلسل. هذا يكلفنا معالجة النفقات العامة وملف *wes.js* المتضخم. يتم أيضًا تحويل الوحدات المكتوبة في *es module* إلى `require()` عن طريق التحويل ، لذلك من الممكن استدعاء *COM Object* . ومع ذلك ، فإنه لا يدعم تحديد ترميز ملف الوحدة النمطية باستخدام *es module* . يتم تحميل كل شيء تلقائيًا. لتحميلها كوحدة *es module* ، اضبط الامتداد على `.mjs` أو اضبط حقل `"type"` في `package.json` على `"module"` .
+يفسر *Chakra* ، وهو محرك تنفيذ البرنامج النصي ، بناء الجملة مثل `imoprt` ، ولكن لا يمكن تنفيذه كما هو لأن طريقة المعالجة مثل *cscript* غير محددة. في *wes* ، من خلال إضافة *babel* إلى الوحدات المدمجة ، يتم أيضًا تنفيذ *es module* أثناء نقلها واحدة تلو الأخرى. هذا يكلفنا معالجة النفقات العامة وملف *wes.js* المتضخم. يتم أيضًا تحويل الوحدات المكتوبة في *es module* إلى `require()` عن طريق التحويل ، لذلك من الممكن استدعاء *COM Object* . ومع ذلك ، فإنه لا يدعم تحديد ترميز ملف الوحدة النمطية باستخدام *es module* . يتم تحميل كل شيء تلقائيًا. لتحميلها كوحدة *es module* ، اضبط الامتداد على `.mjs` أو اضبط حقل `"type"` في `package.json` على `"module"` .
 
      // ./sub.mjs export default function sub (a, b) { return a - b }
 
@@ -96,11 +106,14 @@
 
      // ./main2.js import sub from './sub.mjs' console.log('sub(7, 3) // => %O', sub(7, 3))
 
+
 # كائن مدمج
 
 يحتوي *wes* *built-in objects* مضمنة غير موجودة في *WSH (JScript)* .
 
+
 undefined
+
 
 ## *Buffer*
 
@@ -108,11 +121,13 @@ undefined
 
      const content = 'Hello World' const buff = Buffer.from(content) console.log(`${content} %O`, buff)
 
+
 ## `__dirname` و `__filename`
 
 `__filename` يخزن مسار ملف الوحدة النمطية الجاري تنفيذه. يحتوي `__dirname` على دليل `__filename` .
 
      console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise* الفوري
 
@@ -120,9 +135,11 @@ undefined
 
      const example = () => { const promise = new Promise((resolve, reject) => { console.log('promise') setTimeout(() => { console.log('setTimeout') resolve('resolved'); }, 2000); }).then((val) => { console.log(val) }); console.log('sub') }; console.log('start') example(); console.log('end')
 
+
 # وحدة مدمجة
 
 يحتوي *wes* *built-in modules* لتبسيط وتوحيد المعالجة الأساسية.
+
 
 ## *ansi*
 
@@ -134,6 +151,7 @@ undefined
 
      const { color } = require('ansi') const orange = color(255, 165, 0) console.log(orange 'Hello World')
 
+
 ## *argv*
 
 احصل على وسيطات سطر الأوامر. تعلن وسيطات سطر الأوامر الخاصة بـ `cscript.exe` عن الوسائط المسماة بـ `/` ، بينما يعلن *wes* عن الوسائط المسماة بـ `-` و `--` . *argv.unnamed* و argv. *argv.named* نوع قيمة وسيطة سطر الأوامر إما إلى *String* *Number* *Boolean* . أدخل وسيطات سطر الأوامر باستخدام *REP* .
@@ -144,21 +162,25 @@ undefined
 
      const argv = require('argv') console.log(`argv: %O argv.unnamed: %O argv.named: %O`, argv, argv.unnamed, argv.named)
 
+
 ## *pathname*
 
-التلاعب بالمسارات. المسارات التي تبدأ بـ `/` و `\` بشكل عام مرتبطة بجذر محرك الأقراص. على سبيل المثال `/filename` و `C:/filename` يمكن أن يكونا نفس المسار. لأسباب أمنية ، يفسر `wes` المسارات التي تبدأ بـ `/` و `\` المتعلقة بدليل العمل.
+التلاعب بالمسارات. المسارات التي تبدأ بـ `/` و `\` بشكل عام مرتبطة بجذر محرك الأقراص. على سبيل المثال `/filename` و `C:/filename` يمكن أن يكونا نفس المسار. لأسباب أمنية ، يفسر *wes* المسارات التي تبدأ بـ `/` و `\` المتعلقة بدليل العمل.
 
      const path = require('pathname') const file = path.resolve(__dirname, 'index.js') console.log('file %O', file)
 
+
 ## *filesystem*
 
-معالجة الملفات والدلائل. يخمن `readTextFileSync` تلقائيًا ترميز الملف ويقرأه.
+معالجة الملفات والدلائل. `readTextFileSync()` تلقائيًا ترميز الملف ويقرأه. (حتى إذا تم `encode` الوسيطة الثانية لـ `readFileSync()` على `auto` ، فسيتم تخمينها تلقائيًا.)
 
-     const fs = require('filesystem') const path = require('pathname') const readme = path.resolve(__dirname, 'README.md') const contents = fs.readTextFileSync(readme) console.log(contents)
+     const fs = require('filesystem') const path = require('pathname') const readme = path.resolve(__dirname, 'README.md') const contents = fs.readTextFileSync(readme) // const contents = fs.readFileSync(readme, 'auto') console.log(contents)
+
 
 ## *chardet*
 
 أنا أستخدم بعض الميزات من <https://github.com/runk/node-chardet> . يمكنك زيادة دقة التخمين التلقائي عن طريق زيادة الأحرف الخاصة بالترميز.
+
 
 ## *JScript*
 
@@ -170,11 +192,13 @@ undefined
 
      const { GetObject, Enumerator } = require('JScript') const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service") new Enumerator(ServiceSet).forEach(service => console.log( 'Name: %O\nDescription: %O\n', service.Name, service.Description ))
 
+
 ## *VBScript*
 
 يقدم *VBScript* بعض الميزات التي لا توفرها *JScript* .
 
      const { TypeName } = require('VBScript') const FSO = require('Scripting.FileSystemObject') console.log(TypeName(FSO))
+
 
 ## *httprequest*
 
@@ -182,7 +206,9 @@ undefined
 
      const request = require('httprequest') const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1') console.log('%O', JSON.parse(content))
 
+
 undefined
+
 
 ## *pipe*
 
@@ -192,6 +218,7 @@ undefined
 
      const pipe = require('pipe') function add (a, b) { return ba } function sub (a, b) { return b - a } function div (a, b) { return a / b } const add5 = add.bind(null, 5) const sub3 = sub.bind(null, 3) pipe() .use(add5) .use(sub3) .use(div, 4) .process(10, (err, res) => console.log('res: %O', res))
 
+
 ## *typecheck*
 
 حدد نوع البرنامج النصي.
@@ -200,7 +227,9 @@ undefined
 
      const { isString, isNumber, isBoolean, isObject } = require('typecheck') const log = require('log') log(() => isString("ECMAScript")) log(() => isNumber(43.5)) log(() => isBoolean(false)) log(() => isObject(function(){}))
 
+
 undefined
+
 
 ## *getMember*
 
@@ -209,6 +238,7 @@ undefined
 ### إستعمال
 
      const getMember = require('getMember') const FileSystemObject = 'Scripting.FileSystemObject' console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
+
 
 ## *zip*
 
@@ -234,9 +264,11 @@ undefined
 | `--path`  | `-p`     | `path` أو ملف للدخول   |
 | `--dest`  | `-d`     | ملف مجلد لإخراج `dest` |
 
+
 # تجميع (تغليف) وتثبيت الوحدات
 
 في *wes* ، تسمى حزمة من عدة وحدات حزمة. يمكنك تثبيت الحزمة الخاصة بـ *wes* المنشورة على *github* . مطلوب *github repository* لنشر الحزمة.
+
 
 ## *bundle*
 
@@ -256,7 +288,9 @@ undefined
 
      wes bundle
 
+
 undefined
+
 
 # تركيب الحزم من المستودعات الخاصة
 
@@ -268,9 +302,11 @@ undefined
 
      wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
+
 # مقدمة الحزمة
 
 فيما يلي بعض الحزم الخارجية.
+
 
 ## *@wachaon/fmt*
 

@@ -18,6 +18,8 @@
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
+
+
 # বৈশিষ্ট্য
 
 *   আপনি স্ক্রিপ্ট ইঞ্জিনকে *Chakra* পরিবর্তন করতে পারেন এবং *ECMAScript2015* স্পেসিফিকেশন অনুযায়ী লিখতে পারেন।
@@ -26,12 +28,15 @@
 *   অন্তর্নির্মিত মডিউলগুলি মৌলিক প্রক্রিয়াকরণকে সমর্থন করে যেমন ফাইল ইনপুট/আউটপুট এবং কনসোলে রঙিন পাঠ্য আউটপুট
 *   আপনি ফাইল রিডিং স্বয়ংক্রিয়ভাবে এনকোডিং অনুমান করতে দিতে পারেন, তাই আপনাকে এনকোডিং ইত্যাদি সম্পর্কে চিন্তা করতে হবে না।
 *   বাহ্যিক প্রকাশনা এবং পুনরুদ্ধার সমর্থন করার জন্য প্যাকেজ মডিউল
+*   *WSH* চেয়ে আরো দয়া করে ত্রুটির বিবরণ প্রদর্শন করুন
+
 
 # *wes* সমস্যা যা আমরা সমাধান করতে পারি না
 
 *   `WScript.Quit` প্রোগ্রামটি বাতিল করতে পারে না এবং একটি ত্রুটি কোড ফেরত দেয় না
 *   অ্যাসিঙ্ক্রোনাস প্রক্রিয়াকরণ সঠিকভাবে কাজ করে না
 *   আপনি `WScript.CreateObject` এর দ্বিতীয় আর্গুমেন্টের *event prefix* ব্যবহার করতে পারবেন না
+
 
 # ডাউনলোড
 
@@ -43,6 +48,7 @@
 পাথ কনফিগার করুন *wes.js* শুধুমাত্র *ascii* তে সংরক্ষণ করা হয়। আপনি যদি ইতিমধ্যে *wes* ডাউনলোড করে থাকেন তবে আপনি নিম্নলিখিত কমান্ডের মাধ্যমে এটি আপডেট করতে পারেন।
 
      wes update
+
 
 # ব্যবহার
 
@@ -56,6 +62,7 @@
 
 আপনি দুটি ফাঁকা লাইন প্রবেশ না করা পর্যন্ত *REP* স্ক্রিপ্ট ইনপুট গ্রহণ করে। আপনি *REP* *README.md* এ উদাহরণ স্ক্রিপ্ট চালাতেও দেখতে পারেন।
 
+
 ## কমান্ড লাইন বিকল্প
 
 *wes* স্টার্টআপ বিকল্পগুলি নিম্নরূপ।
@@ -68,9 +75,11 @@
 | `--encoding=UTF-8` | পড়া প্রথম ফাইলের এনকোডিং নির্দিষ্ট করে                |
 | `--engine=Chakra`  | এই বিকল্পটি *wes* দ্বারা স্বয়ংক্রিয়ভাবে যোগ করা হয়  |
 
+
 # মডিউল সিস্টেম
 
 *wes* দুটি মডিউল সিস্টেম সমর্থন করে, *commonjs module* সিস্টেম `require()` ব্যবহার করে এবং *es module* সিস্টেম `import` ব্যবহার করে। ( *dynamic import* সমর্থিত নয় কারণ এটি একটি অ্যাসিঙ্ক্রোনাস প্রক্রিয়া)
+
 
 ## *commonjs module*
 
@@ -86,9 +95,10 @@
 
      const Shell = require('Shell.Application') Shell.MinimizeAll() WScript.Sleep(2000) Shell.UndoMinimizeAll()
 
+
 ## *es module*
 
-*Chakra* , যা স্ক্রিপ্ট এক্সিকিউশন ইঞ্জিন, সিনট্যাক্সকে ব্যাখ্যা করে যেমন `imoprt` , কিন্তু এটি কার্যকর করা যায় না কারণ এটি `cscript` হিসাবে প্রক্রিয়াকরণ পদ্ধতি সংজ্ঞায়িত করা হয়নি। *wes* এ, অন্তর্নির্মিত মডিউলগুলিতে *babel* যোগ করার মাধ্যমে, *es module* একের পর এক স্থানান্তরিত হওয়ার সময় কার্যকর করা হয়। এটি আমাদের ওভারহেড এবং একটি ফুলে যাওয়া *wes.js* ফাইল প্রক্রিয়াকরণের জন্য খরচ করে। *es module* লেখা মডিউলগুলিকেও ট্রান্সপিলিং করে `require()` এ রূপান্তরিত করা হয়, তাই *COM Object* অবজেক্টকে কল করা সম্ভব। যাইহোক, এটি *es module* সহ মডিউল ফাইলের এনকোডিং নির্দিষ্ট করা সমর্থন করে না। সবকিছু স্বয়ংক্রিয়ভাবে লোড হয়. এটিকে একটি *es module* হিসাবে লোড করতে, .mjs এ এক্সটেনশন সেট করুন বা `.mjs` এ `"type"` ক্ষেত্রটিকে `"module"` এ `package.json` করুন।
+*Chakra* , যা একটি স্ক্রিপ্ট এক্সিকিউশন ইঞ্জিন, সিনট্যাক্সকে ব্যাখ্যা করে যেমন `imoprt` , কিন্তু এটি কার্যকর করা যায় না কারণ এটি *cscript* হিসাবে প্রক্রিয়াকরণ পদ্ধতি সংজ্ঞায়িত করা হয়নি। *wes* এ, অন্তর্নির্মিত মডিউলগুলিতে *babel* যোগ করার মাধ্যমে, *es module* ক্রমানুসারে স্থানান্তরিত হওয়ার সময় কার্যকর করা হয়। এটি আমাদের ওভারহেড এবং একটি ফুলে যাওয়া *wes.js* ফাইল প্রক্রিয়াকরণের জন্য খরচ করে। *es module* লেখা মডিউলগুলিকেও ট্রান্সপিলিং করে `require()` এ রূপান্তরিত করা হয়, তাই *COM Object* অবজেক্টকে কল করা সম্ভব। যাইহোক, এটি *es module* সহ মডিউল ফাইলের এনকোডিং নির্দিষ্ট করা সমর্থন করে না। সবকিছু স্বয়ংক্রিয়ভাবে লোড হয়. এটিকে একটি *es module* হিসাবে লোড করতে, .mjs এ এক্সটেনশন সেট করুন বা `.mjs` এ `"type"` ক্ষেত্রটিকে `"module"` এ `package.json` করুন।
 
      // ./sub.mjs export default function sub (a, b) { return a - b }
 
@@ -96,11 +106,14 @@
 
      // ./main2.js import sub from './sub.mjs' console.log('sub(7, 3) // => %O', sub(7, 3))
 
+
 # অন্তর্নির্মিত বস্তু
 
 *wes* এর *built-in objects* রয়েছে *WSH (JScript)* এ পাওয়া যায় নি।
 
+
 undefined
+
 
 ## *Buffer*
 
@@ -108,11 +121,13 @@ undefined
 
      const content = 'Hello World' const buff = Buffer.from(content) console.log(`${content} %O`, buff)
 
+
 ## `__dirname` এবং `__filename`
 
 `__filename` বর্তমানে কার্যকর করা মডিউল ফাইলের পথ সংরক্ষণ করে। `__dirname` এ `__filename` এর ডিরেক্টরি রয়েছে।
 
      console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
@@ -120,9 +135,11 @@ undefined
 
      const example = () => { const promise = new Promise((resolve, reject) => { console.log('promise') setTimeout(() => { console.log('setTimeout') resolve('resolved'); }, 2000); }).then((val) => { console.log(val) }); console.log('sub') }; console.log('start') example(); console.log('end')
 
+
 # অন্তর্নির্মিত মডিউল
 
 মৌলিক প্রক্রিয়াকরণকে সরল ও মানসম্মত করার জন্য *wes* এর *built-in modules* রয়েছে।
+
 
 ## *ansi*
 
@@ -134,6 +151,7 @@ ansi হল `ansi` *ANSI escape code* যা আদর্শ আউটপুট 
 
      const { color } = require('ansi') const orange = color(255, 165, 0) console.log(orange 'Hello World')
 
+
 ## *argv*
 
 কমান্ড লাইন আর্গুমেন্ট পান. `cscript.exe` এর কমান্ড লাইন আর্গুমেন্ট `/` এর সাথে নামযুক্ত আর্গুমেন্ট ঘোষণা করে, যখন *wes* `-` এবং `--` এর সাথে নামযুক্ত আর্গুমেন্ট ঘোষণা করে। *argv.unnamed* এবং *argv.named* কমান্ড লাইন আর্গুমেন্ট ভ্যালু টাইপকে *String* *Number* *Boolean* কাস্ট করে। *REP* এর সাথে কমান্ড লাইন আর্গুমেন্ট লিখুন।
@@ -144,21 +162,25 @@ ansi হল `ansi` *ANSI escape code* যা আদর্শ আউটপুট 
 
      const argv = require('argv') console.log(`argv: %O argv.unnamed: %O argv.named: %O`, argv, argv.unnamed, argv.named)
 
+
 ## *pathname*
 
-পাথ ম্যানিপুলেট. `/` এবং `\` দিয়ে শুরু হওয়া পাথগুলি সাধারণত ড্রাইভ রুটের সাথে আপেক্ষিক। উদাহরণস্বরূপ `/filename` এবং `C:/filename` একই পথ হতে পারে। নিরাপত্তার কারণে, wes কার্যকারী ডিরেক্টরির সাথে সম্পর্কিত `/` এবং `\` দিয়ে শুরু হওয়া `wes` ব্যাখ্যা করে।
+পাথ ম্যানিপুলেট. `/` এবং `\` দিয়ে শুরু হওয়া পাথগুলি সাধারণত ড্রাইভ রুটের সাথে আপেক্ষিক। উদাহরণস্বরূপ `/filename` এবং `C:/filename` একই পথ হতে পারে। নিরাপত্তার কারণে, wes কার্যকারী ডিরেক্টরির সাথে সম্পর্কিত `/` এবং `\` দিয়ে শুরু হওয়া *wes* ব্যাখ্যা করে।
 
      const path = require('pathname') const file = path.resolve(__dirname, 'index.js') console.log('file %O', file)
 
+
 ## *filesystem*
 
-ফাইল এবং ডিরেক্টরি ম্যানিপুলেট. `readTextFileSync` স্বয়ংক্রিয়ভাবে ফাইলের এনকোডিং অনুমান করে এবং এটি পড়ে।
+ফাইল এবং ডিরেক্টরি ম্যানিপুলেট. `readTextFileSync()` স্বয়ংক্রিয়ভাবে ফাইলের এনকোডিং অনুমান করে এবং এটি পড়ে। (এমনকি যদি `readFileSync()` এর দ্বিতীয় আর্গুমেন্টটি `auto` `encode` করা থাকে তবে এটি স্বয়ংক্রিয়ভাবে অনুমান করা হবে।)
 
-     const fs = require('filesystem') const path = require('pathname') const readme = path.resolve(__dirname, 'README.md') const contents = fs.readTextFileSync(readme) console.log(contents)
+     const fs = require('filesystem') const path = require('pathname') const readme = path.resolve(__dirname, 'README.md') const contents = fs.readTextFileSync(readme) // const contents = fs.readFileSync(readme, 'auto') console.log(contents)
+
 
 ## *chardet*
 
 আমি <https://github.com/runk/node-chardet> থেকে কিছু বৈশিষ্ট্য ব্যবহার করছি। আপনি এনকোডিং-নির্দিষ্ট অক্ষর বাড়িয়ে স্বয়ংক্রিয় অনুমান করার সঠিকতা বাড়াতে পারেন।
+
 
 ## *JScript*
 
@@ -170,11 +192,13 @@ ansi হল `ansi` *ANSI escape code* যা আদর্শ আউটপুট 
 
      const { GetObject, Enumerator } = require('JScript') const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service") new Enumerator(ServiceSet).forEach(service => console.log( 'Name: %O\nDescription: %O\n', service.Name, service.Description ))
 
+
 ## *VBScript*
 
 *VBScript* কিছু বৈশিষ্ট্য অফার করে যা *JScript* করে না।
 
      const { TypeName } = require('VBScript') const FSO = require('Scripting.FileSystemObject') console.log(TypeName(FSO))
+
 
 ## *httprequest*
 
@@ -182,7 +206,9 @@ ansi হল `ansi` *ANSI escape code* যা আদর্শ আউটপুট 
 
      const request = require('httprequest') const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1') console.log('%O', JSON.parse(content))
 
+
 undefined
+
 
 ## *pipe*
 
@@ -192,6 +218,7 @@ undefined
 
      const pipe = require('pipe') function add (a, b) { return ba } function sub (a, b) { return b - a } function div (a, b) { return a / b } const add5 = add.bind(null, 5) const sub3 = sub.bind(null, 3) pipe() .use(add5) .use(sub3) .use(div, 4) .process(10, (err, res) => console.log('res: %O', res))
 
+
 ## *typecheck*
 
 স্ক্রিপ্টের ধরন নির্ধারণ করুন।
@@ -200,7 +227,9 @@ undefined
 
      const { isString, isNumber, isBoolean, isObject } = require('typecheck') const log = require('log') log(() => isString("ECMAScript")) log(() => isNumber(43.5)) log(() => isBoolean(false)) log(() => isObject(function(){}))
 
+
 undefined
+
 
 ## *getMember*
 
@@ -209,6 +238,7 @@ undefined
 ### ব্যবহার
 
      const getMember = require('getMember') const FileSystemObject = 'Scripting.FileSystemObject' console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
+
 
 ## *zip*
 
@@ -234,9 +264,11 @@ undefined
 | `--path` | `-p`          | প্রবেশ করতে `path` বা ফাইল |
 | `--dest` | `-d`          | ফোল্ডার ফাইল আউটপুট `dest` |
 
+
 # বান্ডলিং (প্যাকেজিং) এবং মডিউল ইনস্টল করা
 
 *wes* এ, বেশ কয়েকটি মডিউলের একটি বান্ডিলকে প্যাকেজ বলা হয়। আপনি *github* এ প্রকাশিত *wes* এর জন্য প্যাকেজটি ইনস্টল করতে পারেন। একটি প্যাকেজ প্রকাশ করার জন্য একটি *github repository* প্রয়োজন।
+
 
 ## *bundle*
 
@@ -256,7 +288,9 @@ undefined
 
      wes bundle
 
+
 undefined
+
 
 # ব্যক্তিগত সংগ্রহস্থল থেকে প্যাকেজ ইনস্টল করা হচ্ছে
 
@@ -268,9 +302,11 @@ undefined
 
      wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
+
 # প্যাকেজ পরিচিতি
 
 এখানে কিছু বাহ্যিক প্যাকেজ আছে.
+
 
 ## *@wachaon/fmt*
 

@@ -18,6 +18,8 @@ Untuk teks dalam bahasa lain, sila pilih daripada pilihan di bawah.
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
+
+
 # ciri
 
 *   Anda boleh menukar enjin skrip kepada *Chakra* dan menulis mengikut spesifikasi *ECMAScript2015* .
@@ -26,12 +28,15 @@ Untuk teks dalam bahasa lain, sila pilih daripada pilihan di bawah.
 *   Modul terbina dalam menyokong pemprosesan asas seperti input/output fail dan output teks berwarna ke konsol
 *   Anda boleh membiarkan pembacaan fail meneka pengekodan secara automatik, jadi anda tidak perlu risau tentang pengekodan dsb.
 *   Pakej modul untuk menyokong penerbitan dan pengambilan luaran
+*   Paparkan butiran ralat dengan lebih baik daripada *WSH*
+
 
 # Isu yang *wes* yang tidak dapat kami selesaikan
 
 *   `WScript.Quit` tidak boleh membatalkan program dan tidak mengembalikan kod ralat
 *   Pemprosesan tak segerak tidak berfungsi dengan betul
 *   Anda tidak boleh menggunakan *event prefix* bagi argumen kedua `WScript.CreateObject`
+
 
 # muat turun
 
@@ -43,6 +48,7 @@ Wes hanya memerlukan *wes* *wes.js* . Untuk memuat turun, salin *wes.js* daripad
 Konfigurasikan laluan *wes.js* disimpan dalam *ascii* sahaja. Jika anda telah memuat turun *wes* , anda boleh mengemas kininya dengan arahan berikut.
 
      wes update
+
 
 # Penggunaan
 
@@ -56,6 +62,7 @@ Selain itu, memandangkan *wes* dilengkapi dengan *REP* , anda boleh memasukkan s
 
 *REP* menerima input skrip sehingga anda memasukkan dua baris kosong. Anda juga boleh melihat *REP* menjalankan skrip contoh dalam *README.md* .
 
+
 ## pilihan baris arahan
 
 Pilihan permulaan *wes* adalah seperti berikut.
@@ -68,9 +75,11 @@ Pilihan permulaan *wes* adalah seperti berikut.
 | `--encoding=UTF-8` | Menentukan pengekodan fail pertama dibaca             |
 | `--engine=Chakra`  | Pilihan ini ditambah secara automatik oleh *wes*      |
 
+
 # sistem modul
 
 *wes* menyokong dua sistem modul, sistem *commonjs module* menggunakan `require()` dan sistem *es module* menggunakan `import` . ( *dynamic import* tidak disokong kerana ia adalah proses tak segerak)
+
 
 ## *commonjs module*
 
@@ -86,9 +95,10 @@ Juga, adalah mungkin untuk mengimport dengan *require* untuk *COM Object* sepert
 
      const Shell = require('Shell.Application') Shell.MinimizeAll() WScript.Sleep(2000) Shell.UndoMinimizeAll()
 
+
 ## *es module*
 
-*Chakra* , yang merupakan enjin pelaksanaan skrip, mentafsir sintaks seperti `imoprt` , tetapi ia tidak boleh dilaksanakan kerana kaedah pemprosesan sebagai `cscript` tidak ditakrifkan. Di *wes* , dengan menambahkan *babel* pada modul terbina dalam, modul *es module* juga dilaksanakan semasa ditranspil secara berurutan. Ini membebankan kami memproses overhed dan fail *wes.js* yang kembung. Modul yang ditulis dalam *es module* juga ditukar kepada `require()` dengan mengalihkan, jadi adalah mungkin untuk memanggil *COM Object* . Walau bagaimanapun, ia tidak menyokong menentukan pengekodan fail modul dengan *es module* . Semuanya dimuatkan secara automatik. Untuk memuatkannya sebagai *es module* , tetapkan sambungan kepada `.mjs` atau tetapkan medan `"type"` dalam `package.json` kepada `"module"` .
+*Chakra* , yang merupakan enjin pelaksanaan skrip, mentafsir sintaks seperti `imoprt` , tetapi ia tidak boleh dilaksanakan kerana kaedah pemprosesan sebagai *cscript* tidak ditakrifkan. Di *wes* , dengan menambahkan *babel* pada modul terbina dalam, modul *es module* juga dilaksanakan semasa ditranspil secara berurutan. Ini membebankan kami memproses overhed dan fail *wes.js* yang kembung. Modul yang ditulis dalam *es module* juga ditukar kepada `require()` dengan mengalihkan, jadi adalah mungkin untuk memanggil *COM Object* . Walau bagaimanapun, ia tidak menyokong menentukan pengekodan fail modul dengan *es module* . Semuanya dimuatkan secara automatik. Untuk memuatkannya sebagai *es module* , tetapkan sambungan kepada `.mjs` atau tetapkan medan `"type"` dalam `package.json` kepada `"module"` .
 
      // ./sub.mjs export default function sub (a, b) { return a - b }
 
@@ -96,11 +106,14 @@ Juga, adalah mungkin untuk mengimport dengan *require* untuk *COM Object* sepert
 
      // ./main2.js import sub from './sub.mjs' console.log('sub(7, 3) // => %O', sub(7, 3))
 
+
 # objek terbina dalam
 
 *wes* mempunyai *built-in objects* tidak ditemui dalam *WSH (JScript)* .
 
+
 undefined
+
 
 ## *Buffer*
 
@@ -108,11 +121,13 @@ Anda boleh mengendalikan penimbal.
 
      const content = 'Hello World' const buff = Buffer.from(content) console.log(`${content} %O`, buff)
 
+
 ## `__dirname` dan `__filename`
 
 `__filename` menyimpan laluan fail modul yang sedang dilaksanakan. `__dirname` mengandungi direktori `__filename` .
 
      console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
@@ -120,9 +135,11 @@ Memandangkan *wes* ialah persekitaran pelaksanaan untuk pemprosesan segerak, *se
 
      const example = () => { const promise = new Promise((resolve, reject) => { console.log('promise') setTimeout(() => { console.log('setTimeout') resolve('resolved'); }, 2000); }).then((val) => { console.log(val) }); console.log('sub') }; console.log('start') example(); console.log('end')
 
+
 # Modul terbina dalam
 
 *wes* mempunyai *built-in modules* untuk memudahkan dan menyeragamkan pemprosesan asas.
+
 
 ## *ansi*
 
@@ -134,6 +151,7 @@ Anda juga boleh mencipta warna anda sendiri dengan `ansi.color()` dan `ansi.bgCo
 
      const { color } = require('ansi') const orange = color(255, 165, 0) console.log(orange 'Hello World')
 
+
 ## *argv*
 
 Dapatkan hujah baris arahan. Argumen baris arahan `cscript.exe` mengisytiharkan argumen bernama dengan `/` , manakala *wes* mengisytiharkan argumen bernama dengan `-` dan `--` . *argv.unnamed* dan *argv.named* jenis nilai argumen baris arahan kepada sama ada *Number* *String* *Boolean* . Masukkan argumen baris arahan dengan *REP* .
@@ -144,21 +162,25 @@ Jalankan skrip berikut pada *REP* .
 
      const argv = require('argv') console.log(`argv: %O argv.unnamed: %O argv.named: %O`, argv, argv.unnamed, argv.named)
 
+
 ## *pathname*
 
-Memanipulasi laluan. Laluan yang bermula dengan `/` dan `\` biasanya relatif kepada akar pemacu. Contohnya `/filename` dan `C:/filename` boleh menjadi laluan yang sama. Atas sebab keselamatan, `wes` mentafsir laluan bermula dengan `/` dan `\` relatif kepada direktori kerja.
+Memanipulasi laluan. Laluan yang bermula dengan `/` dan `\` biasanya relatif kepada akar pemacu. Contohnya `/filename` dan `C:/filename` boleh menjadi laluan yang sama. Atas sebab keselamatan, *wes* mentafsir laluan bermula dengan `/` dan `\` relatif kepada direktori kerja.
 
      const path = require('pathname') const file = path.resolve(__dirname, 'index.js') console.log('file %O', file)
 
+
 ## *filesystem*
 
-Memanipulasi fail dan direktori. `readTextFileSync` meneka secara automatik pengekodan fail dan membacanya.
+Memanipulasi fail dan direktori. `readTextFileSync()` secara automatik meneka pengekodan fail dan membacanya. (Walaupun hujah kedua `readFileSync()` `encode` kepada `auto` , ia akan diteka secara automatik.)
 
-     const fs = require('filesystem') const path = require('pathname') const readme = path.resolve(__dirname, 'README.md') const contents = fs.readTextFileSync(readme) console.log(contents)
+     const fs = require('filesystem') const path = require('pathname') const readme = path.resolve(__dirname, 'README.md') const contents = fs.readTextFileSync(readme) // const contents = fs.readFileSync(readme, 'auto') console.log(contents)
+
 
 ## *chardet*
 
 Saya menggunakan beberapa ciri dari <https://github.com/runk/node-chardet> . Anda boleh meningkatkan ketepatan auto-teka dengan meningkatkan aksara khusus pengekodan.
+
 
 ## *JScript*
 
@@ -170,11 +192,13 @@ Jika anda menukar enjin skrip kepada *Chakra* , anda tidak akan dapat menggunaka
 
      const { GetObject, Enumerator } = require('JScript') const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service") new Enumerator(ServiceSet).forEach(service => console.log( 'Name: %O\nDescription: %O\n', service.Name, service.Description ))
 
+
 ## *VBScript*
 
 *VBScript* menawarkan beberapa ciri yang tidak dimiliki oleh *JScript* .
 
      const { TypeName } = require('VBScript') const FSO = require('Scripting.FileSystemObject') console.log(TypeName(FSO))
+
 
 ## *httprequest*
 
@@ -182,7 +206,9 @@ Jika anda menukar enjin skrip kepada *Chakra* , anda tidak akan dapat menggunaka
 
      const request = require('httprequest') const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1') console.log('%O', JSON.parse(content))
 
+
 undefined
+
 
 ## *pipe*
 
@@ -192,6 +218,7 @@ undefined
 
      const pipe = require('pipe') function add (a, b) { return ba } function sub (a, b) { return b - a } function div (a, b) { return a / b } const add5 = add.bind(null, 5) const sub3 = sub.bind(null, 3) pipe() .use(add5) .use(sub3) .use(div, 4) .process(10, (err, res) => console.log('res: %O', res))
 
+
 ## *typecheck*
 
 Tentukan jenis skrip.
@@ -200,7 +227,9 @@ Tentukan jenis skrip.
 
      const { isString, isNumber, isBoolean, isObject } = require('typecheck') const log = require('log') log(() => isString("ECMAScript")) log(() => isNumber(43.5)) log(() => isBoolean(false)) log(() => isObject(function(){}))
 
+
 undefined
+
 
 ## *getMember*
 
@@ -209,6 +238,7 @@ Dapatkan jenis ahli dan perihalan *COM Object* daripada *ProgID* .
 ### Penggunaan
 
      const getMember = require('getMember') const FileSystemObject = 'Scripting.FileSystemObject' console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
+
 
 ## *zip*
 
@@ -234,9 +264,11 @@ Jika `path` mempunyai sambungan `.zip` , `unzip()` diproses dan tiada perihalan 
 | `--path` | `-p`           | `path` atau fail untuk dimasukkan |
 | `--dest` | `-d`           | fail folder ke output `dest`      |
 
+
 # Mengikat (pembungkusan) dan memasang modul
 
 Dalam *wes* , himpunan beberapa modul dipanggil pakej. Anda boleh memasang pakej untuk *wes* diterbitkan di *github* . *github repository* diperlukan untuk menerbitkan pakej.
+
 
 ## *bundle*
 
@@ -256,7 +288,9 @@ Masukkan arahan berikut untuk digabungkan: Rujuk *package.json* untuk mengetahui
 
      wes bundle
 
+
 undefined
+
 
 # Memasang pakej dari repositori peribadi
 
@@ -268,9 +302,11 @@ Jika anda mengakses repositori persendirian *raw* dengan penyemak imbas, *token*
 
      wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
+
 # Pengenalan pakej
 
 Berikut adalah beberapa pakej luaran.
+
 
 ## *@wachaon/fmt*
 

@@ -18,6 +18,8 @@ For texts in other languages, please select from the options below.
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
+
+
 # feature
 
 *   You can change the script engine to *Chakra* and write according to *ECMAScript2015* specifications.
@@ -26,12 +28,15 @@ For texts in other languages, please select from the options below.
 *   Built-in modules support basic processing such as file input/output and colored text output to the console
 *   You can let file reading automatically guess the encoding, so you don't have to worry about encoding etc.
 *   Package modules to support external publishing and retrieval
+*   Display error details more kindly than *WSH*
+
 
 # *wes* issues that we can't solve
 
 *   `WScript.Quit` cannot abort the program and does not return an error code
 *   Asynchronous processing does not work properly
 *   You cannot use the *event prefix* of the second argument of `WScript.CreateObject`
+
 
 # download
 
@@ -43,6 +48,7 @@ For texts in other languages, please select from the options below.
 Configure the path *wes.js* is stored in *ascii* only. If you have already downloaded *wes* , you can update it with the following command.
 
      wes update
+
 
 # Usage
 
@@ -56,6 +62,7 @@ Also, since *wes* is equipped with *REP* , you can enter scripts directly by sta
 
 *REP* accepts script input until you enter two blank lines. You can also see *REP* running the example script in *README.md* .
 
+
 ## command line options
 
 *wes* startup options are as follows.
@@ -68,9 +75,11 @@ Also, since *wes* is equipped with *REP* , you can enter scripts directly by sta
 | `--encoding=UTF-8` | Specifies the encoding of the first file read  |
 | `--engine=Chakra`  | This option is added automatically by *wes*    |
 
+
 # module system
 
 *wes* supports two module systems, the *commonjs module* system using `require()` and the *es module* system using `import` . ( *dynamic import* is not supported because it is an asynchronous process)
+
 
 ## *commonjs module*
 
@@ -86,9 +95,10 @@ Also, it is possible to import with *require* for *COM Object* like `require('WS
 
      const Shell = require('Shell.Application') Shell.MinimizeAll() WScript.Sleep(2000) Shell.UndoMinimizeAll()
 
+
 ## *es module*
 
-*Chakra* , which is the script execution engine, interprets syntax such as `imoprt` , but it cannot be executed as it is because the processing method as `cscript` is not defined. In *wes* , by adding *babel* to the built-in modules, *es module* are also executed while being transpiled one by one. This costs us processing overhead and a bloated *wes.js* file. Modules written in *es module* are also converted to `require()` by transpiling, so it is possible to call *COM Object* . However, it does not support specifying the encoding of the module file with *es module* . Everything is loaded automatically. To load it as an *es module* , set the extension to `.mjs` or set the `"type"` field in `package.json` to `"module"` .
+*Chakra* , which is the script execution engine, interprets syntax such as `imoprt` , but it cannot be executed as it is because the processing method as *cscript* is not defined. In *wes* , by adding *babel* to the built-in modules, *es module* are also executed while being transpiled one by one. This costs us processing overhead and a bloated *wes.js* file. Modules written in *es module* are also converted to `require()` by transpiling, so it is possible to call *COM Object* . However, it does not support specifying the encoding of the module file with *es module* . Everything is loaded automatically. To load it as an *es module* , set the extension to `.mjs` or set the `"type"` field in `package.json` to `"module"` .
 
      // ./sub.mjs export default function sub (a, b) { return a - b }
 
@@ -96,11 +106,14 @@ Also, it is possible to import with *require* for *COM Object* like `require('WS
 
      // ./main2.js import sub from './sub.mjs' console.log('sub(7, 3) // => %O', sub(7, 3))
 
+
 # built-in object
 
 *wes* has *built-in objects* not found in *WSH (JScript)* .
 
+
 undefined
+
 
 ## *Buffer*
 
@@ -108,11 +121,13 @@ You can handle buffers.
 
      const content = 'Hello World' const buff = Buffer.from(content) console.log(`${content} %O`, buff)
 
+
 ## `__dirname` and `__filename`
 
 `__filename` stores the path of the currently executing module file. `__dirname` contains the directory of `__filename` .
 
      console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
@@ -120,9 +135,11 @@ Since *wes* is an execution environment for synchronous processing, *setTimeout*
 
      const example = () => { const promise = new Promise((resolve, reject) => { console.log('promise') setTimeout(() => { console.log('setTimeout') resolve('resolved'); }, 2000); }).then((val) => { console.log(val) }); console.log('sub') }; console.log('start') example(); console.log('end')
 
+
 # Built-in module
 
 *wes* has *built-in modules* to simplify and standardize basic processing.
+
 
 ## *ansi*
 
@@ -134,6 +151,7 @@ You can also create your own colors with `ansi.color()` and `ansi.bgColor()` . A
 
      const { color } = require('ansi') const orange = color(255, 165, 0) console.log(orange 'Hello World')
 
+
 ## *argv*
 
 Get command line arguments. `cscript.exe` 's command line arguments declare named arguments with `/` , while *wes* declares named arguments with `-` and `--` . *argv.unnamed* and *argv.named* the command line argument value type to either *String* *Number* *Boolean* . Enter command line arguments with *REP* .
@@ -144,21 +162,25 @@ Run the following script on *REP* .
 
      const argv = require('argv') console.log(`argv: %O argv.unnamed: %O argv.named: %O`, argv, argv.unnamed, argv.named)
 
+
 ## *pathname*
 
-Manipulate paths. Paths starting with `/` and `\` are generally relative to the drive root. For example `/filename` and `C:/filename` can be the same path. For security reasons, `wes` interprets paths starting with `/` and `\` relative to the working directory.
+Manipulate paths. Paths starting with `/` and `\` are generally relative to the drive root. For example `/filename` and `C:/filename` can be the same path. For security reasons, *wes* interprets paths starting with `/` and `\` relative to the working directory.
 
      const path = require('pathname') const file = path.resolve(__dirname, 'index.js') console.log('file %O', file)
 
+
 ## *filesystem*
 
-Manipulate files and directories. `readTextFileSync` automatically guesses the encoding of the file and reads it.
+Manipulate files and directories. `readTextFileSync()` automatically guesses the encoding of the file and reads it. (Even if the second argument of `readFileSync()` is `encode` to `auto` , it will be guessed automatically.)
 
-     const fs = require('filesystem') const path = require('pathname') const readme = path.resolve(__dirname, 'README.md') const contents = fs.readTextFileSync(readme) console.log(contents)
+     const fs = require('filesystem') const path = require('pathname') const readme = path.resolve(__dirname, 'README.md') const contents = fs.readTextFileSync(readme) // const contents = fs.readFileSync(readme, 'auto') console.log(contents)
+
 
 ## *chardet*
 
 I am using some features from <https://github.com/runk/node-chardet> . You can increase the accuracy of auto-guessing by increasing encoding-specific characters.
+
 
 ## *JScript*
 
@@ -170,11 +192,13 @@ If you change the script engine to *Chakra* , you won't be able to use *JScript*
 
      const { GetObject, Enumerator } = require('JScript') const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service") new Enumerator(ServiceSet).forEach(service => console.log( 'Name: %O\nDescription: %O\n', service.Name, service.Description ))
 
+
 ## *VBScript*
 
 *VBScript* offers some features that *JScript* does not.
 
      const { TypeName } = require('VBScript') const FSO = require('Scripting.FileSystemObject') console.log(TypeName(FSO))
+
 
 ## *httprequest*
 
@@ -182,7 +206,9 @@ If you change the script engine to *Chakra* , you won't be able to use *JScript*
 
      const request = require('httprequest') const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1') console.log('%O', JSON.parse(content))
 
+
 undefined
+
 
 ## *pipe*
 
@@ -192,6 +218,7 @@ undefined
 
      const pipe = require('pipe') function add (a, b) { return ba } function sub (a, b) { return b - a } function div (a, b) { return a / b } const add5 = add.bind(null, 5) const sub3 = sub.bind(null, 3) pipe() .use(add5) .use(sub3) .use(div, 4) .process(10, (err, res) => console.log('res: %O', res))
 
+
 ## *typecheck*
 
 Determine the script type.
@@ -200,7 +227,9 @@ Determine the script type.
 
      const { isString, isNumber, isBoolean, isObject } = require('typecheck') const log = require('log') log(() => isString("ECMAScript")) log(() => isNumber(43.5)) log(() => isBoolean(false)) log(() => isObject(function(){}))
 
+
 undefined
+
 
 ## *getMember*
 
@@ -209,6 +238,7 @@ Get member type and description of *COM Object* from *ProgID* .
 ### Usage
 
      const getMember = require('getMember') const FileSystemObject = 'Scripting.FileSystemObject' console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
+
 
 ## *zip*
 
@@ -234,9 +264,11 @@ If the `path` has the extension `.zip` , `unzip()` is processed, and there is no
 | `--path` | `-p`        | `path` or file to enter      |
 | `--dest` | `-d`        | folder file to output `dest` |
 
+
 # Bundling (packaging) and installing modules
 
 In *wes* , a bundle of several modules is called a package. You can install the package for *wes* published on *github* . A *github repository* is required to publish a package.
+
 
 ## *bundle*
 
@@ -256,7 +288,9 @@ Enter the following command to bundle: Refer to *package.json* for what to bundl
 
      wes bundle
 
+
 undefined
+
 
 # Installing packages from private repositories
 
@@ -268,9 +302,11 @@ If you access the private repository *raw* with a browser, the *token* will be d
 
      wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
+
 # Package introduction
 
 Here are some external packages.
+
 
 ## *@wachaon/fmt*
 

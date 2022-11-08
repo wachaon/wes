@@ -19,6 +19,7 @@
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
+
 # 特徴
 
 *   スクリプトエンジンを *Chakra* に変更して *ECMAScript2015+* の仕様で記述できます
@@ -27,6 +28,7 @@
 *   ビルトインモジュールがファイルの入出力やコンソールへ色付き文字を出力などの基本的な処理をサポートします
 *   ファイルの読み込みにエンコードを自動推測させることができるので、エンコードなどを気にする必要がありません
 *   モジュールをパッケージ化して外部公開や取得もサポートします
+*   *WSH* より親切にエラー内容を表示します
 
 # *wes* が解決できない既知の問題
 
@@ -91,8 +93,8 @@ wes
 ## *commonjs module*
 
 `module.exports` への代入と `require()` での呼び出しでモジュールを管理します。
-絶対パスと `./` と `../` から始まる相対パス以外のパスは *wes\_modules* ディレクトリと
-利便上 *node\_modules* ディレクトリからモジュールを探します。
+絶対パスと `./` と `../` から始まる相対パス以外のパスは *wes_modules* ディレクトリと
+利便上 *node_modules* ディレクトリからモジュールを探します。
 *wes* の `require()` はモジュールファイルのエンコードを自動推測しますが、
 正しく推測しない場合に第二引数でエンコードを指定も可能です。
 
@@ -121,7 +123,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-スクリプトの実行エンジンである *Chakra* は `imoprt` などの構文を解釈しますが `cscript` としての処理方法が定義されていないのか、そのままでは実行できません。
+スクリプトの実行エンジンである *Chakra* は `imoprt` などの構文を解釈しますが *cscript* としての処理方法が定義されていないのか、そのままでは実行できません。
 *wes* では *babel* をビルトインモジュールに加えることで、*es module* に対しても逐次トランスパイルしながら実行しています。そのためコストとして処理のオーバーヘッドと *wes.js* ファイルが肥大化しています。
 *es module* で記述されているモジュールもトランスパイルで `require()` に変換されるため、*COM Object* の呼び出しも可能です。
 しかしながら *es module* でのモジュールファイルのエンコード指定には対応していません。全て自動推測で読み込まれます。
@@ -146,12 +148,13 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 
 ## *console*
 
-*wes* では `WScript.Echo` や `WScript.StdErr.WriteLine` の代わりに *console* を使用します。
+*wes* では `WScript.Echo()` や `WScript.StdErr.WriteLine()` の代わりに *console* を使用します。
 
-### *console.log()*
+### *console.log*
 
-`console.log` でコンソールに文字を出力します。また書式化文字列にも対応しています。
+`console.log()` でコンソールに文字を出力します。また書式化文字列にも対応しています。
 書式化演算子 `%` 使用して書式化文字列を出力します。
+(書式化演算子は他のメソッドでも有効です。)
 
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
@@ -175,19 +178,19 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 *wes* では色付き文字列を出力する為に `WScript.StdOut.WriteLine` ではなく、`WScript.StdErr.WriteLine` を使用します。
 `WScript.Echo` や `WScript.StdOut.WriteLine` は出力を遮断されています。`WScript.StdErr.WriteLine` もしくは `console.log` を使用してください。
 
-### *console.print()*
+### *console.print*
 
 通常 `console.log()` は最後に改行を含みますが、`console.print` は改行を含みません。
 
-### *console.debug()*
+### *console.debug*
 
 `--debug` オプションが有効な場合のみコンソールに出力されます。
 
-### *console.error()*
+### *console.error*
 
 内容をメッセージとして例外を投げます。
 
-### *console.weaklog()*
+### *console.weaklog*
 
 `console.weaklog()` で出力された文字列は、後続する出力がある場合にコンソールから消えます。
 出力を入れ替える場合に活用します。
@@ -213,7 +216,7 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
-*wes* は同期処理の実行環境なので、*setTimeout* *setInterval* *setImmediate*  *Promise* は
+*wes* は同期処理の実行環境なので、*setTimeout* *setInterval* *setImmediate* *Promise* は
 非同期処理として機能しませんが、*Promise* の実装が前提のモジュールの対応の為に実装しています。
 
 ```javascript
@@ -288,7 +291,7 @@ argv, argv.unnamed, argv.named)
 パスの操作をします。
 一般的には `/` および `\` から開始されるパスはドライブルートからの相対パスを指します。
 例えば `/filename` と `C:/filename` は同じパスになる場合があります。
-`wes` ではセキュリティーの観点から `/` および `\` で開始されるパスはワーキングディレクトリからの相対パスと解釈されます。
+*wes* ではセキュリティーの観点から `/` および `\` で開始されるパスはワーキングディレクトリからの相対パスと解釈されます。
 
 ```javascript
 const path = require('pathname')
@@ -299,13 +302,15 @@ console.log('file %O', file)
 ## *filesystem*
 
 ファイルの操作やディレクトリの操作をします。
-`readTextFileSync` はファイルのエンコードを自動推測して読み込みます。
+`readTextFileSync()` はファイルのエンコードを自動推測して読み込みます。
+(`readFileSync()` の2番目の引数の `encode` を `auto` にしても自動推測します。)
 
 ```javascript
 const fs = require('filesystem')
 const path = require('pathname')
 const readme = path.resolve(__dirname, 'README.md')
 const contents = fs.readTextFileSync(readme)
+// const contents = fs.readFileSync(readme, 'auto')
 console.log(contents)
 ```
 
