@@ -296,10 +296,10 @@
             if (argv.get('debug')) console.debug('%O import to %O ', parentModule ? parentModule.path : null, entry)
             else {
                 if (entry.length > 120) {
-                    var front = entry.slice(1, 100)
+                    var front = entry.slice(1, 90)
                     var end = entry.slice(-15)
-                    console.log('import to %O', front + '... ' + end)
-                } else console.log('import to %O', entry)
+                    console.weaklog('import to %O', front + ' ... ' + end)
+                } else console.weaklog('import to %O', entry)
             }
 
             var mod = {
@@ -357,7 +357,6 @@
                         codeMap.Buffer = req(BUFFER).Buffer
                     if (entry !== PROMISE) codeMap.Promise = req(PROMISE)
 
-                    if (!argv.get('debug')) console.print(ansi.cursorUp(1) + BOL + EIL)
                     generateCodeAndExecution(codeMap, script)
                     wes.history.pop()
                     break
