@@ -18,8 +18,6 @@
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
-
-
 # 特徵
 
 *   您可以將腳本引擎更改為*Chakra*並根據*ECMAScript2015*規範編寫。
@@ -30,13 +28,11 @@
 *   打包模塊以支持外部發布和檢索
 *   比*WSH*更友好地顯示錯誤細節
 
-
 # 我們無法解決的*wes*問題
 
 *   `WScript.Quit`不能中止程序並且不返回錯誤代碼
 *   異步處理無法正常工作
 *   您不能使用`WScript.CreateObject`的第二個參數的*event prefix*
-
 
 # 下載
 
@@ -48,7 +44,6 @@
 配置*wes.js*僅存儲在*ascii*中的路徑。如果您已經下載了*wes* ，您可以使用以下命令對其進行更新。
 
      wes update
-
 
 # 用法
 
@@ -62,7 +57,6 @@
 
 *REP*接受腳本輸入，直到您輸入兩個空行。您還可以在*README.md*中看到*REP*運行示例腳本。
 
-
 ## 命令行選項
 
 *wes*啟動選項如下。
@@ -75,11 +69,9 @@
 | `--encoding=UTF-8` | 指定讀取的第一個文件的編碼               |
 | `--engine=Chakra`  | 此選項由*wes*自動添加               |
 
-
 # 模塊系統
 
 *wes*支持兩個模塊系統，使用`require()`的*commonjs module*系統和使用`import`的*es module*系統。 （不支持*dynamic import* ，因為它是一個異步過程）
-
 
 ## *commonjs module*
 
@@ -95,7 +87,6 @@
 
      const Shell = require('Shell.Application') Shell.MinimizeAll() WScript.Sleep(2000) Shell.UndoMinimizeAll()
 
-
 ## *es module*
 
 腳本執行引擎*Chakra*解釋了諸如`imoprt`之類的語法，但由於未定義*cscript*的處理方法，因此無法按原樣執行。在*wes*中，通過在內置模塊中添加*babel* ， *es module*也在被一個一個轉譯的同時執行。這會花費我們處理開銷和臃腫的*wes.js*文件。 *es module*中寫的模塊也通過轉譯轉換為`require()` ，因此可以調用*COM Object* 。但是，它不支持使用*es module*指定模塊文件的編碼。一切都是自動加載的。要將其加載為*es module* ，請將擴展名設置為`.mjs`或將`package.json`中的`"type"`字段設置為`"module"` 。
@@ -106,14 +97,11 @@
 
      // ./main2.js import sub from './sub.mjs' console.log('sub(7, 3) // => %O', sub(7, 3))
 
-
 # 內置對象
 
 *wes*有*WSH (JScript)*中沒有的*built-in objects* 。
 
-
 undefined
-
 
 ## *Buffer*
 
@@ -121,13 +109,11 @@ undefined
 
      const content = 'Hello World' const buff = Buffer.from(content) console.log(`${content} %O`, buff)
 
-
 ## `__dirname`和`__filename`
 
 `__filename`存儲當前執行的模塊文件的路徑。 `__dirname`包含`__filename`的目錄。
 
      console.log('dirname: %O\nfilename: %O', __dirname, __filename)
-
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
@@ -135,11 +121,9 @@ undefined
 
      const example = () => { const promise = new Promise((resolve, reject) => { console.log('promise') setTimeout(() => { console.log('setTimeout') resolve('resolved'); }, 2000); }).then((val) => { console.log(val) }); console.log('sub') }; console.log('start') example(); console.log('end')
 
-
 # 內置模塊
 
 *wes*有*built-in modules*來簡化和標準化基本處理。
-
 
 ## *ansi*
 
@@ -151,7 +135,6 @@ undefined
 
      const { color } = require('ansi') const orange = color(255, 165, 0) console.log(orange 'Hello World')
 
-
 ## *argv*
 
 獲取命令行參數。 `cscript.exe`的命令行參數用`/`聲明命名參數，而*wes*用`-`和`--`聲明命名參數。 *argv.unnamed*和*argv.named*命令行參數值類型轉換為*String* *Number* *Boolean* 。使用*REP*輸入命令行參數。
@@ -162,13 +145,11 @@ undefined
 
      const argv = require('argv') console.log(`argv: %O argv.unnamed: %O argv.named: %O`, argv, argv.unnamed, argv.named)
 
-
 ## *pathname*
 
 操縱路徑。以`/`和`\`開頭的路徑通常相對於驅動器根目錄。例如`/filename`和`C:/filename`可以是相同的路徑。出於安全原因， *wes*解釋以`/`和`\`開頭的相對於工作目錄的路徑。
 
      const path = require('pathname') const file = path.resolve(__dirname, 'index.js') console.log('file %O', file)
-
 
 ## *filesystem*
 
@@ -176,11 +157,9 @@ undefined
 
      const fs = require('filesystem') const path = require('pathname') const readme = path.resolve(__dirname, 'README.md') const contents = fs.readTextFileSync(readme) // const contents = fs.readFileSync(readme, 'auto') console.log(contents)
 
-
 ## *chardet*
 
 我正在使用<https://github.com/runk/node-chardet>的一些功能。您可以通過增加特定於編碼的字符來提高自動猜測的準確性。
-
 
 ## *JScript*
 
@@ -192,13 +171,11 @@ undefined
 
      const { GetObject, Enumerator } = require('JScript') const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service") new Enumerator(ServiceSet).forEach(service => console.log( 'Name: %O\nDescription: %O\n', service.Name, service.Description ))
 
-
 ## *VBScript*
 
 *VBScript*提供了一些*JScript*沒有的功能。
 
      const { TypeName } = require('VBScript') const FSO = require('Scripting.FileSystemObject') console.log(TypeName(FSO))
-
 
 ## *httprequest*
 
@@ -206,9 +183,7 @@ undefined
 
      const request = require('httprequest') const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1') console.log('%O', JSON.parse(content))
 
-
 undefined
-
 
 ## *pipe*
 
@@ -218,7 +193,6 @@ undefined
 
     const pipe = require('pipe') function add (a, b) { return ba } function sub (a, b) { return b - a } function div (a, b) { return a / b } const add5 = add.bind(null, 5) const sub3 = sub.bind(null, 3) pipe() .use(add5) .use(sub3) .use(div, 4) .process(10, (err, res) => console.log('res: %O', res))
 
-
 ## *typecheck*
 
 確定腳本類型。
@@ -227,9 +201,7 @@ undefined
 
     const { isString, isNumber, isBoolean, isObject } = require('typecheck') const log = require('log') log(() => isString("ECMAScript")) log(() => isNumber(43.5)) log(() => isBoolean(false)) log(() => isObject(function(){}))
 
-
 undefined
-
 
 ## *getMember*
 
@@ -238,7 +210,6 @@ undefined
 ### 用法
 
     const getMember = require('getMember') const FileSystemObject = 'Scripting.FileSystemObject' console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
-
 
 ## *zip*
 
@@ -264,11 +235,9 @@ undefined
 | `--path` | `-p` | `path`要輸入的文件夾或文件 |
 | `--dest` | `-d` | 文件夾文件輸出`dest`    |
 
-
 # 捆綁（打包）和安裝模塊
 
 在*wes*中，幾個模塊的捆綁稱為一個包。您可以安裝在*github*上發布的*wes*軟件包。發布包需要*github repository* 。
-
 
 ## *bundle*
 
@@ -288,9 +257,7 @@ undefined
 
      wes bundle
 
-
 undefined
-
 
 # 從私有倉庫安裝包
 
@@ -302,11 +269,9 @@ undefined
 
      wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
-
 # 包裝介紹
 
 這是一些外部軟件包。
-
 
 ## *@wachaon/fmt*
 

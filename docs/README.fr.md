@@ -18,8 +18,6 @@ Pour les textes dans d'autres langues, veuillez sélectionner parmi les options 
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
-
-
 # caractéristique
 
 *   Vous pouvez changer le moteur de script en *Chakra* et écrire selon les spécifications *ECMAScript2015* .
@@ -30,13 +28,11 @@ Pour les textes dans d'autres langues, veuillez sélectionner parmi les options 
 *   Modules de package pour prendre en charge la publication et la récupération externes
 *   Afficher les détails de l'erreur plus gentiment que *WSH*
 
-
 # Problèmes *wes* que nous ne pouvons pas résoudre
 
 *   `WScript.Quit` ne peut pas interrompre le programme et ne renvoie pas de code d'erreur
 *   Le traitement asynchrone ne fonctionne pas correctement
 *   Vous ne pouvez pas utiliser le *event prefix* du deuxième argument de `WScript.CreateObject`
-
 
 # Télécharger
 
@@ -48,7 +44,6 @@ Nous utilisons `SendKeys` *wes* *WScript.Shell* lors de l'exécution en tant qu'
 Configurez le chemin *wes.js* est stocké en *ascii* uniquement. Si vous avez déjà téléchargé *wes* , vous pouvez le mettre à jour avec la commande suivante.
 
      wes update
-
 
 # Usage
 
@@ -62,7 +57,6 @@ De plus, étant donné que *wes* est équipé de *REP* , vous pouvez entrer des 
 
 *REP* accepte l'entrée de script jusqu'à ce que vous saisissiez deux lignes vides. Vous pouvez également voir *REP* exécuter l'exemple de script dans *README.md* .
 
-
 ## options de ligne de commande
 
 Les options de démarrage de *wes* sont les suivantes.
@@ -75,11 +69,9 @@ Les options de démarrage de *wes* sont les suivantes.
 | `--encoding=UTF-8` | Spécifie l'encodage du premier fichier lu              |
 | `--engine=Chakra`  | Cette option est ajoutée automatiquement par *wes*     |
 
-
 # système de modules
 
 *wes* prend en charge deux systèmes de modules, le système de *commonjs module* utilisant `require()` et le système de *es module* utilisant les `import` . ( *dynamic import* n'est pas prise en charge car il s'agit d'un processus asynchrone)
-
 
 ## *commonjs module*
 
@@ -95,7 +87,6 @@ En outre, il est possible d'importer avec *require* pour un *COM Object* comme `
 
      const Shell = require('Shell.Application') Shell.MinimizeAll() WScript.Sleep(2000) Shell.UndoMinimizeAll()
 
-
 ## *es module*
 
 *Chakra* , qui est un moteur d'exécution de script, interprète une syntaxe telle que `imoprt` , mais il ne peut pas être exécuté tel quel car la méthode de traitement en tant que *cscript* n'est pas définie. Dans *wes* , en ajoutant *babel* aux modules intégrés, les modules *es module* sont également exécutés tout en étant séquentiellement transpilés. Cela nous coûte des frais généraux de traitement et un fichier *wes.js* gonflé. Les modules écrits dans le *es module* sont également convertis en `require()` par transpilation, il est donc possible d'appeler *COM Object* . Cependant, il ne prend pas en charge la spécification de l'encodage du fichier de module avec *es module* . Tout est chargé automatiquement. Pour le charger en tant que *es module* , définissez l'extension sur `.mjs` ou définissez le champ `"type"` dans `package.json` sur `"module"` .
@@ -106,14 +97,11 @@ En outre, il est possible d'importer avec *require* pour un *COM Object* comme `
 
      // ./main2.js import sub from './sub.mjs' console.log('sub(7, 3) // => %O', sub(7, 3))
 
-
 # objet incorporé
 
 *wes* a *built-in objects* introuvables dans *WSH (JScript)* .
 
-
 undefined
-
 
 ## *Buffer*
 
@@ -121,13 +109,11 @@ Vous pouvez gérer les tampons.
 
      const content = 'Hello World' const buff = Buffer.from(content) console.log(`${content} %O`, buff)
 
-
 ## `__dirname` et `__filename`
 
 `__filename` stocke le chemin du fichier de module en cours d'exécution. `__dirname` contient le répertoire de `__filename` .
 
      console.log('dirname: %O\nfilename: %O', __dirname, __filename)
-
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
@@ -135,11 +121,9 @@ Vous pouvez gérer les tampons.
 
      const example = () => { const promise = new Promise((resolve, reject) => { console.log('promise') setTimeout(() => { console.log('setTimeout') resolve('resolved'); }, 2000); }).then((val) => { console.log(val) }); console.log('sub') }; console.log('start') example(); console.log('end')
 
-
 # Module intégré
 
 *wes* a *built-in modules* pour simplifier et standardiser le traitement de base.
-
 
 ## *ansi*
 
@@ -151,7 +135,6 @@ Vous pouvez également créer vos propres couleurs avec `ansi.color()` et `ansi.
 
      const { color } = require('ansi') const orange = color(255, 165, 0) console.log(orange 'Hello World')
 
-
 ## *argv*
 
 Obtenir les arguments de la ligne de commande. Les arguments de ligne de commande de `cscript.exe` déclarent des arguments nommés avec `/` , tandis que *wes* déclare des arguments nommés avec `-` et `--` . *argv.unnamed* et *argv.named* le type de valeur d'argument de ligne de commande en *String* *Number* *Boolean* . Entrez les arguments de la ligne de commande avec *REP* .
@@ -162,13 +145,11 @@ Exécutez le script suivant sur *REP* .
 
      const argv = require('argv') console.log(`argv: %O argv.unnamed: %O argv.named: %O`, argv, argv.unnamed, argv.named)
 
-
 ## *pathname*
 
 Manipulez les chemins. Les chemins commençant par `/` et `\` sont généralement relatifs à la racine du lecteur. Par exemple `/filename` et `C:/filename` peuvent être le même chemin. Pour des raisons de sécurité, *wes* interprète les chemins commençant par `/` et `\` par rapport au répertoire de travail.
 
      const path = require('pathname') const file = path.resolve(__dirname, 'index.js') console.log('file %O', file)
-
 
 ## *filesystem*
 
@@ -176,11 +157,9 @@ Manipuler des fichiers et des répertoires. `readTextFileSync()` devine automati
 
      const fs = require('filesystem') const path = require('pathname') const readme = path.resolve(__dirname, 'README.md') const contents = fs.readTextFileSync(readme) // const contents = fs.readFileSync(readme, 'auto') console.log(contents)
 
-
 ## *chardet*
 
 J'utilise certaines fonctionnalités de <https://github.com/runk/node-chardet> . Vous pouvez augmenter la précision de l'auto-estimation en augmentant les caractères spécifiques à l'encodage.
-
 
 ## *JScript*
 
@@ -192,13 +171,11 @@ Si vous changez le moteur de script en *Chakra* , vous ne pourrez pas utiliser l
 
      const { GetObject, Enumerator } = require('JScript') const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service") new Enumerator(ServiceSet).forEach(service => console.log( 'Name: %O\nDescription: %O\n', service.Name, service.Description ))
 
-
 ## *VBScript*
 
 *VBScript* offre certaines fonctionnalités que *JScript* n'offre pas.
 
      const { TypeName } = require('VBScript') const FSO = require('Scripting.FileSystemObject') console.log(TypeName(FSO))
-
 
 ## *httprequest*
 
@@ -206,9 +183,7 @@ Si vous changez le moteur de script en *Chakra* , vous ne pourrez pas utiliser l
 
      const request = require('httprequest') const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1') console.log('%O', JSON.parse(content))
 
-
 undefined
-
 
 ## *pipe*
 
@@ -218,7 +193,6 @@ undefined
 
      const pipe = require('pipe') function add (a, b) { return ba } function sub (a, b) { return b - a } function div (a, b) { return a / b } const add5 = add.bind(null, 5) const sub3 = sub.bind(null, 3) pipe() .use(add5) .use(sub3) .use(div, 4) .process(10, (err, res) => console.log('res: %O', res))
 
-
 ## *typecheck*
 
 Déterminez le type de script.
@@ -227,9 +201,7 @@ Déterminez le type de script.
 
      const { isString, isNumber, isBoolean, isObject } = require('typecheck') const log = require('log') log(() => isString("ECMAScript")) log(() => isNumber(43.5)) log(() => isBoolean(false)) log(() => isObject(function(){}))
 
-
 undefined
-
 
 ## *getMember*
 
@@ -238,7 +210,6 @@ Obtenez le type de membre et la description de *COM Object* à partir de *ProgID
 ### Usage
 
      const getMember = require('getMember') const FileSystemObject = 'Scripting.FileSystemObject' console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
-
 
 ## *zip*
 
@@ -264,11 +235,9 @@ Si le `path` a l'extension `.zip` , `unzip()` est traité et il n'y a pas de des
 | `--path` | `-p`        | `path` ou fichier à entrer                  |
 | `--dest` | `-d`        | fichier de dossier vers la `dest` de sortie |
 
-
 # Regroupement (conditionnement) et installation de modules
 
 Dans *wes* , un bundle de plusieurs modules est appelé un package. Vous pouvez installer le package pour *wes* publié sur *github* . Un *github repository* est requis pour publier un package.
-
 
 ## *bundle*
 
@@ -288,9 +257,7 @@ Saisissez la commande suivante pour regrouper : Reportez-vous à *package.json*
 
      wes bundle
 
-
 undefined
-
 
 # Installation de packages à partir de référentiels privés
 
@@ -302,11 +269,9 @@ Lorsque vous accédez au *raw* du référentiel privé avec un navigateur, le *t
 
      wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
-
 # Présentation du paquet
 
 Voici quelques packages externes.
-
 
 ## *@wachaon/fmt*
 

@@ -18,8 +18,6 @@
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
-
-
 # особенность
 
 *   Вы можете изменить скриптовый движок на *Chakra* и писать в соответствии со спецификациями *ECMAScript2015* .
@@ -30,13 +28,11 @@
 *   Упаковать модули для поддержки внешней публикации и поиска
 *   Отображение сведений об ошибке более любезно, чем *WSH*
 
-
 # *wes* проблемы, которые мы не можем решить
 
 *   `WScript.Quit` не может прервать программу и не возвращает код ошибки.
 *   Асинхронная обработка работает неправильно
 *   Вы не можете использовать *event prefix* второго аргумента `WScript.CreateObject`
-
 
 # скачать
 
@@ -48,7 +44,6 @@
 Настройте путь, по *wes.js* хранится только в формате *ascii* . Если вы уже загрузили *wes* , вы можете обновить его с помощью следующей команды.
 
      wes update
-
 
 # Применение
 
@@ -62,7 +57,6 @@
 
 *REP* принимает ввод сценария, пока вы не введете две пустые строки. Вы также можете увидеть, как *REP* запускает пример скрипта в *README.md* .
 
-
 ## параметры командной строки
 
 Варианты запуска *wes* следующие.
@@ -75,11 +69,9 @@
 | `--encoding=UTF-8` | Указывает кодировку первого прочитанного файла                 |
 | `--engine=Chakra`  | Эта опция автоматически добавляется *wes*                      |
 
-
 # модульная система
 
 *wes* поддерживает две модульные системы: *commonjs module* с использованием `require()` и *es module* с использованием `import` . ( *dynamic import* не поддерживается, поскольку это асинхронный процесс)
-
 
 ## *commonjs module*
 
@@ -95,7 +87,6 @@
 
      const Shell = require('Shell.Application') Shell.MinimizeAll() WScript.Sleep(2000) Shell.UndoMinimizeAll()
 
-
 ## *es module*
 
 *Chakra* , механизм выполнения сценариев, интерпретирует такой синтаксис, как `imoprt` , но он не может быть выполнен в том виде, в каком он есть, поскольку метод обработки как *cscript* не определен. В *wes* , добавляя *babel* к встроенным модулям, модули *es module* также выполняются при последовательной транспиляции. Это стоит нам накладных расходов на обработку и раздутого файла *wes.js* Модули, написанные в *es module* , также преобразуются в `require()` путем транспиляции, поэтому можно вызывать *COM Object* . Однако он не поддерживает указание кодировки файла модуля с помощью *es module* . Все загружается автоматически. Чтобы загрузить его как *es module* , установите расширение `.mjs` или установите для поля `"type"` в `package.json` значение `"module"` .
@@ -106,14 +97,11 @@
 
      // ./main2.js import sub from './sub.mjs' console.log('sub(7, 3) // => %O', sub(7, 3))
 
-
 # встроенный объект
 
 *wes* имеет *built-in objects* , которых нет в *WSH (JScript)* .
 
-
 undefined
-
 
 ## *Buffer*
 
@@ -121,13 +109,11 @@ undefined
 
      const content = 'Hello World' const buff = Buffer.from(content) console.log(`${content} %O`, buff)
 
-
 ## `__dirname` и `__filename`
 
 `__filename` хранит путь к текущему исполняемому файлу модуля. `__dirname` содержит каталог `__filename` .
 
      console.log('dirname: %O\nfilename: %O', __dirname, __filename)
-
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
@@ -135,11 +121,9 @@ undefined
 
      const example = () => { const promise = new Promise((resolve, reject) => { console.log('promise') setTimeout(() => { console.log('setTimeout') resolve('resolved'); }, 2000); }).then((val) => { console.log(val) }); console.log('sub') }; console.log('start') example(); console.log('end')
 
-
 # Встроенный модуль
 
 *wes* имеет *built-in modules* для упрощения и стандартизации базовой обработки.
-
 
 ## *ansi*
 
@@ -151,7 +135,6 @@ undefined
 
      const { color } = require('ansi') const orange = color(255, 165, 0) console.log(orange 'Hello World')
 
-
 ## *argv*
 
 Получить аргументы командной строки. Аргументы командной строки `cscript.exe` объявляют именованные аргументы с помощью `/` , а *wes* объявляет именованные аргументы с помощью `-` и `--` . *argv.unnamed* и *argv.named* приводят тип значения аргумента командной строки к типу *String* *Number* *Boolean* . Введите аргументы командной строки с помощью *REP* .
@@ -162,13 +145,11 @@ undefined
 
      const argv = require('argv') console.log(`argv: %O argv.unnamed: %O argv.named: %O`, argv, argv.unnamed, argv.named)
 
-
 ## *pathname*
 
 Манипулировать путями. Пути, начинающиеся с `/` и `\` , обычно относятся к корню диска. Например, `/filename` и `C:/filename` могут быть одним и тем же путем. Из соображений безопасности *wes* интерпретирует пути, начинающиеся с `/` и `\` , относительно рабочего каталога.
 
      const path = require('pathname') const file = path.resolve(__dirname, 'index.js') console.log('file %O', file)
-
 
 ## *filesystem*
 
@@ -176,11 +157,9 @@ undefined
 
      const fs = require('filesystem') const path = require('pathname') const readme = path.resolve(__dirname, 'README.md') const contents = fs.readTextFileSync(readme) // const contents = fs.readFileSync(readme, 'auto') console.log(contents)
 
-
 ## *chardet*
 
 Я использую некоторые функции из <https://github.com/runk/node-chardet> . Вы можете повысить точность автоматического угадывания, увеличив количество символов, специфичных для кодировки.
-
 
 ## *JScript*
 
@@ -192,13 +171,11 @@ undefined
 
      const { GetObject, Enumerator } = require('JScript') const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service") new Enumerator(ServiceSet).forEach(service => console.log( 'Name: %O\nDescription: %O\n', service.Name, service.Description ))
 
-
 ## *VBScript*
 
 *VBScript* предлагает некоторые функции, которых нет *JScript* .
 
      const { TypeName } = require('VBScript') const FSO = require('Scripting.FileSystemObject') console.log(TypeName(FSO))
-
 
 ## *httprequest*
 
@@ -206,9 +183,7 @@ undefined
 
      const request = require('httprequest') const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1') console.log('%O', JSON.parse(content))
 
-
 undefined
-
 
 ## *pipe*
 
@@ -218,7 +193,6 @@ undefined
 
      const pipe = require('pipe') function add (a, b) { return ba } function sub (a, b) { return b - a } function div (a, b) { return a / b } const add5 = add.bind(null, 5) const sub3 = sub.bind(null, 3) pipe() .use(add5) .use(sub3) .use(div, 4) .process(10, (err, res) => console.log('res: %O', res))
 
-
 ## *typecheck*
 
 Определите тип сценария.
@@ -227,9 +201,7 @@ undefined
 
      const { isString, isNumber, isBoolean, isObject } = require('typecheck') const log = require('log') log(() => isString("ECMAScript")) log(() => isNumber(43.5)) log(() => isBoolean(false)) log(() => isObject(function(){}))
 
-
 undefined
-
 
 ## *getMember*
 
@@ -238,7 +210,6 @@ undefined
 ### Применение
 
      const getMember = require('getMember') const FileSystemObject = 'Scripting.FileSystemObject' console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
-
 
 ## *zip*
 
@@ -264,11 +235,9 @@ undefined
 | `--path`  | `-p`         | `path` или файл для входа |
 | `--dest`  | `-d`         | файл папки для `dest`     |
 
-
 # Комплектация (упаковка) и установка модулей
 
 В *wes* пакет из нескольких модулей называется пакетом. Вы можете установить пакет для *wes* , опубликованный на *github* . Для публикации пакета требуется *github repository* .
-
 
 ## *bundle*
 
@@ -288,9 +257,7 @@ undefined
 
      wes bundle
 
-
 undefined
-
 
 # Установка пакетов из приватных репозиториев
 
@@ -302,11 +269,9 @@ undefined
 
      wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
-
 # Введение пакета
 
 Вот несколько внешних пакетов.
-
 
 ## *@wachaon/fmt*
 
