@@ -79,6 +79,7 @@ wes
 | named              | Description                  |
 | ------------------ | ---------------------------- |
 | `--monotone`       | *ANSI escape code* を排除します    |
+| `--transpile`      | 常に *babel-standalone* で変換して実行します |
 | `--debug`          | スクリプトをデバッグモードで実行します          |
 | `--encoding=UTF-8` | 最初に読み込むファイルのエンコードを指定します      |
 | `--engine=Chakra`  | このオプションは *wes* によって自動で付加されます |
@@ -146,6 +147,9 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 ## *console*
 
 *wes* では `WScript.Echo` や `WScript.StdErr.WriteLine` の代わりに *console* を使用します。
+
+### *console.log()*
+
 `console.log` でコンソールに文字を出力します。また書式化文字列にも対応しています。
 書式化演算子 `%` 使用して書式化文字列を出力します。
 
@@ -170,6 +174,23 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 
 *wes* では色付き文字列を出力する為に `WScript.StdOut.WriteLine` ではなく、`WScript.StdErr.WriteLine` を使用します。
 `WScript.Echo` や `WScript.StdOut.WriteLine` は出力を遮断されています。`WScript.StdErr.WriteLine` もしくは `console.log` を使用してください。
+
+### *console.print()*
+
+通常 `console.log()` は最後に改行を含みますが、`console.print` は改行を含みません。
+
+### *console.debug()*
+
+`--debug` オプションが有効な場合のみコンソールに出力されます。
+
+### *console.error()*
+
+内容をメッセージとして例外を投げます。
+
+### *console.weaklog()*
+
+`console.weaklog()` で出力された文字列は、後続する出力がある場合にコンソールから消えます。
+出力を入れ替える場合に活用します。
 
 ## *Buffer*
 
@@ -779,66 +800,3 @@ const { join, workingDirectory } = require('pathname')
 const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
-
-<!--
-## *@wachaon/edge*
-*Internet Explorer* が 2022/6/15 を以てサポートを完了します。それに伴い `require('InternetExplorer.Application')` でのアプリケーションの操作も不可能になると予想されます。
-代替案は、*Microsoft Edge based on Chromium* を *web driver* 経由で操作することになります。`@wachaon/edge` は *Edge* の自動操縦を簡素化します。
-
-### インストール
-まずはパッケージをインストールします。
-
-```bat
-wes install @wachaon/edge --unsafe --bare
-```
-
-次に *web driver* をダウンロードします。
-
-```bat
-wes edge --download
-```
-
-インストールされている *Edge* のバージョンを確認して対応した *web driver* をダウンロードします。
-
-### 使い方
-簡単な使い方になります。
-
-```javascript
-const edge = require('edge')
-edge((window, navi, res) => {
-    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
-    res.exports = []
-    navi.on(/https?:\/\/.+/, (url) => {
-        console.log('URL: %O', url)
-        res.exports.push(url)
-    })
-    window.navigate('https://www.google.com')
-})
-```
-
-このスクリプトは訪問した *URL* を順次コンソールに出力します。
-`@wachaon/edge` は *URL* に対してイベントを登録して `res.exports` にデータを追加していきます。
-登録する *URL* は `String` `RegExp` どちらでも可能で、柔軟な設定ができます。
-イベントドリブンにすることで、自動操縦では対応が困難な処理などはあえてイベントを設定しないことで、容易に手動操作への切り替えが可能です。
-スクリプトを停止させたい場合は、`navi.emit('terminate', res)` を実行するか、*Edge* を手動で終了させます。
-終了処理はデフォルト値として `res.exports` を *.json* ファイルとして出力します。
-終了処理を設定したい場合は、`edge(callback, terminate)` の `terminate` を設定します。
-`window` はブラウザでの `window` ではなく、*@wachaon/webdriver* の *Window* クラスのインスタンスになります。
-
-## *@wachaon/webdriver*
-ブラウザを操作する *web driver* に対してリクエストを送るパッケージになります。
-*@wachaon/edge* に組み込まれています。
-*@wachaon/edge* と同様ブラウザ操作には *web driver* が別途必要になります。
-
-### インストール
-
-```bat
-wes install @wachaon/webdriver --unsafe --bare
-```
-
-*Chromium* ベースの *Microsoft Edge* の *web driver* がなければダウンロードします。また、*edge* のバージョンと *web driver* のバージョンが違う場合は同じバージョンの *web driver* をダウンロードします。
-
-```bat
-wes webdriver --download
-```
--->

@@ -66,6 +66,7 @@ wes
 | named              | Description                  |
 | ------------------ | ---------------------------- |
 | `--monotone`       | *ANSI escape code* を排除します    |
+| `--transpile`      | 常に *babel-standalone* で変換して実行します |
 | `--debug`          | スクリプトをデバッグモードで実行します          |
 | `--encoding=UTF-8` | 最初に読み込むファイルのエンコードを指定します      |
 | `--engine=Chakra`  | このオプションは *wes* によって自動で付加されます |

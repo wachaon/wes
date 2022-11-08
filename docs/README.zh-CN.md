@@ -1,6 +1,7 @@
 # *WES*
 
-*wes*是一个控制台框架，用于在*WSH (Windows Script Host)*上运行*ECMAScript* 。 *README*文件的[*japanese*](/README.md)将是日文。日语以外的文本将被机器翻译。 \\ 对于其他语言的文本，请从下面选择。
+*wes*是一个控制台框架，用于在*WSH (Windows Script Host)*上运行*ECMAScript* 。 *README*文件的[*japanese*](/README.md)将是日文。日语以外的文本将被机器翻译。\
+对于其他语言的文本，请从以下选项中选择。
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -19,59 +20,53 @@
 
 # 特征
 
--   您可以将脚本引擎更改为*Chakra*并根据*ECMAScript2015*规范编写。
--   由于总是执行 32 位*cscript.exe* ，因此在 64 位环境中没有独特的问题。
--   由于有模块系统，因此可以比传统的*WSH*更高效地开发
--   内置模块支持基本处理，例如文件输入/输出和彩色文本输出到控制台
--   您可以让文件读取自动猜测编码，因此您不必担心编码等。
--   打包模块以支持外部发布和检索
+*   您可以将脚本引擎更改为*Chakra*并根据*ECMAScript2015*规范编写。
+*   由于始终执行 32 位*cscript.exe* ，因此在 64 位环境中没有唯一问题。
+*   由于有一个模块系统，它可以比传统的*WSH*更有效地开发
+*   内置模块支持基本处理，例如文件输入/输出和彩色文本输出到控制台
+*   您可以让文件读取自动猜测编码，因此您不必担心编码等。
+*   打包模块以支持外部发布和检索
 
 # 我们无法解决的*wes*问题
 
--   `WScript.Quit`不能中止程序并且不返回错误代码
--   异步处理无法正常工作
--   您不能使用`WScript.CreateObject`的第二个参数的*event prefix*
+*   `WScript.Quit`不能中止程序并且不返回错误代码
+*   异步处理无法正常工作
+*   您不能使用`WScript.CreateObject`的第二个参数的*event prefix*
 
 # 下载
 
 *wes.js* *wes* 。要下载，请从[*@wachaon/wes*](https://github.com/wachaon/wes)复制*wes.js*或在控制台中运行以下命令。
 
-```bat
-bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
-```
+     bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 
-我们在运行时*WScript.Shell* *wes* `SendKeys`作为实现。如果*wes.js*保存目录的路径中包含*ascii*以外的字符，则`SendKeys`无法正确发送密钥，脚本无法执行。 \\ *wes.js*目标路径只能在*ascii*中配置。如果您已经下载了*wes* ，您可以使用以下命令对其进行更新。
+我们在运行时*WScript.Shell* *wes* `SendKeys`作为实现。如果*wes.js*保存目录的路径中包含*ascii*以外的字符，则`SendKeys`无法正确发送密钥，脚本无法执行。\
+配置*wes.js*仅存储在*ascii*中的路径。如果您已经下载了*wes* ，您可以使用以下命令对其进行更新。
 
-```bat
-wes update
-```
+     wes update
 
 # 用法
 
-输入`wes`关键字，然后输入命令，指定将成为控制台程序起点的文件。脚本扩展名*.js*可以省略。
+输入`wes`关键字和指定将成为控制台程序起点的文件的命令。脚本扩展名*.js*可以省略。
 
-```bat
-wes index
-```
+     wes index
 
-此外，由于*wes*配备了*REP* ，您可以通过单独启动`wes`直接输入脚本。
+此外，由于*wes*配备了*REP* ，因此您可以通过单独启动`wes`直接输入脚本。
 
-```bat
-wes
-```
+     wes
 
-*REP*接受脚本输入，直到您输入两个空行。您还可以看到*REP*在*README.md*中运行示例脚本。
+*REP*接受脚本输入，直到您输入两个空行。您还可以在*README.md*中看到*REP*运行示例脚本。
 
 ## 命令行选项
 
 *wes*启动选项如下。
 
-| 命名为                | 描述                   |
-| ------------------ | -------------------- |
-| `--monotone`       | 消除*ANSI escape code* |
-| `--debug`          | 在调试模式下运行脚本           |
-| `--encoding=UTF-8` | 指定读取的第一个文件的编码        |
-| `--engine=Chakra`  | 此选项由*wes*自动添加        |
+| 命名为                | 描述                          |
+| ------------------ | --------------------------- |
+| `--monotone`       | 消除*ANSI escape code*        |
+| `--transpile`      | 始终使用*babel-standalone*转换和运行 |
+| `--debug`          | 在调试模式下运行脚本                  |
+| `--encoding=UTF-8` | 指定读取的第一个文件的编码               |
+| `--engine=Chakra`  | 此选项由*wes*自动添加               |
 
 # 模块系统
 
@@ -79,118 +74,51 @@ wes
 
 ## *commonjs module*
 
-通过分配给`module.exports`并调用`require()`来管理模块。绝对路径和以`./`和`../`开头的相对路径以外的路径在*wes_modules*目录中查找模块，并且方便地在*node_modules*目录中查找。 *wes*的`require()`会自动猜测模块文件的编码，但如果猜测不正确，您可以使用第二个参数指定编码。
+通过分配给`module.exports`并调用`require()`来管理模块。以`./`和`../`开头的绝对路径和相对路径以外的路径在*wes\_modules*目录和*node\_modules*目录中查找模块。 *wes*的`require()`会自动猜测模块文件的编码，但如果没有正确猜测，您可以使用第二个参数指定编码。
 
-```javascript
-// ./add.js
-function add (a, b) {
-    return a + b
-}
-module.exports = add
-```
+     // ./add.js function add (a, b) { return ab } module.exports = add
 
-```javascript
-// ./main.js
-const add = require('./add')
-console.log('add(7, 3) // => %O', add(7, 3))
-```
+<!---->
+
+     // ./main.js const add = require('./add') console.log('add(7, 3) // => %O', add(7, 3))
 
 此外，还可以使用*require* `require('WScript.Shell')`类的*COM Object*导入。
 
-```javascript
-const Shell = require('Shell.Application')
-Shell.MinimizeAll()
-WScript.Sleep(2000)
-Shell.UndoMinimizeAll()
-```
+     const Shell = require('Shell.Application') Shell.MinimizeAll() WScript.Sleep(2000) Shell.UndoMinimizeAll()
 
 ## *es module*
 
-脚本执行引擎*Chakra*解释了诸如`imoprt`之类的语法，但由于未定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过在内置模块中添加*babel* ， *es module*也在被一个一个转译的同时执行。这会花费我们处理开销和臃肿的*wes.js*文件。 *es module*中写的模块也通过转译转换为`require()` ，因此可以调用*COM Object* 。但是，它不支持使用*es module*指定模块文件的编码。一切都是自动加载的。要将其加载为*es module* ，请将扩展名设置为`.mjs`或将`package.json`中的`"type"`字段设置为`"module"` 。
+*Chakra*是一个脚本执行引擎，可以解释诸如`imoprt`之类的语法，但由于没有定义`cscript`的处理方法，因此无法按原样执行。在*wes*中，通过在内置模块中添加*babel* ， *es module*也在被顺序转译的同时执行。这会花费我们处理开销和臃肿的*wes.js*文件。 *es module*中写的模块也通过转译转换为`require()` ，因此可以调用*COM Object* 。但是，它不支持使用*es module*指定模块文件的编码。一切都是自动加载的。要将其加载为*es module* ，请将扩展名设置为`.mjs`或将`package.json`中的`"type"`字段设置为`"module"` 。
 
-```javascript
-// ./sub.mjs
-export default function sub (a, b) {
-    return a - b
-}
-```
+     // ./sub.mjs export default function sub (a, b) { return a - b }
 
-```javascript
-// ./main2.js
-import sub from './sub.mjs'
-console.log('sub(7, 3) // => %O', sub(7, 3))
-```
+<!---->
+
+     // ./main2.js import sub from './sub.mjs' console.log('sub(7, 3) // => %O', sub(7, 3))
 
 # 内置对象
 
 *wes*有*WSH (JScript)*中没有的*built-in objects* 。
 
-## *console*
-
-`WScript.Echo`使用*console*而不是*wes*和`WScript.StdErr.WriteLine` 。使用`console.log`将字符输出到控制台。它还支持格式化字符串。使用`%`格式化运算符输出格式化字符串。
-
-```javascript
-console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
-```
-
-| 格式说明符 | 描述                               |
-| ----- | -------------------------------- |
-| `%s`  | `String(value)`                  |
-| `%S`  | `String(value)`                  |
-| `%c`  | `String(value)`                  |
-| `%C`  | `String(value)`                  |
-| `%d`  | `parseInt(value, 10)`            |
-| `%D`  | `parseInt(value, 10)`            |
-| `%f`  | `Number(value)`                  |
-| `%F`  | `Number(value)`                  |
-| `%j`  | `JSON.stringify(value)`          |
-| `%J`  | `JSON.stringify(value, null, 2)` |
-| `%o`  | 对象转储                             |
-| `%O`  | 对象转储（缩进/彩色）                      |
-
-`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`来输出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`被阻止。 `WScript.StdErr.WriteLine`或`console.log` 。
+undefined
 
 ## *Buffer*
 
 您可以处理缓冲区。
 
-```javascript
-const content = 'Hello World'
-const buff = Buffer.from(content)
-console.log(`${content} %O`, buff)
-```
+     const content = 'Hello World' const buff = Buffer.from(content) console.log(`${content} %O`, buff)
 
 ## `__dirname`和`__filename`
 
 `__filename`存储当前执行的模块文件的路径。 `__dirname`包含`__filename`的目录。
 
-```javascript
-console.log('dirname: %O\nfilename: %O', __dirname, __filename)
-```
+     console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
-由于*wes*是用于同步处理的执行环境，因此*setTimeout* *setInterval* *setImmediate* *Promise*不起到异步处理的作用，但它的实现是为了支持假设*Promise*实现的模块。
+由于*wes*是用于同步处理的执行环境，因此*setTimeout* *setInterval* *setImmediate* *Promise*并不能起到异步处理的作用，但它的实现是为了支持假设*Promise*实现的模块。
 
-```javascript
-const example = () => {
-  const promise = new Promise((resolve, reject) => {
-    console.log('promise')
-
-    setTimeout(() => {
-      console.log('setTimeout') 
-      resolve('resolved');
-    }, 2000);
-  }).then((val) => {
-    console.log(val)
-  });
-  console.log('sub')
-};
-
-console.log('start')
-example();
-console.log('end')
-```
+     const example = () => { const promise = new Promise((resolve, reject) => { console.log('promise') setTimeout(() => { console.log('setTimeout') resolve('resolved'); }, 2000); }).then((val) => { console.log(val) }); console.log('sub') }; console.log('start') example(); console.log('end')
 
 # 内置模块
 
@@ -200,59 +128,33 @@ console.log('end')
 
 `ansi`是*ANSI escape code* ，可以更改标准输出颜色和效果。颜色和效果可能因使用的控制台应用程序的类型和设置而异。
 
-```javascript
-const { redBright, yellow } = require('ansi')
-const message = 'File does not exist'
-console.log(redBright + 'Error: ' + yellow + message)
-```
+     const { redBright, yellow } = require('ansi') const message = 'File does not exist' console.log(redBright 'Error: ' yellow message)
 
 您还可以使用`ansi.color()`和`ansi.bgColor()`创建自己的颜色。参数使用*RGB* （例如`255, 165, 0` ）和*color code* （例如`'#FFA500'` 。不支持`orange`等*color name* 。
 
-```javascript
-const { color } = require('ansi')
-const orange = color(255, 165, 0)
-console.log(orange + 'Hello World')
-```
+     const { color } = require('ansi') const orange = color(255, 165, 0) console.log(orange 'Hello World')
 
 ## *argv*
 
 获取命令行参数。 `cscript.exe`的命令行参数用`/`声明命名参数，而*wes*用`-`和`--`声明命名参数。 *argv.unnamed*和*argv.named*命令行参数值类型转换为*String* *Number* *Boolean* 。使用*REP*输入命令行参数。
 
-```bat
-wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
-```
+     wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
 
 在*REP*上运行以下脚本。
 
-```javascript
-const argv = require('argv')
-console.log(`argv: %O
-argv.unnamed: %O
-argv.named: %O`,
-argv, argv.unnamed, argv.named)
-```
+     const argv = require('argv') console.log(`argv: %O argv.unnamed: %O argv.named: %O`, argv, argv.unnamed, argv.named)
 
 ## *pathname*
 
 操纵路径。以`/`和`\`开头的路径通常相对于驱动器根目录。例如`/filename`和`C:/filename`可以是相同的路径。出于安全原因， `wes`解释以`/`和`\`开头的相对于工作目录的路径。
 
-```javascript
-const path = require('pathname')
-const file = path.resolve(__dirname, 'index.js')
-console.log('file %O', file)
-```
+     const path = require('pathname') const file = path.resolve(__dirname, 'index.js') console.log('file %O', file)
 
 ## *filesystem*
 
 操作文件和目录。 `readTextFileSync`自动猜测文件的编码并读取它。
 
-```javascript
-const fs = require('filesystem')
-const path = require('pathname')
-const readme = path.resolve(__dirname, 'README.md')
-const contents = fs.readTextFileSync(readme)
-console.log(contents)
-```
+     const fs = require('filesystem') const path = require('pathname') const readme = path.resolve(__dirname, 'README.md') const contents = fs.readTextFileSync(readme) console.log(contents)
 
 ## *chardet*
 
@@ -262,111 +164,25 @@ console.log(contents)
 
 如果您将脚本引擎更改为*Chakra* ，您将无法使用*JScript*特定的*Enumerator*等。内置模块*JScript*使它们可用。但是， *Enumerator*返回一个*Array* ，而不是*Enumerator object* 。
 
-```javascript
-const { Enumerator, ActiveXObject } = require('JScript')
-const FSO = new ActiveXObject('Scripting.FileSystemObject')
-const dir = FSO.getFolder(__dirname).Files
-const files = new Enumerator(dir)
-files.forEach(file => console.log(file.Name))
-```
+     const { Enumerator, ActiveXObject } = require('JScript') const FSO = new ActiveXObject('Scripting.FileSystemObject') const dir = FSO.getFolder(__dirname).Files const files = new Enumerator(dir) files.forEach(file => console.log(file.Name))
 
 *GetObject*作为`WScript.GetObject`的替代品。
 
-```javascript
-const { GetObject, Enumerator } = require('JScript')
-const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service")
-new Enumerator(ServiceSet).forEach(service => console.log(
-    'Name: %O\nDescription: %O\n',
-    service.Name,
-    service.Description
-))
-```
+     const { GetObject, Enumerator } = require('JScript') const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service") new Enumerator(ServiceSet).forEach(service => console.log( 'Name: %O\nDescription: %O\n', service.Name, service.Description ))
 
 ## *VBScript*
 
 *VBScript*提供了一些*JScript*没有的功能。
 
-```javascript
-const { TypeName } = require('VBScript')
-const FSO = require('Scripting.FileSystemObject')
-console.log(TypeName(FSO))
-```
+     const { TypeName } = require('VBScript') const FSO = require('Scripting.FileSystemObject') console.log(TypeName(FSO))
 
 ## *httprequest*
 
 *httprequest*发出一个*http request* 。
 
-```javascript
-const request = require('httprequest')
-const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
-console.log('%O', JSON.parse(content))
-```
+     const request = require('httprequest') const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1') console.log('%O', JSON.parse(content))
 
-## *minitest*
-
-*minitest*可以编写简单的测试。从`0.10.71`版本开始，我们回到了基本概念，将断言的类型减少到 3 种。
-
-### 用法
-
-用`describe`分组，用`it`测试，用`assert`验证。 `pass`将是`it`的出现次数和通过次数的数组。
-
-```javascript
-const { describe, it, assert, pass } = require('minitest')
-describe('minitest', () => {
-    describe('add', () => {
-        const add = (a, b) => a + b
-        it('2 plus 3 is 5', () => {
-            assert.equal(5, add(2, 3))
-        })
-        it('0 plus 0 is 0', () => {
-            assert(0 === add(0, 0))
-        })
-        it('"4" plus "5" is 9', () => {
-            assert.equal(9, add("4", "5"))
-        })
-        it('NaN plus 3 is NaN', () => {
-            assert.equal(NaN, add(NaN, 3))
-        })
-    })
-    describe('sub', () => {
-        it('5 minus 4 is 1', () => {
-            const sub = (a, b) => a - b
-            assert.equal(1, sub(5, 4))
-        })
-    })
-})
-console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
-```
-
-### 断言
-
-#### `assert(value, message)` `assert.ok(value, message)`
-
-使用严格相等运算符`===`与`true`进行比较。如果`value`是一个函数，则评估执行该函数的结果。
-
-| 参数        | 类型                    | 描述        |
-| :-------- | :-------------------- | :-------- |
-| `value`   | `{Function\|Boolean}` | 布尔或布尔返回函数 |
-| `message` | `{String}`            | 失败消息      |
-
-#### `assert.equal(expected, actual)`
-
-比较对象的成员相等性，而不是通过引用。 \\ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g`或`{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]`等等。 \\ 在比较类（对象）时，它们必须是相同的构造函数或`actual` `expected`的超类。
-
-| 参数         | 类型      | 描述   |
-| :--------- | :------ | :--- |
-| `expected` | `{Any}` | 期望值  |
-| `actual`   | `{Any}` | 实际价值 |
-
-#### `assert.throws(value, expected, message)`
-
-验证错误是否正确抛出。 \\ 错误是否正确取决于是否是预期错误的*constructor* ，或者*message*是否相等且正则表达式通过*stack*评估。
-
-| 参数         | 类型                        | 描述                                            |
-| :--------- | :------------------------ | :-------------------------------------------- |
-| `value`    | `{Error}`                 | 错误                                            |
-| `expected` | `{Error\|String\|RegExp}` | 计算预期错误*constructor* 、 *message*或*stack*的正则表达式 |
-| `message`  | `{String}`                | 失败时的消息                                        |
+undefined
 
 ## *pipe*
 
@@ -374,25 +190,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 ### 用法
 
-```javascript
-const pipe = require('pipe')
-function add (a, b) {
-    return b + a
-}
-function sub (a, b) {
-    return b - a
-}
-function div (a, b) {
-    return a / b
-}
-const add5 = add.bind(null, 5)
-const sub3 = sub.bind(null, 3)
-pipe()
-  .use(add5)
-  .use(sub3)
-  .use(div, 4)
-  .process(10, (err, res) => console.log('res: %O', res))
-```
+    const pipe = require('pipe') function add (a, b) { return ba } function sub (a, b) { return b - a } function div (a, b) { return a / b } const add5 = add.bind(null, 5) const sub3 = sub.bind(null, 3) pipe() .use(add5) .use(sub3) .use(div, 4) .process(10, (err, res) => console.log('res: %O', res))
 
 ## *typecheck*
 
@@ -400,163 +198,9 @@ pipe()
 
 ### 用法
 
-```javascript
-const { isString, isNumber, isBoolean, isObject } = require('typecheck')
-const log = require('log')
-log(() => isString("ECMAScript"))
-log(() => isNumber(43.5))
-log(() => isBoolean(false))
-log(() => isObject(function(){}))
-```
+    const { isString, isNumber, isBoolean, isObject } = require('typecheck') const log = require('log') log(() => isString("ECMAScript")) log(() => isNumber(43.5)) log(() => isBoolean(false)) log(() => isObject(function(){}))
 
-## *animate*
-
-*animate*有助于为控制台的显示设置动画。
-
-### 用法
-
-如果处理需要很长时间，最好在控制台上将进度显示为动画。
-
-```javascript
-const Animate = require('animate')
-const animate = new Animate
-const size = 23
-let counter = 0
-
-const progress = Animate.genProgressIndicator([
-    '|----------|----------|',
-    '|*---------|----------|',
-    '|**--------|----------|',
-    '|***-------|----------|',
-    '|****------|----------|',
-    '|*****-----|----------|',
-    '|******----|----------|',
-    '|*******---|----------|',
-    '|********--|----------|',
-    '|*********-|----------|',
-    '|**********|----------|',
-    '|**********|*---------|',
-    '|**********|**--------|',
-    '|**********|***-------|',
-    '|**********|****------|',
-    '|**********|*****-----|',
-    '|**********|******----|',
-    '|**********|*******---|',
-    '|**********|********--|',
-    '|**********|*********-|',
-    '|**********|**********|',
-])
-
-const indigator = Animate.genProgressIndicator(['   ', '.  ', '.. ', '...'])
-
-animate.register(() => {
-    let prog = counter / size
-    if (prog >= 1) {
-        prog = 1
-        animate.stop()
-    }
-
-    animate.view = console.format(
-        '%S %S %S',
-        progress(Math.ceil(prog * 20)),
-        ('  ' + Math.ceil(prog * 100) + '%').slice(-4),
-        prog < 1 ? 'loading' + indigator(counter) : 'finished!'
-    )
-    counter++
-}, 100, Number.MAX_VALUE)
-animate.run()
-```
-
-### `constructor(complete)`
-
-当所有队列完成或调用`stop()`时执行`complete`函数。
-
-#### `static genProgressIndicator(animation)`
-
-生成一个显示循环动画的函数。
-
-#### `register(callback, interval, conditional)`
-
-注册处理。可以并行注册和处理多个进程。在`callback`中，我们将指示停止动画并编写要显示的视图。 `interval`指定处理间隔。如果`conditional`是一个函数，它将执行`conditional(count, queue)` ，如果结果为真，它将继续。如果`conditional`是数字，则执行`decrement(count)` ，如果结果是正数，则继续。如果`conditional`未定义，则仅执行一次。请注意，指定函数会增加`count` ，而指定数字会减少`count` 。
-
-#### `stop()`
-
-*animate* 。
-
-#### `cancel(queue)`
-
-暂停特定队列的处理。
-
-#### `run()`
-
-开始动画。
-
-#### `view`
-
-指定打印到控制台的字符。定期切换字符。将*Arrary*或*String*分配给`view` 。 *String*在更新单个动画时很有用，而*Array*在单独为多行设置动画时很有用。
-
-```javascript
-const Animate = require('/lib/animate')
-const animate = new Animate(
-    () => console.log('All Finished!!')
-)
-
-const progress = Animate.genProgressIndicator([
-    '|----------|----------|',
-    '|*---------|----------|',
-    '|**--------|----------|',
-    '|***-------|----------|',
-    '|****------|----------|',
-    '|*****-----|----------|',
-    '|******----|----------|',
-    '|*******---|----------|',
-    '|********--|----------|',
-    '|*********-|----------|',
-    '|**********|----------|',
-    '|**********|*---------|',
-    '|**********|**--------|',
-    '|**********|***-------|',
-    '|**********|****------|',
-    '|**********|*****-----|',
-    '|**********|******----|',
-    '|**********|*******---|',
-    '|**********|********--|',
-    '|**********|*********-|',
-    '|**********|**********|',
-])
-
-const indigator = Animate.genProgressIndicator(['   ', '.  ', '.. ', '...'])
-
-const state = {
-    one: null,
-    two: null,
-    three: null
-}
-
-function upload(name, size, row) {
-    let counter = 0
-    return () => {
-        let prog = counter / size
-        if (prog >= 1) {
-            prog = 1
-            animate.cancel(state[name])
-        }
-
-        animate.view[row] = console.format(
-            '%S %S %S',
-            progress(Math.ceil(prog * 20)),
-            ('  ' + Math.ceil(prog * 100) + '%').slice(-4),
-            prog < 1 ? name + ' loading' + indigator(counter) : name + ' finished! '
-        )
-        counter++
-    }
-}
-
-state.one = animate.register(upload('one', 63, 0), 50, Number.MAX_VALUE)
-state.two = animate.register(upload('two', 49, 1), 60, Number.MAX_VALUE)
-state.three = animate.register(upload('three', 109, 2), 40, Number.MAX_VALUE)
-animate.run()
-```
+undefined
 
 ## *getMember*
 
@@ -564,11 +208,7 @@ animate.run()
 
 ### 用法
 
-```javascript
-const getMember = require('getMember')
-const FileSystemObject = 'Scripting.FileSystemObject'
-console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
-```
+    const getMember = require('getMember') const FileSystemObject = 'Scripting.FileSystemObject' console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
 
 ## *zip*
 
@@ -576,18 +216,11 @@ console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObje
 
 ### 用法
 
-```javascript
-const {zip, unzip} = require('zip')
-console.log(zip('docs\\*', 'dox.zip'))
-console.log(unzip('dox.zip'))
-```
+    const {zip, unzip} = require('zip') console.log(zip('docs\\*', 'dox.zip')) console.log(unzip('dox.zip'))
 
 通配符`*`可以写在`zip(path, destinationPath)` `path`路径中。它可以在*CLI (Command Line Interface)*和*module*中使用。
 
-```bat
-wes zip docs\* dox.zip
-wes zip -p dox.zip
-```
+     wes zip docs\* dox.zip wes zip -p dox.zip
 
 如果`path`具有扩展名`.zip` ，则处理`unzip()` ，并且没有扩展名`.zip`的描述。或者，即使有扩展名`.zip` ，如果有通配符`*`描述，也会处理`zip()` 。
 
@@ -603,7 +236,7 @@ wes zip -p dox.zip
 
 # 捆绑（打包）和安装模块
 
-在*wes*中，多个模块的捆绑包称为包。您可以安装在*github*上发布的*wes*软件包。发布包需要*github repository* 。
+在*wes*中，几个模块的捆绑称为一个包。您可以安装在*github*上发布的*wes*软件包。发布包需要*github repository* 。
 
 ## *bundle*
 
@@ -613,63 +246,27 @@ wes zip -p dox.zip
 
 2.  *package.json*是必需的。至少， `main`字段的描述是必需的。
 
-    ```json
-    {
-        "main": "index.js"
-    }
-    ```
+         { "main": "index.js" }
 
 3.  如果要发布包，请*public*存储库
 
-4.  从`version 0.12.0`开始，直接模块加载到工作目录之上的目录的包将不会被捆绑。可以捆绑上层目录*wes_modules*或*node_modules*中的包。
+4.  从`version 0.12.0`开始，直接模块加载到工作目录之上的目录的包将不会被捆绑。可以捆绑上层目录*wes\_modules*或*node\_modules*中的包。
 
 输入以下命令进行捆绑：请参阅*package.json*以了解要捆绑的内容。
 
-```bat
-    wes bundle 
-```
+     wes bundle
 
-## *install*
-
-用于安装*github*上发布的*wes*包。从`version 0.10.28` ，安装文件夹从`node_modules`更改为`wes_modules` 。如果要在`node_modules`中安装，请添加`--node`选项。从`version 0.12.0`开始，文件将从*bandle.json*解压缩并保存。由于规范更改，与 0.12.0 以下`version 0.12.0`捆绑的软件包可能无法与`version 0.12.0`正确安装。
-
-### 用法
-
-以`@author/repository`的形式传递要*install*的参数。
-
-```bat
-wes install @wachaon/fmt
-```
-
-*install*有选项。
-
-| 命名为           | 简称   | 描述                                            |
-| ------------- | ---- | --------------------------------------------- |
-| `--bare`      | `-b` | 不要创建*@author*文件夹                              |
-| `--global`    | `-g` | 将包安装到*wes.js*所在的文件夹中                          |
-| `--save`      | `-S` | 将包名称和版本添加到*package.json*中的*dependencies*项字段   |
-| `--save--dev` | `-D` | 将包名称和版本添加到*package.json*中的*devDependencies*字段 |
-| `--node`      | `-n` | 安装在*node_module*文件夹中                          |
-
-`--bare`选项可以省略从`author@repository`到`repository`的`require`参数。 `--global`选项使已安装的软件包可用于所有脚本。
-
-```bat
-wes install @wachaon/fmt --bare
-```
+undefined
 
 # 从私有仓库安装包
 
 *install*不仅可以安装来自公共*github*存储库的包，还可以安装来自私有存储库的包。在*install*中，使用*@author/repository*指定包。该实现尝试下载以下 url。
 
-```javascript
-`https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
-```
+     `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 
 如果您使用浏览器访问*raw*存储库，则会显示*token* ，因此请复制*token*并使用它。您还可以通过在*token*有效时在控制台中运行来安装私有存储库中的软件包。
 
-```bat
-wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
-```
+     wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
 # 包装介绍
 
@@ -677,13 +274,11 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* *prettier*地打包为*wes*格式化脚本。此外，如果在安装*@wachaon/fmt*时出现*Syntax Error* ，您可以显示错误的位置。
+*@wachaon/fmt* *prettier*地打包为*wes*格式化脚本。此外，如果在安装*@wachaon/fmt*时出现*Syntax Error* ，您可以指出错误的位置。
 
 ### 安装
 
-```bat
-wes install @wachaon/fmt
-```
+    wes install @wachaon/fmt
 
 ### 用法
 
@@ -691,9 +286,7 @@ wes install @wachaon/fmt
 
 #### 用作*CLI* 。
 
-```bat
-wes @wachaon/fmt src/sample --write
-```
+     wes @wachaon/fmt src/sample --write
 
 | 无名号码 | 描述             |
 | ---- | -------------- |
@@ -707,10 +300,4 @@ wes @wachaon/fmt src/sample --write
 
 #### 作为一个模块使用
 
-```javascript
-const fmt = require('@wachaon/fmt')
-const { readTextFileSync, writeTextFileSync } = require('filesystem')
-const { join, workingDirectory } = require('pathname')
-const target = join(workingDirectory, 'index.js')
-console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
-```
+    const fmt = require('@wachaon/fmt') const { readTextFileSync, writeTextFileSync } = require('filesystem') const { join, workingDirectory } = require('pathname') const target = join(workingDirectory, 'index.js') console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
