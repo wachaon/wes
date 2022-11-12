@@ -36,24 +36,32 @@
 
 # डाउनलोड
 
-*wes.js* *wes* की आवश्यकता है। डाउनलोड करने के लिए, *wes.js* को [*@wachaon/wes*](https://github.com/wachaon/wes) से कॉपी करें या कंसोल में निम्न कमांड चलाएँ।
+*wes.js* *wes* की आवश्यकता है। डाउनलोड करने के लिए, *wes.js* को [*@wachaon/wes*](https://github.com/wachaon/wes) से कॉपी करें या अपने कंसोल में निम्न कमांड चलाएँ।
 
-     bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
+```bat
+bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
+```
 
 *WScript.Shell* *wes* `SendKeys` का उपयोग करते हैं। यदि निर्देशिका का पथ जहां *wes.js* सहेजा गया है, उसमें *ascii* के अलावा अन्य वर्ण हैं, तो `SendKeys` कुंजी को सही ढंग से नहीं भेज सकता है और स्क्रिप्ट को निष्पादित नहीं किया जा सकता है।\
 उस पथ को कॉन्फ़िगर करें *wes.js* केवल *ascii* में संग्रहीत है। यदि आपने पहले ही *wes* डाउनलोड कर लिया है, तो आप इसे निम्न कमांड से अपडेट कर सकते हैं।
 
-     wes update
+```bat
+wes update
+```
 
-# प्रयोग
+# कैसे शुरू *wes*
 
 फ़ाइल को निर्दिष्ट करने वाले कमांड के बाद `wes` कीवर्ड दर्ज करें जो कंसोल के लिए प्रोग्राम का शुरुआती बिंदु होगा। स्क्रिप्ट एक्सटेंशन *.js* को छोड़ा जा सकता है।
 
-     wes index
+```bat
+wes index
+```
 
-साथ ही, चूंकि *wes* *REP* से लैस है, आप अकेले `wes` शुरू करके सीधे स्क्रिप्ट दर्ज कर सकते हैं।
+*wes* सीधे कंसोल पर स्क्रिप्ट को इनपुट और निष्पादित कर सकता है। यदि आप इसे केवल `wes` से शुरू करते हैं, तो आप सीधे स्क्रिप्ट दर्ज कर सकते हैं और निष्पादित कर सकते हैं।
 
-     wes
+```bat
+wes
+```
 
 जब तक आप दो रिक्त पंक्तियाँ दर्ज नहीं करते तब तक *REP* स्क्रिप्ट इनपुट स्वीकार करता है। आप *REP* को *README.md* में उदाहरण स्क्रिप्ट चलाते हुए भी देख सकते हैं।
 
@@ -77,49 +85,136 @@
 
 मॉड्यूल को असाइन करके मॉड्यूल प्रबंधित करें। `module.exports` और कॉल `require()` । `./` और `../` से शुरू होने वाले निरपेक्ष पथों और सापेक्ष पथों के अलावा पथ, *wes\_modules* निर्देशिका में मॉड्यूल की तलाश करते हैं और आसानी से *node\_modules* निर्देशिका। *wes* की `require()` स्वचालित रूप से मॉड्यूल फ़ाइल के एन्कोडिंग का अनुमान लगाती है, लेकिन यदि आप सही ढंग से अनुमान नहीं लगाते हैं तो आप दूसरे तर्क के साथ एन्कोडिंग निर्दिष्ट कर सकते हैं।
 
-     // ./add.js function add (a, b) { return ab } module.exports = add
+```javascript
+// ./add.js
+function add (a, b) {
+    return a + b
+}
+module.exports = add
+```
 
-<!---->
-
-     // ./main.js const add = require('./add') console.log('add(7, 3) // => %O', add(7, 3))
+```javascript
+// ./main.js
+const add = require('./add')
+console.log('add(7, 3) // => %O', add(7, 3))
+```
 
 साथ ही, *COM Object* के लिए *require* के साथ आयात करना संभव है जैसे `require('WScript.Shell')` ।
 
-     const Shell = require('Shell.Application') Shell.MinimizeAll() WScript.Sleep(2000) Shell.UndoMinimizeAll()
+```javascript
+const Shell = require('Shell.Application')
+Shell.MinimizeAll()
+WScript.Sleep(2000)
+Shell.UndoMinimizeAll()
+```
 
 ## *es module*
 
-*Chakra* , जो स्क्रिप्ट निष्पादन इंजन है, सिंटैक्स की व्याख्या करता है जैसे कि `imoprt` , लेकिन इसे निष्पादित नहीं किया जा सकता क्योंकि ऐसा इसलिए है क्योंकि *cscript* के रूप में प्रसंस्करण विधि परिभाषित नहीं है। *wes* में, बिल्ट-इन मॉड्यूल में *babel* जोड़कर, *es module* को एक-एक करके ट्रांसपाइल करते हुए भी निष्पादित किया जाता है। यह हमें ओवरहेड और एक फूली *wes.js* फ़ाइल को संसाधित करने में खर्च करता है। *es module* में लिखे गए मॉड्यूल को ट्रांसपिलिंग द्वारा `require()` में भी परिवर्तित किया जाता है, इसलिए *COM Object* को कॉल करना संभव है। हालांकि, यह *es module* के साथ मॉड्यूल फ़ाइल के एन्कोडिंग को निर्दिष्ट करने का समर्थन नहीं करता है। सब कुछ अपने आप लोड हो जाता है। इसे *es module* के रूप में लोड करने के लिए, एक्सटेंशन को `.mjs` पर सेट करें या `package.json` में `"type"` फ़ील्ड को `"module"` पर सेट करें।
+*Chakra* , स्क्रिप्ट निष्पादन इंजन, सिंटैक्स जैसे कि `imoprt` की व्याख्या करता है, लेकिन इसे निष्पादित नहीं किया जाता है क्योंकि प्रसंस्करण अपरिभाषित है। *wes* में, बिल्ट-इन मॉड्यूल्स में *babel* जोड़कर, एक-एक करके ट्रांसपाइल किए जाने के दौरान *es module* भी निष्पादित किए जाते हैं। यह ओवरहेड और फूला हुआ *wes.js* फ़ाइल को संसाधित करने की लागत पर आता है। ES मॉड्यूल में लिखे गए *es module* भी ट्रांसपाइलिंग द्वारा `require()` में परिवर्तित हो जाते हैं, इसलिए *COM Object* को कॉल करना संभव है। हालांकि, यह मॉड्यूल फ़ाइल के एन्कोडिंग को *es module* के साथ निर्दिष्ट करने का समर्थन नहीं करता है। सब कुछ अपने आप लोड हो जाता है। इसे *es module* के रूप में लोड करने के लिए, एक्सटेंशन को `.mjs` पर सेट करें या `package.json` में `"module"` पर `"type"` फ़ील्ड सेट करें।
 
-     // ./sub.mjs export default function sub (a, b) { return a - b }
+```javascript
+// ./sub.mjs
+export default function sub (a, b) {
+    return a - b
+}
+```
 
-<!---->
-
-     // ./main2.js import sub from './sub.mjs' console.log('sub(7, 3) // => %O', sub(7, 3))
+```javascript
+// ./main2.js
+import sub from './sub.mjs'
+console.log('sub(7, 3) // => %O', sub(7, 3))
+```
 
 # अंतर्निहित वस्तु
 
 *wes* में *WSH (JScript)* *built-in objects* नहीं मिले हैं।
 
-undefined
+## *console*
+
+*wes* `WScript.Echo()` और `WScript.StdErr.WriteLine()` के बजाय वेस *console* का उपयोग करते हैं।
+
+### *console.log*
+
+कंसोल के लिए आउटपुट वर्ण `console.log()` के साथ। यह स्वरूपित तारों का भी समर्थन करता है। `%` फ़ॉर्मेटिंग ऑपरेटर का उपयोग करके एक स्वरूपित स्ट्रिंग को आउटपुट करता है। (फ़ॉर्मेटिंग ऑपरेटर अन्य विधियों के लिए भी मान्य हैं।)
+
+```javascript
+console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
+```
+
+| प्रारूप विनिर्देशक | विवरण                            |
+| ------------------ | -------------------------------- |
+| `%s`               | `String(value)`                  |
+| `%S`               | `String(value)`                  |
+| `%c`               | `String(value)`                  |
+| `%C`               | `String(value)`                  |
+| `%d`               | `parseInt(value, 10)`            |
+| `%D`               | `parseInt(value, 10)`            |
+| `%f`               | `Number(value)`                  |
+| `%F`               | `Number(value)`                  |
+| `%j`               | `JSON.stringify(value)`          |
+| `%J`               | `JSON.stringify(value, null, 2)` |
+| `%o`               | वस्तु डंप                        |
+| `%O`               | ऑब्जेक्ट डंप (इंडेंट/रंगीन)      |
+
+`WScript.StdOut.WriteLine` के *wes* `WScript.StdErr.WriteLine` का उपयोग करता है। `WScript.Echo` और `WScript.StdOut.WriteLine` अवरुद्ध आउटपुट हैं। `WScript.StdErr.WriteLine` या `console.log` का उपयोग करें।
+
+### *console.print*
+
+`console.log()` में आम तौर पर अंत में एक नई लाइन शामिल होती है, लेकिन `console.print` नहीं होता है।
+
+### *console.debug*
+
+`--debug` विकल्प सक्षम होने पर ही कंसोल में आउटपुट।
+
+### *console.error*
+
+संदेश के रूप में सामग्री के साथ एक अपवाद फेंको।
+
+### *console.weaklog*
+
+`console.weaklog()` के साथ मुद्रित स्ट्रिंग्स कंसोल से गायब हो जाती हैं यदि कोई बाद का आउटपुट होता है। आउटपुट स्विच करने के लिए उपयोगी।
 
 ## *Buffer*
 
 आप बफ़र्स को संभाल सकते हैं।
 
-     const content = 'Hello World' const buff = Buffer.from(content) console.log(`${content} %O`, buff)
+```javascript
+const content = 'Hello World'
+const buff = Buffer.from(content)
+console.log(`${content} %O`, buff)
+```
 
 ## `__dirname` और `__filename`
 
 `__filename` वर्तमान में निष्पादित मॉड्यूल फ़ाइल का पथ संग्रहीत करता है। `__dirname` में `__filename` की निर्देशिका है।
 
-     console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+```javascript
+console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+```
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
 चूंकि *wes* सिंक्रोनस प्रोसेसिंग के लिए एक निष्पादन वातावरण है, *setTimeout* *setInterval* *setImmediate* *Promise* एसिंक्रोनस प्रोसेसिंग के रूप में कार्य नहीं करता है, लेकिन यह उन मॉड्यूल का समर्थन करने के लिए कार्यान्वित किया जाता है जो *Promise* कार्यान्वयन को मानते हैं।
 
-     const example = () => { const promise = new Promise((resolve, reject) => { console.log('promise') setTimeout(() => { console.log('setTimeout') resolve('resolved'); }, 2000); }).then((val) => { console.log(val) }); console.log('sub') }; console.log('start') example(); console.log('end')
+```javascript
+const example = () => {
+  const promise = new Promise((resolve, reject) => {
+    console.log('promise')
+
+    setTimeout(() => {
+      console.log('setTimeout') 
+      resolve('resolved');
+    }, 2000);
+  }).then((val) => {
+    console.log(val)
+  });
+  console.log('sub')
+};
+
+console.log('start')
+example();
+console.log('end')
+```
 
 # अंतर्निहित मॉड्यूल
 
@@ -129,111 +224,398 @@ undefined
 
 `ansi` *ANSI escape code* है जो मानक आउटपुट रंग और प्रभाव बदल सकता है। उपयोग किए गए कंसोल एप्लिकेशन के प्रकार और सेटिंग्स के आधार पर रंग और प्रभाव भिन्न हो सकते हैं।
 
-     const { redBright, yellow } = require('ansi') const message = 'File does not exist' console.log(redBright 'Error: ' yellow message)
+```javascript
+const { redBright, yellow } = require('ansi')
+const message = 'File does not exist'
+console.log(redBright + 'Error: ' + yellow + message)
+```
 
 आप `ansi.color()` और `ansi.bgColor()` के साथ अपने खुद के रंग भी बना सकते हैं। तर्क *RGB* जैसे `255, 165, 0` और *color code* जैसे `'#FFA500'` हैं। `orange` जैसे *color name* समर्थित नहीं हैं।
 
-     const { color } = require('ansi') const orange = color(255, 165, 0) console.log(orange 'Hello World')
+```javascript
+const { color } = require('ansi')
+const orange = color(255, 165, 0)
+console.log(orange + 'Hello World')
+```
 
 ## *argv*
 
 कमांड लाइन तर्क प्राप्त करें। `cscript.exe` की कमांड लाइन तर्क `/` के साथ नामित तर्कों की घोषणा करते हैं, जबकि *wes* `-` और `--` के साथ नामित तर्कों की घोषणा करते हैं। *argv.unnamed* और *argv.named* कमांड लाइन तर्क मान प्रकार को *String* *Number* *Boolean* में डाला। *REP* के साथ कमांड लाइन तर्क दर्ज करें।
 
-     wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
+```bat
+wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
+```
 
 *REP* पर निम्न स्क्रिप्ट चलाएँ।
 
-     const argv = require('argv') console.log(`argv: %O argv.unnamed: %O argv.named: %O`, argv, argv.unnamed, argv.named)
+```javascript
+const argv = require('argv')
+console.log(`argv: %O
+argv.unnamed: %O
+argv.named: %O`,
+argv, argv.unnamed, argv.named)
+```
 
 ## *pathname*
 
 रास्तों में हेरफेर। `/` और `\` से शुरू होने वाले पथ आमतौर पर ड्राइव रूट के सापेक्ष होते हैं। उदाहरण के लिए `/filename` और `C:/filename` एक ही पथ हो सकते हैं। सुरक्षा कारणों से, *wes* कार्यशील निर्देशिका के सापेक्ष `/` और `\` से शुरू होने वाले पथों की व्याख्या करता है।
 
-     const path = require('pathname') const file = path.resolve(__dirname, 'index.js') console.log('file %O', file)
+```javascript
+const path = require('pathname')
+const file = path.resolve(__dirname, 'index.js')
+console.log('file %O', file)
+```
 
 ## *filesystem*
 
 फ़ाइलों और निर्देशिकाओं में हेरफेर करें। `readTextFileSync()` स्वचालित रूप से फ़ाइल के एन्कोडिंग का अनुमान लगाता है और उसे पढ़ता है। (भले ही `readFileSync()` का दूसरा तर्क `auto` पर `encode` हो, यह स्वचालित रूप से अनुमान लगाया जाएगा।)
 
-     const fs = require('filesystem') const path = require('pathname') const readme = path.resolve(__dirname, 'README.md') const contents = fs.readTextFileSync(readme) // const contents = fs.readFileSync(readme, 'auto') console.log(contents)
+```javascript
+const fs = require('filesystem')
+const path = require('pathname')
+const readme = path.resolve(__dirname, 'README.md')
+const contents = fs.readTextFileSync(readme)
+// const contents = fs.readFileSync(readme, 'auto')
+console.log(contents)
+```
 
 ## *chardet*
 
-मैं <https://github.com/runk/node-chardet> से कुछ सुविधाओं का उपयोग कर रहा हूं। आप एन्कोडिंग-विशिष्ट वर्णों को बढ़ाकर स्वतः अनुमान लगाने की सटीकता बढ़ा सकते हैं।
+मैं <https://github.com/runk/node-chardet> से कुछ सुविधाओं का उपयोग कर रहा हूं। आप एन्कोडिंग-विशिष्ट वर्णों को बढ़ाकर ऑटो-अनुमान लगाने की सटीकता बढ़ा सकते हैं।
 
 ## *JScript*
 
-यदि आप स्क्रिप्ट इंजन को *Chakra* में बदलते हैं, तो आप *JScript* -विशिष्ट *Enumerator* , आदि का उपयोग नहीं कर पाएंगे। बिल्ट-इन मॉड्यूल *JScript* उन्हें उपलब्ध कराता है। हालांकि, *Enumerator* एक *Array* देता है, न कि *Enumerator object* ।
+यदि आप स्क्रिप्ट इंजन को *Chakra* में बदलते हैं, तो आप *JScript* -विशिष्ट *Enumerator* आदि का उपयोग नहीं कर पाएंगे। अंतर्निहित मॉड्यूल *JScript* उन्हें उपलब्ध कराता है। हालाँकि, *Enumerator* एक *Array* लौटाता है, न कि एक *Enumerator object* ।
 
-     const { Enumerator, ActiveXObject } = require('JScript') const FSO = new ActiveXObject('Scripting.FileSystemObject') const dir = FSO.getFolder(__dirname).Files const files = new Enumerator(dir) files.forEach(file => console.log(file.Name))
+```javascript
+const { Enumerator, ActiveXObject } = require('JScript')
+const FSO = new ActiveXObject('Scripting.FileSystemObject')
+const dir = FSO.getFolder(__dirname).Files
+const files = new Enumerator(dir)
+files.forEach(file => console.log(file.Name))
+```
 
 *GetObject* `WScript.GetObject` के विकल्प के रूप में काम करता है।
 
-     const { GetObject, Enumerator } = require('JScript') const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service") new Enumerator(ServiceSet).forEach(service => console.log( 'Name: %O\nDescription: %O\n', service.Name, service.Description ))
+```javascript
+const { GetObject, Enumerator } = require('JScript')
+const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service")
+new Enumerator(ServiceSet).forEach(service => console.log(
+    'Name: %O\nDescription: %O\n',
+    service.Name,
+    service.Description
+))
+```
 
 ## *VBScript*
 
 *VBScript* कुछ सुविधाएं प्रदान करता है जो *JScript* नहीं करता है।
 
-     const { TypeName } = require('VBScript') const FSO = require('Scripting.FileSystemObject') console.log(TypeName(FSO))
+```javascript
+const { TypeName } = require('VBScript')
+const FSO = require('Scripting.FileSystemObject')
+console.log(TypeName(FSO))
+```
 
 ## *httprequest*
 
 *httprequest* एक *http request* जारी करता है।
 
-     const request = require('httprequest') const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1') console.log('%O', JSON.parse(content))
+```javascript
+const request = require('httprequest')
+const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
+console.log('%O', JSON.parse(content))
+```
 
-undefined
+## *minitest*
+
+*minitest* सरल परीक्षण लिख सकता है। संस्करण `0.10.71` से, हम मूल अवधारणा पर वापस गए और अभिकथन के प्रकारों को घटाकर 3 प्रकार कर दिया।
+
+`describe` के साथ समूह बनाएं, `it` साथ परीक्षण करें, और `assert` सत्यापित करें। `pass` `it` घटनाओं की संख्या और पास की संख्या की एक सरणी होगी।
+
+```javascript
+const { describe, it, assert, pass } = require('minitest')
+describe('minitest', () => {
+    describe('add', () => {
+        const add = (a, b) => a + b
+        it('2 plus 3 is 5', () => {
+            assert.equal(5, add(2, 3))
+        })
+        it('0 plus 0 is 0', () => {
+            assert(0 === add(0, 0))
+        })
+        it('"4" plus "5" is 9', () => {
+            assert.equal(9, add("4", "5"))
+        })
+        it('NaN plus 3 is NaN', () => {
+            assert.equal(NaN, add(NaN, 3))
+        })
+    })
+    describe('sub', () => {
+        it('5 minus 4 is 1', () => {
+            const sub = (a, b) => a - b
+            assert.equal(1, sub(5, 4))
+        })
+    })
+})
+console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
+```
+
+### दावे
+
+#### `assert(value, message)` `assert.ok(value, message)`
+
+सख्त समानता ऑपरेटर `===` के साथ `true` से तुलना करें। यदि `value` एक फ़ंक्शन है, तो फ़ंक्शन को निष्पादित करने के परिणाम का मूल्यांकन करें।
+
+| परम       | टाइप                  | विवरण                              |
+| :-------- | :-------------------- | :--------------------------------- |
+| `value`   | `{Function\|Boolean}` | बूलियन या बूलियन-रिटर्निंग फ़ंक्शन |
+| `message` | `{String}`            | विफलता के मामले में संदेश          |
+
+#### `assert.equal(expected, actual)`
+
+सदस्य समानता के लिए वस्तुओं की तुलना करता है, संदर्भ से नहीं।\
+NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` या `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` आदि।\
+कक्षाओं (वस्तुओं) की तुलना करते समय, उनके पास एक ही निर्माता या एक सुपरक्लास होना चाहिए जिसका `actual` `expected` ।
+
+| परम        | टाइप    | विवरण          |
+| :--------- | :------ | :------------- |
+| `expected` | `{Any}` | अपेक्षित मूल्य |
+| `actual`   | `{Any}` | असल मूल्य      |
+
+#### `assert.throws(value, expected, message)`
+
+सत्यापित करें कि त्रुटियों को सही ढंग से फेंका जा रहा है।\
+त्रुटि सही है या नहीं, यह इस बात से निर्धारित होता है कि अपेक्षित त्रुटि *constructor* , *message* बराबर है, और नियमित अभिव्यक्ति *stack* मूल्यांकन पास करती है।
+
+| परम        | टाइप                      | विवरण                                                                                               |
+| :--------- | :------------------------ | :-------------------------------------------------------------------------------------------------- |
+| `value`    | `{Error}`                 | गलती                                                                                                |
+| `expected` | `{Error\|String\|RegExp}` | एक रेगुलर एक्सप्रेशन जो अपेक्षित त्रुटि *constructor* , *message* , या *stack* का मूल्यांकन करता है |
+| `message`  | `{String}`                | विफलता के मामले में संदेश                                                                           |
 
 ## *pipe*
 
 *pipe* पाइपिंग को सरल करता है।
 
-### प्रयोग
-
-     const pipe = require('pipe') function add (a, b) { return ba } function sub (a, b) { return b - a } function div (a, b) { return a / b } const add5 = add.bind(null, 5) const sub3 = sub.bind(null, 3) pipe() .use(add5) .use(sub3) .use(div, 4) .process(10, (err, res) => console.log('res: %O', res))
+```javascript
+const pipe = require('pipe')
+function add (a, b) {
+    return b + a
+}
+function sub (a, b) {
+    return b - a
+}
+function div (a, b) {
+    return a / b
+}
+const add5 = add.bind(null, 5)
+const sub3 = sub.bind(null, 3)
+pipe()
+  .use(add5)
+  .use(sub3)
+  .use(div, 4)
+  .process(10, (err, res) => console.log('res: %O', res))
+```
 
 ## *typecheck*
 
 स्क्रिप्ट प्रकार निर्धारित करें।
 
-### प्रयोग
+```javascript
+const { isString, isNumber, isBoolean, isObject } = require('typecheck')
+const log = require('log')
+log(() => isString("ECMAScript"))
+log(() => isNumber(43.5))
+log(() => isBoolean(false))
+log(() => isObject(function(){}))
+```
 
-     const { isString, isNumber, isBoolean, isObject } = require('typecheck') const log = require('log') log(() => isString("ECMAScript")) log(() => isNumber(43.5)) log(() => isBoolean(false)) log(() => isObject(function(){}))
+## *animate*
 
-undefined
+*animate* कंसोल के प्रदर्शन को चेतन करने में मदद करता है।
+
+यदि प्रसंस्करण में लंबा समय लगता है, तो प्रगति को कंसोल पर एनीमेशन के रूप में प्रदर्शित करना अच्छा होगा।
+
+```javascript
+const Animate = require('animate')
+const animate = new Animate
+const size = 23
+let counter = 0
+
+const progress = Animate.genProgressIndicator([
+    '|----------|----------|',
+    '|*---------|----------|',
+    '|**--------|----------|',
+    '|***-------|----------|',
+    '|****------|----------|',
+    '|*****-----|----------|',
+    '|******----|----------|',
+    '|*******---|----------|',
+    '|********--|----------|',
+    '|*********-|----------|',
+    '|**********|----------|',
+    '|**********|*---------|',
+    '|**********|**--------|',
+    '|**********|***-------|',
+    '|**********|****------|',
+    '|**********|*****-----|',
+    '|**********|******----|',
+    '|**********|*******---|',
+    '|**********|********--|',
+    '|**********|*********-|',
+    '|**********|**********|',
+])
+
+const indigator = Animate.genProgressIndicator(['   ', '.  ', '.. ', '...'])
+
+animate.register(() => {
+    let prog = counter / size
+    if (prog >= 1) {
+        prog = 1
+        animate.stop()
+    }
+
+    animate.view = console.format(
+        '%S %S %S',
+        progress(Math.ceil(prog * 20)),
+        ('  ' + Math.ceil(prog * 100) + '%').slice(-4),
+        prog < 1 ? 'loading' + indigator(counter) : 'finished!'
+    )
+    counter++
+}, 100, Number.MAX_VALUE)
+animate.run()
+```
+
+### `constructor(complete)`
+
+जब सभी कतारें पूरी हो जाती हैं या `stop()` कहा जाता है, तो `complete` फ़ंक्शन निष्पादित करता है।
+
+#### `static genProgressIndicator(animation)`
+
+एक फ़ंक्शन उत्पन्न करें जो एक साइकिलिंग एनीमेशन प्रदर्शित करता है।
+
+#### `register(callback, interval, conditional)`
+
+पंजीकरण प्रक्रिया। कई प्रक्रियाओं को समानांतर में पंजीकृत और संसाधित किया जा सकता है। `callback` में, हम एनीमेशन को रोकने और प्रदर्शित होने वाले दृश्य को लिखने का निर्देश देंगे। `interval` प्रसंस्करण अंतराल निर्दिष्ट करता है। यदि `conditional` एक फ़ंक्शन है, तो यह `conditional(count, queue)` निष्पादित करेगा और यदि परिणाम सत्य है, तो यह जारी रहेगा। `conditional` `decrement(count)` को निष्पादित करता है यदि यह एक संख्या है और यदि परिणाम एक सकारात्मक संख्या है तो जारी रहता है। `conditional` अपरिभाषित होने पर केवल एक बार निष्पादित होता है। ध्यान दें कि किसी फ़ंक्शन को निर्दिष्ट करने से `count` बढ़ जाती है, जबकि संख्या निर्दिष्ट करने से `count` घट जाती है।
+
+#### `stop()`
+
+*animate* ।
+
+#### `cancel(queue)`
+
+एक विशिष्ट कतार के प्रसंस्करण को निलंबित करता है।
+
+#### `run()`
+
+एनिमेशन शुरू करें।
+
+#### `view`
+
+कंसोल पर मुद्रित वर्णों को निर्दिष्ट करता है। नियमित अंतराल पर वर्ण बदलें। `view` के लिए या तो *Arrary* या *String* असाइन करें। एकल एनीमेशन को अपडेट करते समय एक *String* उपयोगी होती है, और एक से अधिक पंक्तियों को व्यक्तिगत रूप से एनिमेट करते समय एक *Array* उपयोगी होता है।
+
+```javascript
+const Animate = require('/lib/animate')
+const animate = new Animate(
+    () => console.log('All Finished!!')
+)
+
+const progress = Animate.genProgressIndicator([
+    '|----------|----------|',
+    '|*---------|----------|',
+    '|**--------|----------|',
+    '|***-------|----------|',
+    '|****------|----------|',
+    '|*****-----|----------|',
+    '|******----|----------|',
+    '|*******---|----------|',
+    '|********--|----------|',
+    '|*********-|----------|',
+    '|**********|----------|',
+    '|**********|*---------|',
+    '|**********|**--------|',
+    '|**********|***-------|',
+    '|**********|****------|',
+    '|**********|*****-----|',
+    '|**********|******----|',
+    '|**********|*******---|',
+    '|**********|********--|',
+    '|**********|*********-|',
+    '|**********|**********|',
+])
+
+const indigator = Animate.genProgressIndicator(['   ', '.  ', '.. ', '...'])
+
+const state = {
+    one: null,
+    two: null,
+    three: null
+}
+
+function upload(name, size, row) {
+    let counter = 0
+    return () => {
+        let prog = counter / size
+        if (prog >= 1) {
+            prog = 1
+            animate.cancel(state[name])
+        }
+
+        animate.view[row] = console.format(
+            '%S %S %S',
+            progress(Math.ceil(prog * 20)),
+            ('  ' + Math.ceil(prog * 100) + '%').slice(-4),
+            prog < 1 ? name + ' loading' + indigator(counter) : name + ' finished! '
+        )
+        counter++
+    }
+}
+
+state.one = animate.register(upload('one', 63, 0), 50, Number.MAX_VALUE)
+state.two = animate.register(upload('two', 49, 1), 60, Number.MAX_VALUE)
+state.three = animate.register(upload('three', 109, 2), 40, Number.MAX_VALUE)
+animate.run()
+```
 
 ## *getMember*
 
 *ProgID* से सदस्य प्रकार और *COM Object* का विवरण प्राप्त करें।
 
-### प्रयोग
-
-     const getMember = require('getMember') const FileSystemObject = 'Scripting.FileSystemObject' console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
+```javascript
+const getMember = require('getMember')
+const FileSystemObject = 'Scripting.FileSystemObject'
+console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
+```
 
 ## *zip*
 
 फ़ाइलों और फ़ोल्डरों को संपीड़ित करता है और संपीड़ित फ़ाइलों को डीकंप्रेस करता है। आंतरिक रूप से, *PowerShell* को कॉल और संसाधित किया जाता है।
 
-### प्रयोग
-
-     const {zip, unzip} = require('zip') console.log(zip('docs\\*', 'dox.zip')) console.log(unzip('dox.zip'))
+```javascript
+const {zip, unzip} = require('zip')
+console.log(zip('docs\\*', 'dox.zip'))
+console.log(unzip('dox.zip'))
+```
 
 एक वाइल्डकार्ड `*` को `zip(path, destinationPath)` के `path` में लिखा जा सकता है। इसका उपयोग *CLI (Command Line Interface)* और *module* दोनों में किया जा सकता है।
 
-     wes zip docs\* dox.zip wes zip -p dox.zip
+```bat
+wes zip docs\* dox.zip
+wes zip -p dox.zip
+```
 
-यदि `path` में एक्सटेंशन `.zip` है, तो `unzip()` संसाधित हो गया है, और एक्सटेंशन `.zip` का कोई विवरण नहीं है। वैकल्पिक रूप से, भले ही कोई एक्सटेंशन `.zip` हो, यदि कोई वाइल्डकार्ड `*` विवरण है, तो `zip()` संसाधित किया जाएगा।
+यदि `path` में `.zip` एक्सटेंशन है, तो `unzip()` संसाधित किया जाता है, और एक्सटेंशन `.zip` का कोई विवरण नहीं होता है। वैकल्पिक रूप से, भले ही कोई एक्सटेंशन `.zip` हो, अगर कोई वाइल्डकार्ड `*` विवरण है, तो `zip()` संसाधित किया जाएगा।
 
 | अज्ञात | विवरण                              |
 | ------ | ---------------------------------- |
-| `1`    | `path` या दर्ज करने के लिए फ़ाइल   |
-| `2`    | आउटपुट के लिए फ़ोल्डर फ़ाइल `dest` |
+| `1`    | दर्ज करने के लिए `path` या फ़ाइल   |
+| `2`    | आउटपुट `dest` के लिए फ़ोल्डर फ़ाइल |
 
 | नामित    | संक्षिप्त नाम | विवरण                              |
 | -------- | ------------- | ---------------------------------- |
-| `--path` | `-p`          | `path` या दर्ज करने के लिए फ़ाइल   |
-| `--dest` | `-d`          | आउटपुट के लिए फ़ोल्डर फ़ाइल `dest` |
+| `--path` | `-p`          | दर्ज करने के लिए `path` या फ़ाइल   |
+| `--dest` | `-d`          | आउटपुट `dest` के लिए फ़ोल्डर फ़ाइल |
 
 # बंडलिंग (पैकेजिंग) और मॉड्यूल स्थापित करना
 
@@ -244,61 +626,98 @@ undefined
 *github* पर पैकेज प्रकाशित करते समय, *bundle* आवश्यक मॉड्यूल को बंडल करता है और *bundle.json* बनाता है।
 
 1.  एक *repository* में केवल एक पैकेज प्रकाशित किया जा सकता है
-
-2.  *package.json* आवश्यक है। कम से कम, `main` क्षेत्र का विवरण आवश्यक है।
-
-         { "main": "index.js" }
-
+2.  *package.json* आवश्यक है। कम से कम, `main` क्षेत्र का विवरण आवश्यक है। ```json
+    {
+        "main": "index.js"
+    }
+    ```
 3.  यदि आप पैकेज प्रकाशित करना चाहते हैं तो रिपॉजिटरी को *public* करें
-
 4.  `version 0.12.0` से शुरू होकर, कार्यशील निर्देशिका के ऊपर एक निर्देशिका में सीधे मॉड्यूल लोड होने वाले पैकेजों को बंडल नहीं किया जाएगा। ऊपरी निर्देशिका में संकुल *wes\_modules* या *node\_modules* बंडल किए जा सकते हैं।
 
 बंडल करने के लिए निम्न आदेश दर्ज करें: क्या बंडल करना है इसके लिए *package.json* का संदर्भ लें।
 
-     wes bundle
+```bat
+    wes bundle 
+```
 
-undefined
+## *install*
+
+*github* पर प्रकाशित *wes* के लिए पैकेज स्थापित करने के लिए उपयोग किया जाता है। `version 0.10.28` से, स्थापना फ़ोल्डर को `wes_modules` से `node_modules` में बदल दिया गया है। यदि आप `node_modules` add `--node` विकल्प में स्थापित करना चाहते हैं। `version 0.12.0` से शुरू होकर, फ़ाइलों को *bandle.json* से अनज़िप किया जाएगा और सहेजा जाएगा। विशिष्ट परिवर्तनों के कारण, 0.12.0 से कम `version 0.12.0` के साथ बंडल किए गए पैकेज `version 0.12.0` के साथ सही ढंग से स्थापित नहीं हो सकते हैं।
+
+`@author/repository` के रूप में *install* के लिए तर्क पास करें।
+
+```bat
+wes install @wachaon/fmt
+```
+
+*install* के विकल्प हैं।
+
+| नामित         | संक्षिप्त नाम | विवरण                                                                            |
+| ------------- | ------------- | -------------------------------------------------------------------------------- |
+| `--bare`      | `-b`          | *@author* फोल्डर न बनाएं                                                         |
+| `--global`    | `-g`          | पैकेज को फ़ोल्डर में स्थापित करें जहां *wes.js* है                               |
+| `--save`      | `-S`          | पैकेज.जॉन में *dependencies* क्षेत्र में *package.json* का नाम और संस्करण जोड़ें |
+| `--save--dev` | `-D`          | *package.json* में *devDependencies* फ़ील्ड में पैकेज का नाम और संस्करण जोड़ें   |
+| `--node`      | `-n`          | *node\_module* फ़ोल्डर में स्थापित करें                                          |
+
+`--bare` विकल्प `author@repository` से `repository` तक की `require` तर्क को छोड़ सकता है। `--global` विकल्प संस्थापित संकुल को सभी लिपियों के लिए उपलब्ध कराता है.
+
+```bat
+wes install @wachaon/fmt --bare
+```
 
 # निजी भंडारों से संकुल अधिष्ठापन
 
 *install* न केवल सार्वजनिक *github* रिपॉजिटरी से पैकेज स्थापित कर सकता है, बल्कि निजी रिपॉजिटरी से भी पैकेज स्थापित कर सकता है। *install* में, पैकेज को *@author/repository* के साथ निर्दिष्ट करें। कार्यान्वयन निम्न url को डाउनलोड करने का प्रयास करता है।
 
-     `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
+```javascript
+`https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
+```
 
 यदि आप एक ब्राउज़र के साथ निजी भंडार तक *raw* हैं, तो *token* प्रदर्शित होगा, इसलिए *token* की प्रतिलिपि बनाएँ और उसका उपयोग करें। आप निजी रिपॉजिटरी से पैकेज को कंसोल में चलाकर भी इंस्टॉल कर सकते हैं जबकि *token* वैध है।
 
-     wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
+```bat
+wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
+```
 
 # पैकेज परिचय
 
-यहां कुछ बाहरी पैकेज दिए गए हैं।
+यहाँ कुछ बाहरी पैकेज हैं।
 
 ## *@wachaon/fmt*
 
-स्क्रिप्ट को प्रारूपित करने के लिए *@wachaon/fmt* को *wes* के लिए *prettier* पैक किया गया है। साथ ही, यदि *@wachaon/fmt* स्थापित होने के दौरान *Syntax Error* होती है, तो आप त्रुटि के स्थान को इंगित कर सकते हैं।
+*@wachaon/fmt* *wes* के लिए स्क्रिप्ट को फ़ॉर्मैट करने के लिए बेहतर *prettier* से पैक किया गया है। साथ ही, अगर *@wachaon/fmt* इंस्टॉल होने के दौरान *Syntax Error* आता है, तो आप एरर लोकेशन दिखा सकते हैं।
 
 ### इंस्टॉल
 
-     wes install @wachaon/fmt
-
-### प्रयोग
+```bat
+wes install @wachaon/fmt
+```
 
 यदि कार्यशील निर्देशिका में *.prettierrc* (JSON प्रारूप) है, तो यह सेटिंग्स में दिखाई देगा। *fmt* *CLI* और *module* दोनों में उपलब्ध है।
 
 #### *CLI* के रूप में प्रयोग करें।
 
-     wes @wachaon/fmt src/sample --write
+```bat
+wes @wachaon/fmt src/sample --write
+```
 
-| अनाम संख्या | विवरण                                                |
-| ----------- | ---------------------------------------------------- |
-| 1           | आवश्यक। फ़ाइल का पथ जिसे आप प्रारूपित करना चाहते हैं |
+| अनाम संख्या | विवरण                                                  |
+| ----------- | ------------------------------------------------------ |
+| 1           | आवश्यक। उस फ़ाइल का पथ जिसे आप स्वरूपित करना चाहते हैं |
 
-| नामित     | संक्षिप्त नाम | विवरण                       |
-| --------- | ------------- | --------------------------- |
-| `--write` | `-w`          | अधिलेखित करने की अनुमति दें |
+| नामित     | संक्षिप्त नाम | विवरण                      |
+| --------- | ------------- | -------------------------- |
+| `--write` | `-w`          | ओवरराइट करने की अनुमति दें |
 
-प्रारूपित स्क्रिप्ट के साथ फ़ाइल को अधिलेखित करें यदि `--write` या `-w` नामित तर्क निर्दिष्ट है।
+स्वरूपित स्क्रिप्ट के साथ फ़ाइल को अधिलेखित करें यदि `--write` या `-w` नामित तर्क निर्दिष्ट है।
 
 #### मॉड्यूल के रूप में उपयोग करें
 
-     const fmt = require('@wachaon/fmt') const { readTextFileSync, writeTextFileSync } = require('filesystem') const { join, workingDirectory } = require('pathname') const target = join(workingDirectory, 'index.js') console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
+```javascript
+const fmt = require('@wachaon/fmt')
+const { readTextFileSync, writeTextFileSync } = require('filesystem')
+const { join, workingDirectory } = require('pathname')
+const target = join(workingDirectory, 'index.js')
+console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
+```

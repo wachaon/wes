@@ -1,7 +1,7 @@
 # *WES*
 
 *wes* est un framework de console pour exécuter *ECMAScript* sur *WSH (Windows Script Host)* . Le [*japanese*](/README.md) original du *README* sera en japonais. Les textes autres que le japonais seront traduits automatiquement.\
-Pour les textes dans d'autres langues, veuillez sélectionner parmi les options ci-dessous.
+Pour les textes dans d'autres langues, veuillez sélectionner l'une des options ci-dessous.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -36,24 +36,32 @@ Pour les textes dans d'autres langues, veuillez sélectionner parmi les options 
 
 # Télécharger
 
-Wes n'a besoin que du *wes* *wes.js* . Pour télécharger, copiez *wes.js* depuis [*@wachaon/wes*](https://github.com/wachaon/wes) ou exécutez la commande suivante dans la console.
+Wes n'a besoin que du *wes* *wes.js* . Pour télécharger, copiez *wes.js* depuis [*@wachaon/wes*](https://github.com/wachaon/wes) ou exécutez la commande suivante dans votre console.
 
-     bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
+```bat
+bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
+```
 
 Nous utilisons `SendKeys` *wes* *WScript.Shell* lors de l'exécution en tant qu'implémentation. Si le chemin du répertoire où *wes.js* est enregistré contient des caractères autres que *ascii* , `SendKeys` ne peut pas envoyer la clé correctement et le script ne peut pas être exécuté.\
 Configurez le chemin *wes.js* est stocké en *ascii* uniquement. Si vous avez déjà téléchargé *wes* , vous pouvez le mettre à jour avec la commande suivante.
 
-     wes update
+```bat
+wes update
+```
 
-# Usage
+# comment commencer *wes*
 
 Entrez le mot-clé `wes` suivi de la commande spécifiant le fichier qui sera le point de départ du programme vers la console. L'extension de script *.js* peut être omise.
 
-     wes index
+```bat
+wes index
+```
 
-De plus, étant donné que *wes* est équipé de *REP* , vous pouvez entrer des scripts directement en démarrant `wes` seul.
+*wes* peut saisir et exécuter directement des scripts sur la console. Si vous le démarrez avec `wes` uniquement, vous pouvez entrer et exécuter directement le script.
 
-     wes
+```bat
+wes
+```
 
 *REP* accepte l'entrée de script jusqu'à ce que vous saisissiez deux lignes vides. Vous pouvez également voir *REP* exécuter l'exemple de script dans *README.md* .
 
@@ -77,49 +85,136 @@ Les options de démarrage de *wes* sont les suivantes.
 
 Gérez les modules en attribuant à `module.exports` et en appelant `require()` . Les chemins autres que les chemins absolus et les chemins relatifs commençant par `./` ​​et `../` recherchent les modules dans le répertoire *wes\_modules* et commodément le répertoire *node\_modules* . Le `require()` de *wes* devine automatiquement l'encodage du fichier de module, mais vous pouvez spécifier l'encodage avec le deuxième argument s'il ne devine pas correctement.
 
-     // ./add.js function add (a, b) { return ab } module.exports = add
+```javascript
+// ./add.js
+function add (a, b) {
+    return a + b
+}
+module.exports = add
+```
 
-<!---->
-
-     // ./main.js const add = require('./add') console.log('add(7, 3) // => %O', add(7, 3))
+```javascript
+// ./main.js
+const add = require('./add')
+console.log('add(7, 3) // => %O', add(7, 3))
+```
 
 En outre, il est possible d'importer avec *require* pour un *COM Object* comme `require('WScript.Shell')` .
 
-     const Shell = require('Shell.Application') Shell.MinimizeAll() WScript.Sleep(2000) Shell.UndoMinimizeAll()
+```javascript
+const Shell = require('Shell.Application')
+Shell.MinimizeAll()
+WScript.Sleep(2000)
+Shell.UndoMinimizeAll()
+```
 
 ## *es module*
 
-*Chakra* , qui est un moteur d'exécution de script, interprète une syntaxe telle que `imoprt` , mais il ne peut pas être exécuté tel quel car la méthode de traitement en tant que *cscript* n'est pas définie. Dans *wes* , en ajoutant *babel* aux modules intégrés, les modules *es module* sont également exécutés tout en étant séquentiellement transpilés. Cela nous coûte des frais généraux de traitement et un fichier *wes.js* gonflé. Les modules écrits dans le *es module* sont également convertis en `require()` par transpilation, il est donc possible d'appeler *COM Object* . Cependant, il ne prend pas en charge la spécification de l'encodage du fichier de module avec *es module* . Tout est chargé automatiquement. Pour le charger en tant que *es module* , définissez l'extension sur `.mjs` ou définissez le champ `"type"` dans `package.json` sur `"module"` .
+*Chakra* , le moteur d'exécution de script, interprète une syntaxe telle que `imoprt` , mais il n'est pas exécuté car le traitement n'est pas défini. Dans *wes* , en ajoutant *babel* aux modules intégrés, les modules *es module* sont également exécutés tout en étant transpilés un par un. Cela a un coût de traitement supplémentaire et un fichier *wes.js* gonflé. Les modules écrits dans le *es module* sont également convertis en `require()` par transpilation, il est donc possible d'appeler *COM Object* . Cependant, il ne prend pas en charge la spécification de l'encodage du fichier de module avec *es module* . Tout est chargé automatiquement. Pour le charger en tant que *es module* , définissez l'extension sur `.mjs` ou définissez le champ `"type"` dans `package.json` sur `"module"` .
 
-     // ./sub.mjs export default function sub (a, b) { return a - b }
+```javascript
+// ./sub.mjs
+export default function sub (a, b) {
+    return a - b
+}
+```
 
-<!---->
+```javascript
+// ./main2.js
+import sub from './sub.mjs'
+console.log('sub(7, 3) // => %O', sub(7, 3))
+```
 
-     // ./main2.js import sub from './sub.mjs' console.log('sub(7, 3) // => %O', sub(7, 3))
-
-# objet incorporé
+# objet intégré
 
 *wes* a *built-in objects* introuvables dans *WSH (JScript)* .
 
-undefined
+## *console*
+
+Nous utilisons *console* au lieu de *wes* `WScript.Echo()` et `WScript.StdErr.WriteLine()` .
+
+### *console.log*
+
+Affichez les caractères sur la console avec `console.log()` . Il prend également en charge les chaînes formatées. Génère une chaîne formatée à l'aide de l'opérateur de formatage `%` . (Les opérateurs de formatage sont également valables pour d'autres méthodes.)
+
+```javascript
+console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
+```
+
+| Spécificateur de format | La description                   |
+| ----------------------- | -------------------------------- |
+| `%s`                    | `String(value)`                  |
+| `%S`                    | `String(value)`                  |
+| `%c`                    | `String(value)`                  |
+| `%C`                    | `String(value)`                  |
+| `%d`                    | `parseInt(value, 10)`            |
+| `%D`                    | `parseInt(value, 10)`            |
+| `%f`                    | `Number(value)`                  |
+| `%F`                    | `Number(value)`                  |
+| `%j`                    | `JSON.stringify(value)`          |
+| `%J`                    | `JSON.stringify(value, null, 2)` |
+| `%o`                    | vidage d'objet                   |
+| `%O`                    | Vidage d'objet (indenté/coloré)  |
+
+`WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` pour générer des chaînes colorées. `WScript.Echo` et `WScript.StdOut.WriteLine` sont des sorties bloquées. `WScript.StdErr.WriteLine` ou `console.log` .
+
+### *console.print*
+
+`console.log()` inclut normalement une nouvelle ligne à la fin, mais pas `console.print` .
+
+### *console.debug*
+
+Sortie vers la console uniquement si l'option `--debug` est activée.
+
+### *console.error*
+
+Levez une exception avec le contenu comme message.
+
+### *console.weaklog*
+
+Les chaînes imprimées avec `console.weaklog()` disparaissent de la console s'il y a une sortie ultérieure. Utile pour commuter les sorties.
 
 ## *Buffer*
 
 Vous pouvez gérer les tampons.
 
-     const content = 'Hello World' const buff = Buffer.from(content) console.log(`${content} %O`, buff)
+```javascript
+const content = 'Hello World'
+const buff = Buffer.from(content)
+console.log(`${content} %O`, buff)
+```
 
 ## `__dirname` et `__filename`
 
 `__filename` stocke le chemin du fichier de module en cours d'exécution. `__dirname` contient le répertoire de `__filename` .
 
-     console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+```javascript
+console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+```
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
 Étant donné que *wes* est un environnement d'exécution pour le traitement synchrone, *setTimeout* *setInterval* *setImmediate* *Promise* ne fonctionne pas comme un traitement asynchrone, mais il est implémenté pour prendre en charge les modules qui supposent l'implémentation de *Promise* .
 
-     const example = () => { const promise = new Promise((resolve, reject) => { console.log('promise') setTimeout(() => { console.log('setTimeout') resolve('resolved'); }, 2000); }).then((val) => { console.log(val) }); console.log('sub') }; console.log('start') example(); console.log('end')
+```javascript
+const example = () => {
+  const promise = new Promise((resolve, reject) => {
+    console.log('promise')
+
+    setTimeout(() => {
+      console.log('setTimeout') 
+      resolve('resolved');
+    }, 2000);
+  }).then((val) => {
+    console.log(val)
+  });
+  console.log('sub')
+};
+
+console.log('start')
+example();
+console.log('end')
+```
 
 # Module intégré
 
@@ -129,33 +224,60 @@ Vous pouvez gérer les tampons.
 
 `ansi` est *ANSI escape code* qui peut modifier les couleurs et les effets de sortie standard. Les couleurs et les effets peuvent différer selon le type et les paramètres de l'application console utilisée.
 
-     const { redBright, yellow } = require('ansi') const message = 'File does not exist' console.log(redBright 'Error: ' yellow message)
+```javascript
+const { redBright, yellow } = require('ansi')
+const message = 'File does not exist'
+console.log(redBright + 'Error: ' + yellow + message)
+```
 
 Vous pouvez également créer vos propres couleurs avec `ansi.color()` et `ansi.bgColor()` . Les arguments utilisent *RGB* tels que `255, 165, 0` et *color code* tels que `'#FFA500'` . *color name* tels que `orange` ne sont pas pris en charge.
 
-     const { color } = require('ansi') const orange = color(255, 165, 0) console.log(orange 'Hello World')
+```javascript
+const { color } = require('ansi')
+const orange = color(255, 165, 0)
+console.log(orange + 'Hello World')
+```
 
 ## *argv*
 
 Obtenir les arguments de la ligne de commande. Les arguments de ligne de commande de `cscript.exe` déclarent des arguments nommés avec `/` , tandis que *wes* déclare des arguments nommés avec `-` et `--` . *argv.unnamed* et *argv.named* le type de valeur d'argument de ligne de commande en *String* *Number* *Boolean* . Entrez les arguments de la ligne de commande avec *REP* .
 
-     wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
+```bat
+wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
+```
 
 Exécutez le script suivant sur *REP* .
 
-     const argv = require('argv') console.log(`argv: %O argv.unnamed: %O argv.named: %O`, argv, argv.unnamed, argv.named)
+```javascript
+const argv = require('argv')
+console.log(`argv: %O
+argv.unnamed: %O
+argv.named: %O`,
+argv, argv.unnamed, argv.named)
+```
 
 ## *pathname*
 
 Manipulez les chemins. Les chemins commençant par `/` et `\` sont généralement relatifs à la racine du lecteur. Par exemple `/filename` et `C:/filename` peuvent être le même chemin. Pour des raisons de sécurité, *wes* interprète les chemins commençant par `/` et `\` par rapport au répertoire de travail.
 
-     const path = require('pathname') const file = path.resolve(__dirname, 'index.js') console.log('file %O', file)
+```javascript
+const path = require('pathname')
+const file = path.resolve(__dirname, 'index.js')
+console.log('file %O', file)
+```
 
 ## *filesystem*
 
 Manipuler des fichiers et des répertoires. `readTextFileSync()` devine automatiquement l'encodage du fichier et le lit. (Même si le deuxième argument de `readFileSync()` est `encode` sur `auto` , il sera deviné automatiquement.)
 
-     const fs = require('filesystem') const path = require('pathname') const readme = path.resolve(__dirname, 'README.md') const contents = fs.readTextFileSync(readme) // const contents = fs.readFileSync(readme, 'auto') console.log(contents)
+```javascript
+const fs = require('filesystem')
+const path = require('pathname')
+const readme = path.resolve(__dirname, 'README.md')
+const contents = fs.readTextFileSync(readme)
+// const contents = fs.readFileSync(readme, 'auto')
+console.log(contents)
+```
 
 ## *chardet*
 
@@ -165,63 +287,323 @@ J'utilise certaines fonctionnalités de <https://github.com/runk/node-chardet> .
 
 Si vous changez le moteur de script en *Chakra* , vous ne pourrez pas utiliser les *Enumerator* spécifiques à *JScript* , etc. Le module intégré *JScript* les rend disponibles. Cependant, *Enumerator* renvoie un *Array* , pas un *Enumerator object* .
 
-     const { Enumerator, ActiveXObject } = require('JScript') const FSO = new ActiveXObject('Scripting.FileSystemObject') const dir = FSO.getFolder(__dirname).Files const files = new Enumerator(dir) files.forEach(file => console.log(file.Name))
+```javascript
+const { Enumerator, ActiveXObject } = require('JScript')
+const FSO = new ActiveXObject('Scripting.FileSystemObject')
+const dir = FSO.getFolder(__dirname).Files
+const files = new Enumerator(dir)
+files.forEach(file => console.log(file.Name))
+```
 
 *GetObject* fonctionne comme une alternative à `WScript.GetObject` .
 
-     const { GetObject, Enumerator } = require('JScript') const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service") new Enumerator(ServiceSet).forEach(service => console.log( 'Name: %O\nDescription: %O\n', service.Name, service.Description ))
+```javascript
+const { GetObject, Enumerator } = require('JScript')
+const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service")
+new Enumerator(ServiceSet).forEach(service => console.log(
+    'Name: %O\nDescription: %O\n',
+    service.Name,
+    service.Description
+))
+```
 
 ## *VBScript*
 
 *VBScript* offre certaines fonctionnalités que *JScript* n'offre pas.
 
-     const { TypeName } = require('VBScript') const FSO = require('Scripting.FileSystemObject') console.log(TypeName(FSO))
+```javascript
+const { TypeName } = require('VBScript')
+const FSO = require('Scripting.FileSystemObject')
+console.log(TypeName(FSO))
+```
 
 ## *httprequest*
 
 *httprequest* émet une *http request* .
 
-     const request = require('httprequest') const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1') console.log('%O', JSON.parse(content))
+```javascript
+const request = require('httprequest')
+const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
+console.log('%O', JSON.parse(content))
+```
 
-undefined
+## *minitest*
+
+*minitest* peut écrire des tests simples. A partir de la version `0.10.71` , nous sommes revenus au concept de base et avons réduit les types d'assertions à 3 types.
+
+Grouper avec `describe` , tester avec `it` vérifier avec `assert` . `pass` sera un tableau du nombre d'occurrences de celui- `it` et du nombre de passes.
+
+```javascript
+const { describe, it, assert, pass } = require('minitest')
+describe('minitest', () => {
+    describe('add', () => {
+        const add = (a, b) => a + b
+        it('2 plus 3 is 5', () => {
+            assert.equal(5, add(2, 3))
+        })
+        it('0 plus 0 is 0', () => {
+            assert(0 === add(0, 0))
+        })
+        it('"4" plus "5" is 9', () => {
+            assert.equal(9, add("4", "5"))
+        })
+        it('NaN plus 3 is NaN', () => {
+            assert.equal(NaN, add(NaN, 3))
+        })
+    })
+    describe('sub', () => {
+        it('5 minus 4 is 1', () => {
+            const sub = (a, b) => a - b
+            assert.equal(1, sub(5, 4))
+        })
+    })
+})
+console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
+```
+
+### affirmations
+
+#### `assert(value, message)` `assert.ok(value, message)`
+
+Comparez à `true` avec l'opérateur d'égalité stricte `===` . Si `value` est une fonction, évalue le résultat de l'exécution de la fonction.
+
+| Param     | Taper                 | La description                             |
+| :-------- | :-------------------- | :----------------------------------------- |
+| `value`   | `{Function\|Boolean}` | fonction booléenne ou renvoyant un booléen |
+| `message` | `{String}`            | message en cas de panne                    |
+
+#### `assert.equal(expected, actual)`
+
+Compare les objets pour l'égalité des membres, pas par référence.\
+NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` ou `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` etc.\
+Lors de la comparaison de classes (objets), elles doivent avoir le même constructeur ou une superclasse dont `actual` est `expected` .
+
+| Param      | Taper   | La description  |
+| :--------- | :------ | :-------------- |
+| `expected` | `{Any}` | valeur attendue |
+| `actual`   | `{Any}` | Valeur actuelle |
+
+#### `assert.throws(value, expected, message)`
+
+Vérifiez que les erreurs sont générées correctement.\
+Le fait que l'erreur soit correcte ou non est déterminé par le fait que le *constructor* d'erreur attendu, *message* est égal et que l'expression régulière réussit l'évaluation de la *stack* .
+
+| Param      | Taper                     | La description                                                                                   |
+| :--------- | :------------------------ | :----------------------------------------------------------------------------------------------- |
+| `value`    | `{Error}`                 | Erreur                                                                                           |
+| `expected` | `{Error\|String\|RegExp}` | Une expression régulière qui évalue le *constructor* , *message* ou la *stack* d'erreur attendus |
+| `message`  | `{String}`                | message en cas de panne                                                                          |
 
 ## *pipe*
 
 *pipe* simplifie la tuyauterie.
 
-### Usage
-
-     const pipe = require('pipe') function add (a, b) { return ba } function sub (a, b) { return b - a } function div (a, b) { return a / b } const add5 = add.bind(null, 5) const sub3 = sub.bind(null, 3) pipe() .use(add5) .use(sub3) .use(div, 4) .process(10, (err, res) => console.log('res: %O', res))
+```javascript
+const pipe = require('pipe')
+function add (a, b) {
+    return b + a
+}
+function sub (a, b) {
+    return b - a
+}
+function div (a, b) {
+    return a / b
+}
+const add5 = add.bind(null, 5)
+const sub3 = sub.bind(null, 3)
+pipe()
+  .use(add5)
+  .use(sub3)
+  .use(div, 4)
+  .process(10, (err, res) => console.log('res: %O', res))
+```
 
 ## *typecheck*
 
 Déterminez le type de script.
 
-### Usage
+```javascript
+const { isString, isNumber, isBoolean, isObject } = require('typecheck')
+const log = require('log')
+log(() => isString("ECMAScript"))
+log(() => isNumber(43.5))
+log(() => isBoolean(false))
+log(() => isObject(function(){}))
+```
 
-     const { isString, isNumber, isBoolean, isObject } = require('typecheck') const log = require('log') log(() => isString("ECMAScript")) log(() => isNumber(43.5)) log(() => isBoolean(false)) log(() => isObject(function(){}))
+## *animate*
 
-undefined
+*animate* permet d'animer l'affichage de la console.
+
+Si le traitement prend beaucoup de temps, il serait bien d'afficher la progression sous forme d'animation sur la console.
+
+```javascript
+const Animate = require('animate')
+const animate = new Animate
+const size = 23
+let counter = 0
+
+const progress = Animate.genProgressIndicator([
+    '|----------|----------|',
+    '|*---------|----------|',
+    '|**--------|----------|',
+    '|***-------|----------|',
+    '|****------|----------|',
+    '|*****-----|----------|',
+    '|******----|----------|',
+    '|*******---|----------|',
+    '|********--|----------|',
+    '|*********-|----------|',
+    '|**********|----------|',
+    '|**********|*---------|',
+    '|**********|**--------|',
+    '|**********|***-------|',
+    '|**********|****------|',
+    '|**********|*****-----|',
+    '|**********|******----|',
+    '|**********|*******---|',
+    '|**********|********--|',
+    '|**********|*********-|',
+    '|**********|**********|',
+])
+
+const indigator = Animate.genProgressIndicator(['   ', '.  ', '.. ', '...'])
+
+animate.register(() => {
+    let prog = counter / size
+    if (prog >= 1) {
+        prog = 1
+        animate.stop()
+    }
+
+    animate.view = console.format(
+        '%S %S %S',
+        progress(Math.ceil(prog * 20)),
+        ('  ' + Math.ceil(prog * 100) + '%').slice(-4),
+        prog < 1 ? 'loading' + indigator(counter) : 'finished!'
+    )
+    counter++
+}, 100, Number.MAX_VALUE)
+animate.run()
+```
+
+### `constructor(complete)`
+
+Exécute la fonction `complete` lorsque toutes les files d'attente sont terminées ou que `stop()` est appelé.
+
+#### `static genProgressIndicator(animation)`
+
+Générez une fonction qui affiche une animation de cyclisme.
+
+#### `register(callback, interval, conditional)`
+
+Traitement des registres. Plusieurs processus peuvent être enregistrés et traités en parallèle. Dans le `callback` , nous demanderons d'arrêter l'animation et d'écrire la vue à afficher. `interval` spécifie l'intervalle de traitement. Si la `conditional` est une fonction, elle exécutera `conditional(count, queue)` et si le résultat est vrai, elle continuera. La `conditional` exécute `decrement(count)` s'il s'agit d'un nombre et continue si le résultat est un nombre positif. S'exécute une seule fois si `conditional` n'est pas défini. Notez que la spécification d'une fonction augmente le `count` , tandis que la spécification d'un nombre diminue le `count` .
+
+#### `stop()`
+
+*animate* .
+
+#### `cancel(queue)`
+
+Suspend le traitement d'une file d'attente spécifique.
+
+#### `run()`
+
+Lancer l'animation.
+
+#### `view`
+
+Spécifie les caractères qui sont imprimés sur la console. Changez de personnage à intervalles réguliers. Attribuez *Arrary* ou *String* à `view` . Une *String* est utile lors de la mise à jour d'une seule animation, et un *Array* est utile lors de l'animation de plusieurs lignes individuellement.
+
+```javascript
+const Animate = require('/lib/animate')
+const animate = new Animate(
+    () => console.log('All Finished!!')
+)
+
+const progress = Animate.genProgressIndicator([
+    '|----------|----------|',
+    '|*---------|----------|',
+    '|**--------|----------|',
+    '|***-------|----------|',
+    '|****------|----------|',
+    '|*****-----|----------|',
+    '|******----|----------|',
+    '|*******---|----------|',
+    '|********--|----------|',
+    '|*********-|----------|',
+    '|**********|----------|',
+    '|**********|*---------|',
+    '|**********|**--------|',
+    '|**********|***-------|',
+    '|**********|****------|',
+    '|**********|*****-----|',
+    '|**********|******----|',
+    '|**********|*******---|',
+    '|**********|********--|',
+    '|**********|*********-|',
+    '|**********|**********|',
+])
+
+const indigator = Animate.genProgressIndicator(['   ', '.  ', '.. ', '...'])
+
+const state = {
+    one: null,
+    two: null,
+    three: null
+}
+
+function upload(name, size, row) {
+    let counter = 0
+    return () => {
+        let prog = counter / size
+        if (prog >= 1) {
+            prog = 1
+            animate.cancel(state[name])
+        }
+
+        animate.view[row] = console.format(
+            '%S %S %S',
+            progress(Math.ceil(prog * 20)),
+            ('  ' + Math.ceil(prog * 100) + '%').slice(-4),
+            prog < 1 ? name + ' loading' + indigator(counter) : name + ' finished! '
+        )
+        counter++
+    }
+}
+
+state.one = animate.register(upload('one', 63, 0), 50, Number.MAX_VALUE)
+state.two = animate.register(upload('two', 49, 1), 60, Number.MAX_VALUE)
+state.three = animate.register(upload('three', 109, 2), 40, Number.MAX_VALUE)
+animate.run()
+```
 
 ## *getMember*
 
 Obtenez le type de membre et la description de *COM Object* à partir de *ProgID* .
 
-### Usage
-
-     const getMember = require('getMember') const FileSystemObject = 'Scripting.FileSystemObject' console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
+```javascript
+const getMember = require('getMember')
+const FileSystemObject = 'Scripting.FileSystemObject'
+console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
+```
 
 ## *zip*
 
 Compresse les fichiers et les dossiers et décompresse les fichiers compressés. En interne, *PowerShell* est appelé et traité.
 
-### Usage
-
-     const {zip, unzip} = require('zip') console.log(zip('docs\\*', 'dox.zip')) console.log(unzip('dox.zip'))
+```javascript
+const {zip, unzip} = require('zip')
+console.log(zip('docs\\*', 'dox.zip'))
+console.log(unzip('dox.zip'))
+```
 
 Un caractère générique `*` peut être écrit dans le `path` de `zip(path, destinationPath)` . Il peut être utilisé à la fois dans *CLI (Command Line Interface)* et dans les *module* .
 
-     wes zip docs\* dox.zip wes zip -p dox.zip
+```bat
+wes zip docs\* dox.zip
+wes zip -p dox.zip
+```
 
 Si le `path` a l'extension `.zip` , `unzip()` est traité et il n'y a pas de description de l'extension `.zip` . Alternativement, même s'il y a une extension `.zip` , s'il y a une description générique `*` , `zip()` sera traité.
 
@@ -244,30 +626,59 @@ Dans *wes* , un bundle de plusieurs modules est appelé un package. Vous pouvez 
 Lors de la publication d'un package sur *github* , *bundle* regroupe les modules requis et crée *bundle.json* .
 
 1.  Un seul package peut être publié dans un *repository*
-
-2.  *package.json* est requis. Au minimum, la description du champ `main` est requise.
-
-         { "main": "index.js" }
-
+2.  *package.json* est requis. Au minimum, la description du champ `main` est requise. ```json
+    {
+        "main": "index.js"
+    }
+    ```
 3.  Rendez le référentiel *public* si vous souhaitez publier le package
-
 4.  À partir de la `version 0.12.0` , les packages avec chargement direct du module dans un répertoire au-dessus du répertoire de travail ne seront pas regroupés. Les packages du répertoire supérieur *wes\_modules* ou *node\_modules* peuvent être regroupés.
 
 Saisissez la commande suivante pour regrouper : Reportez-vous à *package.json* pour savoir quoi regrouper.
 
-     wes bundle
+```bat
+    wes bundle 
+```
 
-undefined
+## *install*
+
+Utilisé pour installer le package pour *wes* publié sur *github* . À partir de la `version 0.10.28` , le dossier d'installation est modifié de `node_modules` à `wes_modules` . Si vous souhaitez installer dans `node_modules` ajoutez l'option `--node` . À partir de la `version 0.12.0` , les fichiers seront décompressés de *bandle.json* et enregistrés. En raison de changements de spécifications, les packages fournis avec une `version 0.12.0` inférieure à 0.12.0 peuvent ne pas être installés correctement avec la `version 0.12.0` ou ultérieure.
+
+Passez les arguments à *install* sous la forme `@author/repository` .
+
+```bat
+wes install @wachaon/fmt
+```
+
+*install* a des options.
+
+| nommé         | nommé court | La description                                                                          |
+| ------------- | ----------- | --------------------------------------------------------------------------------------- |
+| `--bare`      | `-b`        | Ne créez pas de dossiers *@author*                                                      |
+| `--global`    | `-g`        | Installez le package dans le dossier où se trouve *wes.js*                              |
+| `--save`      | `-S`        | Ajouter le nom et la version du package au champ des *dependencies* dans *package.json* |
+| `--save--dev` | `-D`        | Ajouter le nom et la version du package au champ *devDependencies* dans *package.json*  |
+| `--node`      | `-n`        | Installer dans le dossier *node\_module*                                                |
+
+`--bare` peut omettre l'argument `require` de `author@repository` à `repository` . `--global` rend les packages installés disponibles pour tous les scripts.
+
+```bat
+wes install @wachaon/fmt --bare
+```
 
 # Installation de packages à partir de référentiels privés
 
 *install* peut installer non seulement des packages à partir de référentiels *github* publics, mais également des packages à partir de référentiels privés. Dans *install* , spécifiez le package avec *@author/repository* . L'implémentation tente de télécharger l'URL suivante.
 
-     `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
+```javascript
+`https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
+```
 
 Lorsque vous accédez au *raw* du référentiel privé avec un navigateur, le *token* s'affiche, alors copiez le *token* et utilisez-le. Les packages provenant de référentiels privés peuvent également être installés s'ils sont exécutés dans la console pendant que le *token* est valide.
 
-     wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
+```bat
+wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
+```
 
 # Présentation du paquet
 
@@ -279,15 +690,17 @@ Voici quelques packages externes.
 
 ### installer
 
-     wes install @wachaon/fmt
-
-### Usage
+```bat
+wes install @wachaon/fmt
+```
 
 S'il y a *.prettierrc* (format JSON) dans le répertoire de travail, cela sera reflété dans les paramètres. *fmt* est disponible à la fois dans la *CLI* et dans le *module* .
 
 #### Utiliser comme *CLI* .
 
-     wes @wachaon/fmt src/sample --write
+```bat
+wes @wachaon/fmt src/sample --write
+```
 
 | numéro anonyme | La description                                                |
 | -------------- | ------------------------------------------------------------- |
@@ -301,4 +714,10 @@ Remplacez le fichier par le script formaté si `--write` ou l'argument nommé `-
 
 #### utiliser comme module
 
-     const fmt = require('@wachaon/fmt') const { readTextFileSync, writeTextFileSync } = require('filesystem') const { join, workingDirectory } = require('pathname') const target = join(workingDirectory, 'index.js') console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
+```javascript
+const fmt = require('@wachaon/fmt')
+const { readTextFileSync, writeTextFileSync } = require('filesystem')
+const { join, workingDirectory } = require('pathname')
+const target = join(workingDirectory, 'index.js')
+console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
+```

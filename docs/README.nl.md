@@ -1,6 +1,6 @@
 # *WES*
 
-*wes* is een consoleframework voor het uitvoeren van *ECMAScript* op *WSH (Windows Script Host)* . De originele [*japanese*](/README.md) van de *README* zal in het Japans zijn. Andere teksten dan het Japans worden machinaal vertaald.\
+*wes* is een consoleframework voor het uitvoeren van *ECMAScript* op *WSH (Windows Script Host)* . De originele [*japanese*](/README.md) van de *README* zal in het Japans zijn. Andere teksten dan Japans worden machinaal vertaald.\
 Voor teksten in andere talen kunt u een keuze maken uit de onderstaande opties.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
@@ -36,24 +36,32 @@ Voor teksten in andere talen kunt u een keuze maken uit de onderstaande opties.
 
 # downloaden
 
-Wes heeft alleen het *wes* *wes.js* . Om te downloaden, kopieert u *wes.js* van [*@wachaon/wes*](https://github.com/wachaon/wes) of voert u de volgende opdracht uit in de console.
+Wes heeft alleen het *wes* *wes.js* . Om te downloaden, kopieert u *wes.js* van [*@wachaon/wes*](https://github.com/wachaon/wes) of voert u de volgende opdracht uit in uw console.
 
-     bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
+```bat
+bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
+```
 
 *WScript.Shell* *wes* `SendKeys` tijdens runtime als implementatie. Als het pad van de map waarin *wes.js* is opgeslagen andere tekens dan *ascii* bevat, kan `SendKeys` de sleutel niet correct verzenden en kan het script niet worden uitgevoerd.\
 Configureer het pad *wes.js* alleen in *ascii* wordt opgeslagen. Als je *wes* al hebt gedownload, kun je het bijwerken met de volgende opdracht.
 
-     wes update
+```bat
+wes update
+```
 
-# Gebruik
+# hoe te beginnen met *wes*
 
 Voer het `wes` -sleutelwoord in gevolgd door de opdracht die het bestand specificeert dat het startpunt van het programma naar de console zal zijn. De *.js* kan worden weggelaten.
 
-     wes index
+```bat
+wes index
+```
 
-Omdat *wes* is uitgerust met *REP* , kunt u scripts ook rechtstreeks invoeren door alleen `wes` te starten.
+*wes* kan direct scripts invoeren en uitvoeren op de console. Als u het alleen met `wes` start, kunt u het script direct invoeren en uitvoeren.
 
-     wes
+```bat
+wes
+```
 
 *REP* accepteert scriptinvoer totdat u twee lege regels invoert. U kunt ook zien dat *REP* het voorbeeldscript uitvoert in *README.md* .
 
@@ -77,49 +85,136 @@ De opstartopties van *wes* zijn als volgt.
 
 Beheer modules door deze toe te wijzen aan `module.exports` en request `require()` aan te roepen. Andere paden dan absolute paden en relatieve paden die beginnen met `./` en `../` zoeken naar modules in de map *wes\_modules* en handig in de map *node\_modules* . *wes* 's `require()` raadt automatisch de codering van het modulebestand, maar je kunt de codering specificeren met het tweede argument als het niet correct raadt.
 
-     // ./add.js function add (a, b) { return ab } module.exports = add
+```javascript
+// ./add.js
+function add (a, b) {
+    return a + b
+}
+module.exports = add
+```
 
-<!---->
-
-     // ./main.js const add = require('./add') console.log('add(7, 3) // => %O', add(7, 3))
+```javascript
+// ./main.js
+const add = require('./add')
+console.log('add(7, 3) // => %O', add(7, 3))
+```
 
 Het is ook mogelijk om te importeren met *require* voor *COM Object* zoals `require('WScript.Shell')` .
 
-     const Shell = require('Shell.Application') Shell.MinimizeAll() WScript.Sleep(2000) Shell.UndoMinimizeAll()
+```javascript
+const Shell = require('Shell.Application')
+Shell.MinimizeAll()
+WScript.Sleep(2000)
+Shell.UndoMinimizeAll()
+```
 
 ## *es module*
 
-*Chakra* , de scriptuitvoeringsengine, interpreteert syntaxis zoals `imoprt` , maar het kan niet worden uitgevoerd zoals het is omdat de verwerkingsmethode als *cscript* niet is gedefinieerd. In *wes* , door *babel* toe te voegen aan de ingebouwde modules, worden *es module* ook uitgevoerd terwijl ze één voor één worden getranspileerd. Dit kost ons verwerkingskosten en een opgeblazen *wes.js* -bestand. Modules die in de *es module* zijn geschreven, worden ook geconverteerd naar required `require()` door te transpileren, dus het is mogelijk om *COM Object* aan te roepen. Het ondersteunt echter niet het specificeren van de codering van het modulebestand met *es module* . Alles wordt automatisch geladen. Om het als een *es module* te laden, stelt u de extensie in op `.mjs` of stelt u het veld `"type"` in `package.json` in op `"module"` .
+*Chakra* , de scriptuitvoeringsengine, interpreteert syntaxis zoals `imoprt` , maar wordt niet uitgevoerd omdat de verwerking niet gedefinieerd is. In *wes* , door *babel* toe te voegen aan de ingebouwde modules, worden *es module* ook uitgevoerd terwijl ze één voor één worden getranspileerd. Dit gaat gepaard met verwerkingskosten en een opgeblazen *wes.js* -bestand. Modules die in de *es module* zijn geschreven, worden ook geconverteerd naar required `require()` door te transpileren, dus het is mogelijk om *COM Object* aan te roepen. Het ondersteunt echter niet het specificeren van de codering van het modulebestand met *es module* . Alles wordt automatisch geladen. Om het als een *es module* te laden, stelt u de extensie in op `.mjs` of stelt u het veld `"type"` in `package.json` in op `"module"` .
 
-     // ./sub.mjs export default function sub (a, b) { return a - b }
+```javascript
+// ./sub.mjs
+export default function sub (a, b) {
+    return a - b
+}
+```
 
-<!---->
-
-     // ./main2.js import sub from './sub.mjs' console.log('sub(7, 3) // => %O', sub(7, 3))
+```javascript
+// ./main2.js
+import sub from './sub.mjs'
+console.log('sub(7, 3) // => %O', sub(7, 3))
+```
 
 # ingebouwd object
 
 *wes* heeft *built-in objects* niet worden gevonden in *WSH (JScript)* .
 
-undefined
+## *console*
+
+We gebruiken *console* in plaats van *wes* `WScript.Echo()` en `WScript.StdErr.WriteLine()` .
+
+### *console.log*
+
+Voer tekens uit naar de console met `console.log()` . Het ondersteunt ook geformatteerde tekenreeksen. Voert een opgemaakte tekenreeks uit met behulp van de opmaakoperator `%` . (Opmaakoperatoren zijn ook geldig voor andere methoden.)
+
+```javascript
+console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
+```
+
+| Formaatspecificatie | Beschrijving                        |
+| ------------------- | ----------------------------------- |
+| `%s`                | `String(value)`                     |
+| `%S`                | `String(value)`                     |
+| `%c`                | `String(value)`                     |
+| `%C`                | `String(value)`                     |
+| `%d`                | `parseInt(value, 10)`               |
+| `%D`                | `parseInt(value, 10)`               |
+| `%f`                | `Number(value)`                     |
+| `%F`                | `Number(value)`                     |
+| `%j`                | `JSON.stringify(value)`             |
+| `%J`                | `JSON.stringify(value, null, 2)`    |
+| `%o`                | object dump                         |
+| `%O`                | Objectdump (ingesprongen/kleurrijk) |
+
+`WScript.StdOut.WriteLine` *wes* van `WScript.StdErr.WriteLine` om gekleurde tekenreeksen uit te voeren. `WScript.Echo` en `WScript.StdOut.WriteLine` zijn geblokkeerde uitvoer. `WScript.StdErr.WriteLine` of `console.log` .
+
+### *console.print*
+
+`console.log()` bevat normaal gesproken een nieuwe regel aan het eind, maar `console.print` niet.
+
+### *console.debug*
+
+Alleen uitvoer naar de console als de optie `--debug` is ingeschakeld.
+
+### *console.error*
+
+Gooi een uitzondering met de inhoud als bericht.
+
+### *console.weaklog*
+
+Tekenreeksen die zijn afgedrukt met `console.weaklog()` verdwijnen van de console als er een volgende uitvoer is. Handig voor het schakelen van uitgangen.
 
 ## *Buffer*
 
 Je kunt omgaan met buffers.
 
-     const content = 'Hello World' const buff = Buffer.from(content) console.log(`${content} %O`, buff)
+```javascript
+const content = 'Hello World'
+const buff = Buffer.from(content)
+console.log(`${content} %O`, buff)
+```
 
 ## `__dirname` en `__filename`
 
 `__filename` slaat het pad op van het momenteel uitgevoerde modulebestand. `__dirname` bevat de directory van `__filename` .
 
-     console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+```javascript
+console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+```
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
 Aangezien *wes* een uitvoeringsomgeving is voor synchrone verwerking, werkt *setTimeout* *setInterval* *setImmediate* *Promise* niet als asynchrone verwerking, maar wordt het geïmplementeerd om modules te ondersteunen die de implementatie van *Promise* veronderstellen.
 
-     const example = () => { const promise = new Promise((resolve, reject) => { console.log('promise') setTimeout(() => { console.log('setTimeout') resolve('resolved'); }, 2000); }).then((val) => { console.log(val) }); console.log('sub') }; console.log('start') example(); console.log('end')
+```javascript
+const example = () => {
+  const promise = new Promise((resolve, reject) => {
+    console.log('promise')
+
+    setTimeout(() => {
+      console.log('setTimeout') 
+      resolve('resolved');
+    }, 2000);
+  }).then((val) => {
+    console.log(val)
+  });
+  console.log('sub')
+};
+
+console.log('start')
+example();
+console.log('end')
+```
 
 # Ingebouwde module
 
@@ -129,33 +224,60 @@ Aangezien *wes* een uitvoeringsomgeving is voor synchrone verwerking, werkt *set
 
 `ansi` is *ANSI escape code* die standaarduitvoerkleuren en -effecten kan wijzigen. Kleuren en effecten kunnen verschillen, afhankelijk van het type en de instellingen van de gebruikte consoletoepassing.
 
-     const { redBright, yellow } = require('ansi') const message = 'File does not exist' console.log(redBright 'Error: ' yellow message)
+```javascript
+const { redBright, yellow } = require('ansi')
+const message = 'File does not exist'
+console.log(redBright + 'Error: ' + yellow + message)
+```
 
 U kunt ook uw eigen kleuren maken met `ansi.color()` en `ansi.bgColor()` . Argumenten gebruiken *RGB* zoals `255, 165, 0` en *color code* zoals `'#FFA500'` . *color name* zoals `orange` worden niet ondersteund.
 
-     const { color } = require('ansi') const orange = color(255, 165, 0) console.log(orange 'Hello World')
+```javascript
+const { color } = require('ansi')
+const orange = color(255, 165, 0)
+console.log(orange + 'Hello World')
+```
 
 ## *argv*
 
 Krijg opdrachtregelargumenten. De opdrachtregelargumenten van `cscript.exe` declareren benoemde argumenten met `/` , terwijl *wes* benoemde argumenten declareren met `-` en `--` . *argv.unnamed* en *argv.named* het waardetype van het opdrachtregelargument naar *String* *Number* *Boolean* . Voer opdrachtregelargumenten in met *REP* .
 
-     wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
+```bat
+wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
+```
 
 Voer het volgende script uit op *REP* .
 
-     const argv = require('argv') console.log(`argv: %O argv.unnamed: %O argv.named: %O`, argv, argv.unnamed, argv.named)
+```javascript
+const argv = require('argv')
+console.log(`argv: %O
+argv.unnamed: %O
+argv.named: %O`,
+argv, argv.unnamed, argv.named)
+```
 
 ## *pathname*
 
-Manipuleer paden. Paden die beginnen met `/` en `\` zijn over het algemeen relatief ten opzichte van de stationsroot. Bijvoorbeeld `/filename` en `C:/filename` kunnen hetzelfde pad zijn. Om veiligheidsredenen interpreteert *wes* paden die beginnen met `/` en `\` relatief aan de werkdirectory.
+Paden manipuleren. Paden die beginnen met `/` en `\` zijn over het algemeen relatief ten opzichte van de hoofdmap van de schijf. Bijvoorbeeld `/filename` en `C:/filename` kunnen hetzelfde pad zijn. Om veiligheidsredenen interpreteert *wes* paden die beginnen met `/` en `\` ten opzichte van de werkdirectory.
 
-     const path = require('pathname') const file = path.resolve(__dirname, 'index.js') console.log('file %O', file)
+```javascript
+const path = require('pathname')
+const file = path.resolve(__dirname, 'index.js')
+console.log('file %O', file)
+```
 
 ## *filesystem*
 
 Manipuleer bestanden en mappen. `readTextFileSync()` raadt automatisch de codering van het bestand en leest het. (Zelfs als het tweede argument van `readFileSync()` is `encode` op `auto` , wordt het automatisch geraden.)
 
-     const fs = require('filesystem') const path = require('pathname') const readme = path.resolve(__dirname, 'README.md') const contents = fs.readTextFileSync(readme) // const contents = fs.readFileSync(readme, 'auto') console.log(contents)
+```javascript
+const fs = require('filesystem')
+const path = require('pathname')
+const readme = path.resolve(__dirname, 'README.md')
+const contents = fs.readTextFileSync(readme)
+// const contents = fs.readFileSync(readme, 'auto')
+console.log(contents)
+```
 
 ## *chardet*
 
@@ -163,65 +285,325 @@ Ik gebruik enkele functies van <https://github.com/runk/node-chardet> . U kunt d
 
 ## *JScript*
 
-Als u de scriptengine wijzigt in *Chakra* , kunt u geen *JScript* -specifieke *Enumerator* , enz. gebruiken. De ingebouwde module *JScript* stelt ze beschikbaar. *Enumerator* retourneert echter een *Array* , geen *Enumerator object* .
+Als u de script-engine wijzigt in *Chakra* , kunt u geen *JScript* -specifieke *Enumerator* gebruiken, enz. De ingebouwde module *JScript* maakt ze beschikbaar. *Enumerator* retourneert echter een *Array* en geen *Enumerator object* .
 
-     const { Enumerator, ActiveXObject } = require('JScript') const FSO = new ActiveXObject('Scripting.FileSystemObject') const dir = FSO.getFolder(__dirname).Files const files = new Enumerator(dir) files.forEach(file => console.log(file.Name))
+```javascript
+const { Enumerator, ActiveXObject } = require('JScript')
+const FSO = new ActiveXObject('Scripting.FileSystemObject')
+const dir = FSO.getFolder(__dirname).Files
+const files = new Enumerator(dir)
+files.forEach(file => console.log(file.Name))
+```
 
 *GetObject* werkt als een alternatief voor `WScript.GetObject` .
 
-     const { GetObject, Enumerator } = require('JScript') const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service") new Enumerator(ServiceSet).forEach(service => console.log( 'Name: %O\nDescription: %O\n', service.Name, service.Description ))
+```javascript
+const { GetObject, Enumerator } = require('JScript')
+const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service")
+new Enumerator(ServiceSet).forEach(service => console.log(
+    'Name: %O\nDescription: %O\n',
+    service.Name,
+    service.Description
+))
+```
 
 ## *VBScript*
 
 *VBScript* biedt enkele functies die *JScript* niet biedt.
 
-     const { TypeName } = require('VBScript') const FSO = require('Scripting.FileSystemObject') console.log(TypeName(FSO))
+```javascript
+const { TypeName } = require('VBScript')
+const FSO = require('Scripting.FileSystemObject')
+console.log(TypeName(FSO))
+```
 
 ## *httprequest*
 
 *httprequest* geeft een *http request* uit.
 
-     const request = require('httprequest') const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1') console.log('%O', JSON.parse(content))
+```javascript
+const request = require('httprequest')
+const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
+console.log('%O', JSON.parse(content))
+```
 
-undefined
+## *minitest*
+
+*minitest* kan eenvoudige toetsen schrijven. Vanaf versie `0.10.71` zijn we teruggegaan naar het basisconcept en hebben we de soorten beweringen teruggebracht tot 3 soorten.
+
+Groepeer met `describe` , test `it` en verifieer met `assert` . `pass` zal een array zijn van het aantal keren dat `it` voorkomt en het aantal passes.
+
+```javascript
+const { describe, it, assert, pass } = require('minitest')
+describe('minitest', () => {
+    describe('add', () => {
+        const add = (a, b) => a + b
+        it('2 plus 3 is 5', () => {
+            assert.equal(5, add(2, 3))
+        })
+        it('0 plus 0 is 0', () => {
+            assert(0 === add(0, 0))
+        })
+        it('"4" plus "5" is 9', () => {
+            assert.equal(9, add("4", "5"))
+        })
+        it('NaN plus 3 is NaN', () => {
+            assert.equal(NaN, add(NaN, 3))
+        })
+    })
+    describe('sub', () => {
+        it('5 minus 4 is 1', () => {
+            const sub = (a, b) => a - b
+            assert.equal(1, sub(5, 4))
+        })
+    })
+})
+console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
+```
+
+### beweringen
+
+#### `assert(value, message)` `assert.ok(value, message)`
+
+Vergelijk met `true` met de operator voor strikte gelijkheid `===` . Als `value` een functie is, evalueer dan het resultaat van het uitvoeren van de functie.
+
+| Param     | Type                  | Beschrijving                     |
+| :-------- | :-------------------- | :------------------------------- |
+| `value`   | `{Function\|Boolean}` | boolean of boolean-retourfunctie |
+| `message` | `{String}`            | bericht in geval van storing     |
+
+#### `assert.equal(expected, actual)`
+
+Vergelijkt objecten voor gelijkheid van leden, niet door verwijzing.\
+NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` of `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` enz.\
+Bij het vergelijken van klassen (objecten) moeten ze dezelfde constructor of een superklasse hebben waarvan de `actual` wordt `expected` .
+
+| Param      | Type    | Beschrijving      |
+| :--------- | :------ | :---------------- |
+| `expected` | `{Any}` | verwachte waarde  |
+| `actual`   | `{Any}` | Werkelijke waarde |
+
+#### `assert.throws(value, expected, message)`
+
+Controleer of fouten correct worden gegenereerd.\
+Of de fout al dan niet correct is, wordt bepaald door of de verwachte *constructor* , het *message* gelijk is en de reguliere expressie de *stack* doorstaat.
+
+| Param      | Type                      | Beschrijving                                                                            |
+| :--------- | :------------------------ | :-------------------------------------------------------------------------------------- |
+| `value`    | `{Error}`                 | fout                                                                                    |
+| `expected` | `{Error\|String\|RegExp}` | Een reguliere expressie die de verwachte *constructor* , *message* of *stack* evalueert |
+| `message`  | `{String}`                | bericht in geval van storing                                                            |
 
 ## *pipe*
 
-*pipe* vereenvoudigt pijpen.
+*pipe* vereenvoudigt piping.
 
-### Gebruik
-
-     const pipe = require('pipe') function add (a, b) { return ba } function sub (a, b) { return b - a } function div (a, b) { return a / b } const add5 = add.bind(null, 5) const sub3 = sub.bind(null, 3) pipe() .use(add5) .use(sub3) .use(div, 4) .process(10, (err, res) => console.log('res: %O', res))
+```javascript
+const pipe = require('pipe')
+function add (a, b) {
+    return b + a
+}
+function sub (a, b) {
+    return b - a
+}
+function div (a, b) {
+    return a / b
+}
+const add5 = add.bind(null, 5)
+const sub3 = sub.bind(null, 3)
+pipe()
+  .use(add5)
+  .use(sub3)
+  .use(div, 4)
+  .process(10, (err, res) => console.log('res: %O', res))
+```
 
 ## *typecheck*
 
 Bepaal het scripttype.
 
-### Gebruik
+```javascript
+const { isString, isNumber, isBoolean, isObject } = require('typecheck')
+const log = require('log')
+log(() => isString("ECMAScript"))
+log(() => isNumber(43.5))
+log(() => isBoolean(false))
+log(() => isObject(function(){}))
+```
 
-     const { isString, isNumber, isBoolean, isObject } = require('typecheck') const log = require('log') log(() => isString("ECMAScript")) log(() => isNumber(43.5)) log(() => isBoolean(false)) log(() => isObject(function(){}))
+## *animate*
 
-undefined
+*animate* helpt bij het animeren van de weergave van de console.
+
+Als de verwerking lang duurt, zou het leuk zijn om de voortgang als animatie op de console weer te geven.
+
+```javascript
+const Animate = require('animate')
+const animate = new Animate
+const size = 23
+let counter = 0
+
+const progress = Animate.genProgressIndicator([
+    '|----------|----------|',
+    '|*---------|----------|',
+    '|**--------|----------|',
+    '|***-------|----------|',
+    '|****------|----------|',
+    '|*****-----|----------|',
+    '|******----|----------|',
+    '|*******---|----------|',
+    '|********--|----------|',
+    '|*********-|----------|',
+    '|**********|----------|',
+    '|**********|*---------|',
+    '|**********|**--------|',
+    '|**********|***-------|',
+    '|**********|****------|',
+    '|**********|*****-----|',
+    '|**********|******----|',
+    '|**********|*******---|',
+    '|**********|********--|',
+    '|**********|*********-|',
+    '|**********|**********|',
+])
+
+const indigator = Animate.genProgressIndicator(['   ', '.  ', '.. ', '...'])
+
+animate.register(() => {
+    let prog = counter / size
+    if (prog >= 1) {
+        prog = 1
+        animate.stop()
+    }
+
+    animate.view = console.format(
+        '%S %S %S',
+        progress(Math.ceil(prog * 20)),
+        ('  ' + Math.ceil(prog * 100) + '%').slice(-4),
+        prog < 1 ? 'loading' + indigator(counter) : 'finished!'
+    )
+    counter++
+}, 100, Number.MAX_VALUE)
+animate.run()
+```
+
+### `constructor(complete)`
+
+Voert de `complete` functie uit wanneer alle wachtrijen zijn voltooid of `stop()` wordt aangeroepen.
+
+#### `static genProgressIndicator(animation)`
+
+Genereer een functie die een fietsanimatie weergeeft.
+
+#### `register(callback, interval, conditional)`
+
+Verwerking registreren. Meerdere processen kunnen parallel worden geregistreerd en verwerkt. In de `callback` zullen we instrueren om de animatie te stoppen en de weergave te schrijven die moet worden weergegeven. `interval` specificeert het verwerkingsinterval. Als de `conditional` een functie is, zal deze `conditional(count, queue)` en als het resultaat waar is, zal het doorgaan. De `conditional` voert `decrement(count)` uit als het een getal is en gaat door als het resultaat een positief getal is. Wordt slechts één keer uitgevoerd als `conditional` niet gedefinieerd is. Merk op dat het specificeren van een functie de `count` verhoogt, terwijl het specificeren van een getal de `count` verlaagt.
+
+#### `stop()`
+
+*animate* .
+
+#### `cancel(queue)`
+
+Onderbreekt de verwerking van een specifieke wachtrij.
+
+#### `run()`
+
+Animatie starten.
+
+#### `view`
+
+Specificeert de tekens die naar de console worden afgedrukt. Wissel regelmatig van karakter. Wijs *Arrary* of *String* toe om te `view` . Een *String* is handig bij het bijwerken van een enkele animatie en een *Array* is handig bij het afzonderlijk animeren van meerdere rijen.
+
+```javascript
+const Animate = require('/lib/animate')
+const animate = new Animate(
+    () => console.log('All Finished!!')
+)
+
+const progress = Animate.genProgressIndicator([
+    '|----------|----------|',
+    '|*---------|----------|',
+    '|**--------|----------|',
+    '|***-------|----------|',
+    '|****------|----------|',
+    '|*****-----|----------|',
+    '|******----|----------|',
+    '|*******---|----------|',
+    '|********--|----------|',
+    '|*********-|----------|',
+    '|**********|----------|',
+    '|**********|*---------|',
+    '|**********|**--------|',
+    '|**********|***-------|',
+    '|**********|****------|',
+    '|**********|*****-----|',
+    '|**********|******----|',
+    '|**********|*******---|',
+    '|**********|********--|',
+    '|**********|*********-|',
+    '|**********|**********|',
+])
+
+const indigator = Animate.genProgressIndicator(['   ', '.  ', '.. ', '...'])
+
+const state = {
+    one: null,
+    two: null,
+    three: null
+}
+
+function upload(name, size, row) {
+    let counter = 0
+    return () => {
+        let prog = counter / size
+        if (prog >= 1) {
+            prog = 1
+            animate.cancel(state[name])
+        }
+
+        animate.view[row] = console.format(
+            '%S %S %S',
+            progress(Math.ceil(prog * 20)),
+            ('  ' + Math.ceil(prog * 100) + '%').slice(-4),
+            prog < 1 ? name + ' loading' + indigator(counter) : name + ' finished! '
+        )
+        counter++
+    }
+}
+
+state.one = animate.register(upload('one', 63, 0), 50, Number.MAX_VALUE)
+state.two = animate.register(upload('two', 49, 1), 60, Number.MAX_VALUE)
+state.three = animate.register(upload('three', 109, 2), 40, Number.MAX_VALUE)
+animate.run()
+```
 
 ## *getMember*
 
-Haal het lidtype en de beschrijving van het *COM Object* op van *ProgID* .
+Lidtype en beschrijving van *COM Object* ophalen uit *ProgID* .
 
-### Gebruik
-
-     const getMember = require('getMember') const FileSystemObject = 'Scripting.FileSystemObject' console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
+```javascript
+const getMember = require('getMember')
+const FileSystemObject = 'Scripting.FileSystemObject'
+console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
+```
 
 ## *zip*
 
 Comprimeert bestanden en mappen en decomprimeert gecomprimeerde bestanden. Intern wordt *PowerShell* aangeroepen en verwerkt.
 
-### Gebruik
-
-     const {zip, unzip} = require('zip') console.log(zip('docs\\*', 'dox.zip')) console.log(unzip('dox.zip'))
+```javascript
+const {zip, unzip} = require('zip')
+console.log(zip('docs\\*', 'dox.zip'))
+console.log(unzip('dox.zip'))
+```
 
 Een wildcard `*` kan worden geschreven in het `path` van `zip(path, destinationPath)` . Het kan worden gebruikt in zowel *CLI (Command Line Interface)* als *module* .
 
-     wes zip docs\* dox.zip wes zip -p dox.zip
+```bat
+wes zip docs\* dox.zip
+wes zip -p dox.zip
+```
 
 Als het `path` de extensie `.zip` heeft, wordt `unzip()` verwerkt en is er geen beschrijving van de extensie `.zip` . Als alternatief, zelfs als er een extensie `.zip` is, als er een wildcard `*` beschrijving is, wordt `zip()` verwerkt.
 
@@ -244,30 +626,59 @@ In *wes* wordt een bundel van meerdere modules een pakket genoemd. U kunt het pa
 Bij het publiceren van een pakket naar *github* , *bundle* bundel de vereiste modules en maakt *bundle.json* .
 
 1.  Er kan slechts één pakket in één *repository* worden gepubliceerd
-
-2.  *package.json* is vereist. De beschrijving van het `main` is minimaal vereist.
-
-         { "main": "index.js" }
-
+2.  *package.json* is vereist. De beschrijving van het `main` is minimaal vereist. ```json
+    {
+        "main": "index.js"
+    }
+    ```
 3.  Maak de repository *public* als u het pakket wilt publiceren
-
-4.  Vanaf `version 0.12.0` worden pakketten met een directe module die in een map boven de werkmap wordt geladen, niet gebundeld. Pakketten in de bovenste directory *wes\_modules* of *node\_modules* kunnen worden gebundeld.
+4.  Vanaf `version 0.12.0` worden pakketten met het direct laden van de module in een map boven de werkmap niet gebundeld. Pakketten in de bovenste directory *wes\_modules* of *node\_modules* kunnen worden gebundeld.
 
 Voer de volgende opdracht in om te bundelen: Raadpleeg *package.json* voor wat u moet bundelen.
 
-     wes bundle
+```bat
+    wes bundle 
+```
 
-undefined
+## *install*
+
+Gebruikt om het pakket te installeren voor *wes* gepubliceerd op *github* . Vanaf `version 0.10.28` is de installatiemap gewijzigd van `node_modules` in `wes_modules` . Als je in `node_modules` wilt installeren, voeg dan de optie `--node` toe. Vanaf `version 0.12.0` worden bestanden uit *bandle.json* uitgepakt en opgeslagen. Als gevolg van specificatiewijzigingen kunnen pakketten die zijn gebundeld met `version 0.12.0` lager dan 0.12.0 mogelijk niet correct worden geïnstalleerd met `version 0.12.0` of later.
+
+Geef argumenten door om te *install* in de vorm `@author/repository` .
+
+```bat
+wes install @wachaon/fmt
+```
+
+*install* heeft opties.
+
+| genaamd       | korte naam | Beschrijving                                                                    |
+| ------------- | ---------- | ------------------------------------------------------------------------------- |
+| `--bare`      | `-b`       | Maak geen *@author* mappen                                                      |
+| `--global`    | `-g`       | Installeer het pakket in de map waar *wes.js* zich bevindt                      |
+| `--save`      | `-S`       | Voeg pakketnaam en -versie toe aan het *dependencies* in *package.json*         |
+| `--save--dev` | `-D`       | Voeg pakketnaam en -versie toe aan het veld *devDependencies* in *package.json* |
+| `--node`      | `-n`       | Installeer in de map *node\_module*                                             |
+
+`--bare` kan het argument `require` weglaten van `author@repository` naar `repository` . `--global` maakt geïnstalleerde pakketten beschikbaar voor alle scripts.
+
+```bat
+wes install @wachaon/fmt --bare
+```
 
 # Pakketten installeren vanuit privé-repository's
 
 *install* kan niet alleen pakketten van openbare *github* repositories installeren, maar ook pakketten van private repositories. Geef in *install* het pakket op met *@author/repository* . De implementatie probeert de volgende url te downloaden.
 
-     `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
+```javascript
+`https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
+```
 
-Als u de private repository *raw* met een browser, wordt het *token* weergegeven, dus kopieer het *token* en gebruik het. U kunt ook pakketten installeren vanuit privérepository's door het in de console uit te voeren terwijl het *token* geldig is.
+Wanneer u de *raw* versie van de privérepository opent met een browser, wordt het *token* weergegeven, dus kopieer het *token* en gebruik het. Pakketten uit privé-repositories kunnen ook worden geïnstalleerd als ze in de console worden uitgevoerd terwijl het *token* geldig is.
 
-     wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
+```bat
+wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
+```
 
 # Pakket introductie:
 
@@ -279,15 +690,17 @@ Hier zijn enkele externe pakketten.
 
 ### installeren
 
-     wes install @wachaon/fmt
-
-### Gebruik
+```bat
+wes install @wachaon/fmt
+```
 
 Als er *.prettierrc* (JSON-indeling) in de werkmap staat, wordt dit weergegeven in de instellingen. *fmt* is beschikbaar in zowel *CLI* als *module* .
 
 #### Gebruik als *CLI* .
 
-     wes @wachaon/fmt src/sample --write
+```bat
+wes @wachaon/fmt src/sample --write
+```
 
 | naamloos nummer | Beschrijving                                              |
 | --------------- | --------------------------------------------------------- |
@@ -301,4 +714,10 @@ Overschrijf het bestand met het opgemaakte script als `--write` of het `-w` beno
 
 #### gebruik als een module
 
-     const fmt = require('@wachaon/fmt') const { readTextFileSync, writeTextFileSync } = require('filesystem') const { join, workingDirectory } = require('pathname') const target = join(workingDirectory, 'index.js') console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
+```javascript
+const fmt = require('@wachaon/fmt')
+const { readTextFileSync, writeTextFileSync } = require('filesystem')
+const { join, workingDirectory } = require('pathname')
+const target = join(workingDirectory, 'index.js')
+console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
+```
