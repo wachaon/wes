@@ -54,7 +54,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 wes update
 ```
 
-# 使い方
+# *wes* の起動方法
 
 `wes` のキーワードに続きプログラムの起点となるファイルを指定したコマンドをコンソールへ入力します。
 スクリプトの拡張子 *.js* は省略できます。
@@ -63,8 +63,8 @@ wes update
 wes index
 ```
 
-また、*wes* には *REP* が備わっているので、`wes` のみで起動させると、
-スクリプトを直接入力できます。
+*wes* にはコンソール上でスクリプトの直接入力と実行ができます。`wes` のみで起動させると、
+スクリプトを直接入力、実行できます。
 
 ```bat
 wes
@@ -122,8 +122,8 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-スクリプトの実行エンジンである *Chakra* は `imoprt` などの構文を解釈しますが *cscript* としての処理方法が定義されていないのか、そのままでは実行できません。
-*wes* では *babel* をビルトインモジュールに加えることで、*es module* に対しても逐次トランスパイルしながら実行しています。そのためコストとして処理のオーバーヘッドと *wes.js* ファイルが肥大化しています。
+スクリプトの実行エンジンである *Chakra* は `imoprt` などの構文を解釈しますが、処理が未定義なのか実行されません。
+*wes* では *babel* をビルトインモジュールに加えることで、*es module* に対しても逐次トランスパイルしながら実行しています。そのためコストとして処理のオーバーヘッドと *wes.js* ファイルが肥大化してしまいます。
 *es module* で記述されているモジュールもトランスパイルで `require()` に変換されるため、*COM Object* の呼び出しも可能です。
 しかしながら *es module* でのモジュールファイルのエンコード指定には対応していません。全て自動推測で読み込まれます。
 *es module* として読み込ませるには拡張子を `.mjs` にするか `package.json` の `"type"` フィールドを `"module"` にしてください。
@@ -369,8 +369,6 @@ console.log('%O', JSON.parse(content))
 *minitest* は簡易的なテストを記述できます。
 version `0.10.71` から基本コンセプトに立ち返って、アサーションの種類を３種類に減らしました。
 
-### 使い方
-
 `describe` でグループに分け、`it` でテストを記述し、`assert` で検証します。
 `pass` は `it` の出現回数と合格数の配列になります。
 
@@ -440,8 +438,6 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 *pipe* はパイプ処理を簡素化します。
 
-### 使い方
-
 ```javascript
 const pipe = require('pipe')
 function add (a, b) {
@@ -466,8 +462,6 @@ pipe()
 
 スクリプトの型の判定をします。
 
-### 使い方
-
 ```javascript
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
 const log = require('log')
@@ -480,8 +474,6 @@ log(() => isObject(function(){}))
 ## *animate*
 
 *animate* はコンソールの表示をアニメーションさせる手助けをします。
-
-### 使い方
 
 処理に時間が掛かる場合は進捗度合をコンソールにアニメーションとして表示させた方が親切です。
 
@@ -640,8 +632,6 @@ animate.run()
 
 *ProgID* から *COM Object* のメンバーの種類と説明を取得します。
 
-### 使い方
-
 ```javascript
 const getMember = require('getMember')
 const FileSystemObject = 'Scripting.FileSystemObject'
@@ -652,8 +642,6 @@ console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObje
 
 ファイルやフォルダの圧縮と圧縮ファイルの解凍をします。
 内部で *PowerShell* 呼び出して処理をしています。
-
-### 使い方
 
 ```javascript
 const {zip, unzip} = require('zip')
@@ -715,8 +703,6 @@ wes zip -p dox.zip
 `node_modules` にインストールする場合は、`--node` オプションを追加してください。
 `version 0.12.0` からファイルを *bandle.json* から解凍して保存するようになります。仕様変更の為 `version 0.12.0` 未満でバンドルされたパッケージは `version 0.12.0` 以降では正しくインストールされない場合があります。
 
-### 使い方
-
 *install* には `@author/repository` という書式で引数を渡します。
 
 ```bat
@@ -773,8 +759,6 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```bat
 wes install @wachaon/fmt
 ```
-
-### 使い方
 
 ワーキングディレクトリに *.prettierrc* (JSON フォーマット) があれば設定に反映させます。
 *fmt* は *CLI* と *module* の両方で使用できます。
