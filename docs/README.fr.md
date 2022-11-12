@@ -1,7 +1,7 @@
 # *WES*
 
 *wes* est un framework de console pour exécuter *ECMAScript* sur *WSH (Windows Script Host)* . Le [*japanese*](/README.md) original du *README* sera en japonais. Les textes autres que le japonais seront traduits automatiquement.\
-Pour les textes dans d'autres langues, veuillez sélectionner l'une des options ci-dessous.
+Pour les textes dans d'autres langues, veuillez sélectionner parmi les options ci-dessous.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -36,7 +36,7 @@ Pour les textes dans d'autres langues, veuillez sélectionner l'une des options 
 
 # Télécharger
 
-Wes n'a besoin que du *wes* *wes.js* . Pour télécharger, copiez *wes.js* depuis [*@wachaon/wes*](https://github.com/wachaon/wes) ou exécutez la commande suivante dans votre console.
+Wes n'a besoin que du *wes* *wes.js* . Pour télécharger, copiez *wes.js* depuis [*@wachaon/wes*](https://github.com/wachaon/wes) ou exécutez la commande suivante dans la console.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -51,7 +51,7 @@ wes update
 
 # comment commencer *wes*
 
-Entrez le mot-clé `wes` suivi de la commande spécifiant le fichier qui sera le point de départ du programme vers la console. L'extension de script *.js* peut être omise.
+Entrez le mot-clé `wes` et la commande spécifiant le fichier qui sera le point de départ du programme vers la console. L'extension de script *.js* peut être omise.
 
 ```bat
 wes index
@@ -614,7 +614,7 @@ Si le `path` a l'extension `.zip` , `unzip()` est traité et il n'y a pas de des
 
 | nommé    | nommé court | La description                              |
 | -------- | ----------- | ------------------------------------------- |
-| `--path` | `-p`        | `path` ou fichier à entrer                  |
+| `--path` | `-p`        | `path` ou fichier à saisir                  |
 | `--dest` | `-d`        | fichier de dossier vers la `dest` de sortie |
 
 # Regroupement (conditionnement) et installation de modules
@@ -686,7 +686,7 @@ Voici quelques packages externes.
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* est *prettier* emballé pour *wes* pour formater les scripts. De même, si une *Syntax Error* se produit lors *@wachaon/fmt* , vous pouvez indiquer l'emplacement de l'erreur.
+*@wachaon/fmt* est *prettier* emballé pour *wes* pour formater les scripts. De plus, si une *Syntax Error* se produit lors *@wachaon/fmt* , vous pouvez afficher l'emplacement de l'erreur.
 
 ### installer
 

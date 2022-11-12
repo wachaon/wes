@@ -42,7 +42,7 @@
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-*WScript.Shell* একটি বাস্তবায়ন হিসাবে রানটাইমে `SendKeys` *wes* SendKeys ব্যবহার করে। যদি ডিরেক্টরির পাথ যেখানে *wes.js* সংরক্ষিত হয় সেখানে *ascii* ব্যতীত অন্য অক্ষর থাকে, `SendKeys` সঠিকভাবে কী পাঠাতে পারে না এবং স্ক্রিপ্টটি চালানো যাবে না।\
+*WScript.Shell* একটি বাস্তবায়ন হিসাবে রানটাইমে `SendKeys` *wes* SendKeys ব্যবহার করে। যদি ডিরেক্টরির পাথ যেখানে *wes.js* সংরক্ষিত হয় সেখানে *ascii* ছাড়া অন্য অক্ষর থাকে, `SendKeys` সঠিকভাবে কী পাঠাতে পারে না এবং স্ক্রিপ্টটি চালানো যাবে না।\
 পাথ কনফিগার করুন *wes.js* শুধুমাত্র *ascii* তে সংরক্ষণ করা হয়। আপনি যদি ইতিমধ্যে *wes* ডাউনলোড করে থাকেন তবে আপনি নিম্নলিখিত কমান্ডের মাধ্যমে এটি আপডেট করতে পারেন।
 
 ```bat
@@ -331,7 +331,7 @@ console.log('%O', JSON.parse(content))
 
 *minitest* সহজ পরীক্ষা লিখতে পারে। সংস্করণ `0.10.71` থেকে, আমরা মূল ধারণায় ফিরে গিয়েছিলাম এবং দাবির ধরনগুলিকে 3 প্রকারে কমিয়েছি।
 
-`describe` সহ গ্রুপ করুন, `it` সাথে পরীক্ষা করুন এবং `assert` দিয়ে যাচাই করুন। `pass` `it` সংঘটনের সংখ্যা এবং পাসের সংখ্যার একটি অ্যারে হবে।
+`describe` সহ গোষ্ঠী করুন, `it` দিয়ে পরীক্ষা করুন এবং `assert` দিয়ে যাচাই করুন। `pass` `it` সংঘটনের সংখ্যা এবং পাসের সংখ্যার একটি অ্যারে হবে।
 
 ```javascript
 const { describe, it, assert, pass } = require('minitest')
@@ -392,7 +392,7 @@ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegEx
 | :--------- | :------------------------ | :---------------------------------------------------------------------------------------------- |
 | `value`    | `{Error}`                 | ত্রুটি                                                                                          |
 | `expected` | `{Error\|String\|RegExp}` | একটি নিয়মিত অভিব্যক্তি যা প্রত্যাশিত ত্রুটি *constructor* , *message* বা *stack* মূল্যায়ন করে |
-| `message`  | `{String}`                | ব্যর্থতার বার্তা                                                                                |
+| `message`  | `{String}`                | ব্যর্থতার ক্ষেত্রে বার্তা                                                                       |
 
 ## *pipe*
 
@@ -674,7 +674,7 @@ wes install @wachaon/fmt --bare
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-আপনি যদি ব্রাউজার দিয়ে ব্যক্তিগত সংগ্রহস্থল *raw* অ্যাক্সেস করেন, *token* প্রদর্শিত হবে, তাই *token* অনুলিপি করুন এবং এটি ব্যবহার করুন। *token* বৈধ থাকাকালীন আপনি কনসোলে এটি চালিয়ে ব্যক্তিগত সংগ্রহস্থল থেকে প্যাকেজগুলি ইনস্টল করতে পারেন।
+আপনি যখন ব্রাউজার দিয়ে ব্যক্তিগত সংগ্রহস্থলের *raw* অ্যাক্সেস করেন, *token* প্রদর্শিত হবে, তাই *token* অনুলিপি করুন এবং এটি ব্যবহার করুন। *token* বৈধ থাকাকালীন কনসোলে কার্যকর করা হলে ব্যক্তিগত সংগ্রহস্থল থেকে প্যাকেজগুলিও ইনস্টল করা যেতে পারে।
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
@@ -686,7 +686,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* স্ক্রিপ্ট ফর্ম্যাট করার জন্য *prettier* এর জন্য *wes* প্যাকেজ। এছাড়াও, যদি *@wachaon/fmt* ইনস্টল করার সময় একটি *Syntax Error* ঘটে, আপনি ত্রুটিটির অবস্থান নির্দেশ করতে পারেন।
+*@wachaon/fmt* স্ক্রিপ্ট ফর্ম্যাট করার জন্য *prettier* এর জন্য *wes* প্যাকেজ। এছাড়াও, যদি *@wachaon/fmt* ইনস্টল করার সময় একটি *Syntax Error* ঘটে, আপনি ত্রুটির অবস্থান দেখাতে পারেন।
 
 ### ইনস্টল
 
@@ -694,7 +694,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 wes install @wachaon/fmt
 ```
 
-যদি ওয়ার্কিং ডিরেক্টরিতে *.prettierrc* (JSON ফরম্যাট) থাকে তবে সেটি সেটিংসে প্রতিফলিত হবে। *fmt* *CLI* এবং *module* উভয়েই উপলব্ধ।
+কাজের ডিরেক্টরিতে *.prettierrc* (JSON ফরম্যাট) থাকলে সেটি সেটিংসে প্রতিফলিত হবে। *fmt* *CLI* এবং *module* উভয়েই উপলব্ধ।
 
 #### *CLI* হিসাবে ব্যবহার করুন।
 

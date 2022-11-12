@@ -1,6 +1,6 @@
 # *WES*
 
-*wes* é uma estrutura de console para executar *ECMAScript* em *WSH (Windows Script Host)* . O [*japanese*](/README.md) original do *README* estará em japonês. Textos diferentes do japonês serão traduzidos automaticamente.\
+*wes* é uma estrutura de console para executar o *ECMAScript* no *WSH (Windows Script Host)* . O [*japanese*](/README.md) original do *README* será em japonês. Textos diferentes do japonês serão traduzidos automaticamente.\
 Para textos em outros idiomas, selecione uma das opções abaixo.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
@@ -24,7 +24,7 @@ Para textos em outros idiomas, selecione uma das opções abaixo.
 *   Como o *cscript.exe* de 32 bits é sempre executado, não há nenhum problema exclusivo no ambiente de 64 bits.
 *   Como existe um sistema de módulos, ele pode ser desenvolvido de forma mais eficiente que o *WSH* convencional
 *   Módulos integrados suportam processamento básico, como entrada/saída de arquivo e saída de texto colorido para o console
-*   Você pode deixar a leitura do arquivo adivinhar automaticamente a codificação, para que você não precise se preocupar com a codificação, etc.
+*   Você pode permitir que a leitura do arquivo adivinhe automaticamente a codificação, para que você não precise se preocupar com a codificação, etc.
 *   Módulos de pacote para dar suporte à publicação e recuperação externas
 *   Exiba os detalhes do erro com mais gentileza do que *WSH*
 
@@ -51,7 +51,7 @@ wes update
 
 # como começar *wes*
 
-Digite a palavra-chave `wes` e o comando especificando o arquivo que será o ponto de partida do programa para o console. A extensão de script *.js* pode ser omitida.
+Digite a palavra-chave `wes` seguida do comando especificando o arquivo que será o ponto de partida do programa para o console. A extensão de script *.js* pode ser omitida.
 
 ```bat
 wes index
@@ -127,7 +127,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 
 # objeto embutido
 
-*wes* possui *built-in objects* internos não encontrados em *WSH (JScript)* .
+*wes* tem *built-in objects* internos não encontrados no *WSH (JScript)* .
 
 ## *console*
 
@@ -329,7 +329,7 @@ console.log('%O', JSON.parse(content))
 
 ## *minitest*
 
-*minitest* pode escrever testes simples. A partir da versão `0.10.71` , voltamos ao conceito básico e reduzimos os tipos de asserções para 3 tipos.
+*minitest* pode escrever testes simples. A partir da versão `0.10.71` , voltamos ao conceito básico e reduzimos os tipos de assertivas para 3 tipos.
 
 Agrupe com `describe` , teste com `it` e verifique com `assert` . `pass` será um array do número de ocorrências `it` e o número de passes.
 
@@ -374,9 +374,9 @@ Compare com `true` com o operador de igualdade estrita `===` . Se `value` for um
 
 #### `assert.equal(expected, actual)`
 
-Compara objetos para igualdade de membro, não por referência.\
-NaN `true` função `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` ou `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` etc.\
-Ao comparar classes (objetos), elas devem ter o mesmo construtor ou uma superclasse cuja `actual` seja `expected` .
+Compara objetos para igualdade de membros, não por referência.\
+NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` ou `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` etc.\
+Ao comparar classes (objetos), eles devem ter o mesmo construtor ou uma superclasse cujo `actual` é `expected` .
 
 | Parâmetro  | Modelo  | Descrição      |
 | :--------- | :------ | :------------- |
@@ -385,7 +385,7 @@ Ao comparar classes (objetos), elas devem ter o mesmo construtor ou uma supercla
 
 #### `assert.throws(value, expected, message)`
 
-Verifique se os erros estão sendo lançados corretamente.\
+Verifique se o erro está sendo lançado corretamente.\
 Se o erro está correto ou não, é determinado se o *constructor* de erro esperado, a *message* é igual e a expressão regular passa na avaliação da *stack* .
 
 | Parâmetro  | Modelo                    | Descrição                                                                                |
@@ -497,7 +497,7 @@ Gere uma função que exibe uma animação de ciclismo.
 
 #### `register(callback, interval, conditional)`
 
-Processamento de registro. Múltiplos processos podem ser registrados e processados ​​em paralelo. No `callback` , iremos instruir para parar a animação e escrever a view a ser exibida. `interval` especifica o intervalo de processamento. Se a `conditional` for uma função, ela executará `conditional(count, queue)` e se o resultado for verdadeiro, ela continuará. A `conditional` executa `decrement(count)` se for um número e continua se o resultado for um número positivo. Executa apenas uma vez se `conditional` for indefinido. Observe que especificar uma função aumenta a `count` , enquanto especificar um número diminui a `count` .
+Processamento de registro. Vários processos podem ser registrados e processados ​​em paralelo. No `callback` de chamada, instruiremos a parar a animação e escrever a visualização a ser exibida. `interval` especifica o intervalo de processamento. Se a `conditional` for uma função, ela executará `conditional(count, queue)` e se o resultado for verdadeiro, ela continuará. A `conditional` executa `decrement(count)` se for um número e continua se o resultado for um número positivo. Executa apenas uma vez se a `conditional` for indefinida. Observe que a especificação de uma função aumenta a `count` , enquanto a especificação de um número diminui a `count` .
 
 #### `stop()`
 
@@ -623,7 +623,7 @@ Em *wes* , um pacote de vários módulos é chamado de pacote. Você pode instal
 
 ## *bundle*
 
-Ao publicar um pacote no *github* , o *bundle* agrupa os módulos necessários e cria *bundle.json* .
+Ao publicar um pacote no *github* , *bundle* agrupa os módulos necessários e cria *bundle.json* .
 
 1.  Apenas um pacote pode ser publicado em um *repository*
 2.  *package.json* é obrigatório. No mínimo, a descrição do campo `main` é obrigatória. ```json
@@ -632,7 +632,7 @@ Ao publicar um pacote no *github* , o *bundle* agrupa os módulos necessários e
     }
     ```
 3.  Torne o repositório *public* se quiser publicar o pacote
-4.  A partir da `version 0.12.0` , os pacotes com carregamento direto do módulo em um diretório acima do diretório de trabalho não serão empacotados. Os pacotes no diretório superior *wes\_modules* ou *node\_modules* podem ser agrupados.
+4.  A partir da `version 0.12.0` , os pacotes com carregamento direto do módulo em um diretório acima do diretório de trabalho não serão agrupados. Pacotes no diretório superior *wes\_modules* ou *node\_modules* podem ser agrupados.
 
 Digite o seguinte comando para agrupar: Consulte *package.json* para saber o que agrupar.
 
@@ -686,7 +686,7 @@ Aqui estão alguns pacotes externos.
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* é um pacote *prettier* para o *wes* formatar scripts. Além disso, se ocorrer um *Syntax Error* enquanto *@wachaon/fmt* estiver instalado, você poderá indicar o local do erro.
+*@wachaon/fmt* é um pacote *prettier* para o *wes* formatar scripts. Além disso, se ocorrer um *Syntax Error* enquanto *@wachaon/fmt* estiver instalado, você poderá mostrar o local do erro.
 
 ### instalar
 

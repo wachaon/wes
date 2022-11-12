@@ -31,7 +31,7 @@
 # 我们无法解决的*wes*问题
 
 *   `WScript.Quit`不能中止程序并且不返回错误代码
-*   异步处理无法正常工作
+*   异步处理不能正常工作
 *   您不能使用`WScript.CreateObject`的第二个参数的*event prefix*
 
 # 下载
@@ -79,11 +79,11 @@ wes
 
 # 模块系统
 
-*wes*支持两个模块系统，使用`require()`的*commonjs module*系统和使用`import`的*es module*系统。 （不支持*dynamic import* ，因为它是一个异步过程）
+*wes*支持两种模块系统，使用`require()`的*commonjs module*系统和使用`import`的*es module*系统。 （不支持*dynamic import* ，因为它是一个异步过程）
 
 ## *commonjs module*
 
-通过分配给`module.exports`并调用`require()`来管理模块。绝对路径和以`./`和`../`开头的相对路径以外的路径在*wes\_modules*目录中查找模块，并且方便地在*node\_modules*目录中查找。 *wes*的`require()`会自动猜测模块文件的编码，但如果猜测不正确，您可以使用第二个参数指定编码。
+通过分配给`module.exports`和调用`require()`来管理模块。绝对路径和以`./`和`../`开头的相对路径以外的路径在*wes\_modules*目录和方便的*node\_modules*目录中查找模块。 *wes*的`require()`会自动猜测模块文件的编码，但如果它没有猜对，您可以使用第二个参数指定编码。
 
 ```javascript
 // ./add.js
@@ -99,7 +99,7 @@ const add = require('./add')
 console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
-此外，还可以使用*require* `require('WScript.Shell')`类的*COM Object*导入。
+此外，可以使用*require*来导入*COM Object* ，例如`require('WScript.Shell')` 。
 
 ```javascript
 const Shell = require('Shell.Application')
@@ -110,7 +110,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-脚本执行引擎*Chakra*会解释`imoprt`等语法，但不会执行，因为处理未定义。在*wes*中，通过在内置模块中加入*babel* ， *es module*也在一个一个转译的同时执行。这是以处理开销和臃肿的*wes.js*文件为代价的。用*es module*模块编写的模块也通过转译转换为`require()` ，因此可以调用*COM Object* 。但是不支持用*es module*指定模块文件的编码。一切都自动加载。要将其作为*es module*加载，请将扩展名设置为`.mjs`或将`package.json`中的`"type"`字段设置为`"module"` 。
+脚本执行引擎*Chakra*解释诸如`imoprt`之类的语法，但由于处理未定义，因此未执行。在*wes*中，通过在内置模块中添加*babel* ， *es module*也在被一个一个转译的同时执行。这是以处理开销和臃肿的*wes.js*文件为代价的。 *es module*中写的模块也通过转译转换为`require()` ，因此可以调用*COM Object* 。但是，它不支持使用*es module*指定模块文件的编码。一切都是自动加载的。要将其加载为*es module* ，请将扩展名设置为`.mjs`或将`package.json`中的`"type"`字段设置为`"module"` 。
 
 ```javascript
 // ./sub.mjs
@@ -131,11 +131,11 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 
 ## *console*
 
-我们使用*console*代替*wes* `WScript.Echo()`和`WScript.StdErr.WriteLine()` 。
+我们使用*console*而不是*wes* `WScript.Echo()`和`WScript.StdErr.WriteLine()` 。
 
 ### *console.log*
 
-使用`console.log()`将字符输出到控制台。它还支持格式化字符串。使用`%`格式化运算符输出格式化字符串。 （格式化运算符也适用于其他方法。）
+使用`console.log()`将字符输出到控制台。它还支持格式化字符串。使用`%`格式化运算符输出格式化字符串。 （格式化运算符对其他方法也有效。）
 
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
@@ -186,7 +186,7 @@ console.log(`${content} %O`, buff)
 
 ## `__dirname`和`__filename`
 
-`__filename`存储当前正在执行的模块文件的路径。 `__dirname`包含`__filename`的目录。
+`__filename`存储当前执行的模块文件的路径。 `__dirname`包含`__filename`的目录。
 
 ```javascript
 console.log('dirname: %O\nfilename: %O', __dirname, __filename)
@@ -194,7 +194,7 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
-由于*wes*是同步处理的执行环境，所以*setTimeout* *setInterval* *setImmediate* *Promise*并没有起到异步处理的作用，而是为了支持承担*Promise*实现的模块而实现的。
+由于*wes*是用于同步处理的执行环境，因此*setTimeout* *setInterval* *setImmediate* *Promise*并不能起到异步处理的作用，但它的实现是为了支持假设*Promise*实现的模块。
 
 ```javascript
 const example = () => {
@@ -392,7 +392,7 @@ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegEx
 | :--------- | :------------------------ | :-------------------------------------------- |
 | `value`    | `{Error}`                 | 错误                                            |
 | `expected` | `{Error\|String\|RegExp}` | 计算预期错误*constructor* 、 *message*或*stack*的正则表达式 |
-| `message`  | `{String}`                | 失败消息                                          |
+| `message`  | `{String}`                | 失败时的消息                                        |
 
 ## *pipe*
 
@@ -513,7 +513,7 @@ animate.run()
 
 #### `view`
 
-指定打印到控制台的字符。定期切换字符。将*Arrary*或*String*分配给`view` 。 *String*在更新单个动画时很有用，而*Array*在单独为多行设置动画时很有用。
+指定打印到控制台的字符。定期切换字符。将*Arrary*或*String*分配给`view` 。 *String*在更新单个动画时很有用， *Array*在单独为多行设置动画时很有用。
 
 ```javascript
 const Animate = require('/lib/animate')
@@ -590,7 +590,7 @@ console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObje
 
 ## *zip*
 
-压缩文件和文件夹并解压缩压缩文件。在内部， *PowerShell*被调用和处理。
+压缩文件和文件夹并解压缩压缩文件。在内部调用和处理*PowerShell* 。
 
 ```javascript
 const {zip, unzip} = require('zip')
@@ -605,21 +605,21 @@ wes zip docs\* dox.zip
 wes zip -p dox.zip
 ```
 
-如果`path`具有扩展名`.zip` ，则处理`unzip()` ，并且没有扩展名`.zip`的描述。或者，即使有扩展名`.zip` ，如果有通配符`*`描述，也会处理`zip()` 。
+如果`path`有扩展名`.zip` ， `unzip()`被处理，并且没有扩展名`.zip`的描述。或者，即使有扩展名`.zip` ，如果有通配符`*`描述， `zip()`也会被处理。
 
-| 未命名 | 描述               |
-| --- | ---------------- |
-| `1` | `path`要输入的文件夹或文件 |
-| `2` | 文件夹文件输出`dest`    |
+| 无名  | 描述             |
+| --- | -------------- |
+| `1` | `path`文件夹或文件进入 |
+| `2` | 文件夹文件输出`dest`  |
 
-| 命名为      | 简称   | 描述               |
-| -------- | ---- | ---------------- |
-| `--path` | `-p` | `path`要输入的文件夹或文件 |
-| `--dest` | `-d` | 文件夹文件输出`dest`    |
+| 命名的      | 简称   | 描述             |
+| -------- | ---- | -------------- |
+| `--path` | `-p` | `path`文件夹或文件进入 |
+| `--dest` | `-d` | 文件夹文件输出`dest`  |
 
 # 捆绑（打包）和安装模块
 
-在*wes*中，多个模块的捆绑包称为包。您可以安装在*github*上发布的*wes*软件包。发布包需要*github repository* 。
+在*wes*中，几个模块的捆绑称为包。您可以安装在*github*上发布的*wes*包。发布包需要一个*github repository* 。
 
 ## *bundle*
 
@@ -642,7 +642,7 @@ wes zip -p dox.zip
 
 ## *install*
 
-用于安装*github*上发布的*wes*包。从`version 0.10.28` ，安装文件夹从`node_modules`更改为`wes_modules` 。如果要在`node_modules`中安装，请添加`--node`选项。从`version 0.12.0`开始，文件将从*bandle.json*中解压缩并保存。由于规范更改，与低于 0.12.0 的`version 0.12.0`捆绑的软件包可能无法与`version 0.12.0`一起正确安装。
+用于安装*github*上发布的*wes*包。从`version 0.10.28` ，安装文件夹从`node_modules`更改为`wes_modules` 。如果要在`node_modules`中安装，请添加`--node`选项。从`version 0.12.0`开始，文件将从*bandle.json*解压缩并保存。由于规范更改，与 0.12.0 以下`version 0.12.0`捆绑的软件包可能无法与`version 0.12.0`正确安装。
 
 以`@author/repository`的形式传递要*install*的参数。
 
@@ -652,15 +652,15 @@ wes install @wachaon/fmt
 
 *install*有选项。
 
-| 命名的           | 简称   | 描述                                            |
+| 命名为           | 简称   | 描述                                            |
 | ------------- | ---- | --------------------------------------------- |
 | `--bare`      | `-b` | 不要创建*@author*文件夹                              |
 | `--global`    | `-g` | 将包安装到*wes.js*所在的文件夹中                          |
-| `--save`      | `-S` | 将包名称和版本添加到*package.json*中的*dependencies*字段    |
+| `--save`      | `-S` | 将包名称和版本添加到*package.json*中的*dependencies*项字段   |
 | `--save--dev` | `-D` | 将包名称和版本添加到*package.json*中的*devDependencies*字段 |
 | `--node`      | `-n` | 安装在*node\_module*文件夹中                         |
 
-`--bare`选项可以省略从`author@repository`到`repository`的`require`参数。 `--global`选项使所有脚本都可以使用已安装的包。
+`--bare`选项可以省略从`author@repository`到`repository`的`require`参数。 `--global`选项使已安装的软件包可用于所有脚本。
 
 ```bat
 wes install @wachaon/fmt --bare
@@ -668,13 +668,13 @@ wes install @wachaon/fmt --bare
 
 # 从私有仓库安装包
 
-*install*不仅可以安装来自公共*github*存储库的包，还可以安装来自私有存储库的包。在*install*中，使用*@author/repository*指定包。该实现尝试下载以下 url。
+*install*不仅可以安装来自公共*github*存储库的包，还可以安装来自私有存储库的包。在*install*中，使用*@author/repository*指定包。该实现尝试下载以下网址。
 
 ```javascript
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-如果您使用浏览器访问*raw*存储库，则会显示*token* ，因此请复制*token*并使用它。您还可以通过在*token*有效时在控制台中运行来安装私有存储库中的软件包。
+如果您使用浏览器访问*raw*存储库，则会显示*token* ，因此请复制*token*并使用它。您还可以通过在*token*有效时在控制台中运行来从私有存储库安装包。
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
@@ -686,7 +686,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* *prettier*地打包为*wes*格式化脚本。此外，如果在安装*@wachaon/fmt*时出现*Syntax Error* ，您可以显示错误位置。
+*@wachaon/fmt* *prettier*地打包为*wes*格式化脚本。此外，如果在安装*@wachaon/fmt*时出现*Syntax Error* ，您可以指出错误的位置。
 
 ### 安装
 

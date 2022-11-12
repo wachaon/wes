@@ -36,7 +36,7 @@ Für Texte in anderen Sprachen wählen Sie bitte aus den folgenden Optionen aus.
 
 # Download
 
-Wes benötigt nur die *wes* *wes.js* . Kopieren Sie zum Herunterladen *wes.js* von [*@wachaon/wes*](https://github.com/wachaon/wes) oder führen Sie den folgenden Befehl in der Konsole aus.
+Wes benötigt nur die *wes* *wes.js* . Kopieren Sie zum Herunterladen *wes.js* von [*@wachaon/wes*](https://github.com/wachaon/wes) oder führen Sie den folgenden Befehl in Ihrer Konsole aus.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -51,7 +51,7 @@ wes update
 
 # wie fange ich an *wes*
 
-Geben Sie das Schlüsselwort `wes` und den Befehl ein, der die Datei angibt, die der Startpunkt des Programms für die Konsole sein wird. Die *.js* kann weggelassen werden.
+Geben Sie das Schlüsselwort `wes` gefolgt von dem Befehl ein, der die Datei angibt, die der Startpunkt des Programms für die Konsole sein wird. Die *.js* kann weggelassen werden.
 
 ```bat
 wes index
@@ -386,13 +386,13 @@ Beim Vergleich von Klassen (Objekten) müssen sie denselben Konstruktor oder ein
 #### `assert.throws(value, expected, message)`
 
 Stellen Sie sicher, dass Fehler korrekt ausgegeben werden.\
-Ob der Fehler korrekt ist oder nicht, wird dadurch bestimmt, ob der erwartete Fehlerkonstruktor und *constructor* *message* gleich sind und der reguläre Ausdruck die *stack* Auswertung besteht.
+Ob der Fehler korrekt ist oder nicht, wird dadurch bestimmt, ob der erwartete Fehlerkonstruktor und *constructor* *message* gleich sind und der reguläre Ausdruck die *stack* besteht.
 
 | Parameter  | Typ                       | Beschreibung                                                                                                     |
 | :--------- | :------------------------ | :--------------------------------------------------------------------------------------------------------------- |
 | `value`    | `{Error}`                 | Error                                                                                                            |
 | `expected` | `{Error\|String\|RegExp}` | Ein regulärer Ausdruck, der den erwarteten Fehlerkonstruktor, *constructor* *message* oder den *stack* auswertet |
-| `message`  | `{String}`                | Meldung bei Ausfall                                                                                              |
+| `message`  | `{String}`                | Meldung im Fehlerfall                                                                                            |
 
 ## *pipe*
 
@@ -674,7 +674,7 @@ wes install @wachaon/fmt --bare
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-Wenn Sie mit einem Browser auf das *raw* des privaten Repositorys zugreifen, wird das *token* angezeigt, also kopieren Sie das *token* und verwenden Sie es. Pakete aus privaten Repositorys können auch installiert werden, wenn sie in der Konsole ausgeführt werden, während das *token* gültig ist.
+Wenn Sie mit einem Browser auf das *raw* des privaten Repositorys zugreifen, wird das *token* angezeigt. Kopieren Sie also das *token* und verwenden Sie es. Pakete aus privaten Repositorys können auch installiert werden, wenn sie in der Konsole ausgeführt werden, während das *token* gültig ist.
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA

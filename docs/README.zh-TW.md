@@ -51,7 +51,7 @@ wes update
 
 # 如何開始*wes*
 
-輸入`wes`關鍵字和指定將成為控制台程序起點的文件的命令。腳本擴展名*.js*可以省略。
+輸入`wes`關鍵字，然後輸入命令，指定將成為控制台程序起點的文件。腳本擴展名*.js*可以省略。
 
 ```bat
 wes index
@@ -131,7 +131,7 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 
 ## *console*
 
-我們使用*console*代替*wes* `WScript.Echo()`和`WScript.StdErr.WriteLine()` 。
+我們使用*console*而不是*wes* `WScript.Echo()`和`WScript.StdErr.WriteLine()` 。
 
 ### *console.log*
 
@@ -186,7 +186,7 @@ console.log(`${content} %O`, buff)
 
 ## `__dirname`和`__filename`
 
-`__filename`存儲當前正在執行的模塊文件的路徑。 `__dirname`包含`__filename`的目錄。
+`__filename`存儲當前執行的模塊文件的路徑。 `__dirname`包含`__filename`的目錄。
 
 ```javascript
 console.log('dirname: %O\nfilename: %O', __dirname, __filename)
@@ -194,7 +194,7 @@ console.log('dirname: %O\nfilename: %O', __dirname, __filename)
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
-由於*wes*是用於同步處理的執行環境，因此*setTimeout* *setInterval* *setImmediate* *Promise*並不能起到異步處理的作用，但它的實現是為了支持假設*Promise*實現的模塊。
+由於*wes*是用於同步處理的執行環境，因此*setTimeout* *setInterval* *setImmediate* *Promise*不起到異步處理的作用，但它的實現是為了支持假設*Promise*實現的模塊。
 
 ```javascript
 const example = () => {
@@ -375,8 +375,8 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 #### `assert.equal(expected, actual)`
 
 比較對象的成員相等性，而不是通過引用。\
-NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g`或`{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]`等\
-比較類（對象）時，它們必須具有相同的構造函數或`expected` `actual`值的超類。
+NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g`或`{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]`等等。\
+在比較類（對象）時，它們必須具有相同的構造函數或`actual` `expected`的超類。
 
 | 參數         | 類型      | 描述   |
 | :--------- | :------ | :--- |
@@ -489,7 +489,7 @@ animate.run()
 
 ### `constructor(complete)`
 
-當所有隊列完成或調用`stop()`時執行`complete`功能。
+當所有隊列完成或調用`stop()`時執行`complete`函數。
 
 #### `static genProgressIndicator(animation)`
 
@@ -619,7 +619,7 @@ wes zip -p dox.zip
 
 # 捆綁（打包）和安裝模塊
 
-在*wes*中，幾個模塊的捆綁稱為包。您可以安裝在*github*上發布的*wes*包。發布包需要一個*github repository* 。
+在*wes*中，多個模塊的捆綁包稱為包。您可以安裝在*github*上發布的*wes*軟件包。發布包需要*github repository* 。
 
 ## *bundle*
 
@@ -642,7 +642,7 @@ wes zip -p dox.zip
 
 ## *install*
 
-用於安裝*github*上發布的*wes*包。從`version 0.10.28` ，安裝文件夾從`node_modules`更改為`wes_modules` 。如果要在`node_modules`中安裝，請添加`--node`選項。從`version 0.12.0`開始，文件將從*bandle.json*解壓縮並保存。由於規範更改，與 0.12.0 以下`version 0.12.0`捆綁的軟件包可能無法與`version 0.12.0`正確安裝。
+用於安裝*github*上發布的*wes*包。從`version 0.10.28` ，安裝文件夾從`node_modules`更改為`wes_modules` 。如果要在`node_modules`中安裝，請添加`--node`選項。從`version 0.12.0`開始，文件將從*bandle.json*中解壓縮並保存。由於規範更改，與低於 0.12.0 的`version 0.12.0`捆綁的軟件包可能無法與`version 0.12.0`一起正確安裝。
 
 以`@author/repository`的形式傳遞要*install*的參數。
 
@@ -652,15 +652,15 @@ wes install @wachaon/fmt
 
 *install*有選項。
 
-| 命名為           | 簡稱   | 描述                                            |
+| 命名的           | 簡稱   | 描述                                            |
 | ------------- | ---- | --------------------------------------------- |
 | `--bare`      | `-b` | 不要創建*@author*文件夾                              |
 | `--global`    | `-g` | 將包安裝到*wes.js*所在的文件夾中                          |
-| `--save`      | `-S` | 將包名稱和版本添加到*package.json*中的*dependencies*項字段   |
+| `--save`      | `-S` | 將包名稱和版本添加到*package.json*中的*dependencies*字段    |
 | `--save--dev` | `-D` | 將包名稱和版本添加到*package.json*中的*devDependencies*字段 |
 | `--node`      | `-n` | 安裝在*node\_module*文件夾中                         |
 
-`--bare`選項可以省略從`author@repository`到`repository`的`require`參數。 `--global`選項使已安裝的軟件包可用於所有腳本。
+`--bare`選項可以省略從`author@repository`到`repository`的`require`參數。 `--global`選項使所有腳本都可以使用已安裝的包。
 
 ```bat
 wes install @wachaon/fmt --bare
@@ -674,15 +674,15 @@ wes install @wachaon/fmt --bare
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-當您使用瀏覽器訪問私有存儲庫的*raw*文件時，將顯示*token* ，因此復制*token*並使用它。如果在*token*有效時在控制台中執行，也可以安裝來自私有存儲庫的包。
+如果您使用瀏覽器訪問*raw*存儲庫，則會顯示*token* ，因此請複制*token*並使用它。您還可以通過在*token*有效時在控制台中運行來安裝私有存儲庫中的軟件包。
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
-# 套餐介紹
+# 包裝介紹
 
-這裡有一些外部包。
+這是一些外部軟件包。
 
 ## *@wachaon/fmt*
 
@@ -712,7 +712,7 @@ wes @wachaon/fmt src/sample --write
 
 如果指定了`--write`或`-w`命名參數，則使用格式化腳本覆蓋文件。
 
-#### 作為模塊使用
+#### 作為一個模塊使用
 
 ```javascript
 const fmt = require('@wachaon/fmt')

@@ -1,7 +1,7 @@
 # *WES*
 
-*wes* è un framework di console per l'esecuzione di *ECMAScript* su *WSH (Windows Script Host)* . Il [*japanese*](/README.md) originale del *README* sarà in giapponese. I testi diversi dal giapponese saranno tradotti automaticamente.\
-Per i testi in altre lingue, selezionare una delle opzioni seguenti.
+*wes* è un framework console per l'esecuzione di *ECMAScript* su *WSH (Windows Script Host)* . Il [*japanese*](/README.md) originale del *README* sarà in giapponese. I testi diversi dal giapponese verranno tradotti automaticamente.\
+Per testi in altre lingue, seleziona una delle opzioni seguenti.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -21,9 +21,9 @@ Per i testi in altre lingue, selezionare una delle opzioni seguenti.
 # caratteristica
 
 *   Puoi cambiare il motore di script in *Chakra* e scrivere secondo le specifiche *ECMAScript2015* .
-*   Poiché *cscript.exe* a 32 bit viene sempre eseguito, non vi è alcun problema univoco nell'ambiente a 64 bit.
+*   Poiché *cscript.exe* a 32 bit viene sempre eseguito, non ci sono problemi univoci nell'ambiente a 64 bit.
 *   Poiché esiste un sistema di moduli, può essere sviluppato in modo più efficiente rispetto al *WSH* convenzionale
-*   I moduli integrati supportano l'elaborazione di base come l'input/output di file e l'output di testo colorato nella console
+*   I moduli integrati supportano l'elaborazione di base come l'input/output di file e l'output di testo colorato sulla console
 *   Puoi lasciare che la lettura del file indovini automaticamente la codifica, quindi non devi preoccuparti della codifica ecc.
 *   Moduli del pacchetto per supportare la pubblicazione e il recupero esterni
 *   Visualizza i dettagli dell'errore in modo più gentile rispetto a *WSH*
@@ -36,14 +36,14 @@ Per i testi in altre lingue, selezionare una delle opzioni seguenti.
 
 # Scarica
 
-Wes ha bisogno solo del *wes* *wes.js* . Per scaricare, copia *wes.js* da [*@wachaon/wes*](https://github.com/wachaon/wes) o esegui il seguente comando nella console.
+Wes ha bisogno solo del *wes* *wes.js* Per scaricare, copia *wes.js* da [*@wachaon/wes*](https://github.com/wachaon/wes) o esegui il seguente comando nella tua console.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-Usiamo `SendKeys` *wes* *WScript.Shell* in fase di esecuzione come implementazione. Se il percorso della directory in cui è salvato *wes.js* contiene caratteri diversi da *ascii* , `SendKeys` non può inviare correttamente la chiave e lo script non può essere eseguito.\
-Configura il percorso *wes.js* è memorizzato solo in *ascii* . Se hai già scaricato *wes* , puoi aggiornarlo con il seguente comando.
+Usiamo `SendKeys` *wes* *WScript.Shell* in fase di esecuzione come implementazione. Se il percorso della directory in cui è salvato *wes.js* contiene caratteri diversi da *ascii* , `SendKeys` non può inviare la chiave correttamente e lo script non può essere eseguito.\
+Configura il percorso *wes.js* è archiviato solo in *ascii* . Se hai già scaricato *wes* , puoi aggiornarlo con il seguente comando.
 
 ```bat
 wes update
@@ -51,7 +51,7 @@ wes update
 
 # come iniziare *wes*
 
-Immettere la parola chiave `wes` e il comando specificando il file che sarà il punto di partenza del programma nella console. L'estensione dello script *.js* può essere omessa.
+Immettere la parola chiave `wes` seguita dal comando specificando il file che sarà il punto di partenza del programma nella console. L'estensione dello script *.js* può essere omessa.
 
 ```bat
 wes index
@@ -83,7 +83,7 @@ Le opzioni di avvio di *wes* sono le seguenti.
 
 ## *commonjs module*
 
-Gestisci i moduli assegnandoli a `module.exports` e chiamando `require()` . I percorsi diversi dai percorsi assoluti e dai percorsi relativi che iniziano con `./` e `../` cercano i moduli nella directory *wes\_modules* e opportunamente nella directory *node\_modules* . Il `require()` di *wes* indovina automaticamente la codifica del file del modulo, ma puoi specificare la codifica con il secondo argomento se non indovina correttamente.
+Gestisci i moduli assegnandoli a `module.exports` e chiamando `require()` . Percorsi diversi dai percorsi assoluti e dai percorsi relativi che iniziano con `./` e `../` cercano i moduli nella directory *wes\_modules* e convenientemente nella directory *node\_modules* . `require()` di *wes* indovina automaticamente la codifica del file del modulo, ma puoi specificare la codifica con il secondo argomento se non indovina correttamente.
 
 ```javascript
 // ./add.js
@@ -110,7 +110,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra* , il motore di esecuzione degli script, interpreta la sintassi come `imoprt` , ma non viene eseguita perché l'elaborazione non è definita. In *wes* , aggiungendo *babel* ai moduli incorporati, anche *es module* vengono eseguiti durante il transpiling uno per uno. Ciò comporta un costo di elaborazione del sovraccarico e un file *wes.js* gonfio. Anche i moduli scritti in *es module* vengono convertiti in `require()` mediante transpiling, quindi è possibile chiamare *COM Object* . Tuttavia, non supporta la specifica della codifica del file del modulo con *es module* . Tutto viene caricato automaticamente. Per caricarlo come *es module* , imposta l'estensione su `.mjs` o imposta il campo `"type"` in `package.json` su `"module"` .
+*Chakra* , il motore di esecuzione dello script, interpreta la sintassi come `imoprt` , ma non viene eseguito perché l'elaborazione non è definita. In *wes* , aggiungendo *babel* ai moduli integrati, anche *es module* vengono eseguiti mentre vengono transpilati uno per uno. Ciò ha un costo per l'elaborazione delle spese generali e un file *wes.js* gonfio. I moduli scritti in *es module* vengono anche convertiti in `require()` tramite transpilazione, quindi è possibile chiamare *COM Object* . Tuttavia, non supporta la specifica della codifica del file del modulo con *es module* . Tutto viene caricato automaticamente. Per caricarlo come *es module* , imposta l'estensione su `.mjs` o imposta il campo `"type"` in `package.json` su `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -240,13 +240,13 @@ console.log(orange + 'Hello World')
 
 ## *argv*
 
-Ottieni gli argomenti della riga di comando. Gli argomenti della riga di comando di `cscript.exe` dichiarano gli argomenti denominati con `/` , mentre *wes* dichiara gli argomenti denominati con `-` e `--` . *argv.unnamed* e *argv.named* del tipo di valore dell'argomento della riga di comando su *String* *Number* *Boolean* . Immettere gli argomenti della riga di comando con *REP* .
+Ottieni argomenti da riga di comando. Gli argomenti della riga di comando di `cscript.exe` dichiarano argomenti denominati con `/` , mentre *wes* dichiara argomenti denominati con `-` e `--` . *argv.unnamed* e *argv.named* del tipo di valore dell'argomento della riga di comando su *String* *Number* *Boolean* . Immettere gli argomenti della riga di comando con *REP* .
 
 ```bat
 wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
 ```
 
-Eseguire il seguente script su *REP* .
+Esegui il seguente script su *REP* .
 
 ```javascript
 const argv = require('argv')
@@ -281,7 +281,7 @@ console.log(contents)
 
 ## *chardet*
 
-Sto usando alcune funzionalità di <https://github.com/runk/node-chardet> . Puoi aumentare la precisione dell'auto-indovina aumentando i caratteri specifici della codifica.
+Sto usando alcune funzionalità da <https://github.com/runk/node-chardet> . È possibile aumentare la precisione dell'auto-indovina aumentando i caratteri specifici della codifica.
 
 ## *JScript*
 
@@ -361,7 +361,7 @@ describe('minitest', () => {
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
-### affermazioni
+### asserzioni
 
 #### `assert(value, message)` `assert.ok(value, message)`
 
@@ -375,8 +375,8 @@ Confronta con `true` con l'operatore di uguaglianza rigorosa `===` . Se `value` 
 #### `assert.equal(expected, actual)`
 
 Confronta gli oggetti per l'uguaglianza dei membri, non per riferimento.\
-NaN `true` Funzione `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` o `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` ecc.\
-Quando si confrontano classi (oggetti), devono avere lo stesso costruttore o una superclasse la cui `actual` è `expected` .
+NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` o `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` ecc.\
+Quando si confrontano le classi (oggetti), devono avere lo stesso costruttore o una superclasse di cui è `expected` `actual` .
 
 | Param      | Tipo    | Descrizione    |
 | :--------- | :------ | :------------- |
@@ -392,7 +392,7 @@ Se l'errore è corretto o meno è determinato dal fatto che il *constructor* di 
 | :--------- | :------------------------ | :------------------------------------------------------------------------------------------------ |
 | `value`    | `{Error}`                 | errore                                                                                            |
 | `expected` | `{Error\|String\|RegExp}` | Un'espressione regolare che valuta il *constructor* , *message* o lo *stack* dell'errore previsto |
-| `message`  | `{String}`                | messaggio sul fallimento                                                                          |
+| `message`  | `{String}`                | messaggio in caso di guasto                                                                       |
 
 ## *pipe*
 
@@ -489,7 +489,7 @@ animate.run()
 
 ### `constructor(complete)`
 
-Esegue la funzione `complete` quando tutte le code sono completate o viene chiamato `stop()` .
+Esegue la funzione `complete` quando tutte le code sono state completate o viene chiamato `stop()` .
 
 #### `static genProgressIndicator(animation)`
 
@@ -497,7 +497,7 @@ Genera una funzione che visualizzi un'animazione ciclica.
 
 #### `register(callback, interval, conditional)`
 
-Elaborazione del registro. È possibile registrare ed elaborare più processi in parallelo. Nella `callback` , indicheremo di interrompere l'animazione e scrivere la vista da visualizzare. `interval` specifica l'intervallo di elaborazione. Se il `conditional` è una funzione, verrà eseguito `conditional(count, queue)` e se il risultato è vero, continuerà. Il `conditional` esegue `decrement(count)` se è un numero e continua se il risultato è un numero positivo. Viene eseguito solo una volta se `conditional` non è definito. Si noti che specificando una funzione aumenta il `count` , mentre specificando un numero diminuisce il `count` .
+Elaborazione registro. Più processi possono essere registrati ed elaborati in parallelo. Nel `callback` , istruiremo a fermare l'animazione e scrivere la vista da visualizzare. `interval` specifica l'intervallo di elaborazione. Se il `conditional` è una funzione, eseguirà `conditional(count, queue)` e se il risultato è vero, continuerà. Il `conditional` esegue `decrement(count)` se è un numero e continua se il risultato è un numero positivo. Viene eseguito solo una volta se `conditional` non è definito. Si noti che specificando una funzione si aumenta il `count` , mentre specificando un numero si diminuisce il `count` .
 
 #### `stop()`
 
@@ -619,22 +619,22 @@ Se il `path` ha l'estensione `.zip` , `unzip()` viene elaborato e non c'è alcun
 
 # Raggruppamento (packaging) e installazione di moduli
 
-In *wes* , un pacchetto di più moduli è chiamato pacchetto. Puoi installare il pacchetto per *wes* pubblicato su *github* . Per pubblicare un pacchetto è necessario un *github repository* .
+In *wes* , un insieme di diversi moduli è chiamato pacchetto. Puoi installare il pacchetto per *wes* pubblicato su *github* . Per pubblicare un pacchetto è necessario un *github repository* .
 
 ## *bundle*
 
 Quando si pubblica un pacchetto su *github* , *bundle* raggruppa i moduli richiesti e crea *bundle.json* .
 
-1.  È possibile pubblicare un solo pacchetto in un *repository*
+1.  In un *repository* può essere pubblicato un solo pacchetto
 2.  *package.json* è obbligatorio. Come minimo, è richiesta la descrizione del campo `main` . ```json
     {
         "main": "index.js"
     }
     ```
-3.  Rendi *public* il repository se desideri pubblicare il pacchetto
+3.  Rendere *public* il repository se si desidera pubblicare il pacchetto
 4.  A partire dalla `version 0.12.0` , i pacchetti con caricamento diretto del modulo in una directory sopra la directory di lavoro non verranno raggruppati. I pacchetti nella directory superiore *wes\_modules* o *node\_modules* possono essere raggruppati.
 
-Immettere il seguente comando per raggruppare: Fare riferimento a *package.json* per cosa raggruppare.
+Immettere il seguente comando per raggruppare: Fare riferimento a *package.json* per sapere cosa raggruppare.
 
 ```bat
     wes bundle 
@@ -642,9 +642,9 @@ Immettere il seguente comando per raggruppare: Fare riferimento a *package.json*
 
 ## *install*
 
-Utilizzato per installare il pacchetto per *wes* pubblicato su *github* . Dalla `version 0.10.28` , la cartella di installazione è cambiata da `node_modules` a `wes_modules` . Se vuoi installare in `node_modules` aggiungi l'opzione `--node` . A partire dalla `version 0.12.0` , i file verranno decompressi da *bandle.json* e salvati. A causa di modifiche alle specifiche, i pacchetti in bundle con una `version 0.12.0` inferiore a 0.12.0 potrebbero non essere installati correttamente con `version 0.12.0` o successiva.
+Utilizzato per installare il pacchetto per *wes* pubblicato su *github* . Dalla `version 0.10.28` , la cartella di installazione è cambiata da `node_modules` a `wes_modules` . Se vuoi installare in `node_modules` aggiungi l'opzione `--node` . A partire dalla `version 0.12.0` , i file verranno decompressi da *bandle.json* e salvati. A causa di modifiche alle specifiche, i pacchetti forniti con una `version 0.12.0` inferiore alla 0.12.0 potrebbero non essere installati correttamente con `version 0.12.0` o successiva.
 
-Passa gli argomenti da *install* nella forma `@author/repository` .
+Passa gli argomenti da *install* nel formato `@author/repository` .
 
 ```bat
 wes install @wachaon/fmt
@@ -652,15 +652,15 @@ wes install @wachaon/fmt
 
 *install* ha opzioni.
 
-| di nome       | nome breve | Descrizione                                                                               |
-| ------------- | ---------- | ----------------------------------------------------------------------------------------- |
-| `--bare`      | `-b`       | Non creare cartelle *@author*                                                             |
-| `--global`    | `-g`       | Installa il pacchetto nella cartella in cui si trova *wes.js*                             |
-| `--save`      | `-S`       | Aggiungi il nome e la versione del pacchetto al campo *dependencies* in *package.json*    |
-| `--save--dev` | `-D`       | Aggiungi il nome e la versione del pacchetto al campo *devDependencies* in *package.json* |
-| `--node`      | `-n`       | Installa nella cartella *node\_module*                                                    |
+| di nome       | breve nome | Descrizione                                                                                 |
+| ------------- | ---------- | ------------------------------------------------------------------------------------------- |
+| `--bare`      | `-b`       | Non creare cartelle *@author*                                                               |
+| `--global`    | `-g`       | Installa il pacchetto nella cartella in cui si trova *wes.js*                               |
+| `--save`      | `-S`       | Aggiungi il nome e la versione del pacchetto al campo *dependencies* in *package.json*      |
+| `--save--dev` | `-D`       | Aggiungere il nome e la versione del pacchetto al campo *devDependencies* in *package.json* |
+| `--node`      | `-n`       | Installa nella cartella *node\_module*                                                      |
 
-`--bare` può omettere l'argomento `require` da `author@repository` al `repository` . `--global` rende i pacchetti installati disponibili per tutti gli script.
+`--bare` può omettere l'argomento `require` da `author@repository` a `repository` . `--global` rende i pacchetti installati disponibili per tutti gli script.
 
 ```bat
 wes install @wachaon/fmt --bare
@@ -686,7 +686,7 @@ Ecco alcuni pacchetti esterni.
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* è un pacchetto *prettier* *wes* per noi per formattare gli script. Inoltre, se si verifica un *Syntax Error* durante l'installazione di *@wachaon/fmt* , è possibile indicare la posizione dell'errore.
+*@wachaon/fmt* è un pacchetto *prettier* *wes* per noi per formattare gli script. Inoltre, se si verifica un *Syntax Error* durante l'installazione di *@wachaon/fmt* , è possibile visualizzare la posizione dell'errore.
 
 ### installare
 
@@ -694,7 +694,7 @@ Ecco alcuni pacchetti esterni.
 wes install @wachaon/fmt
 ```
 
-Se è presente *.prettierrc* (formato JSON) nella directory di lavoro, si rifletterà nelle impostazioni. *fmt* è disponibile sia nella *CLI* che nel *module* .
+Se è presente *.prettierrc* (formato JSON) nella directory di lavoro, si rifletterà nelle impostazioni. *fmt* è disponibile sia in *CLI* che in *module* .
 
 #### Utilizzare come *CLI* .
 

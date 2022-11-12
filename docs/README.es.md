@@ -51,7 +51,7 @@ wes update
 
 # como empezar *wes*
 
-Ingrese la palabra clave `wes` y el comando que especifica el archivo que será el punto de partida del programa a la consola. La extensión de secuencia de comandos *.js* se puede omitir.
+Ingrese la palabra clave `wes` seguida del comando que especifica el archivo que será el punto de partida del programa en la consola. La extensión de secuencia de comandos *.js* se puede omitir.
 
 ```bat
 wes index
@@ -268,7 +268,7 @@ console.log('file %O', file)
 
 ## *filesystem*
 
-Manipular archivos y directorios. `readTextFileSync()` adivina automáticamente la codificación del archivo y lo lee. (Incluso si el segundo argumento de `readFileSync()` se `encode` en `auto` , se adivinará automáticamente).
+Manipular archivos y directorios. `readTextFileSync()` adivina automáticamente la codificación del archivo y lo lee. (Incluso si el segundo argumento de `readFileSync()` está `encode` en `auto` , se adivinará automáticamente).
 
 ```javascript
 const fs = require('filesystem')
@@ -392,7 +392,7 @@ Si el error es correcto o no se determina si el *constructor* de error esperado,
 | :--------- | :------------------------ | :------------------------------------------------------------------------------------- |
 | `value`    | `{Error}`                 | error                                                                                  |
 | `expected` | `{Error\|String\|RegExp}` | Una expresión regular que evalúa el error esperado *constructor* , *message* o *stack* |
-| `message`  | `{String}`                | mensaje en caso de falla                                                               |
+| `message`  | `{String}`                | mensaje de falla                                                                       |
 
 ## *pipe*
 
@@ -674,7 +674,7 @@ wes install @wachaon/fmt --bare
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-Cuando acceda al *raw* del repositorio privado con un navegador, se mostrará el *token* , así que copie el *token* y utilícelo. Los paquetes de repositorios privados también se pueden instalar si se ejecutan en la consola mientras el *token* es válido.
+Si accede al repositorio privado *raw* con un navegador, se mostrará el *token* , así que copie el *token* y utilícelo. También puede instalar paquetes desde repositorios privados ejecutándolos en la consola mientras el *token* es válido.
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA

@@ -51,7 +51,7 @@ wes update
 
 # how to start *wes*
 
-Enter the `wes` keyword and the command specifying the file that will be the starting point of the program to the console. The script extension *.js* can be omitted.
+Enter the `wes` keyword followed by the command specifying the file that will be the starting point of the program to the console. The script extension *.js* can be omitted.
 
 ```bat
 wes index
@@ -392,7 +392,7 @@ Whether or not the error is correct is determined by whether the expected error 
 | :--------- | :------------------------ | :-------------------------------------------------------------------------------------------- |
 | `value`    | `{Error}`                 | error                                                                                         |
 | `expected` | `{Error\|String\|RegExp}` | A regular expression that evaluates the expected error *constructor* , *message* , or *stack* |
-| `message`  | `{String}`                | message on failure                                                                            |
+| `message`  | `{String}`                | message in case of failure                                                                    |
 
 ## *pipe*
 
@@ -686,7 +686,7 @@ Here are some external packages.
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* is *prettier* packaged for *wes* to format scripts. Also, if a *Syntax Error* occurs while *@wachaon/fmt* is installed, you can indicate the location of the error.
+*@wachaon/fmt* is *prettier* packaged for *wes* to format scripts. Also, if a *Syntax Error* occurs while *@wachaon/fmt* is installed, you can show the error location.
 
 ### install
 

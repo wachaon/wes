@@ -1,7 +1,7 @@
 # *WES*
 
-*wes* is een consoleframework voor het uitvoeren van *ECMAScript* op *WSH (Windows Script Host)* . De originele [*japanese*](/README.md) van de *README* zal in het Japans zijn. Andere teksten dan Japans worden machinaal vertaald.\
-Voor teksten in andere talen kunt u een keuze maken uit de onderstaande opties.
+*wes* is een consoleframework voor het uitvoeren van *ECMAScript* op *WSH (Windows Script Host)* . De originele [*japanese*](/README.md) van de *README* is in het Japans. Andere teksten dan Japans worden automatisch vertaald.\
+Maak voor teksten in andere talen een keuze uit de onderstaande opties.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -36,14 +36,14 @@ Voor teksten in andere talen kunt u een keuze maken uit de onderstaande opties.
 
 # downloaden
 
-Wes heeft alleen het *wes* *wes.js* . Om te downloaden, kopieert u *wes.js* van [*@wachaon/wes*](https://github.com/wachaon/wes) of voert u de volgende opdracht uit in uw console.
+Wes heeft alleen het *wes* *wes.js* . Om te downloaden, kopieert u *wes.js* van [*@wachaon/wes*](https://github.com/wachaon/wes) of voert u de volgende opdracht uit in de console.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-*WScript.Shell* *wes* `SendKeys` tijdens runtime als implementatie. Als het pad van de map waarin *wes.js* is opgeslagen andere tekens dan *ascii* bevat, kan `SendKeys` de sleutel niet correct verzenden en kan het script niet worden uitgevoerd.\
-Configureer het pad *wes.js* alleen in *ascii* wordt opgeslagen. Als je *wes* al hebt gedownload, kun je het bijwerken met de volgende opdracht.
+*WScript.Shell* `SendKeys` van *wes* tijdens runtime als implementatie. Als het pad van de map waarin *wes.js* is opgeslagen andere tekens dan *ascii* bevat, kan `SendKeys` de sleutel niet correct verzenden en kan het script niet worden uitgevoerd.\
+Configureer het pad *wes.js* wordt opgeslagen alleen in *ascii* . Als je *wes* al hebt gedownload, kun je het bijwerken met de volgende opdracht.
 
 ```bat
 wes update
@@ -51,7 +51,7 @@ wes update
 
 # hoe te beginnen met *wes*
 
-Voer het `wes` -sleutelwoord in gevolgd door de opdracht die het bestand specificeert dat het startpunt van het programma naar de console zal zijn. De *.js* kan worden weggelaten.
+Voer het `wes` -sleutelwoord in en de opdracht die het bestand specificeert dat het startpunt van het programma naar de console zal zijn. De *.js* kan worden weggelaten.
 
 ```bat
 wes index
@@ -168,7 +168,7 @@ Alleen uitvoer naar de console als de optie `--debug` is ingeschakeld.
 
 ### *console.error*
 
-Gooi een uitzondering met de inhoud als bericht.
+Gooi een uitzondering met de inhoud als het bericht.
 
 ### *console.weaklog*
 
@@ -285,7 +285,7 @@ Ik gebruik enkele functies van <https://github.com/runk/node-chardet> . U kunt d
 
 ## *JScript*
 
-Als u de script-engine wijzigt in *Chakra* , kunt u geen *JScript* -specifieke *Enumerator* gebruiken, enz. De ingebouwde module *JScript* maakt ze beschikbaar. *Enumerator* retourneert echter een *Array* en geen *Enumerator object* .
+Als u de scriptengine wijzigt in *Chakra* , kunt u geen *JScript* -specifieke *Enumerator* enz. gebruiken. De ingebouwde module *JScript* stelt ze beschikbaar. *Enumerator* retourneert echter een *Array* , geen *Enumerator object* .
 
 ```javascript
 const { Enumerator, ActiveXObject } = require('JScript')
@@ -329,9 +329,9 @@ console.log('%O', JSON.parse(content))
 
 ## *minitest*
 
-*minitest* kan eenvoudige toetsen schrijven. Vanaf versie `0.10.71` zijn we teruggegaan naar het basisconcept en hebben we de soorten beweringen teruggebracht tot 3 soorten.
+*minitest* kan eenvoudige tests schrijven. Vanaf versie `0.10.71` zijn we teruggegaan naar het basisconcept en hebben we de typen beweringen teruggebracht tot 3 typen.
 
-Groepeer met `describe` , test `it` en verifieer met `assert` . `pass` zal een array zijn van het aantal keren dat `it` voorkomt en het aantal passes.
+Groepeer met `describe` , test `it` en verifieer met `assert` . `pass` is een array van het aantal keren dat `it` voorkomt en het aantal passen.
 
 ```javascript
 const { describe, it, assert, pass } = require('minitest')
@@ -396,7 +396,7 @@ Of de fout al dan niet correct is, wordt bepaald door of de verwachte *construct
 
 ## *pipe*
 
-*pipe* vereenvoudigt piping.
+*pipe* vereenvoudigt pijpen.
 
 ```javascript
 const pipe = require('pipe')
@@ -580,7 +580,7 @@ animate.run()
 
 ## *getMember*
 
-Lidtype en beschrijving van *COM Object* ophalen uit *ProgID* .
+Haal het lidtype en de beschrijving van het *COM Object* op van *ProgID* .
 
 ```javascript
 const getMember = require('getMember')
@@ -632,7 +632,7 @@ Bij het publiceren van een pakket naar *github* , *bundle* bundel de vereiste mo
     }
     ```
 3.  Maak de repository *public* als u het pakket wilt publiceren
-4.  Vanaf `version 0.12.0` worden pakketten met het direct laden van de module in een map boven de werkmap niet gebundeld. Pakketten in de bovenste directory *wes\_modules* of *node\_modules* kunnen worden gebundeld.
+4.  Vanaf `version 0.12.0` worden pakketten met een directe module die in een map boven de werkmap wordt geladen, niet gebundeld. Pakketten in de bovenste directory *wes\_modules* of *node\_modules* kunnen worden gebundeld.
 
 Voer de volgende opdracht in om te bundelen: Raadpleeg *package.json* voor wat u moet bundelen.
 
@@ -642,7 +642,7 @@ Voer de volgende opdracht in om te bundelen: Raadpleeg *package.json* voor wat u
 
 ## *install*
 
-Gebruikt om het pakket te installeren voor *wes* gepubliceerd op *github* . Vanaf `version 0.10.28` is de installatiemap gewijzigd van `node_modules` in `wes_modules` . Als je in `node_modules` wilt installeren, voeg dan de optie `--node` toe. Vanaf `version 0.12.0` worden bestanden uit *bandle.json* uitgepakt en opgeslagen. Als gevolg van specificatiewijzigingen kunnen pakketten die zijn gebundeld met `version 0.12.0` lager dan 0.12.0 mogelijk niet correct worden geïnstalleerd met `version 0.12.0` of later.
+Gebruikt om het pakket voor *wes* te installeren dat op *github* is gepubliceerd. Vanaf `version 0.10.28` is de installatiemap gewijzigd van `node_modules` naar `wes_modules` . Als je in `node_modules` wilt installeren, voeg `--node` toe. Vanaf `version 0.12.0` worden bestanden uit *bandle.json* uitgepakt en opgeslagen. Als gevolg van specificatiewijzigingen kunnen pakketten die zijn gebundeld met `version 0.12.0` minder dan 0.12.0 niet correct worden geïnstalleerd met `version 0.12.0` of hoger.
 
 Geef argumenten door om te *install* in de vorm `@author/repository` .
 
@@ -655,12 +655,12 @@ wes install @wachaon/fmt
 | genaamd       | korte naam | Beschrijving                                                                    |
 | ------------- | ---------- | ------------------------------------------------------------------------------- |
 | `--bare`      | `-b`       | Maak geen *@author* mappen                                                      |
-| `--global`    | `-g`       | Installeer het pakket in de map waar *wes.js* zich bevindt                      |
-| `--save`      | `-S`       | Voeg pakketnaam en -versie toe aan het *dependencies* in *package.json*         |
+| `--global`    | `-g`       | Installeer het pakket in de map waar *wes.js* is                                |
+| `--save`      | `-S`       | Voeg pakketnaam en -versie toe aan het veld *dependencies* in *package.json*    |
 | `--save--dev` | `-D`       | Voeg pakketnaam en -versie toe aan het veld *devDependencies* in *package.json* |
 | `--node`      | `-n`       | Installeer in de map *node\_module*                                             |
 
-`--bare` kan het argument `require` weglaten van `author@repository` naar `repository` . `--global` maakt geïnstalleerde pakketten beschikbaar voor alle scripts.
+`--bare` optie kan het argument ' `require` ' van `author@repository` naar `repository` weglaten. `--global` optie maakt geïnstalleerde pakketten beschikbaar voor alle scripts.
 
 ```bat
 wes install @wachaon/fmt --bare
@@ -696,7 +696,7 @@ wes install @wachaon/fmt
 
 Als er *.prettierrc* (JSON-indeling) in de werkmap staat, wordt dit weergegeven in de instellingen. *fmt* is beschikbaar in zowel *CLI* als *module* .
 
-#### Gebruik als *CLI* .
+#### Gebruiken als *CLI* .
 
 ```bat
 wes @wachaon/fmt src/sample --write
@@ -706,13 +706,13 @@ wes @wachaon/fmt src/sample --write
 | --------------- | --------------------------------------------------------- |
 | 1               | Verplicht. het pad van het bestand dat u wilt formatteren |
 
-| genaamd   | korte naam | Beschrijving           |
-| --------- | ---------- | ---------------------- |
-| `--write` | `-w`       | overschrijven toestaan |
+| genaamd   | korte naam | Beschrijving             |
+| --------- | ---------- | ------------------------ |
+| `--write` | `-w`       | toestaan ​​overschrijven |
 
-Overschrijf het bestand met het opgemaakte script als `--write` of het `-w` benoemde argument is opgegeven.
+Overschrijf het bestand met het geformatteerde script als `--write` of het benoemde argument `-w` is opgegeven.
 
-#### gebruik als een module
+#### gebruiken als module
 
 ```javascript
 const fmt = require('@wachaon/fmt')

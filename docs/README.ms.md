@@ -36,7 +36,7 @@ Untuk teks dalam bahasa lain, sila pilih daripada pilihan di bawah.
 
 # muat turun
 
-Wes hanya memerlukan *wes* *wes.js* . Untuk memuat turun, salin *wes.js* daripada [*@wachaon/wes*](https://github.com/wachaon/wes) atau jalankan arahan berikut dalam konsol anda.
+Wes hanya memerlukan *wes* *wes.js* . Untuk memuat turun, salin *wes.js* daripada [*@wachaon/wes*](https://github.com/wachaon/wes) atau jalankan arahan berikut dalam konsol.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -370,7 +370,7 @@ Bandingkan dengan `true` dengan pengendali kesaksamaan yang ketat `===` . Jika `
 | Param     | taip                  | Penerangan                               |
 | :-------- | :-------------------- | :--------------------------------------- |
 | `value`   | `{Function\|Boolean}` | boolean atau fungsi pengembalian boolean |
-| `message` | `{String}`            | mesej sekiranya berlaku kegagalan        |
+| `message` | `{String}`            | mesej tentang kegagalan                  |
 
 #### `assert.equal(expected, actual)`
 
