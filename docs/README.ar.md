@@ -18,6 +18,8 @@
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
+
+
 # خاصية
 
 *   يمكنك تغيير محرك البرنامج النصي إلى *Chakra* والكتابة وفقًا لمواصفات *ECMAScript2015* .
@@ -28,11 +30,13 @@
 *   وحدات الحزمة لدعم النشر الخارجي والاسترجاع
 *   عرض تفاصيل الخطأ بلطف أكثر من *WSH*
 
+
 # المشكلات *wes* التي لا يمكننا حلها
 
 *   لا يمكن لـ `WScript.Quit` إحباط البرنامج ولا يُرجع رمز خطأ
 *   المعالجة غير المتزامنة لا تعمل بشكل صحيح
 *   لا يمكنك استخدام *event prefix* للوسيطة الثانية من `WScript.CreateObject`
+
 
 # تحميل
 
@@ -48,6 +52,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```bat
 wes update
 ```
+
 
 # كيف تبدأ *wes*
 
@@ -65,6 +70,7 @@ wes
 
 يقبل *REP* إدخال البرنامج النصي حتى تقوم بإدخال سطرين فارغين. يمكنك أيضًا رؤية *REP* يشغل مثال البرنامج النصي في *README.md* .
 
+
 ## خيارات سطر الأوامر
 
 خيارات بدء التشغيل *wes* كما يلي.
@@ -77,9 +83,11 @@ wes
 | `--encoding=UTF-8` | يحدد ترميز أول ملف تمت قراءته                           |
 | `--engine=Chakra`  | هذا الخيار يضاف تلقائيا من قبل *wes*                    |
 
+
 # نظام الوحدة
 
 يدعم *wes* نظامين للوحدات النمطية ، وهما نظام *commonjs module* باستخدام `require()` ونظام *es module* باستخدام `import` . ( *dynamic import* غير مدعوم لأنه عملية غير متزامنة)
+
 
 ## *commonjs module*
 
@@ -108,9 +116,10 @@ WScript.Sleep(2000)
 Shell.UndoMinimizeAll()
 ```
 
+
 ## *es module*
 
-*Chakra* ، محرك تنفيذ النص ، يفسر بناء الجملة مثل `imoprt` ، لكن لا يتم تنفيذه لأن المعالجة غير محددة. في *wes* ، من خلال إضافة *babel* إلى الوحدات المدمجة ، يتم أيضًا تنفيذ *es module* أثناء نقلها واحدة تلو الأخرى. يأتي هذا بتكلفة معالجة ملف *wes.js* متضخم. يتم أيضًا تحويل الوحدات المكتوبة في *es module* إلى `require()` عن طريق التحويل ، لذلك من الممكن استدعاء *COM Object* . ومع ذلك ، فإنه لا يدعم تحديد ترميز ملف الوحدة النمطية باستخدام *es module* . يتم تحميل كل شيء تلقائيًا. لتحميلها كوحدة *es module* ، اضبط الامتداد على `.mjs` أو اضبط حقل `"type"` في `package.json` على `"module"` .
+*Chakra* ، محرك تنفيذ النص ، يفسر بناء الجملة مثل `imoprt` ، لكن لا يتم تنفيذه في بيئة *cscript* . في *wes* ، من خلال إضافة *babel* إلى الوحدات المدمجة ، يتم أيضًا تنفيذ *es module* أثناء نقلها واحدة تلو الأخرى. يأتي هذا بتكلفة معالجة ملف *wes.js* متضخم. يتم أيضًا تحويل الوحدات المكتوبة في *es module* إلى `require()` عن طريق التحويل ، لذلك من الممكن استدعاء *COM Object* . ومع ذلك ، فإنه لا يدعم تحديد ترميز ملف الوحدة النمطية باستخدام *es module* . يتم تحميل كل شيء تلقائيًا. لتحميله كوحدة *es module* ، اضبط الامتداد على `.mjs` أو اضبط حقل `"type"` في `package.json` على `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -125,13 +134,16 @@ import sub from './sub.mjs'
 console.log('sub(7, 3) // => %O', sub(7, 3))
 ```
 
+
 # كائن مدمج
 
 يحتوي *wes* *built-in objects* مضمنة غير موجودة في *WSH (JScript)* .
 
+
 ## *console*
 
 يستخدم Wes *console* بدلاً من *wes* `WScript.Echo()` و `WScript.StdErr.WriteLine()` .
+
 
 ### *console.log*
 
@@ -158,21 +170,26 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 
 `WScript.StdOut.WriteLine` *wes* من `WScript.StdErr.WriteLine` لإخراج السلاسل الملونة. يتم حظر إخراج `WScript.Echo` و `WScript.StdOut.WriteLine` . `WScript.StdErr.WriteLine` أو `console.log` .
 
+
 ### *console.print*
 
 يتضمن `console.log()` عادةً سطرًا جديدًا في النهاية ، ولكن لا يتضمن `console.print` .
+
 
 ### *console.debug*
 
 الإخراج إلى وحدة التحكم فقط إذا تم تمكين الخيار `--debug` .
 
+
 ### *console.error*
 
 قم بطرح استثناء للمحتوى كرسالة.
 
+
 ### *console.weaklog*
 
 تختفي السلاسل المطبوعة باستخدام `console.weaklog()` من وحدة التحكم إذا كان هناك أي إخراج لاحق. مفيد لتبديل المخرجات.
+
 
 ## *Buffer*
 
@@ -181,16 +198,19 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```javascript
 const content = 'Hello World'
 const buff = Buffer.from(content)
-console.log(`${content} %O`, buff)
+console.log('%s %O', content, buff)
 ```
+
 
 ## `__dirname` و `__filename`
 
 `__filename` يخزن مسار ملف الوحدة النمطية الجاري تنفيذه. يحتوي `__dirname` على دليل `__filename` .
 
 ```javascript
-console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+const message = `dirname: ${__dirname}\nfilename: ${ __filename}`
+console.log(message)
 ```
+
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise* الفوري
 
@@ -216,9 +236,11 @@ example();
 console.log('end')
 ```
 
+
 # وحدة مدمجة
 
 يحتوي *wes* *built-in modules* لتبسيط وتوحيد المعالجة الأساسية.
+
 
 ## *ansi*
 
@@ -238,6 +260,7 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
+
 ## *argv*
 
 احصل على وسيطات سطر الأوامر. تعلن وسيطات سطر الأوامر الخاصة بـ `cscript.exe` عن الوسائط المسماة بـ `/` ، بينما يعلن *wes* عن الوسائط المسماة بـ `-` و `--` . *argv.unnamed* و argv. *argv.named* نوع قيمة وسيطة سطر الأوامر إما إلى *String* *Number* *Boolean* . أدخل وسيطات سطر الأوامر باستخدام *REP* .
@@ -256,6 +279,7 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
+
 ## *pathname*
 
 التلاعب بالمسارات. المسارات التي تبدأ بـ `/` و `\` بشكل عام مرتبطة بجذر محرك الأقراص. على سبيل المثال `/filename` و `C:/filename` يمكن أن يكونا نفس المسار. لأسباب أمنية ، يفسر *wes* المسارات التي تبدأ بـ `/` و `\` المتعلقة بدليل العمل.
@@ -265,6 +289,7 @@ const path = require('pathname')
 const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
+
 
 ## *filesystem*
 
@@ -279,9 +304,11 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
+
 ## *chardet*
 
 أنا أستخدم بعض الميزات من <https://github.com/runk/node-chardet> . يمكنك زيادة دقة التخمين التلقائي عن طريق زيادة الأحرف الخاصة بالترميز.
+
 
 ## *JScript*
 
@@ -307,6 +334,7 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
+
 ## *VBScript*
 
 يقدم *VBScript* بعض الميزات التي لا توفرها *JScript* .
@@ -317,6 +345,7 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
+
 ## *httprequest*
 
 *httprequest* يصدر *http request* .
@@ -326,6 +355,7 @@ const request = require('httprequest')
 const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
+
 
 ## *minitest*
 
@@ -361,7 +391,11 @@ describe('minitest', () => {
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
+
 ### التأكيدات
+
+لا يوجد سوى ثلاث وظائف تأكيد لمقارنة العناصر من أجل البساطة.
+
 
 #### `assert(value, message)` `assert.ok(value, message)`
 
@@ -371,6 +405,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 | :-------- | :-------------------- | :-------------------------- |
 | `value`   | `{Function\|Boolean}` | دالة عائدة منطقية أو منطقية |
 | `message` | `{String}`            | رسالة في حالة الفشل         |
+
 
 #### `assert.equal(expected, actual)`
 
@@ -383,6 +418,7 @@ NaN `true` دالة `NaN === NaN` `function (){} === function (){}` `/RegExp/g =
 | `expected` | `{Any}` | القيمة المتوقعة |
 | `actual`   | `{Any}` | القيمة الفعلية  |
 
+
 #### `assert.throws(value, expected, message)`
 
 تحقق من أن الأخطاء يتم طرحها بشكل صحيح.\
@@ -393,6 +429,7 @@ NaN `true` دالة `NaN === NaN` `function (){} === function (){}` `/RegExp/g =
 | `value`    | `{Error}`                 | خطأ                                                                        |
 | `expected` | `{Error\|String\|RegExp}` | تعبير عادي يقوم بتقييم *constructor* الخطأ أو *message* أو *stack* المتوقع |
 | `message`  | `{String}`                | رسالة في حالة الفشل                                                        |
+
 
 ## *pipe*
 
@@ -418,6 +455,7 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
+
 ## *typecheck*
 
 حدد نوع البرنامج النصي.
@@ -430,6 +468,7 @@ log(() => isNumber(43.5))
 log(() => isBoolean(false))
 log(() => isObject(function(){}))
 ```
+
 
 ## *animate*
 
@@ -487,29 +526,36 @@ animate.register(() => {
 animate.run()
 ```
 
+
 ### `constructor(complete)`
 
 ينفذ الوظيفة `complete` عند اكتمال جميع قوائم الانتظار أو استدعاء `stop()` .
+
 
 #### `static genProgressIndicator(animation)`
 
 قم بإنشاء وظيفة تعرض رسمًا متحركًا للدراجات.
 
+
 #### `register(callback, interval, conditional)`
 
 معالجة التسجيل. يمكن تسجيل عمليات متعددة ومعالجتها بالتوازي. في `callback` ، سنصدر تعليمات بإيقاف الرسوم المتحركة وكتابة العرض المراد عرضه. `interval` يحدد الفاصل الزمني للمعالجة. إذا كانت `conditional` عبارة عن دالة ، فسوف تنفذ `conditional(count, queue)` وإذا كانت النتيجة صحيحة ، فستستمر. ينفذ `conditional` `decrement(count)` إذا كان رقمًا ويستمر إذا كانت النتيجة رقمًا موجبًا. يتم التنفيذ مرة واحدة فقط إذا كان `conditional` غير محدد. لاحظ أن تحديد دالة يؤدي إلى زيادة `count` ، بينما يؤدي تحديد رقم إلى تقليل `count` .
+
 
 #### `stop()`
 
 *animate* .
 
+
 #### `cancel(queue)`
 
 يوقف معالجة قائمة انتظار معينة.
 
+
 #### `run()`
 
 ابدأ الرسوم المتحركة.
+
 
 #### `view`
 
@@ -578,6 +624,7 @@ state.three = animate.register(upload('three', 109, 2), 40, Number.MAX_VALUE)
 animate.run()
 ```
 
+
 ## *getMember*
 
 الحصول على نوع العضو ووصف *COM Object* من *ProgID* .
@@ -587,6 +634,7 @@ const getMember = require('getMember')
 const FileSystemObject = 'Scripting.FileSystemObject'
 console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
 ```
+
 
 ## *zip*
 
@@ -617,9 +665,11 @@ wes zip -p dox.zip
 | `--path`  | `-p`     | `path` أو ملف للدخول   |
 | `--dest`  | `-d`     | ملف مجلد لإخراج `dest` |
 
+
 # تجميع (تغليف) وتثبيت الوحدات
 
 في *wes* ، تسمى حزمة من عدة وحدات حزمة. يمكنك تثبيت الحزمة الخاصة بـ *wes* المنشورة على *github* . مطلوب *github repository* لنشر الحزمة.
+
 
 ## *bundle*
 
@@ -639,6 +689,7 @@ wes zip -p dox.zip
 ```bat
     wes bundle 
 ```
+
 
 ## *install*
 
@@ -666,6 +717,7 @@ wes install @wachaon/fmt
 wes install @wachaon/fmt --bare
 ```
 
+
 # تركيب الحزم من المستودعات الخاصة
 
 يمكن *install* ليس فقط تثبيت الحزم من مستودعات *github* العامة ، ولكن أيضًا الحزم من المستودعات الخاصة. في *install* ، حدد الحزمة مع *@author/repository* . يحاول التنفيذ تنزيل عنوان url التالي.
@@ -680,13 +732,16 @@ wes install @wachaon/fmt --bare
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
+
 # مقدمة الحزمة
 
 فيما يلي بعض الحزم الخارجية.
 
+
 ## *@wachaon/fmt*
 
 *@wachaon/fmt* *wes* *prettier* من أجل تنسيق البرامج النصية. أيضًا ، في حالة حدوث *Syntax Error* أثناء *@wachaon/fmt* ، يمكنك الإشارة إلى موقع الخطأ.
+
 
 ### تثبيت
 
@@ -695,6 +750,7 @@ wes install @wachaon/fmt
 ```
 
 إذا كان هناك *.prettierrc* (تنسيق JSON) في دليل العمل ، فسوف ينعكس في الإعدادات. يتوفر *fmt* في كل من *CLI* *module* .
+
 
 #### استخدام *CLI* .
 
@@ -711,6 +767,7 @@ wes @wachaon/fmt src/sample --write
 | `--write` | `-w`     | السماح بالكتابة |
 
 الكتابة فوق الملف بالبرنامج النصي المنسق إذا تم تحديد الوسيطة `--write` أو `-w` المسماة.
+
 
 #### استخدام كوحدة نمطية
 

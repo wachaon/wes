@@ -18,6 +18,8 @@ Para textos em outros idiomas, selecione uma das opções abaixo.
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
+
+
 # característica
 
 *   Você pode alterar o mecanismo de script para *Chakra* e escrever de acordo com as especificações *ECMAScript2015* .
@@ -28,11 +30,13 @@ Para textos em outros idiomas, selecione uma das opções abaixo.
 *   Módulos de pacote para dar suporte à publicação e recuperação externas
 *   Exiba os detalhes do erro com mais gentileza do que *WSH*
 
+
 # *wes* que não podemos resolver
 
 *   `WScript.Quit` não pode abortar o programa e não retorna um código de erro
 *   O processamento assíncrono não funciona corretamente
 *   Você não pode usar o *event prefix* do segundo argumento de `WScript.CreateObject`
+
 
 # download
 
@@ -48,6 +52,7 @@ Configure o caminho *wes.js* é armazenado apenas em *ascii* . Se você já baix
 ```bat
 wes update
 ```
+
 
 # como começar *wes*
 
@@ -65,6 +70,7 @@ wes
 
 *REP* aceita entrada de script até que você insira duas linhas em branco. Você também pode ver *REP* executando o script de exemplo em *README.md* .
 
+
 ## opções de linha de comando
 
 As opções de inicialização do *wes* são as seguintes.
@@ -77,9 +83,11 @@ As opções de inicialização do *wes* são as seguintes.
 | `--encoding=UTF-8` | Especifica a codificação do primeiro arquivo lido |
 | `--engine=Chakra`  | Esta opção é adicionada automaticamente por *wes* |
 
+
 # sistema de módulos
 
 *wes* suporta dois sistemas de módulos, o sistema *commonjs module* usando `require()` e o sistema de *es module* usando `import` . ( *dynamic import* não é suportada porque é um processo assíncrono)
+
 
 ## *commonjs module*
 
@@ -108,9 +116,10 @@ WScript.Sleep(2000)
 Shell.UndoMinimizeAll()
 ```
 
+
 ## *es module*
 
-*Chakra* , o mecanismo de execução de scripts, interpreta sintaxe como `imoprt` , mas não é executado porque o processamento é indefinido. Em *wes* , adicionando *babel* aos módulos embutidos, os módulos *es module* também são executados enquanto são transpilados um a um. Isso tem um custo de processamento de sobrecarga e um arquivo *wes.js* inchado. Módulos escritos no *es module* também são convertidos para `require()` por transpilação, então é possível chamar *COM Object* . No entanto, ele não suporta especificar a codificação do arquivo de módulo com *es module* . Tudo é carregado automaticamente. Para carregá-lo como um *es module* , defina a extensão para `.mjs` ou defina o campo `"type"` em `package.json` para `"module"` .
+*Chakra* , o mecanismo de execução de scripts, interpreta sintaxe como `imoprt` , mas não é executado no ambiente *cscript* . Em *wes* , adicionando *babel* aos módulos embutidos, os módulos *es module* também são executados enquanto são transpilados sequencialmente. Isso tem um custo de processamento de sobrecarga e um arquivo *wes.js* inchado. Módulos escritos no *es module* também são convertidos para `require()` por transpilação, então é possível chamar *COM Object* . No entanto, ele não suporta especificar a codificação do arquivo de módulo com *es module* . Tudo é carregado automaticamente. Para carregá-lo como um *es module* , defina a extensão para `.mjs` ou defina o campo `"type"` em `package.json` para `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -125,13 +134,16 @@ import sub from './sub.mjs'
 console.log('sub(7, 3) // => %O', sub(7, 3))
 ```
 
+
 # objeto embutido
 
 *wes* tem *built-in objects* internos não encontrados no *WSH (JScript)* .
 
+
 ## *console*
 
 Usamos *console* em vez de *wes* `WScript.Echo()` e `WScript.StdErr.WriteLine()` .
+
 
 ### *console.log*
 
@@ -158,21 +170,26 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 
 `WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` para produzir strings coloridas. `WScript.Echo` e `WScript.StdOut.WriteLine` são saídas bloqueadas. `WScript.StdErr.WriteLine` ou `console.log` .
 
+
 ### *console.print*
 
 `console.log()` normalmente inclui uma nova linha no final, mas `console.print` não.
+
 
 ### *console.debug*
 
 Saída para o console somente se a opção `--debug` estiver habilitada.
 
+
 ### *console.error*
 
 Lance uma exceção com o conteúdo como a mensagem.
 
+
 ### *console.weaklog*
 
 Strings impressas com `console.weaklog()` desaparecem do console se houver alguma saída subsequente. Útil para comutação de saídas.
+
 
 ## *Buffer*
 
@@ -181,16 +198,19 @@ Você pode lidar com buffers.
 ```javascript
 const content = 'Hello World'
 const buff = Buffer.from(content)
-console.log(`${content} %O`, buff)
+console.log('%s %O', content, buff)
 ```
+
 
 ## `__dirname` e `__filename`
 
 `__filename` armazena o caminho do arquivo de módulo atualmente em execução. `__dirname` contém o diretório de `__filename` .
 
 ```javascript
-console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+const message = `dirname: ${__dirname}\nfilename: ${ __filename}`
+console.log(message)
 ```
+
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
@@ -216,9 +236,11 @@ example();
 console.log('end')
 ```
 
+
 # Módulo embutido
 
 *wes* possui *built-in modules* para simplificar e padronizar o processamento básico.
+
 
 ## *ansi*
 
@@ -238,6 +260,7 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
+
 ## *argv*
 
 Obtenha argumentos de linha de comando. Os argumentos de linha de comando do `cscript.exe` declaram argumentos nomeados com `/` , enquanto *wes* declara argumentos nomeados com `-` e `--` . *argv.unnamed* e *argv.named* o tipo de valor do argumento da linha de comando para *String* *Number* *Boolean* . Insira os argumentos da linha de comando com *REP* .
@@ -256,6 +279,7 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
+
 ## *pathname*
 
 Manipular caminhos. Os caminhos que começam com `/` e `\` são geralmente relativos à raiz da unidade. Por exemplo, `/filename` e `C:/filename` podem ser o mesmo caminho. Por motivos de segurança, *wes* interpreta os caminhos que começam com `/` e `\` relativos ao diretório de trabalho.
@@ -265,6 +289,7 @@ const path = require('pathname')
 const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
+
 
 ## *filesystem*
 
@@ -279,9 +304,11 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
+
 ## *chardet*
 
 Estou usando alguns recursos de <https://github.com/runk/node-chardet> . Você pode aumentar a precisão da adivinhação automática aumentando os caracteres específicos da codificação.
+
 
 ## *JScript*
 
@@ -307,6 +334,7 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
+
 ## *VBScript*
 
 *VBScript* oferece alguns recursos que o *JScript* não oferece.
@@ -317,6 +345,7 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
+
 ## *httprequest*
 
 *httprequest* emite uma *http request* .
@@ -326,6 +355,7 @@ const request = require('httprequest')
 const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
+
 
 ## *minitest*
 
@@ -361,7 +391,11 @@ describe('minitest', () => {
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
+
 ### afirmações
+
+Existem apenas três funções de asserção para comparar objetos por simplicidade.
+
 
 #### `assert(value, message)` `assert.ok(value, message)`
 
@@ -371,6 +405,7 @@ Compare com `true` com o operador de igualdade estrita `===` . Se `value` for um
 | :-------- | :-------------------- | :------------------------------------- |
 | `value`   | `{Function\|Boolean}` | função booleana ou de retorno booleano |
 | `message` | `{String}`            | mensagem em caso de falha              |
+
 
 #### `assert.equal(expected, actual)`
 
@@ -383,6 +418,7 @@ Ao comparar classes (objetos), eles devem ter o mesmo construtor ou uma supercla
 | `expected` | `{Any}` | valor esperado |
 | `actual`   | `{Any}` | Valor atual    |
 
+
 #### `assert.throws(value, expected, message)`
 
 Verifique se o erro está sendo lançado corretamente.\
@@ -393,6 +429,7 @@ Se o erro está correto ou não, é determinado se o *constructor* de erro esper
 | `value`    | `{Error}`                 | erro                                                                                     |
 | `expected` | `{Error\|String\|RegExp}` | Uma expressão regular que avalia o *constructor* , *message* ou *stack* de erro esperado |
 | `message`  | `{String}`                | mensagem em caso de falha                                                                |
+
 
 ## *pipe*
 
@@ -418,6 +455,7 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
+
 ## *typecheck*
 
 Determine o tipo de script.
@@ -430,6 +468,7 @@ log(() => isNumber(43.5))
 log(() => isBoolean(false))
 log(() => isObject(function(){}))
 ```
+
 
 ## *animate*
 
@@ -487,29 +526,36 @@ animate.register(() => {
 animate.run()
 ```
 
+
 ### `constructor(complete)`
 
 Executa a função `complete` quando todas as filas são concluídas ou `stop()` é chamado.
+
 
 #### `static genProgressIndicator(animation)`
 
 Gere uma função que exibe uma animação de ciclismo.
 
+
 #### `register(callback, interval, conditional)`
 
 Processamento de registro. Vários processos podem ser registrados e processados ​​em paralelo. No `callback` de chamada, instruiremos a parar a animação e escrever a visualização a ser exibida. `interval` especifica o intervalo de processamento. Se a `conditional` for uma função, ela executará `conditional(count, queue)` e se o resultado for verdadeiro, ela continuará. A `conditional` executa `decrement(count)` se for um número e continua se o resultado for um número positivo. Executa apenas uma vez se a `conditional` for indefinida. Observe que a especificação de uma função aumenta a `count` , enquanto a especificação de um número diminui a `count` .
+
 
 #### `stop()`
 
 *animate* .
 
+
 #### `cancel(queue)`
 
 Suspende o processamento de uma fila específica.
 
+
 #### `run()`
 
 Iniciar animação.
+
 
 #### `view`
 
@@ -578,6 +624,7 @@ state.three = animate.register(upload('three', 109, 2), 40, Number.MAX_VALUE)
 animate.run()
 ```
 
+
 ## *getMember*
 
 Obtenha o tipo de membro e a descrição do *COM Object* do *ProgID* .
@@ -587,6 +634,7 @@ const getMember = require('getMember')
 const FileSystemObject = 'Scripting.FileSystemObject'
 console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
 ```
+
 
 ## *zip*
 
@@ -617,9 +665,11 @@ Se o `path` tem a extensão `.zip` , `unzip()` é processado e não há descriç
 | `--path` | `-p`       | `path` ou arquivo para inserir     |
 | `--dest` | `-d`       | arquivo de pasta para saída `dest` |
 
+
 # Agrupamento (embalagem) e instalação de módulos
 
 Em *wes* , um pacote de vários módulos é chamado de pacote. Você pode instalar o pacote para *wes* publicado no *github* . Um *github repository* é necessário para publicar um pacote.
+
 
 ## *bundle*
 
@@ -639,6 +689,7 @@ Digite o seguinte comando para agrupar: Consulte *package.json* para saber o que
 ```bat
     wes bundle 
 ```
+
 
 ## *install*
 
@@ -666,6 +717,7 @@ wes install @wachaon/fmt
 wes install @wachaon/fmt --bare
 ```
 
+
 # Instalando pacotes de repositórios privados
 
 *install* pode instalar não apenas pacotes de repositórios *github* públicos, mas também pacotes de repositórios privados. Em *install* , especifique o pacote com *@author/repository* . A implementação tenta baixar o seguinte URL.
@@ -680,13 +732,16 @@ Quando você acessar o *raw* do repositório privado com um navegador, o *token*
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
+
 # Introdução do pacote
 
 Aqui estão alguns pacotes externos.
 
+
 ## *@wachaon/fmt*
 
 *@wachaon/fmt* é um pacote *prettier* para o *wes* formatar scripts. Além disso, se ocorrer um *Syntax Error* enquanto *@wachaon/fmt* estiver instalado, você poderá mostrar o local do erro.
+
 
 ### instalar
 
@@ -695,6 +750,7 @@ wes install @wachaon/fmt
 ```
 
 Se houver *.prettierrc* (formato JSON) no diretório de trabalho, isso será refletido nas configurações. *fmt* está disponível na *CLI* e no *module* .
+
 
 #### Use como *CLI* .
 
@@ -711,6 +767,7 @@ wes @wachaon/fmt src/sample --write
 | `--write` | `-w`       | permitir sobrescrever |
 
 Sobrescreva o arquivo com o script formatado se `--write` ou `-w` o argumento nomeado for especificado.
+
 
 #### usar como módulo
 

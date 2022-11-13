@@ -19,6 +19,7 @@
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
+
 # 特徴
 
 *   スクリプトエンジンを *Chakra* に変更して *ECMAScript2015+* の仕様で記述できます
@@ -122,7 +123,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-スクリプトの実行エンジンである *Chakra* は `imoprt` などの構文を解釈しますが、処理が未定義なのか実行されません。
+スクリプトの実行エンジンである *Chakra* は `imoprt` などの構文を解釈しますが、*cscript* 環境では実行されません。
 *wes* では *babel* をビルトインモジュールに加えることで、*es module* に対しても逐次トランスパイルしながら実行しています。そのためコストとして処理のオーバーヘッドと *wes.js* ファイルが肥大化してしまいます。
 *es module* で記述されているモジュールもトランスパイルで `require()` に変換されるため、*COM Object* の呼び出しも可能です。
 しかしながら *es module* でのモジュールファイルのエンコード指定には対応していません。全て自動推測で読み込まれます。
@@ -201,7 +202,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```javascript
 const content = 'Hello World'
 const buff = Buffer.from(content)
-console.log(`${content} %O`, buff)
+console.log('%s %O', content, buff)
 ```
 
 ## `__dirname` and `__filename`
@@ -210,7 +211,8 @@ console.log(`${content} %O`, buff)
 `__dirname` は `__filename` のディレクトリが格納されています。
 
 ```javascript
-console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+const message = `dirname: ${__dirname}\nfilename: ${ __filename}`
+console.log(message)
 ```
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
@@ -401,6 +403,8 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 ```
 
 ### assertion
+
+オブジェクトを比較する為のアサーション関数は単純化のため、3種類のみになります。
 
 #### `assert(value, message)` `assert.ok(value, message)`
 

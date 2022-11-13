@@ -18,6 +18,8 @@
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
+
+
 # особенность
 
 *   Вы можете изменить скриптовый движок на *Chakra* и писать в соответствии со спецификациями *ECMAScript2015* .
@@ -28,11 +30,13 @@
 *   Пакетные модули для поддержки внешней публикации и поиска
 *   Отображение сведений об ошибке более любезно, чем *WSH*
 
+
 # *wes* проблемы, которые мы не можем решить
 
 *   `WScript.Quit` не может прервать программу и не возвращает код ошибки.
 *   Асинхронная обработка работает неправильно
 *   Вы не можете использовать *event prefix* второго аргумента `WScript.CreateObject`
+
 
 # скачать
 
@@ -48,6 +52,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```bat
 wes update
 ```
+
 
 # как начать *wes*
 
@@ -65,6 +70,7 @@ wes
 
 *REP* принимает ввод сценария, пока вы не введете две пустые строки. Вы также можете увидеть, как *REP* запускает пример скрипта в *README.md* .
 
+
 ## параметры командной строки
 
 Варианты запуска *wes* следующие.
@@ -77,9 +83,11 @@ wes
 | `--encoding=UTF-8` | Указывает кодировку первого прочитанного файла                 |
 | `--engine=Chakra`  | Эта опция автоматически добавляется *wes*                      |
 
+
 # модульная система
 
 *wes* поддерживает две модульные системы: *commonjs module* с использованием `require()` и *es module* с использованием `import` . ( *dynamic import* не поддерживается, поскольку это асинхронный процесс)
+
 
 ## *commonjs module*
 
@@ -108,9 +116,10 @@ WScript.Sleep(2000)
 Shell.UndoMinimizeAll()
 ```
 
+
 ## *es module*
 
-*Chakra* , механизм выполнения сценариев, интерпретирует такой синтаксис, как `imoprt` , но не выполняется, поскольку обработка не определена. В *wes* , добавляя *babel* к встроенным модулям, модули *es module* также выполняются при передаче один за другим. Это происходит за счет накладных расходов на обработку и раздутого файла *wes.js* Модули, написанные в *es module* , также преобразуются в `require()` путем транспиляции, поэтому можно вызывать *COM Object* . Однако он не поддерживает указание кодировки файла модуля с помощью *es module* . Все загружается автоматически. Чтобы загрузить его как *es module* , установите расширение `.mjs` или установите для поля `"type"` в `package.json` значение `"module"` .
+*Chakra* , механизм выполнения сценариев, интерпретирует такой синтаксис, как `imoprt` , но не выполняется в среде *cscript* . В *wes* , добавляя *babel* к встроенным модулям, модули *es module* также выполняются при последовательной транспиляции. Это происходит за счет накладных расходов на обработку и раздутого файла *wes.js* Модули, написанные в *es module* , также преобразуются в `require()` путем транспиляции, поэтому можно вызывать *COM Object* . Однако он не поддерживает указание кодировки файла модуля с помощью *es module* . Все загружается автоматически. Чтобы загрузить его как *es module* , установите расширение `.mjs` или установите для поля `"type"` в `package.json` значение `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -125,13 +134,16 @@ import sub from './sub.mjs'
 console.log('sub(7, 3) // => %O', sub(7, 3))
 ```
 
+
 # встроенный объект
 
 *wes* имеет *built-in objects* , которых нет в *WSH (JScript)* .
 
+
 ## *console*
 
 Мы используем *console* вместо *wes* `WScript.Echo()` и `WScript.StdErr.WriteLine()` .
+
 
 ### *console.log*
 
@@ -158,21 +170,26 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 
 `WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine` для вывода цветных строк. `WScript.Echo` и `WScript.StdOut.WriteLine` являются заблокированным выводом. `WScript.StdErr.WriteLine` или `console.log` .
 
+
 ### *console.print*
 
 `console.log()` обычно включает новую строку в конце, а `console.print` — нет.
+
 
 ### *console.debug*
 
 Выводить на консоль, только если включена опция `--debug` .
 
+
 ### *console.error*
 
 Создайте исключение с содержимым в качестве сообщения.
 
+
 ### *console.weaklog*
 
 Строки, напечатанные с помощью `console.weaklog()` , исчезают из консоли, если есть какой-либо последующий вывод. Полезно для переключения выходов.
+
 
 ## *Buffer*
 
@@ -181,16 +198,19 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```javascript
 const content = 'Hello World'
 const buff = Buffer.from(content)
-console.log(`${content} %O`, buff)
+console.log('%s %O', content, buff)
 ```
+
 
 ## `__dirname` и `__filename`
 
 `__filename` хранит путь к текущему исполняемому файлу модуля. `__dirname` содержит каталог `__filename` .
 
 ```javascript
-console.log('dirname: %O\nfilename: %O', __dirname, __filename)
+const message = `dirname: ${__dirname}\nfilename: ${ __filename}`
+console.log(message)
 ```
+
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
@@ -216,9 +236,11 @@ example();
 console.log('end')
 ```
 
+
 # Встроенный модуль
 
 *wes* имеет *built-in modules* для упрощения и стандартизации базовой обработки.
+
 
 ## *ansi*
 
@@ -238,6 +260,7 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
+
 ## *argv*
 
 Получить аргументы командной строки. Аргументы командной строки `cscript.exe` объявляют именованные аргументы с помощью `/` , а *wes* объявляет именованные аргументы с помощью `-` и `--` . *argv.unnamed* и *argv.named* приводят тип значения аргумента командной строки к типу *String* *Number* *Boolean* . Введите аргументы командной строки с помощью *REP* .
@@ -256,6 +279,7 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
+
 ## *pathname*
 
 Манипулировать путями. Пути, начинающиеся с `/` и `\` , обычно относятся к корню диска. Например, `/filename` и `C:/filename` могут быть одним и тем же путем. Из соображений безопасности *wes* интерпретирует пути, начинающиеся с `/` и `\` , относительно рабочего каталога.
@@ -265,6 +289,7 @@ const path = require('pathname')
 const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
+
 
 ## *filesystem*
 
@@ -279,9 +304,11 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
+
 ## *chardet*
 
 Я использую некоторые функции из <https://github.com/runk/node-chardet> . Вы можете повысить точность автоматического угадывания, увеличив количество символов, специфичных для кодировки.
+
 
 ## *JScript*
 
@@ -307,6 +334,7 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
+
 ## *VBScript*
 
 *VBScript* предлагает некоторые функции, которых нет *JScript* .
@@ -317,6 +345,7 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
+
 ## *httprequest*
 
 *httprequest* *http request* .
@@ -326,6 +355,7 @@ const request = require('httprequest')
 const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
+
 
 ## *minitest*
 
@@ -361,7 +391,11 @@ describe('minitest', () => {
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
+
 ### утверждения
+
+Для простоты есть только три функции утверждения для сравнения объектов.
+
 
 #### `assert(value, message)` `assert.ok(value, message)`
 
@@ -371,6 +405,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 | :-------- | :-------------------- | :---------------------------------------------- |
 | `value`   | `{Function\|Boolean}` | логическая или логическая функция, возвращающая |
 | `message` | `{String}`            | сообщение о неудаче                             |
+
 
 #### `assert.equal(expected, actual)`
 
@@ -383,6 +418,7 @@ NaN `true` Функция `NaN === NaN` `function (){} === function (){}` `/RegE
 | `expected` | `{Any}` | ожидаемое значение |
 | `actual`   | `{Any}` | Реальная стоимость |
 
+
 #### `assert.throws(value, expected, message)`
 
 Убедитесь, что ошибки выдаются правильно.\
@@ -393,6 +429,7 @@ NaN `true` Функция `NaN === NaN` `function (){} === function (){}` `/RegE
 | `value`    | `{Error}`                 | ошибка                                                                                    |
 | `expected` | `{Error\|String\|RegExp}` | Регулярное выражение, оценивающее ожидаемый *constructor* ошибок, *message* или *stack* . |
 | `message`  | `{String}`                | сообщение в случае неудачи                                                                |
+
 
 ## *pipe*
 
@@ -418,6 +455,7 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
+
 ## *typecheck*
 
 Определите тип сценария.
@@ -430,6 +468,7 @@ log(() => isNumber(43.5))
 log(() => isBoolean(false))
 log(() => isObject(function(){}))
 ```
+
 
 ## *animate*
 
@@ -487,29 +526,36 @@ animate.register(() => {
 animate.run()
 ```
 
+
 ### `constructor(complete)`
 
 Выполняет `complete` функцию, когда все очереди завершены или вызывается функция `stop()` .
+
 
 #### `static genProgressIndicator(animation)`
 
 Создайте функцию, которая отображает циклическую анимацию.
 
+
 #### `register(callback, interval, conditional)`
 
 Регистрация обработки. Несколько процессов могут быть зарегистрированы и обработаны параллельно. В `callback` мы укажем остановить анимацию и написать представление, которое будет отображаться. `interval` указывает интервал обработки. Если `conditional` является функцией, оно выполнит `conditional(count, queue)` и, если результат верен, продолжится. `conditional` выполняет `decrement(count)` , если это число, и продолжает, если результатом является положительное число. Выполняется только один раз, если `conditional` не определено. Обратите внимание, что указание функции увеличивает `count` , а указание `count` уменьшает его.
+
 
 #### `stop()`
 
 *animate* .
 
+
 #### `cancel(queue)`
 
 Приостанавливает обработку определенной очереди.
 
+
 #### `run()`
 
 Запустить анимацию.
+
 
 #### `view`
 
@@ -578,6 +624,7 @@ state.three = animate.register(upload('three', 109, 2), 40, Number.MAX_VALUE)
 animate.run()
 ```
 
+
 ## *getMember*
 
 Получите тип члена и описание *COM Object* из *ProgID* .
@@ -587,6 +634,7 @@ const getMember = require('getMember')
 const FileSystemObject = 'Scripting.FileSystemObject'
 console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
 ```
+
 
 ## *zip*
 
@@ -617,9 +665,11 @@ wes zip -p dox.zip
 | `--path` | `-p`         | `path` или файл для входа |
 | `--dest` | `-d`         | файл папки для `dest`     |
 
+
 # Комплектация (упаковка) и установка модулей
 
 В *wes* пакет из нескольких модулей называется пакетом. Вы можете установить пакет для *wes* , опубликованный на *github* . Для публикации пакета требуется *github repository* .
+
 
 ## *bundle*
 
@@ -639,6 +689,7 @@ wes zip -p dox.zip
 ```bat
     wes bundle 
 ```
+
 
 ## *install*
 
@@ -666,6 +717,7 @@ wes install @wachaon/fmt
 wes install @wachaon/fmt --bare
 ```
 
+
 # Установка пакетов из приватных репозиториев
 
 *install* может устанавливать не только пакеты из общедоступных репозиториев *github* , но и пакеты из частных репозиториев. В *install* укажите пакет с помощью *@author/repository* . Реализация пытается загрузить следующий URL-адрес.
@@ -680,13 +732,16 @@ wes install @wachaon/fmt --bare
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
+
 # Введение пакета
 
 Вот несколько внешних пакетов.
 
+
 ## *@wachaon/fmt*
 
 *@wachaon/fmt* *wes* *prettier* форматировать скрипты. Кроме того, если во время *@wachaon/fmt* возникает *Syntax Error* , вы можете указать ее местонахождение.
+
 
 ### установить
 
@@ -695,6 +750,7 @@ wes install @wachaon/fmt
 ```
 
 Если в рабочей директории есть *.prettierrc* (формат JSON), это будет отражено в настройках. *fmt* доступен как в *CLI* , так и в *module* .
+
 
 #### Использовать как *CLI* .
 
@@ -711,6 +767,7 @@ wes @wachaon/fmt src/sample --write
 | `--write` | `-w`         | разрешить перезапись |
 
 Перезапишите файл отформатированным сценарием, если `--write` или `-w` .
+
 
 #### использовать как модуль
 
