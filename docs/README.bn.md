@@ -691,7 +691,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
 *@wachaon/fmt* স্ক্রিপ্ট ফর্ম্যাট করার জন্য *prettier* এর জন্য *wes* প্যাকেজ। এছাড়াও, যদি *@wachaon/fmt* ইনস্টল করার সময় একটি *Syntax Error* ঘটে, আপনি ত্রুটির অবস্থান দেখাতে পারেন।
 
-### ইনস্টল
+### *@wachaon/fmt* ইনস্টল করুন
 
 ```bat
 wes install @wachaon/fmt
@@ -723,4 +723,89 @@ const { readTextFileSync, writeTextFileSync } = require('filesystem')
 const { join, workingDirectory } = require('pathname')
 const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
+```
+
+## *@wachaon/edge*
+
+*Internet Explorer* 15 জুন, 2022-এ সমর্থন বন্ধ করবে। সেই সাথে, এটা প্রত্যাশিত যে `require('InternetExplorer.Application')` সহ অ্যাপ্লিকেশন অপারেশনও অসম্ভব হয়ে উঠবে। একটি বিকল্প হল *web driver* মাধ্যমে *Microsoft Edge based on Chromium* সাথে কাজ করা। `@wachaon/edge` *Edge* অটোপাইলটকে সহজ করে।
+
+### *@wachaon/edge* ইনস্টল করুন
+
+প্রথমে প্যাকেজটি ইনস্টল করুন।
+
+```bat
+wes install @wachaon/edge --bare
+```
+
+তারপর *web driver* ডাউনলোড করুন।
+
+```bat
+wes edge --download
+```
+
+ইনস্টল করা *Edge* সংস্করণটি পরীক্ষা করুন এবং সংশ্লিষ্ট *web driver* ডাউনলোড করুন।
+
+### ব্যবহার
+
+এটি ব্যবহার করা সহজ হবে। আপনার ব্রাউজার শুরু করুন এবং https: `https://www.google.com` এ প্রদর্শনের জন্য উইন্ডোর আকার এবং সাইট পরিবর্তন করুন।
+
+```javascript
+const edge = require('edge')
+edge((window, navi, res) => {
+    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
+    res.exports = []
+    navi.on(/https?:\/\/.+/, (url) => {
+        console.log('URL: %O', url)
+        res.exports.push(url)
+    })
+    window.navigate('https://www.google.com')
+})
+```
+
+আপনার ব্রাউজারের *URL* `https://www.yahoo` দিয়ে শুরু না হওয়া পর্যন্ত আমরা আপনার দর্শনের ইতিহাস সংরক্ষণ করি।
+
+```javascript
+const edge = require('/index.js')
+
+const ret = edge((window, navi, res) => {
+    window.rect({
+        x: 1,
+        y: 1,
+        width: 1200,
+        height: 500
+    })
+    res.exports = []
+
+    navi.on(/^https?:\/\/www\.yahoo\b/, (url) => {
+        console.log('finished!')
+        navi.emit('terminate', res, window)
+    })
+
+    navi.on(/https?:\/\/.+/, (url) => {
+        console.log('URL: %O', url)
+        res.exports.push(url)
+    })
+
+    window.navigate('http://www.google.com')
+})
+
+console.log('ret // => %O', ret)
+```
+
+*edge* পরিদর্শন করা *URL* কনসোলে ক্রমানুসারে প্রিন্ট করে। `@wachaon/edge` *URL* এর জন্য ইভেন্ট নিবন্ধন করে এবং `res.exports` ডেটা যোগ করে। নিবন্ধিত করা *URL* টি হয় `String` `RegExp` হতে পারে এবং নমনীয়ভাবে সেট করা যেতে পারে। এটিকে ইভেন্ট-চালিত করে, আপনি অটোপাইলট দিয়ে পরিচালনা করা কঠিন প্রক্রিয়াগুলির জন্য ইভেন্টগুলি সেট না করে সহজেই ম্যানুয়াল অপারেশনে স্যুইচ করতে পারেন। আপনি যদি স্ক্রিপ্টটি বন্ধ করতে চান, তাহলে `navi.emit('terminate', res)` বা *Edge* ম্যানুয়ালি বন্ধ করুন। চূড়ান্তকরণ ডিফল্টরূপে *.json* ফাইল হিসাবে `res.exports` কে আউটপুট করে। আপনি যদি টার্মিনেশন প্রসেসিং সেট করতে চান, তাহলে `edge(callback, terminate)` `terminate` সেট করুন (কলব্যাক, টার্মিনেট)। `window` হল *@wachaon/webdriver* এর *Window* ক্লাসের একটি উদাহরণ, ব্রাউজারের `window` নয়।
+
+## *@wachaon/webdriver*
+
+এটি এমন একটি প্যাকেজ হবে যা ব্রাউজারটি পরিচালনাকারী *web driver* অনুরোধ পাঠায়। *@wachaon/edge* এ নির্মিত। *@wachaon/edge* এর মতো, ব্রাউজার অপারেশনের জন্য একটি পৃথক *web driver* প্রয়োজন।
+
+### *@wachaon/webdriver* ইনস্টল করুন
+
+```bat
+wes install @wachaon/webdriver --unsafe --bare
+```
+
+আপনার কাছে না থাকলে *Chromium* ভিত্তিক *Microsoft Edge* *web driver* ডাউনলোড করুন। এছাড়াও, যদি *edge* সংস্করণ এবং *web driver* সংস্করণ ভিন্ন হয়, *web driver* একই সংস্করণ ডাউনলোড করুন।
+
+```bat
+wes webdriver --download
 ```

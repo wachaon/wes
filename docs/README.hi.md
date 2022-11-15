@@ -691,13 +691,13 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
 *@wachaon/fmt* *wes* के लिए स्क्रिप्ट को फ़ॉर्मैट करने के लिए बेहतर *prettier* से पैक किया गया है। साथ ही, अगर *@wachaon/fmt* इंस्टॉल होने के दौरान *Syntax Error* आता है, तो आप एरर लोकेशन दिखा सकते हैं।
 
-### इंस्टॉल
+### *@wachaon/fmt* इंस्टॉल करें
 
 ```bat
 wes install @wachaon/fmt
 ```
 
-यदि कार्यशील निर्देशिका में *.prettierrc* (JSON प्रारूप) है, तो यह सेटिंग्स में दिखाई देगा। *fmt* *CLI* और *module* दोनों में उपलब्ध है।
+यदि वर्किंग डायरेक्टरी में *.prettierrc* (JSON फॉर्मेट) है, तो यह सेटिंग्स में दिखाई देगा। *fmt* *CLI* और *module* दोनों में उपलब्ध है।
 
 #### *CLI* के रूप में प्रयोग करें।
 
@@ -723,4 +723,89 @@ const { readTextFileSync, writeTextFileSync } = require('filesystem')
 const { join, workingDirectory } = require('pathname')
 const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
+```
+
+## *@wachaon/edge*
+
+*Internet Explorer* 15 जून, 2022 को समर्थन समाप्त कर देगा। इसके साथ ही, यह उम्मीद की जाती है कि `require('InternetExplorer.Application')` साथ एप्लिकेशन ऑपरेशन भी असंभव हो जाएगा। *web driver* के माध्यम से *Microsoft Edge based on Chromium* के साथ काम करने का एक विकल्प होगा। `@wachaon/edge` *Edge* ऑटोपायलट को सरल करता है।
+
+### *@wachaon/edge* स्थापित करें
+
+पहले पैकेज स्थापित करें।
+
+```bat
+wes install @wachaon/edge --bare
+```
+
+फिर *web driver* डाउनलोड करें।
+
+```bat
+wes edge --download
+```
+
+स्थापित *Edge* संस्करण की जाँच करें और संबंधित *web driver* डाउनलोड करें।
+
+### प्रयोग
+
+इसका उपयोग करना आसान होगा। अपना ब्राउज़र प्रारंभ करें और विंडो का आकार और साइट प्रदर्शित करने के लिए `https://www.google.com` पर बदलें।
+
+```javascript
+const edge = require('edge')
+edge((window, navi, res) => {
+    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
+    res.exports = []
+    navi.on(/https?:\/\/.+/, (url) => {
+        console.log('URL: %O', url)
+        res.exports.push(url)
+    })
+    window.navigate('https://www.google.com')
+})
+```
+
+हम आपके विज़िट इतिहास को तब तक संग्रहीत करते हैं जब तक आपके ब्राउज़र का *URL* `https://www.yahoo` से शुरू नहीं हो जाता।
+
+```javascript
+const edge = require('/index.js')
+
+const ret = edge((window, navi, res) => {
+    window.rect({
+        x: 1,
+        y: 1,
+        width: 1200,
+        height: 500
+    })
+    res.exports = []
+
+    navi.on(/^https?:\/\/www\.yahoo\b/, (url) => {
+        console.log('finished!')
+        navi.emit('terminate', res, window)
+    })
+
+    navi.on(/https?:\/\/.+/, (url) => {
+        console.log('URL: %O', url)
+        res.exports.push(url)
+    })
+
+    window.navigate('http://www.google.com')
+})
+
+console.log('ret // => %O', ret)
+```
+
+*edge* विज़िट किए गए *URL* को कंसोल पर क्रम में प्रिंट करता है। `@wachaon/edge` *URL* के लिए ईवेंट पंजीकृत करता है और डेटा को `res.exports` में जोड़ता है। पंजीकृत किया जाने वाला *URL* या तो `String` `RegExp` हो सकता है, और लचीले ढंग से सेट किया जा सकता है। इसे ईवेंट-चालित बनाकर, आप उन प्रक्रियाओं के लिए ईवेंट सेट न करके आसानी से मैन्युअल संचालन पर स्विच कर सकते हैं जिन्हें ऑटोपायलट के साथ संभालना मुश्किल है। यदि आप चाहते हैं कि स्क्रिप्ट रुक जाए, तो `navi.emit('terminate', res)` या *Edge* को मैन्युअल रूप से समाप्त करें। अंतिम रूप से `res.exports` को डिफ़ॉल्ट रूप से *.json* फ़ाइल के रूप में आउटपुट करता है। यदि आप टर्मिनेशन प्रोसेसिंग सेट करना चाहते हैं, तो `terminate` ऑफ `edge(callback, terminate)` सेट करें। `window` *@wachaon/webdriver* की *Window* क्लास का एक उदाहरण है, न कि ब्राउज़र की `window` का।
+
+## *@wachaon/webdriver*
+
+यह एक पैकेज होगा जो ब्राउज़र को संचालित करने वाले *web driver* को अनुरोध भेजता है। *@wachaon/edge* में निर्मित। जैसा कि *@wachaon/edge* के साथ होता है, ब्राउज़र संचालन के लिए एक अलग *web driver* की आवश्यकता होती है।
+
+### *@wachaon/webdriver* इंस्टॉल करें
+
+```bat
+wes install @wachaon/webdriver --unsafe --bare
+```
+
+यदि आपके पास *Chromium* -आधारित *Microsoft Edge* *web driver* नहीं है तो इसे डाउनलोड करें। इसके अलावा, यदि *edge* का संस्करण और *web driver* का संस्करण अलग-अलग हैं, तो वेब *web driver* का एक ही संस्करण डाउनलोड करें।
+
+```bat
+wes webdriver --download
 ```

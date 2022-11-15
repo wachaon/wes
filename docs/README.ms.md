@@ -691,7 +691,7 @@ Berikut adalah beberapa pakej luaran.
 
 *@wachaon/fmt* dibungkus *prettier* untuk *wes* memformat skrip. Selain itu, jika *Syntax Error* berlaku semasa *@wachaon/fmt* dipasang, anda boleh menunjukkan lokasi ralat.
 
-### pasang
+### Pasang *@wachaon/fmt*
 
 ```bat
 wes install @wachaon/fmt
@@ -723,4 +723,89 @@ const { readTextFileSync, writeTextFileSync } = require('filesystem')
 const { join, workingDirectory } = require('pathname')
 const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
+```
+
+## *@wachaon/edge*
+
+*Internet Explorer* akan menamatkan sokongan pada 15 Jun 2022. Seiring dengan itu, operasi aplikasi dengan `require('InternetExplorer.Application')` dijangka juga akan menjadi mustahil. Alternatifnya ialah bekerja dengan *Microsoft Edge based on Chromium* melalui *web driver* . `@wachaon/edge` memudahkan autopilot *Edge* .
+
+### Pasang *@wachaon/edge*
+
+Mula-mula pasang pakej.
+
+```bat
+wes install @wachaon/edge --bare
+```
+
+Kemudian muat turun *web driver* .
+
+```bat
+wes edge --download
+```
+
+Semak versi *Edge* yang dipasang dan muat turun *web driver* yang sepadan .
+
+### Penggunaan
+
+Ia akan menjadi mudah untuk digunakan. Mulakan penyemak imbas anda dan tukar saiz tetingkap dan tapak untuk dipaparkan kepada `https://www.google.com` .
+
+```javascript
+const edge = require('edge')
+edge((window, navi, res) => {
+    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
+    res.exports = []
+    navi.on(/https?:\/\/.+/, (url) => {
+        console.log('URL: %O', url)
+        res.exports.push(url)
+    })
+    window.navigate('https://www.google.com')
+})
+```
+
+Kami menyimpan sejarah lawatan anda sehingga *URL* penyemak imbas anda bermula dengan `https://www.yahoo` .
+
+```javascript
+const edge = require('/index.js')
+
+const ret = edge((window, navi, res) => {
+    window.rect({
+        x: 1,
+        y: 1,
+        width: 1200,
+        height: 500
+    })
+    res.exports = []
+
+    navi.on(/^https?:\/\/www\.yahoo\b/, (url) => {
+        console.log('finished!')
+        navi.emit('terminate', res, window)
+    })
+
+    navi.on(/https?:\/\/.+/, (url) => {
+        console.log('URL: %O', url)
+        res.exports.push(url)
+    })
+
+    window.navigate('http://www.google.com')
+})
+
+console.log('ret // => %O', ret)
+```
+
+*edge* mencetak *URL* yang dilawati ke konsol mengikut urutan. `@wachaon/edge` mendaftarkan acara untuk *URL* dan menambahkan data pada `res.exports` . *URL* untuk didaftarkan boleh sama ada `String` `RegExp` , dan boleh ditetapkan secara fleksibel. Dengan menjadikannya dipacu peristiwa, anda boleh beralih kepada operasi manual dengan mudah dengan tidak menetapkan acara untuk proses yang sukar dikendalikan dengan autopilot. Jika anda mahu skrip berhenti, `navi.emit('terminate', res)` atau tamatkan *Edge* secara manual. Pemuktamadkan output `res.exports` sebagai fail *.json* secara lalai. Jika anda ingin menetapkan pemprosesan penamatan, tetapkan `terminate` `edge(callback, terminate)` . `window` ialah contoh kelas *Window* *@wachaon/webdriver* , bukan window's `window` .
+
+## *@wachaon/webdriver*
+
+Ia akan menjadi pakej yang menghantar permintaan kepada *web driver* yang mengendalikan penyemak imbas. Dibina dalam *@wachaon/edge* . Seperti *@wachaon/edge* , *web driver* yang berasingan diperlukan untuk operasi penyemak imbas.
+
+### Pasang *@wachaon/webdriver*
+
+```bat
+wes install @wachaon/webdriver --unsafe --bare
+```
+
+Muat turun *web driver* *Microsoft Edge* berasaskan *Chromium* jika anda tidak memilikinya. Selain itu, jika versi *edge* dan versi *web driver* adalah berbeza, muat turun versi *web driver* yang sama .
+
+```bat
+wes webdriver --download
 ```

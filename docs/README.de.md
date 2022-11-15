@@ -691,7 +691,7 @@ Hier sind einige externe Pakete.
 
 *@wachaon/fmt* ist *prettier* verpackt, damit *wes* Skripte formatieren können. Wenn während der Installation von *@wachaon/fmt* ein *Syntax Error* auftritt, können Sie außerdem den Ort des Fehlers angeben.
 
-### Installieren
+### Installieren Sie *@wachaon/fmt*
 
 ```bat
 wes install @wachaon/fmt
@@ -723,4 +723,89 @@ const { readTextFileSync, writeTextFileSync } = require('filesystem')
 const { join, workingDirectory } = require('pathname')
 const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
+```
+
+## *@wachaon/edge*
+
+Der Support für *Internet Explorer* endet am 15. Juni 2022. Außerdem wird erwartet, dass der Anwendungsbetrieb mit `require('InternetExplorer.Application')` ebenfalls unmöglich wird. Eine Alternative wäre, mit *Microsoft Edge based on Chromium* über den *web driver* zu arbeiten. `@wachaon/edge` vereinfacht den *Edge* -Autopiloten.
+
+### Installieren Sie *@wachaon/edge*
+
+Installieren Sie zuerst das Paket.
+
+```bat
+wes install @wachaon/edge --bare
+```
+
+Laden Sie dann den *web driver* herunter.
+
+```bat
+wes edge --download
+```
+
+Überprüfen Sie die installierte *Edge* -Version und laden Sie den entsprechenden *web driver* herunter.
+
+### Verwendungszweck
+
+Es wird einfach zu bedienen sein. Starten Sie Ihren Browser und ändern Sie die Fenstergröße und die anzuzeigende Website auf `https://www.google.com` .
+
+```javascript
+const edge = require('edge')
+edge((window, navi, res) => {
+    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
+    res.exports = []
+    navi.on(/https?:\/\/.+/, (url) => {
+        console.log('URL: %O', url)
+        res.exports.push(url)
+    })
+    window.navigate('https://www.google.com')
+})
+```
+
+Wir speichern Ihren Besuchsverlauf, bis die *URL* Ihres Browsers mit `https://www.yahoo` beginnt.
+
+```javascript
+const edge = require('/index.js')
+
+const ret = edge((window, navi, res) => {
+    window.rect({
+        x: 1,
+        y: 1,
+        width: 1200,
+        height: 500
+    })
+    res.exports = []
+
+    navi.on(/^https?:\/\/www\.yahoo\b/, (url) => {
+        console.log('finished!')
+        navi.emit('terminate', res, window)
+    })
+
+    navi.on(/https?:\/\/.+/, (url) => {
+        console.log('URL: %O', url)
+        res.exports.push(url)
+    })
+
+    window.navigate('http://www.google.com')
+})
+
+console.log('ret // => %O', ret)
+```
+
+*edge* gibt die besuchten *URL* der Reihe nach auf der Konsole aus. `@wachaon/edge` registriert Ereignisse für *URL* und fügt Daten zu `res.exports` hinzu. Die zu registrierende *URL* kann entweder `String` `RegExp` sein und kann flexibel festgelegt werden. Indem Sie es ereignisgesteuert machen, können Sie einfach auf manuellen Betrieb umschalten, indem Sie keine Ereignisse für Prozesse festlegen, die mit Autopilot schwierig zu handhaben sind. Wenn Sie möchten, dass das Skript beendet wird, `navi.emit('terminate', res)` oder beenden Sie *Edge* manuell. Die Finalisierung gibt `res.exports` als *.json* -Datei aus. Wenn Sie die Beendigungsverarbeitung festlegen möchten, setzen Sie „ `terminate` of `edge(callback, terminate)` . `window` ist eine Instanz der *Window* -Klasse von *@wachaon/webdriver* , nicht das `window` des Browsers.
+
+## *@wachaon/webdriver*
+
+Es wird ein Paket sein, das Anfragen an den *web driver* sendet, der den Browser betreibt. Eingebaut in *@wachaon/edge* . Wie bei *@wachaon/edge* wird für den Browserbetrieb ein separater *web driver* benötigt.
+
+### Installieren Sie *@wachaon/webdriver*
+
+```bat
+wes install @wachaon/webdriver --unsafe --bare
+```
+
+Laden Sie den *Chromium* -basierten *Microsoft Edge* *web driver* herunter, wenn Sie ihn nicht haben. Wenn die Version von *edge* und die Version des *web driver* unterschiedlich sind, laden Sie dieselbe Version des *web driver* herunter.
+
+```bat
+wes webdriver --download
 ```

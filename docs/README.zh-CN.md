@@ -691,7 +691,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
 *@wachaon/fmt* *prettier*地打包为*wes*格式化脚本。此外，如果在安装*@wachaon/fmt*时出现*Syntax Error* ，您可以指出错误的位置。
 
-### 安装
+### 安装*@wachaon/fmt*
 
 ```bat
 wes install @wachaon/fmt
@@ -723,4 +723,89 @@ const { readTextFileSync, writeTextFileSync } = require('filesystem')
 const { join, workingDirectory } = require('pathname')
 const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
+```
+
+## *@wachaon/edge*
+
+*Internet Explorer*将于 2022 年 6 月 15 日终止支持。与此同时，预计使用`require('InternetExplorer.Application')`应用程序操作也将变得不可能。另一种方法是通过*web driver*使用*Microsoft Edge based on Chromium* 。 `@wachaon/edge`简化了*Edge*自动驾驶仪。
+
+### 安装*@wachaon/edge*
+
+首先安装软件包。
+
+```bat
+wes install @wachaon/edge --bare
+```
+
+然后下载*web driver* 。
+
+```bat
+wes edge --download
+```
+
+检查已安装的*Edge*版本并下载相应的*web driver* 。
+
+### 用法
+
+这将很容易使用。启动浏览器并将窗口大小和要显示的站点更改为`https://www.google.com` 。
+
+```javascript
+const edge = require('edge')
+edge((window, navi, res) => {
+    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
+    res.exports = []
+    navi.on(/https?:\/\/.+/, (url) => {
+        console.log('URL: %O', url)
+        res.exports.push(url)
+    })
+    window.navigate('https://www.google.com')
+})
+```
+
+我们会存储您的访问历史记录，直到您的浏览器*URL*以`https://www.yahoo`开头。
+
+```javascript
+const edge = require('/index.js')
+
+const ret = edge((window, navi, res) => {
+    window.rect({
+        x: 1,
+        y: 1,
+        width: 1200,
+        height: 500
+    })
+    res.exports = []
+
+    navi.on(/^https?:\/\/www\.yahoo\b/, (url) => {
+        console.log('finished!')
+        navi.emit('terminate', res, window)
+    })
+
+    navi.on(/https?:\/\/.+/, (url) => {
+        console.log('URL: %O', url)
+        res.exports.push(url)
+    })
+
+    window.navigate('http://www.google.com')
+})
+
+console.log('ret // => %O', ret)
+```
+
+*edge*按顺序将访问的*URL*打印到控制台。 `@wachaon/edge`为*URL*注册事件并将数据添加到`res.exports` 。要注册的*URL*可以是`String` `RegExp` ，可以灵活设置。通过使其成为事件驱动，您可以通过不为自动驾驶难以处理的流程设置事件来轻松切换到手动操作。如果您希望脚本停止， `navi.emit('terminate', res)`或手动终止*Edge* 。 Finalization 默认将`res.exports`输出为*.json*文件。如果要设置`terminate`处理，请设置`edge(callback, terminate)`的终止。 `window`是*@wachaon/webdriver*的*Window*类的实例，而不是浏览器的`window` 。
+
+## *@wachaon/webdriver*
+
+它将是一个向运行浏览器的*web driver*发送请求的包。内置*@wachaon/edge* 。与*@wachaon/edge* ，浏览器操作需要一个单独的*web driver* 。
+
+### 安装*@wachaon/webdriver*
+
+```bat
+wes install @wachaon/webdriver --unsafe --bare
+```
+
+如果没有，请下载基于*Chromium*的*Microsoft Edge* *web driver* 。另外，如果*edge*版本和*web driver*版本不同，请下载相同版本的*web driver* 。
+
+```bat
+wes webdriver --download
 ```

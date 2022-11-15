@@ -691,13 +691,13 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
 *@wachaon/fmt* *wes* *prettier* من أجل تنسيق البرامج النصية. أيضًا ، في حالة حدوث *Syntax Error* أثناء *@wachaon/fmt* ، يمكنك الإشارة إلى موقع الخطأ.
 
-### تثبيت
+### قم بتثبيت *@wachaon/fmt*
 
 ```bat
 wes install @wachaon/fmt
 ```
 
-إذا كان هناك *.prettierrc* (تنسيق JSON) في دليل العمل ، فسوف ينعكس في الإعدادات. يتوفر *fmt* في كل من *CLI* *module* .
+إذا كان هناك تنسيق *.prettierrc* (تنسيق JSON) في دليل العمل ، فسوف ينعكس في الإعدادات. يتوفر *fmt* في كل من *CLI* *module* .
 
 #### استخدام *CLI* .
 
@@ -723,4 +723,89 @@ const { readTextFileSync, writeTextFileSync } = require('filesystem')
 const { join, workingDirectory } = require('pathname')
 const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
+```
+
+## *@wachaon/edge*
+
+سينهي *Internet Explorer* الدعم في 15 يونيو 2022. إلى جانب ذلك ، من المتوقع أن تصبح عملية التطبيق باستخدام `require('InternetExplorer.Application')` مستحيلة أيضًا. سيكون البديل هو العمل مع *Microsoft Edge based on Chromium* عبر *web driver* . `@wachaon/edge` يبسط الطيار الآلي *Edge* .
+
+### قم بتثبيت *@wachaon/edge*
+
+قم أولاً بتثبيت الحزمة.
+
+```bat
+wes install @wachaon/edge --bare
+```
+
+ثم قم بتنزيل *web driver* .
+
+```bat
+wes edge --download
+```
+
+تحقق من إصدار *Edge* المثبت وقم بتنزيل *web driver* المقابل.
+
+### إستعمال
+
+سيكون سهل الاستخدام. ابدأ المتصفح وغيّر حجم النافذة والموقع المراد عرضه على `https://www.google.com` .
+
+```javascript
+const edge = require('edge')
+edge((window, navi, res) => {
+    window.rect({x: 1 ,y: 1, width: 1200, height: 500})
+    res.exports = []
+    navi.on(/https?:\/\/.+/, (url) => {
+        console.log('URL: %O', url)
+        res.exports.push(url)
+    })
+    window.navigate('https://www.google.com')
+})
+```
+
+نقوم بتخزين محفوظات زيارتك حتى يبدأ *URL* لمتصفحك بـ `https://www.yahoo` .
+
+```javascript
+const edge = require('/index.js')
+
+const ret = edge((window, navi, res) => {
+    window.rect({
+        x: 1,
+        y: 1,
+        width: 1200,
+        height: 500
+    })
+    res.exports = []
+
+    navi.on(/^https?:\/\/www\.yahoo\b/, (url) => {
+        console.log('finished!')
+        navi.emit('terminate', res, window)
+    })
+
+    navi.on(/https?:\/\/.+/, (url) => {
+        console.log('URL: %O', url)
+        res.exports.push(url)
+    })
+
+    window.navigate('http://www.google.com')
+})
+
+console.log('ret // => %O', ret)
+```
+
+تطبع *edge* *URL* التي تمت زيارتها إلى وحدة التحكم بالترتيب. `@wachaon/edge` الأحداث *URL* ويضيف البيانات إلى `res.exports` . يمكن أن يكون *URL* المراد تسجيله إما `String` `RegExp` ، ويمكن تعيينه بمرونة. من خلال جعلها مدفوعة بالأحداث ، يمكنك التبديل بسهولة إلى التشغيل اليدوي من خلال عدم تعيين أحداث للعمليات التي يصعب التعامل معها باستخدام الطيار الآلي. إذا كنت تريد أن يتوقف البرنامج النصي ، `navi.emit('terminate', res)` أو إنهاء *Edge* يدويًا. ينتج عن `res.exports` كملف *.json* افتراضيًا. إذا كنت ترغب في تعيين معالجة الإنهاء ، فقم بتعيين `terminate` `edge(callback, terminate)` . `window` هو مثيل لفئة *Window* *@wachaon/webdriver* ، وليس `window` المتصفح.
+
+## *@wachaon/webdriver*
+
+ستكون حزمة ترسل الطلبات إلى *web driver* الذي يقوم بتشغيل المتصفح. بني في *@wachaon/edge* . كما هو الحال مع *@wachaon/edge* ، يلزم وجود *web driver* منفصل لعمليات المتصفح.
+
+### قم بتثبيت *@wachaon/webdriver*
+
+```bat
+wes install @wachaon/webdriver --unsafe --bare
+```
+
+قم بتنزيل *web driver* *Microsoft Edge* المستند إلى *Chromium* إذا لم يكن لديك. أيضًا ، إذا كان إصدار *edge* وإصدار *web driver* مختلفين ، فقم بتنزيل الإصدار نفسه من *web driver* .
+
+```bat
+wes webdriver --download
 ```
