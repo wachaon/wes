@@ -727,27 +727,27 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 ## *@wachaon/edge*
 
-*Internet Explorer*将于 2022 年 6 月 15 日终止支持。与此同时，预计使用`require('InternetExplorer.Application')`应用程序操作也将变得不可能。另一种方法是通过*web driver*使用*Microsoft Edge based on Chromium* 。 `@wachaon/edge`简化了*Edge*自动驾驶仪。
+*Internet Explorer*将于 2022 年 6 月 15 日终止支持。与此同时，预计使用`require('InternetExplorer.Application')`应用程序操作也将变得不可能。另一种方法是通过*web driver(msedgedriver.exe)*运行*Microsoft Edge based on Chromium* 。 `@wachaon/edge`简化了*Edge*自动驾驶仪。
 
 ### 安装*@wachaon/edge*
 
-首先安装软件包。
+首先安装包。
 
 ```bat
 wes install @wachaon/edge --bare
 ```
 
-然后下载*web driver* 。
+然后下载*web driver(msedgedriver.exe)* 。
 
 ```bat
 wes edge --download
 ```
 
-检查已安装的*Edge*版本并下载相应的*web driver* 。
+查看安装的*Edge*版本，下载对应的*web driver* 。
 
-### 用法
+### 如何使用*@wachaon/edge*
 
-这将很容易使用。启动浏览器并将窗口大小和要显示的站点更改为`https://www.google.com` 。
+它将易于使用。启动浏览器并将窗口大小和要显示的站点更改为`https://www.google.com` 。
 
 ```javascript
 const edge = require('edge')
@@ -762,7 +762,7 @@ edge((window, navi, res) => {
 })
 ```
 
-我们会存储您的访问历史记录，直到您的浏览器*URL*以`https://www.yahoo`开头。
+我们会存储您的访问历史记录，直到您的浏览器的*URL*以`https://www.yahoo`开头。
 
 ```javascript
 const edge = require('/index.js')
@@ -792,20 +792,49 @@ const ret = edge((window, navi, res) => {
 console.log('ret // => %O', ret)
 ```
 
-*edge*按顺序将访问的*URL*打印到控制台。 `@wachaon/edge`为*URL*注册事件并将数据添加到`res.exports` 。要注册的*URL*可以是`String` `RegExp` ，可以灵活设置。通过使其成为事件驱动，您可以通过不为自动驾驶难以处理的流程设置事件来轻松切换到手动操作。如果您希望脚本停止， `navi.emit('terminate', res)`或手动终止*Edge* 。 Finalization 默认将`res.exports`输出为*.json*文件。如果要设置`terminate`处理，请设置`edge(callback, terminate)`的终止。 `window`是*@wachaon/webdriver*的*Window*类的实例，而不是浏览器的`window` 。
+*edge*按顺序将访问过的*URL*打印到控制台。 `@wachaon/edge`为*URL*注册事件并将数据添加到`res.exports` 。注册的*URL*可以是`String` `RegExp` ，可以灵活设置。通过使其成为事件驱动，您可以通过不为自动驾驶仪难以处理的流程设置事件来轻松切换到手动操作。如果您希望脚本停止， `navi.emit('terminate', res)`或手动终止*Edge* 。默认情况下，终结将*.json*输出为`res.exports`文件。如果要设置终止处理，请设置`terminate` of `edge(callback, terminate)` 。 `window`是*@wachaon/webdriver*的*Window*类的实例，而不是浏览器的`window` 。
 
 ## *@wachaon/webdriver*
 
-它将是一个向运行浏览器的*web driver*发送请求的包。内置*@wachaon/edge* 。与*@wachaon/edge* ，浏览器操作需要一个单独的*web driver* 。
+它将是一个向运行浏览器的*web driver*发送请求的包。 *@wachaon/edge*包括*@wachaon/webdriver* 。
 
 ### 安装*@wachaon/webdriver*
 
 ```bat
-wes install @wachaon/webdriver --unsafe --bare
+wes install @wachaon/webdriver --bare
 ```
 
-如果没有，请下载基于*Chromium*的*Microsoft Edge* *web driver* 。另外，如果*edge*版本和*web driver*版本不同，请下载相同版本的*web driver* 。
+如果没有基于*Chromium*的*Microsoft Edge* *web driver(msedgedriver.exe)* ，请下载它。另外，如果*edge*的版本和*web driver(msedgedriver.exe)*的版本不同，请下载相同版本的*web driver(msedgedriver.exe)* 。
 
 ```bat
 wes webdriver --download
+```
+
+### 如何使用*@wachaon/webdriver*
+
+转到[*yahoo JAPAN*](https://www.yahoo.co.jp/)站点并保存特定块元素的屏幕截图。
+
+```javascript
+const { Window } = require('webdriver')
+const { writeFileSync } = require('filesystem')
+const { resolve, WorkingDirectory } = require('pathname')
+const genGUID = require('genGUID')
+
+const window = new Window
+const { document } = window
+window.rect({
+    x: 0,
+    y: 0,
+    width: 1280,
+    height: 600
+})
+window.navigate('https://www.yahoo.co.jp/')
+
+const [elm] = document.querySelectorAll('#ContentWrapper > main > div:nth-child(2)')
+const screen = elm.takeScreenShot()
+
+const spec = resolve(WorkingDirectory, 'dev', genGUID() + '.png')
+console.log(writeFileSync(spec, screen))
+
+window.quit()
 ```

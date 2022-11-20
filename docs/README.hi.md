@@ -727,9 +727,9 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 ## *@wachaon/edge*
 
-*Internet Explorer* 15 जून, 2022 को समर्थन समाप्त कर देगा। इसके साथ ही, यह उम्मीद की जाती है कि `require('InternetExplorer.Application')` साथ एप्लिकेशन ऑपरेशन भी असंभव हो जाएगा। *web driver* के माध्यम से *Microsoft Edge based on Chromium* के साथ काम करने का एक विकल्प होगा। `@wachaon/edge` *Edge* ऑटोपायलट को सरल करता है।
+*Internet Explorer* 15 जून, 2022 को समर्थन समाप्त कर देगा। इसके साथ ही, यह उम्मीद की जाती है कि `require('InternetExplorer.Application')` साथ एप्लिकेशन ऑपरेशन भी असंभव हो जाएगा। *web driver(msedgedriver.exe)* के माध्यम से *Microsoft Edge based on Chromium* को संचालित करने का एक विकल्प होगा। `@wachaon/edge` *Edge* ऑटोपायलट को सरल करता है।
 
-### *@wachaon/edge* स्थापित करें
+### *@wachaon/edge* इंस्टॉल करें
 
 पहले पैकेज स्थापित करें।
 
@@ -737,17 +737,17 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 wes install @wachaon/edge --bare
 ```
 
-फिर *web driver* डाउनलोड करें।
+फिर *web driver(msedgedriver.exe)* डाउनलोड करें।
 
 ```bat
 wes edge --download
 ```
 
-स्थापित *Edge* संस्करण की जाँच करें और संबंधित *web driver* डाउनलोड करें।
+इंस्टॉल किए गए *Edge* संस्करण की जांच करें और संबंधित *web driver* डाउनलोड करें।
 
-### प्रयोग
+### *@wachaon/edge* का उपयोग कैसे करें
 
-इसका उपयोग करना आसान होगा। अपना ब्राउज़र प्रारंभ करें और विंडो का आकार और साइट प्रदर्शित करने के लिए `https://www.google.com` पर बदलें।
+इसे इस्तेमाल करना आसान होगा। अपना ब्राउज़र प्रारंभ करें और प्रदर्शित करने के लिए विंडो का आकार और साइट बदलकर `https://www.google.com` कर दें.
 
 ```javascript
 const edge = require('edge')
@@ -762,7 +762,7 @@ edge((window, navi, res) => {
 })
 ```
 
-हम आपके विज़िट इतिहास को तब तक संग्रहीत करते हैं जब तक आपके ब्राउज़र का *URL* `https://www.yahoo` से शुरू नहीं हो जाता।
+हम आपके विज़िट इतिहास को तब तक संग्रहीत करते हैं जब तक कि आपके ब्राउज़र का *URL* `https://www.yahoo` से प्रारंभ नहीं होता.
 
 ```javascript
 const edge = require('/index.js')
@@ -792,20 +792,49 @@ const ret = edge((window, navi, res) => {
 console.log('ret // => %O', ret)
 ```
 
-*edge* विज़िट किए गए *URL* को कंसोल पर क्रम में प्रिंट करता है। `@wachaon/edge` *URL* के लिए ईवेंट पंजीकृत करता है और डेटा को `res.exports` में जोड़ता है। पंजीकृत किया जाने वाला *URL* या तो `String` `RegExp` हो सकता है, और लचीले ढंग से सेट किया जा सकता है। इसे ईवेंट-चालित बनाकर, आप उन प्रक्रियाओं के लिए ईवेंट सेट न करके आसानी से मैन्युअल संचालन पर स्विच कर सकते हैं जिन्हें ऑटोपायलट के साथ संभालना मुश्किल है। यदि आप चाहते हैं कि स्क्रिप्ट रुक जाए, तो `navi.emit('terminate', res)` या *Edge* को मैन्युअल रूप से समाप्त करें। अंतिम रूप से `res.exports` को डिफ़ॉल्ट रूप से *.json* फ़ाइल के रूप में आउटपुट करता है। यदि आप टर्मिनेशन प्रोसेसिंग सेट करना चाहते हैं, तो `terminate` ऑफ `edge(callback, terminate)` सेट करें। `window` *@wachaon/webdriver* की *Window* क्लास का एक उदाहरण है, न कि ब्राउज़र की `window` का।
+*edge* विज़िट किए गए *URL* को क्रम में कंसोल पर प्रिंट करता है। `@wachaon/edge` *URL* के लिए ईवेंट पंजीकृत करता है और `res.exports` में डेटा जोड़ता है। पंजीकृत किया जाने वाला *URL* या तो `String` `RegExp` हो सकता है, और लचीले ढंग से सेट किया जा सकता है। इसे ईवेंट-संचालित बनाकर, आप उन प्रक्रियाओं के लिए ईवेंट सेट न करके आसानी से मैन्युअल ऑपरेशन पर स्विच कर सकते हैं, जिन्हें ऑटोपायलट से हैंडल करना मुश्किल है। यदि आप चाहते हैं कि स्क्रिप्ट बंद हो जाए, तो `navi.emit('terminate', res)` या मैन्युअल रूप से *Edge* को समाप्त करें। अंतिमकरण डिफ़ॉल्ट रूप से `res.exports` को *.json* फ़ाइल के रूप में आउटपुट करता है। यदि आप `terminate` प्रोसेसिंग सेट करना चाहते हैं, तो `edge(callback, terminate)` का टर्मिनेट सेट करें। `window` *@wachaon/webdriver* के *Window* क्लास का एक उदाहरण है, न कि ब्राउज़र का `window` ।
 
 ## *@wachaon/webdriver*
 
-यह एक पैकेज होगा जो ब्राउज़र को संचालित करने वाले *web driver* को अनुरोध भेजता है। *@wachaon/edge* में निर्मित। जैसा कि *@wachaon/edge* के साथ होता है, ब्राउज़र संचालन के लिए एक अलग *web driver* की आवश्यकता होती है।
+यह एक पैकेज होगा जो ब्राउज़र को संचालित करने वाले *web driver* को अनुरोध भेजता है। *@wachaon/edge* में *@wachaon/webdriver* शामिल है।
 
 ### *@wachaon/webdriver* इंस्टॉल करें
 
 ```bat
-wes install @wachaon/webdriver --unsafe --bare
+wes install @wachaon/webdriver --bare
 ```
 
-यदि आपके पास *Chromium* -आधारित *Microsoft Edge* *web driver* नहीं है तो इसे डाउनलोड करें। इसके अलावा, यदि *edge* का संस्करण और *web driver* का संस्करण अलग-अलग हैं, तो वेब *web driver* का एक ही संस्करण डाउनलोड करें।
+यदि आपके पास *Chromium* -आधारित *Microsoft Edge* *web driver(msedgedriver.exe)* नहीं है, तो उसे डाउनलोड करें। साथ ही, यदि *edge* का संस्करण और *web driver(msedgedriver.exe)* भिन्न हैं, तो *web driver(msedgedriver.exe)* ड्राइवर (msedgedriver.exe) का समान संस्करण डाउनलोड करें।
 
 ```bat
 wes webdriver --download
+```
+
+### *@wachaon/webdriver* का उपयोग कैसे करें
+
+[*yahoo JAPAN*](https://www.yahoo.co.jp/) साइट पर जाएं और एक विशिष्ट ब्लॉक तत्व का स्क्रीनशॉट सहेजें।
+
+```javascript
+const { Window } = require('webdriver')
+const { writeFileSync } = require('filesystem')
+const { resolve, WorkingDirectory } = require('pathname')
+const genGUID = require('genGUID')
+
+const window = new Window
+const { document } = window
+window.rect({
+    x: 0,
+    y: 0,
+    width: 1280,
+    height: 600
+})
+window.navigate('https://www.yahoo.co.jp/')
+
+const [elm] = document.querySelectorAll('#ContentWrapper > main > div:nth-child(2)')
+const screen = elm.takeScreenShot()
+
+const spec = resolve(WorkingDirectory, 'dev', genGUID() + '.png')
+console.log(writeFileSync(spec, screen))
+
+window.quit()
 ```

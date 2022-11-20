@@ -727,7 +727,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 ## *@wachaon/edge*
 
-*Internet Explorer* will end support on June 15, 2022. Along with that, it is expected that application operation with `require('InternetExplorer.Application')` will also become impossible. An alternative would be to work with *Microsoft Edge based on Chromium* via the *web driver* . `@wachaon/edge` simplifies *Edge* autopilot.
+*Internet Explorer* will end support on June 15, 2022. Along with that, it is expected that application operation with `require('InternetExplorer.Application')` will also become impossible. An alternative would be to operate *Microsoft Edge based on Chromium* via the *web driver(msedgedriver.exe)* . `@wachaon/edge` simplifies *Edge* autopilot.
 
 ### Install *@wachaon/edge*
 
@@ -737,15 +737,15 @@ First install the package.
 wes install @wachaon/edge --bare
 ```
 
-Then download the *web driver* .
+Then download the *web driver(msedgedriver.exe)* .
 
 ```bat
 wes edge --download
 ```
 
-Check the version of *Edge* installed and download the corresponding *web driver* .
+Check the installed *Edge* version and download the corresponding *web driver* .
 
-### Usage
+### How to use *@wachaon/edge*
 
 It will be easy to use. Start your browser and change the window size and the site to display to `https://www.google.com` .
 
@@ -796,16 +796,45 @@ console.log('ret // => %O', ret)
 
 ## *@wachaon/webdriver*
 
-It will be a package that sends requests to the *web driver* that operates the browser. Built in *@wachaon/edge* . As with *@wachaon/edge* , a separate *web driver* is required for browser operation.
+It will be a package that sends requests to the *web driver* that operates the browser. *@wachaon/edge* includes *@wachaon/webdriver* .
 
 ### Install *@wachaon/webdriver*
 
 ```bat
-wes install @wachaon/webdriver --unsafe --bare
+wes install @wachaon/webdriver --bare
 ```
 
-Download the *Chromium* -based *Microsoft Edge* *web driver* if you don't have it. Also, if the version of *edge* and the version of *web driver* are different, download the same version of *web driver* .
+Download the *Chromium* -based *Microsoft Edge* *web driver(msedgedriver.exe)* if you don't have it. Also, if the version of *edge* and the version of *web driver(msedgedriver.exe)* are different, download the same version of *web driver(msedgedriver.exe)* .
 
 ```bat
 wes webdriver --download
+```
+
+### How to use *@wachaon/webdriver*
+
+Go to the [*yahoo JAPAN*](https://www.yahoo.co.jp/) site and save a screenshot of a specific block element.
+
+```javascript
+const { Window } = require('webdriver')
+const { writeFileSync } = require('filesystem')
+const { resolve, WorkingDirectory } = require('pathname')
+const genGUID = require('genGUID')
+
+const window = new Window
+const { document } = window
+window.rect({
+    x: 0,
+    y: 0,
+    width: 1280,
+    height: 600
+})
+window.navigate('https://www.yahoo.co.jp/')
+
+const [elm] = document.querySelectorAll('#ContentWrapper > main > div:nth-child(2)')
+const screen = elm.takeScreenShot()
+
+const spec = resolve(WorkingDirectory, 'dev', genGUID() + '.png')
+console.log(writeFileSync(spec, screen))
+
+window.quit()
 ```

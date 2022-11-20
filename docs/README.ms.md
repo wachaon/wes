@@ -727,7 +727,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 ## *@wachaon/edge*
 
-*Internet Explorer* akan menamatkan sokongan pada 15 Jun 2022. Seiring dengan itu, operasi aplikasi dengan `require('InternetExplorer.Application')` dijangka juga akan menjadi mustahil. Alternatifnya ialah bekerja dengan *Microsoft Edge based on Chromium* melalui *web driver* . `@wachaon/edge` memudahkan autopilot *Edge* .
+*Internet Explorer* akan menamatkan sokongan pada 15 Jun 2022. Seiring dengan itu, operasi aplikasi dengan `require('InternetExplorer.Application')` dijangka juga akan menjadi mustahil. Alternatifnya ialah dengan mengendalikan *Microsoft Edge based on Chromium* melalui *web driver(msedgedriver.exe)* . `@wachaon/edge` memudahkan autopilot *Edge* .
 
 ### Pasang *@wachaon/edge*
 
@@ -737,7 +737,7 @@ Mula-mula pasang pakej.
 wes install @wachaon/edge --bare
 ```
 
-Kemudian muat turun *web driver* .
+Kemudian muat turun *web driver(msedgedriver.exe)* .
 
 ```bat
 wes edge --download
@@ -745,7 +745,7 @@ wes edge --download
 
 Semak versi *Edge* yang dipasang dan muat turun *web driver* yang sepadan .
 
-### Penggunaan
+### Cara menggunakan *@wachaon/edge*
 
 Ia akan menjadi mudah untuk digunakan. Mulakan penyemak imbas anda dan tukar saiz tetingkap dan tapak untuk dipaparkan kepada `https://www.google.com` .
 
@@ -796,16 +796,45 @@ console.log('ret // => %O', ret)
 
 ## *@wachaon/webdriver*
 
-Ia akan menjadi pakej yang menghantar permintaan kepada *web driver* yang mengendalikan penyemak imbas. Dibina dalam *@wachaon/edge* . Seperti *@wachaon/edge* , *web driver* yang berasingan diperlukan untuk operasi penyemak imbas.
+Ia akan menjadi pakej yang menghantar permintaan kepada *web driver* yang mengendalikan penyemak imbas. *@wachaon/edge* termasuk *@wachaon/webdriver* .
 
 ### Pasang *@wachaon/webdriver*
 
 ```bat
-wes install @wachaon/webdriver --unsafe --bare
+wes install @wachaon/webdriver --bare
 ```
 
-Muat turun *web driver* *Microsoft Edge* berasaskan *Chromium* jika anda tidak memilikinya. Selain itu, jika versi *edge* dan versi *web driver* adalah berbeza, muat turun versi *web driver* yang sama .
+Muat turun pemacu web *Microsoft Edge* berasaskan *Chromium* *web driver(msedgedriver.exe)* jika anda tidak memilikinya. Juga, jika versi *edge* dan versi *web driver(msedgedriver.exe)* adalah berbeza, muat turun versi *web driver(msedgedriver.exe)* .
 
 ```bat
 wes webdriver --download
+```
+
+### Cara menggunakan *@wachaon/webdriver*
+
+Pergi ke tapak [*yahoo JAPAN*](https://www.yahoo.co.jp/) dan simpan tangkapan skrin elemen blok tertentu.
+
+```javascript
+const { Window } = require('webdriver')
+const { writeFileSync } = require('filesystem')
+const { resolve, WorkingDirectory } = require('pathname')
+const genGUID = require('genGUID')
+
+const window = new Window
+const { document } = window
+window.rect({
+    x: 0,
+    y: 0,
+    width: 1280,
+    height: 600
+})
+window.navigate('https://www.yahoo.co.jp/')
+
+const [elm] = document.querySelectorAll('#ContentWrapper > main > div:nth-child(2)')
+const screen = elm.takeScreenShot()
+
+const spec = resolve(WorkingDirectory, 'dev', genGUID() + '.png')
+console.log(writeFileSync(spec, screen))
+
+window.quit()
 ```

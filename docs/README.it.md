@@ -727,7 +727,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 ## *@wachaon/edge*
 
-*Internet Explorer* terminerà il supporto il 15 giugno 2022. Insieme a ciò, si prevede che anche l'operazione dell'applicazione con `require('InternetExplorer.Application')` diventi impossibile. Un'alternativa sarebbe lavorare con *Microsoft Edge based on Chromium* tramite il *web driver* . `@wachaon/edge` semplifica il pilota automatico *Edge* .
+*Internet Explorer* terminerà il supporto il 15 giugno 2022. Insieme a ciò, si prevede che anche l'operazione dell'applicazione con `require('InternetExplorer.Application')` diventi impossibile. Un'alternativa sarebbe utilizzare *Microsoft Edge based on Chromium* tramite il *web driver(msedgedriver.exe)* . `@wachaon/edge` semplifica il pilota automatico *Edge* .
 
 ### Installa *@wachaon/edge*
 
@@ -737,7 +737,7 @@ Prima installa il pacchetto.
 wes install @wachaon/edge --bare
 ```
 
-Quindi scaricare il *web driver* .
+Quindi scaricare il *web driver(msedgedriver.exe)* .
 
 ```bat
 wes edge --download
@@ -745,7 +745,7 @@ wes edge --download
 
 Controlla la versione di *Edge* installata e scarica il *web driver* corrispondente.
 
-### Utilizzo
+### Come usare *@wachaon/edge*
 
 Sarà facile da usare. Avvia il browser e modifica le dimensioni della finestra e il sito da visualizzare in `https://www.google.com` .
 
@@ -762,7 +762,7 @@ edge((window, navi, res) => {
 })
 ```
 
-Conserviamo la cronologia delle visite fino a quando l' *URL* del browser inizia con `https://www.yahoo` .
+Memorizziamo la cronologia delle tue visite finché l' *URL* del tuo browser non inizia con `https://www.yahoo` .
 
 ```javascript
 const edge = require('/index.js')
@@ -792,20 +792,49 @@ const ret = edge((window, navi, res) => {
 console.log('ret // => %O', ret)
 ```
 
-*edge* stampa gli *URL* visitati sulla console in ordine. `@wachaon/edge` registra gli eventi per gli *URL* e aggiunge i dati a `res.exports` . L' *URL* da registrare può essere `String` `RegExp` e può essere impostato in modo flessibile. Rendendolo guidato dagli eventi, puoi passare facilmente al funzionamento manuale non impostando eventi per processi difficili da gestire con il pilota automatico. Se vuoi che lo script si arresti, `navi.emit('terminate', res)` o termina manualmente *Edge* . La finalizzazione restituisce `res.exports` come file *.json* per impostazione predefinita. Se si desidera impostare l'elaborazione della terminazione, impostare `terminate` of `edge(callback, terminate)` . `window` è un'istanza della classe *Window* di *@wachaon/webdriver* , non la `window` del browser.
+*edge* stampa gli *URL* visitati sulla console in ordine. `@wachaon/edge` registra gli eventi per gli *URL* e aggiunge i dati a `res.exports` . L' *URL* da registrare può essere `String` `RegExp` e può essere impostato in modo flessibile. Rendendolo basato sugli eventi, puoi passare facilmente al funzionamento manuale non impostando eventi per processi difficili da gestire con il pilota automatico. Se vuoi che lo script si interrompa, `navi.emit('terminate', res)` o termina *Edge* manualmente. La finalizzazione restituisce `res.exports` come file *.json* per impostazione predefinita. Se si desidera impostare l'elaborazione della terminazione, impostare `terminate` of `edge(callback, terminate)` . `window` è un'istanza della classe *Window* di *@wachaon/webdriver* , non la `window` del browser .
 
 ## *@wachaon/webdriver*
 
-Sarà un pacchetto che invia richieste al *web driver* che gestisce il browser. Costruito in *@wachaon/edge* . Come con *@wachaon/edge* , è necessario un *web driver* separato per le operazioni del browser.
+Sarà un pacchetto che invia richieste al *web driver* che gestisce il browser. *@wachaon/edge* include *@wachaon/webdriver* .
 
 ### Installa *@wachaon/webdriver*
 
 ```bat
-wes install @wachaon/webdriver --unsafe --bare
+wes install @wachaon/webdriver --bare
 ```
 
-Scarica il *web driver* *Microsoft Edge* basato su *Chromium* se non lo possiedi. Inoltre, se la versione di *edge* e la versione del *web driver* sono diverse, scarica la stessa versione del *web driver* .
+Scarica il driver Web *Microsoft Edge* basato su *Chromium* *web driver(msedgedriver.exe)* se non lo possiedi. Inoltre, se la versione di *edge* e la versione del *web driver(msedgedriver.exe)* sono diverse, scaricare la stessa versione del *web driver(msedgedriver.exe)* .
 
 ```bat
 wes webdriver --download
+```
+
+### Come usare *@wachaon/webdriver*
+
+Vai al sito di [*yahoo JAPAN*](https://www.yahoo.co.jp/) e salva uno screenshot di un elemento di blocco specifico.
+
+```javascript
+const { Window } = require('webdriver')
+const { writeFileSync } = require('filesystem')
+const { resolve, WorkingDirectory } = require('pathname')
+const genGUID = require('genGUID')
+
+const window = new Window
+const { document } = window
+window.rect({
+    x: 0,
+    y: 0,
+    width: 1280,
+    height: 600
+})
+window.navigate('https://www.yahoo.co.jp/')
+
+const [elm] = document.querySelectorAll('#ContentWrapper > main > div:nth-child(2)')
+const screen = elm.takeScreenShot()
+
+const spec = resolve(WorkingDirectory, 'dev', genGUID() + '.png')
+console.log(writeFileSync(spec, screen))
+
+window.quit()
 ```

@@ -727,7 +727,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 ## *@wachaon/edge*
 
-*Internet Explorer* 15 জুন, 2022-এ সমর্থন বন্ধ করবে। সেই সাথে, এটা প্রত্যাশিত যে `require('InternetExplorer.Application')` সহ অ্যাপ্লিকেশন অপারেশনও অসম্ভব হয়ে উঠবে। একটি বিকল্প হল *web driver* মাধ্যমে *Microsoft Edge based on Chromium* সাথে কাজ করা। `@wachaon/edge` *Edge* অটোপাইলটকে সহজ করে।
+*Internet Explorer* 15 জুন, 2022-এ সমর্থন বন্ধ করবে। সেই সাথে, এটা প্রত্যাশিত যে `require('InternetExplorer.Application')` সহ অ্যাপ্লিকেশন অপারেশনও অসম্ভব হয়ে উঠবে। একটি বিকল্প হল *web driver(msedgedriver.exe)* এর মাধ্যমে *Microsoft Edge based on Chromium* পরিচালনা করা। `@wachaon/edge` *Edge* অটোপাইলটকে সহজ করে।
 
 ### *@wachaon/edge* ইনস্টল করুন
 
@@ -737,7 +737,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 wes install @wachaon/edge --bare
 ```
 
-তারপর *web driver* ডাউনলোড করুন।
+তারপর *web driver(msedgedriver.exe)* ডাউনলোড করুন।
 
 ```bat
 wes edge --download
@@ -745,7 +745,7 @@ wes edge --download
 
 ইনস্টল করা *Edge* সংস্করণটি পরীক্ষা করুন এবং সংশ্লিষ্ট *web driver* ডাউনলোড করুন।
 
-### ব্যবহার
+### কিভাবে *@wachaon/edge* ব্যবহার করবেন
 
 এটি ব্যবহার করা সহজ হবে। আপনার ব্রাউজার শুরু করুন এবং https: `https://www.google.com` এ প্রদর্শনের জন্য উইন্ডোর আকার এবং সাইট পরিবর্তন করুন।
 
@@ -792,20 +792,49 @@ const ret = edge((window, navi, res) => {
 console.log('ret // => %O', ret)
 ```
 
-*edge* পরিদর্শন করা *URL* কনসোলে ক্রমানুসারে প্রিন্ট করে। `@wachaon/edge` *URL* এর জন্য ইভেন্ট নিবন্ধন করে এবং `res.exports` ডেটা যোগ করে। নিবন্ধিত করা *URL* টি হয় `String` `RegExp` হতে পারে এবং নমনীয়ভাবে সেট করা যেতে পারে। এটিকে ইভেন্ট-চালিত করে, আপনি অটোপাইলট দিয়ে পরিচালনা করা কঠিন প্রক্রিয়াগুলির জন্য ইভেন্টগুলি সেট না করে সহজেই ম্যানুয়াল অপারেশনে স্যুইচ করতে পারেন। আপনি যদি স্ক্রিপ্টটি বন্ধ করতে চান, তাহলে `navi.emit('terminate', res)` বা *Edge* ম্যানুয়ালি বন্ধ করুন। চূড়ান্তকরণ ডিফল্টরূপে *.json* ফাইল হিসাবে `res.exports` কে আউটপুট করে। আপনি যদি টার্মিনেশন প্রসেসিং সেট করতে চান, তাহলে `edge(callback, terminate)` `terminate` সেট করুন (কলব্যাক, টার্মিনেট)। `window` হল *@wachaon/webdriver* এর *Window* ক্লাসের একটি উদাহরণ, ব্রাউজারের `window` নয়।
+*edge* পরিদর্শন করা *URL* কনসোলে ক্রমানুসারে প্রিন্ট করে। `@wachaon/edge` *URL* এর জন্য ইভেন্ট নিবন্ধন করে এবং `res.exports` ডেটা যোগ করে। নিবন্ধিত করা *URL* টি হয় `String` `RegExp` হতে পারে এবং নমনীয়ভাবে সেট করা যেতে পারে। এটিকে ইভেন্ট-চালিত করে, আপনি অটোপাইলট দিয়ে পরিচালনা করা কঠিন প্রক্রিয়াগুলির জন্য ইভেন্ট সেট না করে সহজেই ম্যানুয়াল অপারেশনে স্যুইচ করতে পারেন। আপনি যদি স্ক্রিপ্টটি বন্ধ করতে চান, তাহলে `navi.emit('terminate', res)` বা *Edge* ম্যানুয়ালি বন্ধ করুন। চূড়ান্তকরণ ডিফল্টরূপে *.json* ফাইল হিসাবে `res.exports` কে আউটপুট করে। আপনি যদি টার্মিনেশন প্রসেসিং সেট করতে চান, তাহলে `edge(callback, terminate)` `terminate` সেট করুন (কলব্যাক, টার্মিনেট)। `window` হল *@wachaon/webdriver* এর *Window* ক্লাসের একটি উদাহরণ, ব্রাউজারের `window` নয়।
 
 ## *@wachaon/webdriver*
 
-এটি এমন একটি প্যাকেজ হবে যা ব্রাউজারটি পরিচালনাকারী *web driver* অনুরোধ পাঠায়। *@wachaon/edge* এ নির্মিত। *@wachaon/edge* এর মতো, ব্রাউজার অপারেশনের জন্য একটি পৃথক *web driver* প্রয়োজন।
+এটি এমন একটি প্যাকেজ হবে যা ব্রাউজারটি পরিচালনাকারী *web driver* অনুরোধ পাঠায়। *@wachaon/edge* এ *@wachaon/webdriver* অন্তর্ভুক্ত রয়েছে।
 
 ### *@wachaon/webdriver* ইনস্টল করুন
 
 ```bat
-wes install @wachaon/webdriver --unsafe --bare
+wes install @wachaon/webdriver --bare
 ```
 
-আপনার কাছে না থাকলে *Chromium* ভিত্তিক *Microsoft Edge* *web driver* ডাউনলোড করুন। এছাড়াও, যদি *edge* সংস্করণ এবং *web driver* সংস্করণ ভিন্ন হয়, *web driver* একই সংস্করণ ডাউনলোড করুন।
+আপনার কাছে না থাকলে *Chromium* ভিত্তিক *Microsoft Edge* *web driver(msedgedriver.exe)* ডাউনলোড করুন৷ এছাড়াও, যদি *edge* সংস্করণ এবং *web driver(msedgedriver.exe)* ভিন্ন হয়, তাহলে *web driver(msedgedriver.exe)* ডাউনলোড করুন।
 
 ```bat
 wes webdriver --download
+```
+
+### *@wachaon/webdriver* কিভাবে ব্যবহার করবেন
+
+[*yahoo JAPAN*](https://www.yahoo.co.jp/) সাইটে যান এবং একটি নির্দিষ্ট ব্লক উপাদানের একটি স্ক্রিনশট সংরক্ষণ করুন।
+
+```javascript
+const { Window } = require('webdriver')
+const { writeFileSync } = require('filesystem')
+const { resolve, WorkingDirectory } = require('pathname')
+const genGUID = require('genGUID')
+
+const window = new Window
+const { document } = window
+window.rect({
+    x: 0,
+    y: 0,
+    width: 1280,
+    height: 600
+})
+window.navigate('https://www.yahoo.co.jp/')
+
+const [elm] = document.querySelectorAll('#ContentWrapper > main > div:nth-child(2)')
+const screen = elm.takeScreenShot()
+
+const spec = resolve(WorkingDirectory, 'dev', genGUID() + '.png')
+console.log(writeFileSync(spec, screen))
+
+window.quit()
 ```

@@ -794,7 +794,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 ## *@wachaon/edge*
 *Internet Explorer* が 2022/6/15 を以てサポートを完了します。それに伴い `require('InternetExplorer.Application')` でのアプリケーションの操作も不可能になると予想されます。
-代替案は、*Microsoft Edge based on Chromium* を *web driver* 経由で操作することになります。`@wachaon/edge` は *Edge* の自動操縦を簡素化します。
+代替案は、*Microsoft Edge based on Chromium* を *web driver(msedgedriver.exe)* 経由で操作することになります。`@wachaon/edge` は *Edge* の自動操縦を簡素化します。
 
 ### *@wachaon/edge* のインストール
 まずはパッケージをインストールします。
@@ -803,7 +803,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 wes install @wachaon/edge --bare
 ```
 
-次に *web driver* をダウンロードします。
+次に *web driver(msedgedriver.exe)* をダウンロードします。
 
 ```bat
 wes edge --download
@@ -811,7 +811,7 @@ wes edge --download
 
 インストールされている *Edge* のバージョンを確認して対応した *web driver* をダウンロードします。
 
-### 使い方
+### *@wachaon/edge* の使い方
 簡単な使い方になります。
 ブラウザを起動し、ウインドウサイズと表示するサイトを `https://www.google.com` に変更します。
 
@@ -869,17 +869,45 @@ console.log('ret // => %O', ret)
 
 ## *@wachaon/webdriver*
 ブラウザを操作する *web driver* に対してリクエストを送るパッケージになります。
-*@wachaon/edge* に組み込まれています。
-*@wachaon/edge* と同様ブラウザ操作には *web driver* が別途必要になります。
+*@wachaon/edge* には *@wachaon/webdriver* が内包されております。
 
 ### *@wachaon/webdriver* のインストール
 
 ```bat
-wes install @wachaon/webdriver --unsafe --bare
+wes install @wachaon/webdriver --bare
 ```
 
-*Chromium* ベースの *Microsoft Edge* の *web driver* がなければダウンロードします。また、*edge* のバージョンと *web driver* のバージョンが違う場合は同じバージョンの *web driver* をダウンロードします。
+*Chromium* ベースの *Microsoft Edge* の *web driver(msedgedriver.exe)* がなければダウンロードします。また、*edge* のバージョンと *web driver(msedgedriver.exe)* のバージョンが違う場合は同じバージョンの *web driver(msedgedriver.exe)* をダウンロードします。
 
 ```bat
 wes webdriver --download
+```
+
+### *@wachaon/webdriver* の使い方
+
+[*yahoo JAPAN*](https://www.yahoo.co.jp/) のサイトに移動し、特定のブロック要素のスクリーンショットを保存します。
+
+```javascript
+const { Window } = require('webdriver')
+const { writeFileSync } = require('filesystem')
+const { resolve, WorkingDirectory } = require('pathname')
+const genGUID = require('genGUID')
+
+const window = new Window
+const { document } = window
+window.rect({
+    x: 0,
+    y: 0,
+    width: 1280,
+    height: 600
+})
+window.navigate('https://www.yahoo.co.jp/')
+
+const [elm] = document.querySelectorAll('#ContentWrapper > main > div:nth-child(2)')
+const screen = elm.takeScreenShot()
+
+const spec = resolve(WorkingDirectory, 'dev', genGUID() + '.png')
+console.log(writeFileSync(spec, screen))
+
+window.quit()
 ```

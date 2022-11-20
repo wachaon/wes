@@ -727,7 +727,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 ## *@wachaon/edge*
 
-سينهي *Internet Explorer* الدعم في 15 يونيو 2022. إلى جانب ذلك ، من المتوقع أن تصبح عملية التطبيق باستخدام `require('InternetExplorer.Application')` مستحيلة أيضًا. سيكون البديل هو العمل مع *Microsoft Edge based on Chromium* عبر *web driver* . `@wachaon/edge` يبسط الطيار الآلي *Edge* .
+سينهي *Internet Explorer* الدعم في 15 يونيو 2022. إلى جانب ذلك ، من المتوقع أن تصبح عملية التطبيق باستخدام `require('InternetExplorer.Application')` مستحيلة أيضًا. سيكون البديل هو تشغيل *Microsoft Edge based on Chromium* عبر *web driver(msedgedriver.exe)* . `@wachaon/edge` يبسط الطيار الآلي *Edge* .
 
 ### قم بتثبيت *@wachaon/edge*
 
@@ -737,7 +737,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 wes install @wachaon/edge --bare
 ```
 
-ثم قم بتنزيل *web driver* .
+ثم قم بتنزيل *web driver(msedgedriver.exe)* .
 
 ```bat
 wes edge --download
@@ -745,7 +745,7 @@ wes edge --download
 
 تحقق من إصدار *Edge* المثبت وقم بتنزيل *web driver* المقابل.
 
-### إستعمال
+### كيفية استخدام *@wachaon/edge*
 
 سيكون سهل الاستخدام. ابدأ المتصفح وغيّر حجم النافذة والموقع المراد عرضه على `https://www.google.com` .
 
@@ -796,16 +796,45 @@ console.log('ret // => %O', ret)
 
 ## *@wachaon/webdriver*
 
-ستكون حزمة ترسل الطلبات إلى *web driver* الذي يقوم بتشغيل المتصفح. بني في *@wachaon/edge* . كما هو الحال مع *@wachaon/edge* ، يلزم وجود *web driver* منفصل لعمليات المتصفح.
+ستكون حزمة ترسل الطلبات إلى *web driver* الذي يقوم بتشغيل المتصفح. يتضمن @ *@wachaon/edge* *@wachaon/webdriver* .
 
 ### قم بتثبيت *@wachaon/webdriver*
 
 ```bat
-wes install @wachaon/webdriver --unsafe --bare
+wes install @wachaon/webdriver --bare
 ```
 
-قم بتنزيل *web driver* *Microsoft Edge* المستند إلى *Chromium* إذا لم يكن لديك. أيضًا ، إذا كان إصدار *edge* وإصدار *web driver* مختلفين ، فقم بتنزيل الإصدار نفسه من *web driver* .
+قم بتنزيل برنامج تشغيل الويب *Microsoft Edge* المستند إلى *Chromium* *web driver(msedgedriver.exe)* إذا لم يكن لديك. أيضًا ، إذا كان إصدار *edge* وإصدار *web driver(msedgedriver.exe)* ، فقم بتنزيل الإصدار نفسه من *web driver(msedgedriver.exe)* .
 
 ```bat
 wes webdriver --download
+```
+
+### كيفية استخدام *@wachaon/webdriver*
+
+انتقل إلى موقع [*yahoo JAPAN*](https://www.yahoo.co.jp/) واحفظ لقطة شاشة لعنصر كتلة معين.
+
+```javascript
+const { Window } = require('webdriver')
+const { writeFileSync } = require('filesystem')
+const { resolve, WorkingDirectory } = require('pathname')
+const genGUID = require('genGUID')
+
+const window = new Window
+const { document } = window
+window.rect({
+    x: 0,
+    y: 0,
+    width: 1280,
+    height: 600
+})
+window.navigate('https://www.yahoo.co.jp/')
+
+const [elm] = document.querySelectorAll('#ContentWrapper > main > div:nth-child(2)')
+const screen = elm.takeScreenShot()
+
+const spec = resolve(WorkingDirectory, 'dev', genGUID() + '.png')
+console.log(writeFileSync(spec, screen))
+
+window.quit()
 ```
