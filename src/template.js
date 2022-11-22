@@ -182,7 +182,7 @@
                 argv: argv,
                 arch: ARCHITECTURE,
                 platform: WIN32,
-                version: JSON.parse(readTextFileSync(PACKAGE_JSON)).version,
+                version: existsFileSync(PACKAGE_JSON) ? JSON.parse(readTextFileSync(PACKAGE_JSON)).version : null,
                 stdout: {
                     write: function (msg) {
                         return console.log(msg)
