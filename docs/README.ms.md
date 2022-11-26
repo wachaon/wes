@@ -727,7 +727,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 ## *@wachaon/edge*
 
-*Internet Explorer* akan menamatkan sokongan pada 15 Jun 2022. Seiring dengan itu, operasi aplikasi dengan `require('InternetExplorer.Application')` dijangka juga akan menjadi mustahil. Alternatifnya ialah dengan mengendalikan *Microsoft Edge based on Chromium* melalui *web driver(msedgedriver.exe)* . `@wachaon/edge` memudahkan autopilot *Edge* .
+*Internet Explorer* akan menamatkan sokongan pada 15 Jun 2022. Akibatnya, operasi aplikasi dengan `require('InternetExplorer.Application')` dijangka menjadi mustahil. Selain itu, tapak itu sendiri tidak akan dapat dipaparkan dengan betul dengan menamatkan sokongan untuk *Internet Explorer* . Alternatifnya ialah dengan mengendalikan *Microsoft Edge based on Chromium* melalui *web driver(msedgedriver.exe)* . `@wachaon/edge` memudahkan autopilot *Edge* .
 
 ### Pasang *@wachaon/edge*
 

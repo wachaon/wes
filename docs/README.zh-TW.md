@@ -727,7 +727,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 ## *@wachaon/edge*
 
-*Internet Explorer*將於 2022 年 6 月 15 日終止支持。與此同時，預計使用`require('InternetExplorer.Application')`應用程序操作也將變得不可能。另一種方法是通過*web driver(msedgedriver.exe)*運行*Microsoft Edge based on Chromium* 。 `@wachaon/edge`簡化了*Edge*自動駕駛儀。
+*Internet Explorer*將於 2022 年 6 月 15 日終止支持。因此，預計使用`require('InternetExplorer.Application')`應用程序操作將變得不可能。此外，終止對*Internet Explorer*的支持後，站點本身將無法正確顯示。另一種方法是通過*web driver(msedgedriver.exe)*運行*Microsoft Edge based on Chromium* 。 `@wachaon/edge`簡化了*Edge*自動駕駛儀。
 
 ### 安裝*@wachaon/edge*
 

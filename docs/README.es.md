@@ -727,7 +727,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 ## *@wachaon/edge*
 
-*Internet Explorer* dejará de ser compatible el 15 de junio de 2022. Junto con eso, se espera que la operación de la aplicación con `require('InternetExplorer.Application')` también sea imposible. Una alternativa sería operar *Microsoft Edge based on Chromium* través del *web driver(msedgedriver.exe)* . `@wachaon/edge` *Edge* el piloto automático perimetral.
+*Internet Explorer* dejará de ser compatible el 15 de junio de 2022. Como resultado, se espera que las operaciones de la aplicación con `require('InternetExplorer.Application')` sean imposibles. Además, el sitio en sí mismo no podrá mostrarse correctamente al finalizar el soporte para *Internet Explorer* . Una alternativa sería operar *Microsoft Edge based on Chromium* través del *web driver(msedgedriver.exe)* . `@wachaon/edge` *Edge* el piloto automático perimetral.
 
 ### Instalar *@wachaon/edge*
 
