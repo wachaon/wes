@@ -18,6 +18,8 @@ Para textos en otros idiomas, seleccione entre las opciones a continuación.
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
+
+
 # rasgo
 
 *   Puede cambiar el motor de secuencias de comandos a *Chakra* y escribir de acuerdo con las especificaciones de *ECMAScript2015* .
@@ -28,11 +30,13 @@ Para textos en otros idiomas, seleccione entre las opciones a continuación.
 *   Paquete de módulos para admitir la publicación y recuperación externas
 *   Muestra los detalles del error con más amabilidad que *WSH*
 
+
 # Problemas *wes* que no podemos resolver
 
 *   `WScript.Quit` no puede cancelar el programa y no devuelve un código de error
 *   El procesamiento asíncrono no funciona correctamente
 *   No puede usar el *event prefix* del segundo argumento de `WScript.CreateObject`
+
 
 # descargar
 
@@ -48,6 +52,7 @@ Configure la ruta *wes.js* solo en *ascii* . Si ya ha descargado *wes* , puede a
 ```bat
 wes update
 ```
+
 
 # como empezar *wes*
 
@@ -65,6 +70,7 @@ wes
 
 *REP* acepta entrada de script hasta que ingrese dos líneas en blanco. También puede ver a *REP* ejecutando el script de ejemplo en *README.md* .
 
+
 ## opciones de línea de comando
 
 Las opciones de inicio de *wes* son las siguientes.
@@ -77,9 +83,11 @@ Las opciones de inicio de *wes* son las siguientes.
 | `--encoding=UTF-8` | Especifica la codificación del primer archivo leído |
 | `--engine=Chakra`  | Esta opción es agregada automáticamente por *wes*   |
 
+
 # sistema de módulos
 
 *wes* admite dos sistemas de módulos, el sistema *commonjs module* que usa `require()` y el sistema de *es module* que usa `import` . ( *dynamic import* no es compatible porque es un proceso asíncrono)
+
 
 ## *commonjs module*
 
@@ -108,6 +116,7 @@ WScript.Sleep(2000)
 Shell.UndoMinimizeAll()
 ```
 
+
 ## *es module*
 
 *Chakra* , el motor de ejecución de scripts, interpreta sintaxis como `imoprt` , pero no se ejecuta en el entorno *cscript* . En *wes* , al agregar *babel* a los módulos incorporados, *es module* es también se ejecutan mientras se transpilan secuencialmente. Esto tiene un costo de sobrecarga de procesamiento y un archivo *wes.js* . Los módulos escritos en el *es module* es también se convierten a `require()` mediante la transpilación, por lo que es posible llamar a *COM Object* . Sin embargo, no admite especificar la codificación del archivo del módulo con el *es module* . Todo se carga automáticamente. Para cargarlo como un *es module* , configure la extensión en `.mjs` o configure el campo `"type"` en `package.json` en `"module"` .
@@ -125,13 +134,16 @@ import sub from './sub.mjs'
 console.log('sub(7, 3) // => %O', sub(7, 3))
 ```
 
+
 # objeto incorporado
 
 *wes* tiene *built-in objects* no se encuentran en *WSH (JScript)* .
 
+
 ## *console*
 
 Usamos la *console* en lugar de *wes* `WScript.Echo()` y `WScript.StdErr.WriteLine()` .
+
 
 ### *console.log*
 
@@ -158,21 +170,26 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 
 `WScript.StdOut.WriteLine` *wes* de `WScript.StdErr.WriteLine` para generar cadenas de colores. `WScript.Echo` y `WScript.StdOut.WriteLine` son salida bloqueada. `WScript.StdErr.WriteLine` o `console.log` .
 
+
 ### *console.print*
 
 `console.log()` normalmente incluye una nueva línea al final, pero `console.print` no.
+
 
 ### *console.debug*
 
 Salida a la consola solo si la opción `--debug` está habilitada.
 
+
 ### *console.error*
 
 Lanzar una excepción con el contenido como mensaje.
 
+
 ### *console.weaklog*
 
 Las cadenas impresas con `console.weaklog()` desaparecen de la consola si hay alguna salida posterior. Útil para conmutar salidas.
+
 
 ## *Buffer*
 
@@ -184,6 +201,7 @@ const buff = Buffer.from(content)
 console.log('%s %O', content, buff)
 ```
 
+
 ## `__dirname` y `__filename`
 
 `__filename` almacena la ruta del archivo del módulo que se está ejecutando actualmente. `__dirname` contiene el directorio de `__filename` .
@@ -192,6 +210,7 @@ console.log('%s %O', content, buff)
 const message = `dirname: ${__dirname}\nfilename: ${ __filename}`
 console.log(message)
 ```
+
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
@@ -217,9 +236,11 @@ example();
 console.log('end')
 ```
 
+
 # Módulo incorporado
 
 *wes* tiene *built-in modules* para simplificar y estandarizar el procesamiento básico.
+
 
 ## *ansi*
 
@@ -239,12 +260,13 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
+
 ## *argv*
 
 Obtener argumentos de la línea de comandos. Los argumentos de la línea de comandos de `cscript.exe` declaran argumentos con nombre con `/` , mientras que *wes* declara argumentos con nombre con `-` y `--` . *argv.unnamed* y *argv.named* el tipo de valor del argumento de la línea de comandos en *String* *Number* *Boolean* . Introduzca los argumentos de la línea de comandos con *REP* .
 
 ```bat
-wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
+wes REP aaa -bc dd --e=false --gh=iii jjj --klm nn -o --p 9 r
 ```
 
 Ejecute el siguiente script en *REP* .
@@ -257,6 +279,7 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
+
 ## *pathname*
 
 Manipular caminos. Las rutas que comienzan con `/` y `\` son generalmente relativas a la raíz de la unidad. Por ejemplo `/filename` y `C:/filename` pueden ser la misma ruta. Por razones de seguridad, *wes* interpreta las rutas que comienzan con `/` y `\` relativas al directorio de trabajo.
@@ -266,6 +289,7 @@ const path = require('pathname')
 const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
+
 
 ## *filesystem*
 
@@ -280,9 +304,11 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
+
 ## *chardet*
 
 Estoy usando algunas funciones de <https://github.com/runk/node-chardet> . Puede aumentar la precisión de las adivinanzas automáticas aumentando los caracteres específicos de la codificación.
+
 
 ## *JScript*
 
@@ -308,6 +334,7 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
+
 ## *VBScript*
 
 *VBScript* ofrece algunas funciones que *JScript* no ofrece.
@@ -318,6 +345,7 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
+
 ## *httprequest*
 
 *httprequest* emite una *http request* .
@@ -327,6 +355,7 @@ const request = require('httprequest')
 const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
+
 
 ## *minitest*
 
@@ -362,9 +391,11 @@ describe('minitest', () => {
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
+
 ### afirmaciones
 
 Solo hay tres funciones de aserción para comparar objetos por simplicidad.
+
 
 #### `assert(value, message)` `assert.ok(value, message)`
 
@@ -374,6 +405,7 @@ Compare con `true` con el operador de igualdad estricta `===` . Si el `value` es
 | :-------- | :-------------------- | :------------------------------------- |
 | `value`   | `{Function\|Boolean}` | función booleana o de retorno booleano |
 | `message` | `{String}`            | mensaje en caso de falla               |
+
 
 #### `assert.equal(expected, actual)`
 
@@ -386,6 +418,7 @@ Al comparar clases (objetos), deben tener el mismo constructor o una superclase 
 | `expected` | `{Any}` | valor esperado |
 | `actual`   | `{Any}` | Valor actual   |
 
+
 #### `assert.throws(value, expected, message)`
 
 Verifique que los errores se estén lanzando correctamente.\
@@ -396,6 +429,7 @@ Si el error es correcto o no se determina si el *constructor* de error esperado,
 | `value`    | `{Error}`                 | error                                                                                  |
 | `expected` | `{Error\|String\|RegExp}` | Una expresión regular que evalúa el error esperado *constructor* , *message* o *stack* |
 | `message`  | `{String}`                | mensaje de falla                                                                       |
+
 
 ## *pipe*
 
@@ -421,6 +455,7 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
+
 ## *typecheck*
 
 Determinar el tipo de guión.
@@ -433,6 +468,7 @@ log(() => isNumber(43.5))
 log(() => isBoolean(false))
 log(() => isObject(function(){}))
 ```
+
 
 ## *animate*
 
@@ -490,29 +526,36 @@ animate.register(() => {
 animate.run()
 ```
 
+
 ### `constructor(complete)`
 
 Ejecuta la función `complete` cuando se completan todas las colas o se llama a `stop()` .
+
 
 #### `static genProgressIndicator(animation)`
 
 Genere una función que muestre una animación de ciclismo.
 
+
 #### `register(callback, interval, conditional)`
 
 Tramitación de registros. Se pueden registrar y procesar múltiples procesos en paralelo. En la `callback` de llamada, le indicaremos que detenga la animación y escriba la vista que se mostrará. `interval` especifica el intervalo de procesamiento. Si el `conditional` es una función, ejecutará `conditional(count, queue)` y si el resultado es verdadero, continuará. El `conditional` ejecuta `decrement(count)` si es un número y continúa si el resultado es un número positivo. Se ejecuta solo una vez si `conditional` no está definido. Tenga en cuenta que especificar una función aumenta la `count` , mientras que especificar un `count` la disminuye.
+
 
 #### `stop()`
 
 *animate* .
 
+
 #### `cancel(queue)`
 
 Suspende el procesamiento de una cola específica.
 
+
 #### `run()`
 
 Iniciar animación.
+
 
 #### `view`
 
@@ -581,6 +624,7 @@ state.three = animate.register(upload('three', 109, 2), 40, Number.MAX_VALUE)
 animate.run()
 ```
 
+
 ## *getMember*
 
 Obtenga el tipo de miembro y la descripción del *COM Object* de *ProgID* .
@@ -590,6 +634,7 @@ const getMember = require('getMember')
 const FileSystemObject = 'Scripting.FileSystemObject'
 console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
 ```
+
 
 ## *zip*
 
@@ -620,9 +665,11 @@ Si la `path` tiene la extensión `.zip` , se procesa `unzip()` y no hay una desc
 | `--path` | `-p`         | `path` o archivo a ingresar           |
 | `--dest` | `-d`         | archivo de carpeta a `dest` de salida |
 
+
 # Agrupación (embalaje) e instalación de módulos
 
 En *wes* , un conjunto de varios módulos se denomina paquete. Puede instalar el paquete para *wes* publicado en *github* . Se requiere un *github repository* para publicar un paquete.
+
 
 ## *bundle*
 
@@ -642,6 +689,7 @@ Ingrese el siguiente comando para agrupar: Consulte *package.json* para saber qu
 ```bat
     wes bundle 
 ```
+
 
 ## *install*
 
@@ -669,6 +717,7 @@ wes install @wachaon/fmt
 wes install @wachaon/fmt --bare
 ```
 
+
 # Instalar paquetes desde repositorios privados
 
 *install* puede instalar no solo paquetes de repositorios públicos de *github* , sino también paquetes de repositorios privados. En la *install* , especifique el paquete con *@author/repository* . La implementación intenta descargar la siguiente url.
@@ -683,13 +732,16 @@ Si accede al repositorio privado *raw* con un navegador, se mostrará el *token*
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
+
 # Introducción del paquete
 
 Aquí hay algunos paquetes externos.
 
+
 ## *@wachaon/fmt*
 
 *@wachaon/fmt* *prettier* mejor empaquetado para que *wes* forme scripts. Además, si se produce un *Syntax Error* mientras está instalado *@wachaon/fmt* , puede mostrar la ubicación del error.
+
 
 ### Instalar *@wachaon/fmt*
 
@@ -698,6 +750,7 @@ wes install @wachaon/fmt
 ```
 
 Si hay *.prettierrc* (formato JSON) en el directorio de trabajo, se reflejará en la configuración. *fmt* está disponible tanto en *CLI* como en *module* .
+
 
 #### Utilizar como *CLI* .
 
@@ -715,6 +768,7 @@ wes @wachaon/fmt src/sample --write
 
 Sobrescriba el archivo con el script formateado si se `--write` o el argumento con nombre `-w` .
 
+
 #### utilizar como módulo
 
 ```javascript
@@ -725,9 +779,11 @@ const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
+
 ## *@wachaon/edge*
 
 *Internet Explorer* dejará de ser compatible el 15 de junio de 2022. Como resultado, se espera que las operaciones de la aplicación con `require('InternetExplorer.Application')` sean imposibles. Además, el sitio en sí mismo no podrá mostrarse correctamente al finalizar el soporte para *Internet Explorer* . Una alternativa sería operar *Microsoft Edge based on Chromium* través del *web driver(msedgedriver.exe)* . `@wachaon/edge` *Edge* el piloto automático perimetral.
+
 
 ### Instalar *@wachaon/edge*
 
@@ -744,6 +800,7 @@ wes edge --download
 ```
 
 Comprueba la versión de *Edge* instalada y descarga el *web driver* correspondiente.
+
 
 ### Cómo usar *@wachaon/edge*
 
@@ -794,9 +851,11 @@ console.log('ret // => %O', ret)
 
 *edge* imprime las *URL* visitadas en la consola en orden. `@wachaon/edge` registra eventos para *URL* y agrega datos a `res.exports` . La *URL* que se va a registrar puede ser `String` `RegExp` y se puede configurar de forma flexible. Al hacerlo controlado por eventos, puede cambiar fácilmente a la operación manual al no configurar eventos para procesos que son difíciles de manejar con el piloto automático. Si desea que la secuencia de comandos se detenga, `navi.emit('terminate', res)` o finalice *Edge* manualmente. La finalización genera `res.exports` como un archivo *.json* de forma predeterminada. Si desea configurar el procesamiento de terminación, configure la `terminate` de `edge(callback, terminate)` . `window` es una instancia de la clase *Window* de *@wachaon/webdriver* , no la `window` del navegador.
 
+
 ## *@wachaon/webdriver*
 
 Será un paquete que envía solicitudes al *web driver* que opera el navegador. *@wachaon/edge* incluye *@wachaon/webdriver* .
+
 
 ### Instalar *@wachaon/webdriver*
 
@@ -809,6 +868,7 @@ Descargue el controlador web *Microsoft Edge* basado en *Chromium* *web driver(m
 ```bat
 wes webdriver --download
 ```
+
 
 ### Cómo usar *@wachaon/webdriver*
 

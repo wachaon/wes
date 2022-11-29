@@ -19,6 +19,7 @@
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
+
 # 特徴
 
 *   スクリプトエンジンを *Chakra* に変更して *ECMAScript2015+* の仕様で記述できます
@@ -273,7 +274,7 @@ console.log(orange + 'Hello World')
 *REP* と一緒にコマンドライン引数を入力します。
 
 ```bat
-wes REP aaa -bcd eee --fgh=iii jjj --kln mmm
+wes REP aaa -bc dd --e=false --gh=iii jjj --klm nn -o --p 9 r
 ```
 
 *REP* で次のスクリプトを実行します。
