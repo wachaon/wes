@@ -19,7 +19,6 @@
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
-
 # 特徴
 
 *   スクリプトエンジンを *Chakra* に変更して *ECMAScript2015+* の仕様で記述できます
@@ -776,7 +775,6 @@ wes @wachaon/fmt src/sample --write
 | unnamed number | Description         |
 | -------------- | ------------------- |
 | 1              | 必須。フォーマットしたいファイルのパス |
-
 | named     | short named | Description |
 | --------- | ----------- | ----------- |
 | `--write` | `-w`        | 上書きを許可する    |

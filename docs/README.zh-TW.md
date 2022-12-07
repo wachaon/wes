@@ -18,8 +18,6 @@
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
-
-
 # 特徵
 
 *   您可以將腳本引擎更改為*Chakra*並根據*ECMAScript2015*規範編寫。
@@ -30,13 +28,11 @@
 *   打包模塊以支持外部發布和檢索
 *   比*WSH*更友好地顯示錯誤細節
 
-
 # 我們無法解決的*wes*問題
 
 *   `WScript.Quit`不能中止程序並且不返回錯誤代碼
 *   異步處理無法正常工作
 *   您不能使用`WScript.CreateObject`的第二個參數的*event prefix*
-
 
 # 下載
 
@@ -52,7 +48,6 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```bat
 wes update
 ```
-
 
 # 如何開始*wes*
 
@@ -70,7 +65,6 @@ wes
 
 *REP*接受腳本輸入，直到您輸入兩個空行。您還可以在*README.md*中看到*REP*運行示例腳本。
 
-
 ## 命令行選項
 
 *wes*啟動選項如下。
@@ -83,11 +77,9 @@ wes
 | `--encoding=UTF-8` | 指定讀取的第一個文件的編碼               |
 | `--engine=Chakra`  | 此選項由*wes*自動添加               |
 
-
 # 模塊系統
 
 *wes*支持兩個模塊系統，使用`require()`的*commonjs module*系統和使用`import`的*es module*系統。 （不支持*dynamic import* ，因為它是一個異步過程）
-
 
 ## *commonjs module*
 
@@ -116,7 +108,6 @@ WScript.Sleep(2000)
 Shell.UndoMinimizeAll()
 ```
 
-
 ## *es module*
 
 腳本執行引擎*Chakra*會解釋諸如`imoprt`之類的語法，但不會在*cscript*環境中執行。在*wes*中，通過在內置模塊中添加*babel* ， *es module*也在被順序轉譯的同時執行。這是以處理開銷和臃腫的*wes.js*文件為代價的。 *es module*中寫的模塊也通過轉譯轉換為`require()` ，因此可以調用*COM Object* 。但是，它不支持使用*es module*指定模塊文件的編碼。一切都是自動加載的。要將其加載為*es module* ，請將擴展名設置為`.mjs`或將`package.json`中的`"type"`字段設置為`"module"` 。
@@ -134,16 +125,13 @@ import sub from './sub.mjs'
 console.log('sub(7, 3) // => %O', sub(7, 3))
 ```
 
-
 # 內置對象
 
 *wes*有*WSH (JScript)*中沒有的*built-in objects* 。
 
-
 ## *console*
 
 我們使用*console*而不是*wes* `WScript.Echo()`和`WScript.StdErr.WriteLine()` 。
-
 
 ### *console.log*
 
@@ -170,26 +158,21 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 
 `WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`來輸出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`是阻塞輸出。 `WScript.StdErr.WriteLine`或`console.log` 。
 
-
 ### *console.print*
 
 `console.log()`通常在末尾包含換行符，但`console.print`不包含。
-
 
 ### *console.debug*
 
 僅當啟用`--debug`選項時才輸出到控制台。
 
-
 ### *console.error*
 
 以內容作為消息拋出異常。
 
-
 ### *console.weaklog*
 
 如果有任何後續輸出，使用`console.weaklog()`打印的字符串將從控制台中消失。用於切換輸出。
-
 
 ## *Buffer*
 
@@ -201,7 +184,6 @@ const buff = Buffer.from(content)
 console.log('%s %O', content, buff)
 ```
 
-
 ## `__dirname`和`__filename`
 
 `__filename`存儲當前執行的模塊文件的路徑。 `__dirname`包含`__filename`的目錄。
@@ -210,7 +192,6 @@ console.log('%s %O', content, buff)
 const message = `dirname: ${__dirname}\nfilename: ${ __filename}`
 console.log(message)
 ```
-
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
@@ -236,11 +217,9 @@ example();
 console.log('end')
 ```
 
-
 # 內置模塊
 
 *wes*有*built-in modules*來簡化和標準化基本處理。
-
 
 ## *ansi*
 
@@ -260,7 +239,6 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
-
 ## *argv*
 
 獲取命令行參數。 `cscript.exe`的命令行參數使用`/`聲明命名參數，而*wes*使用`-`和`--`聲明命名參數。 *argv.unnamed*和*argv.named*命令行參數值類型轉換為*String* *Number* *Boolean* 。使用*REP*輸入命令行參數。
@@ -279,7 +257,6 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
-
 ## *pathname*
 
 操縱路徑。以`/`和`\`開頭的路徑通常相對於驅動器根目錄。例如`/filename`和`C:/filename`可以是相同的路徑。出於安全原因， *wes*解釋以`/`和`\`開頭的相對於工作目錄的路徑。
@@ -289,7 +266,6 @@ const path = require('pathname')
 const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
-
 
 ## *filesystem*
 
@@ -304,11 +280,9 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
-
 ## *chardet*
 
 我正在使用<https://github.com/runk/node-chardet>的一些功能。您可以通過增加特定於編碼的字符來提高自動猜測的準確性。
-
 
 ## *JScript*
 
@@ -334,7 +308,6 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
-
 ## *VBScript*
 
 *VBScript*提供了一些*JScript*所沒有的功能。
@@ -345,7 +318,6 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
-
 ## *httprequest*
 
 *httprequest*發出一個*http request* 。
@@ -355,7 +327,6 @@ const request = require('httprequest')
 const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
-
 
 ## *minitest*
 
@@ -391,11 +362,9 @@ describe('minitest', () => {
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
-
 ### 斷言
 
 為簡單起見，只有三個斷言函數用於比較對象。
-
 
 #### `assert(value, message)` `assert.ok(value, message)`
 
@@ -405,7 +374,6 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 | :-------- | :-------------------- | :-------- |
 | `value`   | `{Function\|Boolean}` | 布爾或布爾返回函數 |
 | `message` | `{String}`            | 失敗時的消息    |
-
 
 #### `assert.equal(expected, actual)`
 
@@ -418,7 +386,6 @@ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegEx
 | `expected` | `{Any}` | 期望值  |
 | `actual`   | `{Any}` | 實際價值 |
 
-
 #### `assert.throws(value, expected, message)`
 
 驗證錯誤是否正確拋出。\
@@ -429,7 +396,6 @@ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegEx
 | `value`    | `{Error}`                 | 錯誤                                            |
 | `expected` | `{Error\|String\|RegExp}` | 計算預期錯誤*constructor* 、 *message*或*stack*的正則表達式 |
 | `message`  | `{String}`                | 失敗時的消息                                        |
-
 
 ## *pipe*
 
@@ -455,7 +421,6 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
-
 ## *typecheck*
 
 確定腳本類型。
@@ -468,7 +433,6 @@ log(() => isNumber(43.5))
 log(() => isBoolean(false))
 log(() => isObject(function(){}))
 ```
-
 
 ## *animate*
 
@@ -526,36 +490,29 @@ animate.register(() => {
 animate.run()
 ```
 
-
 ### `constructor(complete)`
 
 當所有隊列完成或調用`stop()`時執行`complete`函數。
-
 
 #### `static genProgressIndicator(animation)`
 
 生成一個顯示循環動畫的函數。
 
-
 #### `register(callback, interval, conditional)`
 
 註冊處理。可以並行註冊和處理多個進程。在`callback`中，我們將指示停止動畫並編寫要顯示的視圖。 `interval`指定處理間隔。如果`conditional`是一個函數，它將執行`conditional(count, queue)` ，如果結果為真，它將繼續。如果`conditional`是數字，則執行`decrement(count)` ，如果結果是正數，則繼續。如果`conditional`未定義，則僅執行一次。請注意，指定函數會增加`count` ，而指定數字會減少`count` 。
-
 
 #### `stop()`
 
 *animate* 。
 
-
 #### `cancel(queue)`
 
 暫停特定隊列的處理。
 
-
 #### `run()`
 
 開始動畫。
-
 
 #### `view`
 
@@ -624,7 +581,6 @@ state.three = animate.register(upload('three', 109, 2), 40, Number.MAX_VALUE)
 animate.run()
 ```
 
-
 ## *getMember*
 
 從*ProgID*獲取*COM Object*的成員類型和描述。
@@ -634,7 +590,6 @@ const getMember = require('getMember')
 const FileSystemObject = 'Scripting.FileSystemObject'
 console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
 ```
-
 
 ## *zip*
 
@@ -665,11 +620,9 @@ wes zip -p dox.zip
 | `--path` | `-p` | `path`文件夾或文件進入 |
 | `--dest` | `-d` | 文件夾文件輸出`dest`  |
 
-
 # 捆綁（打包）和安裝模塊
 
 在*wes*中，多個模塊的捆綁包稱為包。您可以安裝在*github*上發布的*wes*軟件包。發布包需要*github repository* 。
-
 
 ## *bundle*
 
@@ -689,7 +642,6 @@ wes zip -p dox.zip
 ```bat
     wes bundle 
 ```
-
 
 ## *install*
 
@@ -717,7 +669,6 @@ wes install @wachaon/fmt
 wes install @wachaon/fmt --bare
 ```
 
-
 # 從私有倉庫安裝包
 
 *install*不僅可以安裝來自公共*github*存儲庫的包，還可以安裝來自私有存儲庫的包。在*install*中，使用*@author/repository*指定包。該實現嘗試下載以下 url。
@@ -732,16 +683,13 @@ wes install @wachaon/fmt --bare
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
-
 # 包裝介紹
 
 這是一些外部軟件包。
 
-
 ## *@wachaon/fmt*
 
 *@wachaon/fmt* *prettier*地打包為*wes*格式化腳本。此外，如果在安裝*@wachaon/fmt*時出現*Syntax Error* ，您可以顯示錯誤位置。
-
 
 ### 安裝*@wachaon/fmt*
 
@@ -750,7 +698,6 @@ wes install @wachaon/fmt
 ```
 
 如果工作目錄中有*.prettierrc* （JSON 格式），它會反映在設置中。 *fmt*在*CLI*和*module*中都可用。
-
 
 #### 用作*CLI* 。
 
@@ -768,7 +715,6 @@ wes @wachaon/fmt src/sample --write
 
 如果指定了`--write`或`-w`命名參數，則使用格式化腳本覆蓋文件。
 
-
 #### 作為一個模塊使用
 
 ```javascript
@@ -779,11 +725,9 @@ const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
-
 ## *@wachaon/edge*
 
 *Internet Explorer*將於 2022 年 6 月 15 日終止支持。因此，預計使用`require('InternetExplorer.Application')`應用程序操作將變得不可能。此外，終止對*Internet Explorer*的支持後，站點本身將無法正確顯示。另一種方法是通過*web driver(msedgedriver.exe)*運行*Microsoft Edge based on Chromium* 。 `@wachaon/edge`簡化了*Edge*自動駕駛儀。
-
 
 ### 安裝*@wachaon/edge*
 
@@ -800,7 +744,6 @@ wes edge --download
 ```
 
 查看安裝的*Edge*版本，下載對應的*web driver* 。
-
 
 ### 如何使用*@wachaon/edge*
 
@@ -851,11 +794,9 @@ console.log('ret // => %O', ret)
 
 *edge*按順序將訪問過的*URL*打印到控制台。 `@wachaon/edge`為*URL*註冊事件並將數據添加到`res.exports` 。註冊的*URL*可以是`String` `RegExp` ，可以靈活設置。通過使其成為事件驅動，您可以通過不為自動駕駛儀難以處理的流程設置事件來輕鬆切換到手動操作。如果您希望腳本停止， `navi.emit('terminate', res)`或手動終止*Edge* 。默認情況下，終結將*.json*輸出為`res.exports`文件。如果要設置終止處理，請設置`terminate` of `edge(callback, terminate)` 。 `window`是*@wachaon/webdriver*的*Window*類的實例，而不是瀏覽器的`window` 。
 
-
 ## *@wachaon/webdriver*
 
 它將是一個向運行瀏覽器的*web driver*發送請求的包。 *@wachaon/edge*包括*@wachaon/webdriver* 。
-
 
 ### 安裝*@wachaon/webdriver*
 
@@ -868,7 +809,6 @@ wes install @wachaon/webdriver --bare
 ```bat
 wes webdriver --download
 ```
-
 
 ### 如何使用*@wachaon/webdriver*
 
