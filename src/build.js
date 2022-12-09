@@ -22,7 +22,11 @@ files.forEach((file) => {
 })
 
 result['version'] = {
-    source: `module.exports = console.log('${require('../package').version}')`,
+    source: `const isCLI = require('isCLI')
+const version = "${require('../package.json').version}"
+if (isCLI(__filename)) {
+    console.log(version)
+} else module.exports = version`,
     mapping: {},
     path: `{wes}/version`
 }
