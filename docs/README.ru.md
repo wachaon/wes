@@ -609,6 +609,33 @@ console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObje
 
 Временно записать `command` в файл и выполнить `execFile()` . `options` такие же, как и для `execFile()` .
 
+Измените размер и положение окна *Google Chrome* . (Это не работает, если окно развернуто.)
+
+```javascript
+const { execCommand } = require('ps')
+
+const code = `
+$name = "chrome"
+$w = 700
+$h = 500
+$x = 10
+$y = 100
+Add-Type @"
+  using System;
+  using System.Runtime.InteropServices;
+  public class Win32Api {
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+  }
+"@
+Get-Process -Name $name | where { $_.MainWindowTitle -ne "" } | foreach {
+    [Win32Api]::MoveWindow($_.MainWindowHandle, $x, $y, $w, $h, $true) | Out-Null
+}
+`
+console.log(execCommand(code))
+```
+
 ### запустить *ps* прямо из консоли
 
 Вы также можете запустить *PowerShell* прямо из консоли. Если опция команды действительна, `unnamed[1]` становится командой, в противном случае она определяется как путь к файлу и выполняется.
@@ -617,11 +644,17 @@ console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObje
 | ---------- | ------------------------ |
 | `1`        | команда или путь к файлу |
 
-| по имени    | короткое имя | Описание                            |
+| названный   | короткое имя | Описание                            |
 | ----------- | ------------ | ----------------------------------- |
 | `--command` | `-c`         | команда                             |
-| `--file`    | `-f`         | Путь файла                          |
+| `--file`    | `-f`         | Путь к файлу                        |
 | `--policy`  | `-p`         | Политика (по умолчанию `"Bypass"` ) |
+
+Пример отображения списка файлов в текущем каталоге
+
+```bat
+wes ps -c Get-ChildItem
+```
 
 ## *zip*
 

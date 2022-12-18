@@ -609,6 +609,33 @@ We accepteren momenteel de volgende items voor `options` .
 
 Schrijf tijdelijk een `command` naar een bestand en voer `execFile()` uit. `options` zijn hetzelfde als voor `execFile()` .
 
+Wijzig de grootte en positie van het *Google Chrome* venster. (Het werkt niet als het venster is gemaximaliseerd.)
+
+```javascript
+const { execCommand } = require('ps')
+
+const code = `
+$name = "chrome"
+$w = 700
+$h = 500
+$x = 10
+$y = 100
+Add-Type @"
+  using System;
+  using System.Runtime.InteropServices;
+  public class Win32Api {
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+  }
+"@
+Get-Process -Name $name | where { $_.MainWindowTitle -ne "" } | foreach {
+    [Win32Api]::MoveWindow($_.MainWindowHandle, $x, $y, $w, $h, $true) | Out-Null
+}
+`
+console.log(execCommand(code))
+```
+
 ### voer *ps* rechtstreeks uit vanaf de console
 
 U kunt *PowerShell* ook rechtstreeks vanaf de console uitvoeren. Als de opdrachtoptie geldig is, wordt `unnamed[1]` een opdracht, anders wordt het bepaald als een bestandspad en uitgevoerd.
@@ -622,6 +649,12 @@ U kunt *PowerShell* ook rechtstreeks vanaf de console uitvoeren. Als de opdracht
 | `--command` | `-c`       | opdracht                          |
 | `--file`    | `-f`       | Bestandspad                       |
 | `--policy`  | `-p`       | Beleid (standaard is `"Bypass"` ) |
+
+Voorbeeld van het weergeven van een lijst met bestanden in de huidige directory
+
+```bat
+wes ps -c Get-ChildItem
+```
 
 ## *zip*
 

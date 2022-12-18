@@ -609,6 +609,33 @@ console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObje
 
 اكتب `command` مؤقتًا إلى ملف وقم بتنفيذ `execFile()` . `options` هي نفسها بالنسبة لـ `execFile()` .
 
+قم بتغيير حجم وموضع نافذة *Google Chrome* . (لا يعمل إذا تم تكبير النافذة.)
+
+```javascript
+const { execCommand } = require('ps')
+
+const code = `
+$name = "chrome"
+$w = 700
+$h = 500
+$x = 10
+$y = 100
+Add-Type @"
+  using System;
+  using System.Runtime.InteropServices;
+  public class Win32Api {
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+  }
+"@
+Get-Process -Name $name | where { $_.MainWindowTitle -ne "" } | foreach {
+    [Win32Api]::MoveWindow($_.MainWindowHandle, $x, $y, $w, $h, $true) | Out-Null
+}
+`
+console.log(execCommand(code))
+```
+
 ### تشغيل *ps* مباشرة من وحدة التحكم
 
 يمكنك أيضًا تشغيل *PowerShell* مباشرةً من وحدة التحكم. إذا كان خيار الأمر صالحًا ، فإن `unnamed[1]` يصبح أمرًا ، وإلا يتم تحديده كمسار ملف ويتم تنفيذه.
@@ -622,6 +649,12 @@ console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObje
 | `--command` | `-c`     | يأمر                             |
 | `--file`    | `-f`     | مسار الملف                       |
 | `--policy`  | `-p`     | النهج (الافتراضي هو `"Bypass"` ) |
+
+مثال على عرض قائمة بالملفات في الدليل الحالي
+
+```bat
+wes ps -c Get-ChildItem
+```
 
 ## *zip*
 

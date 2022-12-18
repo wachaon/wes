@@ -609,6 +609,33 @@ Pada masa ini kami menerima item berikut untuk `options` .
 
 Tulis `command` pada fail buat sementara waktu dan laksanakan `execFile()` . `options` adalah sama seperti untuk `execFile()` .
 
+Tukar saiz dan kedudukan tetingkap *Google Chrome* . (Ia tidak berfungsi jika tetingkap dimaksimumkan.)
+
+```javascript
+const { execCommand } = require('ps')
+
+const code = `
+$name = "chrome"
+$w = 700
+$h = 500
+$x = 10
+$y = 100
+Add-Type @"
+  using System;
+  using System.Runtime.InteropServices;
+  public class Win32Api {
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+  }
+"@
+Get-Process -Name $name | where { $_.MainWindowTitle -ne "" } | foreach {
+    [Win32Api]::MoveWindow($_.MainWindowHandle, $x, $y, $w, $h, $true) | Out-Null
+}
+`
+console.log(execCommand(code))
+```
+
 ### jalankan *ps* terus dari konsol
 
 Anda juga boleh menjalankan *PowerShell* terus dari konsol. Jika pilihan arahan itu sah, `unnamed[1]` menjadi arahan, jika tidak, ia ditentukan sebagai laluan fail dan dilaksanakan.
@@ -622,6 +649,12 @@ Anda juga boleh menjalankan *PowerShell* terus dari konsol. Jika pilihan arahan 
 | `--command` | `-c`           | perintah                        |
 | `--file`    | `-f`           | Laluan Fail                     |
 | `--policy`  | `-p`           | Dasar (lalai ialah `"Bypass"` ) |
+
+Contoh memaparkan senarai fail dalam direktori semasa
+
+```bat
+wes ps -c Get-ChildItem
+```
 
 ## *zip*
 

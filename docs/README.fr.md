@@ -609,6 +609,33 @@ Nous acceptons actuellement les éléments suivants pour les `options` .
 
 Écrivez temporairement la `command` dans un fichier et exécutez `execFile()` . les `options` sont les mêmes que pour `execFile()` .
 
+Modifiez la taille et la position de la fenêtre *Google Chrome* . (Cela ne fonctionne pas si la fenêtre est maximisée.)
+
+```javascript
+const { execCommand } = require('ps')
+
+const code = `
+$name = "chrome"
+$w = 700
+$h = 500
+$x = 10
+$y = 100
+Add-Type @"
+  using System;
+  using System.Runtime.InteropServices;
+  public class Win32Api {
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+  }
+"@
+Get-Process -Name $name | where { $_.MainWindowTitle -ne "" } | foreach {
+    [Win32Api]::MoveWindow($_.MainWindowHandle, $x, $y, $w, $h, $true) | Out-Null
+}
+`
+console.log(execCommand(code))
+```
+
 ### exécuter *ps* directement depuis la console
 
 Vous pouvez également exécuter *PowerShell* directement depuis la console. Si l'option de commande est valide, `unnamed[1]` devient une commande, sinon il est déterminé comme un chemin de fichier et exécuté.
@@ -622,6 +649,12 @@ Vous pouvez également exécuter *PowerShell* directement depuis la console. Si 
 | `--command` | `-c`        | commande                                         |
 | `--file`    | `-f`        | Chemin du fichier                                |
 | `--policy`  | `-p`        | Politique (la valeur par défaut est `"Bypass"` ) |
+
+Exemple d'affichage d'une liste de fichiers dans le répertoire courant
+
+```bat
+wes ps -c Get-ChildItem
+```
 
 ## *zip*
 

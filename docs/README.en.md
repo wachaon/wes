@@ -607,7 +607,34 @@ We currently accept the following items for `options` .
 
 ### `execCommand(command, options)`
 
-Temporarily write `command` to a file and execute `execFile()` . `options` are the same as for `execFile()` .
+Write `command` to a file temporarily and execute `execFile()` . `options` are the same as for `execFile()` .
+
+Change the size and position of the *Google Chrome* window. (It doesn't work if the window is maximized.)
+
+```javascript
+const { execCommand } = require('ps')
+
+const code = `
+$name = "chrome"
+$w = 700
+$h = 500
+$x = 10
+$y = 100
+Add-Type @"
+  using System;
+  using System.Runtime.InteropServices;
+  public class Win32Api {
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+  }
+"@
+Get-Process -Name $name | where { $_.MainWindowTitle -ne "" } | foreach {
+    [Win32Api]::MoveWindow($_.MainWindowHandle, $x, $y, $w, $h, $true) | Out-Null
+}
+`
+console.log(execCommand(code))
+```
 
 ### run *ps* directly from console
 
@@ -622,6 +649,12 @@ You can also run *PowerShell* directly from the console. If the command option i
 | `--command` | `-c`        | command                         |
 | `--file`    | `-f`        | File Path                       |
 | `--policy`  | `-p`        | Policy (default is `"Bypass"` ) |
+
+Example of displaying a list of files in the current directory
+
+```bat
+wes ps -c Get-ChildItem
+```
 
 ## *zip*
 

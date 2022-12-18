@@ -609,6 +609,33 @@ console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObje
 
 臨時將`command`寫入文件並執行`execFile()` 。 `options`與`execFile()`相同。
 
+更改*Google Chrome*窗口的大小和位置。 （如果窗口最大化則不起作用。）
+
+```javascript
+const { execCommand } = require('ps')
+
+const code = `
+$name = "chrome"
+$w = 700
+$h = 500
+$x = 10
+$y = 100
+Add-Type @"
+  using System;
+  using System.Runtime.InteropServices;
+  public class Win32Api {
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+  }
+"@
+Get-Process -Name $name | where { $_.MainWindowTitle -ne "" } | foreach {
+    [Win32Api]::MoveWindow($_.MainWindowHandle, $x, $y, $w, $h, $true) | Out-Null
+}
+`
+console.log(execCommand(code))
+```
+
 ### 直接從控制台運行*ps*
 
 您也可以直接從控制台運行*PowerShell* 。如果命令選項有效，則`unnamed[1]`成為命令，否則確定為文件路徑並執行。
@@ -622,6 +649,12 @@ console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObje
 | `--command` | `-c` | 命令                 |
 | `--file`    | `-f` | 文件路徑               |
 | `--policy`  | `-p` | 政策（默認為`"Bypass"` ） |
+
+顯示當前目錄中文件列表的示例
+
+```bat
+wes ps -c Get-ChildItem
+```
 
 ## *zip*
 

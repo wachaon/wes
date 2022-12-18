@@ -609,6 +609,33 @@ console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObje
 
 फ़ाइल में अस्थायी रूप से `command` लिखें और `execFile()` निष्पादित करें। `options` `execFile()` के समान हैं।
 
+*Google Chrome* विंडो का आकार और स्थिति बदलें। (विंडो अधिकतम होने पर यह काम नहीं करता है।)
+
+```javascript
+const { execCommand } = require('ps')
+
+const code = `
+$name = "chrome"
+$w = 700
+$h = 500
+$x = 10
+$y = 100
+Add-Type @"
+  using System;
+  using System.Runtime.InteropServices;
+  public class Win32Api {
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+  }
+"@
+Get-Process -Name $name | where { $_.MainWindowTitle -ne "" } | foreach {
+    [Win32Api]::MoveWindow($_.MainWindowHandle, $x, $y, $w, $h, $true) | Out-Null
+}
+`
+console.log(execCommand(code))
+```
+
 ### *ps* को सीधे कंसोल से चलाएं
 
 आप *PowerShell* को सीधे कंसोल से भी चला सकते हैं। यदि कमांड विकल्प मान्य है, तो `unnamed[1]` एक कमांड बन जाता है, अन्यथा इसे फ़ाइल पथ के रूप में निर्धारित किया जाता है और निष्पादित किया जाता है।
@@ -622,6 +649,12 @@ console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObje
 | `--command` | `-c`          | आज्ञा                         |
 | `--file`    | `-f`          | दस्तावेज पथ                   |
 | `--policy`  | `-p`          | नीति (डिफ़ॉल्ट `"Bypass"` है) |
+
+वर्तमान निर्देशिका में फ़ाइलों की सूची प्रदर्शित करने का उदाहरण
+
+```bat
+wes ps -c Get-ChildItem
+```
 
 ## *zip*
 

@@ -659,6 +659,33 @@ console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObje
 
 `command` を一時的にファイルに書き出し、`execFile()` を実行します。`options` は `execFile()` と同じです。
 
+*Google Chrome* のウインドウのサイズと位置を変更します。(ウインドウが最大化されている場合は動作しまません。)
+
+```javascript
+const { execCommand } = require('ps')
+
+const code = `
+$name = "chrome"
+$w = 700
+$h = 500
+$x = 10
+$y = 100
+Add-Type @"
+  using System;
+  using System.Runtime.InteropServices;
+  public class Win32Api {
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+  }
+"@
+Get-Process -Name $name | where { $_.MainWindowTitle -ne "" } | foreach {
+    [Win32Api]::MoveWindow($_.MainWindowHandle, $x, $y, $w, $h, $true) | Out-Null
+}
+`
+console.log(execCommand(code))
+```
+
 ### コンソールから直接 *ps* を実行する
 
 コンソールから直接 *PowerShell* を実行することもできます。
@@ -673,6 +700,12 @@ console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObje
 | `--command` | `-c`        | コマンド |
 | `--file` | `-f`        | ファイルパス  |
 | `--policy` | `-p`   | ポリシー (既定値は `"Bypass"` ) |
+
+カレントディレクトリのファイル一覧を表示する例
+
+```bat
+wes ps -c Get-ChildItem
+```
 
 ## *zip*
 
