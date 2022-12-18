@@ -591,6 +591,38 @@ const FileSystemObject = 'Scripting.FileSystemObject'
 console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
 ```
 
+## *ps*
+
+有助於運行*PowerShell* 。
+
+### `execFile(spec, options)`
+
+執行`spec`路徑中的文件。
+
+我們目前接受以下項目作為`options` 。
+
+| 參數       | 類型                                                                                              | 描述                 |
+| :------- | :---------------------------------------------------------------------------------------------- | :----------------- |
+| `Policy` | `{"AllSigned"\|"Bypass"\|"Default"\|"RemoteSigned"\|"Restricted"\|"Undefined"\|"Unrestricted"}` | 政策（默認為`"Bypass"` ） |
+
+### `execCommand(command, options)`
+
+臨時將`command`寫入文件並執行`execFile()` 。 `options`與`execFile()`相同。
+
+### 直接從控制台運行*ps*
+
+您也可以直接從控制台運行*PowerShell* 。如果命令選項有效，則`unnamed[1]`成為命令，否則確定為文件路徑並執行。
+
+| 無名  | 描述      |
+| --- | ------- |
+| `1` | 命令或文件路徑 |
+
+| 命名的         | 簡稱   | 描述                 |
+| ----------- | ---- | ------------------ |
+| `--command` | `-c` | 命令                 |
+| `--file`    | `-f` | 文件路徑               |
+| `--policy`  | `-p` | 政策（默認為`"Bypass"` ） |
+
 ## *zip*
 
 壓縮文件和文件夾並解壓縮壓縮文件。在內部調用和處理*PowerShell* 。

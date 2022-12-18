@@ -591,6 +591,38 @@ const FileSystemObject = 'Scripting.FileSystemObject'
 console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
 ```
 
+## *ps*
+
+Vergemakkelijkt het uitvoeren van *PowerShell* .
+
+### `execFile(spec, options)`
+
+Voer het bestand uit in het pad van de `spec` .
+
+We accepteren momenteel de volgende items voor `options` .
+
+| Param    | Type                                                                                            | Beschrijving                      |
+| :------- | :---------------------------------------------------------------------------------------------- | :-------------------------------- |
+| `Policy` | `{"AllSigned"\|"Bypass"\|"Default"\|"RemoteSigned"\|"Restricted"\|"Undefined"\|"Unrestricted"}` | Beleid (standaard is `"Bypass"` ) |
+
+### `execCommand(command, options)`
+
+Schrijf tijdelijk een `command` naar een bestand en voer `execFile()` uit. `options` zijn hetzelfde als voor `execFile()` .
+
+### voer *ps* rechtstreeks uit vanaf de console
+
+U kunt *PowerShell* ook rechtstreeks vanaf de console uitvoeren. Als de opdrachtoptie geldig is, wordt `unnamed[1]` een opdracht, anders wordt het bepaald als een bestandspad en uitgevoerd.
+
+| naamloos | Beschrijving            |
+| -------- | ----------------------- |
+| `1`      | opdracht of bestandspad |
+
+| genaamd     | korte naam | Beschrijving                      |
+| ----------- | ---------- | --------------------------------- |
+| `--command` | `-c`       | opdracht                          |
+| `--file`    | `-f`       | Bestandspad                       |
+| `--policy`  | `-p`       | Beleid (standaard is `"Bypass"` ) |
+
 ## *zip*
 
 Comprimeert bestanden en mappen en decomprimeert gecomprimeerde bestanden. Intern wordt *PowerShell* aangeroepen en verwerkt.

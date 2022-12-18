@@ -591,6 +591,38 @@ const FileSystemObject = 'Scripting.FileSystemObject'
 console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
 ```
 
+## *ps*
+
+Facilite l'exécution de *PowerShell* .
+
+### `execFile(spec, options)`
+
+Exécutez le fichier dans le chemin de `spec` .
+
+Nous acceptons actuellement les éléments suivants pour les `options` .
+
+| Param    | Taper                                                                                           | Description                                      |
+| :------- | :---------------------------------------------------------------------------------------------- | :----------------------------------------------- |
+| `Policy` | `{"AllSigned"\|"Bypass"\|"Default"\|"RemoteSigned"\|"Restricted"\|"Undefined"\|"Unrestricted"}` | Politique (la valeur par défaut est `"Bypass"` ) |
+
+### `execCommand(command, options)`
+
+Écrivez temporairement la `command` dans un fichier et exécutez `execFile()` . les `options` sont les mêmes que pour `execFile()` .
+
+### exécuter *ps* directement depuis la console
+
+Vous pouvez également exécuter *PowerShell* directement depuis la console. Si l'option de commande est valide, `unnamed[1]` devient une commande, sinon il est déterminé comme un chemin de fichier et exécuté.
+
+| anonyme | Description                         |
+| ------- | ----------------------------------- |
+| `1`     | chemin de la commande ou du fichier |
+
+| nommé       | nommé court | Description                                      |
+| ----------- | ----------- | ------------------------------------------------ |
+| `--command` | `-c`        | commande                                         |
+| `--file`    | `-f`        | Chemin du fichier                                |
+| `--policy`  | `-p`        | Politique (la valeur par défaut est `"Bypass"` ) |
+
 ## *zip*
 
 Compresse les fichiers et les dossiers et décompresse les fichiers compressés. En interne, *PowerShell* est appelé et traité.

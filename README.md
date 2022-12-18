@@ -641,6 +641,39 @@ const FileSystemObject = 'Scripting.FileSystemObject'
 console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
 ```
 
+## *ps*
+
+*PowerShell* の実行を容易にします。
+
+### `execFile(spec, options)`
+
+`spec` のパスのファイルを実行します。
+
+現在 `options` は以下の項目を受け付けています。
+
+| Param      | Type    | Description |
+| :--------- | :------ | :---------- |
+| `Policy`   | `{"AllSigned"\|"Bypass"\|"Default"\|"RemoteSigned"\|"Restricted"\|"Undefined"\|"Unrestricted"}` | ポリシー(既定値は `"Bypass"` ) |
+
+### `execCommand(command, options)`
+
+`command` を一時的にファイルに書き出し、`execFile()` を実行します。`options` は `execFile()` と同じです。
+
+### コンソールから直接 *ps* を実行する
+
+コンソールから直接 *PowerShell* を実行することもできます。
+コマンドオプションが有効であれば、`unnamed[1]` はコマンドになり、それ以外はファイルパスと判断して実行します。
+
+| unnamed | Description          |
+| ------- | -------------------- |
+| `1`     | コマンドもしくはファイルパス |
+
+| named    | short named | Description          |
+| -------- | ----------- | -------------------- |
+| `--command` | `-c`        | コマンド |
+| `--file` | `-f`        | ファイルパス  |
+| `--policy` | `-p`   | ポリシー (既定値は `"Bypass"` ) |
+
 ## *zip*
 
 ファイルやフォルダの圧縮と圧縮ファイルの解凍をします。
@@ -775,6 +808,7 @@ wes @wachaon/fmt src/sample --write
 | unnamed number | Description         |
 | -------------- | ------------------- |
 | 1              | 必須。フォーマットしたいファイルのパス |
+
 | named     | short named | Description |
 | --------- | ----------- | ----------- |
 | `--write` | `-w`        | 上書きを許可する    |

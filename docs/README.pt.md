@@ -591,6 +591,38 @@ const FileSystemObject = 'Scripting.FileSystemObject'
 console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
 ```
 
+## *ps*
+
+Facilita a execução *PowerShell* .
+
+### `execFile(spec, options)`
+
+Execute o arquivo no caminho de `spec` .
+
+Atualmente, aceitamos os seguintes itens para `options` .
+
+| Parâmetro | Modelo                                                                                          | Descrição                         |
+| :-------- | :---------------------------------------------------------------------------------------------- | :-------------------------------- |
+| `Policy`  | `{"AllSigned"\|"Bypass"\|"Default"\|"RemoteSigned"\|"Restricted"\|"Undefined"\|"Unrestricted"}` | Política (o padrão é `"Bypass"` ) |
+
+### `execCommand(command, options)`
+
+Grave temporariamente o `command` em um arquivo e execute `execFile()` . as `options` são as mesmas de `execFile()` .
+
+### execute *ps* diretamente do console
+
+Você também pode executar o *PowerShell* diretamente do console. Se a opção de comando for válida, `unnamed[1]` torna-se um comando, caso contrário, é determinado como um caminho de arquivo e executado.
+
+| sem nome | Descrição                     |
+| -------- | ----------------------------- |
+| `1`      | comando ou caminho do arquivo |
+
+| nomeado     | nome curto | Descrição                         |
+| ----------- | ---------- | --------------------------------- |
+| `--command` | `-c`       | comando                           |
+| `--file`    | `-f`       | Caminho de arquivo                |
+| `--policy`  | `-p`       | Política (o padrão é `"Bypass"` ) |
+
 ## *zip*
 
 Compacta arquivos e pastas e descompacta arquivos compactados. Internamente, o *PowerShell* é chamado e processado.

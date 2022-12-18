@@ -591,6 +591,38 @@ const FileSystemObject = 'Scripting.FileSystemObject'
 console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
 ```
 
+## *ps*
+
+Memudahkan menjalankan *PowerShell* .
+
+### `execFile(spec, options)`
+
+Jalankan fail dalam laluan `spec` .
+
+Pada masa ini kami menerima item berikut untuk `options` .
+
+| Param    | taip                                                                                            | Penerangan                      |
+| :------- | :---------------------------------------------------------------------------------------------- | :------------------------------ |
+| `Policy` | `{"AllSigned"\|"Bypass"\|"Default"\|"RemoteSigned"\|"Restricted"\|"Undefined"\|"Unrestricted"}` | Dasar (lalai ialah `"Bypass"` ) |
+
+### `execCommand(command, options)`
+
+Tulis `command` pada fail buat sementara waktu dan laksanakan `execFile()` . `options` adalah sama seperti untuk `execFile()` .
+
+### jalankan *ps* terus dari konsol
+
+Anda juga boleh menjalankan *PowerShell* terus dari konsol. Jika pilihan arahan itu sah, `unnamed[1]` menjadi arahan, jika tidak, ia ditentukan sebagai laluan fail dan dilaksanakan.
+
+| tidak dinamakan | Penerangan              |
+| --------------- | ----------------------- |
+| `1`             | arahan atau laluan fail |
+
+| bernama     | pendek bernama | Penerangan                      |
+| ----------- | -------------- | ------------------------------- |
+| `--command` | `-c`           | perintah                        |
+| `--file`    | `-f`           | Laluan Fail                     |
+| `--policy`  | `-p`           | Dasar (lalai ialah `"Bypass"` ) |
+
 ## *zip*
 
 Memampatkan fail dan folder dan menyahmampat fail yang dimampatkan. Secara dalaman, *PowerShell* dipanggil dan diproses.
