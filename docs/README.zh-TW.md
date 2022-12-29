@@ -583,12 +583,34 @@ animate.run()
 
 ## *getMember*
 
-從*ProgID*獲取*COM Object*的成員類型和描述。
+在控制台中使用時，從*ProgID*獲取*COM Object*成員類型和描述。
+
+```bat
+wes getMember "Scripting.FileSystemObject"
+```
+
+作為模塊使用時，它獲取實例的成員類型和描述。如果用作模塊，您可以獲得有關無法從*WSH (Windows Script Host)*確認的對象的信息。
 
 ```javascript
 const getMember = require('getMember')
-const FileSystemObject = 'Scripting.FileSystemObject'
-console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
+const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
+getMember(SWbemServicesEx)
+```
+
+將對像從*wes*傳遞到*PowerShell*需要一定的時間。
+
+如果處理停止，請指定等待時間。 （默認為`1000` ）
+
+```bat
+wes getMember "Scripting.FileSystemObject" 2000
+```
+
+要么
+
+```javascript
+const getMember = require('getMember', 2000)
+const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
+getMember(SWbemServicesEx)
 ```
 
 ## *ps*

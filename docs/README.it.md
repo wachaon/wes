@@ -583,12 +583,34 @@ animate.run()
 
 ## *getMember*
 
-Ottieni il tipo di membro e la descrizione *COM Object* da *ProgID* .
+Ottiene il tipo e la descrizione del membro *COM Object* dal *ProgID* quando utilizzato nella console.
+
+```bat
+wes getMember "Scripting.FileSystemObject"
+```
+
+Quando viene utilizzato come modulo, ottiene il tipo e la descrizione dei membri dell'istanza. Se utilizzato come modulo, è possibile ottenere informazioni sugli oggetti che non possono essere confermati da *WSH (Windows Script Host)* .
 
 ```javascript
 const getMember = require('getMember')
-const FileSystemObject = 'Scripting.FileSystemObject'
-console.log('require("%S") // => %O', FileSystemObject, getMember(FileSystemObject))
+const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
+getMember(SWbemServicesEx)
+```
+
+Il passaggio di oggetti da *wes* a *PowerShell* richiede un certo periodo di tempo.
+
+Se l'elaborazione si interrompe, specificare il tempo di attesa. (il valore predefinito è `1000` )
+
+```bat
+wes getMember "Scripting.FileSystemObject" 2000
+```
+
+o
+
+```javascript
+const getMember = require('getMember', 2000)
+const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
+getMember(SWbemServicesEx)
 ```
 
 ## *ps*
