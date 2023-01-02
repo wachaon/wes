@@ -668,24 +668,12 @@ getMember(SWbemServicesEx)
 
 *PowerShell* の実行を容易にします。
 
-### `execFile(spec, options)`
+### `ps(source)`
 
-`spec` のパスのファイルを実行します。
-
-現在 `options` は以下の項目を受け付けています。
-
-| Param      | Type    | Description |
-| :--------- | :------ | :---------- |
-| `Policy`   | `{"AllSigned"\|"Bypass"\|"Default"\|"RemoteSigned"\|"Restricted"\|"Undefined"\|"Unrestricted"}` | ポリシー(既定値は `"Bypass"` ) |
-
-### `execCommand(command, options)`
-
-`command` を一時的にファイルに書き出し、`execFile()` を実行します。`options` は `execFile()` と同じです。
-
-*Google Chrome* のウインドウのサイズと位置を変更します。(ウインドウが最大化されている場合は動作しまません。)
+`source` の *PowerShell* スクリプトを実行します。 
 
 ```javascript
-const { execCommand } = require('ps')
+const ps = require('ps')
 
 const code = `
 $name = "chrome"
@@ -693,6 +681,7 @@ $w = 700
 $h = 500
 $x = 10
 $y = 100
+
 Add-Type @"
   using System;
   using System.Runtime.InteropServices;
@@ -702,32 +691,29 @@ Add-Type @"
     public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
   }
 "@
+
 Get-Process -Name $name | where { $_.MainWindowTitle -ne "" } | foreach {
     [Win32Api]::MoveWindow($_.MainWindowHandle, $x, $y, $w, $h, $true) | Out-Null
 }
 `
-console.log(execCommand(code))
+
+ps(code)
 ```
 
 ### コンソールから直接 *ps* を実行する
 
-コンソールから直接 *PowerShell* を実行することもできます。
-コマンドオプションが有効であれば、`unnamed[1]` はコマンドになり、それ以外はファイルパスと判断して実行します。
+コンソールで指定した *.ps1* ファイルを実行します。
 
-| unnamed | Description          |
-| ------- | -------------------- |
-| `1`     | コマンドもしくはファイルパス |
+```bat
+wes ps ./sample.ps1
+```
 
-| named    | short named | Description          |
-| -------- | ----------- | -------------------- |
-| `--command` | `-c`        | コマンド |
-| `--file` | `-f`        | ファイルパス  |
-| `--policy` | `-p`   | ポリシー (既定値は `"Bypass"` ) |
+`--Command` もしくは `-c` オプションを指定すれば直接コマンドを実行することもできます。
 
 カレントディレクトリのファイル一覧を表示する例
 
 ```bat
-wes ps -c Get-ChildItem
+wes ps --Command Get-ChildItem
 ```
 
 ## *zip*
