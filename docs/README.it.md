@@ -617,24 +617,12 @@ getMember(SWbemServicesEx)
 
 Facilita l'esecuzione di *PowerShell* .
 
-### `execFile(spec, options)`
+### `ps(source)`
 
-Esegui il file nel percorso di `spec` .
-
-Attualmente accettiamo i seguenti elementi per le `options` .
-
-| Param    | Tipo                                                                                            | Descrizione                                         |
-| :------- | :---------------------------------------------------------------------------------------------- | :-------------------------------------------------- |
-| `Policy` | `{"AllSigned"\|"Bypass"\|"Default"\|"RemoteSigned"\|"Restricted"\|"Undefined"\|"Unrestricted"}` | Criterio (l'impostazione predefinita è `"Bypass"` ) |
-
-### `execCommand(command, options)`
-
-Scrivere temporaneamente il `command` in un file ed eseguire `execFile()` . le `options` sono le stesse di `execFile()` .
-
-Modifica le dimensioni e la posizione della finestra di *Google Chrome* . (Non funziona se la finestra è ingrandita.)
+Eseguire lo script *PowerShell* di `source` .
 
 ```javascript
-const { execCommand } = require('ps')
+const ps = require('ps')
 
 const code = `
 $name = "chrome"
@@ -642,6 +630,7 @@ $w = 700
 $h = 500
 $x = 10
 $y = 100
+
 Add-Type @"
   using System;
   using System.Runtime.InteropServices;
@@ -651,31 +640,29 @@ Add-Type @"
     public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
   }
 "@
+
 Get-Process -Name $name | where { $_.MainWindowTitle -ne "" } | foreach {
     [Win32Api]::MoveWindow($_.MainWindowHandle, $x, $y, $w, $h, $true) | Out-Null
 }
 `
-console.log(execCommand(code))
+
+ps(code)
 ```
 
 ### esegui *ps* direttamente dalla console
 
-Puoi anche eseguire *PowerShell* direttamente dalla console. Se l'opzione di comando è valida, `unnamed[1]` diventa un comando, altrimenti viene determinato come percorso file ed eseguito.
+Esegue il file *.ps1* specificato nella console.
 
-| senza nome | Descrizione             |
-| ---------- | ----------------------- |
-| `1`        | comando o percorso file |
+```bat
+wes ps ./sample.ps1
+```
 
-| di nome     | breve nome | Descrizione                                         |
-| ----------- | ---------- | --------------------------------------------------- |
-| `--command` | `-c`       | comando                                             |
-| `--file`    | `-f`       | Percorso del file                                   |
-| `--policy`  | `-p`       | Criterio (l'impostazione predefinita è `"Bypass"` ) |
+È inoltre possibile eseguire direttamente un comando specificando l'opzione `--Command` o `-c` .
 
 Esempio di visualizzazione di un elenco di file nella directory corrente
 
 ```bat
-wes ps -c Get-ChildItem
+wes ps --Command Get-ChildItem
 ```
 
 ## *zip*

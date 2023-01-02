@@ -617,24 +617,12 @@ getMember(SWbemServicesEx)
 
 *PowerShell* चलाने की सुविधा देता है।
 
-### `execFile(spec, options)`
+### `ps(source)`
 
-फ़ाइल को `spec` के पथ में निष्पादित करें।
-
-वर्तमान में हम `options` के लिए निम्नलिखित मदों को स्वीकार करते हैं।
-
-| परम      | टाइप                                                                                            | विवरण                         |
-| :------- | :---------------------------------------------------------------------------------------------- | :---------------------------- |
-| `Policy` | `{"AllSigned"\|"Bypass"\|"Default"\|"RemoteSigned"\|"Restricted"\|"Undefined"\|"Unrestricted"}` | नीति (डिफ़ॉल्ट `"Bypass"` है) |
-
-### `execCommand(command, options)`
-
-फ़ाइल में अस्थायी रूप से `command` लिखें और `execFile()` निष्पादित करें। `options` `execFile()` के समान हैं।
-
-*Google Chrome* विंडो का आकार और स्थिति बदलें। (विंडो अधिकतम होने पर यह काम नहीं करता है।)
+`source` *PowerShell* स्क्रिप्ट चलाएँ।
 
 ```javascript
-const { execCommand } = require('ps')
+const ps = require('ps')
 
 const code = `
 $name = "chrome"
@@ -642,6 +630,7 @@ $w = 700
 $h = 500
 $x = 10
 $y = 100
+
 Add-Type @"
   using System;
   using System.Runtime.InteropServices;
@@ -651,31 +640,29 @@ Add-Type @"
     public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
   }
 "@
+
 Get-Process -Name $name | where { $_.MainWindowTitle -ne "" } | foreach {
     [Win32Api]::MoveWindow($_.MainWindowHandle, $x, $y, $w, $h, $true) | Out-Null
 }
 `
-console.log(execCommand(code))
+
+ps(code)
 ```
 
 ### *ps* को सीधे कंसोल से चलाएं
 
-आप *PowerShell* को सीधे कंसोल से भी चला सकते हैं। यदि कमांड विकल्प मान्य है, तो `unnamed[1]` एक कमांड बन जाता है, अन्यथा इसे फ़ाइल पथ के रूप में निर्धारित किया जाता है और निष्पादित किया जाता है।
+कंसोल में निर्दिष्ट *.ps1* फ़ाइल निष्पादित करता है।
 
-| अज्ञात | विवरण            |
-| ------ | ---------------- |
-| `1`    | आदेश या फ़ाइल पथ |
+```bat
+wes ps ./sample.ps1
+```
 
-| नामित       | संक्षिप्त नाम | विवरण                         |
-| ----------- | ------------- | ----------------------------- |
-| `--command` | `-c`          | आज्ञा                         |
-| `--file`    | `-f`          | दस्तावेज पथ                   |
-| `--policy`  | `-p`          | नीति (डिफ़ॉल्ट `"Bypass"` है) |
+आप `--Command` या `-c` विकल्प निर्दिष्ट करके सीधे कमांड निष्पादित कर सकते हैं।
 
 वर्तमान निर्देशिका में फ़ाइलों की सूची प्रदर्शित करने का उदाहरण
 
 ```bat
-wes ps -c Get-ChildItem
+wes ps --Command Get-ChildItem
 ```
 
 ## *zip*

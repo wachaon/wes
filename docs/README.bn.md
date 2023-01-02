@@ -617,24 +617,12 @@ getMember(SWbemServicesEx)
 
 *PowerShell* চালানোর সুবিধা দেয়।
 
-### `execFile(spec, options)`
+### `ps(source)`
 
-`spec` এর পাথে ফাইলটি চালান।
-
-আমরা বর্তমানে `options` জন্য নিম্নলিখিত আইটেমগুলি গ্রহণ করি।
-
-| পরম      | টাইপ                                                                                            | বর্ণনা                       |
-| :------- | :---------------------------------------------------------------------------------------------- | :--------------------------- |
-| `Policy` | `{"AllSigned"\|"Bypass"\|"Default"\|"RemoteSigned"\|"Restricted"\|"Undefined"\|"Unrestricted"}` | নীতি (ডিফল্ট হল `"Bypass"` ) |
-
-### `execCommand(command, options)`
-
-অস্থায়ীভাবে একটি ফাইলে `command` লিখুন এবং `execFile()` চালান। `options` `execFile()` এর মতই।
-
-*Google Chrome* উইন্ডোর আকার এবং অবস্থান পরিবর্তন করুন। (উইন্ডোটি সর্বাধিক করা হলে এটি কাজ করে না।)
+`source` *PowerShell* স্ক্রিপ্ট চালান.
 
 ```javascript
-const { execCommand } = require('ps')
+const ps = require('ps')
 
 const code = `
 $name = "chrome"
@@ -642,6 +630,7 @@ $w = 700
 $h = 500
 $x = 10
 $y = 100
+
 Add-Type @"
   using System;
   using System.Runtime.InteropServices;
@@ -651,31 +640,29 @@ Add-Type @"
     public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
   }
 "@
+
 Get-Process -Name $name | where { $_.MainWindowTitle -ne "" } | foreach {
     [Win32Api]::MoveWindow($_.MainWindowHandle, $x, $y, $w, $h, $true) | Out-Null
 }
 `
-console.log(execCommand(code))
+
+ps(code)
 ```
 
 ### কনসোল থেকে সরাসরি *ps* চালান
 
-আপনি সরাসরি কনসোল থেকে *PowerShell* চালাতে পারেন। কমান্ড বিকল্পটি বৈধ হলে, `unnamed[1]` একটি কমান্ড হয়ে যায়, অন্যথায় এটি একটি ফাইল পাথ হিসাবে নির্ধারিত হয় এবং কার্যকর করা হয়।
+কনসোলে নির্দিষ্ট *.ps1* ফাইলটি কার্যকর করে।
 
-| নামহীন | বর্ণনা             |
-| ------ | ------------------ |
-| `1`    | কমান্ড বা ফাইল পাথ |
+```bat
+wes ps ./sample.ps1
+```
 
-| নাম         | সংক্ষিপ্ত নাম | বর্ণনা                       |
-| ----------- | ------------- | ---------------------------- |
-| `--command` | `-c`          | আদেশ                         |
-| `--file`    | `-f`          | ফাইল পাথ                     |
-| `--policy`  | `-p`          | নীতি (ডিফল্ট হল `"Bypass"` ) |
+আপনি `--Command` বা `-c` বিকল্পটি নির্দিষ্ট করে সরাসরি একটি কমান্ড চালাতে পারেন।
 
 বর্তমান ডিরেক্টরিতে ফাইলগুলির একটি তালিকা প্রদর্শনের উদাহরণ
 
 ```bat
-wes ps -c Get-ChildItem
+wes ps --Command Get-ChildItem
 ```
 
 ## *zip*

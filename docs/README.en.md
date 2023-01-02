@@ -617,24 +617,12 @@ getMember(SWbemServicesEx)
 
 Facilitates running *PowerShell* .
 
-### `execFile(spec, options)`
+### `ps(source)`
 
-Execute the file in `spec` 's path.
-
-We currently accept the following items for `options` .
-
-| Param    | Type                                                                                            | Description                     |
-| :------- | :---------------------------------------------------------------------------------------------- | :------------------------------ |
-| `Policy` | `{"AllSigned"\|"Bypass"\|"Default"\|"RemoteSigned"\|"Restricted"\|"Undefined"\|"Unrestricted"}` | Policy (default is `"Bypass"` ) |
-
-### `execCommand(command, options)`
-
-Write `command` to a file temporarily and execute `execFile()` . `options` are the same as for `execFile()` .
-
-Change the size and position of the *Google Chrome* window. (It doesn't work if the window is maximized.)
+Run the `source` *PowerShell* script.
 
 ```javascript
-const { execCommand } = require('ps')
+const ps = require('ps')
 
 const code = `
 $name = "chrome"
@@ -642,6 +630,7 @@ $w = 700
 $h = 500
 $x = 10
 $y = 100
+
 Add-Type @"
   using System;
   using System.Runtime.InteropServices;
@@ -651,31 +640,29 @@ Add-Type @"
     public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
   }
 "@
+
 Get-Process -Name $name | where { $_.MainWindowTitle -ne "" } | foreach {
     [Win32Api]::MoveWindow($_.MainWindowHandle, $x, $y, $w, $h, $true) | Out-Null
 }
 `
-console.log(execCommand(code))
+
+ps(code)
 ```
 
 ### run *ps* directly from console
 
-You can also run *PowerShell* directly from the console. If the command option is valid, `unnamed[1]` becomes a command, otherwise it is determined as a file path and executed.
+Executes the specified *.ps1* file in the console.
 
-| unnamed | Description          |
-| ------- | -------------------- |
-| `1`     | command or file path |
+```bat
+wes ps ./sample.ps1
+```
 
-| named       | short named | Description                     |
-| ----------- | ----------- | ------------------------------- |
-| `--command` | `-c`        | command                         |
-| `--file`    | `-f`        | File Path                       |
-| `--policy`  | `-p`        | Policy (default is `"Bypass"` ) |
+You can also directly execute a command by specifying the `--Command` or `-c` option.
 
 Example of displaying a list of files in the current directory
 
 ```bat
-wes ps -c Get-ChildItem
+wes ps --Command Get-ChildItem
 ```
 
 ## *zip*

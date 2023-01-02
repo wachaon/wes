@@ -617,24 +617,12 @@ getMember(SWbemServicesEx)
 
 Facilite l'exécution de *PowerShell* .
 
-### `execFile(spec, options)`
+### `ps(source)`
 
-Exécutez le fichier dans le chemin de `spec` .
-
-Nous acceptons actuellement les éléments suivants pour les `options` .
-
-| Param    | Taper                                                                                           | Description                                      |
-| :------- | :---------------------------------------------------------------------------------------------- | :----------------------------------------------- |
-| `Policy` | `{"AllSigned"\|"Bypass"\|"Default"\|"RemoteSigned"\|"Restricted"\|"Undefined"\|"Unrestricted"}` | Politique (la valeur par défaut est `"Bypass"` ) |
-
-### `execCommand(command, options)`
-
-Écrivez temporairement la `command` dans un fichier et exécutez `execFile()` . les `options` sont les mêmes que pour `execFile()` .
-
-Modifiez la taille et la position de la fenêtre *Google Chrome* . (Cela ne fonctionne pas si la fenêtre est maximisée.)
+Exécutez le script *PowerShell* `source` .
 
 ```javascript
-const { execCommand } = require('ps')
+const ps = require('ps')
 
 const code = `
 $name = "chrome"
@@ -642,6 +630,7 @@ $w = 700
 $h = 500
 $x = 10
 $y = 100
+
 Add-Type @"
   using System;
   using System.Runtime.InteropServices;
@@ -651,31 +640,29 @@ Add-Type @"
     public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
   }
 "@
+
 Get-Process -Name $name | where { $_.MainWindowTitle -ne "" } | foreach {
     [Win32Api]::MoveWindow($_.MainWindowHandle, $x, $y, $w, $h, $true) | Out-Null
 }
 `
-console.log(execCommand(code))
+
+ps(code)
 ```
 
 ### exécuter *ps* directement depuis la console
 
-Vous pouvez également exécuter *PowerShell* directement depuis la console. Si l'option de commande est valide, `unnamed[1]` devient une commande, sinon il est déterminé comme un chemin de fichier et exécuté.
-
-| anonyme | Description                         |
-| ------- | ----------------------------------- |
-| `1`     | chemin de la commande ou du fichier |
-
-| nommé       | nommé court | Description                                      |
-| ----------- | ----------- | ------------------------------------------------ |
-| `--command` | `-c`        | commande                                         |
-| `--file`    | `-f`        | Chemin du fichier                                |
-| `--policy`  | `-p`        | Politique (la valeur par défaut est `"Bypass"` ) |
-
-Exemple d'affichage d'une liste de fichiers dans le répertoire courant
+Exécute le fichier *.ps1* spécifié dans la console.
 
 ```bat
-wes ps -c Get-ChildItem
+wes ps ./sample.ps1
+```
+
+Vous pouvez également exécuter directement une commande en spécifiant l'option `--Command` ou `-c` .
+
+Exemple d'affichage d'une liste de fichiers dans le répertoire en cours
+
+```bat
+wes ps --Command Get-ChildItem
 ```
 
 ## *zip*

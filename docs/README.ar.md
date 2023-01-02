@@ -617,24 +617,12 @@ getMember(SWbemServicesEx)
 
 يسهل تشغيل *PowerShell* .
 
-### `execFile(spec, options)`
+### `ps(source)`
 
-قم بتنفيذ الملف في مسار `spec` .
-
-نحن نقبل حاليًا العناصر التالية للحصول على `options` .
-
-| بارام    | يكتب                                                                                            | وصف                              |
-| :------- | :---------------------------------------------------------------------------------------------- | :------------------------------- |
-| `Policy` | `{"AllSigned"\|"Bypass"\|"Default"\|"RemoteSigned"\|"Restricted"\|"Undefined"\|"Unrestricted"}` | النهج (الافتراضي هو `"Bypass"` ) |
-
-### `execCommand(command, options)`
-
-اكتب `command` مؤقتًا إلى ملف وقم بتنفيذ `execFile()` . `options` هي نفسها بالنسبة لـ `execFile()` .
-
-قم بتغيير حجم وموضع نافذة *Google Chrome* . (لا يعمل إذا تم تكبير النافذة.)
+قم بتشغيل البرنامج النصي *PowerShell* `source` .
 
 ```javascript
-const { execCommand } = require('ps')
+const ps = require('ps')
 
 const code = `
 $name = "chrome"
@@ -642,6 +630,7 @@ $w = 700
 $h = 500
 $x = 10
 $y = 100
+
 Add-Type @"
   using System;
   using System.Runtime.InteropServices;
@@ -651,31 +640,29 @@ Add-Type @"
     public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
   }
 "@
+
 Get-Process -Name $name | where { $_.MainWindowTitle -ne "" } | foreach {
     [Win32Api]::MoveWindow($_.MainWindowHandle, $x, $y, $w, $h, $true) | Out-Null
 }
 `
-console.log(execCommand(code))
+
+ps(code)
 ```
 
 ### تشغيل *ps* مباشرة من وحدة التحكم
 
-يمكنك أيضًا تشغيل *PowerShell* مباشرةً من وحدة التحكم. إذا كان خيار الأمر صالحًا ، فإن `unnamed[1]` يصبح أمرًا ، وإلا يتم تحديده كمسار ملف ويتم تنفيذه.
+ينفذ ملف *.ps1* المحدد في وحدة التحكم.
 
-| غير مسمى | وصف                 |
-| -------- | ------------------- |
-| `1`      | الأمر أو مسار الملف |
+```bat
+wes ps ./sample.ps1
+```
 
-| اسم الشيئ   | اسم قصير | وصف                              |
-| ----------- | -------- | -------------------------------- |
-| `--command` | `-c`     | يأمر                             |
-| `--file`    | `-f`     | مسار الملف                       |
-| `--policy`  | `-p`     | النهج (الافتراضي هو `"Bypass"` ) |
+يمكنك أيضًا تنفيذ أمر ما مباشرةً عن طريق تحديد الخيار `--Command` أو `-c` .
 
 مثال على عرض قائمة بالملفات في الدليل الحالي
 
 ```bat
-wes ps -c Get-ChildItem
+wes ps --Command Get-ChildItem
 ```
 
 ## *zip*

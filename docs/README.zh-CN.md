@@ -617,24 +617,12 @@ getMember(SWbemServicesEx)
 
 有助于运行*PowerShell* 。
 
-### `execFile(spec, options)`
+### `ps(source)`
 
-执行`spec`路径中的文件。
-
-我们目前接受以下项目作为`options` 。
-
-| 参数       | 类型                                                                                              | 描述                 |
-| :------- | :---------------------------------------------------------------------------------------------- | :----------------- |
-| `Policy` | `{"AllSigned"\|"Bypass"\|"Default"\|"RemoteSigned"\|"Restricted"\|"Undefined"\|"Unrestricted"}` | 政策（默认为`"Bypass"` ） |
-
-### `execCommand(command, options)`
-
-临时将`command`写入文件并执行`execFile()` 。 `options`与`execFile()`相同。
-
-更改*Google Chrome*窗口的大小和位置。 （如果窗口最大化则不起作用。）
+运行`source` *PowerShell*脚本。
 
 ```javascript
-const { execCommand } = require('ps')
+const ps = require('ps')
 
 const code = `
 $name = "chrome"
@@ -642,6 +630,7 @@ $w = 700
 $h = 500
 $x = 10
 $y = 100
+
 Add-Type @"
   using System;
   using System.Runtime.InteropServices;
@@ -651,31 +640,29 @@ Add-Type @"
     public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
   }
 "@
+
 Get-Process -Name $name | where { $_.MainWindowTitle -ne "" } | foreach {
     [Win32Api]::MoveWindow($_.MainWindowHandle, $x, $y, $w, $h, $true) | Out-Null
 }
 `
-console.log(execCommand(code))
+
+ps(code)
 ```
 
 ### 直接从控制台运行*ps*
 
-您也可以直接从控制台运行*PowerShell* 。如果命令选项有效，则`unnamed[1]`成为命令，否则确定为文件路径并执行。
+在控制台中执行指定的*.ps1*文件。
 
-| 无名  | 描述      |
-| --- | ------- |
-| `1` | 命令或文件路径 |
+```bat
+wes ps ./sample.ps1
+```
 
-| 命名的         | 简称   | 描述                 |
-| ----------- | ---- | ------------------ |
-| `--command` | `-c` | 命令                 |
-| `--file`    | `-f` | 文件路径               |
-| `--policy`  | `-p` | 政策（默认为`"Bypass"` ） |
+您也可以通过指定`--Command`或`-c`选项直接执行命令。
 
 显示当前目录中文件列表的示例
 
 ```bat
-wes ps -c Get-ChildItem
+wes ps --Command Get-ChildItem
 ```
 
 ## *zip*

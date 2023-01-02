@@ -617,24 +617,12 @@ getMember(SWbemServicesEx)
 
 Memudahkan menjalankan *PowerShell* .
 
-### `execFile(spec, options)`
+### `ps(source)`
 
-Jalankan fail dalam laluan `spec` .
-
-Pada masa ini kami menerima item berikut untuk `options` .
-
-| Param    | taip                                                                                            | Penerangan                      |
-| :------- | :---------------------------------------------------------------------------------------------- | :------------------------------ |
-| `Policy` | `{"AllSigned"\|"Bypass"\|"Default"\|"RemoteSigned"\|"Restricted"\|"Undefined"\|"Unrestricted"}` | Dasar (lalai ialah `"Bypass"` ) |
-
-### `execCommand(command, options)`
-
-Tulis `command` pada fail buat sementara waktu dan laksanakan `execFile()` . `options` adalah sama seperti untuk `execFile()` .
-
-Tukar saiz dan kedudukan tetingkap *Google Chrome* . (Ia tidak berfungsi jika tetingkap dimaksimumkan.)
+Jalankan skrip *PowerShell* `source` .
 
 ```javascript
-const { execCommand } = require('ps')
+const ps = require('ps')
 
 const code = `
 $name = "chrome"
@@ -642,6 +630,7 @@ $w = 700
 $h = 500
 $x = 10
 $y = 100
+
 Add-Type @"
   using System;
   using System.Runtime.InteropServices;
@@ -651,31 +640,29 @@ Add-Type @"
     public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
   }
 "@
+
 Get-Process -Name $name | where { $_.MainWindowTitle -ne "" } | foreach {
     [Win32Api]::MoveWindow($_.MainWindowHandle, $x, $y, $w, $h, $true) | Out-Null
 }
 `
-console.log(execCommand(code))
+
+ps(code)
 ```
 
 ### jalankan *ps* terus dari konsol
 
-Anda juga boleh menjalankan *PowerShell* terus dari konsol. Jika pilihan arahan itu sah, `unnamed[1]` menjadi arahan, jika tidak, ia ditentukan sebagai laluan fail dan dilaksanakan.
+Melaksanakan fail *.ps1* yang ditentukan dalam konsol.
 
-| tidak dinamakan | Penerangan              |
-| --------------- | ----------------------- |
-| `1`             | arahan atau laluan fail |
+```bat
+wes ps ./sample.ps1
+```
 
-| bernama     | pendek bernama | Penerangan                      |
-| ----------- | -------------- | ------------------------------- |
-| `--command` | `-c`           | perintah                        |
-| `--file`    | `-f`           | Laluan Fail                     |
-| `--policy`  | `-p`           | Dasar (lalai ialah `"Bypass"` ) |
+Anda juga boleh terus melaksanakan arahan dengan menentukan pilihan `--Command` atau `-c` .
 
 Contoh memaparkan senarai fail dalam direktori semasa
 
 ```bat
-wes ps -c Get-ChildItem
+wes ps --Command Get-ChildItem
 ```
 
 ## *zip*
