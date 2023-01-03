@@ -621,6 +621,15 @@ getMember(SWbemServicesEx)
 
 運行`source` *PowerShell*腳本。
 
+在控制台中顯示 cmdlet 列表。
+
+```javascript
+const ps = require('ps')
+const one = ps("Get-Command")
+```
+
+如果有*Google Cherome*窗口，請更改窗口的大小和位置。 （它在全屏模式下不起作用。）
+
 ```javascript
 const ps = require('ps')
 
@@ -644,6 +653,75 @@ Add-Type @"
 Get-Process -Name $name | where { $_.MainWindowTitle -ne "" } | foreach {
     [Win32Api]::MoveWindow($_.MainWindowHandle, $x, $y, $w, $h, $true) | Out-Null
 }
+`
+
+ps(code)
+```
+
+控制鼠標移動和點擊。
+
+```javascript
+const ps = require('ps')
+
+const code = `
+$assemblies = @("System", "System.Runtime.InteropServices")
+
+$Source = @"
+using System;
+using System.Runtime.InteropServices;
+
+namespace Device {
+    public class Mouse {
+        public static void Main (params string[] args) {
+            string method = args[0];
+            int posX = args.Length > 1 ? Int32.Parse(args[1]) : 0;
+            int posY = args.Length > 2 ? Int32.Parse(args[2]) : 0;
+
+            if (method == "pos") {
+                SetCursorPos(posX, posY);
+            }
+
+            if (method == "click") {
+                mouse_event(0x2, posX, posY, 0, 0);
+                mouse_event(0x4, 0, 0, 0, 0);
+            }
+
+            if (method == "leftDown") {
+                mouse_event(0x2, posX, posY, 0, 0);
+            }
+
+            if (method == "leftUp") {
+                mouse_event(0x4, posX, posY, 0, 0);
+            }
+
+            if (method == "rightClick") {
+                mouse_event(0x8, posX, posY, 0, 0);
+                mouse_event(0x10, 0, 0, 0, 0);
+            }
+
+            if (method == "rightDown") {
+                mouse_event(0x8, posX, posY, 0, 0);
+            }
+
+            if (method == "righttUp") {
+                mouse_event(0x10, posX, posY, 0, 0);
+            }
+        }
+
+        [DllImport("USER32.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern void SetCursorPos(int X, int Y);
+
+        [DllImport("USER32.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern void mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
+    }
+}
+"@
+
+Add-Type -Language CSharp -TypeDefinition $Source -ReferencedAssemblies $assemblies
+
+[Device.Mouse]::Main("pos", "50", "70")
+Start-Sleep -Milliseconds 1000
+[Device.Mouse]::Main("click")
 `
 
 ps(code)
