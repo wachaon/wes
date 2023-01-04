@@ -619,7 +619,7 @@ getMember(SWbemServicesEx)
 
 ### `ps(source, option)`
 
-`source` *PowerShell* স্ক্রিপ্ট চালান।
+`source` *PowerShell* স্ক্রিপ্ট চালান.
 
 কনসোলে cmdlets এর একটি তালিকা প্রদর্শন করুন।
 
@@ -668,8 +668,6 @@ const option = [
     unnamed[2] || 0,
     unnamed[3] || 0
 ]
-
-const start = new Date
 
 ps(`
 $Method = $args[0]

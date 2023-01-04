@@ -669,8 +669,6 @@ const option = [
     unnamed[3] || 0
 ]
 
-const start = new Date
-
 ps(`
 $Method = $args[0]
 $PosX = $args[1]
