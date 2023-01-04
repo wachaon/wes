@@ -617,9 +617,9 @@ getMember(SWbemServicesEx)
 
 *PowerShell* চালানোর সুবিধা দেয়।
 
-### `ps(source)`
+### `ps(source, option)`
 
-`source` *PowerShell* স্ক্রিপ্ট চালান.
+`source` *PowerShell* স্ক্রিপ্ট চালান।
 
 কনসোলে cmdlets এর একটি তালিকা প্রদর্শন করুন।
 
@@ -661,9 +661,21 @@ ps(code)
 মাউস নড়াচড়া এবং ক্লিক নিয়ন্ত্রণ করে।
 
 ```javascript
-const ps = require('ps')
+const ps = require("ps")
+const { unnamed } = require('argv')
+const option = [
+    unnamed[1],
+    unnamed[2] || 0,
+    unnamed[3] || 0
+]
 
-const code = `
+const start = new Date
+
+ps(`
+$Method = $args[0]
+$PosX = $args[1]
+$PosY = $args[2]
+
 $assemblies = @("System", "System.Runtime.InteropServices")
 
 $Source = @"
@@ -719,15 +731,17 @@ namespace Device {
 
 Add-Type -Language CSharp -TypeDefinition $Source -ReferencedAssemblies $assemblies
 
-[Device.Mouse]::Main("pos", "50", "70")
-Start-Sleep -Milliseconds 1000
-[Device.Mouse]::Main("click")
-`
-
-ps(code)
+[Device.Mouse]::Main($Method, $PosX, $PosY)
+`, option)
 ```
 
-### কনসোল থেকে সরাসরি *ps* চালান
+স্ক্রিপ্টটিকে একটি ফাইল হিসাবে সংরক্ষণ করুন বা আপনার পরবর্তী `REP` তে পেস্ট করুন।
+
+```bat
+wes REP pos 100 100
+```
+
+### সরাসরি কনসোল থেকে *powershell* চালান
 
 কনসোলে নির্দিষ্ট *.ps1* ফাইলটি কার্যকর করে।
 

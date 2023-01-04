@@ -655,7 +655,7 @@ getMember(SWbemServicesEx)
 
 *PowerShell* の実行を容易にします。
 
-### `ps(source)`
+### `ps(source, option)`
 
 `source` の *PowerShell* スクリプトを実行します。 
 
@@ -700,9 +700,21 @@ ps(code)
 マウスの移動とクリックを操作します。
 
 ```javascript
-const ps = require('ps')
+const ps = require("ps")
+const { unnamed } = require('argv')
+const option = [
+    unnamed[1],
+    unnamed[2] || 0,
+    unnamed[3] || 0
+]
 
-const code = `
+const start = new Date
+
+ps(`
+$Method = $args[0]
+$PosX = $args[1]
+$PosY = $args[2]
+
 $assemblies = @("System", "System.Runtime.InteropServices")
 
 $Source = @"
@@ -758,15 +770,16 @@ namespace Device {
 
 Add-Type -Language CSharp -TypeDefinition $Source -ReferencedAssemblies $assemblies
 
-[Device.Mouse]::Main("pos", "50", "70")
-Start-Sleep -Milliseconds 1000
-[Device.Mouse]::Main("click")
-`
+[Device.Mouse]::Main($Method, $PosX, $PosY)
+`, option)
+```
+スクリプトをファイルとして保存するか、次の `REP` にペーストしてください。
 
-ps(code)
+```bat
+wes REP pos 100 100
 ```
 
-### コンソールから直接 *ps* を実行する
+### コンソールから直接 *powershell* を実行する
 
 コンソールで指定した *.ps1* ファイルを実行します。
 

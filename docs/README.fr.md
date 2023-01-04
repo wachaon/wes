@@ -617,7 +617,7 @@ getMember(SWbemServicesEx)
 
 Facilite l'exécution de *PowerShell* .
 
-### `ps(source)`
+### `ps(source, option)`
 
 Exécutez le script *PowerShell* `source` .
 
@@ -661,9 +661,21 @@ ps(code)
 Contrôle le mouvement de la souris et les clics.
 
 ```javascript
-const ps = require('ps')
+const ps = require("ps")
+const { unnamed } = require('argv')
+const option = [
+    unnamed[1],
+    unnamed[2] || 0,
+    unnamed[3] || 0
+]
 
-const code = `
+const start = new Date
+
+ps(`
+$Method = $args[0]
+$PosX = $args[1]
+$PosY = $args[2]
+
 $assemblies = @("System", "System.Runtime.InteropServices")
 
 $Source = @"
@@ -719,15 +731,17 @@ namespace Device {
 
 Add-Type -Language CSharp -TypeDefinition $Source -ReferencedAssemblies $assemblies
 
-[Device.Mouse]::Main("pos", "50", "70")
-Start-Sleep -Milliseconds 1000
-[Device.Mouse]::Main("click")
-`
-
-ps(code)
+[Device.Mouse]::Main($Method, $PosX, $PosY)
+`, option)
 ```
 
-### exécuter *ps* directement depuis la console
+Enregistrez le script sous forme de fichier ou collez-le dans votre prochain `REP` .
+
+```bat
+wes REP pos 100 100
+```
+
+### Exécutez *powershell* directement depuis la console
 
 Exécute le fichier *.ps1* spécifié dans la console.
 

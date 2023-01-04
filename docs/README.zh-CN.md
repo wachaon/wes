@@ -617,7 +617,7 @@ getMember(SWbemServicesEx)
 
 有助于运行*PowerShell* 。
 
-### `ps(source)`
+### `ps(source, option)`
 
 运行`source` *PowerShell*脚本。
 
@@ -661,9 +661,21 @@ ps(code)
 控制鼠标移动和点击。
 
 ```javascript
-const ps = require('ps')
+const ps = require("ps")
+const { unnamed } = require('argv')
+const option = [
+    unnamed[1],
+    unnamed[2] || 0,
+    unnamed[3] || 0
+]
 
-const code = `
+const start = new Date
+
+ps(`
+$Method = $args[0]
+$PosX = $args[1]
+$PosY = $args[2]
+
 $assemblies = @("System", "System.Runtime.InteropServices")
 
 $Source = @"
@@ -719,15 +731,17 @@ namespace Device {
 
 Add-Type -Language CSharp -TypeDefinition $Source -ReferencedAssemblies $assemblies
 
-[Device.Mouse]::Main("pos", "50", "70")
-Start-Sleep -Milliseconds 1000
-[Device.Mouse]::Main("click")
-`
-
-ps(code)
+[Device.Mouse]::Main($Method, $PosX, $PosY)
+`, option)
 ```
 
-### 直接从控制台运行*ps*
+将脚本另存为文件或将其粘贴到您的下一个`REP`中。
+
+```bat
+wes REP pos 100 100
+```
+
+### 直接从控制台运行*powershell*
 
 在控制台中执行指定的*.ps1*文件。
 

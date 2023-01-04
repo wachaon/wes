@@ -617,7 +617,7 @@ getMember(SWbemServicesEx)
 
 Vergemakkelijkt het uitvoeren van *PowerShell* .
 
-### `ps(source)`
+### `ps(source, option)`
 
 Voer het *PowerShell* `source` bronscript uit.
 
@@ -661,9 +661,21 @@ ps(code)
 Regelt muisbewegingen en klikken.
 
 ```javascript
-const ps = require('ps')
+const ps = require("ps")
+const { unnamed } = require('argv')
+const option = [
+    unnamed[1],
+    unnamed[2] || 0,
+    unnamed[3] || 0
+]
 
-const code = `
+const start = new Date
+
+ps(`
+$Method = $args[0]
+$PosX = $args[1]
+$PosY = $args[2]
+
 $assemblies = @("System", "System.Runtime.InteropServices")
 
 $Source = @"
@@ -719,15 +731,17 @@ namespace Device {
 
 Add-Type -Language CSharp -TypeDefinition $Source -ReferencedAssemblies $assemblies
 
-[Device.Mouse]::Main("pos", "50", "70")
-Start-Sleep -Milliseconds 1000
-[Device.Mouse]::Main("click")
-`
-
-ps(code)
+[Device.Mouse]::Main($Method, $PosX, $PosY)
+`, option)
 ```
 
-### voer *ps* rechtstreeks uit vanaf de console
+Sla het script op als een bestand of plak het in uw volgende `REP` .
+
+```bat
+wes REP pos 100 100
+```
+
+### Voer *powershell* rechtstreeks uit vanaf de console
 
 Voert het opgegeven *.ps1* -bestand uit in de console.
 
@@ -737,7 +751,7 @@ wes ps ./sample.ps1
 
 U kunt ook direct een opdracht uitvoeren door de optie `--Command` of `-c` op te geven.
 
-Voorbeeld van het weergeven van een lijst met bestanden in de huidige map
+Voorbeeld van het weergeven van een lijst met bestanden in de huidige directory
 
 ```bat
 wes ps --Command Get-ChildItem
