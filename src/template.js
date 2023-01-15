@@ -20,7 +20,8 @@
         var wes = {
             history: history,
             entry_point: entry_point,
-            architecture: ARCHITECTURE
+            architecture: ARCHITECTURE,
+            entryMap: {}
         }
 
         /* insert argv */
@@ -466,12 +467,18 @@
             else areas = getAreas(callee, query)
 
             var entry = getEntry(areas)
+
             if (entry == null)
                 throw new Error(
                     'no module:\n' + 'callee: ' + callee + '\nquery: ' + query + LF + JSON.stringify(areas, null, 2)
                 )
 
             var modId = req(GEN_GUID)()
+
+            var duplication = findEntry(entry)
+            // console.log('duplication != null: %O %S\n%S', duplication != null, entry, modId)
+            if (duplication != null) return req(duplication)
+            else wes.entryMap[entry] = modId
 
             if (callee === founder) {
                 wes.entry_point = entry
@@ -517,12 +524,17 @@
                     return existsFileSync(spec)
                 })
             if (pkgSpec) {
-                var modId = req(GEN_GUID)()
-                Modules[modId] = {
-                    source: readTextFileSync(pkgSpec),
-                    path: pkgSpec
+                // console.log('find package.json: %O', wes.entryMap[pkgSpec])
+                if (findEntry(pkgSpec) != null) return req(wes.entryMap[pkgSpec])
+                else {
+                    var modId = req(GEN_GUID)()
+                    Modules[modId] = {
+                        source: readTextFileSync(pkgSpec),
+                        path: pkgSpec
+                    }
+                    wes.entryMap[pkgSpec] = modId
+                    return req(modId)
                 }
-                return req(modId)
             }
             return {}
         }
@@ -554,6 +566,9 @@
                 .join(NONE)
         }
 
+        function findEntry(entry) {
+            return wes.entryMap[entry]
+        }
         /*
         function seq(target, props) {
             if (!Array.isArray(props) || props.length === 0) return target
