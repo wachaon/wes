@@ -861,7 +861,15 @@ wes zip -p dox.zip
 バンドルするには以下のコマンドを入力します。何をバンドルするかは *package.json* を参照します。
 
 ```bat
-    wes bundle 
+wes bundle 
+```
+
+## *init*
+
+幾つかの項目を入力するとその情報から *package.json* を作成します。 
+
+```bat
+wes init
 ```
 
 ## *install*
