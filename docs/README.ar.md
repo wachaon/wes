@@ -804,7 +804,15 @@ wes zip -p dox.zip
 أدخل الأمر التالي للحزمة: ارجع إلى *package.json* لمعرفة ما تريد تجميعه.
 
 ```bat
-    wes bundle 
+wes bundle 
+```
+
+## *init*
+
+أدخل بعض العناصر وسيتم إنشاء *package.json* من تلك المعلومات.
+
+```bat
+wes init
 ```
 
 ## *install*

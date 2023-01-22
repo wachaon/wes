@@ -799,12 +799,20 @@ Bij het publiceren van een pakket naar *github* , *bundle* bundel de vereiste mo
     }
     ```
 3.  Maak de repository *public* als u het pakket wilt publiceren
-4.  Vanaf `version 0.12.0` worden pakketten met een directe module die in een map boven de werkmap wordt geladen, niet gebundeld. Pakketten in de bovenste directory *wes\_modules* of *node\_modules* kunnen worden gebundeld.
+4.  Vanaf `version 0.12.0` worden pakketten met het direct laden van de module in een map boven de werkmap niet gebundeld. Pakketten in de bovenste directory *wes\_modules* of *node\_modules* kunnen worden gebundeld.
 
 Voer de volgende opdracht in om te bundelen: Raadpleeg *package.json* voor wat u moet bundelen.
 
 ```bat
-    wes bundle 
+wes bundle 
+```
+
+## *init*
+
+Voer enkele items in en het zal *package.json* van die informatie maken.
+
+```bat
+wes init
 ```
 
 ## *install*

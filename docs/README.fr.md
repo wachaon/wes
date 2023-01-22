@@ -804,7 +804,15 @@ Lors de la publication d'un package sur *github* , *bundle* regroupe les modules
 Saisissez la commande suivante pour regrouper : Reportez-vous à *package.json* pour savoir quoi regrouper.
 
 ```bat
-    wes bundle 
+wes bundle 
+```
+
+## *init*
+
+Entrez quelques éléments et il créera *package.json* à partir de ces informations.
+
+```bat
+wes init
 ```
 
 ## *install*

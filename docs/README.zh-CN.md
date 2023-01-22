@@ -804,7 +804,15 @@ wes zip -p dox.zip
 输入以下命令进行捆绑：有关要捆绑的内容，请参阅*package.json* 。
 
 ```bat
-    wes bundle 
+wes bundle 
+```
+
+## *init*
+
+输入一些项目，它将根据该信息创建*package.json* 。
+
+```bat
+wes init
 ```
 
 ## *install*

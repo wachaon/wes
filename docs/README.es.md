@@ -804,7 +804,15 @@ Al publicar un paquete en *github* , *bundle* agrupa los módulos necesarios y c
 Ingrese el siguiente comando para agrupar: Consulte *package.json* para saber qué empaquetar.
 
 ```bat
-    wes bundle 
+wes bundle 
+```
+
+## *init*
+
+Ingrese algunos elementos y creará *package.json* a partir de esa información.
+
+```bat
+wes init
 ```
 
 ## *install*

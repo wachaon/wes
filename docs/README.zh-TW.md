@@ -793,18 +793,26 @@ wes zip -p dox.zip
 將包發佈到*github*時， *bundle*會捆綁所需的模塊並創建*bundle.json* 。
 
 1.  一個*repository*只能發布一個包
-2.  *package.json*是必需的。至少， `main`字段的描述是必需的。 ```json
+2.  *package.json*是必需的。至少，需要對`main`字段進行描述。 ```json
     {
         "main": "index.js"
     }
     ```
 3.  如果要發布包，請*public*存儲庫
-4.  從`version 0.12.0`開始，直接模塊加載到工作目錄之上的目錄的包將不會被捆綁。可以捆綁上層目錄*wes\_modules*或*node\_modules*中的包。
+4.  從`version 0.12.0`開始，直接模塊加載到工作目錄上方目錄的包將不會被捆綁。可以打包上層目錄*wes\_modules*或*node\_modules*中的包。
 
-輸入以下命令進行捆綁：請參閱*package.json*以了解要捆綁的內容。
+輸入以下命令進行捆綁：有關要捆綁的內容，請參閱*package.json* 。
 
 ```bat
-    wes bundle 
+wes bundle 
+```
+
+## *init*
+
+輸入一些項目，它將根據該信息創建*package.json* 。
+
+```bat
+wes init
 ```
 
 ## *install*

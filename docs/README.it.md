@@ -804,7 +804,15 @@ Quando si pubblica un pacchetto su *github* , *bundle* raggruppa i moduli richie
 Immettere il seguente comando per raggruppare: Fare riferimento a *package.json* per sapere cosa raggruppare.
 
 ```bat
-    wes bundle 
+wes bundle 
+```
+
+## *init*
+
+Inserisci alcuni elementi e creerà *package.json* da tali informazioni.
+
+```bat
+wes init
 ```
 
 ## *install*

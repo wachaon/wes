@@ -804,7 +804,15 @@ When publishing a package to *github* , *bundle* bundles the required modules an
 Enter the following command to bundle: Refer to *package.json* for what to bundle.
 
 ```bat
-    wes bundle 
+wes bundle 
+```
+
+## *init*
+
+Enter some items and it will create *package.json* from that information.
+
+```bat
+wes init
 ```
 
 ## *install*

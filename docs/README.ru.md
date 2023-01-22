@@ -804,7 +804,15 @@ wes zip -p dox.zip
 Введите следующую команду для объединения: Обратитесь к *package.json* для того, чтобы связать.
 
 ```bat
-    wes bundle 
+wes bundle 
+```
+
+## *init*
+
+Введите некоторые элементы, и он создаст *package.json* из этой информации.
+
+```bat
+wes init
 ```
 
 ## *install*

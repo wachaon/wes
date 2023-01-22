@@ -799,12 +799,20 @@ Ao publicar um pacote no *github* , *bundle* agrupa os módulos necessários e c
     }
     ```
 3.  Torne o repositório *public* se quiser publicar o pacote
-4.  A partir da `version 0.12.0` , os pacotes com carregamento direto do módulo em um diretório acima do diretório de trabalho não serão agrupados. Pacotes no diretório superior *wes\_modules* ou *node\_modules* podem ser agrupados.
+4.  A partir da `version 0.12.0` , os pacotes com carregamento direto do módulo em um diretório acima do diretório de trabalho não serão empacotados. Pacotes no diretório superior *wes\_modules* ou *node\_modules* podem ser agrupados.
 
 Digite o seguinte comando para agrupar: Consulte *package.json* para saber o que agrupar.
 
 ```bat
-    wes bundle 
+wes bundle 
+```
+
+## *init*
+
+Insira alguns itens e ele criará o *package.json* a partir dessas informações.
+
+```bat
+wes init
 ```
 
 ## *install*

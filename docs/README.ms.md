@@ -798,13 +798,21 @@ Apabila menerbitkan pakej ke *github* , *bundle* modul yang diperlukan dan menci
         "main": "index.js"
     }
     ```
-3.  Jadikan repositori *public* jika anda ingin menerbitkan pakej tersebut
+3.  Jadikan repositori *public* jika anda ingin menerbitkan pakej
 4.  Bermula dengan `version 0.12.0` , pakej dengan pemuatan modul langsung ke dalam direktori di atas direktori kerja tidak akan digabungkan. Pakej dalam direktori atas *wes\_modules* atau *node\_modules* boleh digabungkan.
 
 Masukkan arahan berikut untuk digabungkan: Rujuk *package.json* untuk mengetahui perkara yang hendak digabungkan.
 
 ```bat
-    wes bundle 
+wes bundle 
+```
+
+## *init*
+
+Masukkan beberapa item dan ia akan mencipta *package.json* daripada maklumat tersebut.
+
+```bat
+wes init
 ```
 
 ## *install*

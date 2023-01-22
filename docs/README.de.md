@@ -804,7 +804,15 @@ Beim Veröffentlichen eines Pakets auf *github* bündelt *bundle* die erforderli
 Geben Sie zum Bündeln den folgenden Befehl ein: *package.json* Sie, was gebündelt werden soll.
 
 ```bat
-    wes bundle 
+wes bundle 
+```
+
+## *init*
+
+Geben Sie einige Elemente ein und es wird *package.json* aus diesen Informationen erstellt.
+
+```bat
+wes init
 ```
 
 ## *install*
