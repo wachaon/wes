@@ -1,3 +1,5 @@
+const start = new Date()
+
 const FSO = require('Scripting.FileSystemObject')
 const { format } = require('fmt')
 const { Enumerator } = require('JScript')
@@ -90,5 +92,6 @@ let res = format(
 )
 
 log(() => fs.writeTextFileSync('wes.js', res))
+console.log('build time %O', new Date().getTime() - start.getTime())
 
 module.exports = graph
