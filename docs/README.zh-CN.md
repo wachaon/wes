@@ -18,6 +18,8 @@
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
+
+
 # 特征
 
 *   您可以将脚本引擎更改为*Chakra*并根据*ECMAScript2015*规范编写。
@@ -28,11 +30,13 @@
 *   打包模块以支持外部发布和检索
 *   比*WSH*更友好地显示错误细节
 
+
 # 我们无法解决的*wes*问题
 
 *   `WScript.Quit`不能中止程序并且不返回错误代码
 *   异步处理不能正常工作
 *   您不能使用`WScript.CreateObject`的第二个参数的*event prefix*
+
 
 # 下载
 
@@ -48,6 +52,7 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```bat
 wes update
 ```
+
 
 # 如何开始*wes*
 
@@ -65,6 +70,7 @@ wes
 
 *REP*接受脚本输入，直到您输入两个空行。您还可以在*README.md*中看到*REP*运行示例脚本。
 
+
 ## 命令行选项
 
 *wes*启动选项如下。
@@ -77,9 +83,11 @@ wes
 | `--encoding=UTF-8` | 指定读取的第一个文件的编码               |
 | `--engine=Chakra`  | 此选项由*wes*自动添加               |
 
+
 # 模块系统
 
 *wes*支持两种模块系统，使用`require()`的*commonjs module*系统和使用`import`的*es module*系统。 （不支持*dynamic import* ，因为它是一个异步过程）
+
 
 ## *commonjs module*
 
@@ -108,6 +116,7 @@ WScript.Sleep(2000)
 Shell.UndoMinimizeAll()
 ```
 
+
 ## *es module*
 
 脚本执行引擎*Chakra*会解释`imoprt`等语法，但它不会在*cscript*环境中执行。在*wes*中，通过在内置模块中加入*babel* ， *es module*也在一个一个转译的同时执行。这是以处理开销和臃肿的*wes.js*文件为代价的。用*es module*模块编写的模块也通过转译转换为`require()` ，因此可以调用*COM Object* 。但是不支持用*es module*指定模块文件的编码。一切都自动加载。要将其作为*es module*加载，请将扩展名设置为`.mjs`或将`package.json`中的`"type"`字段设置为`"module"` 。
@@ -125,13 +134,16 @@ import sub from './sub.mjs'
 console.log('sub(7, 3) // => %O', sub(7, 3))
 ```
 
+
 # 内置对象
 
 *wes*有*WSH (JScript)*中没有的*built-in objects* 。
 
+
 ## *console*
 
 我们使用*console*而不是*wes* `WScript.Echo()`和`WScript.StdErr.WriteLine()` 。
+
 
 ### *console.log*
 
@@ -158,21 +170,26 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 
 `WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine`来输出彩色字符串。 `WScript.Echo`和`WScript.StdOut.WriteLine`是阻塞输出。 `WScript.StdErr.WriteLine`或`console.log` 。
 
+
 ### *console.print*
 
 `console.log()`通常在末尾包含换行符，但`console.print`不包含。
+
 
 ### *console.debug*
 
 仅当启用`--debug`选项时才输出到控制台。
 
+
 ### *console.error*
 
 以内容作为消息抛出异常。
 
+
 ### *console.weaklog*
 
 如果有任何后续输出，使用`console.weaklog()`打印的字符串将从控制台中消失。用于切换输出。
+
 
 ## *Buffer*
 
@@ -184,6 +201,7 @@ const buff = Buffer.from(content)
 console.log('%s %O', content, buff)
 ```
 
+
 ## `__dirname`和`__filename`
 
 `__filename`存储当前执行的模块文件的路径。 `__dirname`包含`__filename`的目录。
@@ -192,6 +210,7 @@ console.log('%s %O', content, buff)
 const message = `dirname: ${__dirname}\nfilename: ${ __filename}`
 console.log(message)
 ```
+
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
@@ -217,11 +236,13 @@ example();
 console.log('end')
 ```
 
+
 # 内置模块
 
 *wes*有*built-in modules*来简化和标准化基本处理。
 
-# 要删除的内置模块
+
+## 要删除的内置模块
 
 将一些内置模块更改为外部模块，使文件更轻便，更易于维护。
 
@@ -231,6 +252,7 @@ console.log('end')
 *   *log.js*
 
 以上模块可以分别安装为`@wachaon/animate` `@wachaon/day` `@wachaon/debug` `@wachaon/log` 。
+
 
 ## *ansi*
 
@@ -250,6 +272,7 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
+
 ## *argv*
 
 获取命令行参数。 `cscript.exe`的命令行参数使用`/`声明命名参数，而*wes*使用`-`和`--`声明命名参数。 *argv.unnamed*和*argv.named*命令行参数值类型转换为*String* *Number* *Boolean* 。使用*REP*输入命令行参数。
@@ -268,6 +291,7 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
+
 ## *pathname*
 
 操纵路径。以`/`和`\`开头的路径通常相对于驱动器根目录。例如`/filename`和`C:/filename`可以是相同的路径。出于安全原因， *wes*解释以`/`和`\`开头的相对于工作目录的路径。
@@ -277,6 +301,7 @@ const path = require('pathname')
 const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
+
 
 ## *filesystem*
 
@@ -291,9 +316,11 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
+
 ## *chardet*
 
 我正在使用<https://github.com/runk/node-chardet>的一些功能。您可以通过增加特定于编码的字符来提高自动猜测的准确性。
+
 
 ## *JScript*
 
@@ -319,6 +346,7 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
+
 ## *VBScript*
 
 *VBScript*提供了一些*JScript*没有的功能。
@@ -329,6 +357,7 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
+
 ## *httprequest*
 
 *httprequest*发出一个*http request* 。
@@ -338,6 +367,7 @@ const request = require('httprequest')
 const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
+
 
 ## *minitest*
 
@@ -373,9 +403,11 @@ describe('minitest', () => {
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
+
 ### 断言
 
 为简单起见，只有三个断言函数用于比较对象。
+
 
 #### `assert(value, message)` `assert.ok(value, message)`
 
@@ -385,6 +417,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 | :-------- | :-------------------- | :-------- |
 | `value`   | `{Function\|Boolean}` | 布尔或布尔返回函数 |
 | `message` | `{String}`            | 失败时的消息    |
+
 
 #### `assert.equal(expected, actual)`
 
@@ -397,6 +430,7 @@ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegEx
 | `expected` | `{Any}` | 期望值  |
 | `actual`   | `{Any}` | 实际价值 |
 
+
 #### `assert.throws(value, expected, message)`
 
 验证错误是否正确抛出。\
@@ -407,6 +441,7 @@ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegEx
 | `value`    | `{Error}`                 | 错误                                            |
 | `expected` | `{Error\|String\|RegExp}` | 计算预期错误*constructor* 、 *message*或*stack*的正则表达式 |
 | `message`  | `{String}`                | 失败时的消息                                        |
+
 
 ## *pipe*
 
@@ -432,6 +467,7 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
+
 ## *typecheck*
 
 确定脚本类型。
@@ -444,6 +480,7 @@ log(() => isNumber(43.5))
 log(() => isBoolean(false))
 log(() => isObject(function(){}))
 ```
+
 
 ## *getMember*
 
@@ -477,9 +514,11 @@ const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
 getMember(SWbemServicesEx)
 ```
 
+
 ## *ps*
 
 有助于运行*PowerShell* 。
+
 
 ### `ps(source, option)`
 
@@ -603,6 +642,7 @@ Add-Type -Language CSharp -TypeDefinition $Source -ReferencedAssemblies $assembl
 wes REP pos 100 100
 ```
 
+
 ### 直接从控制台运行*powershell*
 
 在控制台中执行指定的*.ps1*文件。
@@ -618,6 +658,7 @@ wes ps ./sample.ps1
 ```bat
 wes ps --Command Get-ChildItem
 ```
+
 
 ## *zip*
 
@@ -648,9 +689,11 @@ wes zip -p dox.zip
 | `--path` | `-p` | `path`文件夹或文件进入 |
 | `--dest` | `-d` | 文件夹文件输出`dest`  |
 
+
 # 捆绑（打包）和安装模块
 
 在*wes*中，几个模块的捆绑称为包。您可以安装在*github*上发布的*wes*包。发布包需要一个*github repository* 。
+
 
 ## *bundle*
 
@@ -671,6 +714,7 @@ wes zip -p dox.zip
 wes bundle 
 ```
 
+
 ## *init*
 
 输入一些项目，它将根据该信息创建*package.json* 。
@@ -678,6 +722,7 @@ wes bundle
 ```bat
 wes init
 ```
+
 
 ## *install*
 
@@ -705,6 +750,7 @@ wes install @wachaon/fmt
 wes install @wachaon/fmt --bare
 ```
 
+
 # 从私有仓库安装包
 
 *install*不仅可以安装来自公共*github*存储库的包，还可以安装来自私有存储库的包。在*install*中，使用*@author/repository*指定包。该实现尝试下载以下网址。
@@ -719,13 +765,16 @@ wes install @wachaon/fmt --bare
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
+
 # 包装介绍
 
 这是一些外部软件包。
 
+
 ## *@wachaon/fmt*
 
 *@wachaon/fmt* *prettier*地打包为*wes*格式化脚本。此外，如果在安装*@wachaon/fmt*时出现*Syntax Error* ，您可以指出错误的位置。
+
 
 ### 安装*@wachaon/fmt*
 
@@ -734,6 +783,7 @@ wes install @wachaon/fmt
 ```
 
 如果工作目录中有*.prettierrc* （JSON 格式），它会反映在设置中。 *fmt*在*CLI*和*module*中都可用。
+
 
 #### 用作*CLI* 。
 
@@ -751,6 +801,7 @@ wes @wachaon/fmt src/sample --write
 
 如果指定了`--write`或`-w`命名参数，则使用格式化脚本覆盖文件。
 
+
 #### 作为一个模块使用
 
 ```javascript
@@ -761,9 +812,11 @@ const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
+
 ## *@wachaon/edge*
 
 *Internet Explorer*将于 2022 年 6 月 15 日终止支持。因此，预计使用`require('InternetExplorer.Application')`应用程序操作将变得不可能。此外，终止对*Internet Explorer*的支持后，站点本身将无法正确显示。另一种方法是通过*web driver(msedgedriver.exe)*运行*Microsoft Edge based on Chromium* 。 `@wachaon/edge`简化了*Edge*自动驾驶仪。
+
 
 ### 安装*@wachaon/edge*
 
@@ -780,6 +833,7 @@ wes edge --download
 ```
 
 查看安装的*Edge*版本，下载对应的*web driver* 。
+
 
 ### 如何使用*@wachaon/edge*
 
@@ -830,9 +884,11 @@ console.log('ret // => %O', ret)
 
 *edge*按顺序将访问过的*URL*打印到控制台。 `@wachaon/edge`为*URL*注册事件并将数据添加到`res.exports` 。注册的*URL*可以是`String` `RegExp` ，可以灵活设置。通过使其成为事件驱动，您可以通过不为自动驾驶仪难以处理的流程设置事件来轻松切换到手动操作。如果您希望脚本停止， `navi.emit('terminate', res)`或手动终止*Edge* 。默认情况下，终结将*.json*输出为`res.exports`文件。如果要设置终止处理，请设置`terminate` of `edge(callback, terminate)` 。 `window`是*@wachaon/webdriver*的*Window*类的实例，而不是浏览器的`window` 。
 
+
 ## *@wachaon/webdriver*
 
 它将是一个向运行浏览器的*web driver*发送请求的包。 *@wachaon/edge*包括*@wachaon/webdriver* 。
+
 
 ### 安装*@wachaon/webdriver*
 
@@ -845,6 +901,7 @@ wes install @wachaon/webdriver --bare
 ```bat
 wes webdriver --download
 ```
+
 
 ### 如何使用*@wachaon/webdriver*
 

@@ -18,6 +18,8 @@ Untuk teks dalam bahasa lain, sila pilih daripada pilihan di bawah.
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
+
+
 # ciri
 
 *   Anda boleh menukar enjin skrip kepada *Chakra* dan menulis mengikut spesifikasi *ECMAScript2015* .
@@ -28,11 +30,13 @@ Untuk teks dalam bahasa lain, sila pilih daripada pilihan di bawah.
 *   Pakej modul untuk menyokong penerbitan dan pengambilan luaran
 *   Paparkan butiran ralat dengan lebih baik daripada *WSH*
 
+
 # Isu-isu yang *wes* yang tidak dapat kami selesaikan
 
 *   `WScript.Quit` tidak boleh membatalkan program dan tidak mengembalikan kod ralat
 *   Pemprosesan tak segerak tidak berfungsi dengan betul
 *   Anda tidak boleh menggunakan *event prefix* bagi argumen kedua `WScript.CreateObject`
+
 
 # muat turun
 
@@ -48,6 +52,7 @@ Konfigurasikan laluan *wes.js* disimpan dalam *ascii* sahaja. Jika anda telah me
 ```bat
 wes update
 ```
+
 
 # macam mana nak mulakan *wes*
 
@@ -65,6 +70,7 @@ wes
 
 *REP* menerima input skrip sehingga anda memasukkan dua baris kosong. Anda juga boleh melihat *REP* menjalankan skrip contoh dalam *README.md* .
 
+
 ## pilihan baris arahan
 
 Pilihan permulaan *wes* adalah seperti berikut.
@@ -77,9 +83,11 @@ Pilihan permulaan *wes* adalah seperti berikut.
 | `--encoding=UTF-8` | Menentukan pengekodan fail pertama dibaca             |
 | `--engine=Chakra`  | Pilihan ini ditambah secara automatik oleh *wes*      |
 
+
 # sistem modul
 
 *wes* menyokong dua sistem modul, sistem *commonjs module* menggunakan `require()` dan sistem *es module* menggunakan `import` . ( *dynamic import* tidak disokong kerana ia adalah proses tak segerak)
+
 
 ## *commonjs module*
 
@@ -108,6 +116,7 @@ WScript.Sleep(2000)
 Shell.UndoMinimizeAll()
 ```
 
+
 ## *es module*
 
 *Chakra* , enjin pelaksanaan skrip, mentafsir sintaks seperti `imoprt` , tetapi ia tidak dilaksanakan dalam persekitaran *cscript* . Di *wes* , dengan menambahkan *babel* pada modul terbina dalam, modul *es module* juga dilaksanakan semasa ditranspil secara berurutan. Ini datang dengan kos pemprosesan overhed dan fail *wes.js* kembung. Modul yang ditulis dalam *es module* juga ditukar kepada `require()` dengan mengalihkan, jadi adalah mungkin untuk memanggil *COM Object* . Walau bagaimanapun, ia tidak menyokong menentukan pengekodan fail modul dengan *es module* . Semuanya dimuatkan secara automatik. Untuk memuatkannya sebagai *es module* , tetapkan sambungan kepada `.mjs` atau tetapkan medan `"type"` dalam `package.json` kepada `"module"` .
@@ -125,13 +134,16 @@ import sub from './sub.mjs'
 console.log('sub(7, 3) // => %O', sub(7, 3))
 ```
 
+
 # objek terbina dalam
 
 *wes* mempunyai *built-in objects* tidak ditemui dalam *WSH (JScript)* .
 
+
 ## *console*
 
 Wes menggunakan *console* dan bukannya *wes* `WScript.Echo()` dan `WScript.StdErr.WriteLine()` .
+
 
 ### *console.log*
 
@@ -158,21 +170,26 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 
 `WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine` untuk mengeluarkan rentetan berwarna. `WScript.Echo` dan `WScript.StdOut.WriteLine` disekat output. `WScript.StdErr.WriteLine` atau `console.log` .
 
+
 ### *console.print*
 
 `console.log()` biasanya menyertakan baris baharu pada penghujungnya, tetapi `console.print` tidak.
+
 
 ### *console.debug*
 
 Output ke konsol hanya jika pilihan `--debug` didayakan.
 
+
 ### *console.error*
 
 Lemparkan pengecualian dengan kandungan sebagai mesej.
 
+
 ### *console.weaklog*
 
 Rentetan yang dicetak dengan `console.weaklog()` hilang daripada konsol jika terdapat sebarang output berikutnya. Berguna untuk menukar output.
+
 
 ## *Buffer*
 
@@ -184,6 +201,7 @@ const buff = Buffer.from(content)
 console.log('%s %O', content, buff)
 ```
 
+
 ## `__dirname` dan `__filename`
 
 `__filename` menyimpan laluan fail modul yang sedang dilaksanakan. `__dirname` mengandungi direktori `__filename` .
@@ -192,6 +210,7 @@ console.log('%s %O', content, buff)
 const message = `dirname: ${__dirname}\nfilename: ${ __filename}`
 console.log(message)
 ```
+
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
@@ -217,11 +236,13 @@ example();
 console.log('end')
 ```
 
+
 # Modul terbina dalam
 
 *wes* mempunyai *built-in modules* untuk memudahkan dan menyeragamkan pemprosesan asas.
 
-# Modul terbina dalam untuk dialih keluar
+
+## Modul terbina dalam untuk dialih keluar
 
 Tukar beberapa modul terbina dalam kepada modul luaran untuk menjadikan fail lebih ringan dan lebih mudah diselenggara.
 
@@ -231,6 +252,7 @@ Tukar beberapa modul terbina dalam kepada modul luaran untuk menjadikan fail leb
 *   *log.js*
 
 Modul di atas boleh dipasang sebagai `@wachaon/animate` `@wachaon/day` `@wachaon/debug` `@wachaon/log` masing-masing.
+
 
 ## *ansi*
 
@@ -250,6 +272,7 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
+
 ## *argv*
 
 Dapatkan hujah baris arahan. Argumen baris arahan `cscript.exe` mengisytiharkan argumen bernama dengan `/` , manakala *wes* mengisytiharkan argumen bernama dengan `-` dan `--` . *argv.unnamed* dan *argv.named* jenis nilai argumen baris arahan kepada sama ada *Number* *String* *Boolean* . Masukkan argumen baris arahan dengan *REP* .
@@ -268,6 +291,7 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
+
 ## *pathname*
 
 Memanipulasi laluan. Laluan yang bermula dengan `/` dan `\` biasanya relatif kepada akar pemacu. Contohnya `/filename` dan `C:/filename` boleh menjadi laluan yang sama. Atas sebab keselamatan, *wes* mentafsir laluan bermula dengan `/` dan `\` relatif kepada direktori kerja.
@@ -277,6 +301,7 @@ const path = require('pathname')
 const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
+
 
 ## *filesystem*
 
@@ -291,9 +316,11 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
+
 ## *chardet*
 
 Saya menggunakan beberapa ciri dari <https://github.com/runk/node-chardet> . Anda boleh meningkatkan ketepatan auto-teka dengan meningkatkan aksara khusus pengekodan.
+
 
 ## *JScript*
 
@@ -319,6 +346,7 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
+
 ## *VBScript*
 
 *VBScript* menawarkan beberapa ciri yang tidak dimiliki oleh *JScript* .
@@ -329,6 +357,7 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
+
 ## *httprequest*
 
 *httprequest* mengeluarkan *http request* .
@@ -338,6 +367,7 @@ const request = require('httprequest')
 const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
+
 
 ## *minitest*
 
@@ -373,9 +403,11 @@ describe('minitest', () => {
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
+
 ### dakwaan
 
 Terdapat hanya tiga fungsi penegasan untuk membandingkan objek untuk kesederhanaan.
+
 
 #### `assert(value, message)` `assert.ok(value, message)`
 
@@ -385,6 +417,7 @@ Bandingkan dengan `true` dengan pengendali kesaksamaan yang ketat `===` . Jika `
 | :-------- | :-------------------- | :--------------------------------------- |
 | `value`   | `{Function\|Boolean}` | boolean atau fungsi pengembalian boolean |
 | `message` | `{String}`            | mesej tentang kegagalan                  |
+
 
 #### `assert.equal(expected, actual)`
 
@@ -397,6 +430,7 @@ Apabila membandingkan kelas (objek), mereka mesti mempunyai pembina yang sama at
 | `expected` | `{Any}` | nilai yang dijangkakan |
 | `actual`   | `{Any}` | Nilai sebenar          |
 
+
 #### `assert.throws(value, expected, message)`
 
 Sahkan bahawa ralat dilemparkan dengan betul.\
@@ -407,6 +441,7 @@ Sama ada ralat itu betul atau tidak ditentukan oleh sama ada *constructor* ralat
 | `value`    | `{Error}`                 | ralat                                                                                    |
 | `expected` | `{Error\|String\|RegExp}` | Ungkapan biasa yang menilai *constructor* ralat, *message* atau *stack* yang dijangkakan |
 | `message`  | `{String}`                | mesej tentang kegagalan                                                                  |
+
 
 ## *pipe*
 
@@ -432,6 +467,7 @@ pipe()
   .process(10, (err, res) => console.log('res: %O', res))
 ```
 
+
 ## *typecheck*
 
 Tentukan jenis skrip.
@@ -444,6 +480,7 @@ log(() => isNumber(43.5))
 log(() => isBoolean(false))
 log(() => isObject(function(){}))
 ```
+
 
 ## *getMember*
 
@@ -477,9 +514,11 @@ const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
 getMember(SWbemServicesEx)
 ```
 
+
 ## *ps*
 
 Memudahkan menjalankan *PowerShell* .
+
 
 ### `ps(source, option)`
 
@@ -603,6 +642,7 @@ Simpan skrip sebagai fail atau tampalkannya ke `REP` anda yang seterusnya.
 wes REP pos 100 100
 ```
 
+
 ### Jalankan *powershell* terus dari konsol
 
 Melaksanakan fail *.ps1* yang ditentukan dalam konsol.
@@ -618,6 +658,7 @@ Contoh memaparkan senarai fail dalam direktori semasa
 ```bat
 wes ps --Command Get-ChildItem
 ```
+
 
 ## *zip*
 
@@ -648,9 +689,11 @@ Jika `path` mempunyai sambungan `.zip` , `unzip()` diproses dan tiada perihalan 
 | `--path` | `-p`           | `path` atau fail untuk dimasukkan |
 | `--dest` | `-d`           | fail folder ke output `dest`      |
 
+
 # Mengikat (pembungkusan) dan memasang modul
 
 Dalam *wes* , himpunan beberapa modul dipanggil pakej. Anda boleh memasang pakej untuk *wes* diterbitkan di *github* . *github repository* diperlukan untuk menerbitkan pakej.
+
 
 ## *bundle*
 
@@ -671,6 +714,7 @@ Masukkan arahan berikut untuk digabungkan: Rujuk *package.json* untuk mengetahui
 wes bundle 
 ```
 
+
 ## *init*
 
 Masukkan beberapa item dan ia akan mencipta *package.json* daripada maklumat tersebut.
@@ -678,6 +722,7 @@ Masukkan beberapa item dan ia akan mencipta *package.json* daripada maklumat ter
 ```bat
 wes init
 ```
+
 
 ## *install*
 
@@ -705,6 +750,7 @@ wes install @wachaon/fmt
 wes install @wachaon/fmt --bare
 ```
 
+
 # Memasang pakej dari repositori peribadi
 
 *install* boleh memasang bukan sahaja pakej dari repositori *github* awam, tetapi juga pakej dari repositori peribadi. Dalam *install* , nyatakan pakej dengan *@author/repository* . Pelaksanaan cuba memuat turun url berikut.
@@ -719,13 +765,16 @@ Jika anda mengakses repositori persendirian *raw* dengan penyemak imbas, *token*
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
+
 # Pengenalan pakej
 
 Berikut adalah beberapa pakej luaran.
 
+
 ## *@wachaon/fmt*
 
 *@wachaon/fmt* dibungkus *prettier* untuk *wes* memformat skrip. Selain itu, jika *Syntax Error* berlaku semasa *@wachaon/fmt* dipasang, anda boleh menunjukkan lokasi ralat.
+
 
 ### Pasang *@wachaon/fmt*
 
@@ -734,6 +783,7 @@ wes install @wachaon/fmt
 ```
 
 Jika terdapat *.prettierrc* (format JSON) dalam direktori kerja, ia akan ditunjukkan dalam tetapan. *fmt* tersedia dalam kedua-dua *CLI* dan *module* .
+
 
 #### Gunakan sebagai *CLI* .
 
@@ -751,6 +801,7 @@ wes @wachaon/fmt src/sample --write
 
 Tulis ganti fail dengan skrip terformat jika `--write` atau argumen bernama `-w` ditentukan.
 
+
 #### digunakan sebagai modul
 
 ```javascript
@@ -761,9 +812,11 @@ const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
+
 ## *@wachaon/edge*
 
 *Internet Explorer* akan menamatkan sokongan pada 15 Jun 2022. Akibatnya, operasi aplikasi dengan `require('InternetExplorer.Application')` dijangka menjadi mustahil. Selain itu, tapak itu sendiri tidak akan dapat dipaparkan dengan betul dengan menamatkan sokongan untuk *Internet Explorer* . Alternatifnya ialah dengan mengendalikan *Microsoft Edge based on Chromium* melalui *web driver(msedgedriver.exe)* . `@wachaon/edge` memudahkan autopilot *Edge* .
+
 
 ### Pasang *@wachaon/edge*
 
@@ -780,6 +833,7 @@ wes edge --download
 ```
 
 Semak versi *Edge* yang dipasang dan muat turun *web driver* yang sepadan .
+
 
 ### Cara menggunakan *@wachaon/edge*
 
@@ -830,9 +884,11 @@ console.log('ret // => %O', ret)
 
 *edge* mencetak *URL* yang dilawati ke konsol mengikut urutan. `@wachaon/edge` mendaftarkan acara untuk *URL* dan menambahkan data pada `res.exports` . *URL* untuk didaftarkan boleh sama ada `String` `RegExp` , dan boleh ditetapkan secara fleksibel. Dengan menjadikannya dipacu peristiwa, anda boleh beralih kepada operasi manual dengan mudah dengan tidak menetapkan acara untuk proses yang sukar dikendalikan dengan autopilot. Jika anda mahu skrip berhenti, `navi.emit('terminate', res)` atau tamatkan *Edge* secara manual. Pemuktamadkan output `res.exports` sebagai fail *.json* secara lalai. Jika anda ingin menetapkan pemprosesan penamatan, tetapkan `terminate` `edge(callback, terminate)` . `window` ialah contoh kelas *Window* *@wachaon/webdriver* , bukan window's `window` .
 
+
 ## *@wachaon/webdriver*
 
 Ia akan menjadi pakej yang menghantar permintaan kepada *web driver* yang mengendalikan penyemak imbas. *@wachaon/edge* termasuk *@wachaon/webdriver* .
+
 
 ### Pasang *@wachaon/webdriver*
 
@@ -845,6 +901,7 @@ Muat turun pemacu web *Microsoft Edge* berasaskan *Chromium* *web driver(msedged
 ```bat
 wes webdriver --download
 ```
+
 
 ### Cara menggunakan *@wachaon/webdriver*
 
