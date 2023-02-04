@@ -6,7 +6,6 @@ describe('#test Enumerator', () => {
         const FSO = require('Scripting.FileSystemObject')
         let files = new Enumerator(FSO.GetFolder(`./lib`).Files).map((v) => v.name)
         let list = [
-            'animate.js',
             'ansi.js',
             'argv.js',
             'babel-standalone.js',
@@ -14,8 +13,6 @@ describe('#test Enumerator', () => {
             'bundle.js',
             'chardet.js',
             'console.js',
-            'day.js',
-            'debug.js',
             'event.js',
             'filesystem.js',
             'genGUID.js',
@@ -28,7 +25,6 @@ describe('#test Enumerator', () => {
             'install.js',
             'isCLI.js',
             'JScript.js',
-            'log.js',
             'minitest.js',
             'pathname.js',
             'pipe.js',

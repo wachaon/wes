@@ -1,7 +1,6 @@
 const typecheck = require('/lib/typecheck')
 const { describe, it, assert, pass } = require('/lib/minitest')
 const { STRING, FUNCTION } = require('/lib/text')
-const log = require('log')
 
 describe("# typecheck", () => {
 

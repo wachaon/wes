@@ -38,8 +38,6 @@ let graph = JSON.stringify(result, null, 4)
     .map((v) => SPACE.repeat(8) + v)
     .join(CRLF)
 
-const log = require('log')
-
 let template = fs.readTextFileSync('src/template.js')
 let sep = rCRLF.test(template) ? CRLF : LF
 let line = template.split(sep)
@@ -91,7 +89,7 @@ let res = format(
         .join(sep)
 )
 
-log(() => fs.writeTextFileSync('wes.js', res))
+console.log(fs.writeTextFileSync('wes.js', res))
 console.log('build time %O', new Date().getTime() - start.getTime())
 
 module.exports = graph
