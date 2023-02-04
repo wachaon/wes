@@ -221,6 +221,17 @@ console.log('end')
 
 *wes* verfügt über *built-in modules* , um die grundlegende Verarbeitung zu vereinfachen und zu standardisieren.
 
+# Eingebaute Module zum Entfernen
+
+Ändern Sie einige eingebaute Module in externe Module, um die Datei schlanker und pflegeleichter zu machen.
+
+*   *animate.js*
+*   *day.js*
+*   *debug.js*
+*   *log.js*
+
+Die obigen Module können jeweils als `@wachaon/animate` `@wachaon/day` `@wachaon/debug` `@wachaon/log` werden.
+
 ## *ansi*
 
 `ansi` ist ein *ANSI escape code* , der Standardausgabefarben und -effekte ändern kann. Farben und Effekte können je nach Typ und Einstellungen der verwendeten Konsolenanwendung abweichen.
@@ -432,153 +443,6 @@ log(() => isString("ECMAScript"))
 log(() => isNumber(43.5))
 log(() => isBoolean(false))
 log(() => isObject(function(){}))
-```
-
-## *animate*
-
-*animate* hilft, die Anzeige der Konsole zu animieren.
-
-Wenn die Bearbeitung lange dauert, wäre es schön, den Fortschritt als Animation auf der Konsole anzuzeigen.
-
-```javascript
-const Animate = require('animate')
-const animate = new Animate
-const size = 23
-let counter = 0
-
-const progress = Animate.genProgressIndicator([
-    '|----------|----------|',
-    '|*---------|----------|',
-    '|**--------|----------|',
-    '|***-------|----------|',
-    '|****------|----------|',
-    '|*****-----|----------|',
-    '|******----|----------|',
-    '|*******---|----------|',
-    '|********--|----------|',
-    '|*********-|----------|',
-    '|**********|----------|',
-    '|**********|*---------|',
-    '|**********|**--------|',
-    '|**********|***-------|',
-    '|**********|****------|',
-    '|**********|*****-----|',
-    '|**********|******----|',
-    '|**********|*******---|',
-    '|**********|********--|',
-    '|**********|*********-|',
-    '|**********|**********|',
-])
-
-const indigator = Animate.genProgressIndicator(['   ', '.  ', '.. ', '...'])
-
-animate.register(() => {
-    let prog = counter / size
-    if (prog >= 1) {
-        prog = 1
-        animate.stop()
-    }
-
-    animate.view = console.format(
-        '%S %S %S',
-        progress(Math.ceil(prog * 20)),
-        ('  ' + Math.ceil(prog * 100) + '%').slice(-4),
-        prog < 1 ? 'loading' + indigator(counter) : 'finished!'
-    )
-    counter++
-}, 100, Number.MAX_VALUE)
-animate.run()
-```
-
-### `constructor(complete)`
-
-Führt die `complete` Funktion aus, wenn alle Warteschlangen abgeschlossen sind oder `stop()` aufgerufen wird.
-
-#### `static genProgressIndicator(animation)`
-
-Generieren Sie eine Funktion, die eine Fahrradanimation anzeigt.
-
-#### `register(callback, interval, conditional)`
-
-Verarbeitung registrieren. Es können mehrere Prozesse registriert und parallel verarbeitet werden. Im `callback` wir an, die Animation zu stoppen und die anzuzeigende Ansicht zu schreiben. `interval` gibt das Verarbeitungsintervall an. Wenn die `conditional` eine Funktion ist, wird `conditional(count, queue)` ausgeführt, und wenn das Ergebnis wahr ist, wird sie fortgesetzt. Die `conditional` führt `decrement(count)` aus, wenn es sich um eine Zahl handelt, und fährt fort, wenn das Ergebnis eine positive Zahl ist. Wird nur einmal ausgeführt, wenn `conditional` nicht definiert ist. Beachten Sie, dass die Angabe einer Funktion die `count` erhöht, während die Angabe einer Zahl die `count` verringert.
-
-#### `stop()`
-
-*animate* .
-
-#### `cancel(queue)`
-
-Unterbricht die Verarbeitung einer bestimmten Warteschlange.
-
-#### `run()`
-
-Animation starten.
-
-#### `view`
-
-Gibt die Zeichen an, die an die Konsole ausgegeben werden. Wechseln Sie die Charaktere in regelmäßigen Abständen. Weisen Sie `view` entweder *Arrary* oder *String* zu. Ein *String* ist nützlich, wenn eine einzelne Animation aktualisiert wird, und ein *Array* ist nützlich, wenn mehrere Zeilen einzeln animiert werden.
-
-```javascript
-const Animate = require('/lib/animate')
-const animate = new Animate(
-    () => console.log('All Finished!!')
-)
-
-const progress = Animate.genProgressIndicator([
-    '|----------|----------|',
-    '|*---------|----------|',
-    '|**--------|----------|',
-    '|***-------|----------|',
-    '|****------|----------|',
-    '|*****-----|----------|',
-    '|******----|----------|',
-    '|*******---|----------|',
-    '|********--|----------|',
-    '|*********-|----------|',
-    '|**********|----------|',
-    '|**********|*---------|',
-    '|**********|**--------|',
-    '|**********|***-------|',
-    '|**********|****------|',
-    '|**********|*****-----|',
-    '|**********|******----|',
-    '|**********|*******---|',
-    '|**********|********--|',
-    '|**********|*********-|',
-    '|**********|**********|',
-])
-
-const indigator = Animate.genProgressIndicator(['   ', '.  ', '.. ', '...'])
-
-const state = {
-    one: null,
-    two: null,
-    three: null
-}
-
-function upload(name, size, row) {
-    let counter = 0
-    return () => {
-        let prog = counter / size
-        if (prog >= 1) {
-            prog = 1
-            animate.cancel(state[name])
-        }
-
-        animate.view[row] = console.format(
-            '%S %S %S',
-            progress(Math.ceil(prog * 20)),
-            ('  ' + Math.ceil(prog * 100) + '%').slice(-4),
-            prog < 1 ? name + ' loading' + indigator(counter) : name + ' finished! '
-        )
-        counter++
-    }
-}
-
-state.one = animate.register(upload('one', 63, 0), 50, Number.MAX_VALUE)
-state.two = animate.register(upload('two', 49, 1), 60, Number.MAX_VALUE)
-state.three = animate.register(upload('three', 109, 2), 40, Number.MAX_VALUE)
-animate.run()
 ```
 
 ## *getMember*

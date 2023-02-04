@@ -221,6 +221,17 @@ console.log('end')
 
 *wes*有*built-in modules*來簡化和標準化基本處理。
 
+# 要刪除的內置模塊
+
+將一些內置模塊更改為外部模塊，使文件更輕便，更易於維護。
+
+*   *animate.js*
+*   *day.js*
+*   *debug.js*
+*   *log.js*
+
+以上模塊可以分別安裝為`@wachaon/animate` `@wachaon/day` `@wachaon/debug` `@wachaon/log` 。
+
 ## *ansi*
 
 `ansi`是*ANSI escape code* ，可以更改標準輸出顏色和效果。顏色和效果可能因使用的控制台應用程序的類型和設置而異。
@@ -432,153 +443,6 @@ log(() => isString("ECMAScript"))
 log(() => isNumber(43.5))
 log(() => isBoolean(false))
 log(() => isObject(function(){}))
-```
-
-## *animate*
-
-*animate*有助於為控制台的顯示設置動畫。
-
-如果處理需要很長時間，最好在控制台上將進度顯示為動畫。
-
-```javascript
-const Animate = require('animate')
-const animate = new Animate
-const size = 23
-let counter = 0
-
-const progress = Animate.genProgressIndicator([
-    '|----------|----------|',
-    '|*---------|----------|',
-    '|**--------|----------|',
-    '|***-------|----------|',
-    '|****------|----------|',
-    '|*****-----|----------|',
-    '|******----|----------|',
-    '|*******---|----------|',
-    '|********--|----------|',
-    '|*********-|----------|',
-    '|**********|----------|',
-    '|**********|*---------|',
-    '|**********|**--------|',
-    '|**********|***-------|',
-    '|**********|****------|',
-    '|**********|*****-----|',
-    '|**********|******----|',
-    '|**********|*******---|',
-    '|**********|********--|',
-    '|**********|*********-|',
-    '|**********|**********|',
-])
-
-const indigator = Animate.genProgressIndicator(['   ', '.  ', '.. ', '...'])
-
-animate.register(() => {
-    let prog = counter / size
-    if (prog >= 1) {
-        prog = 1
-        animate.stop()
-    }
-
-    animate.view = console.format(
-        '%S %S %S',
-        progress(Math.ceil(prog * 20)),
-        ('  ' + Math.ceil(prog * 100) + '%').slice(-4),
-        prog < 1 ? 'loading' + indigator(counter) : 'finished!'
-    )
-    counter++
-}, 100, Number.MAX_VALUE)
-animate.run()
-```
-
-### `constructor(complete)`
-
-當所有隊列完成或調用`stop()`時執行`complete`函數。
-
-#### `static genProgressIndicator(animation)`
-
-生成一個顯示循環動畫的函數。
-
-#### `register(callback, interval, conditional)`
-
-註冊處理。可以並行註冊和處理多個進程。在`callback`中，我們將指示停止動畫並編寫要顯示的視圖。 `interval`指定處理間隔。如果`conditional`是一個函數，它將執行`conditional(count, queue)` ，如果結果為真，它將繼續。如果`conditional`是數字，則執行`decrement(count)` ，如果結果是正數，則繼續。如果`conditional`未定義，則僅執行一次。請注意，指定函數會增加`count` ，而指定數字會減少`count` 。
-
-#### `stop()`
-
-*animate* 。
-
-#### `cancel(queue)`
-
-暫停特定隊列的處理。
-
-#### `run()`
-
-開始動畫。
-
-#### `view`
-
-指定打印到控制台的字符。定期切換字符。將*Arrary*或*String*分配給`view` 。 *String*在更新單個動畫時很有用，而*Array*在單獨為多行設置動畫時很有用。
-
-```javascript
-const Animate = require('/lib/animate')
-const animate = new Animate(
-    () => console.log('All Finished!!')
-)
-
-const progress = Animate.genProgressIndicator([
-    '|----------|----------|',
-    '|*---------|----------|',
-    '|**--------|----------|',
-    '|***-------|----------|',
-    '|****------|----------|',
-    '|*****-----|----------|',
-    '|******----|----------|',
-    '|*******---|----------|',
-    '|********--|----------|',
-    '|*********-|----------|',
-    '|**********|----------|',
-    '|**********|*---------|',
-    '|**********|**--------|',
-    '|**********|***-------|',
-    '|**********|****------|',
-    '|**********|*****-----|',
-    '|**********|******----|',
-    '|**********|*******---|',
-    '|**********|********--|',
-    '|**********|*********-|',
-    '|**********|**********|',
-])
-
-const indigator = Animate.genProgressIndicator(['   ', '.  ', '.. ', '...'])
-
-const state = {
-    one: null,
-    two: null,
-    three: null
-}
-
-function upload(name, size, row) {
-    let counter = 0
-    return () => {
-        let prog = counter / size
-        if (prog >= 1) {
-            prog = 1
-            animate.cancel(state[name])
-        }
-
-        animate.view[row] = console.format(
-            '%S %S %S',
-            progress(Math.ceil(prog * 20)),
-            ('  ' + Math.ceil(prog * 100) + '%').slice(-4),
-            prog < 1 ? name + ' loading' + indigator(counter) : name + ' finished! '
-        )
-        counter++
-    }
-}
-
-state.one = animate.register(upload('one', 63, 0), 50, Number.MAX_VALUE)
-state.two = animate.register(upload('two', 49, 1), 60, Number.MAX_VALUE)
-state.three = animate.register(upload('three', 109, 2), 40, Number.MAX_VALUE)
-animate.run()
 ```
 
 ## *getMember*
