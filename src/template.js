@@ -30,7 +30,7 @@
 
         /* insert console */
 
-        /* insert utility */
+        // insert utility
 
         var timeout = false
         function setTimeout() {
@@ -169,7 +169,7 @@
             var existsFileSync = filesystem.existsFileSync
             var readTextFileSync = filesystem.readTextFileSync
 
-            var find = utility.find
+            //var find = utility.find
 
             var global = this
 
@@ -582,9 +582,12 @@
         */
 
         function getPathToModule(filespec) {
-            return find(Modules, function (_mod, _id) {
-                return PATH in _mod && _mod[PATH] === filespec
-            })
+            return Modules[
+                Object.keys(Modules).find(function (_id) {
+                    var _mod = Modules[_id]
+                    return PATH in _mod && _mod[PATH] === filespec
+                })
+            ]
         }
 
         function getField(json, path) {
@@ -840,12 +843,25 @@
                 console.debug(LIME + 'step: 2. Identify the module that caused the error')
                 var mod =
                     wes.main === REP
-                        ? find(Modules, function (_mod, _id) {
-                              return _id.startsWith(BRACKET_START)
-                          })
-                        : find(Modules, function (_mod, _id) {
-                              return _mod.path === wes.history[wes.history.length - 1]
-                          })
+                        ? Modules[
+                              Object.keys(Modules).find(function (_id) {
+                                  return _id.startsWith(BRACKET_START)
+                              })
+                          ]
+                        : /*
+                            ? find(Modules, function (_mod, _id) {
+                                return _id.startsWith(BRACKET_START)
+                            })
+                            : find(Modules, function (_mod, _id) {
+                                return _mod.path === wes.history[wes.history.length - 1]
+                            })
+                            */
+                          Modules[
+                              Object.keys(Modules).find(function (_id) {
+                                  var _mod = Modules[_id]
+                                  return _mod.path === wes.history[wes.history.length - 1]
+                              })
+                          ]
 
                 if (mod == null) {
                     console.debug(LIME + 'step: 3. If the module could not be identified, print error.stack and exit.')
@@ -880,9 +896,18 @@
                             var row = _row - 0
                             var column = _column - 0
 
-                            var mod = find(Modules, function (_mod, _id) {
-                                return _mod.path === _spec
-                            })
+                            var mod =
+                                Modules[
+                                    Object.keys(Modules).find(function (_id) {
+                                        var _mod = Modules[_id]
+                                        return _mod.path === _spec
+                                    })
+                                ]
+                            /*
+                                        var mod = find(Modules, function (_mod, _id) {
+                                            return _mod.path === _spec
+                                        })
+                                        */
 
                             return showErrorCode(mod.source, mod.path, row, column)
                         })
@@ -916,9 +941,18 @@
                             var row = _row - 0
                             var column = _column - 0
 
-                            var mod = find(Modules, function (_mod, _id) {
-                                return _mod.path === _spec
-                            })
+                            var mod =
+                                Modules[
+                                    Object.keys(Modules).find(function (_id) {
+                                        var _mod = Modules[_id]
+                                        return _mod.path === _spec
+                                    })
+                                ]
+                            /*
+                                    var mod = find(Modules, function (_mod, _id) {
+                                        return _mod.path === _spec
+                                    })
+                                    */
 
                             var decoded = decodeMappings(mod.map.mappings)
                             var mapping = decoded[row - 1][column - 1]
