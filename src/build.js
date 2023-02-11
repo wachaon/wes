@@ -53,10 +53,8 @@ const rAnsi = /\/\* insert ansi \*\//
 const Argv = fs.readTextFileSync('lib/argv.js')
 const rArgv = /\/\* insert argv \*\//
 
-/*
 const Utility = fs.readTextFileSync('lib/utility.js')
 const rUtility = /\/\* insert utility \*\//
-*/
 
 let res = format(
     line
@@ -80,15 +78,13 @@ let res = format(
                     Argv +
                     '        })()\n    return module.exports\n})()'
                 )
-            /*
             else if (rUtility.test(value))
                 return (
                     'var utility = (function () {\n    var module = { exports: {} };\n        (function () {' +
                     Utility +
                     '        })()\n    return module.exports\n})()'
                 )
-            */ else
-                return value
+            else return value
         })
         .join(sep)
 )
