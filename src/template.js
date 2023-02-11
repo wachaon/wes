@@ -254,7 +254,7 @@
                                 var type = getField(pkg, TYPE) || COMMONJS
                                 if (typeof dot === string) areas.push(resolve(dir, dot))
                                 else if (Array.isArray(dot)) {
-                                    dot.find(function (val) {
+                                    dot.find(function dot_find(val) {
                                         if (typeof val === string) {
                                             areas.push(resolve(dir, val))
                                         } else if (type === COMMONJS && REQUIRE in val) {
@@ -484,7 +484,7 @@
         function nearestPackageJson(dir) {
             var pkgSpec = bubblingDirectory(dir, PACKAGE_JSON)
                 .reverse()
-                .find(function (spec) {
+                .find(function pkgSpec_find(spec) {
                     return existsFileSync(spec)
                 })
             if (pkgSpec) {
@@ -504,7 +504,7 @@
 
         function generateCodeAndExecution(hash, source) {
             var args = Object.keys(hash)
-            var prop = args.map(function (key) {
+            var prop = args.map(function generateCodeAndExecution_map(key) {
                 return hash[key]
             })
             args.unshift(null)
@@ -523,7 +523,7 @@
         function escapeName(name) {
             return name
                 .split(NONE)
-                .map(function (ch) {
+                .map(function escapeName_map(ch) {
                     return /\w/.test(ch) ? ch : DOLLAR + ch.codePointAt(0).toString(16)
                 })
                 .join(NONE)
@@ -534,7 +534,7 @@
         }
 
         function getPathToModule(filespec) {
-            return find(function (mod) {
+            return find(function getPathToModule_find(mod) {
                 return PATH in mod && mod[PATH] === filespec
             })(Modules)
         }
@@ -607,7 +607,7 @@
             return stack
                 .split(rLINE_SEP)
                 .join(LF)
-                .replace(/ ([A-Z]\$3a\$2f|\$7b)[^ ]+ /g, function (_spec) {
+                .replace(/ ([A-Z]\$3a\$2f|\$7b)[^ ]+ /g, function unescapeName_replace(_spec) {
                     return unescape(_spec.split(DOLLAR).join(PERCENT))
                 })
         }
@@ -625,7 +625,7 @@
             var lines = source.split(rLINE_SEP)
             var max = String(lines.length).length + 4
             return lines
-                .map(function (line, i) {
+                .map(function addLineNumber_map(line, i) {
                     return (SPACE.repeat(max) + String(i + 1) + ' | ').slice(max * -1) + line
                 })
                 .join(LF)
@@ -642,7 +642,7 @@
                     if (lineRow === target) return REVERSE + line + CLEAR
                     else return line
                 })
-                .filter(function (line, i) {
+                .filter(function addLineNumber_filter(line, i) {
                     var lineRow = i + 1
                     return min <= lineRow && lineRow <= max ? true : false
                 })
@@ -781,7 +781,7 @@
         var REVERSE = ansi.reverse
         var CLEAR = ansi.clear
 
-        ;(function () {
+        ;(function error_handling() {
             try {
                 error.stack = unescapeName(error.stack)
 
@@ -792,12 +792,12 @@
                 console.debug(LIME + 'step: 2. Identify the module that caused the error')
                 var mod =
                     wes.main === REP
-                        ? find(function (mod, id) {
+                        ? find(function startsWith_BRACKET_START(mod, id) {
                               return id.startsWith(BRACKET_START)
                           })(Modules)
-                        : find(function (mod, id) {
+                        : find(function path_with_history(mod, id) {
                               return mod.path === wes.history[wes.history.length - 1]
-                          })
+                          })(Modules)
 
                 if (mod == null) {
                     console.debug(LIME + 'step: 3. If the module could not be identified, print error.stack and exit.')
