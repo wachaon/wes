@@ -183,13 +183,13 @@
                 platform: WIN32,
                 version: existsFileSync(PACKAGE_JSON) ? JSON.parse(readTextFileSync(PACKAGE_JSON)).version : null,
                 stdout: {
-                    write: function (msg) {
+                    write: function stdout_write(msg) {
                         return console.log(msg)
                     }
                 },
                 stderr: {
-                    write: function (msg) {
-                        return console.log(msg)
+                    write: function stderr_write(msg) {
+                        return console.error(msg)
                     }
                 }
             }
