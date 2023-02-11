@@ -154,8 +154,6 @@
             var ENCODING = 'encoding'
             var ASTERISK = '*'
             var DUMP = 'dump'
-            var EIL = '\u001B[0K'
-            var BOL = '\u001B[1G'
 
             var pathname = req(PATHNAME)
             var resolve = pathname.resolve
@@ -215,16 +213,7 @@
 
             var founder = resolve(WorkingDirectory, ASTERISK)
 
-            //// var tree = {}
-            //// var properties = []
-            //// var current = null
-
-            //// current = seq(tree, properties)
-            //// current.type = founder
-
             require(founder, main, argv.get(ENCODING))
-
-            //// if (argv.get('relation')) console.log('\n[relation]: %O', tree)
         }
 
         // functions
@@ -420,9 +409,6 @@
 
         // require
         function require(callee, query, encode) {
-            //// var start = Date.now()
-            //// var element
-
             if (argv.get(DUMP)) console.print('callee: ' + callee)
 
             // execute req function, if it is a core module
@@ -445,18 +431,8 @@
             var mappingID
             if (parentModule) {
                 if ((mappingID = parentModule.mapping[query])) {
-                    //// current = seq(tree, properties)
-                    //// current.children = current.children || []
-                    //// element = { type: Modules[mappingID].path }
-                    //// current.children.push(element)
-                    //// properties.push(Modules[mappingID].path)
-
                     if (argv.get(DUMP)) console.log(' => ' + ansi.cyanBright + '<mapping>: ' + element.type)
                     var mappingMod = req(mappingID)
-                    //// element.value = Date.now() - start
-
-                    //// properties.pop()
-
                     return mappingMod
                 }
             }
@@ -474,9 +450,7 @@
                 )
 
             var modId = req(GEN_GUID)()
-
             var duplication = findEntry(entry)
-            // console.log('duplication != null: %O %S\n%S', duplication != null, entry, modId)
             if (duplication != null) return req(duplication)
             else wes.entryMap[entry] = modId
 
@@ -485,18 +459,8 @@
                 wes.main = modId
             }
 
-            //// current = seq(tree, properties)
-            //// current.children = current.children || []
-            //// element = { type: entry }
-            //// current.children.push(element)
-            //// properties.push(entry)
-
             if (argv.get(DUMP)) console.log(' => ' + ansi.magentaBright + '<module>: ' + entry)
             var mod = createModule(modId, entry, query, parentModule, encode)
-            //// element.value = Date.now() - start
-
-            //// properties.pop()
-
             mod.exports = mod.module.exports
             return mod.exports
         }
@@ -524,7 +488,6 @@
                     return existsFileSync(spec)
                 })
             if (pkgSpec) {
-                // console.log('find package.json: %O', wes.entryMap[pkgSpec])
                 if (findEntry(pkgSpec) != null) return req(wes.entryMap[pkgSpec])
                 else {
                     var modId = req(GEN_GUID)()
@@ -569,17 +532,6 @@
         function findEntry(entry) {
             return wes.entryMap[entry]
         }
-        /*
-        function seq(target, props) {
-            if (!Array.isArray(props) || props.length === 0) return target
-            return props.reduce(function (acc, curr) {
-                acc.children = acc.children || []
-                return acc.children.find(function (elm) {
-                    return elm.type === curr
-                })
-            }, target)
-        }
-        */
 
         function getPathToModule(filespec) {
             return find(function (mod) {
@@ -819,8 +771,8 @@
             else if (j === 1) line.push([segment[0]])
         }
     } catch (error) {
-        // var ORANGE = ansi.color(255, 165, 0)
         var LIME = ansi.color(181, 255, 20)
+        // var ORANGE = ansi.color(255, 165, 0)
         // var AQUA = ansi.color(24, 235, 249)
         // var LEMON = ansi.color(253, 255, 0)
         // var CARMINE = ansi.color(215, 0, 53)
