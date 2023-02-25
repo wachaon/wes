@@ -1,5 +1,5 @@
 const { blueBright } = require('ansi')
-const { readdirsSync, readFileSync, writeFileSync, readTextFileSync } = require('filesystem')
+const { readdirsSync, readFileSync, writeFileSync, readTextFileSync, existsFileSync } = require('filesystem')
 const { format } = require('fmt')
 const { resolve } = require('pathname')
 const { LF } = require('text')
@@ -22,7 +22,7 @@ formatter('src')
 
 console.log('\n%SStart formatting document', blueBright)
 readdirsSync(resolve(process.cwd(), 'docs'), (file, dir) => {
-    console.log('%O', writeFileSync(file, readTextFileSync(file).replace(/(\r?\n){3,}/g, LF + LF), UTF8))
+    if (file) console.log('%O', writeFileSync(file, readTextFileSync(file).replace(/(\r?\n){3,}/g, LF + LF), UTF8))
 })
 
 const doc = resolve(process.cwd(), 'README.md')
