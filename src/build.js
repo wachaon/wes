@@ -6,6 +6,7 @@ const { Enumerator } = require('JScript')
 const { rLINE_SEP, rCRLF, rCR, CRLF, SPACE, NONE, LF } = require('text')
 const fs = require('filesystem')
 const path = require('pathname')
+const httprequest = require('httprequest')
 
 require('./format')
 const test = require('./test')
@@ -25,9 +26,14 @@ files.forEach((file) => {
 
 result['version'] = {
     source: `const isCLI = require('isCLI')
+const httprequest = require('httprequest')
 const version = "${require('../package.json').version}"
 if (isCLI(__filename)) {
-    console.log(version)
+    console.log('current version %S', version)
+    try {
+        const latest = JSON.parse(httprequest('GET', 'https://raw.githubusercontent.com/wachaon/wes/master/package.json').responseText).version
+        console.log(' latest version %S', latest)
+    } catch (e) {}
 } else module.exports = version`,
     mapping: {},
     path: `{wes}/version`
