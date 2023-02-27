@@ -1,6 +1,6 @@
 {
     "name": "wes",
-    "version": "0.12.68",
+    "version": "0.12.69",
     "description": "Windows Ecma Script host",
     "main": "wes.js",
     "directories": {
@@ -40,5 +40,14 @@
         "unist-util-inspect": "^7.0.1",
         "unist-util-map": "^3.1.2",
         "unist-util-visit": "^4.1.1"
+    },
+    "wes": {
+        "dependencies": {
+            "csharpscript": "0.0.4",
+            "mouse": "0.0.6",
+            "keyboard": "0.0.6",
+            "window": "0.0.4",
+            "clipboard": "0.0.1"
+        }
     }
 }
