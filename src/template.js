@@ -344,7 +344,7 @@
                         global: global
                     }
                     if (!(entry === BUFFER || /(class|var|let|const)\s+Buffer\b/.test(script)))
-                        codeMap.Buffer = req(BUFFER).Buffer
+                        codeMap.Buffer = req(BUFFER) /*.Buffer*/
                     if (entry !== PROMISE) codeMap.Promise = req(PROMISE)
 
                     generateCodeAndExecution(codeMap, script)
@@ -397,7 +397,7 @@
                         global: global
                     }
                     if (!(entry === BUFFER || /(class|var|let|const)\s+Buffer\b/.test(script)))
-                        codeMap.Buffer = req(BUFFER).Buffer
+                        codeMap.Buffer = req(BUFFER) /*.Buffer*/
                     if (entry !== PROMISE) codeMap.Promise = req(PROMISE)
 
                     generateCodeAndExecution(codeMap, script)
