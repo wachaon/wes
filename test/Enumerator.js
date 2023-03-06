@@ -33,6 +33,7 @@ describe('#test Enumerator', () => {
             'REP.js',
             'text.js',
             'typecheck.js',
+            'uninstall.js',
             'update.js',
             'utility.js',
             'VBScript.js',
