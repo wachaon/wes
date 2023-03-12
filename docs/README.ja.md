@@ -503,6 +503,30 @@ function release(value, i) {
 
 ### *pipe* をコマンドラインから起動する
 
+コマンドラインからは `pipe` の後に変換関数を順に入力します。変換関数への引数は変換関数と同名の名前付きコマンドライン引数の値として入力します。値は *WSH* がコマンドライン引数の `"` を強制排除することから `JSON.parse()` ではなく、`eval()` で解析します。(予期しない関数を実行しない様に、`(` と `)` や `=>` が含まれる場合は `eval()` での解析はしません)
+
+```bash
+wes pipe swap merge --input="sample.txt" --output="" --swap="[2, 0, 1, 3]" --merge=4
+```
+
+このコマンドは次のスクリプトと等価です。
+
+```javascript
+const pipe = require('pipe')
+const { readFileSync, writeFileSync } = require('filesystem')
+const { resolve } = require('pathname')
+
+const data = readFileSync(resolve(process.cwd(), 'sample.txt'), 'auto')
+
+pipe()
+    .use(swap, 2, 0, 1, 3)
+    .use(merge, 4)
+    .process(data, (err, res) => {
+        if (err) console.error(err)
+        console.log(res)
+    })
+```
+
 ## *typecheck*
 
 スクリプトの型の判定をします。

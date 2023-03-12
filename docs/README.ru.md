@@ -471,7 +471,31 @@ function release(value, i) {
 }
 ```
 
-### Запуск *pipe* из командной строки
+### запустить *pipe* из командной строки
+
+В командной строке введите функцию преобразования по порядку после `pipe` . Аргументы в функции преобразования вводятся как значения для именованных аргументов командной строки с тем же именем, что и у функции преобразования. `=>` `(` с помощью `eval()` вместо `JSON.parse()` `)` *WSH* вытесняет `"` в аргументах командной строки. В этом случае не анализируйте с помощью `eval()` )
+
+```bash
+wes pipe swap merge --input="sample.txt" --output="" --swap="[2, 0, 1, 3]" --merge=4
+```
+
+Эта команда эквивалентна сценарию:
+
+```javascript
+const pipe = require('pipe')
+const { readFileSync, writeFileSync } = require('filesystem')
+const { resolve } = require('pathname')
+
+const data = readFileSync(resolve(process.cwd(), 'sample.txt'), 'auto')
+
+pipe()
+    .use(swap, 2, 0, 1, 3)
+    .use(merge, 4)
+    .process(data, (err, res) => {
+        if (err) console.error(err)
+        console.log(res)
+    })
+```
 
 ## *typecheck*
 

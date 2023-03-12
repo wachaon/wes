@@ -473,6 +473,30 @@ function release(value, i) {
 
 ### Memulakan *pipe* dari baris arahan
 
+Daripada baris arahan, masukkan fungsi penukaran mengikut urutan selepas `pipe` . Argumen kepada fungsi penukaran dimasukkan sebagai nilai argumen baris arahan bernama dengan nama yang sama dengan fungsi penukaran. `=>` `(` dengan `eval()` dan bukannya `JSON.parse()` `)` *WSH* memaksa `"` dalam argumen baris arahan. Dalam kes itu, jangan huraikan dengan `eval()` )
+
+```bash
+wes pipe swap merge --input="sample.txt" --output="" --swap="[2, 0, 1, 3]" --merge=4
+```
+
+Perintah ini bersamaan dengan skrip:
+
+```javascript
+const pipe = require('pipe')
+const { readFileSync, writeFileSync } = require('filesystem')
+const { resolve } = require('pathname')
+
+const data = readFileSync(resolve(process.cwd(), 'sample.txt'), 'auto')
+
+pipe()
+    .use(swap, 2, 0, 1, 3)
+    .use(merge, 4)
+    .process(data, (err, res) => {
+        if (err) console.error(err)
+        console.log(res)
+    })
+```
+
 ## *typecheck*
 
 Tentukan jenis skrip.

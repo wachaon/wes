@@ -473,6 +473,30 @@ function release(value, i) {
 
 ### 从命令行启动*pipe*
 
+在命令行中，在`pipe`之后按顺序输入转换函数。转换函数的参数作为与转换函数同名的命名命令行参数的值输入。 `=>`值`(` `eval()`而不是`JSON.parse()`进行解析`)` *WSH*在命令行参数中强制使用`"` 。在这种情况下，请勿使用`eval()`进行解析）
+
+```bash
+wes pipe swap merge --input="sample.txt" --output="" --swap="[2, 0, 1, 3]" --merge=4
+```
+
+此命令等效于脚本：
+
+```javascript
+const pipe = require('pipe')
+const { readFileSync, writeFileSync } = require('filesystem')
+const { resolve } = require('pathname')
+
+const data = readFileSync(resolve(process.cwd(), 'sample.txt'), 'auto')
+
+pipe()
+    .use(swap, 2, 0, 1, 3)
+    .use(merge, 4)
+    .process(data, (err, res) => {
+        if (err) console.error(err)
+        console.log(res)
+    })
+```
+
 ## *typecheck*
 
 确定脚本类型。

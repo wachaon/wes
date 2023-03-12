@@ -473,6 +473,30 @@ function release(value, i) {
 
 ### démarrer *pipe* à partir de la ligne de commande
 
+À partir de la ligne de commande, entrez la fonction de conversion dans l'ordre après `pipe` . Les arguments des fonctions de conversion sont saisis en tant que valeurs pour les arguments de ligne de commande nommés portant le même nom que la fonction de conversion. `=>` valeur `(` analysée avec `eval()` au lieu de `JSON.parse()` `)` *WSH* force `"` dans les arguments de ligne de commande. Dans ce cas, n'analysez pas avec `eval()` )
+
+```bash
+wes pipe swap merge --input="sample.txt" --output="" --swap="[2, 0, 1, 3]" --merge=4
+```
+
+Cette commande est équivalente au script :
+
+```javascript
+const pipe = require('pipe')
+const { readFileSync, writeFileSync } = require('filesystem')
+const { resolve } = require('pathname')
+
+const data = readFileSync(resolve(process.cwd(), 'sample.txt'), 'auto')
+
+pipe()
+    .use(swap, 2, 0, 1, 3)
+    .use(merge, 4)
+    .process(data, (err, res) => {
+        if (err) console.error(err)
+        console.log(res)
+    })
+```
+
 ## *typecheck*
 
 Déterminez le type de script.

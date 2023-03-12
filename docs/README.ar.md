@@ -473,6 +473,30 @@ function release(value, i) {
 
 ### بدء *pipe* من سطر الأوامر
 
+من سطر الأوامر ، أدخل وظيفة التحويل بالترتيب بعد `pipe` . يتم إدخال وسيطات وظائف التحويل كقيم لوسائط سطر الأوامر المسماة بنفس اسم وظيفة التحويل. `(` تحليل `=>` باستخدام `eval()` بدلاً من `JSON.parse()` `)` *WSH* يفرض الخروج `"` في وسيطات سطر الأوامر. في هذه الحالة ، لا تحلل باستخدام `eval()` )
+
+```bash
+wes pipe swap merge --input="sample.txt" --output="" --swap="[2, 0, 1, 3]" --merge=4
+```
+
+هذا الأمر يكافئ البرنامج النصي:
+
+```javascript
+const pipe = require('pipe')
+const { readFileSync, writeFileSync } = require('filesystem')
+const { resolve } = require('pathname')
+
+const data = readFileSync(resolve(process.cwd(), 'sample.txt'), 'auto')
+
+pipe()
+    .use(swap, 2, 0, 1, 3)
+    .use(merge, 4)
+    .process(data, (err, res) => {
+        if (err) console.error(err)
+        console.log(res)
+    })
+```
+
 ## *typecheck*
 
 حدد نوع البرنامج النصي.

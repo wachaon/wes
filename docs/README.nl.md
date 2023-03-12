@@ -471,7 +471,31 @@ function release(value, i) {
 }
 ```
 
-### *pipe* starten vanaf de opdrachtregel
+### start *pipe* vanaf de opdrachtregel
+
+Voer vanaf de opdrachtregel de conversiefunctie in de volgorde na `pipe` in. Argumenten voor conversiefuncties worden ingevoerd als waarden voor benoemde opdrachtregelargumenten met dezelfde naam als de conversiefunctie. `=>` waarde `(` geparseerd met `eval()` in plaats van `JSON.parse()` `)` *WSH* `"` forceert in opdrachtregelargumenten. In dat geval niet parseren met `eval()` )
+
+```bash
+wes pipe swap merge --input="sample.txt" --output="" --swap="[2, 0, 1, 3]" --merge=4
+```
+
+Deze opdracht is gelijk aan het script:
+
+```javascript
+const pipe = require('pipe')
+const { readFileSync, writeFileSync } = require('filesystem')
+const { resolve } = require('pathname')
+
+const data = readFileSync(resolve(process.cwd(), 'sample.txt'), 'auto')
+
+pipe()
+    .use(swap, 2, 0, 1, 3)
+    .use(merge, 4)
+    .process(data, (err, res) => {
+        if (err) console.error(err)
+        console.log(res)
+    })
+```
 
 ## *typecheck*
 

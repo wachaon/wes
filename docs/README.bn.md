@@ -471,7 +471,31 @@ function release(value, i) {
 }
 ```
 
-### কমান্ড লাইন থেকে *pipe* শুরু হচ্ছে
+### কমান্ড লাইন থেকে *pipe* শুরু করুন
+
+কমান্ড লাইন থেকে, `pipe` পরে ক্রমে রূপান্তর ফাংশন লিখুন। রূপান্তর ফাংশনের আর্গুমেন্টগুলি রূপান্তর ফাংশনের মতো একই নামের সাথে নামযুক্ত কমান্ড-লাইন আর্গুমেন্টের মান হিসাবে প্রবেশ করা হয়। `=>` `JSON.parse()` ) এর পরিবর্তে `eval()` দিয়ে পার্স করা `(` `)` *WSH* কমান্ড লাইন আর্গুমেন্টে `"` কে জোর করে বের করে দেয়। সেক্ষেত্রে, `eval()` ) দিয়ে পার্স করবেন না
+
+```bash
+wes pipe swap merge --input="sample.txt" --output="" --swap="[2, 0, 1, 3]" --merge=4
+```
+
+এই কমান্ডটি স্ক্রিপ্টের সমতুল্য:
+
+```javascript
+const pipe = require('pipe')
+const { readFileSync, writeFileSync } = require('filesystem')
+const { resolve } = require('pathname')
+
+const data = readFileSync(resolve(process.cwd(), 'sample.txt'), 'auto')
+
+pipe()
+    .use(swap, 2, 0, 1, 3)
+    .use(merge, 4)
+    .process(data, (err, res) => {
+        if (err) console.error(err)
+        console.log(res)
+    })
+```
 
 ## *typecheck*
 

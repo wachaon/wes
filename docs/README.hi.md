@@ -471,7 +471,31 @@ function release(value, i) {
 }
 ```
 
-### कमांड लाइन से *pipe* शुरू करना
+### कमांड लाइन से *pipe* शुरू करें
+
+कमांड लाइन से, `pipe` के बाद क्रम में रूपांतरण फ़ंक्शन दर्ज करें। रूपांतरण कार्यों के लिए तर्कों को रूपांतरण फ़ंक्शन के समान नाम वाले कमांड-लाइन तर्कों के नाम के मान के रूप में दर्ज किया जाता है। `=>` `JSON.parse()` ) के बजाय `eval()` के साथ पार्स किया गया `(` `)` *WSH* "कमांड लाइन तर्कों में `"` को बल देता है। उस स्थिति में, `eval()` के साथ पार्स न करें)
+
+```bash
+wes pipe swap merge --input="sample.txt" --output="" --swap="[2, 0, 1, 3]" --merge=4
+```
+
+यह कमांड स्क्रिप्ट के बराबर है:
+
+```javascript
+const pipe = require('pipe')
+const { readFileSync, writeFileSync } = require('filesystem')
+const { resolve } = require('pathname')
+
+const data = readFileSync(resolve(process.cwd(), 'sample.txt'), 'auto')
+
+pipe()
+    .use(swap, 2, 0, 1, 3)
+    .use(merge, 4)
+    .process(data, (err, res) => {
+        if (err) console.error(err)
+        console.log(res)
+    })
+```
 
 ## *typecheck*
 
