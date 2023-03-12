@@ -297,7 +297,7 @@ console.log(contents)
 
 ## *JScript*
 
-আপনি যদি স্ক্রিপ্ট ইঞ্জিনকে *JScript* পরিবর্তন করেন, তাহলে আপনি *Chakra* নির্দিষ্ট *Enumerator* ইত্যাদি ব্যবহার করতে পারবেন না। অন্তর্নির্মিত মডিউল *JScript* তাদের উপলব্ধ করে তোলে। যাইহোক, *Enumerator* একটি *Array* করে, একটি *Enumerator object* নয়।
+আপনি যদি স্ক্রিপ্ট ইঞ্জিনকে *Chakra* পরিবর্তন করেন, আপনি *JScript* নির্দিষ্ট *Enumerator* ইত্যাদি ব্যবহার করতে পারবেন না। অন্তর্নির্মিত মডিউল *JScript* তাদের উপলব্ধ করে তোলে। যাইহোক, *Enumerator* *Array* প্রদান করে, *Enumerator object* নয়।
 
 ```javascript
 const { Enumerator, ActiveXObject } = require('JScript')
@@ -307,11 +307,12 @@ const files = new Enumerator(dir)
 files.forEach(file => console.log(file.Name))
 ```
 
-*GetObject* `WScript.GetObject` বিকল্প হিসেবে কাজ করে।
+*GetObject* `WScript.GetObject` এর বিকল্প হিসেবে কাজ করে।
 
 ```javascript
 const { GetObject, Enumerator } = require('JScript')
 const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service")
+
 new Enumerator(ServiceSet).forEach(service => console.log(
     'Name: %O\nDescription: %O\n',
     service.Name,
@@ -343,10 +344,11 @@ console.log('%O', JSON.parse(content))
 
 *minitest* সহজ পরীক্ষা লিখতে পারে। সংস্করণ `0.10.71` থেকে, আমরা মূল ধারণায় ফিরে গিয়েছিলাম এবং দাবির ধরনগুলিকে 3 প্রকারে কমিয়েছি।
 
-`describe` সহ গোষ্ঠী করুন, `it` দিয়ে পরীক্ষা করুন এবং `assert` দিয়ে যাচাই করুন। `pass` `it` সংঘটনের সংখ্যা এবং পাসের সংখ্যার একটি অ্যারে হবে।
+`describe` সহ গ্রুপ করুন, `it` সাথে পরীক্ষা করুন এবং `assert` যাচাই করুন। `pass` `it` সংঘটনের সংখ্যা এবং পাসের সংখ্যার একটি অ্যারে হবে।
 
 ```javascript
 const { describe, it, assert, pass } = require('minitest')
+
 describe('minitest', () => {
     describe('add', () => {
         const add = (a, b) => a + b
@@ -370,6 +372,7 @@ describe('minitest', () => {
         })
     })
 })
+
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
@@ -410,27 +413,65 @@ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegEx
 
 ## *pipe*
 
-*pipe* পাইপিংকে সহজ করে।
+*pipe* পাইপিংকে সহজ করে। এক বা একাধিক *converter* সাথে *data* রূপান্তর করার সময় ফলাফলটি আউটপুট হয়। *ver 0.12.75* পর থেকে, এটি সরাসরি কমান্ড লাইন থেকে শুরু করা যেতে পারে।
+
+### একটি মডিউল হিসাবে *pipe* শুরু করুন।
+
+*pipe* পদ্ধতির `use(converter)` আর্গুমেন্টে রূপান্তর ফাংশন রাখুন এবং `process(data, callback(error, result))` সহ ডেটা ইনপুট এবং পোস্ট-রূপান্তর প্রক্রিয়াকরণ বর্ণনা করুন। যদি কোন `callback` নির্দিষ্ট করা না থাকে, রিটার্ন মান *promise* হবে, এবং প্রক্রিয়াকরণ `then(result)` এবং `catch(error)` এর সাথে সংযুক্ত করা যেতে পারে।
 
 ```javascript
 const pipe = require('pipe')
+
 function add (a, b) {
     return b + a
 }
+
 function sub (a, b) {
     return b - a
 }
+
 function div (a, b) {
     return a / b
 }
+
 const add5 = add.bind(null, 5)
 const sub3 = sub.bind(null, 3)
+
 pipe()
   .use(add5)
   .use(sub3)
   .use(div, 4)
   .process(10, (err, res) => console.log('res: %O', res))
 ```
+
+`use(converter)` ছাড়াও, `.filter(callbackFn(value, index))` এবং `map(callbackFn(value, index))` এর মতো পদ্ধতি রয়েছে। প্রতিটি *data* একটি স্ট্রিং, একটি অ্যারে এবং একটি বস্তু।
+
+```javascript
+const pipe = require('pipe')
+
+const tsv = `
+javascript\t1955
+java\t1995
+vbscript\t1996
+c#\t2000
+`.trim()
+
+pipe()
+    .filter(include)
+    .map(release)
+    .process(tsv)
+    .then((res) => console.log(() => res))
+
+function include(value, i) {
+    return value.includes('script')
+}
+
+function release(value, i) {
+    return value.split('\t').join(' was released in ')
+}
+```
+
+### কমান্ড লাইন থেকে *pipe*
 
 ## *typecheck*
 

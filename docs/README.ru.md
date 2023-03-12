@@ -297,7 +297,7 @@ console.log(contents)
 
 ## *JScript*
 
-Если вы измените скриптовый движок на *Chakra* , вы не сможете использовать специфичные для *JScript* *Enumerator* и т. д. Встроенный модуль *JScript* делает их доступными. Однако *Enumerator* возвращает *Array* , а не *Enumerator object* .
+Если вы измените скриптовый движок на *Chakra* , вы не сможете использовать специфичные *JScript* *Enumerator* и т. д. Встроенный модуль *JScript* делает их доступными. Однако *Enumerator* возвращает *Array* , а не *Enumerator object* .
 
 ```javascript
 const { Enumerator, ActiveXObject } = require('JScript')
@@ -312,6 +312,7 @@ files.forEach(file => console.log(file.Name))
 ```javascript
 const { GetObject, Enumerator } = require('JScript')
 const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service")
+
 new Enumerator(ServiceSet).forEach(service => console.log(
     'Name: %O\nDescription: %O\n',
     service.Name,
@@ -343,10 +344,11 @@ console.log('%O', JSON.parse(content))
 
 *minitest* может писать простые тесты. С версии `0.10.71` мы вернулись к базовой концепции и сократили типы утверждений до 3 типов.
 
-Группируйте с помощью `describe` , тестируйте с `it` помощью и проверяйте с помощью `assert` . `pass` будет массивом количества `it` вхождений и количества проходов.
+Сгруппируйте с помощью `describe` , протестируйте с `it` помощью и проверьте с помощью `assert` . `pass` будет массивом количества `it` вхождений и количества проходов.
 
 ```javascript
 const { describe, it, assert, pass } = require('minitest')
+
 describe('minitest', () => {
     describe('add', () => {
         const add = (a, b) => a + b
@@ -370,6 +372,7 @@ describe('minitest', () => {
         })
     })
 })
+
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
@@ -410,27 +413,65 @@ NaN `true` Функция `NaN === NaN` `function (){} === function (){}` `/RegE
 
 ## *pipe*
 
-*pipe* упрощает трубопровод.
+*pipe* упрощает трубопровод. Вывод результата при преобразовании *data* с помощью одного или нескольких *converter* . Начиная с *ver 0.12.75* , его можно запустить прямо из командной строки.
+
+### Запустить *pipe* как модуль.
+
+Поместите функцию преобразования в аргумент `use(converter)` метода *pipe* и опишите ввод данных и обработку после преобразования с помощью `process(data, callback(error, result))` . Если `callback` не указан, возвращаемое значение будет *promise* , а обработка может быть связана с `then(result)` и `catch(error)` .
 
 ```javascript
 const pipe = require('pipe')
+
 function add (a, b) {
     return b + a
 }
+
 function sub (a, b) {
     return b - a
 }
+
 function div (a, b) {
     return a / b
 }
+
 const add5 = add.bind(null, 5)
 const sub3 = sub.bind(null, 3)
+
 pipe()
   .use(add5)
   .use(sub3)
   .use(div, 4)
   .process(10, (err, res) => console.log('res: %O', res))
 ```
+
+В дополнение к `use(converter)` существуют такие методы, как `.filter(callbackFn(value, index))` и `map(callbackFn(value, index))` . Каждые *data* представляют собой строку, массив и объект.
+
+```javascript
+const pipe = require('pipe')
+
+const tsv = `
+javascript\t1955
+java\t1995
+vbscript\t1996
+c#\t2000
+`.trim()
+
+pipe()
+    .filter(include)
+    .map(release)
+    .process(tsv)
+    .then((res) => console.log(() => res))
+
+function include(value, i) {
+    return value.includes('script')
+}
+
+function release(value, i) {
+    return value.split('\t').join(' was released in ')
+}
+```
+
+### *pipe* из командной строки
 
 ## *typecheck*
 

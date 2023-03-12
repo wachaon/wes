@@ -297,7 +297,7 @@ console.log(contents)
 
 ## *JScript*
 
-如果您将脚本引擎更改为*Chakra* ，您将无法使用*JScript*特定的*Enumerator*等。内置模块*JScript*使它们可用。但是， *Enumerator*返回一个*Array* ，而不是*Enumerator object* 。
+如果将脚本引擎更改为*Chakra* ，您将无法使用*JScript* specific *Enumerator*等。内置模块*JScript*使它们可用。但是， *Enumerator*返回*Array* ，而不是*Enumerator object* 。
 
 ```javascript
 const { Enumerator, ActiveXObject } = require('JScript')
@@ -307,11 +307,12 @@ const files = new Enumerator(dir)
 files.forEach(file => console.log(file.Name))
 ```
 
-*GetObject*作为`WScript.GetObject`的替代品。
+*GetObject*用作`WScript.GetObject`的替代方法。
 
 ```javascript
 const { GetObject, Enumerator } = require('JScript')
 const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service")
+
 new Enumerator(ServiceSet).forEach(service => console.log(
     'Name: %O\nDescription: %O\n',
     service.Name,
@@ -341,12 +342,13 @@ console.log('%O', JSON.parse(content))
 
 ## *minitest*
 
-*minitest*可以编写简单的测试。从`0.10.71`版本开始，我们回到了基本概念，将断言的类型减少到 3 种。
+*minitest*可以编写简单的测试。从`0.10.71`版本开始，我们回到了基本概念，将断言的类型减少到 3 种类型。
 
 用`describe`分组，用`it`测试，用`assert`验证。 `pass`将是`it`的出现次数和通过次数的数组。
 
 ```javascript
 const { describe, it, assert, pass } = require('minitest')
+
 describe('minitest', () => {
     describe('add', () => {
         const add = (a, b) => a + b
@@ -370,6 +372,7 @@ describe('minitest', () => {
         })
     })
 })
+
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
@@ -410,27 +413,65 @@ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegEx
 
 ## *pipe*
 
-*pipe*简化了管道。
+*pipe*简化了管道。在用一个或多个*converter*转换*data*的同时输出结果。从*ver 0.12.75*开始，可以直接从命令行启动。
+
+### 将*pipe*作为一个模块启动。
+
+将转换函数放在*pipe*方法的`use(converter)`参数中，用`process(data, callback(error, result))`描述数据输入和转换后处理。如果没有指定`callback` ，返回值将是*promise* ，处理可以连接到`then(result)`和`catch(error)` 。
 
 ```javascript
 const pipe = require('pipe')
+
 function add (a, b) {
     return b + a
 }
+
 function sub (a, b) {
     return b - a
 }
+
 function div (a, b) {
     return a / b
 }
+
 const add5 = add.bind(null, 5)
 const sub3 = sub.bind(null, 3)
+
 pipe()
   .use(add5)
   .use(sub3)
   .use(div, 4)
   .process(10, (err, res) => console.log('res: %O', res))
 ```
+
+除了`use(converter)`之外，还有`.filter(callbackFn(value, index))`和`map(callbackFn(value, index))`等方法。每个*data*都是一个字符串、一个数组和一个对象。
+
+```javascript
+const pipe = require('pipe')
+
+const tsv = `
+javascript\t1955
+java\t1995
+vbscript\t1996
+c#\t2000
+`.trim()
+
+pipe()
+    .filter(include)
+    .map(release)
+    .process(tsv)
+    .then((res) => console.log(() => res))
+
+function include(value, i) {
+    return value.includes('script')
+}
+
+function release(value, i) {
+    return value.split('\t').join(' was released in ')
+}
+```
+
+### 从命令行*pipe*
 
 ## *typecheck*
 

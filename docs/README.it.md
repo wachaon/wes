@@ -297,7 +297,7 @@ Sto usando alcune funzionalità da <https://github.com/runk/node-chardet> . È p
 
 ## *JScript*
 
-Se modifichi il motore di script in *Chakra* , non sarai in grado di utilizzare *Enumerator* specifici di *JScript* , ecc. Il modulo integrato *JScript* li rende disponibili. Tuttavia, *Enumerator* restituisce un oggetto *Array* , non un *Enumerator object* .
+Se cambi il motore di script in *Chakra* , non sarai in grado di utilizzare *Enumerator* specifici *JScript* , ecc. Il modulo integrato *JScript* li rende disponibili. Tuttavia, *Enumerator* restituisce *Array* , non *Enumerator object* .
 
 ```javascript
 const { Enumerator, ActiveXObject } = require('JScript')
@@ -312,6 +312,7 @@ files.forEach(file => console.log(file.Name))
 ```javascript
 const { GetObject, Enumerator } = require('JScript')
 const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service")
+
 new Enumerator(ServiceSet).forEach(service => console.log(
     'Name: %O\nDescription: %O\n',
     service.Name,
@@ -347,6 +348,7 @@ Raggruppa con `describe` , verifica con `it` e verifica con `assert` . `pass` sa
 
 ```javascript
 const { describe, it, assert, pass } = require('minitest')
+
 describe('minitest', () => {
     describe('add', () => {
         const add = (a, b) => a + b
@@ -370,6 +372,7 @@ describe('minitest', () => {
         })
     })
 })
+
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
@@ -410,27 +413,65 @@ Se l'errore è corretto o meno è determinato dal fatto che il *constructor* di 
 
 ## *pipe*
 
-*pipe* semplifica le tubazioni.
+*pipe* semplifica le tubazioni. Invia il risultato durante la conversione *data* con uno o più *converter* . Dalla *ver 0.12.75* in poi, può essere avviato direttamente dalla riga di comando.
+
+### Avvia *pipe* come modulo.
+
+Inserisci la funzione di conversione nell'argomento `use(converter)` del metodo *pipe* e descrivi l'input dei dati e l'elaborazione post-conversione con `process(data, callback(error, result))` . Se non viene specificata alcuna `callback` , il valore restituito sarà *promise* e l'elaborazione può essere connessa con `then(result)` e `catch(error)` .
 
 ```javascript
 const pipe = require('pipe')
+
 function add (a, b) {
     return b + a
 }
+
 function sub (a, b) {
     return b - a
 }
+
 function div (a, b) {
     return a / b
 }
+
 const add5 = add.bind(null, 5)
 const sub3 = sub.bind(null, 3)
+
 pipe()
   .use(add5)
   .use(sub3)
   .use(div, 4)
   .process(10, (err, res) => console.log('res: %O', res))
 ```
+
+Oltre `use(converter)` , esistono metodi come `.filter(callbackFn(value, index))` e `map(callbackFn(value, index))` . Ogni *data* è una stringa, un array e un oggetto.
+
+```javascript
+const pipe = require('pipe')
+
+const tsv = `
+javascript\t1955
+java\t1995
+vbscript\t1996
+c#\t2000
+`.trim()
+
+pipe()
+    .filter(include)
+    .map(release)
+    .process(tsv)
+    .then((res) => console.log(() => res))
+
+function include(value, i) {
+    return value.includes('script')
+}
+
+function release(value, i) {
+    return value.split('\t').join(' was released in ')
+}
+```
+
+### *pipe* dalla riga di comando
 
 ## *typecheck*
 

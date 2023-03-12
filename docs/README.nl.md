@@ -297,7 +297,7 @@ Ik gebruik enkele functies van <https://github.com/runk/node-chardet> . U kunt d
 
 ## *JScript*
 
-Als u de scriptengine wijzigt in *Chakra* , kunt u geen *JScript* -specifieke *Enumerator* enz. gebruiken. De ingebouwde module *JScript* stelt ze beschikbaar. *Enumerator* retourneert echter een *Array* , geen *Enumerator object* .
+Als u de script-engine wijzigt in *Chakra* , kunt u geen *JScript* specifieke *Enumerator* enz. gebruiken. De ingebouwde module *JScript* maakt ze beschikbaar. *Enumerator* retourneert echter *Array* en geen *Enumerator object* .
 
 ```javascript
 const { Enumerator, ActiveXObject } = require('JScript')
@@ -312,6 +312,7 @@ files.forEach(file => console.log(file.Name))
 ```javascript
 const { GetObject, Enumerator } = require('JScript')
 const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service")
+
 new Enumerator(ServiceSet).forEach(service => console.log(
     'Name: %O\nDescription: %O\n',
     service.Name,
@@ -341,12 +342,13 @@ console.log('%O', JSON.parse(content))
 
 ## *minitest*
 
-*minitest* kan eenvoudige tests schrijven. Vanaf versie `0.10.71` zijn we teruggegaan naar het basisconcept en hebben we de typen beweringen teruggebracht tot 3 typen.
+*minitest* kan eenvoudige toetsen schrijven. Vanaf versie `0.10.71` zijn we teruggegaan naar het basisconcept en hebben we de soorten beweringen teruggebracht tot 3 soorten.
 
-Groepeer met `describe` , test `it` en verifieer met `assert` . `pass` is een array van het aantal keren dat `it` voorkomt en het aantal passen.
+Groepeer met `describe` , test `it` en verifieer met `assert` . `pass` zal een array zijn van het aantal keren dat `it` voorkomt en het aantal passes.
 
 ```javascript
 const { describe, it, assert, pass } = require('minitest')
+
 describe('minitest', () => {
     describe('add', () => {
         const add = (a, b) => a + b
@@ -370,6 +372,7 @@ describe('minitest', () => {
         })
     })
 })
+
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
@@ -410,27 +413,65 @@ Of de fout al dan niet correct is, wordt bepaald door of de verwachte *construct
 
 ## *pipe*
 
-*pipe* vereenvoudigt pijpen.
+*pipe* vereenvoudigt piping. Voer het resultaat uit tijdens het converteren van *data* met een of meerdere *converter* . Vanaf *ver 0.12.75* kan het direct vanaf de opdrachtregel worden gestart.
+
+### Start *pipe* als een module.
+
+Plaats de conversiefunctie in `use(converter)` van de *pipe* methode en beschrijf de gegevensinvoer en verwerking na de conversie met `process(data, callback(error, result))` . Als er geen `callback` is opgegeven, is de geretourneerde waarde *promise* en kan de verwerking worden verbonden met `then(result)` en `catch(error)` .
 
 ```javascript
 const pipe = require('pipe')
+
 function add (a, b) {
     return b + a
 }
+
 function sub (a, b) {
     return b - a
 }
+
 function div (a, b) {
     return a / b
 }
+
 const add5 = add.bind(null, 5)
 const sub3 = sub.bind(null, 3)
+
 pipe()
   .use(add5)
   .use(sub3)
   .use(div, 4)
   .process(10, (err, res) => console.log('res: %O', res))
 ```
+
+Naast `use(converter)` zijn er methoden zoals `.filter(callbackFn(value, index))` en `map(callbackFn(value, index))` . Elke *data* is een string, een array en een object.
+
+```javascript
+const pipe = require('pipe')
+
+const tsv = `
+javascript\t1955
+java\t1995
+vbscript\t1996
+c#\t2000
+`.trim()
+
+pipe()
+    .filter(include)
+    .map(release)
+    .process(tsv)
+    .then((res) => console.log(() => res))
+
+function include(value, i) {
+    return value.includes('script')
+}
+
+function release(value, i) {
+    return value.split('\t').join(' was released in ')
+}
+```
+
+### *pipe* vanaf de opdrachtregel
 
 ## *typecheck*
 

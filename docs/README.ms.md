@@ -297,7 +297,7 @@ Saya menggunakan beberapa ciri dari <https://github.com/runk/node-chardet> . And
 
 ## *JScript*
 
-Jika anda menukar enjin skrip kepada *Chakra* , anda tidak akan dapat menggunakan *JScript* -specific *Enumerator* , dsb. Modul terbina dalam *JScript* menjadikannya tersedia. Walau bagaimanapun, *Enumerator* mengembalikan *Array* , bukan *Enumerator object* .
+Jika anda menukar enjin skrip kepada *Chakra* , anda tidak akan dapat menggunakan *Enumerator* khusus *JScript* , dsb. Modul terbina dalam *JScript* menjadikannya tersedia. Walau bagaimanapun, *Enumerator* mengembalikan *Array* , bukan *Enumerator object* .
 
 ```javascript
 const { Enumerator, ActiveXObject } = require('JScript')
@@ -312,6 +312,7 @@ files.forEach(file => console.log(file.Name))
 ```javascript
 const { GetObject, Enumerator } = require('JScript')
 const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service")
+
 new Enumerator(ServiceSet).forEach(service => console.log(
     'Name: %O\nDescription: %O\n',
     service.Name,
@@ -343,10 +344,11 @@ console.log('%O', JSON.parse(content))
 
 *minitest* boleh menulis ujian mudah. Daripada versi `0.10.71` , kami kembali kepada konsep asas dan mengurangkan jenis penegasan kepada 3 jenis.
 
-Kumpulan dengan `describe` , uji `it` , dan sahkan dengan `assert` . `pass` akan menjadi tatasusunan bilangan kejadiannya `it` bilangan pas.
+Kumpulan dengan `describe` , uji `it` , dan sahkan dengan `assert` . `pass` akan menjadi tatasusunan bilangan `it` dan bilangan pas.
 
 ```javascript
 const { describe, it, assert, pass } = require('minitest')
+
 describe('minitest', () => {
     describe('add', () => {
         const add = (a, b) => a + b
@@ -370,6 +372,7 @@ describe('minitest', () => {
         })
     })
 })
+
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
@@ -410,27 +413,65 @@ Sama ada ralat itu betul atau tidak ditentukan oleh sama ada *constructor* ralat
 
 ## *pipe*
 
-*pipe* memudahkan paip.
+*pipe* memudahkan paip. Keluarkan hasil semasa menukar *data* dengan satu atau berbilang *converter* . Dari *ver 0.12.75* dan seterusnya, ia boleh dimulakan terus dari baris arahan.
+
+### Mulakan *pipe* sebagai modul.
+
+Letakkan fungsi penukaran dalam hujah `use(converter)` kaedah *pipe* dan huraikan input data dan pemprosesan pasca penukaran dengan `process(data, callback(error, result))` . Jika tiada `callback` dinyatakan, nilai pulangan akan menjadi *promise* , dan pemprosesan boleh disambungkan dengan `then(result)` dan `catch(error)` .
 
 ```javascript
 const pipe = require('pipe')
+
 function add (a, b) {
     return b + a
 }
+
 function sub (a, b) {
     return b - a
 }
+
 function div (a, b) {
     return a / b
 }
+
 const add5 = add.bind(null, 5)
 const sub3 = sub.bind(null, 3)
+
 pipe()
   .use(add5)
   .use(sub3)
   .use(div, 4)
   .process(10, (err, res) => console.log('res: %O', res))
 ```
+
+Sebagai tambahan kepada `use(converter)` , terdapat kaedah seperti `.filter(callbackFn(value, index))` dan `map(callbackFn(value, index))` . Setiap *data* ialah rentetan, tatasusunan dan objek.
+
+```javascript
+const pipe = require('pipe')
+
+const tsv = `
+javascript\t1955
+java\t1995
+vbscript\t1996
+c#\t2000
+`.trim()
+
+pipe()
+    .filter(include)
+    .map(release)
+    .process(tsv)
+    .then((res) => console.log(() => res))
+
+function include(value, i) {
+    return value.includes('script')
+}
+
+function release(value, i) {
+    return value.split('\t').join(' was released in ')
+}
+```
+
+### *pipe* dari baris arahan
 
 ## *typecheck*
 

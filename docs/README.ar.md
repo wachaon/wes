@@ -312,6 +312,7 @@ files.forEach(file => console.log(file.Name))
 ```javascript
 const { GetObject, Enumerator } = require('JScript')
 const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service")
+
 new Enumerator(ServiceSet).forEach(service => console.log(
     'Name: %O\nDescription: %O\n',
     service.Name,
@@ -347,6 +348,7 @@ console.log('%O', JSON.parse(content))
 
 ```javascript
 const { describe, it, assert, pass } = require('minitest')
+
 describe('minitest', () => {
     describe('add', () => {
         const add = (a, b) => a + b
@@ -370,6 +372,7 @@ describe('minitest', () => {
         })
     })
 })
+
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
@@ -410,27 +413,65 @@ NaN `true` دالة `NaN === NaN` `function (){} === function (){}` `/RegExp/g =
 
 ## *pipe*
 
-يبسط *pipe* الأنابيب.
+يبسط *pipe* . إخراج النتيجة أثناء تحويل *data* باستخدام *converter* . من *ver 0.12.75* فصاعدًا ، يمكن بدء تشغيله مباشرة من سطر الأوامر.
+
+### ابدأ *pipe* كوحدة نمطية.
+
+ضع وظيفة التحويل في وسيطة `use(converter)` لطريقة *pipe* ووصف إدخال البيانات ومعالجة ما بعد التحويل مع `process(data, callback(error, result))` . إذا لم يتم تحديد `callback` ، فستكون القيمة المعادة *promise* ، ويمكن ربط المعالجة بـ `then(result)` `catch(error)` .
 
 ```javascript
 const pipe = require('pipe')
+
 function add (a, b) {
     return b + a
 }
+
 function sub (a, b) {
     return b - a
 }
+
 function div (a, b) {
     return a / b
 }
+
 const add5 = add.bind(null, 5)
 const sub3 = sub.bind(null, 3)
+
 pipe()
   .use(add5)
   .use(sub3)
   .use(div, 4)
   .process(10, (err, res) => console.log('res: %O', res))
 ```
+
+بالإضافة إلى `use(converter)` ، هناك طرق مثل `.filter(callbackFn(value, index))` و `map(callbackFn(value, index))` . كل *data* عبارة عن سلسلة ومصفوفة وكائن.
+
+```javascript
+const pipe = require('pipe')
+
+const tsv = `
+javascript\t1955
+java\t1995
+vbscript\t1996
+c#\t2000
+`.trim()
+
+pipe()
+    .filter(include)
+    .map(release)
+    .process(tsv)
+    .then((res) => console.log(() => res))
+
+function include(value, i) {
+    return value.includes('script')
+}
+
+function release(value, i) {
+    return value.split('\t').join(' was released in ')
+}
+```
+
+### *pipe* من سطر الأوامر
 
 ## *typecheck*
 

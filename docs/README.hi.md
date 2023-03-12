@@ -297,7 +297,7 @@ console.log(contents)
 
 ## *JScript*
 
-यदि आप स्क्रिप्ट इंजन को *Chakra* में बदलते हैं, तो आप *JScript* विशिष्ट *Enumerator* आदि का उपयोग नहीं कर पाएंगे। बिल्ट-इन मॉड्यूल *JScript* उन्हें उपलब्ध कराता है। हालांकि, *Enumerator* एक *Array* देता है, न कि *Enumerator object* ।
+यदि आप स्क्रिप्ट इंजन को *Chakra* में बदलते हैं, तो आप *JScript* विशिष्ट *Enumerator* आदि का उपयोग नहीं कर पाएंगे। अंतर्निहित मॉड्यूल *JScript* उन्हें उपलब्ध कराता है। हालाँकि, *Enumerator* *Array* लौटाता है, न कि *Enumerator object* ।
 
 ```javascript
 const { Enumerator, ActiveXObject } = require('JScript')
@@ -312,6 +312,7 @@ files.forEach(file => console.log(file.Name))
 ```javascript
 const { GetObject, Enumerator } = require('JScript')
 const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service")
+
 new Enumerator(ServiceSet).forEach(service => console.log(
     'Name: %O\nDescription: %O\n',
     service.Name,
@@ -343,10 +344,11 @@ console.log('%O', JSON.parse(content))
 
 *minitest* सरल परीक्षण लिख सकता है। संस्करण `0.10.71` से, हम मूल अवधारणा पर वापस गए और अभिकथन के प्रकारों को घटाकर 3 प्रकार कर दिया।
 
-`describe` के साथ समूह बनाएं, `it` साथ परीक्षण करें, और `assert` सत्यापित करें। `pass` `it` घटनाओं की संख्या और पास की संख्या की एक सरणी होगी।
+`describe` के साथ समूह बनाएं, `it` साथ परीक्षण करें, और `assert` के साथ सत्यापित करें। `pass` `it` घटनाओं की संख्या और पास की संख्या की एक सरणी होगी।
 
 ```javascript
 const { describe, it, assert, pass } = require('minitest')
+
 describe('minitest', () => {
     describe('add', () => {
         const add = (a, b) => a + b
@@ -370,6 +372,7 @@ describe('minitest', () => {
         })
     })
 })
+
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
@@ -410,27 +413,65 @@ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegEx
 
 ## *pipe*
 
-*pipe* पाइपिंग को सरल करता है।
+*pipe* पाइपिंग को सरल करता है। परिणाम एक या एकाधिक *converter* के साथ *data* परिवर्तित करते समय आउटपुट होता है। *ver 0.12.75* के बाद से इसे सीधे कमांड लाइन से शुरू किया जा सकता है।
+
+### एक मॉड्यूल के रूप में *pipe* प्रारंभ करें।
+
+रूपांतरण फ़ंक्शन को *pipe* विधि के `use(converter)` तर्क में रखें और `process(data, callback(error, result))` के साथ डेटा इनपुट और पोस्ट-रूपांतरण प्रसंस्करण का वर्णन करें। यदि कोई `callback` निर्दिष्ट नहीं किया गया है, तो वापसी मूल्य *promise* होगा, और प्रसंस्करण `then(result)` और `catch(error)` से जुड़ा हो सकता है।
 
 ```javascript
 const pipe = require('pipe')
+
 function add (a, b) {
     return b + a
 }
+
 function sub (a, b) {
     return b - a
 }
+
 function div (a, b) {
     return a / b
 }
+
 const add5 = add.bind(null, 5)
 const sub3 = sub.bind(null, 3)
+
 pipe()
   .use(add5)
   .use(sub3)
   .use(div, 4)
   .process(10, (err, res) => console.log('res: %O', res))
 ```
+
+`use(converter)` के अलावा, `.filter(callbackFn(value, index))` और `map(callbackFn(value, index))` जैसे तरीके हैं। प्रत्येक *data* एक स्ट्रिंग, एक सरणी और एक वस्तु है।
+
+```javascript
+const pipe = require('pipe')
+
+const tsv = `
+javascript\t1955
+java\t1995
+vbscript\t1996
+c#\t2000
+`.trim()
+
+pipe()
+    .filter(include)
+    .map(release)
+    .process(tsv)
+    .then((res) => console.log(() => res))
+
+function include(value, i) {
+    return value.includes('script')
+}
+
+function release(value, i) {
+    return value.split('\t').join(' was released in ')
+}
+```
+
+### कमांड लाइन से *pipe*
 
 ## *typecheck*
 

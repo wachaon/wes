@@ -297,7 +297,7 @@ Estou usando alguns recursos de <https://github.com/runk/node-chardet> . Você p
 
 ## *JScript*
 
-Se você alterar o mecanismo de script para *Chakra* , não poderá usar *Enumerator* específicos de *JScript* , etc. O módulo embutido *JScript* os disponibiliza. No entanto, *Enumerator* retorna um *Array* , não um *Enumerator object* .
+Se você alterar o mecanismo de script para *Chakra* , não poderá usar *Enumerator* específicos *JScript* etc. O módulo integrado *JScript* os torna disponíveis. No entanto, *Enumerator* retorna *Array* , não *Enumerator object* .
 
 ```javascript
 const { Enumerator, ActiveXObject } = require('JScript')
@@ -312,6 +312,7 @@ files.forEach(file => console.log(file.Name))
 ```javascript
 const { GetObject, Enumerator } = require('JScript')
 const ServiceSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Service")
+
 new Enumerator(ServiceSet).forEach(service => console.log(
     'Name: %O\nDescription: %O\n',
     service.Name,
@@ -341,12 +342,13 @@ console.log('%O', JSON.parse(content))
 
 ## *minitest*
 
-*minitest* pode escrever testes simples. A partir da versão `0.10.71` , voltamos ao conceito básico e reduzimos os tipos de assertivas para 3 tipos.
+*minitest* pode escrever testes simples. A partir da versão `0.10.71` , voltamos ao conceito básico e reduzimos os tipos de asserções para 3 tipos.
 
 Agrupe com `describe` , teste com `it` e verifique com `assert` . `pass` será um array do número de ocorrências `it` e o número de passes.
 
 ```javascript
 const { describe, it, assert, pass } = require('minitest')
+
 describe('minitest', () => {
     describe('add', () => {
         const add = (a, b) => a + b
@@ -370,6 +372,7 @@ describe('minitest', () => {
         })
     })
 })
+
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
@@ -410,27 +413,65 @@ Se o erro está correto ou não, é determinado se o *constructor* de erro esper
 
 ## *pipe*
 
-*pipe* simplifica a tubulação.
+*pipe* simplifica a tubulação. Gere o resultado durante a conversão de *data* com um ou vários *converter* . A partir *ver 0.12.75* , pode ser iniciado diretamente da linha de comando.
+
+### Inicie *pipe* como um módulo.
+
+Coloque a função de conversão `use(converter)` do método *pipe* e descreva a entrada de dados e o processamento pós-conversão com `process(data, callback(error, result))` . Se nenhum `callback` for especificado, o valor de retorno será *promise* e o processamento pode ser conectado com `then(result)` e `catch(error)` .
 
 ```javascript
 const pipe = require('pipe')
+
 function add (a, b) {
     return b + a
 }
+
 function sub (a, b) {
     return b - a
 }
+
 function div (a, b) {
     return a / b
 }
+
 const add5 = add.bind(null, 5)
 const sub3 = sub.bind(null, 3)
+
 pipe()
   .use(add5)
   .use(sub3)
   .use(div, 4)
   .process(10, (err, res) => console.log('res: %O', res))
 ```
+
+Além de `use(converter)` , existem métodos como `.filter(callbackFn(value, index))` e `map(callbackFn(value, index))` . Cada *data* é uma string, uma matriz e um objeto.
+
+```javascript
+const pipe = require('pipe')
+
+const tsv = `
+javascript\t1955
+java\t1995
+vbscript\t1996
+c#\t2000
+`.trim()
+
+pipe()
+    .filter(include)
+    .map(release)
+    .process(tsv)
+    .then((res) => console.log(() => res))
+
+function include(value, i) {
+    return value.includes('script')
+}
+
+function release(value, i) {
+    return value.split('\t').join(' was released in ')
+}
+```
+
+### *pipe* da linha de comando
 
 ## *typecheck*
 
