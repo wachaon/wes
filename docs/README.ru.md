@@ -18,8 +18,6 @@
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
-
-
 # особенность
 
 *   Вы можете изменить скриптовый движок на *Chakra* и писать в соответствии со спецификациями *ECMAScript2015* .
@@ -30,13 +28,11 @@
 *   Пакетные модули для поддержки внешней публикации и поиска
 *   Отображение сведений об ошибке более любезно, чем *WSH*
 
-
 # *wes* проблемы, которые мы не можем решить
 
 *   `WScript.Quit` не может прервать программу и не возвращает код ошибки.
 *   Асинхронная обработка работает неправильно
 *   Вы не можете использовать *event prefix* второго аргумента `WScript.CreateObject`
-
 
 # скачать
 
@@ -52,7 +48,6 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```bat
 wes update
 ```
-
 
 # как начать *wes*
 
@@ -70,7 +65,6 @@ wes
 
 *REP* принимает ввод сценария, пока вы не введете две пустые строки. Вы также можете увидеть, как *REP* запускает пример скрипта в *README.md* .
 
-
 ## параметры командной строки
 
 Варианты запуска *wes* следующие.
@@ -83,11 +77,9 @@ wes
 | `--encoding=UTF-8` | Указывает кодировку первого прочитанного файла                 |
 | `--engine=Chakra`  | Эта опция автоматически добавляется *wes*                      |
 
-
 # модульная система
 
 *wes* поддерживает две модульные системы: *commonjs module* с использованием `require()` и *es module* с использованием `import` . ( *dynamic import* не поддерживается, поскольку это асинхронный процесс)
-
 
 ## *commonjs module*
 
@@ -116,7 +108,6 @@ WScript.Sleep(2000)
 Shell.UndoMinimizeAll()
 ```
 
-
 ## *es module*
 
 *Chakra* , механизм выполнения сценариев, интерпретирует такой синтаксис, как `imoprt` , но не выполняется в среде *cscript* . В *wes* , добавляя *babel* к встроенным модулям, модули *es module* также выполняются при последовательной транспиляции. Это происходит за счет накладных расходов на обработку и раздутого файла *wes.js* Модули, написанные в *es module* , также преобразуются в `require()` путем транспиляции, поэтому можно вызывать *COM Object* . Однако он не поддерживает указание кодировки файла модуля с помощью *es module* . Все загружается автоматически. Чтобы загрузить его как *es module* , установите расширение `.mjs` или установите для поля `"type"` в `package.json` значение `"module"` .
@@ -134,16 +125,13 @@ import sub from './sub.mjs'
 console.log('sub(7, 3) // => %O', sub(7, 3))
 ```
 
-
 # встроенный объект
 
 *wes* имеет *built-in objects* , которых нет в *WSH (JScript)* .
 
-
 ## *console*
 
 Мы используем *console* вместо *wes* `WScript.Echo()` и `WScript.StdErr.WriteLine()` .
-
 
 ### *console.log*
 
@@ -170,26 +158,21 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 
 `WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine` для вывода цветных строк. `WScript.Echo` и `WScript.StdOut.WriteLine` являются заблокированным выводом. `WScript.StdErr.WriteLine` или `console.log` .
 
-
 ### *console.print*
 
 `console.log()` обычно включает новую строку в конце, а `console.print` — нет.
-
 
 ### *console.debug*
 
 Выводить на консоль, только если включена опция `--debug` .
 
-
 ### *console.error*
 
 Создайте исключение с содержимым в качестве сообщения.
 
-
 ### *console.weaklog*
 
 Строки, напечатанные с помощью `console.weaklog()` , исчезают из консоли, если есть какой-либо последующий вывод. Полезно для переключения выходов.
-
 
 ## *Buffer*
 
@@ -201,7 +184,6 @@ const buff = Buffer.from(content)
 console.log('%s %O', content, buff)
 ```
 
-
 ## `__dirname` и `__filename`
 
 `__filename` хранит путь к текущему исполняемому файлу модуля. `__dirname` содержит каталог `__filename` .
@@ -210,7 +192,6 @@ console.log('%s %O', content, buff)
 const message = `dirname: ${__dirname}\nfilename: ${ __filename}`
 console.log(message)
 ```
-
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
@@ -236,11 +217,9 @@ example();
 console.log('end')
 ```
 
-
 # Встроенный модуль
 
 *wes* имеет *built-in modules* для упрощения и стандартизации базовой обработки.
-
 
 ## Встроенные модули, подлежащие удалению
 
@@ -252,7 +231,6 @@ console.log('end')
 *   *log.js*
 
 Вышеупомянутые модули могут быть установлены как `@wachaon/animate` `@wachaon/day` `@wachaon/debug` `@wachaon/log` соответственно.
-
 
 ## *ansi*
 
@@ -272,7 +250,6 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
-
 ## *argv*
 
 Получить аргументы командной строки. Аргументы командной строки `cscript.exe` объявляют именованные аргументы с помощью `/` , а *wes* объявляет именованные аргументы с помощью `-` и `--` . *argv.unnamed* и *argv.named* приводят тип значения аргумента командной строки к типу *String* *Number* *Boolean* . Введите аргументы командной строки с помощью *REP* .
@@ -291,7 +268,6 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
-
 ## *pathname*
 
 Манипулировать путями. Пути, начинающиеся с `/` и `\` , обычно относятся к корню диска. Например, `/filename` и `C:/filename` могут быть одним и тем же путем. Из соображений безопасности *wes* интерпретирует пути, начинающиеся с `/` и `\` , относительно рабочего каталога.
@@ -301,7 +277,6 @@ const path = require('pathname')
 const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
-
 
 ## *filesystem*
 
@@ -316,11 +291,9 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
-
 ## *chardet*
 
 Я использую некоторые функции из <https://github.com/runk/node-chardet> . Вы можете повысить точность автоматического угадывания, увеличив количество символов, специфичных для кодировки.
-
 
 ## *JScript*
 
@@ -347,7 +320,6 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
-
 ## *VBScript*
 
 *VBScript* предлагает некоторые функции, которых нет *JScript* .
@@ -358,7 +330,6 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
-
 ## *httprequest*
 
 *httprequest* *http request* .
@@ -368,7 +339,6 @@ const request = require('httprequest')
 const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
-
 
 ## *minitest*
 
@@ -406,11 +376,9 @@ describe('minitest', () => {
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
-
 ### утверждения
 
 Для простоты есть только три функции утверждения для сравнения объектов.
-
 
 #### `assert(value, message)` `assert.ok(value, message)`
 
@@ -420,7 +388,6 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 | :-------- | :-------------------- | :---------------------------------------------- |
 | `value`   | `{Function\|Boolean}` | логическая или логическая функция, возвращающая |
 | `message` | `{String}`            | сообщение о неудаче                             |
-
 
 #### `assert.equal(expected, actual)`
 
@@ -433,7 +400,6 @@ NaN `true` Функция `NaN === NaN` `function (){} === function (){}` `/RegE
 | `expected` | `{Any}` | ожидаемое значение |
 | `actual`   | `{Any}` | Реальная стоимость |
 
-
 #### `assert.throws(value, expected, message)`
 
 Убедитесь, что ошибки выдаются правильно.\
@@ -445,11 +411,9 @@ NaN `true` Функция `NaN === NaN` `function (){} === function (){}` `/RegE
 | `expected` | `{Error\|String\|RegExp}` | Регулярное выражение, оценивающее ожидаемый *constructor* ошибок, *message* или *stack* . |
 | `message`  | `{String}`                | сообщение в случае неудачи                                                                |
 
-
 ## *pipe*
 
 *pipe* упрощает трубопровод. Вывод результата при преобразовании *data* с помощью одного или нескольких *converter* . Начиная с *ver 0.12.75* , его можно запустить прямо из командной строки.
-
 
 ### Стартовая *pipe* как модуль
 
@@ -507,13 +471,9 @@ function release(value, i) {
 }
 ```
 
-
 ### Запуск *pipe* из командной строки
 
-
-# <<<<<<< ГОЛОВА
-
-В командной строке введите функцию преобразования по порядку после `pipe` . Аргументы в функции преобразования вводятся как значения для именованных аргументов командной строки с тем же именем, что и у функции преобразования. `=>` `(` с помощью `eval()` вместо `JSON.parse()` `)` *WSH* вытесняет `"` в аргументах командной строки. В этом случае не анализируйте с помощью `eval()` )
+В командной строке введите функцию преобразования по порядку после `pipe` . Аргументы в функции преобразования вводятся как значения именованных аргументов командной строки с тем же именем, что и у функции преобразования. `=>` `(` с помощью `eval()` вместо `JSON.parse()` `)` *WSH* вытесняет `"` в аргументах командной строки. В этом случае не анализируйте с помощью `eval()` )
 
 ```bash
 wes pipe swap merge --input="sample.txt" --output="" --swap="[2, 0, 1, 3]" --merge=4
@@ -537,9 +497,6 @@ pipe()
     })
 ```
 
-> > > > > > > владелец
-
-
 ## *typecheck*
 
 Определите тип сценария.
@@ -552,7 +509,6 @@ log(() => isNumber(43.5))
 log(() => isBoolean(false))
 log(() => isObject(function(){}))
 ```
-
 
 ## *getMember*
 
@@ -586,11 +542,9 @@ const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
 getMember(SWbemServicesEx)
 ```
 
-
 ## *ps*
 
 Облегчает запуск *PowerShell* .
-
 
 ### `ps(source, option)`
 
@@ -714,7 +668,6 @@ Add-Type -Language CSharp -TypeDefinition $Source -ReferencedAssemblies $assembl
 wes REP pos 100 100
 ```
 
-
 ### Запустите *powershell* прямо из консоли
 
 Выполняет указанный файл *.ps1* в консоли.
@@ -730,7 +683,6 @@ wes ps ./sample.ps1
 ```bat
 wes ps --Command Get-ChildItem
 ```
-
 
 ## *zip*
 
@@ -761,11 +713,9 @@ wes zip -p dox.zip
 | `--path` | `-p`         | `path` или файл для входа |
 | `--dest` | `-d`         | файл папки для `dest`     |
 
-
 # Комплектация (упаковка) и установка модулей
 
 В *wes* пакет из нескольких модулей называется пакетом. Вы можете установить пакет для *wes* , опубликованный на *github* . Для публикации пакета требуется *github repository* .
-
 
 ## *bundle*
 
@@ -786,7 +736,6 @@ wes zip -p dox.zip
 wes bundle 
 ```
 
-
 ## *init*
 
 Введите некоторые элементы, и он создаст *package.json* из этой информации.
@@ -794,7 +743,6 @@ wes bundle
 ```bat
 wes init
 ```
-
 
 ## *install*
 
@@ -822,7 +770,6 @@ wes install @wachaon/fmt
 wes install @wachaon/fmt --bare
 ```
 
-
 # Установка пакетов из приватных репозиториев
 
 *install* может устанавливать не только пакеты из общедоступных репозиториев *github* , но и пакеты из частных репозиториев. В *install* укажите пакет с помощью *@author/repository* . Реализация пытается загрузить следующий URL-адрес.
@@ -837,16 +784,13 @@ wes install @wachaon/fmt --bare
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
-
 # Введение пакета
 
 Вот несколько внешних пакетов.
 
-
 ## *@wachaon/fmt*
 
 *@wachaon/fmt* *wes* *prettier* форматировать скрипты. Кроме того, если во время *@wachaon/fmt* возникает *Syntax Error* , вы можете указать ее местонахождение.
-
 
 ### Установите *@wachaon/fmt*
 
@@ -855,7 +799,6 @@ wes install @wachaon/fmt
 ```
 
 Если в рабочей директории есть *.prettierrc* (формат JSON), это будет отражено в настройках. *fmt* доступен как в *CLI* , так и в *module* .
-
 
 #### Использовать как *CLI* .
 
@@ -873,7 +816,6 @@ wes @wachaon/fmt src/sample --write
 
 Перезапишите файл отформатированным сценарием, если `--write` или `-w` .
 
-
 #### использовать как модуль
 
 ```javascript
@@ -884,11 +826,9 @@ const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
-
 ## *@wachaon/edge*
 
 Поддержка *Internet Explorer* прекратится 15 июня 2022 г. В результате ожидается, что работа приложения с `require('InternetExplorer.Application')` станет невозможной. Кроме того, сам сайт не сможет корректно отображаться после прекращения поддержки *Internet Explorer* . Альтернативой может быть использование *Microsoft Edge based on Chromium* через *web driver(msedgedriver.exe)* . `@wachaon/edge` упрощает *Edge* автопилот.
-
 
 ### Установите *@wachaon/edge*
 
@@ -905,7 +845,6 @@ wes edge --download
 ```
 
 Проверьте установленную версию *Edge* и загрузите соответствующий *web driver* .
-
 
 ### Как использовать *@wachaon/edge*
 
@@ -956,11 +895,9 @@ console.log('ret // => %O', ret)
 
 *edge* выводит посещенные *URL* -адреса на консоль по порядку. `@wachaon/edge` регистрирует события для *URL* и добавляет данные в `res.exports` . Регистрируемый *URL* -адрес может быть либо `String` `RegExp` , либо гибко задаваться. Сделав его управляемым событиями, вы можете легко переключиться на ручное управление, не устанавливая события для процессов, которые трудно обработать с помощью автопилота. Если вы хотите, чтобы скрипт остановился, `navi.emit('terminate', res)` или завершите работу *Edge* вручную. Финализация по умолчанию выводит `res.exports` в виде файла *.json* . Если вы хотите установить обработку завершения, установите `terminate` `edge(callback, terminate)` . `window` является экземпляром класса *Window* *@wachaon/webdriver* , а не `window` браузера.
 
-
 ## *@wachaon/webdriver*
 
 Это будет пакет, который отправляет запросы *web driver* , управляющему браузером. *@wachaon/edge* включает *@wachaon/webdriver* .
-
 
 ### Установите *@wachaon/webdriver*
 
@@ -973,7 +910,6 @@ wes install @wachaon/webdriver --bare
 ```bat
 wes webdriver --download
 ```
-
 
 ### Как использовать *@wachaon/webdriver*
 

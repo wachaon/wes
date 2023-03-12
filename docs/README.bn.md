@@ -18,8 +18,6 @@
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
-
-
 # বৈশিষ্ট্য
 
 *   আপনি *Chakra* স্ক্রিপ্ট ইঞ্জিন পরিবর্তন করতে পারেন এবং *ECMAScript2015* স্পেসিফিকেশন অনুযায়ী লিখতে পারেন।
@@ -30,13 +28,11 @@
 *   বাহ্যিক প্রকাশনা এবং পুনরুদ্ধার সমর্থন করার জন্য প্যাকেজ মডিউল
 *   *WSH* চেয়ে আরো দয়া করে ত্রুটির বিবরণ প্রদর্শন করুন
 
-
 # *wes* সমস্যা যা আমরা সমাধান করতে পারি না
 
 *   `WScript.Quit` প্রোগ্রামটি বাতিল করতে পারে না এবং একটি ত্রুটি কোড ফেরত দেয় না
 *   অ্যাসিঙ্ক্রোনাস প্রক্রিয়াকরণ সঠিকভাবে কাজ করে না
 *   আপনি `WScript.CreateObject` এর দ্বিতীয় আর্গুমেন্টের *event prefix* ব্যবহার করতে পারবেন না
-
 
 # ডাউনলোড
 
@@ -52,7 +48,6 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 ```bat
 wes update
 ```
-
 
 # কিভাবে *wes* শুরু করবেন
 
@@ -70,7 +65,6 @@ wes
 
 আপনি দুটি ফাঁকা লাইন প্রবেশ না করা পর্যন্ত *REP* স্ক্রিপ্ট ইনপুট গ্রহণ করে। আপনি *REP* *README.md* এ উদাহরণ স্ক্রিপ্ট চালাতেও দেখতে পারেন।
 
-
 ## কমান্ড লাইন বিকল্প
 
 *wes* স্টার্টআপ বিকল্পগুলি নিম্নরূপ।
@@ -83,11 +77,9 @@ wes
 | `--encoding=UTF-8` | পড়া প্রথম ফাইলের এনকোডিং নির্দিষ্ট করে                |
 | `--engine=Chakra`  | এই বিকল্পটি *wes* দ্বারা স্বয়ংক্রিয়ভাবে যোগ করা হয়  |
 
-
 # মডিউল সিস্টেম
 
 *wes* দুটি মডিউল সিস্টেম সমর্থন করে, *commonjs module* সিস্টেম `require()` ব্যবহার করে এবং *es module* সিস্টেম `import` ব্যবহার করে। ( *dynamic import* সমর্থিত নয় কারণ এটি একটি অ্যাসিঙ্ক্রোনাস প্রক্রিয়া)
-
 
 ## *commonjs module*
 
@@ -116,7 +108,6 @@ WScript.Sleep(2000)
 Shell.UndoMinimizeAll()
 ```
 
-
 ## *es module*
 
 *Chakra* , স্ক্রিপ্ট এক্সিকিউশন ইঞ্জিন, সিনট্যাক্স ব্যাখ্যা করে যেমন `imoprt` , কিন্তু এটি *cscript* পরিবেশে কার্যকর করা হয় না। *wes* এ, অন্তর্নির্মিত মডিউলগুলিতে *babel* যোগ করার মাধ্যমে, *es module* ক্রমানুসারে স্থানান্তরিত হওয়ার সময় কার্যকর করা হয়। এটি ওভারহেড প্রক্রিয়াকরণের খরচ এবং একটি ফুলে যাওয়া *wes.js* ফাইলের জন্য আসে। *es module* লেখা মডিউলগুলিকেও ট্রান্সপিলিং করে `require()` এ রূপান্তরিত করা হয়, তাই *COM Object* অবজেক্টকে কল করা সম্ভব। যাইহোক, এটি *es module* সহ মডিউল ফাইলের এনকোডিং নির্দিষ্ট করা সমর্থন করে না। সবকিছু স্বয়ংক্রিয়ভাবে লোড হয়. এটিকে একটি *es module* হিসাবে লোড করতে, .mjs এ এক্সটেনশন সেট করুন বা `.mjs` এ `"type"` ক্ষেত্রটিকে `"module"` এ `package.json` করুন।
@@ -134,16 +125,13 @@ import sub from './sub.mjs'
 console.log('sub(7, 3) // => %O', sub(7, 3))
 ```
 
-
 # অন্তর্নির্মিত বস্তু
 
 *wes* এর *built-in objects* রয়েছে *WSH (JScript)* এ পাওয়া যায় নি।
 
-
 ## *console*
 
 Wes *wes* `WScript.Echo()` এবং `WScript.StdErr.WriteLine()` এর পরিবর্তে *console* ব্যবহার করে।
-
 
 ### *console.log*
 
@@ -170,26 +158,21 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 
 `WScript.StdOut.WriteLine` রঙিন স্ট্রিং আউটপুট করতে WScript.StdOut.WriteLine এর *wes* `WScript.StdErr.WriteLine` ব্যবহার করে। `WScript.Echo` এবং `WScript.StdOut.WriteLine` ব্লক আউটপুট। `WScript.StdErr.WriteLine` বা `console.log` ব্যবহার করুন।
 
-
 ### *console.print*
 
 `console.log()` সাধারণত শেষে একটি নতুন লাইন অন্তর্ভুক্ত করে, কিন্তু `console.print` করে না।
-
 
 ### *console.debug*
 
 `--debug` বিকল্প সক্রিয় থাকলেই কনসোলে আউটপুট।
 
-
 ### *console.error*
 
 বার্তা হিসাবে বিষয়বস্তুর সাথে একটি ব্যতিক্রম নিক্ষেপ করুন।
 
-
 ### *console.weaklog*
 
 `console.weaklog()` দিয়ে মুদ্রিত স্ট্রিংগুলি কনসোল থেকে অদৃশ্য হয়ে যায় যদি পরবর্তী কোনো আউটপুট থাকে। আউটপুট স্যুইচ করার জন্য দরকারী।
-
 
 ## *Buffer*
 
@@ -201,7 +184,6 @@ const buff = Buffer.from(content)
 console.log('%s %O', content, buff)
 ```
 
-
 ## `__dirname` এবং `__filename`
 
 `__filename` বর্তমানে কার্যকর করা মডিউল ফাইলের পথ সংরক্ষণ করে। `__dirname` এ `__filename` এর ডিরেক্টরি রয়েছে।
@@ -210,7 +192,6 @@ console.log('%s %O', content, buff)
 const message = `dirname: ${__dirname}\nfilename: ${ __filename}`
 console.log(message)
 ```
-
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
@@ -236,11 +217,9 @@ example();
 console.log('end')
 ```
 
-
 # অন্তর্নির্মিত মডিউল
 
 মৌলিক প্রক্রিয়াকরণকে সরল ও মানসম্মত করার জন্য *wes* এর *built-in modules* রয়েছে।
-
 
 ## অন্তর্নির্মিত মডিউল অপসারণ করা হবে
 
@@ -252,7 +231,6 @@ console.log('end')
 *   *log.js*
 
 উপরের মডিউলগুলি যথাক্রমে @wachaon `@wachaon/animate` `@wachaon/day` `@wachaon/debug` `@wachaon/log` হিসাবে ইনস্টল করা যেতে পারে।
-
 
 ## *ansi*
 
@@ -272,7 +250,6 @@ const orange = color(255, 165, 0)
 console.log(orange + 'Hello World')
 ```
 
-
 ## *argv*
 
 কমান্ড লাইন আর্গুমেন্ট পান. `cscript.exe` এর কমান্ড লাইন আর্গুমেন্ট `/` এর সাথে নামযুক্ত আর্গুমেন্ট ঘোষণা করে, যখন *wes* `-` এবং `--` এর সাথে নামযুক্ত আর্গুমেন্ট ঘোষণা করে। *argv.unnamed* এবং *argv.named* কমান্ড লাইন আর্গুমেন্ট ভ্যালু টাইপকে *String* *Number* *Boolean* কাস্ট করে। *REP* এর সাথে কমান্ড লাইন আর্গুমেন্ট লিখুন।
@@ -291,7 +268,6 @@ argv.named: %O`,
 argv, argv.unnamed, argv.named)
 ```
 
-
 ## *pathname*
 
 পাথ ম্যানিপুলেট. `/` এবং `\` দিয়ে শুরু হওয়া পাথগুলি সাধারণত ড্রাইভ রুটের সাথে আপেক্ষিক। উদাহরণস্বরূপ `/filename` এবং `C:/filename` একই পথ হতে পারে। নিরাপত্তার কারণে, wes কার্যকারী ডিরেক্টরির সাথে সম্পর্কিত `/` এবং `\` দিয়ে শুরু হওয়া *wes* ব্যাখ্যা করে।
@@ -301,7 +277,6 @@ const path = require('pathname')
 const file = path.resolve(__dirname, 'index.js')
 console.log('file %O', file)
 ```
-
 
 ## *filesystem*
 
@@ -316,11 +291,9 @@ const contents = fs.readTextFileSync(readme)
 console.log(contents)
 ```
 
-
 ## *chardet*
 
 আমি <https://github.com/runk/node-chardet> থেকে কিছু বৈশিষ্ট্য ব্যবহার করছি। আপনি এনকোডিং-নির্দিষ্ট অক্ষর বাড়িয়ে স্বয়ংক্রিয় অনুমান করার সঠিকতা বাড়াতে পারেন।
-
 
 ## *JScript*
 
@@ -347,7 +320,6 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 ))
 ```
 
-
 ## *VBScript*
 
 *VBScript* কিছু বৈশিষ্ট্য অফার করে যা *JScript* করে না।
@@ -358,7 +330,6 @@ const FSO = require('Scripting.FileSystemObject')
 console.log(TypeName(FSO))
 ```
 
-
 ## *httprequest*
 
 *httprequest* একটি *http request* ইস্যু করে।
@@ -368,7 +339,6 @@ const request = require('httprequest')
 const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log('%O', JSON.parse(content))
 ```
-
 
 ## *minitest*
 
@@ -406,11 +376,9 @@ describe('minitest', () => {
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
-
 ### দাবী
 
 সরলতার জন্য বস্তুর তুলনা করার জন্য শুধুমাত্র তিনটি দাবী ফাংশন আছে।
-
 
 #### assert(মান, `assert(value, message)` `assert.ok(value, message)`
 
@@ -420,7 +388,6 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 | :-------- | :-------------------- | :----------------------------------- |
 | `value`   | `{Function\|Boolean}` | বুলিয়ান বা বুলিয়ান-রিটার্নিং ফাংশন |
 | `message` | `{String}`            | ব্যর্থতার ক্ষেত্রে বার্তা            |
-
 
 #### `assert.equal(expected, actual)`
 
@@ -433,7 +400,6 @@ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegEx
 | `expected` | `{Any}` | প্রত্যাশিত মান |
 | `actual`   | `{Any}` | প্রকৃত মূল্য   |
 
-
 #### `assert.throws(value, expected, message)`
 
 যাচাই করুন যে ত্রুটিগুলি সঠিকভাবে নিক্ষেপ করা হচ্ছে।\
@@ -445,11 +411,9 @@ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegEx
 | `expected` | `{Error\|String\|RegExp}` | একটি নিয়মিত অভিব্যক্তি যা প্রত্যাশিত ত্রুটি *constructor* , *message* বা *stack* মূল্যায়ন করে |
 | `message`  | `{String}`                | ব্যর্থতার ক্ষেত্রে বার্তা                                                                       |
 
-
 ## *pipe*
 
 *pipe* পাইপিংকে সহজ করে। এক বা একাধিক *converter* সাথে *data* রূপান্তর করার সময় ফলাফলটি আউটপুট হয়। *ver 0.12.75* পর থেকে, এটি সরাসরি কমান্ড লাইন থেকে শুরু করা যেতে পারে।
-
 
 ### একটি মডিউল হিসাবে *pipe* শুরু করুন
 
@@ -507,11 +471,7 @@ function release(value, i) {
 }
 ```
 
-
 ### কমান্ড লাইন থেকে *pipe* শুরু হচ্ছে
-
-
-# <<<<<<< হেড
 
 কমান্ড লাইন থেকে, `pipe` পরে ক্রমে রূপান্তর ফাংশন লিখুন। রূপান্তর ফাংশনের আর্গুমেন্টগুলি রূপান্তর ফাংশনের মতো একই নামের সাথে নামযুক্ত কমান্ড-লাইন আর্গুমেন্টের মান হিসাবে প্রবেশ করা হয়। `=>` `JSON.parse()` ) এর পরিবর্তে `eval()` দিয়ে পার্স করা `(` `)` *WSH* কমান্ড লাইন আর্গুমেন্টে `"` কে জোর করে বের করে দেয়। সেক্ষেত্রে, `eval()` ) দিয়ে পার্স করবেন না
 
@@ -537,9 +497,6 @@ pipe()
     })
 ```
 
-> > > > > > > মাস্টার
-
-
 ## *typecheck*
 
 স্ক্রিপ্টের ধরন নির্ধারণ করুন।
@@ -552,7 +509,6 @@ log(() => isNumber(43.5))
 log(() => isBoolean(false))
 log(() => isObject(function(){}))
 ```
-
 
 ## *getMember*
 
@@ -586,11 +542,9 @@ const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
 getMember(SWbemServicesEx)
 ```
 
-
 ## *ps*
 
 *PowerShell* চালানোর সুবিধা দেয়।
-
 
 ### `ps(source, option)`
 
@@ -714,7 +668,6 @@ Add-Type -Language CSharp -TypeDefinition $Source -ReferencedAssemblies $assembl
 wes REP pos 100 100
 ```
 
-
 ### সরাসরি কনসোল থেকে *powershell* চালান
 
 কনসোলে নির্দিষ্ট *.ps1* ফাইলটি কার্যকর করে।
@@ -730,7 +683,6 @@ wes ps ./sample.ps1
 ```bat
 wes ps --Command Get-ChildItem
 ```
-
 
 ## *zip*
 
@@ -761,11 +713,9 @@ wes zip -p dox.zip
 | `--path` | `-p`          | প্রবেশ করতে `path` বা ফাইল |
 | `--dest` | `-d`          | ফোল্ডার ফাইল আউটপুট `dest` |
 
-
 # বান্ডলিং (প্যাকেজিং) এবং মডিউল ইনস্টল করা
 
 *wes* এ, বেশ কয়েকটি মডিউলের একটি বান্ডিলকে প্যাকেজ বলা হয়। আপনি *github* এ প্রকাশিত *wes* এর জন্য প্যাকেজটি ইনস্টল করতে পারেন। একটি প্যাকেজ প্রকাশ করার জন্য একটি *github repository* প্রয়োজন।
-
 
 ## *bundle*
 
@@ -786,7 +736,6 @@ wes zip -p dox.zip
 wes bundle 
 ```
 
-
 ## *init*
 
 কিছু আইটেম লিখুন এবং এটি সেই তথ্য থেকে *package.json* তৈরি করবে।
@@ -794,7 +743,6 @@ wes bundle
 ```bat
 wes init
 ```
-
 
 ## *install*
 
@@ -822,7 +770,6 @@ wes install @wachaon/fmt
 wes install @wachaon/fmt --bare
 ```
 
-
 # ব্যক্তিগত সংগ্রহস্থল থেকে প্যাকেজ ইনস্টল করা হচ্ছে
 
 *install* শুধুমাত্র পাবলিক *github* রিপোজিটরি থেকে প্যাকেজ ইন্সটল করতে পারে না, ব্যক্তিগত রিপোজিটরি থেকে প্যাকেজও ইনস্টল করতে পারে। *install* সময়, *@author/repository* সহ প্যাকেজটি নির্দিষ্ট করুন। বাস্তবায়ন নিম্নলিখিত url ডাউনলোড করার চেষ্টা করে।
@@ -837,16 +784,13 @@ wes install @wachaon/fmt --bare
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
-
 # প্যাকেজ পরিচিতি
 
 এখানে কিছু বাহ্যিক প্যাকেজ আছে.
 
-
 ## *@wachaon/fmt*
 
 *@wachaon/fmt* স্ক্রিপ্ট ফর্ম্যাট করার জন্য *prettier* এর জন্য *wes* প্যাকেজ। এছাড়াও, যদি *@wachaon/fmt* ইনস্টল করার সময় একটি *Syntax Error* ঘটে, আপনি ত্রুটির অবস্থান দেখাতে পারেন।
-
 
 ### *@wachaon/fmt* ইনস্টল করুন
 
@@ -855,7 +799,6 @@ wes install @wachaon/fmt
 ```
 
 কাজের ডিরেক্টরিতে *.prettierrc* (JSON ফরম্যাট) থাকলে সেটি সেটিংসে প্রতিফলিত হবে। *fmt* *CLI* এবং *module* উভয়েই উপলব্ধ।
-
 
 #### *CLI* হিসাবে ব্যবহার করুন।
 
@@ -873,7 +816,6 @@ wes @wachaon/fmt src/sample --write
 
 `--write` বা `-w` নামের আর্গুমেন্ট নির্দিষ্ট করা থাকলে ফরম্যাট করা স্ক্রিপ্ট দিয়ে ফাইলটি ওভাররাইট করুন।
 
-
 #### একটি মডিউল হিসাবে ব্যবহার করুন
 
 ```javascript
@@ -884,11 +826,9 @@ const target = join(workingDirectory, 'index.js')
 console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
-
 ## *@wachaon/edge*
 
 *Internet Explorer* 15 জুন, 2022-এ সমর্থন বন্ধ করবে। ফলস্বরূপ, এটি প্রত্যাশিত যে `require('InternetExplorer.Application')` সহ অ্যাপ্লিকেশন অপারেশনগুলি অসম্ভব হয়ে উঠবে৷ উপরন্তু, *Internet Explorer* সমর্থন শেষ করে সাইটটি নিজেই সঠিকভাবে প্রদর্শন করতে সক্ষম হবে না। একটি বিকল্প হল *web driver(msedgedriver.exe)* এর মাধ্যমে *Microsoft Edge based on Chromium* পরিচালনা করা। `@wachaon/edge` *Edge* অটোপাইলটকে সহজ করে।
-
 
 ### *@wachaon/edge* ইনস্টল করুন
 
@@ -905,7 +845,6 @@ wes edge --download
 ```
 
 ইনস্টল করা *Edge* সংস্করণটি পরীক্ষা করুন এবং সংশ্লিষ্ট *web driver* ডাউনলোড করুন।
-
 
 ### কিভাবে *@wachaon/edge* ব্যবহার করবেন
 
@@ -956,11 +895,9 @@ console.log('ret // => %O', ret)
 
 *edge* পরিদর্শন করা *URL* কনসোলে ক্রমানুসারে প্রিন্ট করে। `@wachaon/edge` *URL* এর জন্য ইভেন্ট নিবন্ধন করে এবং `res.exports` ডেটা যোগ করে। নিবন্ধিত করা *URL* টি হয় `String` `RegExp` হতে পারে এবং নমনীয়ভাবে সেট করা যেতে পারে। এটিকে ইভেন্ট-চালিত করে, আপনি অটোপাইলট দিয়ে পরিচালনা করা কঠিন প্রক্রিয়াগুলির জন্য ইভেন্ট সেট না করে সহজেই ম্যানুয়াল অপারেশনে স্যুইচ করতে পারেন। আপনি যদি স্ক্রিপ্টটি বন্ধ করতে চান, তাহলে `navi.emit('terminate', res)` বা *Edge* ম্যানুয়ালি বন্ধ করুন। চূড়ান্তকরণ ডিফল্টরূপে *.json* ফাইল হিসাবে `res.exports` কে আউটপুট করে। আপনি যদি টার্মিনেশন প্রসেসিং সেট করতে চান, তাহলে `edge(callback, terminate)` `terminate` সেট করুন (কলব্যাক, টার্মিনেট)। `window` হল *@wachaon/webdriver* এর *Window* ক্লাসের একটি উদাহরণ, ব্রাউজারের `window` নয়।
 
-
 ## *@wachaon/webdriver*
 
 এটি এমন একটি প্যাকেজ হবে যা ব্রাউজারটি পরিচালনাকারী *web driver* অনুরোধ পাঠায়। *@wachaon/edge* এ *@wachaon/webdriver* অন্তর্ভুক্ত রয়েছে।
-
 
 ### *@wachaon/webdriver* ইনস্টল করুন
 
@@ -973,7 +910,6 @@ wes install @wachaon/webdriver --bare
 ```bat
 wes webdriver --download
 ```
-
 
 ### *@wachaon/webdriver* কিভাবে ব্যবহার করবেন
 
