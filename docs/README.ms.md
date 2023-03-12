@@ -415,7 +415,7 @@ Sama ada ralat itu betul atau tidak ditentukan oleh sama ada *constructor* ralat
 
 *pipe* memudahkan paip. Keluarkan hasil semasa menukar *data* dengan satu atau berbilang *converter* . Dari *ver 0.12.75* dan seterusnya, ia boleh dimulakan terus dari baris arahan.
 
-### Mulakan *pipe* sebagai modul.
+### Mulakan *pipe* sebagai modul
 
 Letakkan fungsi penukaran dalam hujah `use(converter)` kaedah *pipe* dan huraikan input data dan pemprosesan pasca penukaran dengan `process(data, callback(error, result))` . Jika tiada `callback` dinyatakan, nilai pulangan akan menjadi *promise* , dan pemprosesan boleh disambungkan dengan `then(result)` dan `catch(error)` .
 
@@ -471,7 +471,7 @@ function release(value, i) {
 }
 ```
 
-### *pipe* dari baris arahan
+### Memulakan *pipe* dari baris arahan
 
 ## *typecheck*
 

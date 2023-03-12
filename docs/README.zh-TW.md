@@ -415,7 +415,7 @@ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegEx
 
 *pipe*簡化了管道。在用一個或多個*converter*轉換*data*的同時輸出結果。從*ver 0.12.75*開始，可以直接從命令行啟動。
 
-### 將*pipe*作為一個模塊啟動。
+### 作為模塊啟動*pipe*
 
 將轉換函數放在*pipe*方法的`use(converter)`參數中，用`process(data, callback(error, result))`描述數據輸入和轉換後處理。如果沒有指定`callback` ，返回值將是*promise* ，處理可以連接到`then(result)`和`catch(error)` 。
 
@@ -471,7 +471,7 @@ function release(value, i) {
 }
 ```
 
-### 從命令行*pipe*
+### 從命令行啟動*pipe*
 
 ## *typecheck*
 

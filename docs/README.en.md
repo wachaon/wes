@@ -415,7 +415,7 @@ Whether or not the error is correct is determined by whether the expected error 
 
 *pipe* simplifies piping. The result is output while converting *data* with one or multiple *converter* . From *ver 0.12.75* onwards, it can be started directly from the command line.
 
-### Start *pipe* as a module.
+### Start *pipe* as a module
 
 Put the conversion function in `use(converter)` argument of the *pipe* method and describe the data input and post-conversion processing with `process(data, callback(error, result))` . If no `callback` is specified, the return value will be *promise* , and processing can be connected with `then(result)` and `catch(error)` .
 
@@ -471,7 +471,7 @@ function release(value, i) {
 }
 ```
 
-### *pipe* from the command line
+### Starting *pipe* from the command line
 
 ## *typecheck*
 
