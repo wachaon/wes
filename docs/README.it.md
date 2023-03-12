@@ -415,7 +415,7 @@ Se l'errore è corretto o meno è determinato dal fatto che il *constructor* di 
 
 *pipe* semplifica le tubazioni. Invia il risultato durante la conversione *data* con uno o più *converter* . Dalla *ver 0.12.75* in poi, può essere avviato direttamente dalla riga di comando.
 
-### Avvia *pipe* come modulo.
+### Avvia *pipe* come modulo
 
 Inserisci la funzione di conversione nell'argomento `use(converter)` del metodo *pipe* e descrivi l'input dei dati e l'elaborazione post-conversione con `process(data, callback(error, result))` . Se non viene specificata alcuna `callback` , il valore restituito sarà *promise* e l'elaborazione può essere connessa con `then(result)` e `catch(error)` .
 
@@ -471,7 +471,7 @@ function release(value, i) {
 }
 ```
 
-### *pipe* dalla riga di comando
+### avviare *pipe* dalla riga di comando
 
 ## *typecheck*
 

@@ -415,7 +415,7 @@ Of de fout al dan niet correct is, wordt bepaald door of de verwachte *construct
 
 *pipe* vereenvoudigt piping. Voer het resultaat uit tijdens het converteren van *data* met een of meerdere *converter* . Vanaf *ver 0.12.75* kan het direct vanaf de opdrachtregel worden gestart.
 
-### Start *pipe* als een module.
+### Start *pipe* als een module
 
 Plaats de conversiefunctie in `use(converter)` van de *pipe* methode en beschrijf de gegevensinvoer en verwerking na de conversie met `process(data, callback(error, result))` . Als er geen `callback` is opgegeven, is de geretourneerde waarde *promise* en kan de verwerking worden verbonden met `then(result)` en `catch(error)` .
 
@@ -471,7 +471,7 @@ function release(value, i) {
 }
 ```
 
-### *pipe* vanaf de opdrachtregel
+### *pipe* starten vanaf de opdrachtregel
 
 ## *typecheck*
 

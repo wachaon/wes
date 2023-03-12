@@ -415,7 +415,7 @@ NaN `true` دالة `NaN === NaN` `function (){} === function (){}` `/RegExp/g =
 
 يبسط *pipe* . إخراج النتيجة أثناء تحويل *data* باستخدام *converter* . من *ver 0.12.75* فصاعدًا ، يمكن بدء تشغيله مباشرة من سطر الأوامر.
 
-### ابدأ *pipe* كوحدة نمطية.
+### ابدأ *pipe* كوحدة نمطية
 
 ضع وظيفة التحويل في وسيطة `use(converter)` لطريقة *pipe* ووصف إدخال البيانات ومعالجة ما بعد التحويل مع `process(data, callback(error, result))` . إذا لم يتم تحديد `callback` ، فستكون القيمة المعادة *promise* ، ويمكن ربط المعالجة بـ `then(result)` `catch(error)` .
 
@@ -471,7 +471,7 @@ function release(value, i) {
 }
 ```
 
-### *pipe* من سطر الأوامر
+### بدء *pipe* من سطر الأوامر
 
 ## *typecheck*
 

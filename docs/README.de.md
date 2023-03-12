@@ -415,7 +415,7 @@ Ob der Fehler korrekt ist oder nicht, wird dadurch bestimmt, ob der erwartete Fe
 
 *pipe* vereinfacht die Verrohrung. Das Ergebnis wird beim Konvertieren *data* mit einem oder mehreren *converter* ausgegeben. Ab *ver 0.12.75* kann es direkt von der Kommandozeile aus gestartet werden.
 
-### *pipe* als Modul starten.
+### *pipe* als Modul starten
 
 Fügen Sie die Konvertierungsfunktion in `use(converter)` der *pipe* Methode ein und beschreiben Sie die Dateneingabe und die Verarbeitung nach der Konvertierung mit `process(data, callback(error, result))` . Wird kein `callback` angegeben, ist der Rückgabewert *promise* und die Verarbeitung kann mit `then(result)` und `catch(error)` verbunden werden.
 
@@ -471,7 +471,7 @@ function release(value, i) {
 }
 ```
 
-### *pipe* von der Kommandozeile aus
+### starten Sie *pipe* von der Befehlszeile aus
 
 ## *typecheck*
 

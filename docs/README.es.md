@@ -415,7 +415,7 @@ Si el error es correcto o no se determina si el *constructor* de error esperado,
 
 *pipe* simplifica la instalación de tuberías. Envíe el resultado al convertir *data* con uno o varios *converter* . Desde *ver 0.12.75* en adelante, se puede iniciar directamente desde la línea de comandos.
 
-### Inicie *pipe* como un módulo.
+### *pipe* de inicio como un módulo
 
 Coloque la función de conversión en `use(converter)` del método *pipe* y describa la entrada de datos y el procesamiento posterior a la conversión con `process(data, callback(error, result))` . Si no se especifica ninguna `callback` , el valor de retorno será *promise* y el procesamiento se puede conectar con `then(result)` y `catch(error)` .
 
@@ -471,7 +471,7 @@ function release(value, i) {
 }
 ```
 
-### *pipe* desde la línea de comando
+### Comenzando *pipe* desde la línea de comando
 
 ## *typecheck*
 

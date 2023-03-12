@@ -458,7 +458,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 *data* を1つないし、複数の *converter* で変換しながら結果をだします。
 *ver 0.12.75* 以降はコマンドラインからも直接起動可能になりました。
 
-### *pipe* をモジュールとして起動する。
+### *pipe* をモジュールとして起動する
 
 *pipe* のメソッドの `use(converter)` の引数に変換関数を入れて `process(data, callback(error, result))` でデータの入力と変換後の処理を記述します。`callback` を指定しない場合の戻り値は *promise* になり、`then(result)` ならびに `catch(error)` で処理を繋げていけます。
 
@@ -514,7 +514,7 @@ function release(value, i) {
 }
 ```
 
-### *pipe* をコマンドラインから
+### *pipe* をコマンドラインから起動する
 
 ## *typecheck*
 

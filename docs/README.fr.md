@@ -415,7 +415,7 @@ Le fait que l'erreur soit correcte ou non est déterminé par le fait que le *co
 
 *pipe* simplifie la tuyauterie. Le résultat est sorti lors de la conversion *data* avec un ou plusieurs *converter* . À partir de *ver 0.12.75* , il peut être lancé directement à partir de la ligne de commande.
 
-### Démarrez *pipe* en tant que module.
+### Démarrer *pipe* en tant que module
 
 Placez la fonction de conversion dans `use(converter)` de la méthode *pipe* et décrivez l'entrée de données et le traitement post-conversion avec `process(data, callback(error, result))` . Si aucun `callback` n'est spécifié, la valeur de retour sera *promise* et le traitement peut être connecté avec `then(result)` et `catch(error)` .
 
@@ -471,7 +471,7 @@ function release(value, i) {
 }
 ```
 
-### *pipe* depuis la ligne de commande
+### démarrer *pipe* à partir de la ligne de commande
 
 ## *typecheck*
 

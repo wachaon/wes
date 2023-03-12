@@ -415,7 +415,7 @@ Se o erro está correto ou não, é determinado se o *constructor* de erro esper
 
 *pipe* simplifica a tubulação. Gere o resultado durante a conversão de *data* com um ou vários *converter* . A partir *ver 0.12.75* , pode ser iniciado diretamente da linha de comando.
 
-### Inicie *pipe* como um módulo.
+### Inicie *pipe* como um módulo
 
 Coloque a função de conversão `use(converter)` do método *pipe* e descreva a entrada de dados e o processamento pós-conversão com `process(data, callback(error, result))` . Se nenhum `callback` for especificado, o valor de retorno será *promise* e o processamento pode ser conectado com `then(result)` e `catch(error)` .
 
@@ -471,7 +471,7 @@ function release(value, i) {
 }
 ```
 
-### *pipe* da linha de comando
+### Iniciando *pipe* a partir da linha de comando
 
 ## *typecheck*
 
