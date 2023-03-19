@@ -67,7 +67,7 @@ wes
 
 ## opções de linha de comando
 
-As opções de inicialização do *wes* são as seguintes.
+As opções de inicialização *wes* são as seguintes.
 
 | nomeado            | Descrição                                         |
 | ------------------ | ------------------------------------------------- |
@@ -75,7 +75,7 @@ As opções de inicialização do *wes* são as seguintes.
 | `--transpile`      | Sempre converta e execute com *babel-standalone*  |
 | `--debug`          | execute o script no modo de depuração             |
 | `--encoding=UTF-8` | Especifica a codificação do primeiro arquivo lido |
-| `--engine=Chakra`  | Esta opção é adicionada automaticamente por *wes* |
+| `--arch=x86`       | Esta opção é adicionada automaticamente por *wes* |
 
 # sistema de módulos
 

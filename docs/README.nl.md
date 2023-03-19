@@ -65,17 +65,17 @@ wes
 
 *REP* accepteert scriptinvoer totdat u twee lege regels invoert. U kunt ook zien dat *REP* het voorbeeldscript uitvoert in *README.md* .
 
-## opdrachtregelopties
+## opdrachtregel opties
 
-De opstartopties van *wes* zijn als volgt.
+De opstartopties *wes* zijn als volgt.
 
 | genaamd            | Beschrijving                                            |
 | ------------------ | ------------------------------------------------------- |
 | `--monotone`       | Elimineert *ANSI escape code*                           |
 | `--transpile`      | Altijd converteren en uitvoeren met *babel-standalone*  |
-| `--debug`          | voer het script uit in debug-modus                      |
+| `--debug`          | voer het script uit in foutopsporingsmodus              |
 | `--encoding=UTF-8` | Specificeert de codering van het eerste gelezen bestand |
-| `--engine=Chakra`  | Deze optie wordt automatisch toegevoegd door *wes*      |
+| `--arch=x86`       | Deze optie wordt automatisch toegevoegd door *wes*      |
 
 # module systeem
 

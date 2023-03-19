@@ -67,7 +67,7 @@ wes
 
 ## opzioni della riga di comando
 
-Le opzioni di avvio di *wes* sono le seguenti.
+Le opzioni di avvio *wes* sono le seguenti.
 
 | di nome            | Descrizione                                            |
 | ------------------ | ------------------------------------------------------ |
@@ -75,7 +75,7 @@ Le opzioni di avvio di *wes* sono le seguenti.
 | `--transpile`      | Converti ed esegui sempre con *babel-standalone*       |
 | `--debug`          | eseguire lo script in modalità debug                   |
 | `--encoding=UTF-8` | Specifica la codifica del primo file letto             |
-| `--engine=Chakra`  | Questa opzione viene aggiunta automaticamente da *wes* |
+| `--arch=x86`       | Questa opzione viene aggiunta automaticamente da *wes* |
 
 # sistema di moduli
 

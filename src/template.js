@@ -8,19 +8,17 @@
         var WIN32SEP = '\\'
         var PROCESSOR_ARCHITECTURE = '%PROCESSOR_ARCHITECTURE%'
         var WSCRIPT_SHELL = 'WScript.Shell'
-        var ENGINE = 'engine'
-        var CHAKRA = 'Chakra'
         var MONOTONE = 'monotone'
 
         var WShell = WScript.CreateObject(WSCRIPT_SHELL)
         var history = [WScript.ScriptFullName.split(WIN32SEP).join(POSIXSEP)]
         var entry_point = null
-        var ARCHITECTURE = WShell.ExpandEnvironmentStrings(PROCESSOR_ARCHITECTURE)
+        var architecture = WShell.ExpandEnvironmentStrings(PROCESSOR_ARCHITECTURE)
 
         var wes = {
             history: history,
             entry_point: entry_point,
-            architecture: ARCHITECTURE,
+            architecture: architecture,
             entryMap: {}
         }
 
@@ -85,10 +83,10 @@
             immediate = false
         }
 
-        if (!argv.has(ENGINE, CHAKRA)) {
-            var cpu = ARCHITECTURE !== 'x86' ? '{%}windir{%}\\SysWOW64\\cscript' : 'cscript'
+        if (!argv.has('arch')) {
+            var cpu = architecture !== 'x86' ? '{%}windir{%}\\SysWOW64\\cscript' : 'cscript'
             var nologo = '//nologo'
-            var engin = '--engine=Chakra'
+            var arch = '--arch=' + architecture
             var chakra = '//E:{{}1b7cd997-e5ff-4932-a7a6-2a9e636da385{}}'
             var monotone = argv.has(MONOTONE) ? NONE : '| echo off'
             var enter = '{ENTER}'
@@ -99,9 +97,7 @@
             }
 
             WShell.SendKeys(
-                [cpu, WScript.ScriptFullName, parameters.join(SPACE), nologo, chakra, engin, monotone, enter].join(
-                    SPACE
-                )
+                [cpu, WScript.ScriptFullName, parameters.join(SPACE), nologo, chakra, arch, monotone, enter].join(SPACE)
             )
 
             WScript.Quit()
@@ -179,7 +175,7 @@
                     return WorkingDirectory
                 },
                 argv: argv,
-                arch: ARCHITECTURE,
+                arch: architecture,
                 platform: WIN32,
                 version: existsFileSync(PACKAGE_JSON) ? JSON.parse(readTextFileSync(PACKAGE_JSON)).version : null,
                 stdout: {

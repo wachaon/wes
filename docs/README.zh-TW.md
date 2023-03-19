@@ -69,13 +69,13 @@ wes
 
 *wes*啟動選項如下。
 
-| 命名為                | 描述                          |
+| 命名的                | 描述                          |
 | ------------------ | --------------------------- |
 | `--monotone`       | 消除*ANSI escape code*        |
 | `--transpile`      | 始終使用*babel-standalone*轉換和運行 |
 | `--debug`          | 在調試模式下運行腳本                  |
 | `--encoding=UTF-8` | 指定讀取的第一個文件的編碼               |
-| `--engine=Chakra`  | 此選項由*wes*自動添加               |
+| `--arch=x86`       | 這個選項是*wes*自動添加的             |
 
 # 模塊系統
 

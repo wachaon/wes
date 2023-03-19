@@ -75,7 +75,7 @@ wes
 | `--transpile`      | Immer konvertieren und mit *babel-standalone* ausführen |
 | `--debug`          | Führen Sie das Skript im Debug-Modus aus                |
 | `--encoding=UTF-8` | Gibt die Kodierung der ersten gelesenen Datei an        |
-| `--engine=Chakra`  | Diese Option wird automatisch von *wes* hinzugefügt     |
+| `--arch=x86`       | Diese Option wird automatisch von *wes* hinzugefügt     |
 
 # Modulsystem
 

@@ -75,7 +75,7 @@ Pilihan permulaan *wes* adalah seperti berikut.
 | `--transpile`      | Sentiasa tukar dan jalankan dengan *babel-standalone* |
 | `--debug`          | jalankan skrip dalam mod nyahpepijat                  |
 | `--encoding=UTF-8` | Menentukan pengekodan fail pertama dibaca             |
-| `--engine=Chakra`  | Pilihan ini ditambah secara automatik oleh *wes*      |
+| `--arch=x86`       | Pilihan ini ditambah secara automatik oleh *wes*      |
 
 # sistem modul
 

@@ -75,7 +75,7 @@ wes
 | `--transpile`      | Always convert and run with *babel-standalone* |
 | `--debug`          | run the script in debug mode                   |
 | `--encoding=UTF-8` | Specifies the encoding of the first file read  |
-| `--engine=Chakra`  | This option is added automatically by *wes*    |
+| `--arch=x86`       | This option is added automatically by *wes*    |
 
 # module system
 

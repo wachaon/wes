@@ -67,15 +67,15 @@ wes
 
 ## options de ligne de commande
 
-Les options de démarrage de *wes* sont les suivantes.
+Les options de démarrage *wes* sont les suivantes.
 
-| nommé              | La description                                         |
+| nommé              | Description                                            |
 | ------------------ | ------------------------------------------------------ |
 | `--monotone`       | Élimine *ANSI escape code*                             |
 | `--transpile`      | Toujours convertir et exécuter avec *babel-standalone* |
 | `--debug`          | exécuter le script en mode débogage                    |
 | `--encoding=UTF-8` | Spécifie l'encodage du premier fichier lu              |
-| `--engine=Chakra`  | Cette option est ajoutée automatiquement par *wes*     |
+| `--arch=x86`       | Cette option est ajoutée automatiquement par *wes*     |
 
 # système de modules
 
