@@ -158,6 +158,7 @@
             var isAbsolute = pathname.isAbsolute
             var toPosixSep = pathname.toPosixSep
             var WorkingDirectory = pathname.WorkingDirectory
+            var bubbleUp = pathname.bubbleUp
 
             var filesystem = req(FILESYSTEM)
             var existsFileSync = filesystem.existsFileSync
@@ -478,11 +479,12 @@
         }
 
         function nearestPackageJson(dir) {
-            var pkgSpec = bubblingDirectory(dir, PACKAGE_JSON)
-                .reverse()
-                .find(function pkgSpec_find(spec) {
-                    return existsFileSync(spec)
-                })
+            var pkgSpec = bubbleUp(dir, function findPkg(curr) {
+                var pkg = resolve(curr, PACKAGE_JSON)
+                if (existsFileSync(pkg)) return pkg
+                return null
+            })
+
             if (pkgSpec) {
                 if (findEntry(pkgSpec) != null) return req(wes.entryMap[pkgSpec])
                 else {
