@@ -18,14 +18,14 @@ Pour les textes dans d'autres langues, veuillez sélectionner parmi les options 
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
-# caractéristique
+# fonctionnalité
 
 *   Vous pouvez changer le moteur de script en *Chakra* et écrire selon les spécifications *ECMAScript2015* .
-*   Étant donné que *cscript.exe* 32 bits est toujours exécuté, il n'y a pas de problème unique dans un environnement 64 bits.
-*   Puisqu'il existe un système de modules, il peut être développé plus efficacement que le *WSH* conventionnel
+*   Utilise toujours *cscript.exe* 32 bits, donc pas de problèmes uniques 64 bits
+*   Système de modules disponible pour un développement plus efficace que *WSH* traditionnel
 *   Les modules intégrés prennent en charge le traitement de base tel que l'entrée/sortie de fichiers et la sortie de texte coloré vers la console
-*   Vous pouvez laisser la lecture du fichier deviner automatiquement l'encodage, vous n'avez donc pas à vous soucier de l'encodage, etc.
-*   Modules de package pour prendre en charge la publication et la récupération externes
+*   Vous n'avez pas à vous soucier de l'encodage, etc. car il peut déduire automatiquement l'encodage lors de la lecture du fichier
+*   Il est également possible de packager le module et de le publier en externe ou de l'obtenir.
 *   Afficher les détails de l'erreur plus gentiment que *WSH*
 
 # Problèmes *wes* que nous ne pouvons pas résoudre
@@ -34,16 +34,15 @@ Pour les textes dans d'autres langues, veuillez sélectionner parmi les options 
 *   Le traitement asynchrone ne fonctionne pas correctement
 *   Vous ne pouvez pas utiliser le *event prefix* du deuxième argument de `WScript.CreateObject`
 
-# Télécharger
+# télécharger
 
-Wes n'a besoin que du *wes* *wes.js* . Pour télécharger, copiez *wes.js* depuis [*@wachaon/wes*](https://github.com/wachaon/wes) ou exécutez la commande suivante dans la console.
+*wes* n'a besoin que du fichier *wes.js* Pour télécharger, copiez *wes.js* depuis [*@wachaon/wes*](https://github.com/wachaon/wes) ou exécutez la commande suivante dans la console.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-Nous utilisons `SendKeys` *wes* *WScript.Shell* lors de l'exécution en tant qu'implémentation. Si le chemin du répertoire où *wes.js* est enregistré contient des caractères autres que *ascii* , `SendKeys` ne peut pas envoyer la clé correctement et le script ne peut pas être exécuté.\
-Configurez le chemin *wes.js* est stocké en *ascii* uniquement. Si vous avez déjà téléchargé *wes* , vous pouvez le mettre à jour avec la commande suivante.
+*wes* adopte une implémentation qui utilise `SendKeys` de *WScript.Shell* lors de l'exécution. Si le chemin du répertoire où *wes.js* est stocké contient des caractères non ASCII, `SendKeys` ne pourra pas envoyer les clés correctement et le script ne s'exécutera pas. Par conséquent, assurez-vous que le chemin où vous stockez *wes.js* se compose uniquement de caractères ASCII. Alternativement, si vous avez déjà téléchargé *wes.js* , vous pouvez le mettre à jour en utilisant la commande ci-dessous.
 
 ```bat
 wes update

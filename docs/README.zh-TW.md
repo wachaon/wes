@@ -20,13 +20,13 @@
 
 # 特徵
 
-*   您可以將腳本引擎更改為*Chakra*並根據*ECMAScript2015*規範編寫。
-*   由於總是執行 32 位*cscript.exe* ，因此在 64 位環境中沒有獨特的問題。
-*   由於有模塊系統，因此可以比傳統的*WSH*更高效地開發
-*   內置模塊支持基本處理，例如文件輸入/輸出和彩色文本輸出到控制台
-*   您可以讓文件讀取自動猜測編碼，因此您不必擔心編碼等。
-*   打包模塊以支持外部發布和檢索
-*   比*WSH*更友好地顯示錯誤細節
+*   可以將腳本引擎換成*Chakra* ，按照*ECMAScript2015*規範編寫。
+*   始終使用 32 位*cscript.exe* ，因此沒有獨特的 64 位問題
+*   模塊系統可用於比傳統*WSH*更高效的開發
+*   內置模塊支持文件輸入/輸出、彩色文本輸出到控制台等基本處理
+*   您不必擔心編碼等問題，因為它可以在讀取文件時自動推斷編碼
+*   也可以將模塊打包對外發布或者獲取。
+*   比*WSH*更友好地顯示錯誤詳細信息
 
 # 我們無法解決的*wes*問題
 
@@ -36,14 +36,13 @@
 
 # 下載
 
-*wes.js* *wes* 。要下載，請從[*@wachaon/wes*](https://github.com/wachaon/wes)複製*wes.js*或在控制台中運行以下命令。
+*wes*只需要*wes.js*文件。要下載，請從[*@wachaon/wes*](https://github.com/wachaon/wes)複製*wes.js*或在您的控制台中運行以下命令。
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-我們在運行時*WScript.Shell* *wes* `SendKeys`作為實現。如果*wes.js*保存目錄的路徑中包含*ascii*以外的字符，則`SendKeys`無法正確發送密鑰，腳本無法執行。\
-配置*wes.js*僅存儲在*ascii*中的路徑。如果您已經下載了*wes* ，您可以使用以下命令對其進行更新。
+*wes*採用了一種在運行時使用*WScript.Shell*的`SendKeys`的實現。如果*wes.js*所在目錄的路徑包含非 ASCII 字符， `SendKeys`將無法正確發送密鑰，腳本將無法運行。因此，請確保您存儲*wes.js*路徑僅包含 ASCII 字符。或者，如果您已經下載了*wes.js* ，您可以使用下面的命令更新它。
 
 ```bat
 wes update

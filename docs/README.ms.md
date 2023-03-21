@@ -21,11 +21,11 @@ Untuk teks dalam bahasa lain, sila pilih daripada pilihan di bawah.
 # ciri
 
 *   Anda boleh menukar enjin skrip kepada *Chakra* dan menulis mengikut spesifikasi *ECMAScript2015* .
-*   Memandangkan 32bit *cscript.exe* sentiasa dilaksanakan, tiada masalah unik dalam persekitaran 64bit.
-*   Oleh kerana terdapat sistem modul, ia boleh dibangunkan dengan lebih cekap daripada *WSH* konvensional
+*   Sentiasa menggunakan 32-bit *cscript.exe* , jadi tiada masalah 64-bit yang unik
+*   Sistem modul tersedia untuk pembangunan yang lebih cekap daripada *WSH* tradisional
 *   Modul terbina dalam menyokong pemprosesan asas seperti input/output fail dan output teks berwarna ke konsol
-*   Anda boleh membiarkan pembacaan fail meneka pengekodan secara automatik, jadi anda tidak perlu risau tentang pengekodan dsb.
-*   Pakej modul untuk menyokong penerbitan dan pengambilan luaran
+*   Anda tidak perlu risau tentang pengekodan dan lain-lain kerana ia secara automatik boleh membuat kesimpulan pengekodan apabila membaca fail
+*   Ia juga mungkin untuk membungkus modul dan menerbitkannya secara luaran atau mendapatkannya.
 *   Paparkan butiran ralat dengan lebih baik daripada *WSH*
 
 # Isu-isu yang *wes* yang tidak dapat kami selesaikan
@@ -36,14 +36,13 @@ Untuk teks dalam bahasa lain, sila pilih daripada pilihan di bawah.
 
 # muat turun
 
-Wes hanya memerlukan *wes* *wes.js* . Untuk memuat turun, salin *wes.js* daripada [*@wachaon/wes*](https://github.com/wachaon/wes) atau jalankan arahan berikut dalam konsol.
+*wes* hanya memerlukan fail *wes.js* Untuk memuat turun, salin *wes.js* daripada [*@wachaon/wes*](https://github.com/wachaon/wes) atau jalankan arahan berikut dalam konsol.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-*WScript.Shell* *wes* pada masa `SendKeys` sebagai pelaksanaan. Jika laluan direktori tempat *wes.js* disimpan mengandungi aksara selain *ascii* , `SendKeys` tidak boleh menghantar kunci dengan betul dan skrip tidak boleh dilaksanakan.\
-Konfigurasikan laluan *wes.js* disimpan dalam *ascii* sahaja. Jika anda telah memuat turun *wes* , anda boleh mengemas kininya dengan arahan berikut.
+*wes* mengamalkan pelaksanaan yang menggunakan *WScript.Shell* 's `SendKeys` pada masa jalan. Jika laluan direktori tempat *wes.js* disimpan mengandungi aksara bukan ASCII, `SendKeys` tidak akan dapat menghantar kunci dengan betul dan skrip tidak akan dijalankan. Oleh itu, pastikan laluan tempat anda menyimpan *wes.js* hanya terdiri daripada aksara ASCII. Sebagai alternatif, jika anda telah memuat turun *wes.js* , anda boleh mengemas kininya menggunakan arahan di bawah.
 
 ```bat
 wes update

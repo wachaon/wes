@@ -18,14 +18,14 @@ Maak voor teksten in andere talen een keuze uit de onderstaande opties.
 +  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
 +  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
-# voorzien zijn van
+# functie
 
-*   U kunt de scriptengine wijzigen in *Chakra* en schrijven volgens *ECMAScript2015* -specificaties.
-*   Aangezien 32bit *cscript.exe* altijd wordt uitgevoerd, is er geen uniek probleem in een 64bit-omgeving.
-*   Omdat er een modulesysteem is, kan het efficiënter worden ontwikkeld dan de conventionele *WSH*
+*   U kunt de script-engine wijzigen in *Chakra* en schrijven volgens de *ECMAScript2015* -specificaties.
+*   Gebruikt altijd 32-bits *cscript.exe* , dus geen unieke 64-bits problemen
+*   Modulesysteem beschikbaar voor efficiëntere ontwikkeling dan traditionele *WSH*
 *   Ingebouwde modules ondersteunen basisverwerking zoals invoer/uitvoer van bestanden en uitvoer van gekleurde tekst naar de console
-*   U kunt het lezen van bestanden automatisch de codering laten raden, zodat u zich geen zorgen hoeft te maken over codering enz.
-*   Pakketmodules ter ondersteuning van extern publiceren en ophalen
+*   U hoeft zich geen zorgen te maken over codering etc. omdat het de codering automatisch kan afleiden bij het lezen van het bestand
+*   Het is ook mogelijk om de module te verpakken en extern te publiceren of te verkrijgen.
 *   Geef foutdetails vriendelijker weer dan *WSH*
 
 # *wes* problemen die we niet kunnen oplossen
@@ -36,14 +36,13 @@ Maak voor teksten in andere talen een keuze uit de onderstaande opties.
 
 # downloaden
 
-Wes heeft alleen het *wes* *wes.js* . Om te downloaden, kopieert u *wes.js* van [*@wachaon/wes*](https://github.com/wachaon/wes) of voert u de volgende opdracht uit in de console.
+*wes* heeft alleen het bestand *wes.js* nodig. Om te downloaden, kopieert u *wes.js* van [*@wachaon/wes*](https://github.com/wachaon/wes) of voert u de volgende opdracht uit in de console.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-*WScript.Shell* `SendKeys` van *wes* tijdens runtime als implementatie. Als het pad van de map waarin *wes.js* is opgeslagen andere tekens dan *ascii* bevat, kan `SendKeys` de sleutel niet correct verzenden en kan het script niet worden uitgevoerd.\
-Configureer het pad *wes.js* wordt opgeslagen alleen in *ascii* . Als je *wes* al hebt gedownload, kun je het bijwerken met de volgende opdracht.
+*wes* past een implementatie toe die *WScript.Shell* 's `SendKeys` tijdens runtime gebruikt. Als het pad van de map waarin *wes.js* is opgeslagen niet-ASCII-tekens bevat, kan `SendKeys` de sleutels niet correct verzenden en wordt het script niet uitgevoerd. Daarom mag het pad waar u *wes.js* opslaat alleen uit ASCII-tekens bestaan. Als u *wes.js* al hebt gedownload, kunt u het ook bijwerken met de onderstaande opdracht.
 
 ```bat
 wes update

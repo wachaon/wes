@@ -21,11 +21,11 @@ For texts in other languages, please select from the options below.
 # feature
 
 *   You can change the script engine to *Chakra* and write according to *ECMAScript2015* specifications.
-*   Since 32bit *cscript.exe* is always executed, there is no unique problem in 64bit environment.
-*   Since there is a module system, it can be developed more efficiently than the conventional *WSH*
+*   Always uses 32-bit *cscript.exe* , so no unique 64-bit problems
+*   Module system available for more efficient development than traditional *WSH*
 *   Built-in modules support basic processing such as file input/output and colored text output to the console
-*   You can let file reading automatically guess the encoding, so you don't have to worry about encoding etc.
-*   Package modules to support external publishing and retrieval
+*   You don't have to worry about encoding etc. as it can automatically infer the encoding when reading the file
+*   It is also possible to package the module and publish it externally or obtain it.
 *   Display error details more kindly than *WSH*
 
 # *wes* issues that we can't solve
@@ -36,14 +36,13 @@ For texts in other languages, please select from the options below.
 
 # download
 
-*wes.js* *wes* . To download, copy *wes.js* from [*@wachaon/wes*](https://github.com/wachaon/wes) or run the following command in console.
+*wes* only needs the *wes.js* file. To download, copy *wes.js* from [*@wachaon/wes*](https://github.com/wachaon/wes) or run the following command in console.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-*WScript.Shell* *wes* `SendKeys` at runtime as an implementation. If the path of the directory where *wes.js* is saved contains characters other than *ascii* , `SendKeys` cannot send the key correctly and the script cannot be executed.\
-Configure the path *wes.js* is stored in *ascii* only. If you have already downloaded *wes* , you can update it with the following command.
+*wes* adopts an implementation that uses *WScript.Shell* 's `SendKeys` at runtime. If the path of the directory where *wes.js* is stored contains non-ASCII characters, `SendKeys` will not be able to send the keys correctly and the script will not run. Therefore, the path where you store *wes.js* should consist of ASCII characters only. Alternatively, if you have already downloaded *wes.js* , you can update it using the command below.
 
 ```bat
 wes update

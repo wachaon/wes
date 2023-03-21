@@ -20,12 +20,12 @@ Für Texte in anderen Sprachen wählen Sie bitte aus den folgenden Optionen aus.
 
 # Besonderheit
 
-*   Sie können die Skript-Engine in *Chakra* ändern und gemäß den *ECMAScript2015* -Spezifikationen schreiben.
-*   Da 32-Bit *cscript.exe* immer ausgeführt wird, gibt es in der 64-Bit-Umgebung kein eindeutiges Problem.
-*   Da es sich um ein Modulsystem handelt, kann es effizienter entwickelt werden als das herkömmliche *WSH*
-*   Integrierte Module unterstützen die grundlegende Verarbeitung wie Dateieingabe/-ausgabe und Farbtextausgabe an die Konsole
-*   Sie können die Codierung beim Lesen von Dateien automatisch erraten lassen, sodass Sie sich keine Gedanken über die Codierung usw. machen müssen.
-*   Paketmodule zur Unterstützung externer Veröffentlichungen und Abrufe
+*   Sie können die Skript-Engine auf *Chakra* ändern und gemäß den *ECMAScript2015* Spezifikationen schreiben.
+*   Verwendet immer 32-Bit *cscript.exe* , also keine eindeutigen 64-Bit-Probleme
+*   Verfügbares Modulsystem für eine effizientere Entwicklung als herkömmliche *WSH*
+*   Eingebaute Module unterstützen die grundlegende Verarbeitung wie Dateieingabe/-ausgabe und Farbtextausgabe an die Konsole
+*   Sie müssen sich keine Gedanken über die Codierung usw. machen, da es beim Lesen der Datei automatisch auf die Codierung schließen kann
+*   Es ist auch möglich, das Modul zu packen und extern zu veröffentlichen oder zu beziehen.
 *   Zeigen Sie Fehlerdetails freundlicher an als *WSH*
 
 # *wes* Probleme, die wir nicht lösen können
@@ -34,16 +34,15 @@ Für Texte in anderen Sprachen wählen Sie bitte aus den folgenden Optionen aus.
 *   Die asynchrone Verarbeitung funktioniert nicht richtig
 *   Sie können das *event prefix* des zweiten Arguments von `WScript.CreateObject` nicht verwenden
 
-# Download
+# herunterladen
 
-Wes benötigt nur die *wes* *wes.js* . Kopieren Sie zum Herunterladen *wes.js* von [*@wachaon/wes*](https://github.com/wachaon/wes) oder führen Sie den folgenden Befehl in Ihrer Konsole aus.
+*wes* benötigt nur die Datei *wes.js* Kopieren Sie zum Herunterladen *wes.js* von [*@wachaon/wes*](https://github.com/wachaon/wes) oder führen Sie den folgenden Befehl in Ihrer Konsole aus.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-`SendKeys` *WScript.Shell* *wes* zur Laufzeit als Implementierung. Wenn der Pfad des Verzeichnisses, in dem *wes.js* gespeichert ist, andere Zeichen als *ascii* enthält, kann `SendKeys` den Schlüssel nicht korrekt senden und das Skript kann nicht ausgeführt werden.\
-Konfigurieren Sie den Pfad, *wes.js* gespeichert ist, nur in *ascii* . Wenn Sie *wes* bereits heruntergeladen haben, können Sie es mit dem folgenden Befehl aktualisieren.
+*wes* übernimmt eine Implementierung, die `SendKeys` von *WScript.Shell* zur Laufzeit verwendet. Wenn der Pfad des Verzeichnisses, in dem *wes.js* gespeichert ist, Nicht-ASCII-Zeichen enthält, kann `SendKeys` die Schlüssel nicht korrekt senden und das Skript wird nicht ausgeführt. Stellen Sie daher sicher, dass der Pfad, in dem Sie *wes.js* speichern, nur aus ASCII-Zeichen besteht. Wenn Sie *wes.js* bereits heruntergeladen haben, können Sie es alternativ mit dem folgenden Befehl aktualisieren.
 
 ```bat
 wes update

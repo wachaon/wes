@@ -21,11 +21,11 @@ Per testi in altre lingue, seleziona una delle opzioni seguenti.
 # caratteristica
 
 *   Puoi cambiare il motore di script in *Chakra* e scrivere secondo le specifiche *ECMAScript2015* .
-*   Poiché *cscript.exe* a 32 bit viene sempre eseguito, non ci sono problemi univoci nell'ambiente a 64 bit.
-*   Poiché esiste un sistema di moduli, può essere sviluppato in modo più efficiente rispetto al *WSH* convenzionale
-*   I moduli integrati supportano l'elaborazione di base come l'input/output di file e l'output di testo colorato sulla console
-*   Puoi lasciare che la lettura del file indovini automaticamente la codifica, quindi non devi preoccuparti della codifica ecc.
-*   Moduli del pacchetto per supportare la pubblicazione e il recupero esterni
+*   Utilizza sempre *cscript.exe* a 32 bit, quindi nessun problema a 64 bit univoco
+*   Sistema modulare disponibile per uno sviluppo più efficiente rispetto al tradizionale *WSH*
+*   I moduli integrati supportano l'elaborazione di base come l'input/output di file e l'output di testo colorato nella console
+*   Non devi preoccuparti della codifica ecc. Poiché può dedurre automaticamente la codifica durante la lettura del file
+*   È anche possibile impacchettare il modulo e pubblicarlo esternamente o ottenerlo.
 *   Visualizza i dettagli dell'errore in modo più gentile rispetto a *WSH*
 
 # Problemi *wes* che non possiamo risolvere
@@ -34,16 +34,15 @@ Per testi in altre lingue, seleziona una delle opzioni seguenti.
 *   L'elaborazione asincrona non funziona correttamente
 *   Non è possibile utilizzare il *event prefix* del secondo argomento di `WScript.CreateObject`
 
-# Scarica
+# scaricamento
 
-Wes ha bisogno solo del *wes* *wes.js* Per scaricare, copia *wes.js* da [*@wachaon/wes*](https://github.com/wachaon/wes) o esegui il seguente comando nella tua console.
+*wes* serve solo il file *wes.js* Per scaricare, copia *wes.js* da [*@wachaon/wes*](https://github.com/wachaon/wes) o esegui il seguente comando nella tua console.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-Usiamo `SendKeys` *wes* *WScript.Shell* in fase di esecuzione come implementazione. Se il percorso della directory in cui è salvato *wes.js* contiene caratteri diversi da *ascii* , `SendKeys` non può inviare la chiave correttamente e lo script non può essere eseguito.\
-Configura il percorso *wes.js* è archiviato solo in *ascii* . Se hai già scaricato *wes* , puoi aggiornarlo con il seguente comando.
+*wes* adotta un'implementazione che utilizza `SendKeys` di *WScript.Shell* in fase di esecuzione. Se il percorso della directory in cui è memorizzato *wes.js* contiene caratteri non ASCII, `SendKeys` non sarà in grado di inviare correttamente le chiavi e lo script non verrà eseguito. Pertanto, assicurati che il percorso in cui memorizzi *wes.js* sia composto solo da caratteri ASCII. In alternativa, se hai già scaricato *wes.js* , puoi aggiornarlo utilizzando il comando seguente.
 
 ```bat
 wes update
