@@ -24,10 +24,9 @@ files.forEach((file) => {
     if (ext !== '.js') return
 
     const mod_name = escapeName(`{wes}/${filename}`)
-    let source = fs.readFileSync(file.Path, 'UTF-8N').replace(rCR, NONE)
-    let code = '(function ' + mod_name + '() {' + source + '\n} )()'
+    let source = '(function ' + mod_name + '() {' + fs.readFileSync(file.Path, 'UTF-8N').replace(rCR, NONE) + '\n} )()'
 
-    result[filename] = { source, code, mapping: {}, path: `{wes}/${filename}`, type: COMMONJS }
+    result[filename] = { source, mapping: {}, path: `{wes}/${filename}`, type: COMMONJS }
 })
 
 result['version'] = {
