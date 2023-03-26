@@ -468,16 +468,6 @@
             return cls.hasOwnProperty(prop)
         }
 
-        function bubblingDirectory(dir, query) {
-            var res = []
-            query ? res.push(resolve(dir, query)) : res.push(resolve(dir))
-            while (dir !== dirname(dir)) {
-                dir = dirname(dir)
-                query ? res.push(resolve(dir, query)) : res.push(resolve(dir))
-            }
-            return res.reverse()
-        }
-
         function nearestPackageJson(dir) {
             var pkgSpec = bubbleUp(dir, function findPkg(curr) {
                 var pkg = resolve(curr, PACKAGE_JSON)
