@@ -6,7 +6,8 @@ const { Enumerator } = require('JScript')
 const { rLINE_SEP, rCRLF, rCR, CRLF, SPACE, NONE, LF } = require('text')
 const fs = require('filesystem')
 const path = require('pathname')
-const httprequest = require('httprequest')
+const DOLLAR = '$'
+var COMMONJS = 'commonjs'
 
 require('./format')
 const test = require('./test')
@@ -17,17 +18,22 @@ let files = new Enumerator(FSO.GetFolder('lib').Files)
 let result = {}
 
 files.forEach((file) => {
-    let filename = path.basename(file.name, '.js')
-    let ext = path.extname(file.name)
+    const name = file.name
+    let filename = path.basename(name, '.js')
+    let ext = path.extname(name)
     if (ext !== '.js') return
+
+    const mod_name = escapeName(`{wes}/${filename}`)
     let source = fs.readFileSync(file.Path, 'UTF-8N').replace(rCR, NONE)
-    result[filename] = { source, mapping: {}, path: `{wes}/${filename}` }
+    let code = '(function ' + mod_name + '() {' + source + '\n} )()'
+
+    result[filename] = { source, code, mapping: {}, path: `{wes}/${filename}`, type: COMMONJS }
 })
 
 result['version'] = {
     source: `const isCLI = require('isCLI')
 const httprequest = require('httprequest')
-const version = "${require('../package.json').version}"
+const version = "${require('/package.json').version}"
 if (isCLI(__filename)) {
     console.log('current version %S', version)
     try {
@@ -99,3 +105,12 @@ console.log(fs.writeTextFileSync('wes.js', res))
 console.log('build time %O', new Date().getTime() - start.getTime())
 
 module.exports = graph
+
+function escapeName(name) {
+    return name
+        .split(NONE)
+        .map(function escapeName_map(ch) {
+            return /\w/.test(ch) ? ch : DOLLAR + ch.codePointAt(0).toString(16)
+        })
+        .join(NONE)
+}
