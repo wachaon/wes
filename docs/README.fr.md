@@ -511,7 +511,7 @@ log(() => isObject(function(){}))
 
 ## *getMember*
 
-Obtient le type de membre et la description de l' *COM Object* à partir du *ProgID* lorsqu'il est utilisé dans la console.
+Obtient le type et la description du membre *COM Object* à partir *ProgID* lorsqu'il est utilisé dans la console.
 
 ```bat
 wes getMember "Scripting.FileSystemObject"
@@ -521,22 +521,6 @@ Lorsqu'il est utilisé en tant que module, il obtient le type de membre et la de
 
 ```javascript
 const getMember = require('getMember')
-const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
-getMember(SWbemServicesEx)
-```
-
-Passer des objets de *wes* à *PowerShell* nécessite un certain temps.
-
-Si le traitement s'arrête, veuillez préciser le temps d'attente. (la valeur par défaut est `1000` )
-
-```bat
-wes getMember "Scripting.FileSystemObject" 2000
-```
-
-ou alors
-
-```javascript
-const getMember = require('getMember', 2000)
 const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
 getMember(SWbemServicesEx)
 ```
@@ -553,7 +537,8 @@ Affichez une liste d'applets de commande dans la console.
 
 ```javascript
 const ps = require('ps')
-const one = ps("Get-Command")
+ 
+console.log(ps("Get-Command"))
 ```
 
 S'il existe une fenêtre *Google Cherome* , modifiez la taille et la position de la fenêtre. (Cela ne fonctionne pas en mode plein écran.)

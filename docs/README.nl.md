@@ -511,32 +511,16 @@ log(() => isObject(function(){}))
 
 ## *getMember*
 
-Haalt het *COM Object* en de beschrijving op van de *ProgID* bij gebruik in de console.
+Haalt het *COM Object* en de beschrijving op van *ProgID* bij gebruik in de console.
 
 ```bat
 wes getMember "Scripting.FileSystemObject"
 ```
 
-Bij gebruik als module krijgt het het type en de beschrijving van de leden van de instantie. Indien gebruikt als een module, kunt u informatie krijgen over objecten die niet kunnen worden bevestigd vanuit *WSH (Windows Script Host)* .
+Bij gebruik als module krijgt het het lidtype en de beschrijving van de instantie. Indien gebruikt als een module, kunt u informatie krijgen over objecten die niet kunnen worden bevestigd vanuit *WSH (Windows Script Host)* .
 
 ```javascript
 const getMember = require('getMember')
-const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
-getMember(SWbemServicesEx)
-```
-
-Het doorgeven van objecten van *wes* naar *PowerShell* vereist een bepaalde hoeveelheid tijd.
-
-Als de verwerking stopt, geef dan de wachttijd op. (standaard is `1000` )
-
-```bat
-wes getMember "Scripting.FileSystemObject" 2000
-```
-
-of
-
-```javascript
-const getMember = require('getMember', 2000)
 const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
 getMember(SWbemServicesEx)
 ```
@@ -547,13 +531,14 @@ Vergemakkelijkt het uitvoeren van *PowerShell* .
 
 ### `ps(source, option)`
 
-Voer het *PowerShell* `source` bronscript uit.
+Voer `source` *PowerShell* bronscript uit.
 
 Geef een lijst met cmdlets weer in de console.
 
 ```javascript
 const ps = require('ps')
-const one = ps("Get-Command")
+ 
+console.log(ps("Get-Command"))
 ```
 
 Als er een *Google Cherome* venster is, wijzigt u de grootte en positie van het venster. (Het werkt niet in de modus Volledig scherm.)

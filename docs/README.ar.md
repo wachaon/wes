@@ -511,7 +511,7 @@ log(() => isObject(function(){}))
 
 ## *getMember*
 
-الحصول على نوع عضو *COM Object* ووصفه من *ProgID* عند استخدامه في وحدة التحكم.
+الحصول على نوع *COM Object* ووصفه من *ProgID* عند استخدامه في وحدة التحكم.
 
 ```bat
 wes getMember "Scripting.FileSystemObject"
@@ -521,22 +521,6 @@ wes getMember "Scripting.FileSystemObject"
 
 ```javascript
 const getMember = require('getMember')
-const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
-getMember(SWbemServicesEx)
-```
-
-يتطلب تمرير الكائنات من *wes* إلى *PowerShell* قدرًا معينًا من الوقت.
-
-إذا توقفت المعالجة ، يرجى تحديد وقت الانتظار. (الافتراضي هو `1000` )
-
-```bat
-wes getMember "Scripting.FileSystemObject" 2000
-```
-
-أو
-
-```javascript
-const getMember = require('getMember', 2000)
 const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
 getMember(SWbemServicesEx)
 ```
@@ -553,7 +537,8 @@ getMember(SWbemServicesEx)
 
 ```javascript
 const ps = require('ps')
-const one = ps("Get-Command")
+ 
+console.log(ps("Get-Command"))
 ```
 
 إذا كانت هناك نافذة *Google Cherome* ، فقم بتغيير حجم وموضع النافذة. (لا يعمل في وضع ملء الشاشة.)

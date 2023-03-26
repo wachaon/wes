@@ -517,26 +517,10 @@ log(() => isObject(function(){}))
 wes getMember "Scripting.FileSystemObject"
 ```
 
-একটি মডিউল হিসাবে ব্যবহার করা হলে, এটি উদাহরণের সদস্যদের প্রকার এবং বিবরণ পায়। একটি মডিউল হিসাবে ব্যবহার করা হলে, আপনি *WSH (Windows Script Host)* থেকে নিশ্চিত করা যাবে না এমন বস্তু সম্পর্কে তথ্য পেতে পারেন।
+একটি মডিউল হিসাবে ব্যবহার করা হলে, এটি সদস্যের ধরণ এবং উদাহরণের বিবরণ পায়। একটি মডিউল হিসাবে ব্যবহার করা হলে, আপনি *WSH (Windows Script Host)* থেকে নিশ্চিত করা যাবে না এমন বস্তু সম্পর্কে তথ্য পেতে পারেন।
 
 ```javascript
 const getMember = require('getMember')
-const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
-getMember(SWbemServicesEx)
-```
-
-*wes* থেকে *PowerShell* এ অবজেক্ট পাস করার জন্য একটি নির্দিষ্ট সময় প্রয়োজন।
-
-প্রক্রিয়াকরণ বন্ধ হলে, অপেক্ষার সময় নির্দিষ্ট করুন। (ডিফল্ট হল `1000` )
-
-```bat
-wes getMember "Scripting.FileSystemObject" 2000
-```
-
-বা
-
-```javascript
-const getMember = require('getMember', 2000)
 const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
 getMember(SWbemServicesEx)
 ```
@@ -553,7 +537,8 @@ getMember(SWbemServicesEx)
 
 ```javascript
 const ps = require('ps')
-const one = ps("Get-Command")
+ 
+console.log(ps("Get-Command"))
 ```
 
 যদি একটি *Google Cherome* উইন্ডো থাকে, তাহলে উইন্ডোটির আকার এবং অবস্থান পরিবর্তন করুন। (এটি পূর্ণ স্ক্রীন মোডে কাজ করে না।)

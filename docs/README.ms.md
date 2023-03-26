@@ -517,26 +517,10 @@ Mendapatkan jenis ahli *COM Object* dan penerangan daripada *ProgID* apabila dig
 wes getMember "Scripting.FileSystemObject"
 ```
 
-Apabila digunakan sebagai modul, ia mendapat jenis dan perihalan ahli contoh. Apabila digunakan sebagai modul, anda boleh mendapatkan maklumat tentang objek yang tidak boleh disahkan daripada *WSH (Windows Script Host)* .
+Apabila digunakan sebagai modul, ia mendapat jenis ahli dan perihalan contoh. Apabila digunakan sebagai modul, anda boleh mendapatkan maklumat tentang objek yang tidak boleh disahkan daripada *WSH (Windows Script Host)* .
 
 ```javascript
 const getMember = require('getMember')
-const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
-getMember(SWbemServicesEx)
-```
-
-Menghantar objek dari *wes* ke *PowerShell* memerlukan masa tertentu.
-
-Jika pemprosesan berhenti, sila nyatakan masa menunggu. (lalai ialah `1000` )
-
-```bat
-wes getMember "Scripting.FileSystemObject" 2000
-```
-
-atau
-
-```javascript
-const getMember = require('getMember', 2000)
 const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
 getMember(SWbemServicesEx)
 ```
@@ -553,7 +537,8 @@ Paparkan senarai cmdlet dalam konsol.
 
 ```javascript
 const ps = require('ps')
-const one = ps("Get-Command")
+ 
+console.log(ps("Get-Command"))
 ```
 
 Jika terdapat tetingkap *Google Cherome* , tukar saiz dan kedudukan tetingkap tersebut. (Ia tidak berfungsi dalam mod skrin penuh.)

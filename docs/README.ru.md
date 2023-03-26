@@ -525,22 +525,6 @@ const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
 getMember(SWbemServicesEx)
 ```
 
-Передача объектов из *wes* в *PowerShell* требует определенного времени.
-
-Если обработка останавливается, укажите время ожидания. (по умолчанию `1000` )
-
-```bat
-wes getMember "Scripting.FileSystemObject" 2000
-```
-
-или же
-
-```javascript
-const getMember = require('getMember', 2000)
-const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
-getMember(SWbemServicesEx)
-```
-
 ## *ps*
 
 Облегчает запуск *PowerShell* .
@@ -553,7 +537,8 @@ getMember(SWbemServicesEx)
 
 ```javascript
 const ps = require('ps')
-const one = ps("Get-Command")
+ 
+console.log(ps("Get-Command"))
 ```
 
 Если есть окно *Google Cherome* , измените размер и положение окна. (Не работает в полноэкранном режиме.)

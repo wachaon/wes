@@ -517,26 +517,10 @@ log(() => isObject(function(){}))
 wes getMember "Scripting.FileSystemObject"
 ```
 
-当用作模块时，它获取实例成员的类型和描述。如果用作模块，您可以获得有关无法从*WSH (Windows Script Host)*确认的对象的信息。
+当作为模块使用时，它获取实例的成员类型和描述。如果用作模块，您可以获得有关无法从*WSH (Windows Script Host)*确认的对象的信息。
 
 ```javascript
 const getMember = require('getMember')
-const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
-getMember(SWbemServicesEx)
-```
-
-将对象从*wes*传递到*PowerShell*需要一定的时间。
-
-如果处理停止，请指定等待时间。 （默认为`1000` ）
-
-```bat
-wes getMember "Scripting.FileSystemObject" 2000
-```
-
-要么
-
-```javascript
-const getMember = require('getMember', 2000)
 const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
 getMember(SWbemServicesEx)
 ```
@@ -553,7 +537,8 @@ getMember(SWbemServicesEx)
 
 ```javascript
 const ps = require('ps')
-const one = ps("Get-Command")
+ 
+console.log(ps("Get-Command"))
 ```
 
 如果有*Google Cherome*窗口，请更改窗口的大小和位置。 （它在全屏模式下不起作用。）

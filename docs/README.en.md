@@ -511,32 +511,16 @@ log(() => isObject(function(){}))
 
 ## *getMember*
 
-Gets the *COM Object* member type and description from the *ProgID* when used in the console.
+Gets the *COM Object* member type and description from *ProgID* when used in the console.
 
 ```bat
 wes getMember "Scripting.FileSystemObject"
 ```
 
-When used as a module, it gets the type and description of the instance's members. If used as a module, you can get information about objects that cannot be confirmed from *WSH (Windows Script Host)* .
+When used as a module, it gets the member type and description of the instance. If used as a module, you can get information about objects that cannot be confirmed from *WSH (Windows Script Host)* .
 
 ```javascript
 const getMember = require('getMember')
-const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
-getMember(SWbemServicesEx)
-```
-
-Passing objects from *wes* to *PowerShell* requires a certain amount of time.
-
-If processing stops, please specify the waiting time. (default is `1000` )
-
-```bat
-wes getMember "Scripting.FileSystemObject" 2000
-```
-
-or
-
-```javascript
-const getMember = require('getMember', 2000)
 const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
 getMember(SWbemServicesEx)
 ```
@@ -547,13 +531,14 @@ Facilitates running *PowerShell* .
 
 ### `ps(source, option)`
 
-Run the `source` *PowerShell* script.
+Run `source` *PowerShell* script.
 
 Display a list of cmdlets in the console.
 
 ```javascript
 const ps = require('ps')
-const one = ps("Get-Command")
+ 
+console.log(ps("Get-Command"))
 ```
 
 If there is a *Google Cherome* window, change the size and position of the window. (It doesn't work in full screen mode.)

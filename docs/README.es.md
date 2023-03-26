@@ -511,7 +511,7 @@ log(() => isObject(function(){}))
 
 ## *getMember*
 
-Obtiene el tipo de miembro del *COM Object* y la descripción del *ProgID* cuando se usa en la consola.
+Obtiene el tipo de miembro *COM Object* y la descripción *ProgID* cuando se usa en la consola.
 
 ```bat
 wes getMember "Scripting.FileSystemObject"
@@ -525,38 +525,23 @@ const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
 getMember(SWbemServicesEx)
 ```
 
-Pasar objetos de *wes* a *PowerShell* requiere una cierta cantidad de tiempo.
-
-Si el procesamiento se detiene, especifique el tiempo de espera. (el valor predeterminado es `1000` )
-
-```bat
-wes getMember "Scripting.FileSystemObject" 2000
-```
-
-o
-
-```javascript
-const getMember = require('getMember', 2000)
-const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
-getMember(SWbemServicesEx)
-```
-
 ## *ps*
 
 Facilita la ejecución de *PowerShell* .
 
 ### `ps(source, option)`
 
-Ejecute el script `source` de *PowerShell* .
+Ejecute `source` *PowerShell* .
 
 Muestre una lista de cmdlets en la consola.
 
 ```javascript
 const ps = require('ps')
-const one = ps("Get-Command")
+ 
+console.log(ps("Get-Command"))
 ```
 
-Si hay una ventana de *Google Cherome* , cambie el tamaño y la posición de la ventana. (No funciona en modo de pantalla completa).
+Si hay una ventana *Google Cherome* , cambie el tamaño y la posición de la ventana. (No funciona en modo de pantalla completa).
 
 ```javascript
 const ps = require('ps')

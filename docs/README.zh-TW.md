@@ -517,26 +517,10 @@ log(() => isObject(function(){}))
 wes getMember "Scripting.FileSystemObject"
 ```
 
-作為模塊使用時，它獲取實例的成員類型和描述。如果用作模塊，您可以獲得有關無法從*WSH (Windows Script Host)*確認的對象的信息。
+作為模塊使用時，它獲取實例的成員類型和描述。當作為模塊使用時，您可以獲得有關無法從*WSH (Windows Script Host)*確認的對象的信息。
 
 ```javascript
 const getMember = require('getMember')
-const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
-getMember(SWbemServicesEx)
-```
-
-將對像從*wes*傳遞到*PowerShell*需要一定的時間。
-
-如果處理停止，請指定等待時間。 （默認為`1000` ）
-
-```bat
-wes getMember "Scripting.FileSystemObject" 2000
-```
-
-要么
-
-```javascript
-const getMember = require('getMember', 2000)
 const SWbemServicesEx = require("WbemScripting.SWbemLocator").ConnectServer()
 getMember(SWbemServicesEx)
 ```
@@ -553,7 +537,8 @@ getMember(SWbemServicesEx)
 
 ```javascript
 const ps = require('ps')
-const one = ps("Get-Command")
+ 
+console.log(ps("Get-Command"))
 ```
 
 如果有*Google Cherome*窗口，請更改窗口的大小和位置。 （它在全屏模式下不起作用。）
