@@ -1,6 +1,6 @@
 {
   "name": "wes",
-  "version": "0.12.97",
+  "version": "0.12.98",
   "description": "Windows Ecma Script host",
   "main": "wes.js",
   "directories": {
@@ -52,7 +52,8 @@
       "@wachaon/merge": "0.0.2",
       "@wachaon/fmt": "0.3.0",
       "@wachaon/translate": "0.0.6",
-      "@wachaon/commit": "0.1.0"
+      "@wachaon/commit": "0.1.0",
+      "@wachaon/eaw": "0.2.0"
     },
     "devDependencies": {
       "@wachaon/commit": "0.1.0"
