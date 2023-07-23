@@ -373,8 +373,8 @@ console.log(TypeName(FSO))
 
 ```javascript
 const request = require('httprequest')
-const content = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
-console.log('%O', JSON.parse(content))
+const { responseText } = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
+console.log(() => JSON.parse(responseText))
 ```
 
 ## *minitest*
