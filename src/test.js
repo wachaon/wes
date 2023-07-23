@@ -1,9 +1,11 @@
 const { Enumerator } = require('/lib/JScript')
 const fs = require('/lib/filesystem')
 const { greenBright, redBright } = require('/lib/ansi')
+const { get } = require('argv')
 
 const FSO = require('Scripting.FileSystemObject')
 let files = new Enumerator(FSO.GetFolder(`./test`).Files).map((v) => v.path)
+if (!get('all')) files = files.filter((path) => !path.includes('httprequest.js'))
 
 let total = 0
 let succeed = 0
