@@ -778,7 +778,7 @@ wes install @wachaon/fmt
 | `--save--dev` | `-D`          | *package.json* में *devDependencies* फ़ील्ड में पैकेज का नाम और संस्करण जोड़ें |
 | `--node`      | `-n`          | *node\_module* फ़ोल्डर में स्थापित करें                                        |
 
-`--bare` विकल्प `author@repository` से `repository` तक `require` तर्क को छोड़ सकता है। `--global` विकल्प स्थापित पैकेजों को सभी स्क्रिप्ट के लिए उपलब्ध कराता है।
+`--bare` विकल्प `@author/repository` से `repository` तक `require` तर्क को हटा सकता है। `--global` विकल्प स्थापित पैकेजों को सभी स्क्रिप्ट के लिए उपलब्ध कराता है।
 
 ```bat
 wes install @wachaon/fmt --bare

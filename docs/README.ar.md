@@ -778,7 +778,7 @@ wes install @wachaon/fmt
 | `--save--dev` | `-D`     | أضف اسم الحزمة والإصدار إلى حقل *devDependencies* في *package.json* |
 | `--node`      | `-n`     | التثبيت في مجلد *node\_module*                                      |
 
-يمكن أن يحذف الخيار `--bare` الوسيطة `require` من `author@repository` إلى `repository` . يتيح الخيار `--global` الحزم المثبتة لجميع البرامج النصية.
+يمكن أن يحذف الخيار `--bare` الوسيطة `require` من `@author/repository` إلى `repository` . يتيح الخيار `--global` الحزم المثبتة لجميع البرامج النصية.
 
 ```bat
 wes install @wachaon/fmt --bare

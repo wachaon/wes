@@ -778,7 +778,7 @@ wes install @wachaon/fmt
 | `--save--dev` | `-D` | 将包名称和版本添加到*package.json*中的*devDependencies*字段 |
 | `--node`      | `-n` | 安装在*node\_module*文件夹中                         |
 
-`--bare`选项可以省略从`author@repository`到`repository`的`require`参数。 `--global`选项使已安装的软件包可供所有脚本使用。
+`--bare`选项可以省略从`@author/repository`到`repository`的`require`参数。 `--global`选项使已安装的软件包可供所有脚本使用。
 
 ```bat
 wes install @wachaon/fmt --bare

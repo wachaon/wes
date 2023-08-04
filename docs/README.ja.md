@@ -815,7 +815,7 @@ wes install @wachaon/fmt
 | `--save--dev` | `-D`        | *package.json* の *devDependencies* フィールドにパッケージ名とバージョンを追加する |
 | `--node`      | `-n`        | *node\_module* フォルダにインストールする                                          |
 
-`--bare` オプションは `require` の引数を `author@repository` から `repository` に省略できます。
+`--bare` オプションは `require` の引数を `@author/repository` から `repository` に省略できます。
 `--global` オプションはインストールしたパッケージを全てのスクリプトから利用できます。
 
 ```bat
@@ -925,7 +925,7 @@ edge((window, navi, res) => {
 ブラウザの *URL* が `https://www.yahoo` から始まるものになるまで、訪問履歴を保管します。
 
 ```javascript
-const edge = require('/index.js')
+const edge = require('edge')
 
 const ret = edge((window, navi, res) => {
     window.rect({

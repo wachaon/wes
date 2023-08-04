@@ -778,7 +778,7 @@ wes install @wachaon/fmt
 | `--save--dev` | `-D`           | Tambahkan nama pakej dan versi pada medan *devDependencies* dalam *package.json* |
 | `--node`      | `-n`           | Pasang dalam folder *node\_module*                                               |
 
-Pilihan `--bare` boleh menghilangkan hujah `require` daripada `author@repository` ke `repository` . Pilihan `--global` menjadikan pakej yang dipasang tersedia untuk semua skrip.
+Pilihan `--bare` boleh menghilangkan hujah `require` daripada `@author/repository` ke `repository` . Pilihan `--global` menjadikan pakej yang dipasang tersedia untuk semua skrip.
 
 ```bat
 wes install @wachaon/fmt --bare

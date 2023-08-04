@@ -829,7 +829,7 @@ wes install @wachaon/fmt
 | `--save--dev` | `-D`        | *package.json* の *devDependencies* フィールドにパッケージ名とバージョンを追加する |
 | `--node`      | `-n`        | *node\_module* フォルダにインストールする                               |
 
-`--bare` オプションは `require` の引数を `author@repository` から `repository` に省略できます。
+`--bare` オプションは `require` の引数を `@author/repository` から `repository` に省略できます。
 `--global` オプションはインストールしたパッケージを全てのスクリプトから利用できます。
 
 ```bat

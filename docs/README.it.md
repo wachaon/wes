@@ -778,7 +778,7 @@ wes install @wachaon/fmt
 | `--save--dev` | `-D`       | Aggiungi il nome e la versione del pacchetto al campo *devDependencies* in *package.json* |
 | `--node`      | `-n`       | Installa nella cartella *node\_module*                                                    |
 
-L'opzione `--bare` può omettere `require` da `author@repository` a `repository` . `--global` rende i pacchetti installati disponibili per tutti gli script.
+L'opzione `--bare` può omettere `require` da `@author/repository` a `repository` . `--global` rende i pacchetti installati disponibili per tutti gli script.
 
 ```bat
 wes install @wachaon/fmt --bare
