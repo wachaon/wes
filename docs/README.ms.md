@@ -1,6 +1,6 @@
 # *WES*
 
-*wes* ialah rangka kerja konsol untuk menjalankan *ECMAScript* pada *WSH (Windows Script Host)* . [*japanese*](/README.md) asal *README* adalah dalam bahasa Jepun. Teks selain bahasa Jepun akan diterjemahkan mesin.\
+*wes* ialah rangka kerja konsol untuk menjalankan *ECMAScript* pada *WSH (Windows Script Host)* . Teks asal *README* adalah dalam [*japanese*](/README.md) . Teks selain bahasa Jepun akan diterjemahkan mesin.\
 Untuk teks dalam bahasa lain, sila pilih daripada pilihan di bawah.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
@@ -20,15 +20,15 @@ Untuk teks dalam bahasa lain, sila pilih daripada pilihan di bawah.
 
 # ciri
 
-*   Anda boleh menukar enjin skrip kepada *Chakra* dan menulis mengikut spesifikasi *ECMAScript2015* .
+*   Anda boleh menukar enjin skrip kepada *Chakra* dan menulis mengikut spesifikasi *ECMAScript2015+* .
 *   Sentiasa menggunakan 32-bit *cscript.exe* , jadi tiada masalah 64-bit yang unik
 *   Sistem modul tersedia untuk pembangunan yang lebih cekap daripada *WSH* tradisional
 *   Modul terbina dalam menyokong pemprosesan asas seperti input/output fail dan output teks berwarna ke konsol
 *   Anda tidak perlu risau tentang pengekodan dan lain-lain kerana ia secara automatik boleh membuat kesimpulan pengekodan apabila membaca fail
-*   Ia juga mungkin untuk membungkus modul dan menerbitkannya secara luaran atau mendapatkannya.
+*   Anda juga boleh membungkus modul dan menerbitkannya secara luaran atau memperolehnya.
 *   Paparkan butiran ralat dengan lebih baik daripada *WSH*
 
-# Isu-isu yang *wes* yang tidak dapat kami selesaikan
+# Isu yang diketahui yang tidak dapat *wes* selesaikan
 
 *   `WScript.Quit` tidak boleh membatalkan program dan tidak mengembalikan kod ralat
 *   Pemprosesan tak segerak tidak berfungsi dengan betul
@@ -42,7 +42,7 @@ Untuk teks dalam bahasa lain, sila pilih daripada pilihan di bawah.
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-*wes* mengamalkan pelaksanaan yang menggunakan *WScript.Shell* 's `SendKeys` pada masa jalan. Jika laluan direktori tempat *wes.js* disimpan mengandungi aksara bukan ASCII, `SendKeys` tidak akan dapat menghantar kunci dengan betul dan skrip tidak akan dijalankan. Oleh itu, pastikan laluan tempat anda menyimpan *wes.js* hanya terdiri daripada aksara ASCII. Sebagai alternatif, jika anda telah memuat turun *wes.js* , anda boleh mengemas kininya menggunakan arahan di bawah.
+*wes* mengamalkan pelaksanaan yang menggunakan *WScript.Shell* 's `SendKeys` pada masa jalan. Jika laluan direktori tempat *wes.js* disimpan mengandungi aksara bukan ASCII, `SendKeys` tidak akan dapat menghantar kunci dengan betul dan skrip tidak akan dijalankan. Oleh itu, laluan tempat anda menyimpan *wes.js* hendaklah terdiri daripada aksara ASCII sahaja. Sebagai alternatif, jika anda telah memuat turun *wes.js* , anda boleh mengemas kininya menggunakan arahan di bawah.
 
 ```bat
 wes update
@@ -109,7 +109,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra* , enjin pelaksanaan skrip, mentafsir sintaks seperti `imoprt` , tetapi ia tidak dilaksanakan dalam persekitaran *cscript* . Di *wes* , dengan menambahkan *babel* pada modul terbina dalam, modul *es module* juga dilaksanakan semasa ditranspil secara berurutan. Ini datang dengan kos pemprosesan overhed dan fail *wes.js* kembung. Modul yang ditulis dalam *es module* juga ditukar kepada `require()` dengan mengalihkan, jadi adalah mungkin untuk memanggil *COM Object* . Walau bagaimanapun, ia tidak menyokong menentukan pengekodan fail modul dengan *es module* . Semuanya dimuatkan secara automatik. Untuk memuatkannya sebagai *es module* , tetapkan sambungan kepada `.mjs` atau tetapkan medan `"type"` dalam `package.json` kepada `"module"` .
+*Chakra* , enjin pelaksanaan skrip, mentafsir sintaks seperti `imoprt` , tetapi ia tidak dilaksanakan dalam persekitaran *cscript* . Di *wes* dengan menambahkan *babel* pada modul terbina dalam, *es module* juga dilaksanakan semasa ditranspilasi satu demi satu. Ini datang dengan kos pemprosesan overhed dan fail *wes.js* kembung. Modul yang ditulis dalam *es module* juga ditukar kepada `require()` dengan mengalihkan, jadi adalah mungkin untuk memanggil *COM Object* . Walau bagaimanapun, ia tidak menyokong menentukan pengekodan fail modul dengan *es module* . Semuanya dimuatkan secara automatik. Untuk memuatkannya sebagai *es module* , tetapkan sambungan kepada `.mjs` atau tetapkan medan `"type"` dalam `package.json` kepada `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -126,11 +126,11 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 
 # objek terbina dalam
 
-*wes* mempunyai *built-in objects* tidak ditemui dalam *WSH (JScript)* .
+*wes* mempunyai *built-in objects* yang tidak ditemui dalam *WSH (JScript)* .
 
 ## *console*
 
-Wes menggunakan *console* dan bukannya *wes* `WScript.Echo()` dan `WScript.StdErr.WriteLine()` .
+*wes* menggunakan *console* dan bukannya `WScript.Echo()` dan `WScript.StdErr.WriteLine()` .
 
 ### *console.log*
 
@@ -155,7 +155,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`           | tempat pembuangan objek                    |
 | `%O`           | Pembuangan objek (berinden/berwarna-warni) |
 
-`WScript.StdOut.WriteLine` *wes* `WScript.StdErr.WriteLine` untuk mengeluarkan rentetan berwarna. `WScript.Echo` dan `WScript.StdOut.WriteLine` disekat output. `WScript.StdErr.WriteLine` atau `console.log` .
+*wes* menggunakan `WScript.StdOut.WriteLine` dan bukannya `WScript.StdErr.WriteLine` untuk mengeluarkan rentetan berwarna. `WScript.Echo` dan `WScript.StdOut.WriteLine` disekat output. Gunakan `WScript.StdErr.WriteLine` atau `console.log` .
 
 ### *console.print*
 
@@ -167,7 +167,7 @@ Output ke konsol hanya jika pilihan `--debug` didayakan.
 
 ### *console.error*
 
-Lemparkan pengecualian dengan kandungan sebagai mesej.
+Buang pengecualian dengan kandungan sebagai mesej.
 
 ### *console.weaklog*
 
@@ -241,7 +241,7 @@ const message = 'File does not exist'
 console.log(redBright + 'Error: ' + yellow + message)
 ```
 
-Anda juga boleh mencipta warna anda sendiri dengan `ansi.color()` dan `ansi.bgColor()` . Hujah menggunakan *RGB* seperti `255, 165, 0` dan *color code* seperti `'#FFA500'` . *color name* seperti `orange` tidak disokong.
+Anda juga boleh mencipta warna anda sendiri dengan `ansi.color()` dan `ansi.bgColor()` . Hujah menggunakan *RGB* seperti `255, 165, 0` *color code* seperti `'#FFA500'` . *color name* seperti `orange` tidak disokong.
 
 ```javascript
 const { color } = require('ansi')
@@ -251,7 +251,7 @@ console.log(orange + 'Hello World')
 
 ## *argv*
 
-Dapatkan hujah baris arahan. Argumen baris arahan `cscript.exe` mengisytiharkan argumen bernama dengan `/` , manakala *wes* mengisytiharkan argumen bernama dengan `-` dan `--` . *argv.unnamed* dan *argv.named* jenis nilai argumen baris arahan kepada sama ada *Number* *String* *Boolean* . Masukkan argumen baris arahan dengan *REP* .
+Dapatkan hujah baris arahan. Argumen baris arahan `cscript.exe` mengisytiharkan argumen bernama dengan `/` , manakala *wes* mengisytiharkan argumen bernama dengan `-` dan `--` . *argv.unnamed* dan *argv.named* menghantar jenis nilai argumen baris arahan kepada sama ada *Number* *String* *Boolean* Masukkan argumen baris arahan dengan *REP* .
 
 ```bat
 wes REP aaa -bc dd --e=false --gh=iii jjj --klm nn -o --p 9 r
@@ -279,7 +279,7 @@ console.log('file %O', file)
 
 ## *filesystem*
 
-Memanipulasi fail dan direktori. `readTextFileSync()` secara automatik meneka pengekodan fail dan membacanya. (Walaupun hujah kedua `readFileSync()` `encode` kepada `auto` , ia akan diteka secara automatik.)
+Memanipulasi fail dan direktori. `readTextFileSync()` secara automatik meneka pengekodan fail dan membacanya. (Walaupun `encode` kedua `readFileSync()` ditetapkan kepada `auto` , ia akan diteka secara automatik.)
 
 ```javascript
 const fs = require('filesystem')
@@ -323,20 +323,42 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 
 *VBScript* menawarkan beberapa ciri yang tidak dimiliki oleh *JScript* .
 
-```javascript
+```javascript {"testing": true}
 const { TypeName } = require('VBScript')
 const FSO = require('Scripting.FileSystemObject')
-console.log(TypeName(FSO))
+console.log(TypeName(FSO)) // => "FileSystemObject"
 ```
 
 ## *httprequest*
 
 *httprequest* mengeluarkan *http request* .
 
-```javascript
+```javascript {"testing": true}
 const request = require('httprequest')
 const { responseText } = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
-console.log(() => JSON.parse(responseText))
+console.log(() => JSON.parse(responseText)) /* => {
+    "id": 1,
+    "name": "Leanne Graham",
+    "username": "Bret",
+    "email": "Sincere@april.biz",
+    "address": {
+        "street": "Kulas Light",
+        "suite": "Apt. 556",
+        "city": "Gwenborough",
+        "zipcode": "92998-3874",
+        "geo": {
+            "lat": "-37.3159",
+            "lng": "81.1496"
+        }
+    },
+    "phone": "1-770-736-8031 x56442",
+    "website": "hildegard.org",
+    "company": {
+        "name": "Romaguera-Crona",
+        "catchPhrase": "Multi-layered client-server neural-net",
+        "bs": "harness real-time e-markets"
+    }
+} */
 ```
 
 ## *minitest*
@@ -386,12 +408,12 @@ Bandingkan dengan `true` dengan pengendali kesaksamaan yang ketat `===` . Jika `
 | Param     | taip                  | Penerangan                               |
 | :-------- | :-------------------- | :--------------------------------------- |
 | `value`   | `{Function\|Boolean}` | boolean atau fungsi pengembalian boolean |
-| `message` | `{String}`            | mesej tentang kegagalan                  |
+| `message` | `{String}`            | mesej sekiranya berlaku kegagalan        |
 
 #### `assert.equal(expected, actual)`
 
 Membandingkan objek untuk kesaksamaan ahli, bukan dengan rujukan.\
-NaN `true` Fungsi `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` atau `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` dsb.\
+`NaN === NaN` `function (){} === function (){}` `true` `/RegExp/g === /RegExp/g` atau `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` dsb.\
 Apabila membandingkan kelas (objek), mereka mesti mempunyai pembina yang sama atau superclass yang `actual` `expected` .
 
 | Param      | taip    | Penerangan             |
@@ -406,19 +428,19 @@ Sama ada ralat itu betul atau tidak ditentukan oleh sama ada *constructor* ralat
 
 | Param      | taip                      | Penerangan                                                                               |
 | :--------- | :------------------------ | :--------------------------------------------------------------------------------------- |
-| `value`    | `{Error}`                 | ralat                                                                                    |
+| `value`    | `{Error}`                 | kesilapan                                                                                |
 | `expected` | `{Error\|String\|RegExp}` | Ungkapan biasa yang menilai *constructor* ralat, *message* atau *stack* yang dijangkakan |
-| `message`  | `{String}`                | mesej tentang kegagalan                                                                  |
+| `message`  | `{String}`                | mesej sekiranya berlaku kegagalan                                                        |
 
 ## *pipe*
 
-*pipe* memudahkan paip. Keluarkan hasil semasa menukar *data* dengan satu atau berbilang *converter* . Dari *ver 0.12.75* dan seterusnya, ia boleh dimulakan terus dari baris arahan.
+*pipe* memudahkan paip. Hasilnya ialah output semasa menukar *data* dengan satu atau berbilang *converter* . Dari *ver 0.12.75* dan seterusnya, ia boleh dimulakan terus dari baris arahan.
 
 ### Mulakan *pipe* sebagai modul
 
 Letakkan fungsi penukaran dalam hujah `use(converter)` kaedah *pipe* dan huraikan input data dan pemprosesan pasca penukaran dengan `process(data, callback(error, result))` . Jika tiada `callback` dinyatakan, nilai pulangan akan menjadi *promise* , dan pemprosesan boleh disambungkan dengan `then(result)` dan `catch(error)` .
 
-```javascript
+```javascript {"testing": true}
 const pipe = require('pipe')
 
 function add (a, b) {
@@ -440,12 +462,14 @@ pipe()
   .use(add5)
   .use(sub3)
   .use(div, 4)
-  .process(10, (err, res) => console.log('res: %O', res))
+  .process(10, (err, res) => {
+    console.log(() => res) // => 3
+  })
 ```
 
 Sebagai tambahan kepada `use(converter)` , terdapat kaedah seperti `.filter(callbackFn(value, index))` dan `map(callbackFn(value, index))` . Setiap *data* ialah rentetan, tatasusunan dan objek.
 
-```javascript
+```javascript {"testing": true}
 const pipe = require('pipe')
 
 const tsv = `
@@ -455,12 +479,6 @@ vbscript\t1996
 c#\t2000
 `.trim()
 
-pipe()
-    .filter(include)
-    .map(release)
-    .process(tsv)
-    .then((res) => console.log(() => res))
-
 function include(value, i) {
     return value.includes('script')
 }
@@ -468,6 +486,16 @@ function include(value, i) {
 function release(value, i) {
     return value.split('\t').join(' was released in ')
 }
+
+pipe()
+    .filter(include)
+    .map(release)
+    .process(tsv)
+    .then((res) => {
+        console.log(() => res) /* => `javascript was released in 1955
+vbscript was released in 1996` */
+    })
+
 ```
 
 ### mulakan *pipe* dari baris arahan
@@ -500,13 +528,12 @@ pipe()
 
 Tentukan jenis skrip.
 
-```javascript
+```javascript {"testing": true}
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
-const log = require('log')
-log(() => isString("ECMAScript"))
-log(() => isNumber(43.5))
-log(() => isBoolean(false))
-log(() => isObject(function(){}))
+console.log(() => isString("ECMAScript")) /* => true */
+console.log(() => isNumber(43.5)) /* => true */
+console.log(() => isBoolean(false)) /* => true */
+console.log(() => isObject(function(){})) /* => false */
 ```
 
 ## *getMember*
@@ -685,7 +712,7 @@ wes zip docs\* dox.zip
 wes zip -p dox.zip
 ```
 
-Jika `path` mempunyai sambungan `.zip` , `unzip()` diproses dan tiada perihalan sambungan `.zip` . Sebagai alternatif, walaupun terdapat sambungan `.zip` , jika terdapat kad bebas `*` penerangan, `zip()` akan diproses.
+Jika `path` mempunyai sambungan `.zip` , `unzip()` diproses dan tiada perihalan sambungan `.zip` . Sebagai alternatif, walaupun terdapat sambungan `.zip` jika terdapat kad bebas `*` penerangan, `zip()` akan diproses.
 
 | tidak dinamakan | Penerangan                        |
 | --------------- | --------------------------------- |
@@ -703,15 +730,18 @@ Dalam *wes* , himpunan beberapa modul dipanggil pakej. Anda boleh memasang pakej
 
 ## *bundle*
 
-Apabila menerbitkan pakej ke *github* , *bundle* modul yang diperlukan dan mencipta *bundle.json* .
+Apabila menerbitkan pakej ke *github* , *bundle* menghimpunkan modul yang diperlukan dan mencipta *bundle.json* .
 
 1.  Hanya satu pakej boleh diterbitkan dalam satu *repository*
-2.  *package.json* diperlukan. Sekurang-kurangnya, perihalan medan `main` diperlukan. ```json
-    {
-        "main": "index.js"
-    }
+
+2.  *package.json* diperlukan. Sekurang-kurangnya, perihalan medan `main` diperlukan.
+
+    ```json
+     { "main": "index.js" }
     ```
+
 3.  Jadikan repositori *public* jika anda ingin menerbitkan pakej
+
 4.  Bermula dengan `version 0.12.0` , pakej dengan pemuatan modul langsung ke dalam direktori di atas direktori kerja tidak akan digabungkan. Pakej dalam direktori atas *wes\_modules* atau *node\_modules* boleh digabungkan.
 
 Masukkan arahan berikut untuk digabungkan: Rujuk *package.json* untuk mengetahui perkara yang hendak digabungkan.
@@ -730,7 +760,7 @@ wes init
 
 ## *install*
 
-Digunakan untuk memasang pakej untuk *wes* diterbitkan di *github* . Daripada `version 0.10.28` , folder pemasangan ditukar daripada `node_modules` kepada `wes_modules` . Jika anda ingin memasang dalam `node_modules` tambah `--node` pilihan. Bermula dengan `version 0.12.0` , fail akan dinyahzip daripada *bandle.json* dan disimpan. Disebabkan oleh perubahan spesifikasi, pakej yang digabungkan dengan `version 0.12.0` kurang daripada 0.12.0 mungkin tidak dipasang dengan betul dengan `version 0.12.0` atau lebih baru.
+Digunakan untuk memasang pakej untuk *wes* diterbitkan di *github* . Daripada `version 0.10.28` , folder pemasangan ditukar daripada `node_modules` kepada `wes_modules` . Jika anda ingin memasang dalam `node_modules` tambah `--node` pilihan. Bermula dengan `version 0.12.0` , fail akan dinyahzip daripada *bandle.json* dan disimpan. Disebabkan oleh perubahan spesifikasi, pakej yang digabungkan dengan `version 0.12.0` mungkin tidak dipasang dengan betul dengan `version 0.12.0` atau lebih baru.
 
 Lulus hujah untuk *install* dalam bentuk `@author/repository` .
 
@@ -748,7 +778,7 @@ wes install @wachaon/fmt
 | `--save--dev` | `-D`           | Tambahkan nama pakej dan versi pada medan *devDependencies* dalam *package.json* |
 | `--node`      | `-n`           | Pasang dalam folder *node\_module*                                               |
 
-`--bare` boleh menghilangkan hujah `require` daripada `author@repository` ke `repository` . `--global` menjadikan pakej yang dipasang tersedia untuk semua skrip.
+Pilihan `--bare` boleh menghilangkan hujah `require` daripada `author@repository` ke `repository` . Pilihan `--global` menjadikan pakej yang dipasang tersedia untuk semua skrip.
 
 ```bat
 wes install @wachaon/fmt --bare
@@ -762,7 +792,7 @@ wes install @wachaon/fmt --bare
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-Jika anda mengakses repositori persendirian *raw* dengan penyemak imbas, *token* akan dipaparkan, jadi salin *token* dan gunakannya. Anda juga boleh memasang pakej dari repositori peribadi dengan menjalankannya dalam konsol semasa *token* itu sah.
+Apabila anda mengakses *raw* repositori peribadi dengan penyemak imbas, *token* akan dipaparkan, jadi salin *token* dan gunakannya. Pakej daripada repositori peribadi juga boleh dipasang jika dilaksanakan dalam konsol semasa *token* sah.
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
@@ -774,7 +804,7 @@ Berikut adalah beberapa pakej luaran.
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* dibungkus *prettier* untuk *wes* memformat skrip. Selain itu, jika *Syntax Error* berlaku semasa *@wachaon/fmt* dipasang, anda boleh menunjukkan lokasi ralat.
+*@wachaon/fmt* dibungkus *prettier* untuk *wes* memformat skrip. Selain itu, jika *Syntax Error* berlaku semasa *@wachaon/fmt* dipasang, anda boleh menunjukkan lokasi ralat itu.
 
 ### Pasang *@wachaon/fmt*
 
@@ -877,7 +907,7 @@ const ret = edge((window, navi, res) => {
 console.log('ret // => %O', ret)
 ```
 
-*edge* mencetak *URL* yang dilawati ke konsol mengikut urutan. `@wachaon/edge` mendaftarkan acara untuk *URL* dan menambahkan data pada `res.exports` . *URL* untuk didaftarkan boleh sama ada `String` `RegExp` , dan boleh ditetapkan secara fleksibel. Dengan menjadikannya dipacu peristiwa, anda boleh beralih kepada operasi manual dengan mudah dengan tidak menetapkan acara untuk proses yang sukar dikendalikan dengan autopilot. Jika anda mahu skrip berhenti, `navi.emit('terminate', res)` atau tamatkan *Edge* secara manual. Pemuktamadkan output `res.exports` sebagai fail *.json* secara lalai. Jika anda ingin menetapkan pemprosesan penamatan, tetapkan `terminate` `edge(callback, terminate)` . `window` ialah contoh kelas *Window* *@wachaon/webdriver* , bukan window's `window` .
+*edge* mencetak *URL* yang dilawati ke konsol mengikut urutan. `@wachaon/edge` mendaftarkan acara untuk *URL* dan menambahkan data pada `res.exports` . *URL* yang hendak didaftarkan boleh sama ada `String` `RegExp` , dan boleh ditetapkan secara fleksibel. Dengan menjadikannya dipacu peristiwa, anda boleh beralih kepada operasi manual dengan mudah dengan tidak menetapkan acara untuk proses yang sukar dikendalikan dengan autopilot. Jika anda mahu skrip berhenti, jalankan `navi.emit('terminate', res)` atau tamatkan *Edge* secara manual. Pengakhiran mengeluarkan `res.exports` sebagai fail *.json* secara lalai. Jika anda ingin menetapkan pemprosesan penamatan, tetapkan `terminate` `edge(callback, terminate)` . `window` ialah contoh kelas *Window* *@wachaon/webdriver* , bukan window's `window` .
 
 ## *@wachaon/webdriver*
 

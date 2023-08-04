@@ -1,6 +1,6 @@
 # *WES*
 
-*wes* is een consoleframework voor het uitvoeren van *ECMAScript* op *WSH (Windows Script Host)* . De originele [*japanese*](/README.md) van de *README* is in het Japans. Andere teksten dan Japans worden automatisch vertaald.\
+*wes* is een consoleframework voor het uitvoeren van *ECMAScript* op *WSH (Windows Script Host)* . De originele tekst van *README* is in [*japanese*](/README.md) . Andere teksten dan Japans worden automatisch vertaald.\
 Maak voor teksten in andere talen een keuze uit de onderstaande opties.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
@@ -20,19 +20,19 @@ Maak voor teksten in andere talen een keuze uit de onderstaande opties.
 
 # functie
 
-*   U kunt de script-engine wijzigen in *Chakra* en schrijven volgens de *ECMAScript2015* -specificaties.
+*   U kunt de script-engine wijzigen in *Chakra* en schrijven volgens de specificaties van *ECMAScript2015+* .
 *   Gebruikt altijd 32-bits *cscript.exe* , dus geen unieke 64-bits problemen
 *   Modulesysteem beschikbaar voor efficiëntere ontwikkeling dan traditionele *WSH*
 *   Ingebouwde modules ondersteunen basisverwerking zoals invoer/uitvoer van bestanden en uitvoer van gekleurde tekst naar de console
 *   U hoeft zich geen zorgen te maken over codering etc. omdat het de codering automatisch kan afleiden bij het lezen van het bestand
-*   Het is ook mogelijk om de module te verpakken en extern te publiceren of te verkrijgen.
+*   Het is ook mogelijk om de module te verpakken en extern te publiceren of te verwerven.
 *   Geef foutdetails vriendelijker weer dan *WSH*
 
-# *wes* problemen die we niet kunnen oplossen
+# Bekende problemen die *wes* niet kunnen oplossen
 
-*   `WScript.Quit` kan het programma niet afbreken en geeft geen foutcode terug
+*   `WScript.Quit` kan het programma niet afbreken en retourneert geen foutcode
 *   Asynchrone verwerking werkt niet goed
-*   U kunt het *event prefix* van het tweede argument van `WScript.CreateObject` . niet gebruiken
+*   U kunt *event prefix* van het tweede argument van `WScript.CreateObject` niet gebruiken
 
 # downloaden
 
@@ -48,9 +48,9 @@ bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/
 wes update
 ```
 
-# hoe te beginnen met *wes*
+# hoe te *wes*
 
-Voer het `wes` -sleutelwoord in en de opdracht die het bestand specificeert dat het startpunt van het programma naar de console zal zijn. De *.js* kan worden weggelaten.
+Voer `wes` trefwoord in en de opdracht die het bestand specificeert dat het startpunt van het programma naar de console zal zijn. De scriptextensie *.js* kan worden weggelaten.
 
 ```bat
 wes index
@@ -62,7 +62,7 @@ wes index
 wes
 ```
 
-*REP* accepteert scriptinvoer totdat u twee lege regels invoert. U kunt ook zien dat *REP* het voorbeeldscript uitvoert in *README.md* .
+*REP* accepteert scriptinvoer totdat u twee lege regels invoert. U kunt *REP* ook het voorbeeldscript zien uitvoeren in *README.md* .
 
 ## opdrachtregel opties
 
@@ -78,11 +78,11 @@ De opstartopties *wes* zijn als volgt.
 
 # module systeem
 
-*wes* ondersteunt twee modulesystemen, het *commonjs module* dat gebruikmaakt van required `require()` en het *es module* dat `import` gebruikt. ( *dynamic import* wordt niet ondersteund omdat het een asynchroon proces is)
+*wes* ondersteunt twee modulesystemen, *commonjs module* met behulp van `require()` en *es module* met behulp van `import` . ( *dynamic import* wordt niet ondersteund omdat het een asynchroon proces is)
 
 ## *commonjs module*
 
-Beheer modules door deze toe te wijzen aan `module.exports` en request `require()` aan te roepen. Andere paden dan absolute paden en relatieve paden die beginnen met `./` en `../` zoeken naar modules in de map *wes\_modules* en handig in de map *node\_modules* . *wes* 's `require()` raadt automatisch de codering van het modulebestand, maar je kunt de codering specificeren met het tweede argument als het niet correct raadt.
+Beheer modules door ze toe te wijzen aan `module.exports` en `require()` aan te roepen. Andere paden dan absolute paden en relatieve paden die beginnen met `./` en `../` zoeken naar modules in *wes\_modules* en handig in *node\_modules* . *wes* ' `require()` raadt automatisch de codering van het modulebestand, maar u kunt de codering specificeren met het tweede argument als het niet correct raadt.
 
 ```javascript
 // ./add.js
@@ -109,7 +109,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra* , de scriptuitvoeringsengine, interpreteert syntaxis zoals `imoprt` , maar wordt niet uitgevoerd in de *cscript* omgeving. In *wes* , door *babel* toe te voegen aan de ingebouwde modules, worden *es module* ook uitgevoerd terwijl ze sequentieel worden getranspileerd. Dit gaat gepaard met verwerkingskosten en een opgeblazen *wes.js* -bestand. Modules die in de *es module* zijn geschreven, worden ook geconverteerd naar required `require()` door te transpileren, dus het is mogelijk om *COM Object* aan te roepen. Het ondersteunt echter niet het specificeren van de codering van het modulebestand met *es module* . Alles wordt automatisch geladen. Om het als een *es module* te laden, stelt u de extensie in op `.mjs` of stelt u het veld `"type"` in `package.json` in op `"module"` .
+*Chakra* , de engine voor het uitvoeren van scripts, interpreteert syntaxis zoals `imoprt` , maar wordt niet uitgevoerd in *cscript* omgeving. In *wes* door *babel* toe te voegen aan de ingebouwde modules, worden *es module* ook uitgevoerd terwijl ze een voor een worden getransponeerd. Dit gaat gepaard met verwerkingskosten en een opgeblazen *wes.js* bestand. Modules geschreven in *es module* worden ook geconverteerd naar `require()` door transpilatie, dus het is mogelijk om *COM Object* aan te roepen. Het ondersteunt echter niet het specificeren van de codering van het modulebestand met *es module* . Alles wordt automatisch geladen. Om het als *es module* te laden, stelt u de extensie in op `.mjs` of stelt u het veld `"type"` in `package.json` in op `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -124,38 +124,38 @@ import sub from './sub.mjs'
 console.log('sub(7, 3) // => %O', sub(7, 3))
 ```
 
-# ingebouwd object
+# ingebouwd voorwerp
 
-*wes* heeft *built-in objects* niet worden gevonden in *WSH (JScript)* .
+*wes* heeft *built-in objects* die niet zijn gevonden in *WSH (JScript)* .
 
 ## *console*
 
-We gebruiken *console* in plaats van *wes* `WScript.Echo()` en `WScript.StdErr.WriteLine()` .
+*wes* gebruiken *console* in plaats van `WScript.Echo()` en `WScript.StdErr.WriteLine()` .
 
 ### *console.log*
 
-Voer tekens uit naar de console met `console.log()` . Het ondersteunt ook geformatteerde tekenreeksen. Voert een opgemaakte tekenreeks uit met behulp van de opmaakoperator `%` . (Opmaakoperatoren zijn ook geldig voor andere methoden.)
+Voer tekens uit naar de console met `console.log()` . Het ondersteunt ook geformatteerde strings. Voert een opgemaakte tekenreeks uit met behulp van de `%` -opmaakoperator. (Opmaakoperatoren zijn ook geldig voor andere methoden.)
 
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
-| Formaatspecificatie | Beschrijving                        |
-| ------------------- | ----------------------------------- |
-| `%s`                | `String(value)`                     |
-| `%S`                | `String(value)`                     |
-| `%c`                | `String(value)`                     |
-| `%C`                | `String(value)`                     |
-| `%d`                | `parseInt(value, 10)`               |
-| `%D`                | `parseInt(value, 10)`               |
-| `%f`                | `Number(value)`                     |
-| `%F`                | `Number(value)`                     |
-| `%j`                | `JSON.stringify(value)`             |
-| `%J`                | `JSON.stringify(value, null, 2)`    |
-| `%o`                | object dump                         |
-| `%O`                | Objectdump (ingesprongen/kleurrijk) |
+| Formaat specificatie | Beschrijving                        |
+| -------------------- | ----------------------------------- |
+| `%s`                 | `String(value)`                     |
+| `%S`                 | `String(value)`                     |
+| `%c`                 | `String(value)`                     |
+| `%C`                 | `String(value)`                     |
+| `%d`                 | `parseInt(value, 10)`               |
+| `%D`                 | `parseInt(value, 10)`               |
+| `%f`                 | `Number(value)`                     |
+| `%F`                 | `Number(value)`                     |
+| `%j`                 | `JSON.stringify(value)`             |
+| `%J`                 | `JSON.stringify(value, null, 2)`    |
+| `%o`                 | object dumpen                       |
+| `%O`                 | Objectdump (ingesprongen/kleurrijk) |
 
-`WScript.StdOut.WriteLine` *wes* van `WScript.StdErr.WriteLine` om gekleurde tekenreeksen uit te voeren. `WScript.Echo` en `WScript.StdOut.WriteLine` zijn geblokkeerde uitvoer. `WScript.StdErr.WriteLine` of `console.log` .
+*wes* gebruikt `WScript.StdOut.WriteLine` in plaats van `WScript.StdErr.WriteLine` om gekleurde strings uit te voeren. `WScript.Echo` en `WScript.StdOut.WriteLine` zijn geblokkeerd. Gebruik `WScript.StdErr.WriteLine` of `console.log` .
 
 ### *console.print*
 
@@ -163,11 +163,11 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 
 ### *console.debug*
 
-Alleen uitvoer naar de console als de optie `--debug` is ingeschakeld.
+Alleen uitvoer naar de console als `--debug` is ingeschakeld.
 
 ### *console.error*
 
-Gooi een uitzondering met de inhoud als het bericht.
+Gooi een uitzondering met de inhoud als bericht.
 
 ### *console.weaklog*
 
@@ -185,7 +185,7 @@ console.log('%s %O', content, buff)
 
 ## `__dirname` en `__filename`
 
-`__filename` slaat het pad op van het momenteel uitgevoerde modulebestand. `__dirname` bevat de directory van `__filename` .
+`__filename` slaat het pad op van het modulebestand dat momenteel wordt uitgevoerd. `__dirname` bevat de directory van `__filename` .
 
 ```javascript
 const message = `dirname: ${__dirname}\nfilename: ${ __filename}`
@@ -194,7 +194,7 @@ console.log(message)
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
-Aangezien *wes* een uitvoeringsomgeving is voor synchrone verwerking, werkt *setTimeout* *setInterval* *setImmediate* *Promise* niet als asynchrone verwerking, maar wordt het geïmplementeerd om modules te ondersteunen die de implementatie van *Promise* veronderstellen.
+Aangezien *wes* een uitvoeringsomgeving is voor synchrone verwerking, functioneert *setTimeout* *setInterval* *setImmediate* *Promise* niet als asynchrone verwerking, maar is het geïmplementeerd om modules te ondersteunen die uitgaan van *Promise* implementatie.
 
 ```javascript
 const example = () => {
@@ -218,7 +218,7 @@ console.log('end')
 
 # Ingebouwde module
 
-*wes* heeft *built-in modules* om de basisverwerking te vereenvoudigen en te standaardiseren.
+*wes* heeft *built-in modules* om basisverwerking te vereenvoudigen en te standaardiseren.
 
 ## Ingebouwde modules moeten verwijderd worden
 
@@ -233,7 +233,7 @@ De bovenstaande modules kunnen respectievelijk worden geïnstalleerd als `@wacha
 
 ## *ansi*
 
-`ansi` is *ANSI escape code* die standaarduitvoerkleuren en -effecten kan wijzigen. Kleuren en effecten kunnen verschillen, afhankelijk van het type en de instellingen van de gebruikte consoletoepassing.
+`ansi` is *ANSI escape code* die standaard uitvoerkleuren en -effecten kan wijzigen. Kleuren en effecten kunnen verschillen, afhankelijk van het type en de instellingen van de gebruikte consoletoepassing.
 
 ```javascript
 const { redBright, yellow } = require('ansi')
@@ -241,7 +241,7 @@ const message = 'File does not exist'
 console.log(redBright + 'Error: ' + yellow + message)
 ```
 
-U kunt ook uw eigen kleuren maken met `ansi.color()` en `ansi.bgColor()` . Argumenten gebruiken *RGB* zoals `255, 165, 0` en *color code* zoals `'#FFA500'` . *color name* zoals `orange` worden niet ondersteund.
+U kunt ook uw eigen kleuren maken met `ansi.color()` en `ansi.bgColor()` . Argumenten gebruiken *RGB* zoals `255, 165, 0` *color code* zoals `'#FFA500'` . *color name* zoals `orange` worden niet ondersteund.
 
 ```javascript
 const { color } = require('ansi')
@@ -251,7 +251,7 @@ console.log(orange + 'Hello World')
 
 ## *argv*
 
-Krijg opdrachtregelargumenten. De opdrachtregelargumenten van `cscript.exe` declareren benoemde argumenten met `/` , terwijl *wes* benoemde argumenten declareert met `-` en `--` . *argv.unnamed* en *argv.named* het waardetype van het opdrachtregelargument naar ofwel *String* *Number* *Boolean* . Voer opdrachtregelargumenten in met *REP* .
+Krijg opdrachtregelargumenten. De opdrachtregelargumenten van `cscript.exe` declareren benoemde argumenten met `/` , terwijl *wes* benoemde argumenten declareert met `-` en `--` . *argv.unnamed* en *argv.named* casten het waardetype van het opdrachtregelargument naar ofwel *String* *Number* *Boolean* . Voer opdrachtregelargumenten in met *REP* .
 
 ```bat
 wes REP aaa -bc dd --e=false --gh=iii jjj --klm nn -o --p 9 r
@@ -279,7 +279,7 @@ console.log('file %O', file)
 
 ## *filesystem*
 
-Manipuleer bestanden en mappen. `readTextFileSync()` raadt automatisch de codering van het bestand en leest het. (Zelfs als het tweede argument van `readFileSync()` is `encode` op `auto` , wordt het automatisch geraden.)
+Bestanden en mappen manipuleren. `readTextFileSync()` raadt automatisch de codering van het bestand en leest het. (Zelfs als het tweede `encode` van `readFileSync()` is ingesteld op `auto` , wordt het automatisch geraden.)
 
 ```javascript
 const fs = require('filesystem')
@@ -292,7 +292,7 @@ console.log(contents)
 
 ## *chardet*
 
-Ik gebruik enkele functies van <https://github.com/runk/node-chardet> . U kunt de nauwkeurigheid van automatisch raden vergroten door coderingsspecifieke tekens te vergroten.
+Ik gebruik enkele functies van <https://github.com/runk/node-chardet> . U kunt de nauwkeurigheid van automatisch raden vergroten door het aantal coderingsspecifieke tekens te vergroten.
 
 ## *JScript*
 
@@ -323,20 +323,42 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 
 *VBScript* biedt enkele functies die *JScript* niet biedt.
 
-```javascript
+```javascript {"testing": true}
 const { TypeName } = require('VBScript')
 const FSO = require('Scripting.FileSystemObject')
-console.log(TypeName(FSO))
+console.log(TypeName(FSO)) // => "FileSystemObject"
 ```
 
 ## *httprequest*
 
-*httprequest* geeft een *http request* uit.
+*httprequest* geeft *http request* af.
 
-```javascript
+```javascript {"testing": true}
 const request = require('httprequest')
 const { responseText } = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
-console.log(() => JSON.parse(responseText))
+console.log(() => JSON.parse(responseText)) /* => {
+    "id": 1,
+    "name": "Leanne Graham",
+    "username": "Bret",
+    "email": "Sincere@april.biz",
+    "address": {
+        "street": "Kulas Light",
+        "suite": "Apt. 556",
+        "city": "Gwenborough",
+        "zipcode": "92998-3874",
+        "geo": {
+            "lat": "-37.3159",
+            "lng": "81.1496"
+        }
+    },
+    "phone": "1-770-736-8031 x56442",
+    "website": "hildegard.org",
+    "company": {
+        "name": "Romaguera-Crona",
+        "catchPhrase": "Multi-layered client-server neural-net",
+        "bs": "harness real-time e-markets"
+    }
+} */
 ```
 
 ## *minitest*
@@ -381,18 +403,18 @@ Er zijn slechts drie beweringsfuncties voor het vergelijken van objecten voor de
 
 #### `assert(value, message)` `assert.ok(value, message)`
 
-Vergelijk met `true` met de operator voor strikte gelijkheid `===` . Als `value` een functie is, evalueer dan het resultaat van het uitvoeren van de functie.
+Vergelijk met `true` met de strikte gelijkheidsoperator `===` . Als `value` een functie is, evalueer dan het resultaat van het uitvoeren van de functie.
 
 | Param     | Type                  | Beschrijving                     |
 | :-------- | :-------------------- | :------------------------------- |
-| `value`   | `{Function\|Boolean}` | boolean of boolean-retourfunctie |
+| `value`   | `{Function\|Boolean}` | booleaanse of booleaanse functie |
 | `message` | `{String}`            | bericht in geval van storing     |
 
 #### `assert.equal(expected, actual)`
 
-Vergelijkt objecten voor gelijkheid van leden, niet door verwijzing.\
-NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` of `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` enz.\
-Bij het vergelijken van klassen (objecten) moeten ze dezelfde constructor of een superklasse hebben waarvan de `actual` wordt `expected` .
+Vergelijkt objecten voor ledengelijkheid, niet op basis van referentie.\
+`NaN === NaN` `function (){} === function (){}` `true` `/RegExp/g === /RegExp/g` of `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` enz.\
+Bij het vergelijken van klassen (objecten) moeten ze dezelfde constructor hebben of een superklasse waarvan `actual` wordt `expected` .
 
 | Param      | Type    | Beschrijving      |
 | :--------- | :------ | :---------------- |
@@ -402,7 +424,7 @@ Bij het vergelijken van klassen (objecten) moeten ze dezelfde constructor of een
 #### `assert.throws(value, expected, message)`
 
 Controleer of fouten correct worden gegenereerd.\
-Of de fout al dan niet correct is, wordt bepaald door of de verwachte *constructor* , het *message* gelijk is en de reguliere expressie de *stack* doorstaat.
+Of de fout al dan niet correct is, wordt bepaald door het feit of de *constructor* van de verwachte fout, *message* gelijk is en de reguliere expressie *stack* doorstaat.
 
 | Param      | Type                      | Beschrijving                                                                            |
 | :--------- | :------------------------ | :-------------------------------------------------------------------------------------- |
@@ -418,7 +440,7 @@ Of de fout al dan niet correct is, wordt bepaald door of de verwachte *construct
 
 Plaats de conversiefunctie in `use(converter)` van de *pipe* methode en beschrijf de gegevensinvoer en verwerking na de conversie met `process(data, callback(error, result))` . Als er geen `callback` is opgegeven, is de geretourneerde waarde *promise* en kan de verwerking worden verbonden met `then(result)` en `catch(error)` .
 
-```javascript
+```javascript {"testing": true}
 const pipe = require('pipe')
 
 function add (a, b) {
@@ -440,12 +462,14 @@ pipe()
   .use(add5)
   .use(sub3)
   .use(div, 4)
-  .process(10, (err, res) => console.log('res: %O', res))
+  .process(10, (err, res) => {
+    console.log(() => res) // => 3
+  })
 ```
 
 Naast `use(converter)` zijn er methoden zoals `.filter(callbackFn(value, index))` en `map(callbackFn(value, index))` . Elke *data* is een string, een array en een object.
 
-```javascript
+```javascript {"testing": true}
 const pipe = require('pipe')
 
 const tsv = `
@@ -455,12 +479,6 @@ vbscript\t1996
 c#\t2000
 `.trim()
 
-pipe()
-    .filter(include)
-    .map(release)
-    .process(tsv)
-    .then((res) => console.log(() => res))
-
 function include(value, i) {
     return value.includes('script')
 }
@@ -468,9 +486,19 @@ function include(value, i) {
 function release(value, i) {
     return value.split('\t').join(' was released in ')
 }
+
+pipe()
+    .filter(include)
+    .map(release)
+    .process(tsv)
+    .then((res) => {
+        console.log(() => res) /* => `javascript was released in 1955
+vbscript was released in 1996` */
+    })
+
 ```
 
-### *pipe* starten vanaf de opdrachtregel
+### start *pipe* vanaf de opdrachtregel
 
 Voer vanaf de opdrachtregel de conversiefunctie in de volgorde na `pipe` in. Argumenten voor conversiefuncties worden ingevoerd als de waarden van benoemde opdrachtregelargumenten met dezelfde naam als de conversiefunctie. `=>` waarde `(` geparseerd met `eval()` in plaats van `JSON.parse()` `)` *WSH* `"` forceert in opdrachtregelargumenten. In dat geval niet parseren met `eval()` )
 
@@ -500,13 +528,12 @@ pipe()
 
 Bepaal het scripttype.
 
-```javascript
+```javascript {"testing": true}
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
-const log = require('log')
-log(() => isString("ECMAScript"))
-log(() => isNumber(43.5))
-log(() => isBoolean(false))
-log(() => isObject(function(){}))
+console.log(() => isString("ECMAScript")) /* => true */
+console.log(() => isNumber(43.5)) /* => true */
+console.log(() => isBoolean(false)) /* => true */
+console.log(() => isObject(function(){})) /* => false */
 ```
 
 ## *getMember*
@@ -517,7 +544,7 @@ Haalt het *COM Object* en de beschrijving op van *ProgID* bij gebruik in de cons
 wes getMember "Scripting.FileSystemObject"
 ```
 
-Bij gebruik als module krijgt het het lidtype en de beschrijving van de instantie. Indien gebruikt als een module, kunt u informatie krijgen over objecten die niet kunnen worden bevestigd vanuit *WSH (Windows Script Host)* .
+Bij gebruik als module krijgt het het type en de beschrijving van de leden van de instantie. Bij gebruik als module kunt u informatie krijgen over objecten die niet kunnen worden bevestigd vanuit *WSH (Windows Script Host)* .
 
 ```javascript
 const getMember = require('getMember')
@@ -654,15 +681,15 @@ wes REP pos 100 100
 
 ### Voer *powershell* rechtstreeks uit vanaf de console
 
-Voert het opgegeven *.ps1* -bestand uit in de console.
+Voert het opgegeven *.ps1* bestand uit in de console.
 
 ```bat
 wes ps ./sample.ps1
 ```
 
-U kunt ook direct een opdracht uitvoeren door de optie `--Command` of `-c` op te geven.
+U kunt ook direct een opdracht uitvoeren door `--Command` of `-c` op te geven.
 
-Voorbeeld van het weergeven van een lijst met bestanden in de huidige directory
+Voorbeeld van het weergeven van een lijst met bestanden in de huidige map
 
 ```bat
 wes ps --Command Get-ChildItem
@@ -678,14 +705,14 @@ console.log(zip('docs\\*', 'dox.zip'))
 console.log(unzip('dox.zip'))
 ```
 
-Een wildcard `*` kan worden geschreven in het `path` van `zip(path, destinationPath)` . Het kan worden gebruikt in zowel *CLI (Command Line Interface)* als *module* .
+Een jokerteken `*` kan worden geschreven in `path` van `zip(path, destinationPath)` . Het kan zowel in *CLI (Command Line Interface)* als in *module* worden gebruikt.
 
 ```bat
 wes zip docs\* dox.zip
 wes zip -p dox.zip
 ```
 
-Als het `path` de extensie `.zip` heeft, wordt `unzip()` verwerkt en is er geen beschrijving van de extensie `.zip` . Als alternatief, zelfs als er een extensie `.zip` is, als er een wildcard `*` beschrijving is, wordt `zip()` verwerkt.
+Als `path` de extensie `.zip` heeft, wordt `unzip()` verwerkt en is er geen beschrijving van de extensie `.zip` . Als alternatief, zelfs als er een extensie `.zip` als er een wildcard `*` beschrijving is, zal `zip()` worden verwerkt.
 
 | naamloos | Beschrijving                      |
 | -------- | --------------------------------- |
@@ -697,21 +724,24 @@ Als het `path` de extensie `.zip` heeft, wordt `unzip()` verwerkt en is er geen 
 | `--path` | `-p`       | `path` of bestand om in te voeren |
 | `--dest` | `-d`       | mapbestand naar `dest`            |
 
-# Modules bundelen (verpakken) en installeren
+# Bundelen (verpakken) en installeren van modules
 
-In *wes* wordt een bundel van meerdere modules een pakket genoemd. U kunt het pakket voor *wes* installeren dat op *github* is gepubliceerd. Een *github repository* is vereist om een ​​pakket te publiceren.
+In *wes* wordt een bundel van meerdere modules een pakket genoemd. U kunt het pakket voor *wes* installeren dat op *github* is gepubliceerd. *github repository* is vereist om een ​​pakket te publiceren.
 
 ## *bundle*
 
 Bij het publiceren van een pakket naar *github* , *bundle* bundel de vereiste modules en maakt *bundle.json* .
 
 1.  Er kan slechts één pakket in één *repository* worden gepubliceerd
-2.  *package.json* is vereist. De beschrijving van het `main` is minimaal vereist. ```json
-    {
-        "main": "index.js"
-    }
+
+2.  *package.json* is vereist. De beschrijving van `main` is minimaal vereist.
+
+    ```json
+     { "main": "index.js" }
     ```
+
 3.  Maak de repository *public* als u het pakket wilt publiceren
+
 4.  Vanaf `version 0.12.0` worden pakketten met het direct laden van de module in een map boven de werkmap niet gebundeld. Pakketten in de bovenste directory *wes\_modules* of *node\_modules* kunnen worden gebundeld.
 
 Voer de volgende opdracht in om te bundelen: Raadpleeg *package.json* voor wat u moet bundelen.
@@ -730,7 +760,7 @@ wes init
 
 ## *install*
 
-Gebruikt om het pakket voor *wes* te installeren dat op *github* is gepubliceerd. Vanaf `version 0.10.28` is de installatiemap gewijzigd van `node_modules` naar `wes_modules` . Als je in `node_modules` wilt installeren, voeg `--node` toe. Vanaf `version 0.12.0` worden bestanden uit *bandle.json* uitgepakt en opgeslagen. Als gevolg van specificatiewijzigingen kunnen pakketten die zijn gebundeld met `version 0.12.0` minder dan 0.12.0 niet correct worden geïnstalleerd met `version 0.12.0` of hoger.
+Gebruikt om het pakket te installeren voor *wes* gepubliceerd op *github* . Vanaf `version 0.10.28` is de installatiemap gewijzigd van `node_modules` in `wes_modules` . Als je in `node_modules` wilt installeren, voeg dan de optie `--node` toe. Vanaf `version 0.12.0` wordt het bestand uit *bandle.json* uitgepakt en opgeslagen. Als gevolg van specificatiewijzigingen kunnen pakketten die zijn gebundeld met `version 0.12.0` mogelijk niet correct worden geïnstalleerd met `version 0.12.0` of later.
 
 Geef argumenten door om te *install* in de vorm `@author/repository` .
 
@@ -743,38 +773,38 @@ wes install @wachaon/fmt
 | genaamd       | korte naam | Beschrijving                                                                    |
 | ------------- | ---------- | ------------------------------------------------------------------------------- |
 | `--bare`      | `-b`       | Maak geen *@author* mappen                                                      |
-| `--global`    | `-g`       | Installeer het pakket in de map waar *wes.js* is                                |
-| `--save`      | `-S`       | Voeg pakketnaam en -versie toe aan het veld *dependencies* in *package.json*    |
+| `--global`    | `-g`       | Installeer het pakket in de map waar *wes.js* zich bevindt                      |
+| `--save`      | `-S`       | Voeg pakketnaam en -versie toe aan *dependencies* in *package.json*             |
 | `--save--dev` | `-D`       | Voeg pakketnaam en -versie toe aan het veld *devDependencies* in *package.json* |
 | `--node`      | `-n`       | Installeer in de map *node\_module*                                             |
 
-`--bare` optie kan het argument ' `require` ' van `author@repository` naar `repository` weglaten. `--global` optie maakt geïnstalleerde pakketten beschikbaar voor alle scripts.
+De optie `--bare` kan `require` weglaten van `author@repository` naar `repository` . `--global` maakt geïnstalleerde pakketten beschikbaar voor alle scripts.
 
 ```bat
 wes install @wachaon/fmt --bare
 ```
 
-# Pakketten installeren vanuit privé-repository's
+# Pakketten installeren vanuit privérepository's
 
-*install* kan niet alleen pakketten van openbare *github* repositories installeren, maar ook pakketten van private repositories. Geef in *install* het pakket op met *@author/repository* . De implementatie probeert de volgende url te downloaden.
+*install* kan niet alleen pakketten uit openbare *github* repository's installeren, maar ook pakketten uit privé-repository's. Specificeer in *install* het pakket met *@author/repository* . De implementatie probeert de volgende url te downloaden.
 
 ```javascript
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-Wanneer u de *raw* versie van de privérepository opent met een browser, wordt het *token* weergegeven, dus kopieer het *token* en gebruik het. Pakketten uit privé-repositories kunnen ook worden geïnstalleerd als ze in de console worden uitgevoerd terwijl het *token* geldig is.
+Wanneer u met een browser toegang krijgt tot *raw* van de privérepository, wordt *token* weergegeven, dus kopieer het *token* en gebruik het. Pakketten uit privérepository's kunnen ook worden geïnstalleerd als ze worden uitgevoerd in de console terwijl *token* geldig is.
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
-# Pakket introductie:
+# Pakket introductie
 
 Hier zijn enkele externe pakketten.
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* is *prettier* verpakt voor *wes* om scripts te formatteren. Als er een *Syntax Error* optreedt terwijl *@wachaon/fmt* is geïnstalleerd, kunt u ook de locatie van de fout aangeven.
+*@wachaon/fmt* is *prettier* verpakt om scripts op te *wes* . Als er *Syntax Error* optreedt terwijl *@wachaon/fmt* is geïnstalleerd, kunt u de locatie van de fout aangeven.
 
 ### Installeer *@wachaon/fmt*
 
@@ -790,15 +820,15 @@ Als er *.prettierrc* (JSON-indeling) in de werkmap staat, wordt dit weergegeven 
 wes @wachaon/fmt src/sample --write
 ```
 
-| naamloos nummer | Beschrijving                                              |
-| --------------- | --------------------------------------------------------- |
-| 1               | Verplicht. het pad van het bestand dat u wilt formatteren |
+| naamloos nummer | Beschrijving                                            |
+| --------------- | ------------------------------------------------------- |
+| 1               | Vereist. het pad van het bestand dat u wilt formatteren |
 
 | genaamd   | korte naam | Beschrijving             |
 | --------- | ---------- | ------------------------ |
 | `--write` | `-w`       | toestaan ​​overschrijven |
 
-Overschrijf het bestand met het geformatteerde script als `--write` of het benoemde argument `-w` is opgegeven.
+Overschrijf het bestand met het geformatteerde script als `--write` of `-w` is opgegeven.
 
 #### gebruiken als module
 
@@ -812,7 +842,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 ## *@wachaon/edge*
 
-*Internet Explorer* beëindigt de ondersteuning op 15 juni 2022. Hierdoor wordt verwacht dat applicatiebewerkingen met `require('InternetExplorer.Application')` onmogelijk zullen worden. Bovendien zal de site zelf niet correct kunnen worden weergegeven door de ondersteuning voor *Internet Explorer* te beëindigen. Een alternatief zou zijn om *Microsoft Edge based on Chromium* te bedienen via de *web driver(msedgedriver.exe)* . `@wachaon/edge` *Edge* randautomatische piloot.
+*Internet Explorer* beëindigt de ondersteuning op 15 juni 2022. Hierdoor wordt verwacht dat applicatiebewerkingen met `require('InternetExplorer.Application')` onmogelijk zullen worden. Bovendien zal de site zelf niet correct kunnen worden weergegeven door de ondersteuning voor *Internet Explorer* te beëindigen. Een alternatief zou zijn om *Microsoft Edge based on Chromium* te bedienen via *web driver(msedgedriver.exe)* . `@wachaon/edge` vereenvoudigt *Edge* piloot.
 
 ### Installeer *@wachaon/edge*
 
@@ -822,13 +852,13 @@ Installeer eerst het pakket.
 wes install @wachaon/edge --bare
 ```
 
-Download dan de *web driver(msedgedriver.exe)* .
+Download dan *web driver(msedgedriver.exe)* .
 
 ```bat
 wes edge --download
 ```
 
-Controleer de geïnstalleerde *Edge* -versie en download de bijbehorende *web driver* .
+Controleer de geïnstalleerde *Edge* versie en download de bijbehorende *web driver* .
 
 ### Hoe *@wachaon/edge* te gebruiken
 
@@ -847,7 +877,7 @@ edge((window, navi, res) => {
 })
 ```
 
-We bewaren uw bezoekgeschiedenis totdat de *URL* van uw browser begint met `https://www.yahoo` .
+We bewaren uw bezoekgeschiedenis totdat *URL* van uw browser begint met `https://www.yahoo` .
 
 ```javascript
 const edge = require('/index.js')
@@ -877,11 +907,11 @@ const ret = edge((window, navi, res) => {
 console.log('ret // => %O', ret)
 ```
 
-*edge* drukt de bezochte *URL* op volgorde af naar de console. `@wachaon/edge` registreert gebeurtenissen voor *URL* en voegt gegevens toe aan `res.exports` . De te registreren *URL* kan `String` `RegExp` zijn en kan flexibel worden ingesteld. Door het event-driven te maken, kun je eenvoudig overschakelen naar handmatige bediening door geen events in te stellen voor processen die moeilijk af te handelen zijn met de automatische piloot. Als u wilt dat het script stopt, `navi.emit('terminate', res)` of beëindigt u *Edge* handmatig. Finalisatie voert `res.exports` standaard uit als een *.json* bestand. Als u beëindigingsverwerking wilt instellen, stelt `terminate` van `edge(callback, terminate)` . `window` is een instantie van de *Window* -klasse van *@wachaon/webdriver* , niet het `window` .
+*edge* drukt de bezochte *URL* op volgorde af naar de console. `@wachaon/edge` registreert gebeurtenissen voor *URL* en voegt gegevens toe aan `res.exports` . *URL* kan `String` `RegExp` zijn en kan flexibel worden ingesteld. Door het event-driven te maken, kun je eenvoudig overschakelen naar handmatige bediening door geen events in te stellen voor processen die moeilijk af te handelen zijn met de automatische piloot. Als u wilt dat het script stopt, voert u `navi.emit('terminate', res)` uit of beëindigt *Edge* handmatig. Finalisatie voert `res.exports` standaard uit als een *.json* bestand. Als u beëindigingsverwerking wilt instellen, stelt u `terminate` van `edge(callback, terminate)` in. `window` is een instantie van *Window* klasse van *@wachaon/webdriver* , niet het `window` .
 
 ## *@wachaon/webdriver*
 
-Het zal een pakket zijn dat verzoeken stuurt naar de *web driver* die de browser bestuurt. *@wachaon/edge* bevat *@wachaon/webdriver* .
+Het zal een pakket zijn dat verzoeken stuurt naar *web driver* die de browser bestuurt. *@wachaon/edge* bevat *@wachaon/webdriver* .
 
 ### Installeer *@wachaon/webdriver*
 
@@ -889,7 +919,7 @@ Het zal een pakket zijn dat verzoeken stuurt naar de *web driver* die de browser
 wes install @wachaon/webdriver --bare
 ```
 
-Download de op *Chromium* gebaseerde *Microsoft Edge* *web driver(msedgedriver.exe)* als u deze niet hebt. Als de versie van *edge* en de versie van *web driver(msedgedriver.exe)* verschillend zijn, download dan dezelfde versie van *web driver(msedgedriver.exe)* .
+Download *Chromium* gebaseerde *Microsoft Edge* *web driver(msedgedriver.exe)* als u deze niet hebt. Als de versie van *edge* en de versie van *web driver(msedgedriver.exe)* verschillend zijn, download dan dezelfde versie van *web driver(msedgedriver.exe)* .
 
 ```bat
 wes webdriver --download
@@ -897,7 +927,7 @@ wes webdriver --download
 
 ### Hoe *@wachaon/webdriver* te gebruiken
 
-Ga naar de [*yahoo JAPAN*](https://www.yahoo.co.jp/) -site en sla een screenshot op van een specifiek blokelement.
+Ga naar [*yahoo JAPAN*](https://www.yahoo.co.jp/) site en sla een screenshot op van een specifiek blokelement.
 
 ```javascript
 const { Window } = require('webdriver')

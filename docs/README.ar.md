@@ -1,6 +1,6 @@
 # *WES*
 
-*wes* هو إطار عمل لوحدة التحكم لتشغيل *ECMAScript* على *WSH (Windows Script Host)* . سيكون [*japanese*](/README.md) الأصلي من *README* باللغة اليابانية. سيتم ترجمة النصوص غير اليابانية آليًا.\
+*wes* هو إطار عمل لوحدة التحكم لتشغيل *ECMAScript* على *WSH (Windows Script Host)* . سيكون النص الأصلي من *README* باللغة [*japanese*](/README.md) . سيتم ترجمة النصوص غير اليابانية آليًا.\
 للنصوص بلغات أخرى ، يرجى التحديد من الخيارات أدناه.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
@@ -20,7 +20,7 @@
 
 # ميزة
 
-*   يمكنك تغيير محرك البرنامج النصي إلى *Chakra* والكتابة وفقًا لمواصفات *ECMAScript2015* .
+*   يمكنك تغيير محرك البرنامج النصي إلى *Chakra* والكتابة وفقًا لمواصفات *ECMAScript2015+* .
 *   يستخدم دائمًا *cscript.exe* 32 بت ، لذلك لا توجد مشاكل 64 بت فريدة
 *   نظام الوحدة متاح لتطوير أكثر كفاءة من *WSH* التقليدي
 *   تدعم الوحدات المدمجة المعالجة الأساسية مثل إدخال / إخراج الملف وإخراج النص الملون إلى وحدة التحكم
@@ -28,7 +28,7 @@
 *   من الممكن أيضًا حزم الوحدة ونشرها خارجيًا أو الحصول عليها.
 *   عرض تفاصيل الخطأ بلطف أكثر من *WSH*
 
-# المشكلات *wes* التي لا يمكننا حلها
+# المشكلات المعروفة التي لا *wes* حلها
 
 *   لا يمكن لـ `WScript.Quit` إحباط البرنامج ولا يُرجع رمز خطأ
 *   المعالجة غير المتزامنة لا تعمل بشكل صحيح
@@ -36,13 +36,13 @@
 
 # تحميل
 
-يحتاج *wes* إلى ملف *wes.js* فقط. للتنزيل ، انسخ *wes.js* من [*@wachaon/wes*](https://github.com/wachaon/wes) أو قم بتشغيل الأمر التالي في وحدة التحكم الخاصة بك.
+يحتاج *wes* إلى ملف *wes.js* فقط. للتنزيل ، انسخ *wes.js* من [*@wachaon/wes*](https://github.com/wachaon/wes) أو قم بتشغيل الأمر التالي في وحدة التحكم.
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-يتبنى *wes* تطبيقًا يستخدم `SendKeys` *WScript.Shell* في وقت التشغيل. إذا كان مسار الدليل حيث يتم تخزين *wes.js* يحتوي على أحرف غير ASCII ، فلن تتمكن `SendKeys` من إرسال المفاتيح بشكل صحيح ولن يتم تشغيل البرنامج النصي. لذلك ، تأكد من أن المسار الذي تخزن فيه *wes.js* يتكون فقط من أحرف ASCII. بدلاً من ذلك ، إذا قمت بالفعل بتنزيل *wes.js* ، فيمكنك تحديثه باستخدام الأمر أدناه.
+يتبنى *wes* تطبيقًا يستخدم `SendKeys` لـ *WScript.Shell* في وقت التشغيل. إذا كان مسار الدليل حيث تم تخزين *wes.js* يحتوي على أحرف غير ASCII ، فلن تتمكن `SendKeys` من إرسال المفاتيح بشكل صحيح ولن يتم تشغيل البرنامج النصي. لذلك ، تأكد من أن المسار الذي تخزن فيه *wes.js* يتكون فقط من أحرف ASCII. بدلاً من ذلك ، إذا قمت بالفعل بتنزيل *wes.js* ، فيمكنك تحديثه باستخدام الأمر أدناه.
 
 ```bat
 wes update
@@ -82,7 +82,7 @@ wes
 
 ## *commonjs module*
 
-إدارة الوحدات عن طريق التخصيص إلى `module.exports` `require()` . المسارات بخلاف المسارات المطلقة والمسارات النسبية التي تبدأ بـ `./` و `../` ابحث عن الوحدات النمطية في دليل *wes\_modules* وبشكل ملائم في دليل *node\_modules* . يقوم *wes* `require()` تلقائيًا بتخمين ترميز ملف الوحدة النمطية ، ولكن يمكنك تحديد الترميز باستخدام الوسيطة الثانية إذا لم يتم التخمين بشكل صحيح.
+إدارة الوحدات عن طريق التخصيص إلى `module.exports` والاستدعاء `require()` . المسارات بخلاف المسارات المطلقة والمسارات النسبية التي تبدأ بـ `./` و `../` ابحث عن الوحدات النمطية في دليل *wes\_modules* وبشكل ملائم في دليل *node\_modules* . يقوم *wes* `require()` تلقائيًا بتخمين ترميز ملف الوحدة النمطية ، ولكن يمكنك تحديد الترميز باستخدام الوسيطة الثانية إذا لم يتم التخمين بشكل صحيح.
 
 ```javascript
 // ./add.js
@@ -109,7 +109,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra* ، محرك تنفيذ النص ، يفسر بناء الجملة مثل `imoprt` ، لكن لا يتم تنفيذه في بيئة *cscript* . في *wes* ، من خلال إضافة *babel* إلى الوحدات المدمجة ، يتم أيضًا تنفيذ *es module* أثناء نقلها واحدة تلو الأخرى. يأتي هذا بتكلفة معالجة ملف *wes.js* متضخم. يتم أيضًا تحويل الوحدات المكتوبة في *es module* إلى `require()` عن طريق التحويل ، لذلك من الممكن استدعاء *COM Object* . ومع ذلك ، فإنه لا يدعم تحديد ترميز ملف الوحدة النمطية باستخدام *es module* . يتم تحميل كل شيء تلقائيًا. لتحميله كوحدة *es module* ، اضبط الامتداد على `.mjs` أو اضبط حقل `"type"` في `package.json` على `"module"` .
+*Chakra* ، محرك تنفيذ النص ، يفسر بناء الجملة مثل `imoprt` ، لكن لا يتم تنفيذه في بيئة *cscript* . في *wes* من خلال إضافة *babel* إلى الوحدات المدمجة ، يتم أيضًا تنفيذ *es module* أثناء نقلها واحدة تلو الأخرى. يأتي هذا بتكلفة معالجة ملف *wes.js* متضخم. يتم أيضًا تحويل الوحدات المكتوبة في *es module* إلى `require()` عن طريق التحويل ، لذلك من الممكن استدعاء *COM Object* . ومع ذلك ، فإنه لا يدعم تحديد ترميز ملف الوحدة النمطية باستخدام *es module* . يتم تحميل كل شيء تلقائيًا. لتحميلها *es module* ، اضبط الامتداد على `.mjs` أو اضبط حقل `"type"` في `package.json` على `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -126,11 +126,11 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 
 # كائن مدمج
 
-يحتوي *wes* *built-in objects* مضمنة غير موجودة في *WSH (JScript)* .
+يحتوي *wes* *built-in objects* غير موجودة في *WSH (JScript)* .
 
 ## *console*
 
-يستخدم Wes *console* بدلاً من *wes* `WScript.Echo()` و `WScript.StdErr.WriteLine()` .
+يستخدم *wes* *console* بدلاً من `WScript.Echo()` و `WScript.StdErr.WriteLine()` .
 
 ### *console.log*
 
@@ -155,11 +155,11 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`         | تفريغ الكائن                       |
 | `%O`         | تفريغ الكائن (مسافة بادئة / ملونة) |
 
-`WScript.StdOut.WriteLine` *wes* من `WScript.StdErr.WriteLine` لإخراج السلاسل الملونة. يتم حظر إخراج `WScript.Echo` و `WScript.StdOut.WriteLine` . `WScript.StdErr.WriteLine` أو `console.log` .
+يستخدم *wes* `WScript.StdOut.WriteLine` بدلاً من `WScript.StdErr.WriteLine` لإخراج السلاسل الملونة. تم حظر `WScript.Echo` و `WScript.StdOut.WriteLine` . استخدم `WScript.StdErr.WriteLine` أو `console.log` .
 
 ### *console.print*
 
-يتضمن `console.log()` عادةً سطرًا جديدًا في النهاية ، ولكن لا يتضمن `console.print` .
+تتضمن `console.log()` عادةً سطرًا جديدًا في النهاية ، لكن لا تتضمن `console.print` .
 
 ### *console.debug*
 
@@ -192,9 +192,9 @@ const message = `dirname: ${__dirname}\nfilename: ${ __filename}`
 console.log(message)
 ```
 
-## *setTimeout* *setInterval* *setImmediate* *Promise* الفوري
+## *setTimeout* *setInterval* *setImmediate* *Promise*
 
-نظرًا لأن *wes* هي بيئة تنفيذ للمعالجة المتزامنة ، فإن *setTimeout* *setInterval* *setImmediate* لا تعمل كعملية غير متزامنة ، ولكن يتم تنفيذها لدعم الوحدات النمطية التي *Promise* *Promise*
+نظرًا لأن *wes* هي بيئة تنفيذ للمعالجة المتزامنة ، *setTimeout* *setInterval* *setImmediate* *Promise* تعمل كعملية غير متزامنة ، ولكن يتم تنفيذها لدعم الوحدات النمطية التي تفترض تنفيذ *Promise* .
 
 ```javascript
 const example = () => {
@@ -251,7 +251,7 @@ console.log(orange + 'Hello World')
 
 ## *argv*
 
-احصل على وسيطات سطر الأوامر. تعلن وسيطات سطر الأوامر الخاصة بـ `cscript.exe` عن الوسائط المسماة بـ `/` ، بينما يعلن *wes* عن الوسائط المسماة بـ `-` و `--` . *argv.unnamed* و argv. *argv.named* نوع قيمة وسيطة سطر الأوامر إما إلى *String* *Number* *Boolean* . أدخل وسيطات سطر الأوامر باستخدام *REP* .
+احصل على وسيطات سطر الأوامر. تعلن وسيطات سطر الأوامر الخاصة بـ `cscript.exe` عن الوسائط المسماة بـ `/` ، بينما يعلن *wes* عن الوسائط المسماة بـ `-` و `--` . *argv.unnamed* و *argv.named* يلقي نوع قيمة وسيطة سطر الأوامر إما إلى *String* *Number* *Boolean* . أدخل وسيطات سطر الأوامر باستخدام *REP* .
 
 ```bat
 wes REP aaa -bc dd --e=false --gh=iii jjj --klm nn -o --p 9 r
@@ -279,7 +279,7 @@ console.log('file %O', file)
 
 ## *filesystem*
 
-معالجة الملفات والدلائل. `readTextFileSync()` تلقائيًا ترميز الملف ويقرأه. (حتى إذا تم `encode` الوسيطة الثانية لـ `readFileSync()` على `auto` ، فسيتم تخمينها تلقائيًا.)
+معالجة الملفات والدلائل. يخمن `readTextFileSync()` تلقائيًا ترميز الملف ويقرأه. (حتى إذا تم تعيين `encode` الثانية لـ `readFileSync()` على `auto` ، فسيتم تخمينها تلقائيًا.)
 
 ```javascript
 const fs = require('filesystem')
@@ -323,20 +323,42 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 
 يقدم *VBScript* بعض الميزات التي لا توفرها *JScript* .
 
-```javascript
+```javascript {"testing": true}
 const { TypeName } = require('VBScript')
 const FSO = require('Scripting.FileSystemObject')
-console.log(TypeName(FSO))
+console.log(TypeName(FSO)) // => "FileSystemObject"
 ```
 
 ## *httprequest*
 
 *httprequest* يصدر *http request* .
 
-```javascript
+```javascript {"testing": true}
 const request = require('httprequest')
 const { responseText } = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
-console.log(() => JSON.parse(responseText))
+console.log(() => JSON.parse(responseText)) /* => {
+    "id": 1,
+    "name": "Leanne Graham",
+    "username": "Bret",
+    "email": "Sincere@april.biz",
+    "address": {
+        "street": "Kulas Light",
+        "suite": "Apt. 556",
+        "city": "Gwenborough",
+        "zipcode": "92998-3874",
+        "geo": {
+            "lat": "-37.3159",
+            "lng": "81.1496"
+        }
+    },
+    "phone": "1-770-736-8031 x56442",
+    "website": "hildegard.org",
+    "company": {
+        "name": "Romaguera-Crona",
+        "catchPhrase": "Multi-layered client-server neural-net",
+        "bs": "harness real-time e-markets"
+    }
+} */
 ```
 
 ## *minitest*
@@ -381,17 +403,17 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 #### `assert(value, message)` `assert.ok(value, message)`
 
-قارن بـ " `true` " مع عامل المساواة الصارم `===` . إذا كانت `value` دالة ، فقم بتقييم نتيجة تنفيذ الوظيفة.
+قارن مع `true` مع عامل المساواة الصارم `===` . إذا كانت `value` دالة ، فقم بتقييم نتيجة تنفيذ الوظيفة.
 
 | بارام     | يكتب                  | وصف                         |
 | :-------- | :-------------------- | :-------------------------- |
 | `value`   | `{Function\|Boolean}` | دالة عائدة منطقية أو منطقية |
-| `message` | `{String}`            | رسالة في حالة الفشل         |
+| `message` | `{String}`            | رسالة عن الفشل              |
 
 #### `assert.equal(expected, actual)`
 
 يقارن الكائنات من أجل مساواة الأعضاء ، وليس بالإشارة.\
-NaN `true` دالة `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` أو `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` إلخ.\
+`NaN === NaN` `function (){} === function (){}` `true` `/RegExp/g === /RegExp/g` أو `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` إلخ.\
 عند مقارنة الفئات (الكائنات) ، يجب أن يكون لها نفس المُنشئ أو فئة فائقة `expected` `actual` .
 
 | بارام      | يكتب    | وصف             |
@@ -408,7 +430,7 @@ NaN `true` دالة `NaN === NaN` `function (){} === function (){}` `/RegExp/g =
 | :--------- | :------------------------ | :------------------------------------------------------------------------- |
 | `value`    | `{Error}`                 | خطأ                                                                        |
 | `expected` | `{Error\|String\|RegExp}` | تعبير عادي يقوم بتقييم *constructor* الخطأ أو *message* أو *stack* المتوقع |
-| `message`  | `{String}`                | رسالة في حالة الفشل                                                        |
+| `message`  | `{String}`                | رسالة عن الفشل                                                             |
 
 ## *pipe*
 
@@ -418,7 +440,7 @@ NaN `true` دالة `NaN === NaN` `function (){} === function (){}` `/RegExp/g =
 
 ضع وظيفة التحويل في وسيطة `use(converter)` لطريقة *pipe* ووصف إدخال البيانات ومعالجة ما بعد التحويل مع `process(data, callback(error, result))` . إذا لم يتم تحديد `callback` ، فستكون القيمة المعادة *promise* ، ويمكن ربط المعالجة بـ `then(result)` `catch(error)` .
 
-```javascript
+```javascript {"testing": true}
 const pipe = require('pipe')
 
 function add (a, b) {
@@ -440,12 +462,14 @@ pipe()
   .use(add5)
   .use(sub3)
   .use(div, 4)
-  .process(10, (err, res) => console.log('res: %O', res))
+  .process(10, (err, res) => {
+    console.log(() => res) // => 3
+  })
 ```
 
 بالإضافة إلى `use(converter)` ، هناك طرق مثل `.filter(callbackFn(value, index))` و `map(callbackFn(value, index))` . كل *data* عبارة عن سلسلة ومصفوفة وكائن.
 
-```javascript
+```javascript {"testing": true}
 const pipe = require('pipe')
 
 const tsv = `
@@ -455,12 +479,6 @@ vbscript\t1996
 c#\t2000
 `.trim()
 
-pipe()
-    .filter(include)
-    .map(release)
-    .process(tsv)
-    .then((res) => console.log(() => res))
-
 function include(value, i) {
     return value.includes('script')
 }
@@ -468,6 +486,16 @@ function include(value, i) {
 function release(value, i) {
     return value.split('\t').join(' was released in ')
 }
+
+pipe()
+    .filter(include)
+    .map(release)
+    .process(tsv)
+    .then((res) => {
+        console.log(() => res) /* => `javascript was released in 1955
+vbscript was released in 1996` */
+    })
+
 ```
 
 ### بدء *pipe* من سطر الأوامر
@@ -500,13 +528,12 @@ pipe()
 
 حدد نوع البرنامج النصي.
 
-```javascript
+```javascript {"testing": true}
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
-const log = require('log')
-log(() => isString("ECMAScript"))
-log(() => isNumber(43.5))
-log(() => isBoolean(false))
-log(() => isObject(function(){}))
+console.log(() => isString("ECMAScript")) /* => true */
+console.log(() => isNumber(43.5)) /* => true */
+console.log(() => isBoolean(false)) /* => true */
+console.log(() => isObject(function(){})) /* => false */
 ```
 
 ## *getMember*
@@ -517,7 +544,7 @@ log(() => isObject(function(){}))
 wes getMember "Scripting.FileSystemObject"
 ```
 
-عند استخدامه كوحدة نمطية ، فإنه يحصل على نوع العضو ووصف المثيل. إذا تم استخدامها كوحدة نمطية ، يمكنك الحصول على معلومات حول الكائنات التي لا يمكن تأكيدها من *WSH (Windows Script Host)* .
+عند استخدامه كوحدة نمطية ، فإنه يحصل على نوع ووصف أعضاء المثيل. إذا تم استخدامها كوحدة نمطية ، يمكنك الحصول على معلومات حول الكائنات التي لا يمكن تأكيدها من *WSH (Windows Script Host)* .
 
 ```javascript
 const getMember = require('getMember')
@@ -685,7 +712,7 @@ wes zip docs\* dox.zip
 wes zip -p dox.zip
 ```
 
-إذا كان `path` يحتوي على الامتداد `.zip` ، تتم معالجة `unzip()` ، ولا يوجد وصف `.zip` . بدلاً من ذلك ، حتى إذا كان هناك امتداد `.zip` ، إذا كان هناك وصف بدل `*` ، فستتم معالجة `zip()` .
+إذا كان `path` يحتوي على الامتداد `.zip` ، تتم معالجة `unzip()` ، ولا يوجد وصف للملحق `.zip` . بدلاً من ذلك ، حتى إذا كان هناك امتداد `.zip` إذا كان هناك وصف بدل `*` ، فستتم معالجة `zip()` .
 
 | غير مسمى | وصف                    |
 | -------- | ---------------------- |
@@ -703,15 +730,18 @@ wes zip -p dox.zip
 
 ## *bundle*
 
-عند نشر *bundle* على *github* ، قم بتجميع الوحدات النمطية المطلوبة في حزم وإنشاء *bundle.json* .
+عند نشر حزمة على *github* ، *bundle* بتجميع الوحدات النمطية المطلوبة في حزم وإنشاء *bundle.json* .
 
 1.  يمكن نشر حزمة واحدة فقط في *repository* واحد
-2.  *package.json* مطلوب. كحد أدنى ، مطلوب وصف الحقل `main` . ```json
-    {
-        "main": "index.js"
-    }
+
+2.  *package.json* مطلوب. كحد أدنى ، مطلوب وصف الحقل `main` .
+
+    ```json
+     { "main": "index.js" }
     ```
+
 3.  اجعل المستودع *public* إذا كنت تريد نشر الحزمة
+
 4.  بدءًا من `version 0.12.0` ، لن يتم تجميع الحزم ذات التحميل المباشر للوحدة في دليل أعلى دليل العمل. يمكن تجميع الحزم الموجودة في الدليل العلوي *wes\_modules* أو *node\_modules* .
 
 أدخل الأمر التالي للحزمة: ارجع إلى *package.json* لمعرفة ما تريد تجميعه.
@@ -730,7 +760,7 @@ wes init
 
 ## *install*
 
-تستخدم لتثبيت حزمة *wes* المنشورة على *github* . من `version 0.10.28` ، يتم تغيير مجلد التثبيت من `node_modules` إلى `wes_modules` . إذا كنت تريد التثبيت في `node_modules` أضف خيار `--node` . بدءًا من `version 0.12.0` ، سيتم فك ضغط الملفات من *bandle.json* وحفظها. نظرًا لتغييرات المواصفات ، قد لا يتم تثبيت الحزم المرفقة `version 0.12.0` أقل من 0.12.0 بشكل صحيح مع `version 0.12.0` أو أحدث.
+تستخدم لتثبيت حزمة *wes* المنشورة على *github* . من `version 0.10.28` ، يتم تغيير مجلد التثبيت من `node_modules` إلى `wes_modules` . إذا كنت تريد التثبيت في `node_modules` ، أضف خيار `--node` . من `version 0.12.0` ، سيتم فك ضغط الملف من *bandle.json* وحفظه. نظرًا لتغييرات المواصفات ، قد لا يتم تثبيت الحزم المرفقة `version 0.12.0` بشكل صحيح مع `version 0.12.0` أو أحدث.
 
 قم بتمرير الوسائط *install* في النموذج `@author/repository` .
 
@@ -748,7 +778,7 @@ wes install @wachaon/fmt
 | `--save--dev` | `-D`     | أضف اسم الحزمة والإصدار إلى حقل *devDependencies* في *package.json* |
 | `--node`      | `-n`     | التثبيت في مجلد *node\_module*                                      |
 
-يمكن أن يحذف الخيار `--bare` الوسيطة `require` من `author@repository` إلى `repository` . `--global` الحزم المثبتة لجميع البرامج النصية.
+يمكن أن يحذف الخيار `--bare` الوسيطة `require` من `author@repository` إلى `repository` . يتيح الخيار `--global` الحزم المثبتة لجميع البرامج النصية.
 
 ```bat
 wes install @wachaon/fmt --bare
@@ -762,7 +792,7 @@ wes install @wachaon/fmt --bare
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-إذا قمت بالوصول إلى المستودع الخاص بشكل *raw* باستخدام متصفح ، فسيتم عرض *token* ، لذا انسخ *token* . يمكنك أيضًا تثبيت الحزم من المستودعات الخاصة عن طريق تشغيلها في وحدة التحكم أثناء صلاحية *token* .
+إذا قمت بالوصول إلى المستودع الخاص *raw* باستخدام متصفح ، فسيتم عرض *token* ، لذا انسخ *token* واستخدمه. يمكنك أيضًا تثبيت الحزم من المستودعات الخاصة عن طريق تشغيلها في وحدة التحكم أثناء صلاحية *token* المميز.
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
@@ -774,7 +804,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* *wes* *prettier* من أجل تنسيق البرامج النصية. أيضًا ، في حالة حدوث *Syntax Error* أثناء *@wachaon/fmt* ، يمكنك الإشارة إلى موقع الخطأ.
+تم تجميع *@wachaon/fmt* *prettier* من *wes* تنسيق البرامج النصية. أيضًا ، في حالة حدوث *Syntax Error* أثناء تثبيت *@wachaon/fmt* ، يمكنك الإشارة إلى موقع الخطأ.
 
 ### قم بتثبيت *@wachaon/fmt*
 
@@ -782,7 +812,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 wes install @wachaon/fmt
 ```
 
-إذا كان هناك تنسيق *.prettierrc* (تنسيق JSON) في دليل العمل ، فسوف ينعكس في الإعدادات. يتوفر *fmt* في كل من *CLI* *module* .
+إذا كان هناك تنسيق *.prettierrc* (تنسيق JSON) في دليل العمل ، فسوف ينعكس في الإعدادات. يتوفر *fmt* في كل من *CLI* والوحدة *module* .
 
 #### استخدام *CLI* .
 
@@ -800,7 +830,7 @@ wes @wachaon/fmt src/sample --write
 
 الكتابة فوق الملف بالبرنامج النصي المنسق إذا تم تحديد الوسيطة `--write` أو `-w` المسماة.
 
-#### استخدام كوحدة نمطية
+#### استخدم كوحدة نمطية
 
 ```javascript
 const fmt = require('@wachaon/fmt')
@@ -812,7 +842,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 ## *@wachaon/edge*
 
-سينهي *Internet Explorer* الدعم في 15 يونيو 2022. نتيجة لذلك ، من المتوقع أن تصبح عمليات التطبيق التي `require('InternetExplorer.Application')` مستحيلة. بالإضافة إلى ذلك ، لن يتمكن الموقع نفسه من العرض بشكل صحيح عن طريق إنهاء دعم *Internet Explorer* . سيكون البديل هو تشغيل *Microsoft Edge based on Chromium* عبر *web driver(msedgedriver.exe)* . `@wachaon/edge` يبسط الطيار الآلي *Edge* .
+سينهي *Internet Explorer* الدعم في 15 يونيو 2022. نتيجة لذلك ، من المتوقع أن تصبح عمليات التطبيق التي `require('InternetExplorer.Application')` مستحيلة. بالإضافة إلى ذلك ، لن يتمكن الموقع نفسه من العرض بشكل صحيح عن طريق إنهاء دعم *Internet Explorer* . سيكون البديل هو تشغيل *Microsoft Edge based on Chromium* عبر *web driver(msedgedriver.exe)* . `@wachaon/edge` يبسط *Edge* الآلي للحافة.
 
 ### قم بتثبيت *@wachaon/edge*
 
@@ -877,11 +907,11 @@ const ret = edge((window, navi, res) => {
 console.log('ret // => %O', ret)
 ```
 
-تطبع *edge* *URL* التي تمت زيارتها إلى وحدة التحكم بالترتيب. `@wachaon/edge` الأحداث *URL* ويضيف البيانات إلى `res.exports` . يمكن أن يكون *URL* المراد تسجيله إما `String` `RegExp` ، ويمكن تعيينه بمرونة. من خلال جعلها مدفوعة بالأحداث ، يمكنك التبديل بسهولة إلى التشغيل اليدوي من خلال عدم تعيين أحداث للعمليات التي يصعب التعامل معها باستخدام الطيار الآلي. إذا كنت تريد أن يتوقف البرنامج النصي ، `navi.emit('terminate', res)` أو إنهاء *Edge* يدويًا. ينتج عن `res.exports` كملف *.json* افتراضيًا. إذا كنت ترغب في تعيين معالجة الإنهاء ، فقم بتعيين `terminate` `edge(callback, terminate)` . `window` هو مثيل لفئة *Window* *@wachaon/webdriver* ، وليس `window` المتصفح.
+تطبع *edge* *URL* التي تمت زيارتها إلى وحدة التحكم بالترتيب. يسجل `@wachaon/edge` الأحداث لعناوين *URL* ويضيف البيانات إلى `res.exports` . يمكن أن يكون *URL* المراد تسجيله إما `String` `RegExp` ، ويمكن تعيينه بمرونة. من خلال جعلها مدفوعة بالأحداث ، يمكنك التبديل بسهولة إلى التشغيل اليدوي من خلال عدم تعيين أحداث للعمليات التي يصعب التعامل معها باستخدام الطيار الآلي. إذا كنت تريد أن يتوقف البرنامج النصي ، فقم بتشغيل `navi.emit('terminate', res)` أو إنهاء *Edge* يدويًا. ينتج عن الإنهاء `res.exports` كملف *.json* افتراضيًا. إذا كنت ترغب في تعيين معالجة الإنهاء ، فقم بتعيين `terminate` `edge(callback, terminate)` . `window` هو مثيل لفئة *Window* *@wachaon/webdriver* ، وليس `window` المتصفح.
 
 ## *@wachaon/webdriver*
 
-ستكون حزمة ترسل الطلبات إلى *web driver* الذي يقوم بتشغيل المتصفح. يتضمن @ *@wachaon/edge* *@wachaon/webdriver* .
+ستكون حزمة ترسل الطلبات إلى *web driver* الذي يقوم بتشغيل المتصفح. يتضمن *@wachaon/edge* *@wachaon/webdriver* .
 
 ### قم بتثبيت *@wachaon/webdriver*
 

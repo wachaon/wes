@@ -1,6 +1,6 @@
 # *WES*
 
-*wes* হল *WSH (Windows Script Host)* এ *ECMAScript* চালানোর জন্য একটি কনসোল ফ্রেমওয়ার্ক। *README* এর মূল [*japanese*](/README.md) জাপানি ভাষায় হবে। জাপানি ব্যতীত অন্য পাঠ্যগুলি মেশিন অনুবাদ করা হবে।\
+*wes* হল *WSH (Windows Script Host)* এ *ECMAScript* চালানোর জন্য একটি কনসোল ফ্রেমওয়ার্ক। *README* এর মূল পাঠ্য [*japanese*](/README.md) ভাষায় হবে। জাপানি ব্যতীত অন্য পাঠ্যগুলি মেশিন অনুবাদ করা হবে।\
 অন্যান্য ভাষার পাঠ্যের জন্য, অনুগ্রহ করে নীচের বিকল্পগুলি থেকে নির্বাচন করুন৷
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
@@ -20,7 +20,7 @@
 
 # বৈশিষ্ট্য
 
-*   আপনি স্ক্রিপ্ট ইঞ্জিনকে *Chakra* পরিবর্তন করতে পারেন এবং *ECMAScript2015* স্পেসিফিকেশন অনুযায়ী লিখতে পারেন।
+*   আপনি স্ক্রিপ্ট ইঞ্জিনকে *Chakra* পরিবর্তন করতে পারেন এবং *ECMAScript2015+* স্পেসিফিকেশন অনুযায়ী লিখতে পারেন।
 *   সর্বদা 32-বিট *cscript.exe* ব্যবহার করে, তাই কোন অনন্য 64-বিট সমস্যা নেই
 *   মডিউল সিস্টেম ঐতিহ্যগত *WSH* তুলনায় আরো দক্ষ উন্নয়নের জন্য উপলব্ধ
 *   অন্তর্নির্মিত মডিউলগুলি মৌলিক প্রক্রিয়াকরণকে সমর্থন করে যেমন ফাইল ইনপুট/আউটপুট এবং কনসোলে রঙিন পাঠ্য আউটপুট
@@ -28,7 +28,7 @@
 *   মডিউলটি প্যাকেজ করা এবং বাহ্যিকভাবে প্রকাশ করা বা এটি প্রাপ্ত করাও সম্ভব।
 *   *WSH* চেয়ে আরো দয়া করে ত্রুটির বিবরণ প্রদর্শন করুন
 
-# *wes* সমস্যা যা আমরা সমাধান করতে পারি না
+# পরিচিত সমস্যা যা *wes* সমাধান করতে পারি না
 
 *   `WScript.Quit` প্রোগ্রামটি বাতিল করতে পারে না এবং একটি ত্রুটি কোড ফেরত দেয় না
 *   অ্যাসিঙ্ক্রোনাস প্রক্রিয়াকরণ সঠিকভাবে কাজ করে না
@@ -36,7 +36,7 @@
 
 # ডাউনলোড
 
-*wes* শুধুমাত্র *wes.js* ফাইল প্রয়োজন. ডাউনলোড করতে, [*@wachaon/wes*](https://github.com/wachaon/wes) থেকে *wes.js* কপি করুন বা কনসোলে নিম্নলিখিত কমান্ডটি চালান।
+*wes* শুধুমাত্র *wes.js* ফাইল প্রয়োজন. ডাউনলোড করতে, [*@wachaon/wes*](https://github.com/wachaon/wes) থেকে *wes.js* কপি করুন অথবা আপনার কনসোলে নিম্নলিখিত কমান্ডটি চালান।
 
 ```bat
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
@@ -50,7 +50,7 @@ wes update
 
 # কিভাবে *wes* শুরু করবেন
 
-ফাইলটি নির্দিষ্ট করে কমান্ডটি অনুসরণ করে `wes` কীওয়ার্ড লিখুন যা কনসোলে প্রোগ্রামের শুরুর বিন্দু হবে। স্ক্রিপ্ট এক্সটেনশন *.js* বাদ দেওয়া যেতে পারে।
+`wes` কীওয়ার্ড এবং ফাইলটি নির্দিষ্ট করে কমান্ডটি লিখুন যা কনসোলে প্রোগ্রামের সূচনা বিন্দু হবে। স্ক্রিপ্ট এক্সটেনশন *.js* বাদ দেওয়া যেতে পারে।
 
 ```bat
 wes index
@@ -68,13 +68,13 @@ wes
 
 *wes* স্টার্টআপ বিকল্পগুলি নিম্নরূপ।
 
-| নাম                | বর্ণনা                                                 |
-| ------------------ | ------------------------------------------------------ |
-| `--monotone`       | *ANSI escape code* বাদ দেয়                            |
-| `--transpile`      | সর্বদা রূপান্তর করুন এবং *babel-standalone* সাথে চালান |
-| `--debug`          | ডিবাগ মোডে স্ক্রিপ্ট চালান                             |
-| `--encoding=UTF-8` | পড়া প্রথম ফাইলের এনকোডিং নির্দিষ্ট করে                |
-| `--arch=x86`       | এই বিকল্পটি *wes* দ্বারা স্বয়ংক্রিয়ভাবে যোগ করা হয়  |
+| নাম                | বর্ণনা                                                  |
+| ------------------ | ------------------------------------------------------- |
+| `--monotone`       | *ANSI escape code* বাদ দেয়                             |
+| `--transpile`      | সর্বদা রূপান্তর করুন এবং *babel-standalone* দিয়ে চালান |
+| `--debug`          | ডিবাগ মোডে স্ক্রিপ্ট চালান                              |
+| `--encoding=UTF-8` | পড়া প্রথম ফাইলের এনকোডিং নির্দিষ্ট করে                 |
+| `--arch=x86`       | এই বিকল্পটি *wes* দ্বারা স্বয়ংক্রিয়ভাবে যোগ করা হয়   |
 
 # মডিউল সিস্টেম
 
@@ -82,7 +82,7 @@ wes
 
 ## *commonjs module*
 
-`module.exports` বরাদ্দ করে এবং `require()` কল করে মডিউল পরিচালনা করুন। পরম পাথ এবং `./` এবং `../` দিয়ে শুরু হওয়া আপেক্ষিক পাথগুলি ছাড়া অন্য পাথগুলি *wes\_modules* ডিরেক্টরিতে এবং সুবিধামত *node\_modules* ডিরেক্টরিতে মডিউলগুলি সন্ধান করে৷ *wes* 's `require()` স্বয়ংক্রিয়ভাবে মডিউল ফাইলের এনকোডিং অনুমান করে, কিন্তু আপনি দ্বিতীয় আর্গুমেন্টের সাথে এনকোডিং নির্দিষ্ট করতে পারেন যদি এটি সঠিকভাবে অনুমান না করে।
+`module.exports` এ বরাদ্দ করে এবং `require()` কল করে মডিউল পরিচালনা করুন। পরম পাথ এবং `./` এবং `../` দিয়ে শুরু হওয়া আপেক্ষিক পাথগুলি ছাড়া অন্য পাথগুলি *wes\_modules* ডিরেক্টরিতে এবং সুবিধামত *node\_modules* ডিরেক্টরিতে মডিউলগুলি সন্ধান করে৷ *wes* 's `require()` স্বয়ংক্রিয়ভাবে মডিউল ফাইলের এনকোডিং অনুমান করে, কিন্তু আপনি দ্বিতীয় আর্গুমেন্টের সাথে এনকোডিং নির্দিষ্ট করতে পারেন যদি এটি সঠিকভাবে অনুমান না করে।
 
 ```javascript
 // ./add.js
@@ -98,7 +98,7 @@ const add = require('./add')
 console.log('add(7, 3) // => %O', add(7, 3))
 ```
 
-এছাড়াও, `require('WScript.Shell')` মতো *COM Object* *require* সাথে আমদানি করা সম্ভব।
+এছাড়াও, `require('WScript.Shell')` এর মতো *COM Object* *require* সাথে আমদানি করা সম্ভব।
 
 ```javascript
 const Shell = require('Shell.Application')
@@ -109,7 +109,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra* , স্ক্রিপ্ট এক্সিকিউশন ইঞ্জিন, সিনট্যাক্স ব্যাখ্যা করে যেমন `imoprt` , কিন্তু এটি *cscript* পরিবেশে কার্যকর করা হয় না। *wes* এ, অন্তর্নির্মিত মডিউলগুলিতে *babel* যোগ করার মাধ্যমে, *es module* ক্রমানুসারে স্থানান্তরিত হওয়ার সময় কার্যকর করা হয়। এটি ওভারহেড প্রক্রিয়াকরণের খরচ এবং একটি ফুলে যাওয়া *wes.js* ফাইলের জন্য আসে। *es module* লেখা মডিউলগুলিকেও ট্রান্সপিলিং করে `require()` এ রূপান্তরিত করা হয়, তাই *COM Object* অবজেক্টকে কল করা সম্ভব। যাইহোক, এটি *es module* সহ মডিউল ফাইলের এনকোডিং নির্দিষ্ট করা সমর্থন করে না। সবকিছু স্বয়ংক্রিয়ভাবে লোড হয়. এটিকে একটি *es module* হিসাবে লোড করতে, .mjs এ এক্সটেনশন সেট করুন বা `.mjs` এ `"type"` ক্ষেত্রটিকে `"module"` এ `package.json` করুন।
+*Chakra* , স্ক্রিপ্ট এক্সিকিউশন ইঞ্জিন, সিনট্যাক্স ব্যাখ্যা করে যেমন `imoprt` , কিন্তু এটি *cscript* পরিবেশে কার্যকর করা হয় না। *wes* অন্তর্নির্মিত মডিউলগুলিতে *babel* যোগ করার মাধ্যমে, *es module* একের পর এক স্থানান্তরিত হওয়ার সময় কার্যকর করা হয়। এটি ওভারহেড প্রক্রিয়াকরণের খরচ এবং একটি ফুলে যাওয়া *wes.js* ফাইলের জন্য আসে। *es module* লেখা মডিউলগুলিকেও ট্রান্সপিলিং করে `require()` তে রূপান্তরিত করা হয়, তাই *COM Object* কল করা সম্ভব। যাইহোক, এটি *es module* সহ মডিউল ফাইলের এনকোডিং নির্দিষ্ট করা সমর্থন করে না। সবকিছু স্বয়ংক্রিয়ভাবে লোড হয়. এটিকে *es module* হিসাবে লোড করতে, `.mjs` এ এক্সটেনশন সেট করুন বা `package.json` এর `"type"` ক্ষেত্রটিকে `"module"` এ সেট করুন।
 
 ```javascript
 // ./sub.mjs
@@ -130,11 +130,11 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 
 ## *console*
 
-Wes *wes* `WScript.Echo()` এবং `WScript.StdErr.WriteLine()` এর পরিবর্তে *console* ব্যবহার করে।
+*wes* `WScript.Echo()` এবং `WScript.StdErr.WriteLine()` এর পরিবর্তে *console* ব্যবহার করে।
 
 ### *console.log*
 
-`console.log()` দিয়ে কনসোলে অক্ষর আউটপুট করুন। এটি ফরম্যাট করা স্ট্রিংগুলিকেও সমর্থন করে। `%` ফরম্যাটিং অপারেটর ব্যবহার করে একটি ফরম্যাট করা স্ট্রিং আউটপুট করে। (ফরম্যাটিং অপারেটর অন্যান্য পদ্ধতির জন্যও বৈধ।)
+`console.log()` দিয়ে কনসোলে অক্ষর আউটপুট করুন। এটি ফরম্যাট করা স্ট্রিংগুলিকেও সমর্থন করে। `%` ফরম্যাটিং অপারেটর ব্যবহার করে একটি ফর্ম্যাট করা স্ট্রিং আউটপুট করে। (ফরম্যাটিং অপারেটর অন্যান্য পদ্ধতির জন্যও বৈধ।)
 
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
@@ -155,7 +155,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`                 | বস্তুর ডাম্প                     |
 | `%O`                 | অবজেক্ট ডাম্প (ইন্ডেন্টেড/রঙিন)  |
 
-`WScript.StdOut.WriteLine` রঙিন স্ট্রিং আউটপুট করতে WScript.StdOut.WriteLine এর *wes* `WScript.StdErr.WriteLine` ব্যবহার করে। `WScript.Echo` এবং `WScript.StdOut.WriteLine` ব্লক আউটপুট। `WScript.StdErr.WriteLine` বা `console.log` ব্যবহার করুন।
+*wes* রঙিন স্ট্রিং আউটপুট করতে `WScript.StdErr.WriteLine` এর পরিবর্তে `WScript.StdOut.WriteLine` ব্যবহার করে। `WScript.Echo` এবং `WScript.StdOut.WriteLine` ব্লক আউটপুট। `WScript.StdErr.WriteLine` বা `console.log` ব্যবহার করুন।
 
 ### *console.print*
 
@@ -218,7 +218,7 @@ console.log('end')
 
 # অন্তর্নির্মিত মডিউল
 
-মৌলিক প্রক্রিয়াকরণকে সরল ও মানসম্মত করার জন্য *wes* এর *built-in modules* রয়েছে।
+মৌলিক প্রক্রিয়াকরণকে সরল ও মানসম্মত করার জন্য *wes* *built-in modules* রয়েছে।
 
 ## অন্তর্নির্মিত মডিউল অপসারণ করা হবে
 
@@ -229,11 +229,11 @@ console.log('end')
 *   *debug.js*
 *   *log.js*
 
-উপরের মডিউলগুলি যথাক্রমে @wachaon `@wachaon/animate` `@wachaon/day` `@wachaon/debug` `@wachaon/log` হিসাবে ইনস্টল করা যেতে পারে।
+উপরের মডিউলগুলি যথাক্রমে `@wachaon/animate` `@wachaon/day` `@wachaon/debug` `@wachaon/log` হিসাবে ইনস্টল করা যেতে পারে।
 
 ## *ansi*
 
-ansi হল `ansi` *ANSI escape code* যা আদর্শ আউটপুট রং এবং প্রভাব পরিবর্তন করতে পারে। ব্যবহৃত কনসোল অ্যাপ্লিকেশনের ধরন এবং সেটিংসের উপর নির্ভর করে রঙ এবং প্রভাব ভিন্ন হতে পারে।
+`ansi` হল *ANSI escape code* যা আদর্শ আউটপুট রং এবং প্রভাব পরিবর্তন করতে পারে। ব্যবহৃত কনসোল অ্যাপ্লিকেশনের ধরন এবং সেটিংসের উপর নির্ভর করে রঙ এবং প্রভাব ভিন্ন হতে পারে।
 
 ```javascript
 const { redBright, yellow } = require('ansi')
@@ -241,7 +241,7 @@ const message = 'File does not exist'
 console.log(redBright + 'Error: ' + yellow + message)
 ```
 
-এছাড়াও আপনি `ansi.color()` এবং `ansi.bgColor()` ) দিয়ে আপনার নিজস্ব রং তৈরি করতে পারেন। আর্গুমেন্ট *RGB* ব্যবহার করে যেমন `255, 165, 0` এবং *color code* যেমন `'#FFA500'` । `orange` মতো *color name* সমর্থিত নয়।
+এছাড়াও আপনি `ansi.color()` এবং `ansi.bgColor()` দিয়ে আপনার নিজস্ব রং তৈরি করতে পারেন। আর্গুমেন্ট *RGB* ব্যবহার করে যেমন `255, 165, 0` *color code* যেমন `'#FFA500'` । `orange` মতো *color name* সমর্থিত নয়।
 
 ```javascript
 const { color } = require('ansi')
@@ -269,7 +269,7 @@ argv, argv.unnamed, argv.named)
 
 ## *pathname*
 
-পাথ ম্যানিপুলেট. `/` এবং `\` দিয়ে শুরু হওয়া পাথগুলি সাধারণত ড্রাইভ রুটের সাথে আপেক্ষিক। উদাহরণস্বরূপ `/filename` এবং `C:/filename` একই পথ হতে পারে। নিরাপত্তার কারণে, wes কার্যকারী ডিরেক্টরির সাথে সম্পর্কিত `/` এবং `\` দিয়ে শুরু হওয়া *wes* ব্যাখ্যা করে।
+পাথ ম্যানিপুলেট. `/` এবং `\` দিয়ে শুরু হওয়া পাথগুলি সাধারণত ড্রাইভ রুটের সাথে আপেক্ষিক। উদাহরণস্বরূপ `/filename` এবং `C:/filename` একই পথ হতে পারে। নিরাপত্তার কারণে, *wes* কার্যকারী ডিরেক্টরির সাথে সম্পর্কিত `/` এবং `\` দিয়ে শুরু হওয়া পাথগুলিকে ব্যাখ্যা করে।
 
 ```javascript
 const path = require('pathname')
@@ -279,7 +279,7 @@ console.log('file %O', file)
 
 ## *filesystem*
 
-ফাইল এবং ডিরেক্টরি ম্যানিপুলেট. `readTextFileSync()` স্বয়ংক্রিয়ভাবে ফাইলের এনকোডিং অনুমান করে এবং এটি পড়ে। (এমনকি যদি `readFileSync()` এর দ্বিতীয় আর্গুমেন্টটি `auto` `encode` করা থাকে তবে এটি স্বয়ংক্রিয়ভাবে অনুমান করা হবে।)
+ফাইল এবং ডিরেক্টরি ম্যানিপুলেট. `readTextFileSync()` স্বয়ংক্রিয়ভাবে ফাইলের এনকোডিং অনুমান করে এবং এটি পড়ে। (এমনকি যদি `readFileSync()` এর দ্বিতীয় `encode` `auto` সেট করা থাকে তবে এটি স্বয়ংক্রিয়ভাবে অনুমান করা হবে।)
 
 ```javascript
 const fs = require('filesystem')
@@ -296,7 +296,7 @@ console.log(contents)
 
 ## *JScript*
 
-আপনি যদি স্ক্রিপ্ট ইঞ্জিনকে *Chakra* পরিবর্তন করেন, আপনি *JScript* নির্দিষ্ট *Enumerator* ইত্যাদি ব্যবহার করতে পারবেন না। অন্তর্নির্মিত মডিউল *JScript* তাদের উপলব্ধ করে তোলে। যাইহোক, *Enumerator* *Array* প্রদান করে, *Enumerator object* নয়।
+আপনি যদি স্ক্রিপ্ট ইঞ্জিনকে *Chakra* পরিবর্তন করেন, তাহলে আপনি *JScript* নির্দিষ্ট *Enumerator* ইত্যাদি ব্যবহার করতে পারবেন না। অন্তর্নির্মিত মডিউল *JScript* তাদের উপলব্ধ করে তোলে। যাইহোক, *Enumerator* *Array* প্রদান করে, *Enumerator object* নয়।
 
 ```javascript
 const { Enumerator, ActiveXObject } = require('JScript')
@@ -323,27 +323,49 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 
 *VBScript* কিছু বৈশিষ্ট্য অফার করে যা *JScript* করে না।
 
-```javascript
+```javascript {"testing": true}
 const { TypeName } = require('VBScript')
 const FSO = require('Scripting.FileSystemObject')
-console.log(TypeName(FSO))
+console.log(TypeName(FSO)) // => "FileSystemObject"
 ```
 
 ## *httprequest*
 
-*httprequest* একটি *http request* ইস্যু করে।
+*httprequest* *http request* ইস্যু করে।
 
-```javascript
+```javascript {"testing": true}
 const request = require('httprequest')
 const { responseText } = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
-console.log(() => JSON.parse(responseText))
+console.log(() => JSON.parse(responseText)) /* => {
+    "id": 1,
+    "name": "Leanne Graham",
+    "username": "Bret",
+    "email": "Sincere@april.biz",
+    "address": {
+        "street": "Kulas Light",
+        "suite": "Apt. 556",
+        "city": "Gwenborough",
+        "zipcode": "92998-3874",
+        "geo": {
+            "lat": "-37.3159",
+            "lng": "81.1496"
+        }
+    },
+    "phone": "1-770-736-8031 x56442",
+    "website": "hildegard.org",
+    "company": {
+        "name": "Romaguera-Crona",
+        "catchPhrase": "Multi-layered client-server neural-net",
+        "bs": "harness real-time e-markets"
+    }
+} */
 ```
 
 ## *minitest*
 
 *minitest* সহজ পরীক্ষা লিখতে পারে। সংস্করণ `0.10.71` থেকে, আমরা মূল ধারণায় ফিরে গিয়েছিলাম এবং দাবির ধরনগুলিকে 3 প্রকারে কমিয়েছি।
 
-`describe` সহ গ্রুপ করুন, `it` সাথে পরীক্ষা করুন এবং `assert` যাচাই করুন। `pass` `it` সংঘটনের সংখ্যা এবং পাসের সংখ্যার একটি অ্যারে হবে।
+`describe` সহ গোষ্ঠী করুন, `it` দিয়ে পরীক্ষা করুন এবং `assert` দিয়ে যাচাই করুন। `pass` `it` সংঘটনের সংখ্যা এবং পাসের সংখ্যার একটি অ্যারে হবে।
 
 ```javascript
 const { describe, it, assert, pass } = require('minitest')
@@ -379,7 +401,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 সরলতার জন্য বস্তুর তুলনা করার জন্য শুধুমাত্র তিনটি দাবী ফাংশন আছে।
 
-#### assert(মান, `assert(value, message)` `assert.ok(value, message)`
+#### `assert(value, message)` `assert.ok(value, message)`
 
 কঠোর সমতা অপারেটরের সাথে `true` সাথে তুলনা করুন `===` । `value` একটি ফাংশন হলে, ফাংশন কার্যকর করার ফলাফল মূল্যায়ন করুন।
 
@@ -391,7 +413,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 #### `assert.equal(expected, actual)`
 
 সদস্য সমতার জন্য বস্তুর তুলনা, রেফারেন্স দ্বারা নয়।\
-NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` বা `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` ইত্যাদি।\
+`NaN === NaN` `function (){} === function (){}` `true` `/RegExp/g === /RegExp/g` বা `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` ইত্যাদি।\
 ক্লাস (বস্তু) তুলনা করার সময়, তাদের অবশ্যই একই কনস্ট্রাক্টর বা একটি সুপারক্লাস থাকতে হবে যার `actual` `expected` ।
 
 | পরম        | টাইপ    | বর্ণনা         |
@@ -412,13 +434,13 @@ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegEx
 
 ## *pipe*
 
-*pipe* পাইপিংকে সহজ করে। এক বা একাধিক *converter* সাথে *data* রূপান্তর করার সময় ফলাফলটি আউটপুট হয়। *ver 0.12.75* পর থেকে, এটি সরাসরি কমান্ড লাইন থেকে শুরু করা যেতে পারে।
+*pipe* পাইপিংকে সহজ করে। এক বা একাধিক *converter* সাথে *data* রূপান্তর করার সময় ফলাফল আউটপুট করুন। *ver 0.12.75* পর থেকে, এটি সরাসরি কমান্ড লাইন থেকে শুরু করা যেতে পারে।
 
 ### একটি মডিউল হিসাবে *pipe* শুরু করুন
 
-*pipe* পদ্ধতির `use(converter)` আর্গুমেন্টে রূপান্তর ফাংশন রাখুন এবং `process(data, callback(error, result))` সহ ডেটা ইনপুট এবং পোস্ট-রূপান্তর প্রক্রিয়াকরণ বর্ণনা করুন। যদি কোন `callback` নির্দিষ্ট করা না থাকে, রিটার্ন মান *promise* হবে, এবং প্রক্রিয়াকরণ `then(result)` এবং `catch(error)` এর সাথে সংযুক্ত করা যেতে পারে।
+*pipe* পদ্ধতির `use(converter)` আর্গুমেন্টে রূপান্তর ফাংশন রাখুন এবং `process(data, callback(error, result))` সহ ডেটা ইনপুট এবং পোস্ট-রূপান্তর প্রক্রিয়াকরণ বর্ণনা করুন। যদি কোন `callback` নির্দিষ্ট করা না থাকে, তাহলে রিটার্ন মান *promise* হবে, এবং প্রক্রিয়াকরণ `then(result)` এবং `catch(error)` এর সাথে সংযুক্ত করা যেতে পারে।
 
-```javascript
+```javascript {"testing": true}
 const pipe = require('pipe')
 
 function add (a, b) {
@@ -440,12 +462,14 @@ pipe()
   .use(add5)
   .use(sub3)
   .use(div, 4)
-  .process(10, (err, res) => console.log('res: %O', res))
+  .process(10, (err, res) => {
+    console.log(() => res) // => 3
+  })
 ```
 
 `use(converter)` ছাড়াও, `.filter(callbackFn(value, index))` এবং `map(callbackFn(value, index))` এর মতো পদ্ধতি রয়েছে। প্রতিটি *data* একটি স্ট্রিং, একটি অ্যারে এবং একটি বস্তু।
 
-```javascript
+```javascript {"testing": true}
 const pipe = require('pipe')
 
 const tsv = `
@@ -455,12 +479,6 @@ vbscript\t1996
 c#\t2000
 `.trim()
 
-pipe()
-    .filter(include)
-    .map(release)
-    .process(tsv)
-    .then((res) => console.log(() => res))
-
 function include(value, i) {
     return value.includes('script')
 }
@@ -468,6 +486,16 @@ function include(value, i) {
 function release(value, i) {
     return value.split('\t').join(' was released in ')
 }
+
+pipe()
+    .filter(include)
+    .map(release)
+    .process(tsv)
+    .then((res) => {
+        console.log(() => res) /* => `javascript was released in 1955
+vbscript was released in 1996` */
+    })
+
 ```
 
 ### কমান্ড লাইন থেকে *pipe* শুরু হচ্ছে
@@ -500,13 +528,12 @@ pipe()
 
 স্ক্রিপ্টের ধরন নির্ধারণ করুন।
 
-```javascript
+```javascript {"testing": true}
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
-const log = require('log')
-log(() => isString("ECMAScript"))
-log(() => isNumber(43.5))
-log(() => isBoolean(false))
-log(() => isObject(function(){}))
+console.log(() => isString("ECMAScript")) /* => true */
+console.log(() => isNumber(43.5)) /* => true */
+console.log(() => isBoolean(false)) /* => true */
+console.log(() => isObject(function(){})) /* => false */
 ```
 
 ## *getMember*
@@ -517,7 +544,7 @@ log(() => isObject(function(){}))
 wes getMember "Scripting.FileSystemObject"
 ```
 
-একটি মডিউল হিসাবে ব্যবহার করা হলে, এটি সদস্যের ধরণ এবং উদাহরণের বিবরণ পায়। একটি মডিউল হিসাবে ব্যবহার করা হলে, আপনি *WSH (Windows Script Host)* থেকে নিশ্চিত করা যাবে না এমন বস্তু সম্পর্কে তথ্য পেতে পারেন।
+একটি মডিউল হিসাবে ব্যবহার করা হলে, এটি উদাহরণের সদস্যদের প্রকার এবং বিবরণ পায়। একটি মডিউল হিসাবে ব্যবহার করা হলে, আপনি এমন বস্তু সম্পর্কে তথ্য পেতে পারেন যেগুলি *WSH (Windows Script Host)* থেকে নিশ্চিত করা যায় না।
 
 ```javascript
 const getMember = require('getMember')
@@ -533,7 +560,7 @@ getMember(SWbemServicesEx)
 
 `source` *PowerShell* স্ক্রিপ্ট চালান.
 
-কনসোলে cmdlets এর একটি তালিকা প্রদর্শন করুন।
+কনসোলে cmdlet এর একটি তালিকা প্রদর্শন করুন।
 
 ```javascript
 const ps = require('ps')
@@ -685,7 +712,7 @@ wes zip docs\* dox.zip
 wes zip -p dox.zip
 ```
 
-যদি `path` এক্সটেনশন `.zip` থাকে, তাহলে `unzip()` প্রসেস করা হয়, এবং এক্সটেনশন `.zip` এর কোন বিবরণ নেই। বিকল্পভাবে, একটি এক্সটেনশন `.zip` থাকলেও, যদি একটি ওয়াইল্ডকার্ড `*` বিবরণ থাকে, `zip()` প্রক্রিয়া করা হবে।
+যদি `path` এক্সটেনশন `.zip` থাকে, `unzip()` প্রসেস করা হয়, এবং এক্সটেনশন `.zip` এর কোন বিবরণ নেই। বিকল্পভাবে, একটি এক্সটেনশন `.zip` যদি একটি ওয়াইল্ডকার্ড `*` বিবরণ থাকে, `zip()` প্রক্রিয়া করা হবে।
 
 | নামহীন | বর্ণনা                     |
 | ------ | -------------------------- |
@@ -699,20 +726,23 @@ wes zip -p dox.zip
 
 # বান্ডলিং (প্যাকেজিং) এবং মডিউল ইনস্টল করা
 
-*wes* এ, বেশ কয়েকটি মডিউলের একটি বান্ডিলকে প্যাকেজ বলা হয়। আপনি *github* এ প্রকাশিত *wes* এর জন্য প্যাকেজটি ইনস্টল করতে পারেন। একটি প্যাকেজ প্রকাশ করার জন্য একটি *github repository* প্রয়োজন।
+*wes* এ, বেশ কয়েকটি মডিউলের একটি বান্ডিলকে প্যাকেজ বলা হয়। আপনি *github* এ প্রকাশিত *wes* এর জন্য প্যাকেজটি ইনস্টল করতে পারেন। একটি প্যাকেজ প্রকাশ করার জন্য *github repository* প্রয়োজন।
 
 ## *bundle*
 
-*github* একটি প্যাকেজ প্রকাশ করার সময়, প্রয়োজনীয় মডিউলগুলি *bundle* করে এবং *bundle.json* তৈরি করে।
+*github* একটি প্যাকেজ প্রকাশ করার সময়, প্রয়োজনীয় মডিউলগুলিকে *bundle* করে এবং *bundle.json* তৈরি করে।
 
 1.  একটি *repository* শুধুমাত্র একটি প্যাকেজ প্রকাশ করা যেতে পারে
-2.  *package.json* প্রয়োজন। ন্যূনতম, `main` ক্ষেত্রের বিবরণ প্রয়োজন। ```json
-    {
-        "main": "index.js"
-    }
+
+2.  *package.json* প্রয়োজন। ন্যূনতম, `main` ক্ষেত্রের বিবরণ প্রয়োজন।
+
+    ```json
+     { "main": "index.js" }
     ```
+
 3.  আপনি যদি প্যাকেজটি প্রকাশ করতে চান তাহলে সংগ্রহস্থলটিকে *public* করুন৷
-4.  `version 0.12.0` দিয়ে শুরু করে, কার্যকারী ডিরেক্টরির উপরে একটি ডিরেক্টরিতে সরাসরি মডিউল লোড করা প্যাকেজগুলি বান্ডিল করা হবে না। উপরের ডিরেক্টরির *wes\_modules* বা *node\_modules* করা যেতে পারে।
+
+4.  `version 0.12.0` দিয়ে শুরু করে, কার্যকারী ডিরেক্টরির উপরে একটি ডিরেক্টরিতে সরাসরি মডিউল লোড করা প্যাকেজগুলি বান্ডিল করা হবে না। উপরের ডিরেক্টরির প্যাকেজগুলি *wes\_modules* বা *node\_modules* বান্ডিল করা যেতে পারে।
 
 বান্ডিল করতে নিম্নলিখিত কমান্ডটি লিখুন: কি বান্ডেল করতে হবে তা জানতে *package.json* পড়ুন।
 
@@ -730,7 +760,7 @@ wes init
 
 ## *install*
 
-*wes* প্রকাশিত *github* এর জন্য প্যাকেজ ইনস্টল করতে ব্যবহৃত হয়। `version 0.10.28` থেকে, ইনস্টলেশন ফোল্ডারটি `wes_modules` থেকে `node_modules` এ পরিবর্তিত হয়েছে। আপনি `node_modules` এ ইনস্টল করতে চাইলে add `--node` অপশন দিন। `version 0.12.0` দিয়ে শুরু করে, ফাইলগুলি *bandle.json* থেকে আনজিপ করা হবে এবং সংরক্ষণ করা হবে৷ স্পেসিফিকেশন পরিবর্তনের কারণে, 0.12.0-এর কম `version 0.12.0` সহ প্যাকেজগুলি `version 0.12.0` সাথে সঠিকভাবে ইনস্টল নাও হতে পারে।
+*github* প্রকাশিত *wes* এর জন্য প্যাকেজ ইনস্টল করতে ব্যবহৃত হয়। `version 0.10.28` থেকে, ইনস্টলেশন ফোল্ডারটি `node_modules` থেকে `wes_modules` এ পরিবর্তিত হয়। আপনি `node_modules` এ ইনস্টল করতে চাইলে add `--node` অপশন দিন। `version 0.12.0` দিয়ে শুরু করে, ফাইলগুলি *bandle.json* থেকে আনজিপ করা হবে এবং সংরক্ষণ করা হবে৷ স্পেসিফিকেশন পরিবর্তনের কারণে, `version 0.12.0` সহ প্যাকেজগুলি `version 0.12.0` সাথে সঠিকভাবে ইনস্টল নাও হতে পারে।
 
 `@author/repository` ফর্মে *install* করতে আর্গুমেন্ট পাস করুন।
 
@@ -738,15 +768,15 @@ wes init
 wes install @wachaon/fmt
 ```
 
-*install* করার বিকল্প আছে।
+*install* বিকল্প আছে।
 
-| নাম           | সংক্ষিপ্ত নাম | বর্ণনা                                                                      |
-| ------------- | ------------- | --------------------------------------------------------------------------- |
-| `--bare`      | `-b`          | *@author* ফোল্ডার তৈরি করবেন না                                             |
-| `--global`    | `-g`          | যে ফোল্ডারে *wes.js* আছে সেখানে প্যাকেজটি ইনস্টল করুন                       |
-| `--save`      | `-S`          | *package.json* এ *dependencies* ক্ষেত্রে প্যাকেজের নাম এবং সংস্করণ যোগ করুন |
-| `--save--dev` | `-D`          | *devDependencies* *package.json* প্যাকেজের নাম এবং সংস্করণ যোগ করুন         |
-| `--node`      | `-n`          | *node\_module* ফোল্ডারে ইনস্টল করুন                                         |
+| নাম           | সংক্ষিপ্ত নাম | বর্ণনা                                                                         |
+| ------------- | ------------- | ------------------------------------------------------------------------------ |
+| `--bare`      | `-b`          | *@author* ফোল্ডার তৈরি করবেন না                                                |
+| `--global`    | `-g`          | যে ফোল্ডারে *wes.js* আছে সেখানে প্যাকেজটি ইনস্টল করুন                          |
+| `--save`      | `-S`          | *package.json* এ *dependencies* ক্ষেত্রে প্যাকেজের নাম এবং সংস্করণ যোগ করুন    |
+| `--save--dev` | `-D`          | *package.json* এ *devDependencies* ক্ষেত্রে প্যাকেজের নাম এবং সংস্করণ যোগ করুন |
+| `--node`      | `-n`          | *node\_module* ফোল্ডারে ইনস্টল করুন                                            |
 
 `--bare` বিকল্পটি `author@repository` থেকে `repository` তে `require` আর্গুমেন্ট বাদ দিতে পারে। `--global` বিকল্পটি সমস্ত স্ক্রিপ্টের জন্য ইনস্টল করা প্যাকেজ উপলব্ধ করে।
 
@@ -756,7 +786,7 @@ wes install @wachaon/fmt --bare
 
 # ব্যক্তিগত সংগ্রহস্থল থেকে প্যাকেজ ইনস্টল করা হচ্ছে
 
-*install* শুধুমাত্র পাবলিক *github* রিপোজিটরি থেকে প্যাকেজ ইন্সটল করতে পারে না, ব্যক্তিগত রিপোজিটরি থেকে প্যাকেজও ইনস্টল করতে পারে। *install* সময়, *@author/repository* সহ প্যাকেজটি নির্দিষ্ট করুন। বাস্তবায়ন নিম্নলিখিত url ডাউনলোড করার চেষ্টা করে।
+*install* শুধুমাত্র পাবলিক *github* রিপোজিটরি থেকে প্যাকেজ ইন্সটল করতে পারে না, ব্যক্তিগত রিপোজিটরি থেকে প্যাকেজও ইনস্টল করতে পারে। *install* , *@author/repository* সহ প্যাকেজটি নির্দিষ্ট করুন। বাস্তবায়ন নিম্নলিখিত url ডাউনলোড করার চেষ্টা করে।
 
 ```javascript
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
@@ -774,7 +804,7 @@ wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* স্ক্রিপ্ট ফর্ম্যাট করার জন্য *prettier* এর জন্য *wes* প্যাকেজ। এছাড়াও, যদি *@wachaon/fmt* ইনস্টল করার সময় একটি *Syntax Error* ঘটে, আপনি ত্রুটির অবস্থান দেখাতে পারেন।
+*@wachaon/fmt* স্ক্রিপ্ট ফর্ম্যাট করার জন্য *wes* এর জন্য *prettier* প্যাকেজ। এছাড়াও, যদি *@wachaon/fmt* ইনস্টল করার সময় *Syntax Error* ঘটে, আপনি ত্রুটিটির অবস্থান নির্দেশ করতে পারেন।
 
 ### *@wachaon/fmt* ইনস্টল করুন
 
@@ -798,7 +828,7 @@ wes @wachaon/fmt src/sample --write
 | --------- | ------------- | ------------------------ |
 | `--write` | `-w`          | ওভাররাইট করার অনুমতি দিন |
 
-`--write` বা `-w` নামের আর্গুমেন্ট নির্দিষ্ট করা থাকলে ফরম্যাট করা স্ক্রিপ্ট দিয়ে ফাইলটি ওভাররাইট করুন।
+`--write` বা `-w` নামের আর্গুমেন্ট নির্দিষ্ট করা থাকলে ফর্ম্যাট করা স্ক্রিপ্ট দিয়ে ফাইলটি ওভাররাইট করুন।
 
 #### একটি মডিউল হিসাবে ব্যবহার করুন
 
@@ -832,7 +862,7 @@ wes edge --download
 
 ### কিভাবে *@wachaon/edge* ব্যবহার করবেন
 
-এটি ব্যবহার করা সহজ হবে। আপনার ব্রাউজার শুরু করুন এবং https: `https://www.google.com` এ প্রদর্শনের জন্য উইন্ডোর আকার এবং সাইট পরিবর্তন করুন।
+এটি ব্যবহার করা সহজ হবে। আপনার ব্রাউজার শুরু করুন এবং উইন্ডোর আকার পরিবর্তন করুন এবং `https://www.google.com` এ প্রদর্শন সাইটটি পরিবর্তন করুন।
 
 ```javascript
 const edge = require('edge')
@@ -877,11 +907,11 @@ const ret = edge((window, navi, res) => {
 console.log('ret // => %O', ret)
 ```
 
-*edge* পরিদর্শন করা *URL* কনসোলে ক্রমানুসারে প্রিন্ট করে। `@wachaon/edge` *URL* এর জন্য ইভেন্ট নিবন্ধন করে এবং `res.exports` ডেটা যোগ করে। নিবন্ধিত করা *URL* টি হয় `String` `RegExp` হতে পারে এবং নমনীয়ভাবে সেট করা যেতে পারে। এটিকে ইভেন্ট-চালিত করে, আপনি অটোপাইলট দিয়ে পরিচালনা করা কঠিন প্রক্রিয়াগুলির জন্য ইভেন্ট সেট না করে সহজেই ম্যানুয়াল অপারেশনে স্যুইচ করতে পারেন। আপনি যদি স্ক্রিপ্টটি বন্ধ করতে চান, তাহলে `navi.emit('terminate', res)` বা *Edge* ম্যানুয়ালি বন্ধ করুন। চূড়ান্তকরণ ডিফল্টরূপে *.json* ফাইল হিসাবে `res.exports` কে আউটপুট করে। আপনি যদি টার্মিনেশন প্রসেসিং সেট করতে চান, তাহলে `edge(callback, terminate)` `terminate` সেট করুন (কলব্যাক, টার্মিনেট)। `window` হল *@wachaon/webdriver* এর *Window* ক্লাসের একটি উদাহরণ, ব্রাউজারের `window` নয়।
+*edge* পরিদর্শন করা *URL* কনসোলে ক্রমানুসারে প্রিন্ট করে। `@wachaon/edge` *URL* এর জন্য ইভেন্ট নিবন্ধন করে এবং `res.exports` এ ডেটা যোগ করে। নিবন্ধিত করা *URL* হয় `String` `RegExp` হতে পারে এবং নমনীয়ভাবে সেট করা যেতে পারে৷ এটিকে ইভেন্ট-চালিত করে, আপনি অটোপাইলট দিয়ে পরিচালনা করা কঠিন প্রক্রিয়াগুলির জন্য ইভেন্টগুলি সেট না করে সহজেই ম্যানুয়াল অপারেশনে স্যুইচ করতে পারেন। আপনি যদি স্ক্রিপ্টটি বন্ধ করতে চান, তাহলে `navi.emit('terminate', res)` চালান বা ম্যানুয়ালি *Edge* বন্ধ করুন। চূড়ান্তকরণ ডিফল্টরূপে *.json* ফাইল হিসাবে `res.exports` আউটপুট করে। আপনি যদি টার্মিনেশন প্রসেসিং সেট করতে চান, তাহলে প্রান্তের `terminate` সেট করুন `edge(callback, terminate)` । `window` হল *@wachaon/webdriver* এর *Window* ক্লাসের একটি উদাহরণ, ব্রাউজারের `window` নয়।
 
 ## *@wachaon/webdriver*
 
-এটি এমন একটি প্যাকেজ হবে যা ব্রাউজারটি পরিচালনাকারী *web driver* অনুরোধ পাঠায়। *@wachaon/edge* এ *@wachaon/webdriver* অন্তর্ভুক্ত রয়েছে।
+এটি এমন একটি প্যাকেজ হবে যা ব্রাউজারটি পরিচালনাকারী *web driver* অনুরোধ পাঠায়। *@wachaon/edge* *@wachaon/webdriver* অন্তর্ভুক্ত রয়েছে।
 
 ### *@wachaon/webdriver* ইনস্টল করুন
 

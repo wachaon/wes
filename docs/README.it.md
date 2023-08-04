@@ -1,7 +1,7 @@
 # *WES*
 
-*wes* è un framework console per l'esecuzione di *ECMAScript* su *WSH (Windows Script Host)* . Il [*japanese*](/README.md) originale del *README* sarà in giapponese. I testi diversi dal giapponese verranno tradotti automaticamente.\
-Per testi in altre lingue, seleziona una delle opzioni seguenti.
+*wes* è un framework di console per l'esecuzione *ECMAScript* su *WSH (Windows Script Host)* . Il testo originale del *README* sarà in [*japanese*](/README.md) . I testi diversi dal giapponese saranno tradotti automaticamente.\
+Per i testi in altre lingue, selezionare una delle opzioni seguenti.
 
 +  [*English*](/docs/README.en.md) <!-- 英語 -->
 +  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
@@ -20,7 +20,7 @@ Per testi in altre lingue, seleziona una delle opzioni seguenti.
 
 # caratteristica
 
-*   Puoi cambiare il motore di script in *Chakra* e scrivere secondo le specifiche *ECMAScript2015* .
+*   Puoi cambiare il motore di script in *Chakra* e scrivere secondo le specifiche *ECMAScript2015+* .
 *   Utilizza sempre *cscript.exe* a 32 bit, quindi nessun problema a 64 bit univoco
 *   Sistema modulare disponibile per uno sviluppo più efficiente rispetto al tradizionale *WSH*
 *   I moduli integrati supportano l'elaborazione di base come l'input/output di file e l'output di testo colorato nella console
@@ -28,11 +28,11 @@ Per testi in altre lingue, seleziona una delle opzioni seguenti.
 *   È anche possibile impacchettare il modulo e pubblicarlo esternamente o ottenerlo.
 *   Visualizza i dettagli dell'errore in modo più gentile rispetto a *WSH*
 
-# Problemi *wes* che non possiamo risolvere
+# Problemi noti che non *wes* risolvere
 
 *   `WScript.Quit` non può interrompere il programma e non restituisce un codice di errore
 *   L'elaborazione asincrona non funziona correttamente
-*   Non è possibile utilizzare il *event prefix* del secondo argomento di `WScript.CreateObject`
+*   Non è possibile utilizzare *event prefix* del secondo argomento di `WScript.CreateObject`
 
 # scaricamento
 
@@ -42,7 +42,7 @@ Per testi in altre lingue, seleziona una delle opzioni seguenti.
 bitsadmin /TRANSFER GetWES https://raw.githubusercontent.com/wachaon/wes/master/wes.js %CD%\\wes.js
 ```
 
-*wes* adotta un'implementazione che utilizza `SendKeys` di *WScript.Shell* in fase di esecuzione. Se il percorso della directory in cui è memorizzato *wes.js* contiene caratteri non ASCII, `SendKeys` non sarà in grado di inviare correttamente le chiavi e lo script non verrà eseguito. Pertanto, assicurati che il percorso in cui memorizzi *wes.js* sia composto solo da caratteri ASCII. In alternativa, se hai già scaricato *wes.js* , puoi aggiornarlo utilizzando il comando seguente.
+*wes* adotta un'implementazione che utilizza `SendKeys` di *WScript.Shell* in fase di esecuzione. Se il percorso della directory in cui è memorizzato *wes.js* contiene caratteri non ASCII, `SendKeys` non sarà in grado di inviare correttamente le chiavi e lo script non verrà eseguito. Pertanto, il percorso in cui memorizzi *wes.js* dovrebbe essere costituito solo da caratteri ASCII. In alternativa, se hai già scaricato *wes.js* , puoi aggiornarlo utilizzando il comando seguente.
 
 ```bat
 wes update
@@ -50,19 +50,19 @@ wes update
 
 # come iniziare *wes*
 
-Immettere la parola chiave `wes` seguita dal comando specificando il file che sarà il punto di partenza del programma nella console. L'estensione dello script *.js* può essere omessa.
+Immettere `wes` seguita dal comando specificando il file che sarà il punto di partenza del programma nella console. L'estensione dello script *.js* può essere omessa.
 
 ```bat
 wes index
 ```
 
-*wes* può inserire ed eseguire direttamente gli script sulla console. Se lo avvii solo con `wes` , puoi inserire ed eseguire direttamente lo script.
+*wes* può inserire ed eseguire direttamente gli script sulla console. Se lo avvii solo con `wes` , puoi entrare ed eseguire direttamente lo script.
 
 ```bat
 wes
 ```
 
-*REP* accetta l'input dello script finché non inserisci due righe vuote. Puoi anche vedere *REP* che esegue lo script di esempio in *README.md* .
+*REP* accetta l'input di script finché non si inseriscono due righe vuote. Puoi anche vedere *REP* eseguire lo script di esempio in *README.md* .
 
 ## opzioni della riga di comando
 
@@ -78,11 +78,11 @@ Le opzioni di avvio *wes* sono le seguenti.
 
 # sistema di moduli
 
-*wes* supporta due sistemi di moduli, il sistema *commonjs module* che utilizza `require()` e il sistema di *es module* che utilizza `import` . (l' *dynamic import* non è supportata perché è un processo asincrono)
+*wes* supporta due sistemi di moduli, *commonjs module* che utilizza `require()` e *es module* che utilizza `import` . ( *dynamic import* non è supportata perché è un processo asincrono)
 
 ## *commonjs module*
 
-Gestisci i moduli assegnandoli a `module.exports` e chiamando `require()` . Percorsi diversi dai percorsi assoluti e dai percorsi relativi che iniziano con `./` e `../` cercano i moduli nella directory *wes\_modules* e convenientemente nella directory *node\_modules* . `require()` di *wes* indovina automaticamente la codifica del file del modulo, ma puoi specificare la codifica con il secondo argomento se non indovina correttamente.
+Gestisci i moduli assegnandoli a `module.exports` e chiamando `require()` . I percorsi diversi dai percorsi assoluti e dai percorsi relativi che iniziano con `./` e `../` cercano i moduli nella directory *wes\_modules* e opportunamente *node\_modules* . `require()` di *wes* indovina automaticamente la codifica del file del modulo, ma puoi specificare la codifica con il secondo argomento se non indovina correttamente.
 
 ```javascript
 // ./add.js
@@ -109,7 +109,7 @@ Shell.UndoMinimizeAll()
 
 ## *es module*
 
-*Chakra* , il motore di esecuzione dello script, interpreta la sintassi come `imoprt` , ma non viene eseguito nell'ambiente *cscript* . In *wes* , aggiungendo *babel* ai moduli integrati, anche *es module* vengono eseguiti mentre vengono trasposti in sequenza. Ciò ha un costo per l'elaborazione delle spese generali e un file *wes.js* gonfio. I moduli scritti in *es module* vengono anche convertiti in `require()` tramite transpilazione, quindi è possibile chiamare *COM Object* . Tuttavia, non supporta la specifica della codifica del file del modulo con *es module* . Tutto viene caricato automaticamente. Per caricarlo come *es module* , imposta l'estensione su `.mjs` o imposta il campo `"type"` in `package.json` su `"module"` .
+*Chakra* , il motore di esecuzione degli script, interpreta la sintassi come `imoprt` , ma non viene eseguita nell'ambiente *cscript* . In *wes* aggiungendo *babel* ai moduli predefiniti, anche *es module* vengono eseguiti durante il transpiling uno per uno. Ciò comporta un costo di elaborazione del sovraccarico e un file *wes.js* gonfio. Anche i moduli scritti in *es module* vengono convertiti in `require()` mediante transpiling, quindi è possibile chiamare *COM Object* . Tuttavia, non supporta la specifica della codifica del file del modulo con *es module* . Tutto viene caricato automaticamente. Per caricarlo come *es module* , imposta l'estensione su `.mjs` o imposta il campo `"type"` in `package.json` su `"module"` .
 
 ```javascript
 // ./sub.mjs
@@ -130,11 +130,11 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 
 ## *console*
 
-Usiamo la *console* invece di *wes* `WScript.Echo()` e `WScript.StdErr.WriteLine()` .
+*wes* *console* invece di `WScript.Echo()` e `WScript.StdErr.WriteLine()` .
 
 ### *console.log*
 
-Invia i caratteri alla console con `console.log()` . Supporta anche le stringhe formattate. Emette una stringa formattata utilizzando l'operatore di formattazione `%` . (Gli operatori di formattazione sono validi anche per altri metodi.)
+Invia i caratteri alla console con `console.log()` . Supporta anche stringhe formattate. Restituisce una stringa formattata utilizzando l'operatore di formattazione `%` . (Gli operatori di formattazione sono validi anche per altri metodi.)
 
 ```javascript
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
@@ -155,7 +155,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 | `%o`                      | dump dell'oggetto                      |
 | `%O`                      | Dump dell'oggetto (rientrato/colorato) |
 
-`WScript.StdOut.WriteLine` *wes* di `WScript.StdErr.WriteLine` per generare stringhe colorate. L'output di `WScript.Echo` e `WScript.StdOut.WriteLine` è bloccato. `WScript.StdErr.WriteLine` o `console.log` .
+*wes* usa `WScript.StdOut.WriteLine` invece di `WScript.StdErr.WriteLine` per produrre stringhe colorate. `WScript.Echo` e `WScript.StdOut.WriteLine` sono output bloccato. Usa `WScript.StdErr.WriteLine` o `console.log` .
 
 ### *console.print*
 
@@ -163,7 +163,7 @@ console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 
 ### *console.debug*
 
-Output sulla console solo se l'opzione `--debug` è abilitata.
+Invia l'output alla console solo se `--debug` è abilitata.
 
 ### *console.error*
 
@@ -171,7 +171,7 @@ Genera un'eccezione con il contenuto come messaggio.
 
 ### *console.weaklog*
 
-Le stringhe stampate con `console.weaklog()` scompaiono dalla console se è presente un output successivo. Utile per uscite di commutazione.
+Le stringhe stampate con `console.weaklog()` scompaiono dalla console se c'è un output successivo. Utile per commutare le uscite.
 
 ## *Buffer*
 
@@ -194,7 +194,7 @@ console.log(message)
 
 ## *setTimeout* *setInterval* *setImmediate* *Promise*
 
-Poiché *wes* è un ambiente di esecuzione per l'elaborazione sincrona, *setTimeout* *setInterval* *setImmediate* *Promise* non funziona come elaborazione asincrona, ma è implementato per supportare moduli che presuppongono l'implementazione di *Promise* .
+Poiché *wes* è un ambiente di esecuzione per l'elaborazione sincrona, *setTimeout* *setInterval* *setImmediate* *Promise* non funziona come elaborazione asincrona, ma è implementato per supportare i moduli che presuppongono l'implementazione *Promise* .
 
 ```javascript
 const example = () => {
@@ -233,7 +233,7 @@ I moduli di cui sopra possono essere installati rispettivamente come `@wachaon/a
 
 ## *ansi*
 
-`ansi` è un *ANSI escape code* che può modificare i colori e gli effetti dell'output standard. I colori e gli effetti possono variare a seconda del tipo e delle impostazioni dell'applicazione console utilizzata.
+`ansi` Ã¨ *ANSI escape code* che puÃ² modificare i colori e gli effetti dell'output standard. I colori e gli effetti possono variare a seconda del tipo e delle impostazioni dell'applicazione della console utilizzata.
 
 ```javascript
 const { redBright, yellow } = require('ansi')
@@ -241,7 +241,7 @@ const message = 'File does not exist'
 console.log(redBright + 'Error: ' + yellow + message)
 ```
 
-Puoi anche creare i tuoi colori con `ansi.color()` e `ansi.bgColor()` . Gli argomenti utilizzano *RGB* come `255, 165, 0` e *color code* come `'#FFA500'` . I *color name* come l' `orange` non sono supportati.
+Puoi anche creare i tuoi colori con `ansi.color()` e `ansi.bgColor()` . Gli argomenti utilizzano *RGB* come `255, 165, 0` *color code* come `'#FFA500'` . *color name* come `orange` non sono supportati.
 
 ```javascript
 const { color } = require('ansi')
@@ -251,7 +251,7 @@ console.log(orange + 'Hello World')
 
 ## *argv*
 
-Ottieni gli argomenti della riga di comando. Gli argomenti della riga di comando di `cscript.exe` dichiarano gli argomenti denominati con `/` , mentre *wes* dichiara gli argomenti denominati con `-` e `--` . *argv.unnamed* e *argv.named* del tipo di valore dell'argomento della riga di comando su *String* *Number* *Boolean* . Immettere gli argomenti della riga di comando con *REP* .
+Ottieni gli argomenti della riga di comando. Gli argomenti della riga di comando di `cscript.exe` dichiarano gli argomenti denominati con `/` , mentre *wes* dichiara gli argomenti denominati con `-` e `--` . *argv.unnamed* e *argv.named* eseguono il cast del tipo di valore dell'argomento della riga di comando su *String* *Number* *Boolean* . Immettere gli argomenti della riga di comando con *REP* .
 
 ```bat
 wes REP aaa -bc dd --e=false --gh=iii jjj --klm nn -o --p 9 r
@@ -269,7 +269,7 @@ argv, argv.unnamed, argv.named)
 
 ## *pathname*
 
-Manipola percorsi. I percorsi che iniziano con `/` e `\` sono generalmente relativi alla radice dell'unità. Ad esempio `/filename` e `C:/filename` possono essere lo stesso percorso. Per motivi di sicurezza, *wes* interpreta i percorsi che iniziano con `/` e `\` relativi alla directory di lavoro.
+Manipola i percorsi. I percorsi che iniziano con `/` e `\` sono generalmente relativi alla radice dell'unità. Ad esempio `/filename` e `C:/filename` possono essere lo stesso percorso. Per motivi di sicurezza, *wes* interpreta i percorsi che iniziano con `/` e `\` relativi alla directory di lavoro.
 
 ```javascript
 const path = require('pathname')
@@ -279,7 +279,7 @@ console.log('file %O', file)
 
 ## *filesystem*
 
-Manipola file e directory. `readTextFileSync()` indovina automaticamente la codifica del file e lo legge. (Anche se il secondo argomento di `readFileSync()` è `encode` su `auto` , verrà indovinato automaticamente.)
+Manipolare file e directory. `readTextFileSync()` indovina automaticamente la codifica del file e lo legge. (Anche se il secondo `encode` di `readFileSync()` è impostato su `auto` , verrà indovinato automaticamente.)
 
 ```javascript
 const fs = require('filesystem')
@@ -323,20 +323,42 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 
 *VBScript* offre alcune funzionalità che *JScript* non offre.
 
-```javascript
+```javascript {"testing": true}
 const { TypeName } = require('VBScript')
 const FSO = require('Scripting.FileSystemObject')
-console.log(TypeName(FSO))
+console.log(TypeName(FSO)) // => "FileSystemObject"
 ```
 
 ## *httprequest*
 
-*httprequest* emette una *http request* .
+*httprequest* emette *http request* .
 
-```javascript
+```javascript {"testing": true}
 const request = require('httprequest')
 const { responseText } = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
-console.log(() => JSON.parse(responseText))
+console.log(() => JSON.parse(responseText)) /* => {
+    "id": 1,
+    "name": "Leanne Graham",
+    "username": "Bret",
+    "email": "Sincere@april.biz",
+    "address": {
+        "street": "Kulas Light",
+        "suite": "Apt. 556",
+        "city": "Gwenborough",
+        "zipcode": "92998-3874",
+        "geo": {
+            "lat": "-37.3159",
+            "lng": "81.1496"
+        }
+    },
+    "phone": "1-770-736-8031 x56442",
+    "website": "hildegard.org",
+    "company": {
+        "name": "Romaguera-Crona",
+        "catchPhrase": "Multi-layered client-server neural-net",
+        "bs": "harness real-time e-markets"
+    }
+} */
 ```
 
 ## *minitest*
@@ -375,24 +397,24 @@ describe('minitest', () => {
 console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass[1])
 ```
 
-### affermazioni
+### asserzioni
 
-Ci sono solo tre funzioni di asserzione per confrontare oggetti per semplicità.
+Ci sono solo tre funzioni di asserzione per confrontare gli oggetti per semplicitÃ .
 
 #### `assert(value, message)` `assert.ok(value, message)`
 
-Confronta con `true` con l'operatore di uguaglianza rigorosa `===` . Se `value` è una funzione, valuta il risultato dell'esecuzione della funzione.
+Confronta con `true` con l'operatore di uguaglianza rigorosa `===` . Se `value` Ã¨ una funzione, valuta il risultato dell'esecuzione della funzione.
 
 | Param     | Tipo                  | Descrizione                             |
 | :-------- | :-------------------- | :-------------------------------------- |
 | `value`   | `{Function\|Boolean}` | funzione booleana o di ritorno booleano |
-| `message` | `{String}`            | messaggio sul fallimento                |
+| `message` | `{String}`            | messaggio in caso di guasto             |
 
 #### `assert.equal(expected, actual)`
 
 Confronta gli oggetti per l'uguaglianza dei membri, non per riferimento.\
-NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegExp/g` o `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` ecc.\
-Quando si confrontano le classi (oggetti), devono avere lo stesso costruttore o una superclasse di cui è `expected` `actual` .
+`NaN === NaN` `function (){} === function (){}` `true` `/RegExp/g === /RegExp/g` o `{one: {two: 2}} === {one: {two: 2}}` `[1,2,3] === [1,2,3]` ecc.\
+Quando si confrontano classi (oggetti), devono avere lo stesso costruttore o una superclasse di cui si `expected` `actual` .
 
 | Param      | Tipo    | Descrizione    |
 | :--------- | :------ | :------------- |
@@ -402,23 +424,23 @@ Quando si confrontano le classi (oggetti), devono avere lo stesso costruttore o 
 #### `assert.throws(value, expected, message)`
 
 Verificare che gli errori vengano generati correttamente.\
-Se l'errore è corretto o meno è determinato dal fatto che il *constructor* di errori previsto , il *message* sia uguale e l'espressione regolare superi la valutazione *stack* .
+La correttezza o meno dell'errore è determinata dal fatto che il *constructor* dell'errore previsto, *message* sia uguale e che l'espressione regolare superi la valutazione *stack* .
 
-| Param      | Tipo                      | Descrizione                                                                                       |
-| :--------- | :------------------------ | :------------------------------------------------------------------------------------------------ |
-| `value`    | `{Error}`                 | errore                                                                                            |
-| `expected` | `{Error\|String\|RegExp}` | Un'espressione regolare che valuta il *constructor* , *message* o lo *stack* dell'errore previsto |
-| `message`  | `{String}`                | messaggio in caso di guasto                                                                       |
+| Param      | Tipo                      | Descrizione                                                                                    |
+| :--------- | :------------------------ | :--------------------------------------------------------------------------------------------- |
+| `value`    | `{Error}`                 | errore                                                                                         |
+| `expected` | `{Error\|String\|RegExp}` | Un'espressione regolare che valuta il *constructor* , *message* o *stack* dell'errore previsto |
+| `message`  | `{String}`                | messaggio in caso di guasto                                                                    |
 
 ## *pipe*
 
-*pipe* semplifica le tubazioni. Invia il risultato durante la conversione *data* con uno o più *converter* . Dalla *ver 0.12.75* in poi, può essere avviato direttamente dalla riga di comando.
+*pipe* semplifica le tubazioni. Il risultato viene emesso durante la conversione *data* con uno o più *converter* . Dalla *ver 0.12.75* in poi, può essere avviato direttamente dalla riga di comando.
 
 ### Avvia *pipe* come modulo
 
 Inserisci la funzione di conversione nell'argomento `use(converter)` del metodo *pipe* e descrivi l'input dei dati e l'elaborazione post-conversione con `process(data, callback(error, result))` . Se non viene specificata alcuna `callback` , il valore restituito sarà *promise* e l'elaborazione può essere connessa con `then(result)` e `catch(error)` .
 
-```javascript
+```javascript {"testing": true}
 const pipe = require('pipe')
 
 function add (a, b) {
@@ -440,12 +462,14 @@ pipe()
   .use(add5)
   .use(sub3)
   .use(div, 4)
-  .process(10, (err, res) => console.log('res: %O', res))
+  .process(10, (err, res) => {
+    console.log(() => res) // => 3
+  })
 ```
 
 Oltre `use(converter)` , esistono metodi come `.filter(callbackFn(value, index))` e `map(callbackFn(value, index))` . Ogni *data* è una stringa, un array e un oggetto.
 
-```javascript
+```javascript {"testing": true}
 const pipe = require('pipe')
 
 const tsv = `
@@ -455,12 +479,6 @@ vbscript\t1996
 c#\t2000
 `.trim()
 
-pipe()
-    .filter(include)
-    .map(release)
-    .process(tsv)
-    .then((res) => console.log(() => res))
-
 function include(value, i) {
     return value.includes('script')
 }
@@ -468,11 +486,21 @@ function include(value, i) {
 function release(value, i) {
     return value.split('\t').join(' was released in ')
 }
+
+pipe()
+    .filter(include)
+    .map(release)
+    .process(tsv)
+    .then((res) => {
+        console.log(() => res) /* => `javascript was released in 1955
+vbscript was released in 1996` */
+    })
+
 ```
 
-### avviare *pipe* dalla riga di comando
+### Avvio *pipe* dalla riga di comando
 
-Dalla riga di comando, inserisci la funzione di conversione nell'ordine dopo `pipe` . Gli argomenti delle funzioni di conversione vengono immessi come valori per gli argomenti della riga di comando denominati con lo stesso nome della funzione di conversione. `=>` valore `(` analizzato con `eval()` invece di `JSON.parse()` `)` *WSH* forza `"` negli argomenti della riga di comando. In tal caso, non analizzare con `eval()` )
+Dalla riga di comando, inserisci la funzione di conversione nell'ordine dopo `pipe` . Gli argomenti delle funzioni di conversione vengono immessi come valori degli argomenti della riga di comando denominati con lo stesso nome della funzione di conversione. `=>` valore `(` analizzato con `eval()` invece di `JSON.parse()` `)` *WSH* forza `"` negli argomenti della riga di comando. In tal caso, non analizzare con `eval()` )
 
 ```bash
 wes pipe swap merge --input="sample.txt" --output="" --swap="[2, 0, 1, 3]" --merge=4
@@ -500,13 +528,12 @@ pipe()
 
 Determina il tipo di script.
 
-```javascript
+```javascript {"testing": true}
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
-const log = require('log')
-log(() => isString("ECMAScript"))
-log(() => isNumber(43.5))
-log(() => isBoolean(false))
-log(() => isObject(function(){}))
+console.log(() => isString("ECMAScript")) /* => true */
+console.log(() => isNumber(43.5)) /* => true */
+console.log(() => isBoolean(false)) /* => true */
+console.log(() => isObject(function(){})) /* => false */
 ```
 
 ## *getMember*
@@ -517,7 +544,7 @@ Ottiene il tipo e la descrizione del membro *COM Object* dal *ProgID* quando uti
 wes getMember "Scripting.FileSystemObject"
 ```
 
-Quando viene utilizzato come modulo, ottiene il tipo di membro e la descrizione dell'istanza. Se utilizzato come modulo, è possibile ottenere informazioni sugli oggetti che non possono essere confermati da *WSH (Windows Script Host)* .
+Quando viene utilizzato come modulo, ottiene il tipo e la descrizione dei membri dell'istanza. Se utilizzato come modulo, è possibile ottenere informazioni sugli oggetti che non possono essere confermati da *WSH (Windows Script Host)* .
 
 ```javascript
 const getMember = require('getMember')
@@ -527,7 +554,7 @@ getMember(SWbemServicesEx)
 
 ## *ps*
 
-Facilita l'esecuzione di *PowerShell* .
+Facilita l'esecuzione *PowerShell* .
 
 ### `ps(source, option)`
 
@@ -660,7 +687,7 @@ Esegue il file *.ps1* specificato nella console.
 wes ps ./sample.ps1
 ```
 
-È inoltre possibile eseguire direttamente un comando specificando l'opzione `--Command` o `-c` .
+È inoltre possibile eseguire direttamente un comando specificando `--Command` o `-c` .
 
 Esempio di visualizzazione di un elenco di file nella directory corrente
 
@@ -678,14 +705,14 @@ console.log(zip('docs\\*', 'dox.zip'))
 console.log(unzip('dox.zip'))
 ```
 
-Un carattere jolly `*` può essere scritto nel `path` di `zip(path, destinationPath)` . Può essere utilizzato sia nella *CLI (Command Line Interface)* che nei *module* .
+Un carattere jolly `*` può essere scritto `path` di `zip(path, destinationPath)` . Può essere utilizzato sia nella *CLI (Command Line Interface)* che *module* .
 
 ```bat
 wes zip docs\* dox.zip
 wes zip -p dox.zip
 ```
 
-Se il `path` ha l'estensione `.zip` , `unzip()` viene elaborato e non c'è alcuna descrizione dell'estensione `.zip` . In alternativa, anche se è presente un'estensione `.zip` , se è presente un carattere jolly `*` descrizione, verrà elaborato `zip()` .
+Se `path` ha l'estensione `.zip` , `unzip()` viene elaborato e non c'è alcuna descrizione dell'estensione `.zip` . In alternativa, anche se è presente un'estensione `.zip` se è presente un carattere jolly `*` descrizione, verrà elaborato `zip()` .
 
 | senza nome | Descrizione                          |
 | ---------- | ------------------------------------ |
@@ -699,19 +726,22 @@ Se il `path` ha l'estensione `.zip` , `unzip()` viene elaborato e non c'è alcun
 
 # Raggruppamento (packaging) e installazione di moduli
 
-In *wes* , un insieme di diversi moduli è chiamato pacchetto. Puoi installare il pacchetto per *wes* pubblicato su *github* . Per pubblicare un pacchetto è necessario un *github repository* .
+In *wes* , un insieme di diversi moduli è chiamato pacchetto. Puoi installare il pacchetto per *wes* pubblicato su *github* . Per pubblicare un pacchetto è necessario *github repository* .
 
 ## *bundle*
 
 Quando si pubblica un pacchetto su *github* , *bundle* raggruppa i moduli richiesti e crea *bundle.json* .
 
 1.  In un *repository* può essere pubblicato un solo pacchetto
-2.  *package.json* è obbligatorio. Come minimo, è richiesta la descrizione del campo `main` . ```json
-    {
-        "main": "index.js"
-    }
+
+2.  *package.json* è obbligatorio. Come minimo, è richiesta la descrizione del campo `main` .
+
+    ```json
+     { "main": "index.js" }
     ```
+
 3.  Rendere *public* il repository se si desidera pubblicare il pacchetto
+
 4.  A partire dalla `version 0.12.0` , i pacchetti con caricamento diretto del modulo in una directory sopra la directory di lavoro non verranno raggruppati. I pacchetti nella directory superiore *wes\_modules* o *node\_modules* possono essere raggruppati.
 
 Immettere il seguente comando per raggruppare: Fare riferimento a *package.json* per sapere cosa raggruppare.
@@ -730,7 +760,7 @@ wes init
 
 ## *install*
 
-Utilizzato per installare il pacchetto per *wes* pubblicato su *github* . Dalla `version 0.10.28` , la cartella di installazione è cambiata da `node_modules` a `wes_modules` . Se vuoi installare in `node_modules` aggiungi l'opzione `--node` . A partire dalla `version 0.12.0` , i file verranno decompressi da *bandle.json* e salvati. A causa di modifiche alle specifiche, i pacchetti forniti con una `version 0.12.0` inferiore alla 0.12.0 potrebbero non essere installati correttamente con `version 0.12.0` o successiva.
+Utilizzato per installare il pacchetto per *wes* pubblicato su *github* . Dalla `version 0.10.28` , la cartella di installazione è cambiata da `node_modules` a `wes_modules` . Se vuoi installare in `node_modules` aggiungi l'opzione `--node` . A partire dalla `version 0.12.0` , i file verranno decompressi da *bandle.json* e salvati. A causa di modifiche alle specifiche, i pacchetti forniti con `version 0.12.0` potrebbero non essere installati correttamente con `version 0.12.0` o successiva.
 
 Passa gli argomenti da *install* nel formato `@author/repository` .
 
@@ -740,15 +770,15 @@ wes install @wachaon/fmt
 
 *install* ha opzioni.
 
-| di nome       | breve nome | Descrizione                                                                                 |
-| ------------- | ---------- | ------------------------------------------------------------------------------------------- |
-| `--bare`      | `-b`       | Non creare cartelle *@author*                                                               |
-| `--global`    | `-g`       | Installa il pacchetto nella cartella in cui si trova *wes.js*                               |
-| `--save`      | `-S`       | Aggiungi il nome e la versione del pacchetto al campo *dependencies* in *package.json*      |
-| `--save--dev` | `-D`       | Aggiungere il nome e la versione del pacchetto al campo *devDependencies* in *package.json* |
-| `--node`      | `-n`       | Installa nella cartella *node\_module*                                                      |
+| di nome       | breve nome | Descrizione                                                                               |
+| ------------- | ---------- | ----------------------------------------------------------------------------------------- |
+| `--bare`      | `-b`       | Non creare cartelle *@author*                                                             |
+| `--global`    | `-g`       | Installa il pacchetto nella cartella in cui si trova *wes.js*                             |
+| `--save`      | `-S`       | Aggiungi il nome e la versione del pacchetto al campo *dependencies* in *package.json*    |
+| `--save--dev` | `-D`       | Aggiungi il nome e la versione del pacchetto al campo *devDependencies* in *package.json* |
+| `--node`      | `-n`       | Installa nella cartella *node\_module*                                                    |
 
-`--bare` può omettere l'argomento `require` da `author@repository` a `repository` . `--global` rende i pacchetti installati disponibili per tutti gli script.
+L'opzione `--bare` può omettere `require` da `author@repository` a `repository` . `--global` rende i pacchetti installati disponibili per tutti gli script.
 
 ```bat
 wes install @wachaon/fmt --bare
@@ -762,19 +792,19 @@ wes install @wachaon/fmt --bare
 `https://raw.githubusercontent.com/${author}/${repository}/master/bundle.json`
 ```
 
-Se accedi al repository privato *raw* con un browser, il *token* verrà visualizzato, quindi copia il *token* e utilizzalo. Puoi anche installare pacchetti da repository privati ​​eseguendolo nella console mentre il *token* è valido.
+Se accedi al repository privato *raw* con un browser, *token* verrà visualizzato, quindi copia il *token* e usalo. Puoi anche installare pacchetti da repository privati ​​eseguendolo nella console mentre *token* è valido.
 
 ```bat
 wes install @wachaon/calc?token=ADAAOIID5JALCLECFVLWV7K6ZHHDA
 ```
 
-# Presentazione del pacchetto
+# Introduzione al pacchetto
 
 Ecco alcuni pacchetti esterni.
 
 ## *@wachaon/fmt*
 
-*@wachaon/fmt* è un pacchetto *prettier* *wes* per noi per formattare gli script. Inoltre, se si verifica un *Syntax Error* durante l'installazione di *@wachaon/fmt* , è possibile visualizzare la posizione dell'errore.
+*@wachaon/fmt* è un pacchetto *prettier* per *wes* per formattare gli script. Inoltre, se si verifica *Syntax Error* durante l'installazione di *@wachaon/fmt* , è possibile indicare la posizione dell'errore.
 
 ### Installa *@wachaon/fmt*
 
@@ -782,9 +812,9 @@ Ecco alcuni pacchetti esterni.
 wes install @wachaon/fmt
 ```
 
-Se è presente *.prettierrc* (formato JSON) nella directory di lavoro, si rifletterà nelle impostazioni. *fmt* è disponibile sia nella *CLI* che nel *module* .
+Se è presente *.prettierrc* (formato JSON) nella directory di lavoro, si rifletterà nelle impostazioni. *fmt* è disponibile sia nella *CLI* che *module* .
 
-#### Utilizzare come *CLI* .
+#### Usa come *CLI* .
 
 ```bat
 wes @wachaon/fmt src/sample --write
@@ -794,11 +824,11 @@ wes @wachaon/fmt src/sample --write
 | ----------------- | ---------------------------------------------------- |
 | 1                 | Necessario. il percorso del file che vuoi formattare |
 
-| di nome   | di nome breve | Descrizione                  |
-| --------- | ------------- | ---------------------------- |
-| `--write` | `-w`          | consentire la sovrascrittura |
+| di nome   | breve nome | Descrizione                  |
+| --------- | ---------- | ---------------------------- |
+| `--write` | `-w`       | consentire la sovrascrittura |
 
-Sovrascrivi il file con lo script formattato se è specificato `--write` o l'argomento denominato `-w` .
+Sovrascrivere il file con lo script formattato se è specificato `--write` o `-w` .
 
 #### utilizzare come modulo
 
@@ -812,7 +842,7 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 
 ## *@wachaon/edge*
 
-*Internet Explorer* terminerà il supporto il 15 giugno 2022. Di conseguenza, si prevede che le operazioni dell'applicazione con `require('InternetExplorer.Application')` diventeranno impossibili. Inoltre, il sito stesso non sarà in grado di essere visualizzato correttamente interrompendo il supporto per *Internet Explorer* . Un'alternativa sarebbe utilizzare *Microsoft Edge based on Chromium* tramite il *web driver(msedgedriver.exe)* . `@wachaon/edge` semplifica il pilota automatico *Edge* .
+*Internet Explorer* terminerà il supporto il 15 giugno 2022. Di conseguenza, si prevede che le operazioni dell'applicazione con `require('InternetExplorer.Application')` diventino impossibili. Inoltre, il sito stesso non sarà in grado di essere visualizzato correttamente interrompendo il supporto per *Internet Explorer* . Un'alternativa sarebbe utilizzare *Microsoft Edge based on Chromium* tramite *web driver(msedgedriver.exe)* . `@wachaon/edge` semplifica il pilota automatico *Edge* .
 
 ### Installa *@wachaon/edge*
 
@@ -822,17 +852,17 @@ Prima installa il pacchetto.
 wes install @wachaon/edge --bare
 ```
 
-Quindi scaricare il *web driver(msedgedriver.exe)* .
+Quindi scaricare *web driver(msedgedriver.exe)* .
 
 ```bat
 wes edge --download
 ```
 
-Controlla la versione di *Edge* installata e scarica il *web driver* corrispondente.
+Controlla la versione *Edge* installata e scarica il *web driver* corrispondente.
 
 ### Come usare *@wachaon/edge*
 
-Sarà facile da usare. Avvia il browser e modifica le dimensioni della finestra e il sito da visualizzare in `https://www.google.com` .
+Sarà facile da usare. Avvia il browser e modifica le dimensioni della finestra e visualizza il sito in `https://www.google.com` .
 
 ```javascript
 const edge = require('edge')
@@ -847,7 +877,7 @@ edge((window, navi, res) => {
 })
 ```
 
-Memorizziamo la cronologia delle tue visite finché l' *URL* del tuo browser non inizia con `https://www.yahoo` .
+Memorizziamo la cronologia delle tue visite finché *URL* del tuo browser non inizia con `https://www.yahoo` .
 
 ```javascript
 const edge = require('/index.js')
@@ -877,7 +907,7 @@ const ret = edge((window, navi, res) => {
 console.log('ret // => %O', ret)
 ```
 
-*edge* stampa gli *URL* visitati sulla console in ordine. `@wachaon/edge` registra gli eventi per gli *URL* e aggiunge i dati a `res.exports` . L' *URL* da registrare può essere `String` `RegExp` e può essere impostato in modo flessibile. Rendendolo basato sugli eventi, puoi passare facilmente al funzionamento manuale non impostando eventi per processi difficili da gestire con il pilota automatico. Se vuoi che lo script si interrompa, `navi.emit('terminate', res)` o termina *Edge* manualmente. La finalizzazione restituisce `res.exports` come file *.json* per impostazione predefinita. Se si desidera impostare l'elaborazione della terminazione, impostare `terminate` of `edge(callback, terminate)` . `window` è un'istanza della classe *Window* di *@wachaon/webdriver* , non la `window` del browser .
+*edge* stampa gli *URL* visitati sulla console in ordine. `@wachaon/edge` registra gli eventi per *URL* e aggiunge i dati a `res.exports` . *URL* da registrare può essere `String` `RegExp` e può essere impostato in modo flessibile. Rendendolo basato sugli eventi, puoi passare facilmente al funzionamento manuale non impostando eventi per processi difficili da gestire con il pilota automatico. Se vuoi che lo script si interrompa, esegui `navi.emit('terminate', res)` o termina *Edge* manualmente. La finalizzazione restituisce `res.exports` come file *.json* per impostazione predefinita. Se si desidera impostare l'elaborazione della terminazione, impostare `terminate` of `edge(callback, terminate)` . `window` è un'istanza della classe *Window* di *@wachaon/webdriver* , non la `window` del browser .
 
 ## *@wachaon/webdriver*
 
@@ -889,7 +919,7 @@ Sarà un pacchetto che invia richieste al *web driver* che gestisce il browser. 
 wes install @wachaon/webdriver --bare
 ```
 
-Scarica il driver Web *Microsoft Edge* basato su *Chromium* *web driver(msedgedriver.exe)* se non lo possiedi. Inoltre, se la versione di *edge* e la versione del *web driver(msedgedriver.exe)* sono diverse, scaricare la stessa versione del *web driver(msedgedriver.exe)* .
+Scarica *Chromium* driver Web *Microsoft Edge* basato su Chromium *web driver(msedgedriver.exe)* se non lo possiedi. Inoltre, se la versione di *edge* e la versione del *web driver(msedgedriver.exe)* sono diverse, scaricare la stessa versione del *web driver(msedgedriver.exe)* .
 
 ```bat
 wes webdriver --download
@@ -897,7 +927,7 @@ wes webdriver --download
 
 ### Come usare *@wachaon/webdriver*
 
-Vai al sito di [*yahoo JAPAN*](https://www.yahoo.co.jp/) e salva uno screenshot di un elemento di blocco specifico.
+Vai al sito [*yahoo JAPAN*](https://www.yahoo.co.jp/) e salva uno screenshot di un elemento di blocco specifico.
 
 ```javascript
 const { Window } = require('webdriver')

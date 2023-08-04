@@ -76,13 +76,13 @@ wes
 
 *wes* の起動オプションは下記になります。
 
-| named              | Description                  |
-| ------------------ | ---------------------------- |
-| `--monotone`       | *ANSI escape code* を排除します    |
+| named              | Description                      |
+| ------------------ | -------------------------------- |
+| `--monotone`       | *ANSI escape code* を排除します        |
 | `--transpile`      | 常に *babel-standalone* で変換して実行します |
-| `--debug`          | スクリプトをデバッグモードで実行します          |
-| `--encoding=UTF-8` | 最初に読み込むファイルのエンコードを指定します      |
-| `--arch=x86`       | このオプションは *wes* によって自動で付加されます |
+| `--debug`          | スクリプトをデバッグモードで実行します              |
+| `--encoding=UTF-8` | 最初に読み込むファイルのエンコードを指定します          |
+| `--arch=x86`       | このオプションは *wes* によって自動で付加されます     |
 
 # モジュールシステム
 
@@ -91,8 +91,8 @@ wes
 ## *commonjs module*
 
 `module.exports` への代入と `require()` での呼び出しでモジュールを管理します。
-絶対パスと `./` と `../` から始まる相対パス以外のパスは *wes_modules* ディレクトリと
-利便上 *node_modules* ディレクトリからモジュールを探します。
+絶対パスと `./` と `../` から始まる相対パス以外のパスは *wes\_modules* ディレクトリと
+利便上 *node\_modules* ディレクトリからモジュールを探します。
 *wes* の `require()` はモジュールファイルのエンコードを自動推測しますが、
 正しく推測しない場合に第二引数でエンコードを指定も可能です。
 
@@ -246,10 +246,10 @@ console.log('end')
 
 ファイルを軽量化とメンテナンスの軽減のため、ビルトインモジュールの一部を外部モジュールに変更します。
 
-+  *animate.js*  
-+  *day.js*
-+  *debug.js*
-+  *log.js*
+*   *animate.js*
+*   *day.js*
+*   *debug.js*
+*   *log.js*
 
 上記モジュールは それぞれ `@wachaon/animate` `@wachaon/day` `@wachaon/debug` `@wachaon/log` として
 インストールできます。
@@ -361,20 +361,42 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 
 *VBScript* は *JScript* にはない機能のいくつかを提供します。
 
-```javascript
+```javascript {"testing": true}
 const { TypeName } = require('VBScript')
 const FSO = require('Scripting.FileSystemObject')
-console.log(TypeName(FSO))
+console.log(TypeName(FSO)) // => "FileSystemObject"
 ```
 
 ## *httprequest*
 
 *httprequest* は *http request* を発行します。
 
-```javascript
+```javascript {"testing": true}
 const request = require('httprequest')
 const { responseText } = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
-console.log(() => JSON.parse(responseText))
+console.log(() => JSON.parse(responseText)) /* => {
+    "id": 1,
+    "name": "Leanne Graham",
+    "username": "Bret",
+    "email": "Sincere@april.biz",
+    "address": {
+        "street": "Kulas Light",
+        "suite": "Apt. 556",
+        "city": "Gwenborough",
+        "zipcode": "92998-3874",
+        "geo": {
+            "lat": "-37.3159",
+            "lng": "81.1496"
+        }
+    },
+    "phone": "1-770-736-8031 x56442",
+    "website": "hildegard.org",
+    "company": {
+        "name": "Romaguera-Crona",
+        "catchPhrase": "Multi-layered client-server neural-net",
+        "bs": "harness real-time e-markets"
+    }
+} */
 ```
 
 ## *minitest*
@@ -461,7 +483,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 *pipe* のメソッドの `use(converter)` の引数に変換関数を入れて `process(data, callback(error, result))` でデータの入力と変換後の処理を記述します。`callback` を指定しない場合の戻り値は *promise* になり、`then(result)` ならびに `catch(error)` で処理を繋げていけます。
 
-```javascript
+```javascript {"testing": true}
 const pipe = require('pipe')
 
 function add (a, b) {
@@ -483,12 +505,14 @@ pipe()
   .use(add5)
   .use(sub3)
   .use(div, 4)
-  .process(10, (err, res) => console.log('res: %O', res))
+  .process(10, (err, res) => {
+    console.log(() => res) // => 3
+  })
 ```
 
 また、`use(converter)` 以外に `.filter(callbackFn(value, index))` や `map(callbackFn(value, index))` などのメソッドもあります。それぞれ *data* が文字列、配列、オブジェクトも場合に網羅的にアクセスして処理します。
 
-```javascript
+```javascript {"testing": true}
 const pipe = require('pipe')
 
 const tsv = `
@@ -498,12 +522,6 @@ vbscript\t1996
 c#\t2000
 `.trim()
 
-pipe()
-    .filter(include)
-    .map(release)
-    .process(tsv)
-    .then((res) => console.log(() => res))
-
 function include(value, i) {
     return value.includes('script')
 }
@@ -511,6 +529,16 @@ function include(value, i) {
 function release(value, i) {
     return value.split('\t').join(' was released in ')
 }
+
+pipe()
+    .filter(include)
+    .map(release)
+    .process(tsv)
+    .then((res) => {
+        console.log(() => res) /* => `javascript was released in 1955
+vbscript was released in 1996` */
+    })
+
 ```
 
 ### *pipe* をコマンドラインから起動する
@@ -543,13 +571,12 @@ pipe()
 
 スクリプトの型の判定をします。
 
-```javascript
+```javascript {"testing": true}
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
-const log = require('log')
-log(() => isString("ECMAScript"))
-log(() => isNumber(43.5))
-log(() => isBoolean(false))
-log(() => isObject(function(){}))
+console.log(() => isString("ECMAScript")) /* => true */
+console.log(() => isNumber(43.5)) /* => true */
+console.log(() => isBoolean(false)) /* => true */
+console.log(() => isObject(function(){})) /* => false */
 ```
 
 ## *getMember*
@@ -575,7 +602,7 @@ getMember(SWbemServicesEx)
 
 ### `ps(source, option)`
 
-`source` の *PowerShell* スクリプトを実行します。 
+`source` の *PowerShell* スクリプトを実行します。
 
 コンソールにコマンドレット一覧を表示します。
 
@@ -690,6 +717,7 @@ Add-Type -Language CSharp -TypeDefinition $Source -ReferencedAssemblies $assembl
 [Device.Mouse]::Main($Method, $PosX, $PosY)
 `, option)
 ```
+
 スクリプトをファイルとして保存するか、次の `REP` にペーストしてください。
 
 ```bat
@@ -772,7 +800,7 @@ wes bundle
 
 ## *init*
 
-幾つかの項目を入力するとその情報から *package.json* を作成します。 
+幾つかの項目を入力するとその情報から *package.json* を作成します。
 
 ```bat
 wes init
@@ -872,11 +900,13 @@ console.log(writeTextFileSync(target, fmt.format(readTextFileSync(target))))
 ```
 
 ## *@wachaon/edge*
+
 *Internet Explorer* が 2022/6/15 を以てサポートを完了します。それに伴い `require('InternetExplorer.Application')` でのアプリケーションの操作が不可能になることが予想されます。
 また、サイト自体が *Internet Explorer* のサポートを終了することによって、正しく表示できなくります。
 代替案は、*Microsoft Edge based on Chromium* を *web driver(msedgedriver.exe)* 経由で操作することになります。`@wachaon/edge` は *Edge* の自動操縦を簡素化します。
 
 ### *@wachaon/edge* のインストール
+
 まずはパッケージをインストールします。
 
 ```bat
@@ -892,6 +922,7 @@ wes edge --download
 インストールされている *Edge* のバージョンを確認して対応した *web driver* をダウンロードします。
 
 ### *@wachaon/edge* の使い方
+
 簡単な使い方になります。
 ブラウザを起動し、ウインドウサイズと表示するサイトを `https://www.google.com` に変更します。
 
@@ -948,6 +979,7 @@ console.log('ret // => %O', ret)
 `window` はブラウザでの `window` ではなく、*@wachaon/webdriver* の *Window* クラスのインスタンスになります。
 
 ## *@wachaon/webdriver*
+
 ブラウザを操作する *web driver* に対してリクエストを送るパッケージになります。
 *@wachaon/edge* には *@wachaon/webdriver* が内包されております。
 
