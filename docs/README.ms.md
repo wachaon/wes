@@ -880,7 +880,7 @@ edge((window, navi, res) => {
 Kami menyimpan sejarah lawatan anda sehingga *URL* penyemak imbas anda bermula dengan `https://www.yahoo` .
 
 ```javascript
-const edge = require('/index.js')
+const edge = require('edge')
 
 const ret = edge((window, navi, res) => {
     window.rect({

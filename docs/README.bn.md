@@ -880,7 +880,7 @@ edge((window, navi, res) => {
 আপনার ব্রাউজারের *URL* `https://www.yahoo` দিয়ে শুরু না হওয়া পর্যন্ত আমরা আপনার দর্শনের ইতিহাস সংরক্ষণ করি।
 
 ```javascript
-const edge = require('/index.js')
+const edge = require('edge')
 
 const ret = edge((window, navi, res) => {
     window.rect({

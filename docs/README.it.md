@@ -880,7 +880,7 @@ edge((window, navi, res) => {
 Memorizziamo la cronologia delle tue visite finché *URL* del tuo browser non inizia con `https://www.yahoo` .
 
 ```javascript
-const edge = require('/index.js')
+const edge = require('edge')
 
 const ret = edge((window, navi, res) => {
     window.rect({

@@ -880,7 +880,7 @@ edge((window, navi, res) => {
 Мы храним историю ваших посещений до тех пор, пока *URL* вашего браузера не будет начинаться с `https://www.yahoo` .
 
 ```javascript
-const edge = require('/index.js')
+const edge = require('edge')
 
 const ret = edge((window, navi, res) => {
     window.rect({

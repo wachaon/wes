@@ -880,7 +880,7 @@ edge((window, navi, res) => {
 我們會存儲您的訪問歷史記錄，直到您的瀏覽器*URL*以`https://www.yahoo`開頭。
 
 ```javascript
-const edge = require('/index.js')
+const edge = require('edge')
 
 const ret = edge((window, navi, res) => {
     window.rect({
