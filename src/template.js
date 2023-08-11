@@ -282,9 +282,9 @@
 
             if (argv.get('debug')) console.debug('%O import to %O ', parentModule ? parentModule.path : null, entry)
             else {
-                if (entry.length > 120) {
-                    var front = entry.slice(1, 90)
-                    var end = entry.slice(-15)
+                if (entry.length > 100) {
+                    var front = entry.slice(0, 60)
+                    var end = entry.slice(-35)
                     console.weaklog('import to %O', front + ' ... ' + end)
                 } else console.weaklog('import to %O', entry)
             }
