@@ -323,17 +323,17 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 
 *VBScript* ofrece algunas funciones que *JScript* no ofrece.
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "Typename"}
 const { TypeName } = require('VBScript')
 const FSO = require('Scripting.FileSystemObject')
-console.log(TypeName(FSO)) // => "FileSystemObject"
+console.log(() => TypeName(FSO)) // => "FileSystemObject"
 ```
 
 ## *httprequest*
 
 *httprequest* emite *http request* .
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "httprequest"}
 const request = require('httprequest')
 const { responseText } = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log(() => JSON.parse(responseText)) /* => {
@@ -440,7 +440,7 @@ Si el error es correcto o no se determina si el *constructor* de error esperado,
 
 Coloque la función de conversión en `use(converter)` del método *pipe* y describa la entrada de datos y el procesamiento posterior a la conversión con `process(data, callback(error, result))` . Si no se especifica ninguna `callback` , el valor de retorno será *promise* y el procesamiento se puede conectar con `then(result)` y `catch(error)` .
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "pipe"}
 const pipe = require('pipe')
 
 function add (a, b) {
@@ -469,7 +469,7 @@ pipe()
 
 Además de `use(converter)` , existen métodos como `.filter(callbackFn(value, index))` y `map(callbackFn(value, index))` . Cada *data* es una cadena, una matriz y un objeto.
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "utility methods for pipes"}
 const pipe = require('pipe')
 
 const tsv = `
@@ -528,7 +528,7 @@ pipe()
 
 Determinar el tipo de guión.
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "typecheck"}
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
 console.log(() => isString("ECMAScript")) /* => true */
 console.log(() => isNumber(43.5)) /* => true */

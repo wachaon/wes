@@ -348,17 +348,17 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 
 *VBScript* は *JScript* にはない機能のいくつかを提供します。
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "Typename"}
 const { TypeName } = require('VBScript')
 const FSO = require('Scripting.FileSystemObject')
-console.log(TypeName(FSO)) // => "FileSystemObject"
+console.log(() => TypeName(FSO)) // => "FileSystemObject"
 ```
 
 ## *httprequest*
 
 *httprequest* は *http request* を発行します。
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "httprequest"}
 const request = require('httprequest')
 const { responseText } = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log(() => JSON.parse(responseText)) /* => {
@@ -470,7 +470,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 *pipe* のメソッドの `use(converter)` の引数に変換関数を入れて `process(data, callback(error, result))` でデータの入力と変換後の処理を記述します。`callback` を指定しない場合の戻り値は *promise* になり、`then(result)` ならびに `catch(error)` で処理を繋げていけます。
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "pipe"}
 const pipe = require('pipe')
 
 function add (a, b) {
@@ -499,7 +499,7 @@ pipe()
 
 また、`use(converter)` 以外に `.filter(callbackFn(value, index))` や `map(callbackFn(value, index))` などのメソッドもあります。それぞれ *data* が文字列、配列、オブジェクトも場合に網羅的にアクセスして処理します。
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "utility methods for pipes"}
 const pipe = require('pipe')
 
 const tsv = `
@@ -558,7 +558,7 @@ pipe()
 
 スクリプトの型の判定をします。
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "typecheck"}
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
 console.log(() => isString("ECMAScript")) /* => true */
 console.log(() => isNumber(43.5)) /* => true */

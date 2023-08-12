@@ -323,17 +323,17 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 
 *VBScript* предлагает некоторые функции, которых нет *JScript* .
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "Typename"}
 const { TypeName } = require('VBScript')
 const FSO = require('Scripting.FileSystemObject')
-console.log(TypeName(FSO)) // => "FileSystemObject"
+console.log(() => TypeName(FSO)) // => "FileSystemObject"
 ```
 
 ## *httprequest*
 
 *httprequest* отправляет *http request* .
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "httprequest"}
 const request = require('httprequest')
 const { responseText } = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log(() => JSON.parse(responseText)) /* => {
@@ -440,7 +440,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 Поместите функцию преобразования в аргумент `use(converter)` метода *pipe* и опишите ввод данных и обработку после преобразования с помощью `process(data, callback(error, result))` . Если `callback` не указан, возвращаемое значение будет *promise* , а обработку можно связать с `then(result)` и `catch(error)` .
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "pipe"}
 const pipe = require('pipe')
 
 function add (a, b) {
@@ -469,7 +469,7 @@ pipe()
 
 В дополнение к `use(converter)` существуют такие методы, как `.filter(callbackFn(value, index))` и `map(callbackFn(value, index))` . Каждые *data* представляют собой строку, массив и объект.
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "utility methods for pipes"}
 const pipe = require('pipe')
 
 const tsv = `
@@ -528,7 +528,7 @@ pipe()
 
 Определите тип сценария.
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "typecheck"}
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
 console.log(() => isString("ECMAScript")) /* => true */
 console.log(() => isNumber(43.5)) /* => true */

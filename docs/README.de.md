@@ -323,17 +323,17 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 
 *VBScript* bietet einige Funktionen, die *JScript* nicht bietet.
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "Typename"}
 const { TypeName } = require('VBScript')
 const FSO = require('Scripting.FileSystemObject')
-console.log(TypeName(FSO)) // => "FileSystemObject"
+console.log(() => TypeName(FSO)) // => "FileSystemObject"
 ```
 
 ## *httprequest*
 
 *httprequest* gibt *http request* aus.
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "httprequest"}
 const request = require('httprequest')
 const { responseText } = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log(() => JSON.parse(responseText)) /* => {
@@ -440,7 +440,7 @@ Ob der Fehler korrekt ist oder nicht, wird dadurch bestimmt, ob der erwartete *c
 
 Fügen Sie die Konvertierungsfunktion in `use(converter)` der *pipe* Methode ein und beschreiben Sie die Dateneingabe und die Verarbeitung nach der Konvertierung mit `process(data, callback(error, result))` . Wenn kein `callback` angegeben ist, ist der Rückgabewert *promise* und die Verarbeitung kann mit `then(result)` und `catch(error)` verbunden werden.
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "pipe"}
 const pipe = require('pipe')
 
 function add (a, b) {
@@ -469,7 +469,7 @@ pipe()
 
 Zusätzlich zu `use(converter)` gibt es Methoden wie `.filter(callbackFn(value, index))` und `map(callbackFn(value, index))` . Alle *data* sind eine Zeichenfolge, ein Array und ein Objekt.
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "utility methods for pipes"}
 const pipe = require('pipe')
 
 const tsv = `
@@ -528,7 +528,7 @@ pipe()
 
 Bestimmen Sie den Skripttyp.
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "typecheck"}
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
 console.log(() => isString("ECMAScript")) /* => true */
 console.log(() => isNumber(43.5)) /* => true */

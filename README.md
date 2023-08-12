@@ -4,7 +4,20 @@
 *README* の原文は [*japanese*](/README.md) になります。日本語以外は機械翻訳の文章になります。\
 他言語の文章は下記から選択してください。
 
-<!-- import document -->
++  [*English*](/docs/README.en.md) <!-- 英語 -->
++  [*簡体字*](/docs/README.zh-CN.md) <!-- 中国語 (簡体字) -->
++  [*繁体字*](/docs/README.zh-TW.md) <!-- 中国語 (繁体字) -->
++  [*Español*](/docs/README.es.md) <!-- スペイン語 -->
++  [*Deutsch*](/docs/README.de.md) <!-- ドイツ語 -->
++  [*français*](/docs/README.fr.md) <!-- フランス語 -->
++  [*हिन्दी*](/docs/README.hi.md) <!-- ヒンディー語 -->
++  [*Português*](/docs/README.pt.md) <!-- ポルトガル語 -->
++  [*italiano*](/docs/README.it.md) <!-- イタリア語 -->
++  [*русский язык*](/docs/README.ru.md) <!-- ロシア語 -->
++  [*Melayu*](/docs/README.ms.md) <!-- マレー語 -->
++  [*Nederlands*](/docs/README.nl.md) <!-- オランダ語 -->
++  [*عربى*](/docs/README.ar.md) <!-- アラビア語 -->
++  [*বাংলা*](/docs/README.bn.md) <!-- ベンガル語 -->
 
 # 特徴
 
@@ -63,13 +76,13 @@ wes
 
 *wes* の起動オプションは下記になります。
 
-| named              | Description                                       |
-| ------------------ | ------------------------------------------------- |
-| `--monotone`       | *ANSI escape code* を排除します                   |
-| `--transpile`      | 常に *babel-standalone* で変換して実行します      |
-| `--debug`          | スクリプトをデバッグモードで実行します            |
-| `--encoding=UTF-8` | 最初に読み込むファイルのエンコードを指定します    |
-| `--arch=x86`       | このオプションは *wes* によって自動で付加されます |
+| named              | Description                      |
+| ------------------ | -------------------------------- |
+| `--monotone`       | *ANSI escape code* を排除します        |
+| `--transpile`      | 常に *babel-standalone* で変換して実行します |
+| `--debug`          | スクリプトをデバッグモードで実行します              |
+| `--encoding=UTF-8` | 最初に読み込むファイルのエンコードを指定します          |
+| `--arch=x86`       | このオプションは *wes* によって自動で付加されます     |
 
 # モジュールシステム
 
@@ -145,20 +158,20 @@ console.log('sub(7, 3) // => %O', sub(7, 3))
 console.log(`item: %j`,  {name: 'apple', id: '001', price: 120 })
 ```
 
-| Format specifier | Description                                  |
-| ---------------- | -------------------------------------------- |
-| `%s`             | `String(value)`                              |
-| `%S`             | `String(value)`                              |
-| `%c`             | `String(value)`                              |
-| `%C`             | `String(value)`                              |
-| `%d`             | `parseInt(value, 10)`                        |
-| `%D`             | `parseInt(value, 10)`                        |
-| `%f`             | `Number(value)`                              |
-| `%F`             | `Number(value)`                              |
-| `%j`             | `JSON.stringify(value)`                      |
-| `%J`             | `JSON.stringify(value, null, 2)`             |
-| `%o`             | オブジェクトのダンプ                         |
-| `%O`             | オブジェクトのダンプ（インデント・カラフル） |
+| Format specifier | Description                      |
+| ---------------- | -------------------------------- |
+| `%s`             | `String(value)`                  |
+| `%S`             | `String(value)`                  |
+| `%c`             | `String(value)`                  |
+| `%C`             | `String(value)`                  |
+| `%d`             | `parseInt(value, 10)`            |
+| `%D`             | `parseInt(value, 10)`            |
+| `%f`             | `Number(value)`                  |
+| `%F`             | `Number(value)`                  |
+| `%j`             | `JSON.stringify(value)`          |
+| `%J`             | `JSON.stringify(value, null, 2)` |
+| `%o`             | オブジェクトのダンプ                       |
+| `%O`             | オブジェクトのダンプ（インデント・カラフル）           |
 
 *wes* では色付き文字列を出力する為に `WScript.StdOut.WriteLine` ではなく、`WScript.StdErr.WriteLine` を使用します。
 `WScript.Echo` や `WScript.StdOut.WriteLine` は出力を遮断されています。`WScript.StdErr.WriteLine` もしくは `console.log` を使用してください。
@@ -348,17 +361,17 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 
 *VBScript* は *JScript* にはない機能のいくつかを提供します。
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "Typename"}
 const { TypeName } = require('VBScript')
 const FSO = require('Scripting.FileSystemObject')
-console.log(TypeName(FSO)) // => "FileSystemObject"
+console.log(() => TypeName(FSO)) // => "FileSystemObject"
 ```
 
 ## *httprequest*
 
 *httprequest* は *http request* を発行します。
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "httprequest"}
 const request = require('httprequest')
 const { responseText } = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log(() => JSON.parse(responseText)) /* => {
@@ -432,10 +445,10 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 厳密等価演算子 `===` で `true` と比較します。`value` が関数の場合は関数を実行した結果を評価します。
 
-| Param     | Type                  | Description                    |
-| :-------- | :-------------------- | :----------------------------- |
+| Param     | Type                  | Description     |
+| :-------- | :-------------------- | :-------------- |
 | `value`   | `{Function\|Boolean}` | 真偽値もしくは真偽値を返す関数 |
-| `message` | `{String}`            | 失敗した場合のメッセージ       |
+| `message` | `{String}`            | 失敗した場合のメッセージ    |
 
 #### `assert.equal(expected, actual)`
 
@@ -446,19 +459,19 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 | Param      | Type    | Description |
 | :--------- | :------ | :---------- |
-| `expected` | `{Any}` | 期待する値  |
-| `actual`   | `{Any}` | 実際の値    |
+| `expected` | `{Any}` | 期待する値       |
+| `actual`   | `{Any}` | 実際の値        |
 
 #### `assert.throws(value, expected, message)`
 
 正しくエラーが投げられているかを検証します。\
 エラーが正しいかどうかは、期待されたエラーの *constructor* なのか、もしくは *message* が同値、 正規表現が *stack* を評価に合格するかどうかで判断されます。
 
-| Param      | Type                      | Description                                                                     |
-| :--------- | :------------------------ | :------------------------------------------------------------------------------ |
-| `value`    | `{Error}`                 | エラー                                                                          |
+| Param      | Type                      | Description                                               |
+| :--------- | :------------------------ | :-------------------------------------------------------- |
+| `value`    | `{Error}`                 | エラー                                                       |
 | `expected` | `{Error\|String\|RegExp}` | 期待するエラーの *constructor* か *message* もしくは *stack* を評価する正規表現 |
-| `message`  | `{String}`                | 失敗した場合のメッセージ                                                        |
+| `message`  | `{String}`                | 失敗した場合のメッセージ                                              |
 
 ## *pipe*
 
@@ -470,7 +483,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 *pipe* のメソッドの `use(converter)` の引数に変換関数を入れて `process(data, callback(error, result))` でデータの入力と変換後の処理を記述します。`callback` を指定しない場合の戻り値は *promise* になり、`then(result)` ならびに `catch(error)` で処理を繋げていけます。
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "pipe"}
 const pipe = require('pipe')
 
 function add (a, b) {
@@ -499,7 +512,7 @@ pipe()
 
 また、`use(converter)` 以外に `.filter(callbackFn(value, index))` や `map(callbackFn(value, index))` などのメソッドもあります。それぞれ *data* が文字列、配列、オブジェクトも場合に網羅的にアクセスして処理します。
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "utility methods for pipes"}
 const pipe = require('pipe')
 
 const tsv = `
@@ -558,7 +571,7 @@ pipe()
 
 スクリプトの型の判定をします。
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "typecheck"}
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
 console.log(() => isString("ECMAScript")) /* => true */
 console.log(() => isNumber(43.5)) /* => true */
@@ -748,15 +761,15 @@ wes zip -p dox.zip
 
 `path` に拡張子 `.zip` があれば `unzip()` を処理し、拡張子 `.zip` の記述がない。もしくは拡張子 `.zip` があってもワイルドカード `*` の記述があれば `zip()` の処理を行います。
 
-| unnamed | Description                       |
-| ------- | --------------------------------- |
+| unnamed | Description          |
+| ------- | -------------------- |
 | `1`     | `path` 入力するフォルダやファイル |
-| `2`     | `dest` 出力するフォルダファイル   |
+| `2`     | `dest` 出力するフォルダファイル  |
 
-| named    | short named | Description                       |
-| -------- | ----------- | --------------------------------- |
+| named    | short named | Description          |
+| -------- | ----------- | -------------------- |
 | `--path` | `-p`        | `path` 入力するフォルダやファイル |
-| `--dest` | `-d`        | `dest` 出力するフォルダファイル   |
+| `--dest` | `-d`        | `dest` 出力するフォルダファイル  |
 
 # モジュールのバンドル（パッケージ化）とインストール
 
@@ -808,13 +821,13 @@ wes install @wachaon/fmt
 
 *install* にはオプションがあります。
 
-| named         | short named | Description                                                                        |
-| ------------- | ----------- | ---------------------------------------------------------------------------------- |
-| `--bare`      | `-b`        | *@author* フォルダを作成しない                                                     |
-| `--global`    | `-g`        | *wes.js* があるフォルダにパッケージをインストールする                              |
+| named         | short named | Description                                                |
+| ------------- | ----------- | ---------------------------------------------------------- |
+| `--bare`      | `-b`        | *@author* フォルダを作成しない                                       |
+| `--global`    | `-g`        | *wes.js* があるフォルダにパッケージをインストールする                            |
 | `--save`      | `-S`        | *package.json* の *dependencies* フィールドにパッケージ名とバージョンを追加する    |
 | `--save--dev` | `-D`        | *package.json* の *devDependencies* フィールドにパッケージ名とバージョンを追加する |
-| `--node`      | `-n`        | *node\_module* フォルダにインストールする                                          |
+| `--node`      | `-n`        | *node\_module* フォルダにインストールする                               |
 
 `--bare` オプションは `require` の引数を `@author/repository` から `repository` に省略できます。
 `--global` オプションはインストールしたパッケージを全てのスクリプトから利用できます。
@@ -866,13 +879,13 @@ wes install @wachaon/fmt
 wes @wachaon/fmt src/sample --write
 ```
 
-| unnamed number | Description                            |
-| -------------- | -------------------------------------- |
+| unnamed number | Description         |
+| -------------- | ------------------- |
 | 1              | 必須。フォーマットしたいファイルのパス |
 
-| named     | short named | Description      |
-| --------- | ----------- | ---------------- |
-| `--write` | `-w`        | 上書きを許可する |
+| named     | short named | Description |
+| --------- | ----------- | ----------- |
+| `--write` | `-w`        | 上書きを許可する    |
 
 `--write` もしくは `-w` の名前付き引数の指定があればフォーマットしたスクリプトでファイルを上書きします。
 

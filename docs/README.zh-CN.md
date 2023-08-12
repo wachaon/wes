@@ -323,17 +323,17 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 
 *VBScript*提供了*JScript*所没有的一些功能。
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "Typename"}
 const { TypeName } = require('VBScript')
 const FSO = require('Scripting.FileSystemObject')
-console.log(TypeName(FSO)) // => "FileSystemObject"
+console.log(() => TypeName(FSO)) // => "FileSystemObject"
 ```
 
 ## *httprequest*
 
 *httprequest*发出*http request* 。
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "httprequest"}
 const request = require('httprequest')
 const { responseText } = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log(() => JSON.parse(responseText)) /* => {
@@ -440,7 +440,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 将转换函数放在*pipe*方法的`use(converter)`参数中，并使用`process(data, callback(error, result))`描述数据输入和转换后处理。如果没有指定`callback` ，返回值将是*promise* ，处理可以与`then(result)`和`catch(error)`连接。
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "pipe"}
 const pipe = require('pipe')
 
 function add (a, b) {
@@ -469,7 +469,7 @@ pipe()
 
 除了`use(converter)`之外，还有`.filter(callbackFn(value, index))`和`map(callbackFn(value, index))`等方法。每个*data*都是一个字符串、一个数组和一个对象。
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "utility methods for pipes"}
 const pipe = require('pipe')
 
 const tsv = `
@@ -528,7 +528,7 @@ pipe()
 
 确定脚本类型。
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "typecheck"}
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
 console.log(() => isString("ECMAScript")) /* => true */
 console.log(() => isNumber(43.5)) /* => true */

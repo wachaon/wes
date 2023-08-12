@@ -323,17 +323,17 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 
 *VBScript* oferece alguns recursos que *JScript* não oferece.
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "Typename"}
 const { TypeName } = require('VBScript')
 const FSO = require('Scripting.FileSystemObject')
-console.log(TypeName(FSO)) // => "FileSystemObject"
+console.log(() => TypeName(FSO)) // => "FileSystemObject"
 ```
 
 ## *httprequest*
 
 *httprequest* emite *http request* .
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "httprequest"}
 const request = require('httprequest')
 const { responseText } = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log(() => JSON.parse(responseText)) /* => {
@@ -440,7 +440,7 @@ Se o erro está correto ou não, é determinado se o *constructor* de erro esper
 
 Coloque a função de conversão `use(converter)` do método *pipe* e descreva a entrada de dados e o processamento pós-conversão com `process(data, callback(error, result))` . Se nenhum `callback` for especificado, o valor de retorno será *promise* e o processamento pode ser conectado com `then(result)` e `catch(error)` .
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "pipe"}
 const pipe = require('pipe')
 
 function add (a, b) {
@@ -469,7 +469,7 @@ pipe()
 
 Além de `use(converter)` , existem métodos como `.filter(callbackFn(value, index))` e `map(callbackFn(value, index))` . Cada *data* é uma string, uma matriz e um objeto.
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "utility methods for pipes"}
 const pipe = require('pipe')
 
 const tsv = `
@@ -528,7 +528,7 @@ pipe()
 
 Determine o tipo de script.
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "typecheck"}
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
 console.log(() => isString("ECMAScript")) /* => true */
 console.log(() => isNumber(43.5)) /* => true */
@@ -877,7 +877,7 @@ edge((window, navi, res) => {
 })
 ```
 
-Armazenamos seu histórico de visitas até que *URL* do seu navegador comece com `https://www.yahoo` .
+Armazenamos seu histórico de visitas até que *URL* de seu navegador comece com `https://www.yahoo` .
 
 ```javascript
 const edge = require('edge')

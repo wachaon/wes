@@ -323,17 +323,17 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 
 *VBScript* कुछ सुविधाएँ प्रदान करता है जो *JScript* नहीं करता है।
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "Typename"}
 const { TypeName } = require('VBScript')
 const FSO = require('Scripting.FileSystemObject')
-console.log(TypeName(FSO)) // => "FileSystemObject"
+console.log(() => TypeName(FSO)) // => "FileSystemObject"
 ```
 
 ## *httprequest*
 
 *httprequest* *http request* जारी करता है।
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "httprequest"}
 const request = require('httprequest')
 const { responseText } = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log(() => JSON.parse(responseText)) /* => {
@@ -440,7 +440,7 @@ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegEx
 
 रूपांतरण फ़ंक्शन को *pipe* विधि के `use(converter)` तर्क में रखें और `process(data, callback(error, result))` के साथ डेटा इनपुट और पोस्ट-रूपांतरण प्रसंस्करण का वर्णन करें। यदि कोई `callback` निर्दिष्ट नहीं है, तो रिटर्न मान *promise* होगा, और प्रसंस्करण को `then(result)` और `catch(error)` के साथ जोड़ा जा सकता है।
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "pipe"}
 const pipe = require('pipe')
 
 function add (a, b) {
@@ -469,7 +469,7 @@ pipe()
 
 `use(converter)` के अलावा, `.filter(callbackFn(value, index))` और `map(callbackFn(value, index))` जैसी विधियां भी हैं। प्रत्येक *data* एक स्ट्रिंग, एक सरणी और एक ऑब्जेक्ट है।
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "utility methods for pipes"}
 const pipe = require('pipe')
 
 const tsv = `
@@ -528,7 +528,7 @@ pipe()
 
 स्क्रिप्ट प्रकार निर्धारित करें.
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "typecheck"}
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
 console.log(() => isString("ECMAScript")) /* => true */
 console.log(() => isNumber(43.5)) /* => true */
@@ -877,7 +877,7 @@ edge((window, navi, res) => {
 })
 ```
 
-हम आपके विज़िट इतिहास को तब तक संग्रहीत करते हैं जब तक कि आपके ब्राउज़र का *URL* `https://www.yahoo` से शुरू न हो जाए।
+हम आपके विज़िट इतिहास को तब तक संग्रहीत करते हैं जब तक कि आपका ब्राउज़र *URL* `https://www.yahoo` से शुरू न हो जाए।
 
 ```javascript
 const edge = require('edge')

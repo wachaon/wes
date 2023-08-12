@@ -323,17 +323,17 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 
 *VBScript* menawarkan beberapa ciri yang tidak dimiliki oleh *JScript* .
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "Typename"}
 const { TypeName } = require('VBScript')
 const FSO = require('Scripting.FileSystemObject')
-console.log(TypeName(FSO)) // => "FileSystemObject"
+console.log(() => TypeName(FSO)) // => "FileSystemObject"
 ```
 
 ## *httprequest*
 
 *httprequest* mengeluarkan *http request* .
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "httprequest"}
 const request = require('httprequest')
 const { responseText } = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log(() => JSON.parse(responseText)) /* => {
@@ -440,7 +440,7 @@ Sama ada ralat itu betul atau tidak ditentukan oleh sama ada *constructor* ralat
 
 Letakkan fungsi penukaran dalam hujah `use(converter)` kaedah *pipe* dan huraikan input data dan pemprosesan pasca penukaran dengan `process(data, callback(error, result))` . Jika tiada `callback` dinyatakan, nilai pulangan akan menjadi *promise* , dan pemprosesan boleh disambungkan dengan `then(result)` dan `catch(error)` .
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "pipe"}
 const pipe = require('pipe')
 
 function add (a, b) {
@@ -469,7 +469,7 @@ pipe()
 
 Sebagai tambahan kepada `use(converter)` , terdapat kaedah seperti `.filter(callbackFn(value, index))` dan `map(callbackFn(value, index))` . Setiap *data* ialah rentetan, tatasusunan dan objek.
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "utility methods for pipes"}
 const pipe = require('pipe')
 
 const tsv = `
@@ -528,7 +528,7 @@ pipe()
 
 Tentukan jenis skrip.
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "typecheck"}
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
 console.log(() => isString("ECMAScript")) /* => true */
 console.log(() => isNumber(43.5)) /* => true */

@@ -323,17 +323,17 @@ new Enumerator(ServiceSet).forEach(service => console.log(
 
 *VBScript* কিছু বৈশিষ্ট্য অফার করে যা *JScript* করে না।
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "Typename"}
 const { TypeName } = require('VBScript')
 const FSO = require('Scripting.FileSystemObject')
-console.log(TypeName(FSO)) // => "FileSystemObject"
+console.log(() => TypeName(FSO)) // => "FileSystemObject"
 ```
 
 ## *httprequest*
 
 *httprequest* *http request* ইস্যু করে।
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "httprequest"}
 const request = require('httprequest')
 const { responseText } = request('GET', 'https://jsonplaceholder.typicode.com/users/1')
 console.log(() => JSON.parse(responseText)) /* => {
@@ -440,7 +440,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 
 *pipe* পদ্ধতির `use(converter)` আর্গুমেন্টে রূপান্তর ফাংশন রাখুন এবং `process(data, callback(error, result))` সহ ডেটা ইনপুট এবং পোস্ট-রূপান্তর প্রক্রিয়াকরণ বর্ণনা করুন। যদি কোন `callback` নির্দিষ্ট করা না থাকে, তাহলে রিটার্ন মান *promise* হবে, এবং প্রক্রিয়াকরণ `then(result)` এবং `catch(error)` এর সাথে সংযুক্ত করা যেতে পারে।
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "pipe"}
 const pipe = require('pipe')
 
 function add (a, b) {
@@ -469,7 +469,7 @@ pipe()
 
 `use(converter)` ছাড়াও, `.filter(callbackFn(value, index))` এবং `map(callbackFn(value, index))` এর মতো পদ্ধতি রয়েছে। প্রতিটি *data* একটি স্ট্রিং, একটি অ্যারে এবং একটি বস্তু।
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "utility methods for pipes"}
 const pipe = require('pipe')
 
 const tsv = `
@@ -528,7 +528,7 @@ pipe()
 
 স্ক্রিপ্টের ধরন নির্ধারণ করুন।
 
-```javascript {"testing": true}
+```javascript {"testing": true, "message": "typecheck"}
 const { isString, isNumber, isBoolean, isObject } = require('typecheck')
 console.log(() => isString("ECMAScript")) /* => true */
 console.log(() => isNumber(43.5)) /* => true */
