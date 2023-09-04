@@ -146,6 +146,7 @@
             var BRACKET_START = '{'
             var DOLLAR = '$'
             var PERCENT = '%'
+            var PROCESS = 'process'
             var PROMISE = 'promise'
             var ENCODING = 'encoding'
             var ASTERISK = '*'
@@ -168,6 +169,7 @@
 
             var global = this
 
+            /*
             var process = {
                 env: {
                     NODE_ENV: NONE
@@ -190,6 +192,7 @@
                     }
                 }
             }
+            */
 
             var Babel_option = {
                 plugins: [
@@ -331,7 +334,7 @@
                         __dirname: dirname(entry),
                         __filename: entry,
                         wes: wes,
-                        process: process,
+                        process: entry === PROCESS ? undefined : req(PROCESS),
                         setTimeout: setTimeout,
                         clearTimeout: clearTimeout,
                         setInterval: setInterval,
@@ -384,7 +387,7 @@
                         __dirname: dirname,
                         __filename: entry,
                         wes: wes,
-                        process: process,
+                        process: undefined,
                         setTimeout: setTimeout,
                         clearTimeout: clearTimeout,
                         setInterval: setInterval,
