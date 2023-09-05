@@ -28,7 +28,6 @@ describe('#test Enumerator', () => {
             'minitest.js',
             'pathname.js',
             'pipe.js',
-            'process.js',
             'promise.js',
             'ps.js',
             'REP.js',
