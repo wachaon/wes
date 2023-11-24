@@ -77,4 +77,20 @@ describe('# test pathname', () => {
             assert(path.dirname('C:') === 'C:')
         })
     })
+
+    describe('## test drivename', () => {
+        it('C:/bin/github/wes', () => {
+            assert(path.drivename('C:/bin/github/wes') === 'C:/')
+        })
+        it('C:/bin', () => {
+            assert(path.drivename('C:/bin') === 'C:/')
+        })
+        it('C:/', () => {
+            assert(path.drivename('C:/') === 'C:/')
+        })
+        it('C:', () => {
+            assert(path.drivename('C:') === 'C:/')
+        })
+    })
+
 })
