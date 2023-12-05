@@ -432,6 +432,38 @@ Si el error es correcto o no se determina si el *constructor* de error esperado,
 | `expected` | `{Error\|String\|RegExp}` | Una expresión regular que evalúa el error esperado *constructor* , *message* o *stack* |
 | `message`  | `{String}`                | mensaje en caso de falla                                                               |
 
+## *match*
+
+*match* es un módulo que determina si la ruta de un archivo coincide con un patrón específico. Puede utilizar comodines (los comodines son caracteres especiales como `*` y `?` ) en nombres de archivos y rutas para buscar archivos que coincidan con criterios específicos.
+
+| parámetro | Tipo       | Descripción     |
+| :-------- | :--------- | :-------------- |
+| `pattern` | `{String}` | patrón          |
+| `matcher` | `{Any}`    | Ruta de destino |
+
+```javascript
+const match = require('match')
+
+console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
+console.log(() => match('path/**/index.*', 'path/to/url/index.json')) // => true
+console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
+```
+
+### *match.search*
+
+*match.search* encuentra rutas que coinciden con un patrón de rutas existentes.
+
+| parámetro | Tipo       | Descripción                     |
+| :-------- | :--------- | :------------------------------ |
+| `pattern` | `{String}` | patrón                          |
+| `matcher` | `{Any}`    | Ruta del directorio para buscar |
+
+```javascript
+const {search} = require('match')
+
+console.log(() => search('**/LICENSE', process.cwd()))
+```
+
 ## *pipe*
 
 *pipe* simplifica la instalación de tuberías. Envíe el resultado al convertir *data* con uno o varios *converter* . Desde *ver 0.12.75* en adelante, se puede iniciar directamente desde la línea de comandos.

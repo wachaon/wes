@@ -432,6 +432,38 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 | `expected` | `{Error\|String\|RegExp}` | একটি নিয়মিত অভিব্যক্তি যা প্রত্যাশিত ত্রুটি *constructor* , *message* বা *stack* মূল্যায়ন করে |
 | `message`  | `{String}`                | ব্যর্থতার ক্ষেত্রে বার্তা                                                                       |
 
+## *match*
+
+*match* একটি মডিউল যা নির্ধারণ করে যে একটি ফাইল পাথ একটি নির্দিষ্ট প্যাটার্নের সাথে মেলে কিনা। নির্দিষ্ট মানদণ্ডের সাথে মেলে এমন ফাইলগুলি অনুসন্ধান করতে আপনি ফাইলের নাম এবং পাথগুলিতে ওয়াইল্ডকার্ড (ওয়াইল্ডকার্ডগুলি বিশেষ অক্ষর যেমন `*` এবং `?` ) ব্যবহার করতে পারেন।
+
+| পরম       | টাইপ       | বর্ণনা    |
+| :-------- | :--------- | :-------- |
+| `pattern` | `{String}` | প্যাটার্ন |
+| `matcher` | `{Any}`    | লক্ষ্য পথ |
+
+```javascript
+const match = require('match')
+
+console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
+console.log(() => match('path/**/index.*', 'path/to/url/index.json')) // => true
+console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
+```
+
+### *match.search*
+
+*match.search* এমন পাথ খুঁজে পায় যা বিদ্যমান পাথ থেকে একটি প্যাটার্নের সাথে মেলে।
+
+| পরম       | টাইপ       | বর্ণনা                        |
+| :-------- | :--------- | :---------------------------- |
+| `pattern` | `{String}` | প্যাটার্ন                     |
+| `matcher` | `{Any}`    | অনুসন্ধানের জন্য ডিরেক্টরি পথ |
+
+```javascript
+const {search} = require('match')
+
+console.log(() => search('**/LICENSE', process.cwd()))
+```
+
 ## *pipe*
 
 *pipe* পাইপিংকে সহজ করে। এক বা একাধিক *converter* সাথে *data* রূপান্তর করার সময় ফলাফল আউটপুট করুন। *ver 0.12.75* পর থেকে, এটি সরাসরি কমান্ড লাইন থেকে শুরু করা যেতে পারে।

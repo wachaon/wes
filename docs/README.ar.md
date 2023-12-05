@@ -432,6 +432,38 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 | `expected` | `{Error\|String\|RegExp}` | تعبير عادي يقوم بتقييم *constructor* الخطأ أو *message* أو *stack* المتوقع |
 | `message`  | `{String}`                | رسالة عن الفشل                                                             |
 
+## *match*
+
+*match* هي وحدة تحدد ما إذا كان مسار الملف يتطابق مع نمط معين. يمكنك استخدام أحرف البدل (أحرف البدل هي أحرف خاصة مثل `*` و `?` ) في أسماء الملفات والمسارات للبحث عن الملفات التي تطابق معايير محددة.
+
+| بارام     | يكتب       | وصف        |
+| :-------- | :--------- | :--------- |
+| `pattern` | `{String}` | نمط        |
+| `matcher` | `{Any}`    | مسار الهدف |
+
+```javascript
+const match = require('match')
+
+console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
+console.log(() => match('path/**/index.*', 'path/to/url/index.json')) // => true
+console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
+```
+
+### *match.search*
+
+يبحث *match.search* عن المسارات التي تطابق نمطًا من المسارات الموجودة.
+
+| بارام     | يكتب       | وصف               |
+| :-------- | :--------- | :---------------- |
+| `pattern` | `{String}` | نمط               |
+| `matcher` | `{Any}`    | مسار الدليل للبحث |
+
+```javascript
+const {search} = require('match')
+
+console.log(() => search('**/LICENSE', process.cwd()))
+```
+
 ## *pipe*
 
 يبسط *pipe* . إخراج النتيجة أثناء تحويل *data* باستخدام *converter* . من *ver 0.12.75* فصاعدًا ، يمكن بدء تشغيله مباشرة من سطر الأوامر.

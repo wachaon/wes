@@ -432,6 +432,38 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 | `expected` | `{Error\|String\|RegExp}` | Регулярное выражение, оценивающее ожидаемый *constructor* ошибок, *message* или *stack* |
 | `message`  | `{String}`                | сообщение в случае неудачи                                                              |
 
+## *match*
+
+*match* — модуль, который определяет, соответствует ли путь к файлу определенному шаблону. Вы можете использовать подстановочные знаки (подстановочные знаки — это специальные символы, такие как `*` и `?` ) в именах файлов и путях для поиска файлов, соответствующих определенным критериям.
+
+| Парам     | Тип        | Описание     |
+| :-------- | :--------- | :----------- |
+| `pattern` | `{String}` | шаблон       |
+| `matcher` | `{Any}`    | Целевой путь |
+
+```javascript
+const match = require('match')
+
+console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
+console.log(() => match('path/**/index.*', 'path/to/url/index.json')) // => true
+console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
+```
+
+### *match.search*
+
+*match.search* находит пути, соответствующие шаблону, среди существующих путей.
+
+| Парам     | Тип        | Описание                   |
+| :-------- | :--------- | :------------------------- |
+| `pattern` | `{String}` | шаблон                     |
+| `matcher` | `{Any}`    | Путь к каталогу для поиска |
+
+```javascript
+const {search} = require('match')
+
+console.log(() => search('**/LICENSE', process.cwd()))
+```
+
 ## *pipe*
 
 *pipe* упрощает трубопровод. Вывод результата при преобразовании *data* с помощью одного или нескольких *converter* . Начиная с *ver 0.12.75* , его можно запустить прямо из командной строки.

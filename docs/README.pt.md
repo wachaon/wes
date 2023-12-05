@@ -432,6 +432,38 @@ Se o erro está correto ou não, é determinado se o *constructor* de erro esper
 | `expected` | `{Error\|String\|RegExp}` | Uma expressão regular que avalia o *constructor* , *message* ou *stack* de erro esperado |
 | `message`  | `{String}`                | mensagem em caso de falha                                                                |
 
+## *match*
+
+*match* é um módulo que determina se um caminho de arquivo corresponde a um padrão específico. Você pode usar curingas (curingas são caracteres especiais como `*` e `?` ) em nomes e caminhos de arquivos para procurar arquivos que correspondam a critérios específicos.
+
+| Parâmetro | Tipo       | Descrição          |
+| :-------- | :--------- | :----------------- |
+| `pattern` | `{String}` | padrão             |
+| `matcher` | `{Any}`    | Caminho de Destino |
+
+```javascript
+const match = require('match')
+
+console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
+console.log(() => match('path/**/index.*', 'path/to/url/index.json')) // => true
+console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
+```
+
+### *match.search*
+
+*match.search* encontra caminhos que correspondem a um padrão de caminhos existentes.
+
+| Parâmetro | Tipo       | Descrição                           |
+| :-------- | :--------- | :---------------------------------- |
+| `pattern` | `{String}` | padrão                              |
+| `matcher` | `{Any}`    | Caminho do diretório para pesquisar |
+
+```javascript
+const {search} = require('match')
+
+console.log(() => search('**/LICENSE', process.cwd()))
+```
+
 ## *pipe*
 
 *pipe* simplifica a tubulação. Gere o resultado durante a conversão de *data* com um ou vários *converter* . A partir *ver 0.12.75* , pode ser iniciado diretamente da linha de comando.

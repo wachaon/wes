@@ -432,6 +432,38 @@ Ob der Fehler korrekt ist oder nicht, wird dadurch bestimmt, ob der erwartete *c
 | `expected` | `{Error\|String\|RegExp}` | Ein regulärer Ausdruck, der den erwarteten *constructor* , die erwartete *message* oder den erwarteten *stack* auswertet |
 | `message`  | `{String}`                | Meldung bei Fehler                                                                                                       |
 
+## *match*
+
+*match* ist ein Modul, das ermittelt, ob ein Dateipfad mit einem bestimmten Muster übereinstimmt. Sie können Platzhalter (Platzhalter sind Sonderzeichen wie `*` und `?` ) in Dateinamen und Pfaden verwenden, um nach Dateien zu suchen, die bestimmten Kriterien entsprechen.
+
+| Param     | Typ        | Beschreibung |
+| :-------- | :--------- | :----------- |
+| `pattern` | `{String}` | Muster       |
+| `matcher` | `{Any}`    | Zielpfad     |
+
+```javascript
+const match = require('match')
+
+console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
+console.log(() => match('path/**/index.*', 'path/to/url/index.json')) // => true
+console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
+```
+
+### *match.search*
+
+*match.search* findet Pfade, die einem Muster aus vorhandenen Pfaden entsprechen.
+
+| Param     | Typ        | Beschreibung                  |
+| :-------- | :--------- | :---------------------------- |
+| `pattern` | `{String}` | Muster                        |
+| `matcher` | `{Any}`    | Verzeichnispfad für die Suche |
+
+```javascript
+const {search} = require('match')
+
+console.log(() => search('**/LICENSE', process.cwd()))
+```
+
 ## *pipe*
 
 *pipe* vereinfacht die Verrohrung. Geben Sie das Ergebnis aus, während Sie *data* mit einem oder mehreren *converter* konvertieren. Ab *ver 0.12.75* kann es direkt über die Kommandozeile gestartet werden.

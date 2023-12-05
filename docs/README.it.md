@@ -432,6 +432,38 @@ La correttezza o meno dell'errore è determinata dal fatto che il *constructor* 
 | `expected` | `{Error\|String\|RegExp}` | Un'espressione regolare che valuta il *constructor* , *message* o *stack* dell'errore previsto |
 | `message`  | `{String}`                | messaggio in caso di guasto                                                                    |
 
+## *match*
+
+*match* è un modulo che determina se un percorso di file corrisponde a un modello specifico. È possibile utilizzare i caratteri jolly (i caratteri jolly sono caratteri speciali come `*` e `?` ) nei nomi e nei percorsi dei file per cercare file che corrispondono a criteri specifici.
+
+| Param     | Tipo       | Descrizione              |
+| :-------- | :--------- | :----------------------- |
+| `pattern` | `{String}` | modello                  |
+| `matcher` | `{Any}`    | Percorso di destinazione |
+
+```javascript
+const match = require('match')
+
+console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
+console.log(() => match('path/**/index.*', 'path/to/url/index.json')) // => true
+console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
+```
+
+### *match.search*
+
+*match.search* trova percorsi che corrispondono a un modello da percorsi esistenti.
+
+| Param     | Tipo       | Descrizione                         |
+| :-------- | :--------- | :---------------------------------- |
+| `pattern` | `{String}` | modello                             |
+| `matcher` | `{Any}`    | Percorso della directory da cercare |
+
+```javascript
+const {search} = require('match')
+
+console.log(() => search('**/LICENSE', process.cwd()))
+```
+
 ## *pipe*
 
 *pipe* semplifica le tubazioni. Il risultato viene emesso durante la conversione *data* con uno o più *converter* . Dalla *ver 0.12.75* in poi, può essere avviato direttamente dalla riga di comando.

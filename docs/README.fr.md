@@ -432,6 +432,38 @@ Le fait que l'erreur soit correcte ou non est déterminé par le fait que le *co
 | `expected` | `{Error\|String\|RegExp}` | Une expression régulière qui évalue le *constructor* , *message* ou *stack* d'erreur attendus |
 | `message`  | `{String}`                | message en cas de panne                                                                       |
 
+## *match*
+
+*match* est un module qui détermine si un chemin de fichier correspond à un modèle spécifique. Vous pouvez utiliser des caractères génériques (les caractères génériques sont des caractères spéciaux tels que `*` et `?` ) dans les noms et chemins de fichiers pour rechercher des fichiers correspondant à des critères spécifiques.
+
+| Paramètre | Taper      | Description  |
+| :-------- | :--------- | :----------- |
+| `pattern` | `{String}` | modèle       |
+| `matcher` | `{Any}`    | Chemin cible |
+
+```javascript
+const match = require('match')
+
+console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
+console.log(() => match('path/**/index.*', 'path/to/url/index.json')) // => true
+console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
+```
+
+### *match.search*
+
+*match.search* trouve les chemins qui correspondent à un modèle à partir de chemins existants.
+
+| Paramètre | Taper      | Description                       |
+| :-------- | :--------- | :-------------------------------- |
+| `pattern` | `{String}` | modèle                            |
+| `matcher` | `{Any}`    | Chemin du répertoire à rechercher |
+
+```javascript
+const {search} = require('match')
+
+console.log(() => search('**/LICENSE', process.cwd()))
+```
+
 ## *pipe*
 
 *pipe* simplifie la tuyauterie. Le résultat est sorti lors de la conversion *data* avec un ou plusieurs *converter* . À partir de *ver 0.12.75* , il peut être lancé directement à partir de la ligne de commande.

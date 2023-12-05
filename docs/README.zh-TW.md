@@ -432,6 +432,38 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 | `expected` | `{Error\|String\|RegExp}` | 計算預期錯誤*constructor* 、 *message*或*stack*的正則表達式 |
 | `message`  | `{String}`                | 失敗時的消息                                        |
 
+## *match*
+
+*match*是一個確定檔案路徑是否與特定模式相符的模組。您可以在檔案名稱和路徑中使用通配符（通配符是特殊字符，例如`*`和`?` ）來搜尋符合特定條件的檔案。
+
+| 參數        | 類型         | 描述   |
+| :-------- | :--------- | :--- |
+| `pattern` | `{String}` | 圖案   |
+| `matcher` | `{Any}`    | 目標路徑 |
+
+```javascript
+const match = require('match')
+
+console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
+console.log(() => match('path/**/index.*', 'path/to/url/index.json')) // => true
+console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
+```
+
+### *match.search*
+
+*match.search*從現有路徑中尋找與模式相符的路徑。
+
+| 參數        | 類型         | 描述      |
+| :-------- | :--------- | :------ |
+| `pattern` | `{String}` | 圖案      |
+| `matcher` | `{Any}`    | 搜尋的目錄路徑 |
+
+```javascript
+const {search} = require('match')
+
+console.log(() => search('**/LICENSE', process.cwd()))
+```
+
 ## *pipe*
 
 *pipe*簡化了管道。使用一個或多個*converter*轉換*data*的同時輸出結果。從*ver 0.12.75*開始，可以直接從命令行啟動。

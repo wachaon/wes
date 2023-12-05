@@ -460,6 +460,40 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 | `expected` | `{Error\|String\|RegExp}` | 期待するエラーの *constructor* か *message* もしくは *stack* を評価する正規表現 |
 | `message`  | `{String}`                | 失敗した場合のメッセージ                                                        |
 
+## *match*
+
+*match* は、ファイルパスが特定のパターンに一致するするかを判定するモジュールです。
+ファイル名やパスにワイルドカード（ワイルドカードは、`*` や `?` などの特殊文字）を使用して、特定の条件に一致するファイルを検索できます。
+
+| Param     | Type       | Description |
+| :-------- | :--------- | :---------- |
+| `pattern` | `{String}` | パターン    |
+| `matcher` | `{Any}`    | 対象のパス  |
+
+```javascript
+const match = require('match')
+
+console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
+console.log(() => match('path/**/index.*', 'path/to/url/index.json')) // => true
+console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
+```
+
+### *match.search*
+
+*match.search* は実在するパスからパターンにマッチするパスを見つけます。
+
+| Param     | Type       | Description                |
+| :-------- | :--------- | :------------------------- |
+| `pattern` | `{String}` | パターン                   |
+| `matcher` | `{Any}`    | 検索対象のディレクトリパス |
+
+```javascript
+const {search} = require('match')
+
+console.log(() => search('**/LICENSE', process.cwd()))
+```
+
+
 ## *pipe*
 
 *pipe* はパイプ処理を簡素化します。

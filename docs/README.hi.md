@@ -432,6 +432,38 @@ NaN `true` `NaN === NaN` `function (){} === function (){}` `/RegExp/g === /RegEx
 | `expected` | `{Error\|String\|RegExp}` | एक नियमित अभिव्यक्ति जो अपेक्षित त्रुटि *constructor* , *message* या *stack* का मूल्यांकन करती है |
 | `message`  | `{String}`                | विफलता पर संदेश                                                                                   |
 
+## *match*
+
+*match* एक मॉड्यूल है जो यह निर्धारित करता है कि फ़ाइल पथ किसी विशिष्ट पैटर्न से मेल खाता है या नहीं। आप विशिष्ट मानदंडों से मेल खाने वाली फ़ाइलों को खोजने के लिए फ़ाइल नामों और पथों में वाइल्डकार्ड (वाइल्डकार्ड विशेष वर्ण जैसे `*` और `?` ) का उपयोग कर सकते हैं।
+
+| परम       | प्रकार     | विवरण         |
+| :-------- | :--------- | :------------ |
+| `pattern` | `{String}` | नमूना         |
+| `matcher` | `{Any}`    | लक्षित रास्ता |
+
+```javascript
+const match = require('match')
+
+console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
+console.log(() => match('path/**/index.*', 'path/to/url/index.json')) // => true
+console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
+```
+
+### *match.search*
+
+*match.search* ऐसे पथ ढूंढता है जो मौजूदा पथों के पैटर्न से मेल खाते हैं।
+
+| परम       | प्रकार     | विवरण                    |
+| :-------- | :--------- | :----------------------- |
+| `pattern` | `{String}` | नमूना                    |
+| `matcher` | `{Any}`    | खोज के लिए निर्देशिका पथ |
+
+```javascript
+const {search} = require('match')
+
+console.log(() => search('**/LICENSE', process.cwd()))
+```
+
 ## *pipe*
 
 *pipe* पाइपिंग को सरल बनाता है। एक या एकाधिक *converter* के साथ *data* परिवर्तित करते समय परिणाम आउटपुट होता है। *ver 0.12.75* से आगे, इसे सीधे कमांड लाइन से शुरू किया जा सकता है।

@@ -432,6 +432,38 @@ Sama ada ralat itu betul atau tidak ditentukan oleh sama ada *constructor* ralat
 | `expected` | `{Error\|String\|RegExp}` | Ungkapan biasa yang menilai *constructor* ralat, *message* atau *stack* yang dijangkakan |
 | `message`  | `{String}`                | mesej sekiranya berlaku kegagalan                                                        |
 
+## *match*
+
+*match* ialah modul yang menentukan sama ada laluan fail sepadan dengan corak tertentu. Anda boleh menggunakan kad bebas (kad liar ialah aksara khas seperti `*` dan `?` ) dalam nama fail dan laluan untuk mencari fail yang sepadan dengan kriteria tertentu.
+
+| Param     | taip       | Penerangan     |
+| :-------- | :--------- | :------------- |
+| `pattern` | `{String}` | corak          |
+| `matcher` | `{Any}`    | Laluan sasaran |
+
+```javascript
+const match = require('match')
+
+console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
+console.log(() => match('path/**/index.*', 'path/to/url/index.json')) // => true
+console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
+```
+
+### *match.search*
+
+*match.search* mencari laluan yang sepadan dengan corak daripada laluan sedia ada.
+
+| Param     | taip       | Penerangan                     |
+| :-------- | :--------- | :----------------------------- |
+| `pattern` | `{String}` | corak                          |
+| `matcher` | `{Any}`    | Laluan direktori untuk mencari |
+
+```javascript
+const {search} = require('match')
+
+console.log(() => search('**/LICENSE', process.cwd()))
+```
+
 ## *pipe*
 
 *pipe* memudahkan paip. Hasilnya ialah output semasa menukar *data* dengan satu atau berbilang *converter* . Dari *ver 0.12.75* dan seterusnya, ia boleh dimulakan terus dari baris arahan.

@@ -432,6 +432,38 @@ Of de fout al dan niet correct is, wordt bepaald door het feit of de *constructo
 | `expected` | `{Error\|String\|RegExp}` | Een reguliere expressie die de verwachte *constructor* , *message* of *stack* evalueert |
 | `message`  | `{String}`                | bericht in geval van storing                                                            |
 
+## *match*
+
+*match* is een module die bepaalt of een bestandspad overeenkomt met een specifiek patroon. U kunt jokertekens gebruiken (wildcards zijn speciale tekens zoals `*` en `?` ) in bestandsnamen en paden om te zoeken naar bestanden die aan specifieke criteria voldoen.
+
+| Param     | Type       | Beschrijving |
+| :-------- | :--------- | :----------- |
+| `pattern` | `{String}` | patroon      |
+| `matcher` | `{Any}`    | Doelpad      |
+
+```javascript
+const match = require('match')
+
+console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
+console.log(() => match('path/**/index.*', 'path/to/url/index.json')) // => true
+console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
+```
+
+### *match.search*
+
+*match.search* vindt paden die overeenkomen met een patroon uit bestaande paden.
+
+| Param     | Type       | Beschrijving                              |
+| :-------- | :--------- | :---------------------------------------- |
+| `pattern` | `{String}` | patroon                                   |
+| `matcher` | `{Any}`    | Directorypad waarnaar moet worden gezocht |
+
+```javascript
+const {search} = require('match')
+
+console.log(() => search('**/LICENSE', process.cwd()))
+```
+
 ## *pipe*
 
 *pipe* vereenvoudigt piping. Voer het resultaat uit tijdens het converteren van *data* met een of meerdere *converter* . Vanaf *ver 0.12.75* kan het direct vanaf de opdrachtregel worden gestart.

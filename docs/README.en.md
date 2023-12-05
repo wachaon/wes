@@ -432,6 +432,38 @@ Whether or not the error is correct is determined by whether the expected error 
 | `expected` | `{Error\|String\|RegExp}` | A regular expression that evaluates the expected error *constructor* , *message* , or *stack* |
 | `message`  | `{String}`                | message in case of failure                                                                    |
 
+## *match*
+
+*match* is a module that determines whether a file path matches a specific pattern. You can use wildcards (wildcards are special characters such as `*` and `?` ) in file names and paths to search for files that match specific criteria.
+
+| Param     | Type       | Description |
+| :-------- | :--------- | :---------- |
+| `pattern` | `{String}` | pattern     |
+| `matcher` | `{Any}`    | Target path |
+
+```javascript
+const match = require('match')
+
+console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
+console.log(() => match('path/**/index.*', 'path/to/url/index.json')) // => true
+console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
+```
+
+### *match.search*
+
+*match.search* finds paths that match a pattern from existing paths.
+
+| Param     | Type       | Description              |
+| :-------- | :--------- | :----------------------- |
+| `pattern` | `{String}` | pattern                  |
+| `matcher` | `{Any}`    | Directory path to search |
+
+```javascript
+const {search} = require('match')
+
+console.log(() => search('**/LICENSE', process.cwd()))
+```
+
 ## *pipe*
 
 *pipe* simplifies piping. Output the result while converting *data* with one or multiple *converter* . From *ver 0.12.75* onwards, it can be started directly from the command line.
