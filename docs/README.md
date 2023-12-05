@@ -493,7 +493,6 @@ const {search} = require('match')
 console.log(() => search('**/LICENSE', process.cwd()))
 ```
 
-
 ## *pipe*
 
 *pipe* はパイプ処理を簡素化します。
