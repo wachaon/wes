@@ -441,7 +441,7 @@ Se o erro está correto ou não, é determinado se o *constructor* de erro esper
 | `pattern` | `{String}` | padrão             |
 | `matcher` | `{Any}`    | Caminho de Destino |
 
-```javascript
+```javascript {"testing": true, "message": "match"}
 const match = require('match')
 
 console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
@@ -459,7 +459,7 @@ console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
 | `matcher` | `{Any}`    | Caminho do diretório para pesquisar |
 
 ```javascript
-const {search} = require('match')
+const { search } = require('match')
 
 console.log(() => search('**/LICENSE', process.cwd()))
 ```

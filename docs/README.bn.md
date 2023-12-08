@@ -441,7 +441,7 @@ console.log('tests: %O passed: %O, failed: %O', pass[0], pass[1], pass[0] - pass
 | `pattern` | `{String}` | প্যাটার্ন |
 | `matcher` | `{Any}`    | লক্ষ্য পথ |
 
-```javascript
+```javascript {"testing": true, "message": "match"}
 const match = require('match')
 
 console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
@@ -459,7 +459,7 @@ console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
 | `matcher` | `{Any}`    | অনুসন্ধানের জন্য ডিরেক্টরি পথ |
 
 ```javascript
-const {search} = require('match')
+const { search } = require('match')
 
 console.log(() => search('**/LICENSE', process.cwd()))
 ```

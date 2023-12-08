@@ -441,7 +441,7 @@ La correttezza o meno dell'errore è determinata dal fatto che il *constructor* 
 | `pattern` | `{String}` | modello                  |
 | `matcher` | `{Any}`    | Percorso di destinazione |
 
-```javascript
+```javascript {"testing": true, "message": "match"}
 const match = require('match')
 
 console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
@@ -459,7 +459,7 @@ console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
 | `matcher` | `{Any}`    | Percorso della directory da cercare |
 
 ```javascript
-const {search} = require('match')
+const { search } = require('match')
 
 console.log(() => search('**/LICENSE', process.cwd()))
 ```

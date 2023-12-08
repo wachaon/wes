@@ -441,7 +441,7 @@ Of de fout al dan niet correct is, wordt bepaald door het feit of de *constructo
 | `pattern` | `{String}` | patroon      |
 | `matcher` | `{Any}`    | Doelpad      |
 
-```javascript
+```javascript {"testing": true, "message": "match"}
 const match = require('match')
 
 console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
@@ -459,7 +459,7 @@ console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
 | `matcher` | `{Any}`    | Directorypad waarnaar moet worden gezocht |
 
 ```javascript
-const {search} = require('match')
+const { search } = require('match')
 
 console.log(() => search('**/LICENSE', process.cwd()))
 ```

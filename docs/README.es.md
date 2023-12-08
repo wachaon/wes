@@ -441,7 +441,7 @@ Si el error es correcto o no se determina si el *constructor* de error esperado,
 | `pattern` | `{String}` | patrón          |
 | `matcher` | `{Any}`    | Ruta de destino |
 
-```javascript
+```javascript {"testing": true, "message": "match"}
 const match = require('match')
 
 console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
@@ -459,7 +459,7 @@ console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
 | `matcher` | `{Any}`    | Ruta del directorio para buscar |
 
 ```javascript
-const {search} = require('match')
+const { search } = require('match')
 
 console.log(() => search('**/LICENSE', process.cwd()))
 ```

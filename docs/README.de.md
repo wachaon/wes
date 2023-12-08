@@ -441,7 +441,7 @@ Ob der Fehler korrekt ist oder nicht, wird dadurch bestimmt, ob der erwartete *c
 | `pattern` | `{String}` | Muster       |
 | `matcher` | `{Any}`    | Zielpfad     |
 
-```javascript
+```javascript {"testing": true, "message": "match"}
 const match = require('match')
 
 console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
@@ -459,7 +459,7 @@ console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
 | `matcher` | `{Any}`    | Verzeichnispfad für die Suche |
 
 ```javascript
-const {search} = require('match')
+const { search } = require('match')
 
 console.log(() => search('**/LICENSE', process.cwd()))
 ```

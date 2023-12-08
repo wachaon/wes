@@ -441,7 +441,7 @@ Sama ada ralat itu betul atau tidak ditentukan oleh sama ada *constructor* ralat
 | `pattern` | `{String}` | corak          |
 | `matcher` | `{Any}`    | Laluan sasaran |
 
-```javascript
+```javascript {"testing": true, "message": "match"}
 const match = require('match')
 
 console.log(() => match('path/to/*.js', 'path/to/url.js')) // => true
@@ -459,7 +459,7 @@ console.log(() => match('path/to/*.?s', 'path/to/script.cs')) // => true
 | `matcher` | `{Any}`    | Laluan direktori untuk mencari |
 
 ```javascript
-const {search} = require('match')
+const { search } = require('match')
 
 console.log(() => search('**/LICENSE', process.cwd()))
 ```
