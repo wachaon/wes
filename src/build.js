@@ -7,7 +7,13 @@ const { rLINE_SEP, rCRLF, rCR, CRLF, SPACE, NONE, LF } = require('text')
 const fs = require('filesystem')
 const path = require('pathname')
 const DOLLAR = '$'
-var COMMONJS = 'commonjs'
+const COMMONJS = 'commonjs'
+
+const { has } = require('argv')
+if (has('f') || has('full')) {
+    require('./translate')
+    require('./code-test')
+}
 
 require('./format')
 const test = require('./test')
