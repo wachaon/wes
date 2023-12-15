@@ -25,23 +25,23 @@ describe('# test pathname', () => {
     })
 
     describe('## test normalize', () => {
-        it('d://bin/github//wes////wes.js', () => {
-            assert(path.normalize('d://bin/github//wes////wes.js') === 'D:/bin/github/wes/wes.js')
+        it('d://e/f//g////k.js', () => {
+            assert(path.normalize('d://e/f//g////k.js') === 'D:/e/f/g/k.js')
         })
-        it('d://bin/github//./wes////wes.js', () => {
-            assert(path.normalize('d://bin/github//./wes////wes.js') === 'D:/bin/github/wes/wes.js')
+        it('d://e/f//./g////k.js', () => {
+            assert(path.normalize('d://e/f//./g////k.js') === 'D:/e/f/g/k.js')
         })
-        it('d://bin/github//../wes////wes.js', () => {
-            assert(path.normalize('d://bin/github//../wes////wes.js') === 'D:/bin/wes/wes.js')
+        it('d://e/f//../g////k.js', () => {
+            assert(path.normalize('d://e/f//../g////k.js') === 'D:/e/g/k.js')
         })
-        it('d://bin/github/..//../wes////wes.js', () => {
-            assert(path.normalize('d://bin/github/..//../wes////wes.js') === 'D:/wes/wes.js')
+        it('d://e/f/..//../g////k.js', () => {
+            assert(path.normalize('d://e/f/..//../g////k.js') === 'D:/g/k.js')
         })
-        it('bin/github/wes////wes.js', () => {
-            assert(path.normalize('bin/github/wes////wes.js') === 'bin/github/wes/wes.js')
+        it('bin/f/g////k.js', () => {
+            assert(path.normalize('bin/f/g////k.js') === 'bin/f/g/k.js')
         })
-        it('github/.././../wes////wes.js', () => {
-            assert(path.normalize('github/.././../wes////wes.js') === '../wes/wes.js')
+        it('github/.././../g////k.js', () => {
+            assert(path.normalize('github/.././../g////k.js') === '../g/k.js')
         })
     })
 
@@ -49,26 +49,26 @@ describe('# test pathname', () => {
         it('WScript.ScriptFullName', () => {
             assert(path.isAbsolute(WScript.ScriptFullName) === true)
         })
-        it('d:/bin/github/wes/wes.js', () => {
-            assert(path.isAbsolute('d:/bin/github/wes/wes.js') === true)
+        it('d:/e/f/g/i.js', () => {
+            assert(path.isAbsolute('d:/e/f/g/i.js') === true)
         })
-        it('github/wes/wes.js', () => {
-            assert(path.isAbsolute('github/wes/wes.js') === false)
+        it('github/g/k.js', () => {
+            assert(path.isAbsolute('github/g/k.js') === false)
         })
-        it('./wes.js', () => {
-            assert(path.isAbsolute('./wes.js') === false)
+        it('./k.js', () => {
+            assert(path.isAbsolute('./k.js') === false)
         })
-        it('d:/bin/github/../Desktop/log/log.json', () => {
-            assert(path.isAbsolute('d:/bin/github/../Desktop/log/log.json') === true)
+        it('d:/e/f/../Desktop/h/i.json', () => {
+            assert(path.isAbsolute('d:/e/f/../Desktop/h/i.json') === true)
         })
     })
 
     describe('## test dirname', () => {
-        it('C:/bin/github/wes', () => {
-            assert(path.dirname('C:/bin/github/wes') === 'C:/bin/github')
+        it('C:/e/f/g', () => {
+            assert(path.dirname('C:/e/f/g') === 'C:/e/f')
         })
-        it('C:/bin', () => {
-            assert(path.dirname('C:/bin') === 'C:/')
+        it('C:/e', () => {
+            assert(path.dirname('C:/e') === 'C:/')
         })
         it('C:/', () => {
             assert(path.dirname('C:/') === 'C:/')
@@ -79,11 +79,11 @@ describe('# test pathname', () => {
     })
 
     describe('## test drivename', () => {
-        it('C:/bin/github/wes', () => {
-            assert(path.drivename('C:/bin/github/wes') === 'C:/')
+        it('C:/e/f/g', () => {
+            assert(path.drivename('C:/e/f/g') === 'C:/')
         })
-        it('C:/bin', () => {
-            assert(path.drivename('C:/bin') === 'C:/')
+        it('C:/e', () => {
+            assert(path.drivename('C:/e') === 'C:/')
         })
         it('C:/', () => {
             assert(path.drivename('C:/') === 'C:/')
@@ -93,4 +93,33 @@ describe('# test pathname', () => {
         })
     })
 
+    describe('## test relative', () => {
+        it('relative("C:/d/e/f", "C:/d/e/f") => ""', () => {
+            assert.equal(path.relative("C:/d/e/f", "C:/d/e/f"), "")
+        })
+        it('relative("C:/d/e", "C:/d/e/f") => "f"', () => {
+            assert.equal(path.relative("C:/d/e", "C:/d/e/f"), "f")
+        })
+        it('relative("C:/d", "C:/d/e/f") => "e/f"', () => {
+            assert.equal(path.relative("C:/d", "C:/d/e/f"), "e/f")
+        })
+        it('relative("C:/", "C:/d/e/f") => "d/e/f"', () => {
+            assert.equal(path.relative("C:/", "C:/d/e/f"), "d/e/f")
+        })
+        it('relative("C:/d/e/f", "C:/d/e/f") => "../g"', () => {
+            assert.equal(path.relative("C:/d/e/f", "C:/d/e/g"), "../g")
+        })
+        it('relative("C:/d/e/f", "C:/d/g") => "../../g"', () => {
+            assert.equal(path.relative("C:/d/e/f", "C:/d/g"), "../../g")
+        })
+        it('relative("C:/d/e/f", "C:/g") => "../../../g"', () => {
+            assert.equal(path.relative("C:/d/e/f", "C:/g"), "../../../g")
+        })
+        it('relative(process.cwd(), "wes.js") => "wes.js"', () => {
+            assert.equal(path.relative(process.cwd(), "wes.js"), "wes.js")
+        })
+        it('relative(process.cwd(), "../wes.js") => "../wes.js"', () => {
+            assert.equal(path.relative(process.cwd(), "../wes.js"), "../wes.js")
+        })
+    })
 })
