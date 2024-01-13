@@ -833,6 +833,15 @@
                     if (error instanceof SyntaxError) {
                         console.debug(LIME + 'step: 6b. esmodule syntax error')
 
+                        var targetModule =
+                            wes.Modules[
+                                Object.keys(wes.Modules).find(function (_mod) {
+                                    return wes.Modules[_mod].path === mod.path
+                                })
+                            ]
+                        if (targetModule != null && 'code' in targetModule)
+                            console.debug('\n[code]:\n' + targetModule.code + '\n')
+
                         console.log(FILE_PATH_COLOR + 'Predicted error source is ' + mod.path)
                         return console.log(coloring(error.stack, ERROR_COLOR))
                     }
