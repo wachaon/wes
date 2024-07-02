@@ -338,7 +338,8 @@
                         clearInterval: clearInterval,
                         setImmediate: setImmediate,
                         clearImmediate: clearImmediate,
-                        global: global
+                        global: global,
+                        globalThis: global
                     }
                     if (!(entry === BUFFER || /(class|var|let|const)\s+Buffer\b/.test(script)))
                         codeMap.Buffer = req(BUFFER) /*.Buffer*/
@@ -391,7 +392,8 @@
                         clearInterval: clearInterval,
                         setImmediate: setImmediate,
                         clearImmediate: clearImmediate,
-                        global: global
+                        global: global,
+                        globalThis: global
                     }
                     if (!(entry === BUFFER || /(class|var|let|const)\s+Buffer\b/.test(script)))
                         codeMap.Buffer = req(BUFFER) /*.Buffer*/
