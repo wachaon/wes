@@ -192,13 +192,7 @@
             }
 
             var Babel_option = {
-                plugins: [
-                    'transform-modules-commonjs',
-                    'proposal-object-rest-spread',
-                    'proposal-optional-catch-binding',
-                    'proposal-async-generator-functions'
-                ],
-                presets: ['es2017'],
+                presets: ['env'],
                 sourceMaps: true,
                 comments: false
             }
