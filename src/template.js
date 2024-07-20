@@ -274,7 +274,8 @@
         function createModule(GUID, entry, query, parentModule, encode) {
             if (parentModule) parentModule.mapping[query] = GUID
 
-            if (argv.get('debug')) console.debug('%O import to %O ', parentModule ? parentModule.path : null, entry)
+            if (argv.get('debug'))
+                console.build_debug('%O import to %O ', parentModule ? parentModule.path : null, entry)
             else {
                 if (entry.length > 100) {
                     var front = entry.slice(0, 60)
@@ -769,11 +770,13 @@
             try {
                 error.stack = unescapeName(error.stack)
 
-                console.debug(LIME + 'step: 1. An error is displayed with WScript.Popup() before applying console.')
+                console.build_debug(
+                    LIME + 'step: 1. An error is displayed with WScript.Popup() before applying console.'
+                )
                 if (console == null) return WScript.Popup(error.stack)
-                console.debug(error.stack)
+                console.build_debug(error.stack)
 
-                console.debug(LIME + 'step: 2. Identify the module that caused the error')
+                console.build_debug(LIME + 'step: 2. Identify the module that caused the error')
                 var mod =
                     wes.main === REP
                         ? find(function startsWith_BRACKET_START(mod, id) {
@@ -784,15 +787,17 @@
                           })(Modules)
 
                 if (mod == null) {
-                    console.debug(LIME + 'step: 3. If the module could not be identified, print error.stack and exit.')
+                    console.build_debug(
+                        LIME + 'step: 3. If the module could not be identified, print error.stack and exit.'
+                    )
                     return console.log(coloring(error.stack, ERROR_COLOR))
                 }
 
-                console.debug(LIME + 'step: 4. module type is ' + mod.type)
+                console.build_debug(LIME + 'step: 4. module type is ' + mod.type)
                 if (mod.type === COMMONJS) {
-                    console.debug(LIME + 'step: 5a. If the module type is commonjs')
+                    console.build_debug(LIME + 'step: 5a. If the module type is commonjs')
                     if (error instanceof SyntaxError) {
-                        console.debug(LIME + 'step: 5b. commonjs syntax error')
+                        console.build_debug(LIME + 'step: 5b. commonjs syntax error')
                         try {
                             console.log(FILE_PATH_COLOR + 'Predicted error source is ' + mod.path)
                             req(BABEL_STANDALONE).transform(mod.source, Babel_option)
@@ -803,7 +808,9 @@
                     }
 
                     if (!rSTACK_LINE.test(error.stack)) {
-                        console.debug(LIME + 'step: 5c. If there is no line describing the file path in error.stack')
+                        console.build_debug(
+                            LIME + 'step: 5c. If there is no line describing the file path in error.stack'
+                        )
                         error.stack = error.stack.replace(rSTACK_FIRST_LINE, function (_, __, _row, _column) {
                             var row = _row - 0
                             var column = _column - 0
@@ -811,7 +818,9 @@
                             return showErrorCode(mod.source, spec, row, column)
                         })
                     } else {
-                        console.debug(LIME + 'step: 5d. If there is a line describing the file path in error.stack')
+                        console.build_debug(
+                            LIME + 'step: 5d. If there is a line describing the file path in error.stack'
+                        )
                         error.stack = error.stack.replace(rSTACK_LINE, function (_, _spec, _row, _column) {
                             var row = _row - 0
                             var column = _column - 0
@@ -825,9 +834,9 @@
                 }
 
                 if (mod.type === MODULE || mod.type === TRANSPILED) {
-                    console.debug(LIME + 'step: 6a. If the module type is esmodule')
+                    console.build_debug(LIME + 'step: 6a. If the module type is esmodule')
                     if (error instanceof SyntaxError) {
-                        console.debug(LIME + 'step: 6b. esmodule syntax error')
+                        console.build_debug(LIME + 'step: 6b. esmodule syntax error')
 
                         var targetModule =
                             wes.Modules[
@@ -836,14 +845,16 @@
                                 })
                             ]
                         if (targetModule != null && 'code' in targetModule)
-                            console.debug('\n[code]:\n' + targetModule.code + '\n')
+                            console.build_debug('\n[code]:\n' + targetModule.code + '\n')
 
                         console.log(FILE_PATH_COLOR + 'Predicted error source is ' + mod.path)
                         return console.log(coloring(error.stack, ERROR_COLOR))
                     }
 
                     if (!rSTACK_LINE.test(error.stack)) {
-                        console.debug(LIME + 'step: 6c If there is no line describing the file path in error.stack')
+                        console.build_debug(
+                            LIME + 'step: 6c If there is no line describing the file path in error.stack'
+                        )
                         error.stack = error.stack.replace(rSTACK_FIRST_LINE, function (_, __, _row, _column) {
                             var row = _row - 0
                             var column = _column - 0
@@ -855,7 +866,9 @@
                             return showErrorCode(mod.source, spec, mapping[2] + 1, mapping[3] + 1)
                         })
                     } else {
-                        console.debug(LIME + 'step: 6d. If there is a line describing the file path in error.stack')
+                        console.build_debug(
+                            LIME + 'step: 6d. If there is a line describing the file path in error.stack'
+                        )
                         error.stack = error.stack.replace(rSTACK_LINE, function (_, _spec, _row, _column) {
                             var row = _row - 0
                             var column = _column - 0
@@ -872,11 +885,11 @@
                     }
                 }
 
-                console.debug(LIME + "step: 7. If you don't see an error")
+                console.build_debug(LIME + "step: 7. If you don't see an error")
                 console.log(coloring(error.stack, ERROR_COLOR))
-                console.debug('history: %O', history)
+                console.build_debug('history: %O', history)
             } catch (e) {
-                console.debug(LIME + 'step: 8. If an error occurs during error handling')
+                console.build_debug(LIME + 'step: 8. If an error occurs during error handling')
                 console.log(e.stack)
             }
         })()
